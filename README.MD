@@ -2,7 +2,7 @@
 
 ## Overview
 
-BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable.
+BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. Combines good with my mod: [BrudvikStackedChest](https://github.com/brudvik/BrudvikStackedChest).
 
 ## Installation (manual)
 
@@ -13,7 +13,29 @@ BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding c
 
 ## Features
 
-- **Custom Items**: Various armor, weapons and tools - all indestructible.
+**ARMOR** (armor pr. level +10, movement modifier +0.05)
+- **White Hilt Cape**: The Indestructible Cape of Dyrnwyn.
+- **White Hilt Helmet**: The Indestructible Helmet of Dyrnwyn.
+- **White Hilt Shield**: The Indestructible Shield of Dyrnwyn.
+
+**POTIONS**
+- **Gift of Freya**: Potion that grants you immense stamina for 20 minutes.
+- **Gift of Loki**: Potion that grants you endless of Eitr for 20 minutes.
+- **Gift of Odin**: Potion that grants you undwindling health for 20 minutes. 
+
+**TOOLS** (all with a stamina modifier of -= 1)
+- **White Hilt Axe**: The Indestructible Axe of Dyrnwyn.
+- **White Hilt Cultivator**: The Indestructible Cultivator of Dyrnwyn.
+- **White Hilt Hammer**: The Indestructible Hammer of Dyrnwyn.
+- **White Hilt Hoe**: The Indestructible Hoe of Dyrnwyn.
+- **White Hilt Pickaxe**: The Indestructible Pickaxe of Dyrnwyn.
+
+**WEAPONS** (damage multipler +0.5, damage pr. level +10, +fire +pierce +extra damage)
+- **White Hilt Bow**: The Indestructible Bow of Dyrnwyn.
+- **White Hilt Sword**: The Indestructible Sword of Dyrnwyn.
+
+**SHIPS** (also Ashlands ready + always tailwind)
+- **White Hilt Ship**: The Indestructible Ship of Dyrnwyn.
 
 ## Compilation
 
