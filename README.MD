@@ -18,7 +18,7 @@ BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding c
 ## Compilation
 
 Please notice that it won't be possible to compile this `mod` out of the box. Make sure you read up on [Valheim Mod Development](https://github.com/Valheim-Modding/JotunnModStub).
-There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/fantasy-strategy-skills/35481040) and
+There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
 ## Changelog
