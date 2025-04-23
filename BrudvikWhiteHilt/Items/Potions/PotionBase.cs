@@ -33,6 +33,11 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     protected abstract string IconPath { get; }
 
     /// <summary>
+    /// Indicates whether the potion is enabled or not.
+    /// </summary>
+    public abstract bool Enabled { get; }
+
+    /// <summary>
     /// The requirements for crafting the potion.
     /// </summary>
     protected abstract RequirementConfig[] MeadBaseRequirements { get; }

@@ -43,4 +43,9 @@ public class WhiteHiltHammer : WhiteHiltToolBase
         new() { Item = "Stone", Amount = 1, Recover = false },
         new() { Item = "Resin", Amount = 1, Recover = false }
     };
+
+    /// <summary>
+    /// Indicates whether the tool is enabled.
+    /// </summary>
+    public override bool Enabled => true;
 }

@@ -39,4 +39,9 @@ public class WhiteHiltHelmet : WhiteHiltArmorBase
         new() { Item = "IronNails", Amount = 100, Recover = false },
         new() { Item = "HelmetIron", Amount = 1, Recover = false },
     };
+
+    /// <summary>
+    /// Indicates whether the tool is enabled.
+    /// </summary>
+    public override bool Enabled => true;
 }

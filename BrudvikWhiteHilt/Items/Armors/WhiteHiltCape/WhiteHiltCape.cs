@@ -39,4 +39,9 @@ public class WhiteHiltCape : WhiteHiltArmorBase
         new() { Item = "TrophyWraith", Amount = 3, Recover = false },
         new() { Item = "CapeTrollHide", Amount = 1, Recover = false }
     };
+
+    /// <summary>
+    /// Indicates whether the tool is enabled.
+    /// </summary>
+    public override bool Enabled => true;
 }

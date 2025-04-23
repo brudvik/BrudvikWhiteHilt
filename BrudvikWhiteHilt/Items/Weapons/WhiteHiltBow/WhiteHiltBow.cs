@@ -35,6 +35,11 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
     protected override string CopyFrom => "BowAshlands";
 
     /// <summary>
+    /// Indicates whether the White Hilt Bow is enabled.
+    /// </summary>
+    public override bool Enabled => true;
+
+    /// <summary>
     /// The requirements for crafting the White Hilt Bow.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]

@@ -38,6 +38,11 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem
         new() { Item = "Feathers", Amount = 30, Recover = false }
     };
 
+    /// <summary>
+    /// Indicates whether the armor is enabled or not.
+    /// </summary>
+    public abstract bool Enabled { get; }
+
     private readonly ItemManager instance;
 
     /// <summary>

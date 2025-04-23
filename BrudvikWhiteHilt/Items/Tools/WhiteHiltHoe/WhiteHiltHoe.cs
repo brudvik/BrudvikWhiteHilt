@@ -32,4 +32,9 @@ public class WhiteHiltHoe : WhiteHiltToolBase
     /// The name of the item to copy from.
     /// </summary>
     protected override string CopyFrom => "Hoe";
+
+    /// <summary>
+    /// Indicates whether the tool is enabled.
+    /// </summary>
+    public override bool Enabled => true;
 }

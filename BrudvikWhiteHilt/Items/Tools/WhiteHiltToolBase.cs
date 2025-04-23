@@ -40,6 +40,11 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem
         new() { Item = "Resin", Amount = 5, Recover = false }
     };
 
+    /// <summary>
+    /// Indicates whether the tool is enabled or not.
+    /// </summary>
+    public abstract bool Enabled { get; }
+
     private readonly ItemManager instance;
 
     /// <summary>

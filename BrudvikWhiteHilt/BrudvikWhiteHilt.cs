@@ -26,7 +26,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.0.1";
+    public const string PluginVersion = "0.0.2";
 
     /// <summary>
     /// Awake method is called when the script instance is being loaded.
@@ -62,7 +62,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             {
                 if (Activator.CreateInstance(type, ItemManager.Instance) is IWhiteHiltCustomItem customItem)
                 {
-                    customItem.Add();
+                    if (customItem.Enabled)
+                    {
+                        customItem.Add();
+                    }
                 }
             }
 
@@ -76,7 +79,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             {
                 if (Activator.CreateInstance(type, PieceManager.Instance) is IWhiteHiltCustomPiece customPiece)
                 {
-                    customPiece.Add();
+                    if (customPiece.Enabled)
+                    {
+                        customPiece.Add();
+                    }
                 }
             }
 

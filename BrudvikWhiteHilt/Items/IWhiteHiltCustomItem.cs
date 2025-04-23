@@ -6,6 +6,11 @@
 public interface IWhiteHiltCustomItem
 {
     /// <summary>
+    /// Is this custom item enabled?
+    /// </summary>
+    bool Enabled { get; }
+
+    /// <summary>
     /// Adds the custom item to the game.
     /// </summary>
     void Add();

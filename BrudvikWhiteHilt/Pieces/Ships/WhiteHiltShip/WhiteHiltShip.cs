@@ -35,6 +35,11 @@ public class WhiteHiltShip : WhiteHiltShipBase
     protected override string CopyFrom => "VikingShip";
 
     /// <summary>
+    /// Indicates whether the White Hilt ship is enabled.
+    /// </summary>
+    public override bool Enabled => true;
+
+    /// <summary>
     /// The name of the ship prefab.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]

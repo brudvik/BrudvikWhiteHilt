@@ -32,4 +32,9 @@ public class WhiteHiltAxe : WhiteHiltToolBase
     /// The name of the item to copy from.
     /// </summary>
     protected override string CopyFrom => "AxeIron";
+
+    /// <summary>
+    /// Indicates whether the tool is enabled.
+    /// </summary>
+    public override bool Enabled => true;
 }

@@ -38,6 +38,11 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
         new() { Item = "FineWood", Amount = 10, Recover = false }
     };
 
+    /// <summary>
+    /// Indicates whether the weapon is enabled or not.
+    /// </summary>
+    public abstract bool Enabled { get; }
+
     private readonly ItemManager instance;
 
     /// <summary>

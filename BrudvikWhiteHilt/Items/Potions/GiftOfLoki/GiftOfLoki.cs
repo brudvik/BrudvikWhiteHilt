@@ -42,6 +42,11 @@ public class GiftOfLoki : PotionBase
     };
 
     /// <summary>
+    /// Indicates whether the potion is enabled.
+    /// </summary>
+    public override bool Enabled => true;
+
+    /// <summary>
     /// Creates the effect for the potion.
     /// </summary>
     /// <returns></returns>
