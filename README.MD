@@ -22,6 +22,8 @@ BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding c
 - **Gift of Freya**: Potion that grants you immense stamina for 20 minutes.
 - **Gift of Loki**: Potion that grants you endless of Eitr for 20 minutes.
 - **Gift of Odin**: Potion that grants you undwindling health for 20 minutes. 
+- **Gift of Hugin**: Potion that grants you 100% skill level on all skills.
+- **Gift of Munin**: Potion that grants you knowledge about all materials/recipes.
 
 **TOOLS** (all with a stamina modifier of -= 1)
 - **White Hilt Axe**: The Indestructible Axe of Dyrnwyn.
@@ -44,6 +46,10 @@ There's also a directory removed from the source. The `Assets` folder is not par
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
 ## Changelog
+
+### v0.0.2
+
+- Added potions Gift of Hugin and Munin.
 
 ### v0.0.1
 
