@@ -73,8 +73,12 @@
     <Compile Include="Items\Indestructible\IndestructibleItem.cs" />
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreya.cs" />
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreyaEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfHugin\GiftOfHugin.cs" />
+    <Compile Include="Items\Potions\GiftOfHugin\GiftOfHuginEffect.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLoki.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLokiEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfMunin\GiftOfMunin.cs" />
+    <Compile Include="Items\Potions\GiftOfMunin\GiftOfMuninEffect.cs" />
     <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdin.cs" />
     <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdinEffect.cs" />
     <Compile Include="Items\Potions\PotionBase.cs" />
@@ -113,6 +117,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\GiftOfOdin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfHugin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfMunin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Package\icon.png" />
