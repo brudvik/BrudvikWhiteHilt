@@ -1,12 +1,13 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfNjord;
 
 /// <summary>
-/// This class defines the effect of the Gift of Loki potion.
+/// This class defines the effect of the Gift of Njord potion.
+/// Grants the ability to breathe underwater and swim effortlessly.
 /// </summary>
-public class GiftOfLokiEffect : SE_Stats
+public class GiftOfNjordEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,10 +23,10 @@ public class GiftOfLokiEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"The power of {effectName} has arrived!";
+        m_startMessage = $"You have been blessed with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Breathe underwater, swim faster, no swim stamina drain";
     }
 
     /// <summary>
@@ -35,6 +36,7 @@ public class GiftOfLokiEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
+        m_swimSpeedModifier = 1.0f;
         EffectHash = GetHashCode();
     }
 
@@ -48,24 +50,30 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Modifies the swim stamina usage to zero.
     /// </summary>
-    /// <param name="character"></param>
-    public override void Setup(Character character)
+    /// <param name="baseStaminaUse"></param>
+    /// <param name="staminaUse"></param>
+    public override void ModifySwimStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        base.Setup(character);
-
-        // Boost the current Eitr.
-        character.AddEitr(500f);
+        staminaUse = 0f;
     }
 
     /// <summary>
-    /// Modifies the Eitr regen. This is called when the character is regenerating Eitr.
+    /// Updates the status effect to prevent drowning.
     /// </summary>
-    /// <param name="staminaRegen"></param>
-    public override void ModifyEitrRegen(ref float staminaRegen)
+    /// <param name="dt"></param>
+    public override void UpdateStatusEffect(float dt)
     {
-        staminaRegen += 80f;
+        base.UpdateStatusEffect(dt);
+        
+        // Keep stamina above minimum while swimming to prevent drowning
+        if (m_character != null && m_character.IsSwimming())
+        {
+            if (m_character.GetStamina() < 20f)
+            {
+                m_character.AddStamina(50f);
+            }
+        }
     }
-
 }

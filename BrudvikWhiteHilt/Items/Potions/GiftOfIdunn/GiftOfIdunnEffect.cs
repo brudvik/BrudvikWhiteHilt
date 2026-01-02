@@ -1,12 +1,13 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfIdunn;
 
 /// <summary>
-/// This class defines the effect of the Gift of Loki potion.
+/// This class defines the effect of the Gift of Idunn potion.
+/// Grants greatly enhanced health and stamina regeneration.
 /// </summary>
-public class GiftOfLokiEffect : SE_Stats
+public class GiftOfIdunnEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,19 +23,22 @@ public class GiftOfLokiEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"The power of {effectName} has arrived!";
+        m_startMessage = $"Youth flows through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Enhanced regeneration and vitality";
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - duration is 2400 seconds (40 minutes) - extra long!
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = 2400f; // 40 minutes - this potion lasts longer!
+        m_healthRegenModifier = 5f;   // 5x health regen
+        m_staminaRegenModifier = 5f;  // 5x stamina regen
+        m_eitrRegenModifier = 5f;     // 5x eitr regen
         EffectHash = GetHashCode();
     }
 
@@ -48,24 +52,17 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Continuously regenerates a small amount of health.
     /// </summary>
-    /// <param name="character"></param>
-    public override void Setup(Character character)
+    /// <param name="dt"></param>
+    public override void UpdateStatusEffect(float dt)
     {
-        base.Setup(character);
-
-        // Boost the current Eitr.
-        character.AddEitr(500f);
+        base.UpdateStatusEffect(dt);
+        
+        if (m_character != null)
+        {
+            // Small continuous heal
+            m_character.Heal(1f * dt);
+        }
     }
-
-    /// <summary>
-    /// Modifies the Eitr regen. This is called when the character is regenerating Eitr.
-    /// </summary>
-    /// <param name="staminaRegen"></param>
-    public override void ModifyEitrRegen(ref float staminaRegen)
-    {
-        staminaRegen += 80f;
-    }
-
 }

@@ -1,12 +1,13 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfBaldur;
 
 /// <summary>
-/// This class defines the effect of the Gift of Loki potion.
+/// This class defines the effect of the Gift of Baldur potion.
+/// Grants stealth/reduced enemy detection.
 /// </summary>
-public class GiftOfLokiEffect : SE_Stats
+public class GiftOfBaldurEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,10 +23,10 @@ public class GiftOfLokiEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"The power of {effectName} has arrived!";
+        m_startMessage = $"You shimmer with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Enemies cannot detect you easily";
     }
 
     /// <summary>
@@ -35,6 +36,8 @@ public class GiftOfLokiEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
+        m_stealthModifier = -0.99f; // Nearly impossible to detect
+        m_noiseModifier = -0.99f;   // Nearly silent
         EffectHash = GetHashCode();
     }
 
@@ -48,24 +51,21 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Modifies the stealth to be nearly invisible.
     /// </summary>
-    /// <param name="character"></param>
-    public override void Setup(Character character)
+    /// <param name="stealth"></param>
+    public override void ModifyStealth(float baseStealth, ref float stealth)
     {
-        base.Setup(character);
-
-        // Boost the current Eitr.
-        character.AddEitr(500f);
+        stealth = 0.01f; // Extremely stealthy
     }
 
     /// <summary>
-    /// Modifies the Eitr regen. This is called when the character is regenerating Eitr.
+    /// Modifies sneak stamina to be zero.
     /// </summary>
-    /// <param name="staminaRegen"></param>
-    public override void ModifyEitrRegen(ref float staminaRegen)
+    /// <param name="baseStaminaUse"></param>
+    /// <param name="staminaUse"></param>
+    public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaRegen += 80f;
+        staminaUse = 0f;
     }
-
 }

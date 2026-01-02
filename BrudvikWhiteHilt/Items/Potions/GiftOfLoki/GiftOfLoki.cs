@@ -50,7 +50,7 @@ public class GiftOfLoki : PotionBase
     /// Creates the effect for the potion.
     /// </summary>
     /// <returns></returns>
-    protected override StatusEffect CreateEffect()
+    protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfLokiEffect>();
         effect.Initialize(FullName);

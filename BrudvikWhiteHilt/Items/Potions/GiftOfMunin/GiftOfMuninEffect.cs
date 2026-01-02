@@ -7,7 +7,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin;
 /// <summary>
 /// This class defines the effect of the Gift of Munin potion.
 /// </summary>
-public class GiftOfMuninEffect : StatusEffect
+public class GiftOfMuninEffect : SE_Stats
 {
     /// <summary>
     /// The player character that the effect is applied to.
@@ -30,6 +30,16 @@ public class GiftOfMuninEffect : StatusEffect
         m_startMessageType = MessageHud.MessageType.Center;
         m_startMessage = $"You have been bestowed the {effectName}!";
         m_tooltip = effectName;
+    }
+
+    /// <summary>
+    /// Enables the effect - this is an instant effect with no duration.
+    /// </summary>
+    public void OnEnable()
+    {
+        m_activationAnimation = "emote_challenge";
+        m_ttl = 1f; // Instant effect, just need a brief duration
+        EffectHash = GetHashCode();
     }
 
     /// <summary>

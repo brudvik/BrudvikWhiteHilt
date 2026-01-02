@@ -7,7 +7,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfFreya;
 /// <summary>
 /// This class defines the effect of the Gift of Freya potion.
 /// </summary>
-public class GiftOfFreyaEffect : StatusEffect
+public class GiftOfFreyaEffect : SE_Stats
 {
 
     /// <summary>
@@ -31,7 +31,7 @@ public class GiftOfFreyaEffect : StatusEffect
     }
 
     /// <summary>
-    /// Enables the effect - default is 1200f which is 20 minutes (seconds)
+    /// Enables the effect - duration is 1200 seconds (20 minutes).
     /// </summary>
     public void OnEnable()
     {

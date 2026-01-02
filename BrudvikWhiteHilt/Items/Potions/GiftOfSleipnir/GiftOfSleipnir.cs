@@ -1,44 +1,45 @@
-﻿using Jotunn.Configs;
+using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfSleipnir;
 
 /// <summary>
-/// This class defines the Gift of Odin potion.
+/// This class defines the Gift of Sleipnir potion.
+/// Grants increased movement speed, no fall damage, and higher jumps.
 /// </summary>
-public class GiftOfOdin : PotionBase
+public class GiftOfSleipnir : PotionBase
 {
-    public GiftOfOdin(ItemManager instance) : base(instance) { }
+    public GiftOfSleipnir(ItemManager instance) : base(instance) { }
 
     /// <summary>
     /// The base name of the potion.
     /// </summary>
-    protected override string BaseName => "GiftOfOdin";
+    protected override string BaseName => "GiftOfSleipnir";
 
     /// <summary>
     /// The full name of the potion.
     /// </summary>
-    protected override string FullName => "Gift of Odin";
+    protected override string FullName => "Gift of Sleipnir";
 
     /// <summary>
     /// The description of the potion.
     /// </summary>
-    protected override string Description => "Grants you undwindling health";
+    protected override string Description => "Grants you the speed of Odin's eight-legged horse";
 
     /// <summary>
     /// The path to the icon of the potion.
     /// </summary>
-    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfOdin.png";
+    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfSleipnir.png";
 
     /// <summary>
     /// The requirements for crafting the potion.
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Mushroom", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Raspberry", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Blueberries", Amount = 20, Recover = false }
+        new RequirementConfig { Item = "Honey", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "Thistle", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "LoxMeat", Amount = 5, Recover = false }
     };
 
     /// <summary>
@@ -52,7 +53,7 @@ public class GiftOfOdin : PotionBase
     /// <returns></returns>
     protected override SE_Stats CreateEffect()
     {
-        var effect = ScriptableObject.CreateInstance<GiftOfOdinEffect>();
+        var effect = ScriptableObject.CreateInstance<GiftOfSleipnirEffect>();
         effect.Initialize(FullName);
         effect.SetIcon(IconPath);
         return effect;

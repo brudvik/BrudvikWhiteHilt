@@ -113,5 +113,5 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     /// Creates the effect for the potion.
     /// </summary>
     /// <returns></returns>
-    protected abstract StatusEffect CreateEffect();
+    protected abstract SE_Stats CreateEffect();
 }

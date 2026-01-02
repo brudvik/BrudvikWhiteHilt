@@ -7,7 +7,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfHugin;
 /// <summary>
 /// This class defines the effect of the Gift of Hugin potion.
 /// </summary>
-public class GiftOfHuginEffect : StatusEffect
+public class GiftOfHuginEffect : SE_Stats
 {
     /// <summary>
     /// The player character that the effect is applied to.
@@ -30,6 +30,16 @@ public class GiftOfHuginEffect : StatusEffect
         m_startMessageType = MessageHud.MessageType.Center;
         m_startMessage = $"You have been bestowed the {effectName}!";
         m_tooltip = effectName;
+    }
+
+    /// <summary>
+    /// Enables the effect - this is an instant effect with no duration.
+    /// </summary>
+    public void OnEnable()
+    {
+        m_activationAnimation = "emote_challenge";
+        m_ttl = 1f; // Instant effect, just need a brief duration
+        EffectHash = GetHashCode();
     }
 
     /// <summary>

@@ -1,44 +1,45 @@
-﻿using Jotunn.Configs;
+using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfIdunn;
 
 /// <summary>
-/// This class defines the Gift of Odin potion.
+/// This class defines the Gift of Idunn potion.
+/// Grants extended food and potion duration.
 /// </summary>
-public class GiftOfOdin : PotionBase
+public class GiftOfIdunn : PotionBase
 {
-    public GiftOfOdin(ItemManager instance) : base(instance) { }
+    public GiftOfIdunn(ItemManager instance) : base(instance) { }
 
     /// <summary>
     /// The base name of the potion.
     /// </summary>
-    protected override string BaseName => "GiftOfOdin";
+    protected override string BaseName => "GiftOfIdunn";
 
     /// <summary>
     /// The full name of the potion.
     /// </summary>
-    protected override string FullName => "Gift of Odin";
+    protected override string FullName => "Gift of Idunn";
 
     /// <summary>
     /// The description of the potion.
     /// </summary>
-    protected override string Description => "Grants you undwindling health";
+    protected override string Description => "Grants you the blessing of the goddess of eternal youth";
 
     /// <summary>
     /// The path to the icon of the potion.
     /// </summary>
-    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfOdin.png";
+    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfIdunn.png";
 
     /// <summary>
     /// The requirements for crafting the potion.
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Mushroom", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Raspberry", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Blueberries", Amount = 20, Recover = false }
+        new RequirementConfig { Item = "Apple", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "QueenBee", Amount = 3, Recover = false },
+        new RequirementConfig { Item = "Dandelion", Amount = 20, Recover = false }
     };
 
     /// <summary>
@@ -52,7 +53,7 @@ public class GiftOfOdin : PotionBase
     /// <returns></returns>
     protected override SE_Stats CreateEffect()
     {
-        var effect = ScriptableObject.CreateInstance<GiftOfOdinEffect>();
+        var effect = ScriptableObject.CreateInstance<GiftOfIdunnEffect>();
         effect.Initialize(FullName);
         effect.SetIcon(IconPath);
         return effect;

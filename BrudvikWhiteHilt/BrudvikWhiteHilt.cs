@@ -26,7 +26,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.0.2";
+    public const string PluginVersion = "0.0.3";
 
     /// <summary>
     /// Awake method is called when the script instance is being loaded.

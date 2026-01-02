@@ -47,7 +47,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin
         /// Creates the effect for the potion.
         /// </summary>
         /// <returns></returns>
-        protected override StatusEffect CreateEffect()
+        protected override SE_Stats CreateEffect()
         {
             var effect = ScriptableObject.CreateInstance<GiftOfMuninEffect>();
             effect.Initialize(FullName);

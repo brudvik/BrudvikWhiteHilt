@@ -1,12 +1,14 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
+using UnityEngine;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfRatatoskr;
 
 /// <summary>
-/// This class defines the effect of the Gift of Loki potion.
+/// This class defines the effect of the Gift of Ratatoskr potion.
+/// Grants increased sprint speed and agility.
 /// </summary>
-public class GiftOfLokiEffect : SE_Stats
+public class GiftOfRatatoskrEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,10 +24,10 @@ public class GiftOfLokiEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"The power of {effectName} has arrived!";
+        m_startMessage = $"You have been blessed with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Increased agility and sprint speed";
     }
 
     /// <summary>
@@ -35,6 +37,9 @@ public class GiftOfLokiEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
+        m_speedModifier = 0.75f;
+        m_runStaminaDrainModifier = -0.8f;
+        m_jumpModifier = new Vector3(0, 0.5f, 0);
         EffectHash = GetHashCode();
     }
 
@@ -48,24 +53,12 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Modifies the sneak stamina usage.
     /// </summary>
-    /// <param name="character"></param>
-    public override void Setup(Character character)
+    /// <param name="baseStaminaUse"></param>
+    /// <param name="staminaUse"></param>
+    public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        base.Setup(character);
-
-        // Boost the current Eitr.
-        character.AddEitr(500f);
+        staminaUse = 0f;
     }
-
-    /// <summary>
-    /// Modifies the Eitr regen. This is called when the character is regenerating Eitr.
-    /// </summary>
-    /// <param name="staminaRegen"></param>
-    public override void ModifyEitrRegen(ref float staminaRegen)
-    {
-        staminaRegen += 80f;
-    }
-
 }

@@ -1,12 +1,13 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfBrokkr;
 
 /// <summary>
-/// This class defines the effect of the Gift of Loki potion.
+/// This class defines the effect of the Gift of Brokkr potion.
+/// Grants enhanced crafting abilities and workstation bonuses.
 /// </summary>
-public class GiftOfLokiEffect : SE_Stats
+public class GiftOfBrokkrEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,10 +23,10 @@ public class GiftOfLokiEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"The power of {effectName} has arrived!";
+        m_startMessage = $"The craft of the dwarves flows through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Enhanced crafting abilities";
     }
 
     /// <summary>
@@ -48,24 +49,26 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Modifies skill level to boost crafting-related skills.
     /// </summary>
-    /// <param name="character"></param>
-    public override void Setup(Character character)
+    /// <param name="skill"></param>
+    /// <param name="level"></param>
+    public override void ModifySkillLevel(Skills.SkillType skill, ref float level)
     {
-        base.Setup(character);
-
-        // Boost the current Eitr.
-        character.AddEitr(500f);
+        base.ModifySkillLevel(skill, ref level);
+        
+        // Boost all skills while active (simulates master craftsman)
+        level += 25f;
+        if (level > 100f) level = 100f;
     }
 
     /// <summary>
-    /// Modifies the Eitr regen. This is called when the character is regenerating Eitr.
+    /// No stamina cost for home/building items.
     /// </summary>
-    /// <param name="staminaRegen"></param>
-    public override void ModifyEitrRegen(ref float staminaRegen)
+    /// <param name="baseStaminaUse"></param>
+    /// <param name="staminaUse"></param>
+    public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaRegen += 80f;
+        staminaUse = 0f;
     }
-
 }

@@ -1,44 +1,45 @@
-﻿using Jotunn.Configs;
+using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfMimir;
 
 /// <summary>
-/// This class defines the Gift of Odin potion.
+/// This class defines the Gift of Mimir potion.
+/// Grants enhanced awareness and ability to locate resources.
 /// </summary>
-public class GiftOfOdin : PotionBase
+public class GiftOfMimir : PotionBase
 {
-    public GiftOfOdin(ItemManager instance) : base(instance) { }
+    public GiftOfMimir(ItemManager instance) : base(instance) { }
 
     /// <summary>
     /// The base name of the potion.
     /// </summary>
-    protected override string BaseName => "GiftOfOdin";
+    protected override string BaseName => "GiftOfMimir";
 
     /// <summary>
     /// The full name of the potion.
     /// </summary>
-    protected override string FullName => "Gift of Odin";
+    protected override string FullName => "Gift of Mimir";
 
     /// <summary>
     /// The description of the potion.
     /// </summary>
-    protected override string Description => "Grants you undwindling health";
+    protected override string Description => "Grants you the wisdom of the guardian of knowledge";
 
     /// <summary>
     /// The path to the icon of the potion.
     /// </summary>
-    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfOdin.png";
+    protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfMimir.png";
 
     /// <summary>
     /// The requirements for crafting the potion.
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Mushroom", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Raspberry", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Blueberries", Amount = 20, Recover = false }
+        new RequirementConfig { Item = "YggdrasilWood", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "Sap", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "Eitr", Amount = 2, Recover = false }
     };
 
     /// <summary>
@@ -52,7 +53,7 @@ public class GiftOfOdin : PotionBase
     /// <returns></returns>
     protected override SE_Stats CreateEffect()
     {
-        var effect = ScriptableObject.CreateInstance<GiftOfOdinEffect>();
+        var effect = ScriptableObject.CreateInstance<GiftOfMimirEffect>();
         effect.Initialize(FullName);
         effect.SetIcon(IconPath);
         return effect;

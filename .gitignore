@@ -378,4 +378,6 @@ Environment.props
 
 # not the generated dll for thunderstore
 */Package/plugins/*
-Assets/
+
+# Assets folder - exclude PNG icons (licensed content) but keep placeholder
+BrudvikWhiteHilt/Assets/*.png

@@ -16,7 +16,7 @@ public class TailwindPatch
     static void Postfix(Ship __instance, ref bool __result)
     {
         // Ensure tailwind for ships derived from WhiteHiltShipBase
-        if (__instance.name.Contains("WhiteHilt"))
+        if (__instance != null && __instance.name.Contains("WhiteHilt"))
         {
             __result = true;
         }

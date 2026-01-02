@@ -1,12 +1,13 @@
-﻿using BrudvikWhiteHilt.Extensions;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 
-namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
+namespace BrudvikWhiteHilt.Items.Potions.GiftOfSkadi;
 
 /// <summary>
-/// This class defines the effect of the Gift of Odin potion.
+/// This class defines the effect of the Gift of Skadi potion.
+/// Grants immunity to frost and freezing effects.
 /// </summary>
-public class GiftOfOdinEffect : SE_Stats
+public class GiftOfSkadiEffect : SE_Stats
 {
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
@@ -22,10 +23,10 @@ public class GiftOfOdinEffect : SE_Stats
         base.name = effectName;
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
-        m_startMessage = $"You feel immensely powerful with {effectName}!";
+        m_startMessage = $"You embrace the cold with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Immune to frost and freezing";
     }
 
     /// <summary>
@@ -35,6 +36,13 @@ public class GiftOfOdinEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
+        
+        // Set damage modifier for frost immunity
+        m_mods = new System.Collections.Generic.List<HitData.DamageModPair>
+        {
+            new HitData.DamageModPair { m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Immune }
+        };
+        
         EffectHash = GetHashCode();
     }
 
@@ -48,54 +56,31 @@ public class GiftOfOdinEffect : SE_Stats
     }
 
     /// <summary>
-    /// Setups the effect for the character. This is called when the effect is applied to a character.
+    /// Sets up the effect - grants freezing immunity.
     /// </summary>
     /// <param name="character"></param>
     public override void Setup(Character character)
     {
         base.Setup(character);
-
-        // Boost the maximum health.
-        if (character.GetMaxHealth() < 500f)
-        {
-            character.SetMaxHealth(500f);
-        }
-
-        // Boost the current health.
-        character.Heal(character.GetMaxHealth());
+        
+        // Remove any existing freezing effect
+        character.GetSEMan().RemoveStatusEffect("Freezing".GetHashCode());
+        character.GetSEMan().RemoveStatusEffect("Cold".GetHashCode());
     }
 
     /// <summary>
-    /// Modifies the fall damage taken by the character. This is called when the character takes fall damage.
-    /// </summary>
-    /// <param name="baseDamage"></param>
-    /// <param name="damage"></param>
-    public override void ModifyFallDamage(float baseDamage, ref float damage)
-    {
-        damage += 0.05f;
-        if (damage < 0f)
-        {
-            damage = 0f;
-        }
-    }
-
-    /// <summary>
-    /// Modifies the health regen. This is called when the character is regenerating health.
-    /// </summary>
-    /// <param name="regenMultiplier"></param>
-    public override void ModifyHealthRegen(ref float regenMultiplier)
-    {
-        regenMultiplier += 20f;
-    }
-
-    /// <summary>
-    /// Updates the status effect. This is called every frame while the effect is active.
+    /// Updates the status effect to continuously remove freezing.
     /// </summary>
     /// <param name="dt"></param>
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);
-        m_character.Heal(20f);
+        
+        // Continuously remove freezing effects
+        if (m_character != null)
+        {
+            m_character.GetSEMan().RemoveStatusEffect("Freezing".GetHashCode());
+            m_character.GetSEMan().RemoveStatusEffect("Cold".GetHashCode());
+        }
     }
-
 }
