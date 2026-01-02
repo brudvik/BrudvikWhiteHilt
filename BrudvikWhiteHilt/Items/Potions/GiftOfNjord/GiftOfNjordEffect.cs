@@ -68,11 +68,11 @@ public class GiftOfNjordEffect : SE_Stats
         base.UpdateStatusEffect(dt);
         
         // Keep stamina above minimum while swimming to prevent drowning
-        if (m_character != null && m_character.IsSwimming())
+        if (m_character != null && m_character.IsSwimming() && m_character is Player player)
         {
-            if (m_character.GetStamina() < 20f)
+            if (player.GetStamina() < 20f)
             {
-                m_character.AddStamina(50f);
+                player.AddStamina(50f);
             }
         }
     }

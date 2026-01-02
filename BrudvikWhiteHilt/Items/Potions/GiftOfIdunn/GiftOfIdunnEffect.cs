@@ -36,9 +36,9 @@ public class GiftOfIdunnEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 2400f; // 40 minutes - this potion lasts longer!
-        m_healthRegenModifier = 5f;   // 5x health regen
-        m_staminaRegenModifier = 5f;  // 5x stamina regen
-        m_eitrRegenModifier = 5f;     // 5x eitr regen
+        m_healthRegenMultiplier = 5f;   // 5x health regen
+        m_staminaRegenMultiplier = 5f;  // 5x stamina regen
+        m_eitrRegenMultiplier = 5f;     // 5x eitr regen
         EffectHash = GetHashCode();
     }
 

@@ -41,8 +41,7 @@ public class GiftOfFenrirEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
-        m_attackSpeedModifier = 0.5f; // 50% faster attacks
-        m_speedModifier = 0.25f; // Slightly faster movement
+        m_speedModifier = 0.25f; // Faster movement
         EffectHash = GetHashCode();
     }
 

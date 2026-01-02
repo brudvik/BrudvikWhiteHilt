@@ -36,7 +36,6 @@ public class GiftOfThorEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
-        m_attackSpeedModifier = 0.5f; // 50% faster attacks
         
         // Add lightning resistance as a bonus
         m_mods = new System.Collections.Generic.List<HitData.DamageModPair>

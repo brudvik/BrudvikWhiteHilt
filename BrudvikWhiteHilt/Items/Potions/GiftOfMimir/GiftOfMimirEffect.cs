@@ -104,7 +104,7 @@ public class GiftOfMimirEffect : SE_Stats
             
             // The Wishbone effect - makes the player aware of nearby things
             // This creates a visual pulse effect similar to the wishbone
-            if (character.IsMonsterFaction(m_character.GetFaction()))
+            if (!character.IsTamed())
             {
                 // Enemy detected - could add a visual indicator here
                 Jotunn.Logger.LogDebug($"Mimir reveals: {character.m_name} at {character.transform.position}");

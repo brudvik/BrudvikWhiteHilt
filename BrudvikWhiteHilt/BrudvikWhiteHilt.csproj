@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\JotunnLib.2.20.3\build\JotunnLib.props" Condition="Exists('..\packages\JotunnLib.2.20.3\build\JotunnLib.props')" />
+  <Import Project="..\packages\JotunnLib.2.27.1\build\JotunnLib.props" Condition="Exists('..\packages\JotunnLib.2.27.1\build\JotunnLib.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -46,11 +46,17 @@
     <StartWorkingDirectory>$(VALHEIM_INSTALL)</StartWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="assembly_utils">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\assembly_utils.dll</HintPath>
     </Reference>
-    <Reference Include="Jotunn, Version=2.20.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JotunnLib.2.20.3\lib\net462\Jotunn.dll</HintPath>
+    <Reference Include="BepInEx">
+      <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Jotunn, Version=2.27.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JotunnLib.2.27.1\lib\net462\Jotunn.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,23 +70,59 @@
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
+    <Compile Include="Helpers\WearNTearHelper.cs" />
+    <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />
+    <Compile Include="Items\Accessories\WhiteHiltMegingjord\WhiteHiltMegingjord.cs" />
+    <Compile Include="Items\Ammunition\WhiteHiltAmmunitionBase.cs" />
+    <Compile Include="Items\Ammunition\WhiteHiltArrows\WhiteHiltArrows.cs" />
+    <Compile Include="Items\Ammunition\WhiteHiltBolts\WhiteHiltBolts.cs" />
     <Compile Include="Items\Armors\WhiteHiltArmorBase.cs" />
     <Compile Include="Items\Armors\WhiteHiltCape\WhiteHiltCape.cs" />
+    <Compile Include="Items\Armors\WhiteHiltChestplate\WhiteHiltChestplate.cs" />
+    <Compile Include="Items\Armors\WhiteHiltGreaves\WhiteHiltGreaves.cs" />
     <Compile Include="Items\Armors\WhiteHiltHelmet\WhiteHiltHelmet.cs" />
     <Compile Include="Items\Armors\WhiteHiltShield\WhiteHiltShield.cs" />
     <Compile Include="Items\IWhiteHiltCustomItem.cs" />
     <Compile Include="Items\Indestructible\IndestructiblePiece.cs" />
     <Compile Include="Items\Indestructible\IndestructibleItem.cs" />
+    <Compile Include="Items\Potions\GiftOfBaldur\GiftOfBaldur.cs" />
+    <Compile Include="Items\Potions\GiftOfBaldur\GiftOfBaldurEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkr.cs" />
+    <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrir.cs" />
+    <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrirEffect.cs" />
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreya.cs" />
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreyaEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyr.cs" />
+    <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfHel\GiftOfHel.cs" />
+    <Compile Include="Items\Potions\GiftOfHel\GiftOfHelEffect.cs" />
     <Compile Include="Items\Potions\GiftOfHugin\GiftOfHugin.cs" />
     <Compile Include="Items\Potions\GiftOfHugin\GiftOfHuginEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunn.cs" />
+    <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunnEffect.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLoki.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLokiEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfMimir\GiftOfMimir.cs" />
+    <Compile Include="Items\Potions\GiftOfMimir\GiftOfMimirEffect.cs" />
     <Compile Include="Items\Potions\GiftOfMunin\GiftOfMunin.cs" />
     <Compile Include="Items\Potions\GiftOfMunin\GiftOfMuninEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfNjord\GiftOfNjord.cs" />
+    <Compile Include="Items\Potions\GiftOfNjord\GiftOfNjordEffect.cs" />
     <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdin.cs" />
     <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdinEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfRatatoskr\GiftOfRatatoskr.cs" />
+    <Compile Include="Items\Potions\GiftOfRatatoskr\GiftOfRatatoskrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfSkadi\GiftOfSkadi.cs" />
+    <Compile Include="Items\Potions\GiftOfSkadi\GiftOfSkadiEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfSleipnir\GiftOfSleipnir.cs" />
+    <Compile Include="Items\Potions\GiftOfSleipnir\GiftOfSleipnirEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfSurt\GiftOfSurt.cs" />
+    <Compile Include="Items\Potions\GiftOfSurt\GiftOfSurtEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfThor\GiftOfThor.cs" />
+    <Compile Include="Items\Potions\GiftOfThor\GiftOfThorEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyr.cs" />
+    <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyrEffect.cs" />
     <Compile Include="Items\Potions\PotionBase.cs" />
     <Compile Include="Items\Tools\WhiteHiltAxe\WhiteHiltAxe.cs" />
     <Compile Include="Items\Tools\WhiteHiltCultivator\WhiteHiltCultivator.cs" />
@@ -88,8 +130,20 @@
     <Compile Include="Items\Tools\WhiteHiltHoe\WhiteHiltHoe.cs" />
     <Compile Include="Items\Tools\WhiteHiltPickaxe\WhiteHiltPickaxe.cs" />
     <Compile Include="Items\Tools\WhiteHiltToolBase.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltAtgeir\WhiteHiltAtgeir.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltBattleaxe\WhiteHiltBattleaxe.cs" />
     <Compile Include="Items\Weapons\WhiteHiltBow\WhiteHiltBow.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltBuckler\WhiteHiltBuckler.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltCrossbow\WhiteHiltCrossbow.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltKnife\WhiteHiltKnife.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltMace\WhiteHiltMace.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltSledge\WhiteHiltSledge.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltSpear\WhiteHiltSpear.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltStaffFire\WhiteHiltStaffFire.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltStaffIce\WhiteHiltStaffIce.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltStaffLightning\WhiteHiltStaffLightning.cs" />
     <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
     <Compile Include="Patches\Ships\TailwindPatch.cs" />
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
@@ -125,6 +179,20 @@
     <EmbeddedResource Include="Assets\GiftOfMunin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Assets\GiftOfBaldur.png" />
+    <Content Include="Assets\GiftOfBrokkr.png" />
+    <Content Include="Assets\GiftOfFenrir.png" />
+    <Content Include="Assets\GiftOfFreyr.png" />
+    <Content Include="Assets\GiftOfHel.png" />
+    <Content Include="Assets\GiftOfIdunn.PNG" />
+    <Content Include="Assets\GiftOfMimir.png" />
+    <Content Include="Assets\GiftOfNjord.png" />
+    <Content Include="Assets\GiftOfRatatoskr.png" />
+    <Content Include="Assets\GiftOfSkadi.png" />
+    <Content Include="Assets\GiftOfSleipnir.png" />
+    <Content Include="Assets\GiftOfSurt.png" />
+    <Content Include="Assets\GiftOfThor.png" />
+    <Content Include="Assets\GiftOfTyr.png" />
     <Content Include="Package\icon.png" />
   </ItemGroup>
   <PropertyGroup>
@@ -172,6 +240,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\JotunnLib.2.20.3\build\JotunnLib.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JotunnLib.2.20.3\build\JotunnLib.props'))" />
+    <Error Condition="!Exists('..\packages\JotunnLib.2.27.1\build\JotunnLib.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JotunnLib.2.27.1\build\JotunnLib.props'))" />
   </Target>
 </Project>

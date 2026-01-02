@@ -36,8 +36,8 @@ public class GiftOfFreyrEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
-        m_healthRegenModifier = 2f;
-        m_staminaRegenModifier = 2f;
+        m_healthRegenMultiplier = 2f;
+        m_staminaRegenMultiplier = 2f;
         m_addMaxCarryWeight = 150f; // Carry more resources
         EffectHash = GetHashCode();
     }

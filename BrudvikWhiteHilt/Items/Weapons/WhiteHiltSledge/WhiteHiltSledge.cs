@@ -46,6 +46,6 @@ public class WhiteHiltSledge : WhiteHiltWeaponBase
     {
         new() { Item = "Iron", Amount = 30, Recover = false },
         new() { Item = "YmirRemains", Amount = 10, Recover = false },
-        new() { Item = "Stagbreaker", Amount = 1, Recover = false }
+        new() { Item = "SledgeStagbreaker", Amount = 1, Recover = false }
     };
 }
