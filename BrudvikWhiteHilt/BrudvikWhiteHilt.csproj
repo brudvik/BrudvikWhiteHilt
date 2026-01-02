@@ -183,20 +183,48 @@
     <EmbeddedResource Include="Assets\GiftOfMunin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Assets\GiftOfBaldur.png" />
-    <Content Include="Assets\GiftOfBrokkr.png" />
-    <Content Include="Assets\GiftOfFenrir.png" />
-    <Content Include="Assets\GiftOfFreyr.png" />
-    <Content Include="Assets\GiftOfHel.png" />
-    <Content Include="Assets\GiftOfIdunn.PNG" />
-    <Content Include="Assets\GiftOfMimir.png" />
-    <Content Include="Assets\GiftOfNjord.png" />
-    <Content Include="Assets\GiftOfRatatoskr.png" />
-    <Content Include="Assets\GiftOfSkadi.png" />
-    <Content Include="Assets\GiftOfSleipnir.png" />
-    <Content Include="Assets\GiftOfSurt.png" />
-    <Content Include="Assets\GiftOfThor.png" />
-    <Content Include="Assets\GiftOfTyr.png" />
+    <EmbeddedResource Include="Assets\GiftOfBaldur.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfBrokkr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfFenrir.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfFreyr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfHel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfIdunn.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfMimir.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfNjord.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfRatatoskr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfSkadi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfSleipnir.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfSurt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfThor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\GiftOfTyr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Package\icon.png" />
   </ItemGroup>
   <PropertyGroup>
