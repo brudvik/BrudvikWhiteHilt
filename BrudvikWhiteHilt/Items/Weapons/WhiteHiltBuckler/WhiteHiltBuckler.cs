@@ -37,7 +37,7 @@ public class WhiteHiltBuckler : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Buckler is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Buckler.

@@ -37,9 +37,9 @@ public class GiftOfFreyr : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Barley", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Flax", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "LoxPie", Amount = 3, Recover = false }
+        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Raspberry", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false }
     };
 
     /// <summary>

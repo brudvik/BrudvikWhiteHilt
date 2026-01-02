@@ -37,9 +37,9 @@ public class GiftOfFenrir : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "WolfPelt", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "WolfFang", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "TrophyWolf", Amount = 1, Recover = false }
+        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Dandelion", Amount = 5, Recover = false }
     };
 
     /// <summary>

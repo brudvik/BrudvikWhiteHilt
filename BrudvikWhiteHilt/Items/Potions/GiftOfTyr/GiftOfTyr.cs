@@ -37,9 +37,9 @@ public class GiftOfTyr : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "TrophyFenring", Amount = 1, Recover = false },
-        new RequirementConfig { Item = "Silver", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "WolfFang", Amount = 10, Recover = false }
+        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Raspberry", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Resin", Amount = 5, Recover = false }
     };
 
     /// <summary>

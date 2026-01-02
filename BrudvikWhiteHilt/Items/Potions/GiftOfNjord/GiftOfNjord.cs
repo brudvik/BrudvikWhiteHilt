@@ -37,7 +37,7 @@ public class GiftOfNjord : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "FishRaw", Amount = 10, Recover = false },
+        new RequirementConfig { Item = "FishAnglerRaw", Amount = 10, Recover = false },
         new RequirementConfig { Item = "Chitin", Amount = 5, Recover = false },
         new RequirementConfig { Item = "Bloodbag", Amount = 5, Recover = false }
     };

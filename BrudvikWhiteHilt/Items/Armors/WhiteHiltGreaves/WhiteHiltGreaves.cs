@@ -43,5 +43,5 @@ public class WhiteHiltGreaves : WhiteHiltArmorBase
     /// <summary>
     /// Indicates whether the armor is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 }

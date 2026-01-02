@@ -43,7 +43,7 @@ public class WhiteHiltBolts : WhiteHiltAmmunitionBase
     /// <summary>
     /// Indicates whether the White Hilt Bolts are enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Bolts.

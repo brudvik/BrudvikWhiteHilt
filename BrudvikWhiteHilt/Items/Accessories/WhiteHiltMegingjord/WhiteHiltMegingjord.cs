@@ -40,7 +40,7 @@ public class WhiteHiltMegingjord : WhiteHiltAccessoryBase
     /// <summary>
     /// Indicates whether the White Hilt Megingjord is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Megingjord.

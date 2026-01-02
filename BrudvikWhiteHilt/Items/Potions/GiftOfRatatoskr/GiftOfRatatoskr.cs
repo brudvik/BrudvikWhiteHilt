@@ -37,9 +37,9 @@ public class GiftOfRatatoskr : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Acorn", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "Honey", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "Carrot", Amount = 10, Recover = false }
+        new RequirementConfig { Item = "Resin", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Blueberries", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false }
     };
 
     /// <summary>

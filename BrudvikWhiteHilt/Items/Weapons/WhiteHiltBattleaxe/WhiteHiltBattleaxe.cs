@@ -37,7 +37,7 @@ public class WhiteHiltBattleaxe : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Battleaxe is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Battleaxe.

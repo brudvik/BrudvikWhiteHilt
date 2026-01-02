@@ -37,9 +37,9 @@ public class GiftOfHel : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "TrophySkeleton", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "BoneFragments", Amount = 30, Recover = false },
-        new RequirementConfig { Item = "Eitr", Amount = 3, Recover = false }
+        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Blueberries", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Dandelion", Amount = 5, Recover = false }
     };
 
     /// <summary>

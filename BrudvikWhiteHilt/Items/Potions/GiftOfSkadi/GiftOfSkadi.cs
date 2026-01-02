@@ -37,9 +37,9 @@ public class GiftOfSkadi : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "FreezeGland", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "WolfPelt", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "Obsidian", Amount = 10, Recover = false }
+        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false }
     };
 
     /// <summary>

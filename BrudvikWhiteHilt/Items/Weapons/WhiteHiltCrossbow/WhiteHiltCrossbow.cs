@@ -37,7 +37,7 @@ public class WhiteHiltCrossbow : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Crossbow is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Crossbow.

@@ -37,7 +37,7 @@ public class WhiteHiltKnife : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Knife is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Knife.

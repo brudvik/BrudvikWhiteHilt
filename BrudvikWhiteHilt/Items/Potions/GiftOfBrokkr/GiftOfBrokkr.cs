@@ -37,9 +37,9 @@ public class GiftOfBrokkr : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "DvergrNeedle", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "SoftTissue", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "BlackMetal", Amount = 5, Recover = false }
+        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Raspberry", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Blueberries", Amount = 5, Recover = false }
     };
 
     /// <summary>

@@ -37,9 +37,9 @@ public class GiftOfBaldur : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Crystal", Amount = 10, Recover = false },
-        new RequirementConfig { Item = "GreydwarfEye", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "TrophyWraith", Amount = 1, Recover = false }
+        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = "Resin", Amount = 5, Recover = false }
     };
 
     /// <summary>

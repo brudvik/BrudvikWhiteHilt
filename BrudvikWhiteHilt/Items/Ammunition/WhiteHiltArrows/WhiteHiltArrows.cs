@@ -43,7 +43,7 @@ public class WhiteHiltArrows : WhiteHiltAmmunitionBase
     /// <summary>
     /// Indicates whether the White Hilt Arrows are enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Arrows.

@@ -37,7 +37,7 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Mace is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Mace.

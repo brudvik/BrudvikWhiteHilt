@@ -37,7 +37,7 @@ public class WhiteHiltSpear : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Spear is enabled.
     /// </summary>
-    public override bool Enabled => true;
+    public override bool Enabled => false;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Spear.
