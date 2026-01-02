@@ -32,7 +32,7 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "MacePorcupine";
+    protected override string CopyFrom => "MaceNeedle";
 
     /// <summary>
     /// Indicates whether the White Hilt Mace is enabled.
