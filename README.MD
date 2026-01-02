@@ -25,6 +25,18 @@ All weapons are indestructible with enhanced stats: damage multiplier +0.5, dama
 |------|-------------|------------------|--------------|
 | **White Hilt Sword** | The Indestructible Sword of Dyrnwyn | Forge (Level 2) | Bronze ×20, Surtling Core ×5, Bronze Sword ×1 |
 | **White Hilt Bow** | The Indestructible Bow of Dyrnwyn | Forge (Level 2) | Fine Wood ×20, Feathers ×20, Finewood Bow ×1 |
+| **White Hilt Battleaxe** | The Indestructible Battleaxe of Dyrnwyn | Forge (Level 2) | Black Metal ×30, Linen Thread ×10, Iron Axe ×1 |
+| **White Hilt Spear** | The Indestructible Spear of Dyrnwyn | Forge (Level 2) | Chitin ×20, Fine Wood ×10, Flint Spear ×1 |
+| **White Hilt Mace** | The Indestructible Mace of Dyrnwyn | Forge (Level 2) | Iron ×20, Needle ×5, Iron Mace ×1 |
+| **White Hilt Atgeir** | The Indestructible Atgeir of Dyrnwyn | Forge (Level 2) | Black Metal ×25, Linen Thread ×10, Bronze Atgeir ×1 |
+| **White Hilt Knife** | The Indestructible Knife of Dyrnwyn | Forge (Level 2) | Black Metal ×10, Linen Thread ×5, Flint Knife ×1 |
+| **White Hilt Sledge** | The Indestructible Sledge of Dyrnwyn | Forge (Level 2) | Iron ×30, Ymir Remains ×10, Stagbreaker ×1 |
+| **White Hilt Crossbow** | The Indestructible Crossbow of Dyrnwyn | Forge (Level 2) | Black Metal ×20, Root ×10, Huntsman Bow ×1 |
+| **White Hilt Staff of Fire** | The Indestructible Staff of Fire of Dyrnwyn | Galdr Table | Surtling Core ×10, Yggdrasil Wood ×10, Eitr ×5 |
+| **White Hilt Staff of Ice** | The Indestructible Staff of Ice of Dyrnwyn | Galdr Table | Freeze Gland ×10, Yggdrasil Wood ×10, Eitr ×5 |
+| **White Hilt Staff of Lightning** | The Indestructible Staff of Lightning of Dyrnwyn | Galdr Table | Thunderstone ×5, Yggdrasil Wood ×10, Eitr ×5 |
+| **White Hilt Tower Shield** | The Indestructible Tower Shield of Dyrnwyn | Forge (Level 2) | Black Metal ×30, Chain ×10, Iron Tower Shield ×1 |
+| **White Hilt Buckler** | The Indestructible Buckler of Dyrnwyn | Forge (Level 2) | Black Metal ×15, Chain ×5, Bronze Buckler ×1 |
 
 ---
 
@@ -36,7 +48,28 @@ All armor pieces are indestructible with: armor per level +10, movement modifier
 |------|-------------|------------------|--------------|
 | **White Hilt Cape** | The Indestructible Cape of Dyrnwyn | Forge (Level 3) | Feathers ×30, Wraith Trophy ×3, Troll Hide Cape ×1 |
 | **White Hilt Helmet** | The Indestructible Helmet of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Helmet ×1 |
+| **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Flametal ×20, Linen Thread ×20, Iron Chestplate ×1 |
+| **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Flametal ×20, Linen Thread ×15, Iron Greaves ×1 |
 | **White Hilt Shield** | The Indestructible Shield of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Buckler ×1 |
+
+---
+
+### 💍 ACCESSORIES
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **White Hilt Megingjord** | Belt of Dyrnwyn - +700 carry weight | Forge (Level 2) | Iron ×10, Ymir Remains ×10, Megingjord ×1 |
+
+---
+
+### 🏹 AMMUNITION
+
+High-damage ammunition crafted in large quantities (200 per craft). Enhanced with fire and spirit damage.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **White Hilt Arrows** | Indestructible Arrows of Dyrnwyn | Forge (Level 2) | Black Metal ×2, Feathers ×5, Wood ×10 |
+| **White Hilt Bolts** | Indestructible Bolts of Dyrnwyn | Forge (Level 2) | Black Metal ×2, Feathers ×3, Iron ×5 |
 
 ---
 
@@ -124,6 +157,10 @@ the license only allows it to be shipped in the pre-built mod file. If you want 
 ### v0.0.3
 
 - Added 14 new potions: Gift of Sleipnir, Ratatoskr, Njord, Surt, Skadi, Baldur, Thor, Idunn, Brokkr, Tyr, Fenrir, Freyr, Hel, and Mimir.
+- Added 12 new weapons: Battleaxe, Spear, Mace, Atgeir, Knife, Sledge, Crossbow, Staff of Fire, Staff of Ice, Staff of Lightning, Tower Shield, and Buckler.
+- Added 2 new armor pieces: Chestplate and Greaves.
+- Added Megingjord accessory with +450 carry weight.
+- Added ammunition: White Hilt Arrows and Bolts (200 per craft, enhanced damage).
 - Fixed EpicLoot compatibility issue with potions (changed base class to SE_Stats).
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
