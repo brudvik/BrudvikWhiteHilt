@@ -37,7 +37,7 @@ public class WhiteHiltStaffFire : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Staff of Fire is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Staff of Fire.
@@ -45,7 +45,7 @@ public class WhiteHiltStaffFire : WhiteHiltWeaponBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "SurtlingCore", Amount = 10, Recover = false },
-        new() { Item = "YggdrasilWood", Amount = 10, Recover = false },
-        new() { Item = "Eitr", Amount = 5, Recover = false }
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
+        new() { Item = "Guck", Amount = 5, Recover = false }
     };
 }

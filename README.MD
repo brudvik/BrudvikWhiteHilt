@@ -24,19 +24,19 @@ All weapons are indestructible with enhanced stats: damage multiplier +0.5, dama
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **White Hilt Sword** | The Indestructible Sword of Dyrnwyn | Forge (Level 2) | Bronze ×20, Surtling Core ×5, Bronze Sword ×1 |
-| **White Hilt Bow** | The Indestructible Bow of Dyrnwyn | Forge (Level 2) | Fine Wood ×20, Feathers ×20, Finewood Bow ×1 |
-| **White Hilt Battleaxe** | The Indestructible Battleaxe of Dyrnwyn | Forge (Level 2) | Black Metal ×30, Linen Thread ×10, Iron Axe ×1 |
-| **White Hilt Spear** | The Indestructible Spear of Dyrnwyn | Forge (Level 2) | Chitin ×20, Fine Wood ×10, Flint Spear ×1 |
-| **White Hilt Mace** | The Indestructible Mace of Dyrnwyn | Forge (Level 2) | Iron ×20, Needle ×5, Iron Mace ×1 |
-| **White Hilt Atgeir** | The Indestructible Atgeir of Dyrnwyn | Forge (Level 2) | Black Metal ×25, Linen Thread ×10, Bronze Atgeir ×1 |
-| **White Hilt Knife** | The Indestructible Knife of Dyrnwyn | Forge (Level 2) | Black Metal ×10, Linen Thread ×5, Flint Knife ×1 |
+| **White Hilt Bow** | The Indestructible Bow of Dyrnwyn | Forge (Level 2) | Iron ×20, Feathers ×20, Finewood Bow ×1 |
+| **White Hilt Battleaxe** | The Indestructible Battleaxe of Dyrnwyn | Forge (Level 2) | Iron ×30, Ancient Bark ×10, Bronze Axe ×1 |
+| **White Hilt Spear** | The Indestructible Spear of Dyrnwyn | Forge (Level 2) | Iron ×20, Ancient Bark ×10, Bronze Spear ×1 |
+| **White Hilt Mace** | The Indestructible Mace of Dyrnwyn | Forge (Level 2) | Iron ×20, Withered Bone ×5, Bronze Mace ×1 |
+| **White Hilt Atgeir** | The Indestructible Atgeir of Dyrnwyn | Forge (Level 2) | Iron ×25, Ancient Bark ×10, Bronze Atgeir ×1 |
+| **White Hilt Knife** | The Indestructible Knife of Dyrnwyn | Forge (Level 2) | Iron ×10, Leather Scraps ×5, Flint Knife ×1 |
 | **White Hilt Sledge** | The Indestructible Sledge of Dyrnwyn | Forge (Level 2) | Iron ×30, Ymir Remains ×10, Stagbreaker ×1 |
-| **White Hilt Crossbow** | The Indestructible Crossbow of Dyrnwyn | Forge (Level 2) | Black Metal ×20, Root ×10, Huntsman Bow ×1 |
-| **White Hilt Staff of Fire** | The Indestructible Staff of Fire of Dyrnwyn | Galdr Table | Surtling Core ×10, Yggdrasil Wood ×10, Eitr ×5 |
-| **White Hilt Staff of Ice** | The Indestructible Staff of Ice of Dyrnwyn | Galdr Table | Freeze Gland ×10, Yggdrasil Wood ×10, Eitr ×5 |
-| **White Hilt Staff of Lightning** | The Indestructible Staff of Lightning of Dyrnwyn | Galdr Table | Thunderstone ×5, Yggdrasil Wood ×10, Eitr ×5 |
-| **White Hilt Tower Shield** | The Indestructible Tower Shield of Dyrnwyn | Forge (Level 2) | Black Metal ×30, Chain ×10, Iron Tower Shield ×1 |
-| **White Hilt Buckler** | The Indestructible Buckler of Dyrnwyn | Forge (Level 2) | Black Metal ×15, Chain ×5, Bronze Buckler ×1 |
+| **White Hilt Crossbow** | The Indestructible Crossbow of Dyrnwyn | Forge (Level 2) | Iron ×20, Root ×10, Finewood Bow ×1 |
+| **White Hilt Staff of Fire** | The Indestructible Staff of Fire of Dyrnwyn | Forge (Level 2) | Surtling Core ×10, Ancient Bark ×10, Guck ×5 |
+| **White Hilt Staff of Ice** | The Indestructible Staff of Ice of Dyrnwyn | Forge (Level 2) | Iron ×10, Ancient Bark ×10, Guck ×5 |
+| **White Hilt Staff of Lightning** | The Indestructible Staff of Lightning of Dyrnwyn | Forge (Level 2) | Thunderstone ×5, Ancient Bark ×10, Guck ×5 |
+| **White Hilt Tower Shield** | The Indestructible Tower Shield of Dyrnwyn | Forge (Level 2) | Iron ×30, Chain ×10, Banded Shield ×1 |
+| **White Hilt Buckler** | The Indestructible Buckler of Dyrnwyn | Forge (Level 2) | Iron ×15, Chain ×5, Bronze Buckler ×1 |
 
 ---
 
@@ -48,8 +48,8 @@ All armor pieces are indestructible with: armor per level +10, movement modifier
 |------|-------------|------------------|--------------|
 | **White Hilt Cape** | The Indestructible Cape of Dyrnwyn | Forge (Level 3) | Feathers ×30, Wraith Trophy ×3, Troll Hide Cape ×1 |
 | **White Hilt Helmet** | The Indestructible Helmet of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Helmet ×1 |
-| **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Flametal ×20, Linen Thread ×20, Iron Chestplate ×1 |
-| **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Flametal ×20, Linen Thread ×15, Iron Greaves ×1 |
+| **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Chestplate ×1 |
+| **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Greaves ×1 |
 | **White Hilt Shield** | The Indestructible Shield of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Buckler ×1 |
 
 ---
@@ -68,8 +68,8 @@ High-damage ammunition crafted in large quantities (200 per craft). Enhanced wit
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
-| **White Hilt Arrows** | Indestructible Arrows of Dyrnwyn | Forge (Level 2) | Black Metal ×2, Feathers ×5, Wood ×10 |
-| **White Hilt Bolts** | Indestructible Bolts of Dyrnwyn | Forge (Level 2) | Black Metal ×2, Feathers ×3, Iron ×5 |
+| **White Hilt Arrows** | Indestructible Arrows of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×5, Wood ×10 |
+| **White Hilt Bolts** | Indestructible Bolts of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×3, Wood ×5 |
 
 ---
 
@@ -153,6 +153,21 @@ There's also a directory removed from the source. The `Assets` folder is not par
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
 ## Changelog
+
+### v0.0.4 - 2026-01-03
+
+#### Changed
+- **BREAKING**: All weapon crafting requirements now use Swamp-tier materials or earlier (Iron, Ancient Bark, Guck, etc.)
+- **BREAKING**: Armor (Chestplate, Greaves, Shield) now use Swamp-tier materials and CopyFrom references
+- **BREAKING**: Ammunition (Arrows, Bolts) now use Swamp-tier materials and CopyFrom references
+- Removed dependencies on Plains/Mistlands/Ashlands materials (Black Metal, Linen Thread, Eitr, Yggdrasil Wood, Flametal, etc.)
+- Staves now craftable at Forge instead of Galdr Table
+- Updated CopyFrom references to use Swamp-tier base items
+- Fixed Battleaxe CopyFrom to use correct prefab name (Battleaxe instead of BattleaxeIron)
+- Enabled all weapons and armor pieces
+
+#### Fixed
+- Game balance: All weapons are now obtainable before reaching Mountains biome
 
 ### v0.0.3
 

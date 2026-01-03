@@ -32,7 +32,7 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "BowAshlands";
+    protected override string CopyFrom => "BowHuntsman";
 
     /// <summary>
     /// Indicates whether the White Hilt Bow is enabled.
@@ -44,7 +44,7 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "FineWood", Amount = 20, Recover = false },
+        new() { Item = "Iron", Amount = 20, Recover = false },
         new() { Item = "Feathers", Amount = 20, Recover = false },
         new() { Item = "BowFineWood", Amount = 1, Recover = false }
     };

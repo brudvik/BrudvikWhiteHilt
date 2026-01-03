@@ -33,7 +33,7 @@ public class WhiteHiltArrows : WhiteHiltAmmunitionBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "ArrowCarapace";
+    protected override string CopyFrom => "ArrowIron";
 
     /// <summary>
     /// The amount crafted per recipe.
@@ -43,14 +43,14 @@ public class WhiteHiltArrows : WhiteHiltAmmunitionBase
     /// <summary>
     /// Indicates whether the White Hilt Arrows are enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Arrows.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 2, Recover = false },
+        new() { Item = "Iron", Amount = 2, Recover = false },
         new() { Item = "Feathers", Amount = 5, Recover = false },
         new() { Item = "Wood", Amount = 10, Recover = false }
     };

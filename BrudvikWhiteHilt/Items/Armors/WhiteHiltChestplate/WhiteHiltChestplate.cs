@@ -28,20 +28,20 @@ public class WhiteHiltChestplate : WhiteHiltArmorBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "ArmorFlametalChest";
+    protected override string CopyFrom => "ArmorIronChest";
 
     /// <summary>
     /// The requirements for crafting the White Hilt Chestplate.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Flametal", Amount = 20, Recover = false },
-        new() { Item = "LinenThread", Amount = 20, Recover = false },
-        new() { Item = "ArmorIronChest", Amount = 1, Recover = false },
+        new() { Item = "Iron", Amount = 20, Recover = false },
+        new() { Item = "DeerHide", Amount = 10, Recover = false },
+        new() { Item = "ArmorBronzeChest", Amount = 1, Recover = false },
     };
 
     /// <summary>
     /// Indicates whether the armor is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 }

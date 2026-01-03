@@ -28,7 +28,7 @@ public class WhiteHiltShield : WhiteHiltArmorBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "ShieldFlametal";
+    protected override string CopyFrom => "ShieldBanded";
 
     /// <summary>
     /// The requirements for crafting the White Hilt Shield.

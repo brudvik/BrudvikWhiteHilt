@@ -32,20 +32,20 @@ public class WhiteHiltBattleaxe : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "AxeBlackMetal";
+    protected override string CopyFrom => "Battleaxe";
 
     /// <summary>
     /// Indicates whether the White Hilt Battleaxe is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Battleaxe.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 30, Recover = false },
-        new() { Item = "LinenThread", Amount = 10, Recover = false },
-        new() { Item = "AxeIron", Amount = 1, Recover = false }
+        new() { Item = "Iron", Amount = 30, Recover = false },
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
+        new() { Item = "AxeBronze", Amount = 1, Recover = false }
     };
 }

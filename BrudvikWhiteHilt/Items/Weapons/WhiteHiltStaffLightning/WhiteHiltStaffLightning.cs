@@ -37,7 +37,7 @@ public class WhiteHiltStaffLightning : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Staff of Lightning is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Staff of Lightning.
@@ -45,7 +45,7 @@ public class WhiteHiltStaffLightning : WhiteHiltWeaponBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Thunderstone", Amount = 5, Recover = false },
-        new() { Item = "YggdrasilWood", Amount = 10, Recover = false },
-        new() { Item = "Eitr", Amount = 5, Recover = false }
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
+        new() { Item = "Guck", Amount = 5, Recover = false }
     };
 }

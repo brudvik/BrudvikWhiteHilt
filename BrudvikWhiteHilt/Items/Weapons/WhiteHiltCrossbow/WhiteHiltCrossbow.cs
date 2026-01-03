@@ -32,20 +32,20 @@ public class WhiteHiltCrossbow : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "CrossbowArbalest";
+    protected override string CopyFrom => "BowHuntsman";
 
     /// <summary>
     /// Indicates whether the White Hilt Crossbow is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Crossbow.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 20, Recover = false },
+        new() { Item = "Iron", Amount = 20, Recover = false },
         new() { Item = "Root", Amount = 10, Recover = false },
-        new() { Item = "BowHuntsman", Amount = 1, Recover = false }
+        new() { Item = "BowFineWood", Amount = 1, Recover = false }
     };
 }

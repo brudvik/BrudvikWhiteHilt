@@ -32,12 +32,12 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "MaceNeedle";
+    protected override string CopyFrom => "MaceIron";
 
     /// <summary>
     /// Indicates whether the White Hilt Mace is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Mace.
@@ -45,7 +45,7 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 20, Recover = false },
-        new() { Item = "Needle", Amount = 5, Recover = false },
-        new() { Item = "MaceIron", Amount = 1, Recover = false }
+        new() { Item = "WitheredBone", Amount = 5, Recover = false },
+        new() { Item = "MaceBronze", Amount = 1, Recover = false }
     };
 }

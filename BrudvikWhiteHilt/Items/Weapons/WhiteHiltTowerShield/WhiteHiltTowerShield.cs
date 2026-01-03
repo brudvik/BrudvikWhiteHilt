@@ -32,20 +32,20 @@ public class WhiteHiltTowerShield : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "ShieldBlackmetalTower";
+    protected override string CopyFrom => "ShieldIronTower";
 
     /// <summary>
     /// Indicates whether the White Hilt Tower Shield is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Tower Shield.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 30, Recover = false },
+        new() { Item = "Iron", Amount = 30, Recover = false },
         new() { Item = "Chain", Amount = 10, Recover = false },
-        new() { Item = "ShieldIronTower", Amount = 1, Recover = false }
+        new() { Item = "ShieldBanded", Amount = 1, Recover = false }
     };
 }

@@ -32,20 +32,20 @@ public class WhiteHiltKnife : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "KnifeBlackMetal";
+    protected override string CopyFrom => "KnifeChitin";
 
     /// <summary>
     /// Indicates whether the White Hilt Knife is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Knife.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 10, Recover = false },
-        new() { Item = "LinenThread", Amount = 5, Recover = false },
+        new() { Item = "Iron", Amount = 10, Recover = false },
+        new() { Item = "LeatherScraps", Amount = 5, Recover = false },
         new() { Item = "KnifeFlint", Amount = 1, Recover = false }
     };
 }

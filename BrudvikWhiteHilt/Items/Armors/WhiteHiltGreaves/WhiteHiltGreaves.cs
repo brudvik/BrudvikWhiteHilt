@@ -28,20 +28,20 @@ public class WhiteHiltGreaves : WhiteHiltArmorBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "ArmorFlametalLegs";
+    protected override string CopyFrom => "ArmorIronLegs";
 
     /// <summary>
     /// The requirements for crafting the White Hilt Greaves.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Flametal", Amount = 20, Recover = false },
-        new() { Item = "LinenThread", Amount = 15, Recover = false },
-        new() { Item = "ArmorIronLegs", Amount = 1, Recover = false },
+        new() { Item = "Iron", Amount = 20, Recover = false },
+        new() { Item = "DeerHide", Amount = 10, Recover = false },
+        new() { Item = "ArmorBronzeLegs", Amount = 1, Recover = false },
     };
 
     /// <summary>
     /// Indicates whether the armor is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 }

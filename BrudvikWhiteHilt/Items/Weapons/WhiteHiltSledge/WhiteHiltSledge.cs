@@ -37,7 +37,7 @@ public class WhiteHiltSledge : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Sledge is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Sledge.

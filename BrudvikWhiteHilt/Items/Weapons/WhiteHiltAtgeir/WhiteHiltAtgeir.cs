@@ -32,20 +32,20 @@ public class WhiteHiltAtgeir : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "AtgeirBlackmetal";
+    protected override string CopyFrom => "AtgeirIron";
 
     /// <summary>
     /// Indicates whether the White Hilt Atgeir is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Atgeir.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 25, Recover = false },
-        new() { Item = "LinenThread", Amount = 10, Recover = false },
+        new() { Item = "Iron", Amount = 25, Recover = false },
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
         new() { Item = "AtgeirBronze", Amount = 1, Recover = false }
     };
 }

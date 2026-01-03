@@ -37,15 +37,15 @@ public class WhiteHiltStaffIce : WhiteHiltWeaponBase
     /// <summary>
     /// Indicates whether the White Hilt Staff of Ice is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Staff of Ice.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "FreezeGland", Amount = 10, Recover = false },
-        new() { Item = "YggdrasilWood", Amount = 10, Recover = false },
-        new() { Item = "Eitr", Amount = 5, Recover = false }
+        new() { Item = "Iron", Amount = 10, Recover = false },
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
+        new() { Item = "Guck", Amount = 5, Recover = false }
     };
 }

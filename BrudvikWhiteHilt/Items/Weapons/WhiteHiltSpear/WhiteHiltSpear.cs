@@ -32,20 +32,20 @@ public class WhiteHiltSpear : WhiteHiltWeaponBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "SpearCarapace";
+    protected override string CopyFrom => "SpearElderbark";
 
     /// <summary>
     /// Indicates whether the White Hilt Spear is enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Spear.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Chitin", Amount = 20, Recover = false },
-        new() { Item = "FineWood", Amount = 10, Recover = false },
-        new() { Item = "SpearFlint", Amount = 1, Recover = false }
+        new() { Item = "Iron", Amount = 20, Recover = false },
+        new() { Item = "ElderBark", Amount = 10, Recover = false },
+        new() { Item = "SpearBronze", Amount = 1, Recover = false }
     };
 }

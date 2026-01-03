@@ -33,7 +33,7 @@ public class WhiteHiltBolts : WhiteHiltAmmunitionBase
     /// <summary>
     /// The name of the item to copy from.
     /// </summary>
-    protected override string CopyFrom => "BoltCarapace";
+    protected override string CopyFrom => "BoltIron";
 
     /// <summary>
     /// The amount crafted per recipe.
@@ -43,15 +43,15 @@ public class WhiteHiltBolts : WhiteHiltAmmunitionBase
     /// <summary>
     /// Indicates whether the White Hilt Bolts are enabled.
     /// </summary>
-    public override bool Enabled => false;
+    public override bool Enabled => true;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Bolts.
     /// </summary>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "BlackMetal", Amount = 2, Recover = false },
+        new() { Item = "Iron", Amount = 2, Recover = false },
         new() { Item = "Feathers", Amount = 3, Recover = false },
-        new() { Item = "Iron", Amount = 5, Recover = false }
+        new() { Item = "Wood", Amount = 5, Recover = false }
     };
 }
