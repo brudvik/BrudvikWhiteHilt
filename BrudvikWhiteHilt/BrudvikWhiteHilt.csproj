@@ -86,6 +86,7 @@
     <Compile Include="Items\Armors\WhiteHiltGreaves\WhiteHiltGreaves.cs" />
     <Compile Include="Items\Armors\WhiteHiltHelmet\WhiteHiltHelmet.cs" />
     <Compile Include="Items\Armors\WhiteHiltShield\WhiteHiltShield.cs" />
+    <Compile Include="Items\Indestructible\IndestructibleShipPiece.cs" />
     <Compile Include="Items\IWhiteHiltCustomItem.cs" />
     <Compile Include="Items\Indestructible\IndestructiblePiece.cs" />
     <Compile Include="Items\Indestructible\IndestructibleItem.cs" />
