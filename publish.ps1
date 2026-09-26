@@ -62,8 +62,23 @@ if($Target.Equals("Release")) {
     Write-Host "$PackagePath\$TargetAssembly"
     New-Item -Type Directory -Path "$PackagePath\plugins" -Force
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
-    Copy-Item -Path "$ProjectPath\README.md" -Destination "$PackagePath\README.md" -Force
-    Compress-Archive -Path "$PackagePath\*" -DestinationPath "$TargetPath\$TargetAssembly.zip" -Force
+    Copy-Item -Path "$ProjectPath\..\README.MD" -Destination "$PackagePath\README.md" -Force -ErrorAction Stop
+
+    # Compress-Archive in PS 5.1 writes backslash entry names, which Thunderstore rejects
+    Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
+    $zipPath = "$TargetPath\$TargetAssembly.zip"
+    if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
+    $root = (Resolve-Path $PackagePath).Path.TrimEnd('\') + '\'
+    $zip = [System.IO.Compression.ZipFile]::Open($zipPath, 'Create')
+    try {
+        Get-ChildItem -Path $PackagePath -Recurse -File | % {
+            $entry = $_.FullName.Substring($root.Length).Replace('\', '/')
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $entry) | Out-Null
+        }
+    }
+    finally {
+        $zip.Dispose()
+    }
 }
 
 # Pop Location
