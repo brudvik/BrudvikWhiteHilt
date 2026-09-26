@@ -1,9 +1,11 @@
-﻿namespace BrudvikWhiteHilt.Pieces;
+﻿using BrudvikWhiteHilt.Progression;
+
+namespace BrudvikWhiteHilt.Pieces;
 
 /// <summary>
 /// Interface for custom pieces in the White Hilt mod.
 /// </summary>
-public interface IWhiteHiltCustomPiece
+public interface IWhiteHiltCustomPiece : IWhiteHiltProgressionEntry
 {
     /// <summary>
     /// Is this custom piece enabled?

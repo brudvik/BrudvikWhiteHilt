@@ -1,9 +1,11 @@
-﻿namespace BrudvikWhiteHilt.Items;
+﻿using BrudvikWhiteHilt.Progression;
+
+namespace BrudvikWhiteHilt.Items;
 
 /// <summary>
 /// Interface for custom items.
 /// </summary>
-public interface IWhiteHiltCustomItem
+public interface IWhiteHiltCustomItem : IWhiteHiltProgressionEntry
 {
     /// <summary>
     /// Is this custom item enabled?

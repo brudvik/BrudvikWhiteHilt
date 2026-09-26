@@ -1,4 +1,5 @@
-﻿using Jotunn.Configs;
+﻿using BrudvikWhiteHilt.Progression;
+using Jotunn.Configs;
 using Jotunn.Managers;
 
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltSword;
@@ -38,6 +39,9 @@ public class WhiteHiltSword : WhiteHiltWeaponBase
     /// Indicates whether the White Hilt Bow is enabled.
     /// </summary>
     public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Sword.

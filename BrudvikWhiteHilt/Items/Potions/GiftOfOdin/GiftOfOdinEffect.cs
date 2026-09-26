@@ -9,6 +9,11 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
 public class GiftOfOdinEffect : SE_Stats
 {
     /// <summary>
+    /// Minimum max health while the effect is active.
+    /// </summary>
+    public const float MaxHealth = 500f;
+
+    /// <summary>
     /// The hash of the effect. This is used to identify the effect.
     /// </summary>
     public int? EffectHash = null;
@@ -56,9 +61,9 @@ public class GiftOfOdinEffect : SE_Stats
         base.Setup(character);
 
         // Boost the maximum health.
-        if (character.GetMaxHealth() < 500f)
+        if (character.GetMaxHealth() < MaxHealth)
         {
-            character.SetMaxHealth(500f);
+            character.SetMaxHealth(MaxHealth);
         }
 
         // Boost the current health.
@@ -72,11 +77,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="damage"></param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
-        damage += 0.05f;
-        if (damage < 0f)
-        {
-            damage = 0f;
-        }
+        damage *= 0.5f;
     }
 
     /// <summary>
@@ -95,7 +96,8 @@ public class GiftOfOdinEffect : SE_Stats
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);
-        m_character.Heal(20f);
+        // Per frame on purpose: Gift of Odin is god mode.
+        m_character.Heal(20f, showText: false);
     }
 
 }

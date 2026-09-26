@@ -1,5 +1,6 @@
 ﻿using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -36,6 +37,18 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     /// Indicates whether the potion is enabled or not.
     /// </summary>
     public abstract bool Enabled { get; }
+
+    /// <inheritdoc/>
+    public abstract ProgressionTier DefaultTier { get; }
+
+    /// <inheritdoc/>
+    public string Id => BaseName;
+
+    /// <inheritdoc/>
+    public string DisplayName => FullName;
+
+    /// <inheritdoc/>
+    public string GatedPrefabName => $"{BaseName}MeadBase";
 
     /// <summary>
     /// The requirements for crafting the potion.

@@ -70,6 +70,7 @@
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
+    <Compile Include="Helpers\StatusEffectHelper.cs" />
     <Compile Include="Helpers\WearNTearHelper.cs" />
     <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />
     <Compile Include="Items\Accessories\WhiteHiltMegingjord\WhiteHiltMegingjord.cs" />
@@ -146,10 +147,18 @@
     <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
     <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
+    <Compile Include="Patches\Potions\PotionPatches.cs" />
+    <Compile Include="Patches\Progression\ProgressionPatches.cs" />
     <Compile Include="Patches\Ships\TailwindPatch.cs" />
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
+    <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />
+    <Compile Include="Progression\ProgressionManager.cs" />
+    <Compile Include="Progression\ProgressionMode.cs" />
+    <Compile Include="Progression\ProgressionTier.cs" />
+    <Compile Include="Progression\TierOverride.cs" />
+    <Compile Include="Progression\WhiteHiltConfig.cs" />
     <Compile Include="Properties\IgnoreAccessModifiers.cs" />
     <Compile Include="BrudvikWhiteHilt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
-﻿using Jotunn.Configs;
+﻿using BrudvikWhiteHilt.Progression;
+using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
 
@@ -45,6 +46,9 @@ public class GiftOfHugin : PotionBase
     /// Indicates whether the potion is enabled.
     /// </summary>
     public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
     /// <summary>
     /// Creates the effect for the potion.

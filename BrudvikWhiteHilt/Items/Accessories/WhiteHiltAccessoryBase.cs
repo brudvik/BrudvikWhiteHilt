@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Items.Indestructible;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
@@ -39,6 +40,18 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
     /// Indicates whether the accessory is enabled or not.
     /// </summary>
     public abstract bool Enabled { get; }
+
+    /// <inheritdoc/>
+    public virtual ProgressionTier DefaultTier => ProgressionTier.Mountain;
+
+    /// <inheritdoc/>
+    public string Id => BaseName;
+
+    /// <inheritdoc/>
+    public string DisplayName => FullName;
+
+    /// <inheritdoc/>
+    public string GatedPrefabName => BaseName;
 
     private readonly ItemManager instance;
 

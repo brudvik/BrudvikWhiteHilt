@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -39,13 +40,16 @@ public class GiftOfSurt : PotionBase
     {
         new RequirementConfig { Item = "SurtlingCore", Amount = 5, Recover = false },
         new RequirementConfig { Item = "Coal", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Flametal", Amount = 2, Recover = false }
+        new RequirementConfig { Item = "FlametalNew", Amount = 2, Recover = false }
     };
 
     /// <summary>
     /// Indicates whether the potion is enabled.
     /// </summary>
     public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
 
     /// <summary>
     /// Creates the effect for the potion.

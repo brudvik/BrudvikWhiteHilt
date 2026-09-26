@@ -5,19 +5,24 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfFenrir;
 
 /// <summary>
 /// This class defines the effect of the Gift of Fenrir potion.
-/// Grants increased attack speed and life steal on hits.
+/// Grants faster attacks, cheaper attacks, faster movement and life steal.
 /// </summary>
 public class GiftOfFenrirEffect : SE_Stats
 {
     /// <summary>
+    /// Animation speed multiplier while attacking.
+    /// </summary>
+    public const float AttackSpeed = 1.5f;
+
+    /// <summary>
+    /// Share of damage dealt that is returned as health.
+    /// </summary>
+    public const float LifeSteal = 0.15f;
+
+    /// <summary>
     /// The hash of the effect. This is used to identify the effect.
     /// </summary>
     public int? EffectHash = null;
-
-    /// <summary>
-    /// Tracks damage dealt for life steal.
-    /// </summary>
-    private float m_damageDealt = 0f;
 
     /// <summary>
     /// Initializes the effect with the given name.
@@ -31,7 +36,7 @@ public class GiftOfFenrirEffect : SE_Stats
         m_startMessage = $"The wolf's fury surges through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Increased attack speed, life steal on hits";
+        m_tooltip = "Faster attacks, less attack stamina, faster movement, life steal";
     }
 
     /// <summary>
@@ -62,28 +67,5 @@ public class GiftOfFenrirEffect : SE_Stats
     public override void ModifyAttackStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
         staminaUse *= 0.5f; // 50% reduction
-    }
-
-    /// <summary>
-    /// Called when hitting an enemy - implements life steal.
-    /// </summary>
-    public override void OnDamaged(HitData hit, Character attacker)
-    {
-        base.OnDamaged(hit, attacker);
-    }
-
-    /// <summary>
-    /// Updates the effect - continuous minor health regeneration simulates life steal.
-    /// </summary>
-    /// <param name="dt"></param>
-    public override void UpdateStatusEffect(float dt)
-    {
-        base.UpdateStatusEffect(dt);
-        
-        // Continuous regeneration as a form of sustain (simulates life steal)
-        if (m_character != null)
-        {
-            m_character.Heal(2f * dt);
-        }
     }
 }

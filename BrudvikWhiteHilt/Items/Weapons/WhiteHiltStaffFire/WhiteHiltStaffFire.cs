@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -38,6 +39,9 @@ public class WhiteHiltStaffFire : WhiteHiltWeaponBase
     /// Indicates whether the White Hilt Staff of Fire is enabled.
     /// </summary>
     public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Mountain;
 
     /// <summary>
     /// The requirements for crafting the White Hilt Staff of Fire.

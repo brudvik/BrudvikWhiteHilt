@@ -1,6 +1,5 @@
 ﻿using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
-using System;
 
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin;
 
@@ -59,21 +58,22 @@ public class GiftOfMuninEffect : SE_Stats
     {
         base.Setup(character);
         player = character as Player;
-
-        var allItems = ObjectDB.instance.GetAllItems(ItemDrop.ItemData.ItemType.Material, "");
-        foreach (var item in allItems)
+        if (player == null)
         {
-            try
-            {
-                if (!player.IsKnownMaterial(item.name))
-                {
-                    player.AddKnownItem(item.m_itemData);
-                }
-            }
-            catch (Exception ex)
-            {
-                Jotunn.Logger.LogError($"Error adding known item {item.name}: {ex}");
-            }
+            return;
+        }
+
+        // Adding to the known set directly avoids one unlock popup per material.
+        bool learned = false;
+        foreach (var item in ObjectDB.instance.GetAllItems(ItemDrop.ItemData.ItemType.Material, ""))
+        {
+            learned |= player.m_knownMaterial.Add(item.m_itemData.m_shared.m_name);
+        }
+
+        if (learned)
+        {
+            player.UpdateKnownRecipesList();
+            MessageHud.instance?.m_unlockMsgQueue.Clear();
         }
     }
 

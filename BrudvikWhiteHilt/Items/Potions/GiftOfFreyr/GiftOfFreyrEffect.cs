@@ -72,7 +72,7 @@ public class GiftOfFreyrEffect : SE_Stats
         if (m_character != null)
         {
             // Passive comfort bonus effect
-            m_character.Heal(1f * dt);
+            m_character.Heal(1f * dt, showText: false);
             m_character.AddStamina(5f * dt);
         }
     }

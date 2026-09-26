@@ -62,7 +62,7 @@ public class GiftOfIdunnEffect : SE_Stats
         if (m_character != null)
         {
             // Small continuous heal
-            m_character.Heal(1f * dt);
+            m_character.Heal(1f * dt, showText: false);
         }
     }
 }

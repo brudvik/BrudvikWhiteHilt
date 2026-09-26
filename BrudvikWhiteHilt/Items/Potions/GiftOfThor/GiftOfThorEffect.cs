@@ -26,7 +26,7 @@ public class GiftOfThorEffect : SE_Stats
         m_startMessage = $"Thunder courses through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Increased tool damage and attack speed";
+        m_tooltip = "Double chopping and mining damage, less building and attack stamina, immune to lightning";
     }
 
     /// <summary>
@@ -76,11 +76,14 @@ public class GiftOfThorEffect : SE_Stats
     }
 
     /// <summary>
-    /// Modifies the damage dealt to increase chopping and pickaxe damage.
+    /// Doubles chopping and mining damage.
     /// </summary>
-    /// <param name="damageTypes"></param>
-    public override void ModifyDamageMods(ref HitData.DamageModifiers modifiers)
+    /// <param name="skill"></param>
+    /// <param name="hitData"></param>
+    public override void ModifyAttack(Skills.SkillType skill, ref HitData hitData)
     {
-        base.ModifyDamageMods(ref modifiers);
+        base.ModifyAttack(skill, ref hitData);
+        hitData.m_damage.m_chop *= 2f;
+        hitData.m_damage.m_pickaxe *= 2f;
     }
 }

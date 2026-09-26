@@ -7,19 +7,23 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMimir;
 
 /// <summary>
 /// This class defines the effect of the Gift of Mimir potion.
-/// Grants enhanced awareness - reveals nearby resources and creatures on the map.
+/// Reveals the map around the player and marks nearby creatures on the minimap.
 /// </summary>
 public class GiftOfMimirEffect : SE_Stats
 {
+    private const float MapRevealInterval = 5f;
+    private const float CreatureRevealInterval = 1f;
+    private const float CreatureRange = 100f;
+
     /// <summary>
     /// The hash of the effect. This is used to identify the effect.
     /// </summary>
     public int? EffectHash = null;
 
-    /// <summary>
-    /// Timer for periodic map reveals.
-    /// </summary>
+    private readonly List<Minimap.PinData> creaturePins = new();
+    private readonly List<Character> nearbyCharacters = new();
     private float m_revealTimer = 0f;
+    private float m_creatureTimer = 0f;
 
     /// <summary>
     /// Initializes the effect with the given name.
@@ -33,7 +37,7 @@ public class GiftOfMimirEffect : SE_Stats
         m_startMessage = $"Ancient wisdom fills your mind with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Reveals nearby creatures and resources";
+        m_tooltip = "Reveals the map around you and marks nearby creatures";
     }
 
     /// <summary>
@@ -44,6 +48,7 @@ public class GiftOfMimirEffect : SE_Stats
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
         m_revealTimer = 0f;
+        m_creatureTimer = 0f;
         EffectHash = GetHashCode();
     }
 
@@ -57,73 +62,87 @@ public class GiftOfMimirEffect : SE_Stats
     }
 
     /// <summary>
-    /// Periodically reveals the map around the player.
-    /// </summary>
-    /// <param name="dt"></param>
-    public override void UpdateStatusEffect(float dt)
-    {
-        base.UpdateStatusEffect(dt);
-        
-        m_revealTimer += dt;
-        
-        // Reveal map every 5 seconds
-        if (m_revealTimer >= 5f && m_character != null)
-        {
-            m_revealTimer = 0f;
-            
-            // Reveal a large area around the player
-            if (Minimap.instance != null)
-            {
-                Vector3 position = m_character.transform.position;
-                Minimap.instance.Explore(position, 150f);
-            }
-            
-            // Also ping nearby creatures
-            RevealNearbyCreatures();
-        }
-    }
-
-    /// <summary>
-    /// Reveals nearby creatures by adding temporary map pins.
-    /// </summary>
-    private void RevealNearbyCreatures()
-    {
-        if (m_character == null) return;
-        
-        Vector3 playerPos = m_character.transform.position;
-        float range = 100f;
-        
-        // Find all characters in range
-        List<Character> characters = new List<Character>();
-        Character.GetCharactersInRange(playerPos, range, characters);
-        
-        foreach (var character in characters)
-        {
-            if (character == m_character) continue;
-            if (character.IsDead()) continue;
-            
-            // The Wishbone effect - makes the player aware of nearby things
-            // This creates a visual pulse effect similar to the wishbone
-            if (!character.IsTamed())
-            {
-                // Enemy detected - could add a visual indicator here
-                Jotunn.Logger.LogDebug($"Mimir reveals: {character.m_name} at {character.transform.position}");
-            }
-        }
-    }
-
-    /// <summary>
     /// Sets up the initial map exploration.
     /// </summary>
     /// <param name="character"></param>
     public override void Setup(Character character)
     {
         base.Setup(character);
-        
-        // Initial large area reveal
+
         if (Minimap.instance != null && character != null)
         {
             Minimap.instance.Explore(character.transform.position, 200f);
         }
+
+        RevealNearbyCreatures();
+    }
+
+    /// <summary>
+    /// Periodically reveals the map and refreshes the creature markers.
+    /// </summary>
+    /// <param name="dt"></param>
+    public override void UpdateStatusEffect(float dt)
+    {
+        base.UpdateStatusEffect(dt);
+
+        m_revealTimer += dt;
+        if (m_revealTimer >= MapRevealInterval && m_character != null && Minimap.instance != null)
+        {
+            m_revealTimer = 0f;
+            Minimap.instance.Explore(m_character.transform.position, 150f);
+        }
+
+        m_creatureTimer += dt;
+        if (m_creatureTimer >= CreatureRevealInterval)
+        {
+            m_creatureTimer = 0f;
+            RevealNearbyCreatures();
+        }
+    }
+
+    /// <summary>
+    /// Removes the creature markers when the effect ends.
+    /// </summary>
+    public override void Stop()
+    {
+        base.Stop();
+        ClearCreaturePins();
+    }
+
+    private void RevealNearbyCreatures()
+    {
+        ClearCreaturePins();
+
+        // The minimap is local, so only the drinking player gets markers.
+        if (m_character == null || m_character != Player.m_localPlayer || Minimap.instance == null)
+        {
+            return;
+        }
+
+        nearbyCharacters.Clear();
+        Character.GetCharactersInRange(m_character.transform.position, CreatureRange, nearbyCharacters);
+
+        foreach (var character in nearbyCharacters)
+        {
+            if (character == m_character || character.IsPlayer() || character.IsDead() || character.IsTamed())
+            {
+                continue;
+            }
+
+            creaturePins.Add(Minimap.instance.AddPin(character.transform.position, Minimap.PinType.Icon3, character.m_name, save: false, isChecked: false));
+        }
+    }
+
+    private void ClearCreaturePins()
+    {
+        if (Minimap.instance != null)
+        {
+            foreach (var pin in creaturePins)
+            {
+                Minimap.instance.RemovePin(pin);
+            }
+        }
+
+        creaturePins.Clear();
     }
 }

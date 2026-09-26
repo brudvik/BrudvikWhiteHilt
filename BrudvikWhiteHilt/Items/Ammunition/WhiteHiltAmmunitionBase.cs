@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -44,6 +45,18 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem
     /// Indicates whether the ammunition is enabled or not.
     /// </summary>
     public abstract bool Enabled { get; }
+
+    /// <inheritdoc/>
+    public virtual ProgressionTier DefaultTier => ProgressionTier.Swamp;
+
+    /// <inheritdoc/>
+    public string Id => BaseName;
+
+    /// <inheritdoc/>
+    public string DisplayName => FullName;
+
+    /// <inheritdoc/>
+    public string GatedPrefabName => BaseName;
 
     private readonly ItemManager instance;
 

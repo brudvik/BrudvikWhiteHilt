@@ -1,4 +1,5 @@
-﻿using Jotunn.Configs;
+﻿using BrudvikWhiteHilt.Progression;
+using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
 
@@ -42,6 +43,9 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin
         /// Indicates whether the potion is enabled.
         /// </summary>
         public override bool Enabled => true;
+
+        /// <inheritdoc/>
+        public override ProgressionTier DefaultTier => ProgressionTier.Mistlands;
 
         /// <summary>
         /// Creates the effect for the potion.

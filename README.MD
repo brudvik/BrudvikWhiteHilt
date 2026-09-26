@@ -95,40 +95,40 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
-| **Gift of Freya** | Grants immense stamina - drastically reduced stamina drain for all activities. | Honey ×20, Raspberry ×20, Blueberries ×20 |
-| **Gift of Loki** | Grants endless Eitr - adds 500 Eitr and +80 Eitr regeneration. | Neck Tail ×20, Raspberry ×20, Eitr ×1 |
-| **Gift of Odin** | Grants undwindling health - 500 max HP, continuous healing, reduced fall damage. | Mushroom ×20, Raspberry ×20, Blueberries ×20 |
+| **Gift of Freya** | Grants immense stamina - running, jumping, attacking, blocking, dodging, swimming, sneaking and building restore a little stamina instead of draining it, stamina refilled on drink, +40 stamina regeneration. | Honey ×20, Raspberries ×20, Blueberries ×20 |
+| **Gift of Loki** | Grants endless Eitr - fills your Eitr and greatly boosts Eitr regeneration (requires Eitr from food). | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
+| **Gift of Odin** | God mode - 500 max HP, full heal on drink, heals 20 HP every frame, 21x health regeneration, 50% less fall damage. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
 | **Gift of Sleipnir** | Grants the speed of Odin's horse - +50% movement speed, no fall damage, higher jumps. | Honey ×10, Thistle ×10, Lox Meat ×5 |
-| **Gift of Ratatoskr** | Grants squirrel agility - +75% sprint speed, -80% run stamina drain, no sneak stamina. | Acorn ×10, Honey ×10, Carrot ×10 |
-| **Gift of Njord** | Grants the blessing of the sea god - faster swimming, no swim stamina, prevents drowning. | Raw Fish ×10, Chitin ×5, Bloodbag ×5 |
+| **Gift of Ratatoskr** | Grants squirrel agility - +75% movement speed, -80% run stamina drain, higher jumps, no sneak stamina. | Resin ×5, Blueberries ×5, Mushroom ×5 |
+| **Gift of Njord** | Grants the blessing of the sea god - +100% swim speed, no swim stamina, cannot drown. | Raw Anglerfish ×10, Chitin ×5, Bloodbag ×5 |
 | **Gift of Surt** | Grants fire giant power - immune to fire and frost damage. | Surtling Core ×5, Coal ×20, Flametal ×2 |
-| **Gift of Skadi** | Grants winter goddess blessing - immune to frost, removes freezing/cold effects. | Freeze Gland ×5, Wolf Pelt ×5, Obsidian ×10 |
-| **Gift of Baldur** | Grants near-invisibility - -99% detection, -99% noise, no sneak stamina. | Crystal ×10, Greydwarf Eye ×20, Wraith Trophy ×1 |
-| **Gift of Thor** | Grants thunder god strength - +50% attack speed, -90% tool stamina, lightning immune. | Thunderstone ×3, Iron ×10, Honey ×10 |
-| **Gift of Brokkr** | Grants dwarf-smith skill - +25 to all skills, no stamina for building. | Dvergr Needle ×5, Soft Tissue ×10, Black Metal ×5 |
-| **Gift of Tyr** | Grants war god steadfastness - no block stamina, reduced knockback, +100 carry weight. | Fenring Trophy ×1, Silver ×10, Wolf Fang ×10 |
-| **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, +25% movement, life steal healing. | Wolf Pelt ×10, Wolf Fang ×10, Wolf Trophy ×1 |
-| **Gift of Freyr** | Grants fertility god blessing - 2x regen, +150 carry weight, passive healing. | Barley ×20, Flax ×20, Lox Pie ×3 |
-| **Gift of Mimir** | Grants ancient wisdom - reveals 150m map radius every 5 sec, detects creatures. | Yggdrasil Wood ×10, Sap ×10, Eitr ×2 |
+| **Gift of Skadi** | Grants winter goddess blessing - immune to frost, removes freezing/cold effects. | Wood ×5, Stone ×5, Mushroom ×5 |
+| **Gift of Baldur** | Grants near-invisibility - enemies can barely detect you, -99% noise, no sneak stamina. | Wood ×5, Stone ×5, Resin ×5 |
+| **Gift of Thor** | Grants thunder god strength - double chopping and mining damage, -50% attack stamina, -90% building/farming stamina, lightning immune. | Thunderstone ×3, Iron ×10, Honey ×10 |
+| **Gift of Brokkr** | Grants dwarf-smith skill - +25 to all skills (max 100), no stamina for building. | Wood ×5, Raspberries ×5, Blueberries ×5 |
+| **Gift of Tyr** | Grants war god steadfastness - no block stamina, -75% dodge stamina, 90% less knockback, +100 carry weight. | Wood ×5, Raspberries ×5, Resin ×5 |
+| **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, -50% attack stamina, +25% movement speed, heals 15% of damage dealt. | Wood ×5, Mushroom ×5, Dandelion ×5 |
+| **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
+| **Gift of Mimir** | Grants ancient wisdom - reveals the map in a 200m radius on drink, then 150m around you every 5 seconds, and marks creatures within 100m on the minimap. | Yggdrasil Wood ×10, Sap ×10, Eitr ×2 |
 
 #### Extended Duration (40 minutes)
 
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
-| **Gift of Idunn** | Grants eternal youth - 5x health/stamina/eitr regeneration, continuous healing. | Apple ×10, Queen Bee ×3, Dandelion ×20 |
+| **Gift of Idunn** | Grants eternal youth - 5x health/stamina/eitr regeneration, +1 HP/s. | Resin ×5, Raspberries ×5, Dandelion ×5 |
 
 #### Special Effects (30 minutes or until triggered)
 
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
-| **Gift of Hel** | Grants death protection - when taking fatal damage, heals to full instead (one-time use). | Skeleton Trophy ×5, Bone Fragments ×30, Eitr ×3 |
+| **Gift of Hel** | Grants death protection - when a hit would be fatal or health drops below 10%, heals to full instead (one-time use). | Stone ×5, Blueberries ×5, Dandelion ×5 |
 
 #### Instant/Permanent Effects
 
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
 | **Gift of Hugin** | Permanently sets ALL skills to level 100. Named after Odin's raven of "thought". | Neck Tail ×20, Cloudberry ×20, Blueberries ×20 |
-| **Gift of Munin** | Permanently unlocks ALL materials and recipes. Named after Odin's raven of "memory". | Neck Tail ×20, Raspberry ×20, Eitr ×1 |
+| **Gift of Munin** | Permanently teaches ALL materials, revealing every recipe made from materials. Named after Odin's raven of "memory". | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
 
 ---
 
@@ -146,6 +146,32 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Always has tailwind (full sail speed regardless of wind direction)
 - Comfort bonus: +5
 
+---
+
+### ⚙️ PROGRESSION (CONFIG)
+
+Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server.
+
+| Setting | Values | Description |
+|---------|--------|-------------|
+| `[General] Mode` | `Full` (default), `Linear` | Full: every recipe is available as before. Linear: White Hilt gear unlocks biome by biome. |
+| `[General] ShowUnlockMessages` | `true`/`false` | Show a message listing the newly available items when a tier unlocks. |
+| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. |
+
+In **Linear** mode, a tier unlocks the first time you obtain its key material. Recipes in that tier also cost some of that material, unless they already require it.
+
+| Tier | Unlocked by | Extra cost | Default items |
+|------|-------------|------------|---------------|
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator |
+| Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
+| Swamp | Iron | Iron ×5 | Ship, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
+| Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
+| Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
+| Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
+| Ashlands | Flametal | Flametal ×3 | Surt |
+
+Recipes are hidden, never removed, so switching mode never deletes items you already own.
+
 ## Compilation
 
 Please notice that it won't be possible to compile this `mod` out of the box. Make sure you read up on [Valheim Mod Development](https://github.com/Valheim-Modding/JotunnModStub).
@@ -153,6 +179,27 @@ There's also a directory removed from the source. The `Assets` folder is not par
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
 ## Changelog
+
+### v0.1.0 - 2026-09-26
+
+#### Added
+- Config file with `Full` and `Linear` progression modes, synced from the server (admin-only)
+- Linear mode: White Hilt gear unlocks biome by biome when you first obtain Bronze, Iron, Silver, Black Metal, Eitr or Flametal, and recipes cost some of that material
+- Per-item tier overrides, including `Never` to disable a recipe
+- Unlock message when a new tier opens, listing the White Hilt items that became available
+- Gift of Fenrir: faster attacks and real life steal (replaces the constant regeneration)
+- Gift of Thor: double chopping and mining damage
+- Gift of Mimir: marks nearby creatures on the minimap
+- Gift of Odin: the 500 max HP now actually holds while the effect is active
+
+#### Fixed
+- Gift of Surt now requires the obtainable Ashlands Flametal instead of the legacy Ancient Flametal
+- Potion requirements in the README now match the actual recipes
+- Gift of Odin increased fall damage instead of reducing it; it now halves fall damage
+- Gift of Skadi never removed Freezing/Cold (wrong status effect hash)
+- Gift of Munin showed one popup per material; materials are now learned silently
+- Healing potions no longer spam floating heal numbers every frame
+- Potion tooltips and README effects now describe what the potions actually do
 
 ### v0.0.5 - 2026-09-26
 

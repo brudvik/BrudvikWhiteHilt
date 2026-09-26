@@ -64,8 +64,8 @@ public class GiftOfSkadiEffect : SE_Stats
         base.Setup(character);
         
         // Remove any existing freezing effect
-        character.GetSEMan().RemoveStatusEffect("Freezing".GetHashCode());
-        character.GetSEMan().RemoveStatusEffect("Cold".GetHashCode());
+        character.GetSEMan().RemoveStatusEffect(SEMan.s_statusEffectFreezing);
+        character.GetSEMan().RemoveStatusEffect(SEMan.s_statusEffectCold);
     }
 
     /// <summary>
@@ -79,8 +79,8 @@ public class GiftOfSkadiEffect : SE_Stats
         // Continuously remove freezing effects
         if (m_character != null)
         {
-            m_character.GetSEMan().RemoveStatusEffect("Freezing".GetHashCode());
-            m_character.GetSEMan().RemoveStatusEffect("Cold".GetHashCode());
+            m_character.GetSEMan().RemoveStatusEffect(SEMan.s_statusEffectFreezing);
+            m_character.GetSEMan().RemoveStatusEffect(SEMan.s_statusEffectCold);
         }
     }
 }
