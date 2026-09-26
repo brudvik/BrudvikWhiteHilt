@@ -154,6 +154,15 @@ the license only allows it to be shipped in the pre-built mod file. If you want 
 
 ## Changelog
 
+### v0.0.5 - 2026-09-26
+
+#### Changed
+- Compiled against Valheim 1.0.x (Unity 6000.0) and Jotunn 2.30.2 (was 2.27.1)
+- Thunderstore manifest now depends on Jotunn 2.30.2 and BepInExPack 5.4.2350
+
+#### Fixed
+- Removed a stale Unity 2022 editor reference from the project file
+
 ### v0.0.4 - 2026-01-03
 
 #### Changed

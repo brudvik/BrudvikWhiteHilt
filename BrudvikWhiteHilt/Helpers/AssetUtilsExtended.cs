@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jotunn.Utils;
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -38,7 +39,7 @@ public static class AssetUtilsExtended
                 Texture2D texture = new Texture2D(2, 2);
 
                 // Load the image data into the Texture2D object
-                if (texture.LoadImage(data))
+                if (AssetUtils.LoadImage(texture, data))
                 {
                     return texture; // Return the loaded texture
                 }
