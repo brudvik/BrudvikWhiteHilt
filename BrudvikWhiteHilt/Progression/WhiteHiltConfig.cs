@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace BrudvikWhiteHilt.Progression;
 
 /// <summary>
-/// Config entries controlling White Hilt progression. All entries are admin-only and synced from the server.
+/// Config entries for White Hilt: progression, and per-item settings bound by the items themselves.
+/// All entries are admin-only and synced from the server.
 /// </summary>
 public static class WhiteHiltConfig
 {
@@ -70,6 +71,21 @@ public static class WhiteHiltConfig
     public static TierOverride GetTierOverride(string id)
     {
         return tierOverrides.TryGetValue(id, out var entry) ? entry.Value : TierOverride.Default;
+    }
+
+    /// <summary>
+    /// Binds an admin-only, server-synced config entry. <see cref="Initialize"/> must have run first.
+    /// </summary>
+    /// <typeparam name="T">Value type.</typeparam>
+    /// <param name="section">Config section.</param>
+    /// <param name="key">Config key.</param>
+    /// <param name="defaultValue">Default value.</param>
+    /// <param name="description">Description shown in the config file.</param>
+    /// <param name="acceptableValues">Optional allowed range or list.</param>
+    /// <returns>The bound entry.</returns>
+    public static ConfigEntry<T> BindAdminOnly<T>(string section, string key, T defaultValue, string description, AcceptableValueBase acceptableValues = null)
+    {
+        return configFile.Bind(section, key, defaultValue, new ConfigDescription(description, acceptableValues, new ConfigurationManagerAttributes { IsAdminOnly = true }));
     }
 
     private static ConfigDescription AdminOnly(string description)

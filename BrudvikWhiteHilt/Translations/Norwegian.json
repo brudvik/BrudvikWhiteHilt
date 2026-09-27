@@ -1,0 +1,30 @@
+{
+  "item_whitehiltchanterelle": "Kantarell",
+  "item_whitehiltchanterelle_description": "En gyllen, traktformet sopp fra skogkanten på engene. Bedre tilberedt enn rå.",
+  "item_whitehiltwildgarlic": "Ramsløk",
+  "item_whitehiltwildgarlic_description": "Brede, grønne blader med skarp duft av hvitløk. Vokser i skyggen av skogene på engene.",
+  "item_whitehiltporcini": "Steinsopp",
+  "item_whitehiltporcini_description": "En kraftig sopp med brun hatt fra skyggen i Svartskogen. Herlig i en stuing.",
+  "item_whitehiltlingonberries": "Tyttebær",
+  "item_whitehiltlingonberries_description": "Syrlige røde bær fra skogbunnen i Svartskogen.",
+  "item_whitehiltcrowberries": "Krekling",
+  "item_whitehiltcrowberries_description": "Små, svarte bær som klamrer seg fast i de vindutsatte fjellsidene.",
+  "item_whitehiltroseroot": "Rosenrot",
+  "item_whitehiltroseroot_description": "En seig fjellurt med gule blomster. Roten sies å holde den reisende gående.",
+
+  "piece_whitehilt_stonepot": "Steingryte",
+  "piece_whitehilt_stonepot_description": "En enkel steingryte for å lage mat av det du finner i naturen. Sett den over et leirbål.",
+
+  "item_whitehiltchanterellestew": "Kantarellstuing",
+  "item_whitehiltchanterellestew_description": "En god stuing av kantarell, ramsløk og kjøtt. Gir deg krefter før Svartskogen.",
+  "item_whitehiltwildgarlicsoup": "Ramsløksuppe",
+  "item_whitehiltwildgarlicsoup_description": "En lett, grønn suppe av ramsløk, kantarell og bringebær. Holder pusten oppe på lange løpeturer.",
+  "item_whitehiltporcinistew": "Steinsoppstuing",
+  "item_whitehiltporcinistew_description": "En tykk stuing av steinsopp, kantarell og hjortekjøtt. Holder deg på beina dypt inne i Svartskogen.",
+  "item_whitehiltlingonberrysoup": "Tyttebærsuppe",
+  "item_whitehiltlingonberrysoup_description": "En søt og syrlig suppe av tyttebær, ramsløk og honning. God for lange dager på skogstiene.",
+  "item_whitehiltmountainstew": "Fjellstuing",
+  "item_whitehiltmountainstew_description": "Ulvekjøtt langkokt med krekling og steinsopp. Varmer deg gjennom fjellkulden.",
+  "item_whitehiltroserootbroth": "Rosenrotbuljong",
+  "item_whitehiltroserootbroth_description": "En gyllen buljong av rosenrot, tyttebær og løk. Gir deg pust til de bratteste stigningene."
+}

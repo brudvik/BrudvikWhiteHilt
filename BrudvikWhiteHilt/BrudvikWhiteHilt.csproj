@@ -69,8 +69,11 @@
   <ItemGroup>
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
+    <Compile Include="Helpers\ForagingAssets.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
     <Compile Include="Helpers\StatusEffectHelper.cs" />
+    <Compile Include="Helpers\Translations.cs" />
+    <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Helpers\WearNTearHelper.cs" />
     <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />
     <Compile Include="Items\Accessories\WhiteHiltMegingjord\WhiteHiltMegingjord.cs" />
@@ -83,6 +86,20 @@
     <Compile Include="Items\Armors\WhiteHiltGreaves\WhiteHiltGreaves.cs" />
     <Compile Include="Items\Armors\WhiteHiltHelmet\WhiteHiltHelmet.cs" />
     <Compile Include="Items\Armors\WhiteHiltShield\WhiteHiltShield.cs" />
+    <Compile Include="Items\Food\ChanterelleStew\ChanterelleStew.cs" />
+    <Compile Include="Items\Food\LingonberrySoup\LingonberrySoup.cs" />
+    <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
+    <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
+    <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
+    <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
+    <Compile Include="Items\Food\WildGarlicSoup\WildGarlicSoup.cs" />
+    <Compile Include="Items\Foraging\Chanterelle\Chanterelle.cs" />
+    <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
+    <Compile Include="Items\Foraging\ForageableBase.cs" />
+    <Compile Include="Items\Foraging\Lingonberries\Lingonberries.cs" />
+    <Compile Include="Items\Foraging\Porcini\Porcini.cs" />
+    <Compile Include="Items\Foraging\Roseroot\Roseroot.cs" />
+    <Compile Include="Items\Foraging\WildGarlic\WildGarlic.cs" />
     <Compile Include="Items\Indestructible\IndestructibleShipPiece.cs" />
     <Compile Include="Items\IWhiteHiltCustomItem.cs" />
     <Compile Include="Items\Indestructible\IndestructiblePiece.cs" />
@@ -147,10 +164,12 @@
     <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
     <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
+    <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
     <Compile Include="Patches\Ships\TailwindPatch.cs" />
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
+    <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
     <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />
@@ -231,6 +250,8 @@
     <EmbeddedResource Include="Assets\GiftOfIdunn.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\whitehilt_foraging" />
+    <EmbeddedResource Include="Translations\Norwegian.json" />
     <Content Include="Package\icon.png" />
   </ItemGroup>
   <PropertyGroup>

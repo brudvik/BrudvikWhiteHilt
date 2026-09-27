@@ -148,6 +148,34 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 ---
 
+### 🍄 FORAGING & FOOD
+
+New ingredients grow in the **Meadows**, the **Black Forest** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. All recipes are available from the start; you only need the ingredients.
+
+The plants spawn in zones that have not been generated yet. In areas you have already explored:
+- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest
+- a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
+- a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
+- **Wolves** have a 20% chance to drop 1–2 Crowberries
+
+| Item | Description | Found / Crafted | Requirements |
+|------|-------------|-----------------|--------------|
+| **Chanterelle** | Golden funnel-shaped mushroom | Meadows forest edges, or extra drop from Mushroom | – |
+| **Wild Garlic** | Broad leaves with white flowers | Meadows forest shade, or extra drop from Dandelion | – |
+| **Porcini** | Brown-capped mushroom | Inside the Black Forest, or extra drop from Mushroom there | – |
+| **Lingonberries** | Tart red berries | Black Forest bushes, or extra drop from Blueberry bush | – |
+| **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
+| **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
+| **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
+| **Chanterelle Stew** | Meadows: 30 health, 22 stamina, 25 min | Stone Pot | Chanterelle ×3, Wild Garlic ×1, Raw Meat ×1 |
+| **Wild Garlic Soup** | Meadows: 18 health, 32 stamina, 25 min | Stone Pot | Wild Garlic ×2, Chanterelle ×1, Raspberries ×2 |
+| **Porcini Stew** | Black Forest: 40 health, 26 stamina, 30 min | Stone Pot | Porcini ×3, Chanterelle ×1, Deer Meat ×1 |
+| **Lingonberry Soup** | Black Forest: 24 health, 42 stamina, 30 min | Stone Pot | Lingonberries ×3, Wild Garlic ×1, Honey ×1 |
+| **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
+| **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot | Roseroot ×3, Lingonberries ×1, Onion ×1 |
+
+---
+
 ### ⚙️ PROGRESSION (CONFIG)
 
 Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server.
@@ -156,13 +184,20 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are
 |---------|--------|-------------|
 | `[General] Mode` | `Full` (default), `Linear` | Full: every recipe is available as before. Linear: White Hilt gear unlocks biome by biome. |
 | `[General] ShowUnlockMessages` | `true`/`false` | Show a message listing the newly available items when a tier unlocks. |
-| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. |
+| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
+| `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in zones generated from now on. Existing zones are not changed. |
+| `[Foraging.<Name>] SpawnPerZone` | 0–20 | Maximum groups per zone (64 × 64 m). Values below 1 are a chance to place one group. |
+| `[Foraging.<Name>] ExtraDropChance` | 0–1 | Chance that picking the matching vanilla plant also gives the ingredient. 0 turns it off. |
+| `[Foraging.Crowberries] CreatureDropChance` | 0–1 | Chance that a Wolf drops 1–2 Crowberries. |
+| `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish. Changes also apply to food already in inventories. |
+
+Foraging and food settings take effect without a restart.
 
 In **Linear** mode, a tier unlocks the first time you obtain its key material. Recipes in that tier also cost some of that material, unless they already require it.
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food |
 | Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
 | Swamp | Iron | Iron ×5 | Ship, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
@@ -178,7 +213,29 @@ Please notice that it won't be possible to compile this `mod` out of the box. Ma
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run.
+
 ## Changelog
+
+### v0.3.0 - 2026-09-27
+
+#### Added
+- Porcini and Lingonberries in the Black Forest, Crowberries and Roseroot in the Mountains
+- Porcini Stew, Lingonberry Soup, Mountain Stew and Roseroot Broth, cooked in the Stone Pot
+- Wolves sometimes drop Crowberries, and Blueberry bushes sometimes give Lingonberries
+- Config for every forageable (spawning, spawn density, extra-drop chance) and every Stone Pot dish (health, stamina, duration, regen), admin-only and synced from the server
+- Norwegian translations for all forageables, the Stone Pot and its food
+
+#### Changed
+- Extra drops from vanilla plants now depend on the biome: a Mushroom gives a Chanterelle in the Meadows and a Porcini in the Black Forest
+- If a custom model fails to load, the item keeps the vanilla look instead of disappearing
+
+### v0.2.0 - 2026-09-27
+
+#### Added
+- Chanterelle and Wild Garlic, pickable in the Meadows forests, and as a 30% extra drop from vanilla Mushroom and Dandelion
+- Stone Pot: a cooking station built from Stone, Flint and Wood
+- Chanterelle Stew (30 health, 22 stamina) and Wild Garlic Soup (18 health, 32 stamina), cooked in the Stone Pot
 
 ### v0.1.0 - 2026-09-26
 
@@ -233,6 +290,12 @@ the license only allows it to be shipped in the pre-built mod file. If you want 
 - Added Megingjord accessory with +450 carry weight.
 - Added ammunition: White Hilt Arrows and Bolts (200 per craft, enhanced damage).
 - Fixed EpicLoot compatibility issue with potions (changed base class to SE_Stats).
+
+## Credits
+
+- Chanterelle model: ["Chanterelle"](https://sketchfab.com/3d-models/chanterelle-136f5f6bac124b8bb7738945f12243b5) by [Zacxophone](https://sketchfab.com/Zacxophone), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Porcini model: ["Boletus Mushroom"](https://sketchfab.com/3d-models/boletus-mushroom-1b9dde383cb84944b3ffc17d4cb29ebc) by [Jonny Crabb](https://sketchfab.com/JonnyCrabb), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
 - Various code quality improvements.

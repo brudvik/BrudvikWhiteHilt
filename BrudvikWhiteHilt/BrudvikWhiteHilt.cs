@@ -1,5 +1,8 @@
 using BepInEx;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items;
+using BrudvikWhiteHilt.Items.Food;
+using BrudvikWhiteHilt.Items.Foraging;
 using BrudvikWhiteHilt.Pieces;
 using BrudvikWhiteHilt.Progression;
 using HarmonyLib;
@@ -29,10 +32,11 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.1.0";
+    public const string PluginVersion = "0.3.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
+    private readonly List<ForageableBase> forageables = new();
 
     /// <summary>
     /// Awake method is called when the script instance is being loaded.
@@ -41,15 +45,20 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void Awake()
     {
         WhiteHiltConfig.Initialize(Config);
+        Translations.LoadEmbedded();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
 
-        Config.SettingChanged += (_, _) => ProgressionManager.Refresh();
-        SynchronizationManager.OnConfigurationSynchronized += (_, _) => ProgressionManager.Refresh();
+        Config.SettingChanged += (_, _) => RefreshConfig();
+        SynchronizationManager.OnConfigurationSynchronized += (_, _) => RefreshConfig();
 
         // Register a callback to add cloned items when prefabs are registered
         PrefabManager.OnPrefabsRegistered += AddClonedItems;
+
+        // Pickables must exist before the first ZNetScene and ZoneSystem, or their vegetation is missing in that session.
+        PrefabManager.OnVanillaPrefabsAvailable += AddForageables;
+        PrefabManager.OnPrefabsRegistered += AddForageableCreatureDrops;
 
         // Apply Harmony patches using the plugin's GUID
         var harmony = new Harmony(PluginGUID);
@@ -86,6 +95,14 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
                     ProgressionManager.RegisterPiece(customPiece);
                 }
             }
+
+            foreach (var type in types.Where(type => typeof(ForageableBase).IsAssignableFrom(type)))
+            {
+                if (Activator.CreateInstance(type) is ForageableBase forageable && forageable.Enabled)
+                {
+                    forageables.Add(forageable);
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -114,6 +131,36 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
 
         // Unregister the callback to prevent duplicate items
         PrefabManager.OnPrefabsRegistered -= AddClonedItems;
+    }
+
+    /// <summary>
+    /// Adds the forageable items, their pickables and their vegetation.
+    /// </summary>
+    private void AddForageables()
+    {
+        forageables.ForEach(forageable => forageable.Add());
+        PrefabManager.OnVanillaPrefabsAvailable -= AddForageables;
+    }
+
+    /// <summary>
+    /// Adds the forageables as drops on vanilla creatures. Runs for every ZNetScene, since it edits vanilla prefabs.
+    /// </summary>
+    private void AddForageableCreatureDrops()
+    {
+        forageables.ForEach(forageable => forageable.AddCreatureDrop());
+    }
+
+    /// <summary>
+    /// Applies changed or server-synced config values.
+    /// </summary>
+    private void RefreshConfig()
+    {
+        ProgressionManager.Refresh();
+        forageables.ForEach(forageable => forageable.ApplyConfig());
+        foreach (WhiteHiltFoodBase food in customItems.OfType<WhiteHiltFoodBase>())
+        {
+            food.ApplyConfig();
+        }
     }
 
 }
