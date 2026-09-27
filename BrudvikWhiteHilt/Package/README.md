@@ -224,7 +224,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Porcini Stew, Lingonberry Soup, Mountain Stew and Roseroot Broth, cooked in the Stone Pot
 - Wolves sometimes drop Crowberries, and Blueberry bushes sometimes give Lingonberries
 - Config for every forageable (spawning, spawn density, extra-drop chance) and every Stone Pot dish (health, stamina, duration, regen), admin-only and synced from the server
-- Norwegian translations for all forageables, the Stone Pot and its food
+- Norwegian translations for the whole mod: items, the Stone Pot, the ship, potions and their messages, and the tier unlock messages
 
 #### Changed
 - Extra drops from vanilla plants now depend on the biome: a Mushroom gives a Chanterelle in the Meadows and a Porcini in the Black Forest

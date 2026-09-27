@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Indestructible;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -51,6 +52,9 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
     public string DisplayName => FullName;
 
     /// <inheritdoc/>
+    public string NameToken => Translations.Token(Translations.ItemKey(BaseName));
+
+    /// <inheritdoc/>
     public string GatedPrefabName => BaseName;
 
     private readonly ItemManager instance;
@@ -62,6 +66,7 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
     protected WhiteHiltAccessoryBase(ItemManager instance)
     {
         this.instance = instance;
+        Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
     /// <summary>
@@ -79,8 +84,8 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
         {
             ItemConfig config = new()
             {
-                Name = FullName,
-                Description = Description,
+                Name = Translations.Token(Translations.ItemKey(BaseName)),
+                Description = Translations.Token($"{Translations.ItemKey(BaseName)}_description"),
                 CraftingStation = CraftingStations.Forge,
                 MinStationLevel = 2,
                 Requirements = Requirements

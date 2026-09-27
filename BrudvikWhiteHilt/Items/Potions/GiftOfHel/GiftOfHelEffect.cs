@@ -88,7 +88,7 @@ public class GiftOfHelEffect : SE_Stats
         m_character.AddStamina(m_character.GetMaxStamina());
         
         // Show message
-        MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, "Hel has spared you from death!");
+        MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, Translations.Token(GiftOfHel.SparedMessageKey));
         
         // End the effect after use
         m_ttl = 1f;

@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Items.Indestructible;
+﻿using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Indestructible;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -54,7 +55,12 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
     public string DisplayName => FullName;
 
     /// <inheritdoc/>
+    public string NameToken => Translations.Token(PieceKey);
+
+    /// <inheritdoc/>
     public string GatedPrefabName => BaseName;
+
+    private string PieceKey => $"piece_{BaseName.ToLowerInvariant()}";
 
     private readonly PieceManager instance;
 
@@ -65,6 +71,7 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
     protected WhiteHiltShipBase(PieceManager instance)
     {
         this.instance = instance;
+        Translations.AddEnglishNameAndDescription(PieceKey, FullName, Description);
     }
 
     /// <summary>
@@ -76,8 +83,8 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
         {
             PieceConfig pieceConfig = new()
             {
-                Name = FullName,
-                Description = Description,
+                Name = Translations.Token(PieceKey),
+                Description = Translations.Token($"{PieceKey}_description"),
                 PieceTable = PieceTables.Hammer,
                 Requirements = Requirements
             };

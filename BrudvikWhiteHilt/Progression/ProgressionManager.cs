@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BrudvikWhiteHilt.Helpers;
 
 namespace BrudvikWhiteHilt.Progression;
 
@@ -30,6 +31,17 @@ public static class ProgressionManager
     /// Set while the player is discovering a new item, so tier unlocks are announced only when they actually happen.
     /// </summary>
     public static bool AnnounceUnlocks { get; set; }
+
+    /// <summary>
+    /// Registers the English unlock messages. Must run in Awake, before Valheim loads its languages.
+    /// </summary>
+    public static void RegisterTranslations()
+    {
+        foreach (ProgressionTier tier in System.Enum.GetValues(typeof(ProgressionTier)))
+        {
+            Translations.AddEnglish(GetUnlockKey(tier), $"The White Hilt answers: {GetTierDisplayName(tier)} gear unlocked");
+        }
+    }
 
     /// <summary>
     /// Registers an item whose crafting recipe is gated.
@@ -206,11 +218,11 @@ public static class ProgressionManager
             List<string> unlockedNames = itemEntries.Values
                 .Concat(pieceEntries.Values)
                 .Where(entry => ResolveTier(entry, linear: true) is ProgressionTier tier && tier > previousTier && tier <= unlockedTier)
-                .Select(entry => entry.DisplayName)
-                .OrderBy(displayName => displayName)
+                .OrderBy(entry => entry.DisplayName)
+                .Select(entry => entry.NameToken)
                 .ToList();
 
-            string message = $"The White Hilt answers: {GetTierDisplayName(unlockedTier)} gear unlocked";
+            string message = Translations.Token(GetUnlockKey(unlockedTier));
             if (unlockedNames.Count > 0)
             {
                 message += "\n" + string.Join(", ", unlockedNames);
@@ -225,6 +237,11 @@ public static class ProgressionManager
     private static ItemDrop GetItemDrop(string prefabName)
     {
         return ObjectDB.instance?.GetItemPrefab(prefabName)?.GetComponent<ItemDrop>();
+    }
+
+    private static string GetUnlockKey(ProgressionTier tier)
+    {
+        return $"whitehilt_unlock_{tier.ToString().ToLowerInvariant()}";
     }
 
     private static string GetTierDisplayName(ProgressionTier tier)

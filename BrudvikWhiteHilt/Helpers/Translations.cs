@@ -22,6 +22,28 @@ public static class Translations
     }
 
     /// <summary>
+    /// Translation key of an item, e.g. <c>item_whitehiltsword</c>. Its description uses the key plus <c>_description</c>.
+    /// </summary>
+    /// <param name="prefabName">Prefab name of the item.</param>
+    /// <returns>The translation key.</returns>
+    public static string ItemKey(string prefabName)
+    {
+        return $"item_{prefabName.ToLowerInvariant()}";
+    }
+
+    /// <summary>
+    /// Registers the English name and description under <paramref name="key"/> and <paramref name="key"/><c>_description</c>.
+    /// </summary>
+    /// <param name="key">Translation key of the name.</param>
+    /// <param name="name">English name.</param>
+    /// <param name="description">English description.</param>
+    public static void AddEnglishNameAndDescription(string key, string name, string description)
+    {
+        AddEnglish(key, name);
+        AddEnglish($"{key}_description", description);
+    }
+
+    /// <summary>
     /// Registers the English text for a key. Must run in the plugin's Awake, before Valheim loads its languages.
     /// </summary>
     /// <param name="key">Translation key without the leading <c>$</c>.</param>

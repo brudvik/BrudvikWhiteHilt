@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -11,7 +12,19 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfHel;
 /// </summary>
 public class GiftOfHel : PotionBase
 {
-    public GiftOfHel(ItemManager instance) : base(instance) { }
+    /// <summary>
+    /// Localization key for the message shown when Hel prevents a death.
+    /// </summary>
+    public const string SparedMessageKey = "se_giftofhel_spared";
+
+    /// <summary>
+    /// Constructor for the Gift of Hel potion.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public GiftOfHel(ItemManager instance) : base(instance)
+    {
+        Translations.AddEnglish(SparedMessageKey, "Hel has spared you from death!");
+    }
 
     /// <summary>
     /// The base name of the potion.

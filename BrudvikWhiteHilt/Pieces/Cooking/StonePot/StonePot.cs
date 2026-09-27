@@ -37,6 +37,9 @@ public class StonePot : IWhiteHiltCustomPiece
     public string DisplayName => FullName;
 
     /// <inheritdoc/>
+    public string NameToken => Translations.Token(PrefabName);
+
+    /// <inheritdoc/>
     public string GatedPrefabName => PrefabName;
 
     /// <summary>

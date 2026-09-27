@@ -16,6 +16,11 @@ public interface IWhiteHiltProgressionEntry
     string DisplayName { get; }
 
     /// <summary>
+    /// Localization token for the name shown to players.
+    /// </summary>
+    string NameToken { get; }
+
+    /// <summary>
     /// Prefab whose recipe or piece is gated.
     /// </summary>
     string GatedPrefabName { get; }

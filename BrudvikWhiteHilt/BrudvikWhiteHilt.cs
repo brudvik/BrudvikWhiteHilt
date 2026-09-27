@@ -46,6 +46,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         WhiteHiltConfig.Initialize(Config);
         Translations.LoadEmbedded();
+        ProgressionManager.RegisterTranslations();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();

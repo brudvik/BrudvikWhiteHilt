@@ -87,6 +87,9 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
     public string DisplayName => FullName;
 
     /// <inheritdoc/>
+    public string NameToken => Translations.Token(NameKey);
+
+    /// <inheritdoc/>
     public string GatedPrefabName => BaseName;
 
     private string NameKey => $"item_{BaseName.ToLowerInvariant()}";

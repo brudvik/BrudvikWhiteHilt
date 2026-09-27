@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Indestructible;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -11,11 +12,17 @@ namespace BrudvikWhiteHilt.Items.Accessories.WhiteHiltMegingjord;
 /// </summary>
 public class WhiteHiltMegingjord : WhiteHiltAccessoryBase
 {
+    private const string EffectKey = "se_whitehiltmegingjord";
+
     /// <summary>
     /// Constructor for the WhiteHiltMegingjord class.
     /// </summary>
     /// <param name="instance"></param>
-    public WhiteHiltMegingjord(ItemManager instance) : base(instance) { }
+    public WhiteHiltMegingjord(ItemManager instance) : base(instance)
+    {
+        Translations.AddEnglish(EffectKey, "Dyrnwyn's Strength");
+        Translations.AddEnglish($"{EffectKey}_tooltip", "Carry weight increased by 700");
+    }
 
     /// <summary>
     /// The base name of the megingjord.
@@ -69,8 +76,8 @@ public class WhiteHiltMegingjord : WhiteHiltAccessoryBase
     {
         SE_Stats effect = ScriptableObject.CreateInstance<SE_Stats>();
         effect.name = "WhiteHiltMegingjordEffect";
-        effect.m_name = "Dyrnwyn's Strength";
-        effect.m_tooltip = "Carry weight increased by 700";
+        effect.m_name = Translations.Token(EffectKey);
+        effect.m_tooltip = Translations.Token($"{EffectKey}_tooltip");
         effect.m_addMaxCarryWeight = 700f;
         return effect;
     }
