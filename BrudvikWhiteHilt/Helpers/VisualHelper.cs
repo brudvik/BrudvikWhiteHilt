@@ -26,7 +26,9 @@ public static class VisualHelper
     /// <param name="mesh">Replacement mesh, with its pivot at the base.</param>
     /// <param name="texture">Albedo texture for the replacement mesh.</param>
     /// <param name="hang">Fit the width instead of the height and keep the top in place, for a model that hangs where the old one hung.</param>
-    public static void ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture, bool hang = false)
+    /// <param name="size">Longest side of the new model, in local units of <paramref name="visualRoot"/>. Overrides the fitting, for a model with a very different shape.</param>
+    /// <returns>The new model.</returns>
+    public static GameObject ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture, bool hang = false, float? size = null)
     {
         Transform root = visualRoot.transform;
         MeshRenderer[] renderers = visualRoot.GetComponentsInChildren<MeshRenderer>(true)
@@ -56,9 +58,12 @@ public static class VisualHelper
             renderer.enabled = false;
         }
 
-        float scale = hang
-            ? Mathf.Max(target.size.x, target.size.z) / Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z)
-            : target.size.y / mesh.bounds.size.y;
+        Vector3 meshSize = mesh.bounds.size;
+        float scale = size.HasValue
+            ? size.Value / Mathf.Max(meshSize.x, meshSize.y, meshSize.z)
+            : hang
+                ? Mathf.Max(target.size.x, target.size.z) / Mathf.Max(meshSize.x, meshSize.z)
+                : target.size.y / meshSize.y;
         Vector3 meshBase = new(mesh.bounds.center.x, hang ? mesh.bounds.max.y : mesh.bounds.min.y, mesh.bounds.center.z);
         Vector3 targetBase = new(target.center.x, hang ? target.max.y : target.min.y, target.center.z);
 
@@ -72,6 +77,7 @@ public static class VisualHelper
         modelRenderer.sharedMaterial = material;
         modelRenderer.shadowCastingMode = renderers[0].shadowCastingMode;
         modelRenderer.receiveShadows = renderers[0].receiveShadows;
+        return model;
     }
 
     /// <summary>

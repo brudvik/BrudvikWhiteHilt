@@ -150,7 +150,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 ### 🍄 FORAGING & FOOD
 
-New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Rack** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
+New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
 
 The plants spawn in zones that have not been generated yet. In areas you have already explored:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
@@ -170,7 +170,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
-| **Herb Rack** | Stone Pot extension, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×4, Bronze ×2, Thistle ×3 |
+| **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
 | **Chanterelle Stew** | Meadows: 30 health, 22 stamina, 25 min | Stone Pot | Chanterelle ×3, Wild Garlic ×1, Raw Meat ×1 |
 | **Wild Garlic Soup** | Meadows: 18 health, 32 stamina, 25 min | Stone Pot | Wild Garlic ×2, Chanterelle ×1, Raspberries ×2 |
 | **Porcini Stew** | Black Forest: 40 health, 26 stamina, 30 min | Stone Pot | Porcini ×3, Chanterelle ×1, Deer Meat ×1 |
@@ -230,12 +230,12 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 #### Added
 - Cranberries and Sweet Gale in the Swamp. In existing worlds, red Mushrooms in the Swamp sometimes give Cranberries and Thistles there sometimes give Sweet Gale
 - Sweet Gale Sausages and Cranberry Soup, Swamp dishes between the Black Forest and Mountain food
-- Herb Rack: a Stone Pot extension that raises the pot to level 2
+- Herb Tray: a Stone Pot extension with a mortar and herbs that raises the pot to level 2
 - Lingonberry Mead (frost resistance) and Roseroot Mead (faster stamina regeneration), brewed in the Cauldron and fermented like vanilla meads
 
 #### Changed
 - The Stone Pot has its own model: a lidded stone pot hanging from the tripod, instead of a shrunken vanilla cauldron
-- Mountain Stew and Roseroot Broth now need Stone Pot level 2, so a Herb Rack next to the pot
+- Mountain Stew and Roseroot Broth now need Stone Pot level 2, so a Herb Tray next to the pot
 
 ### v0.3.0 - 2026-09-27
 
@@ -319,6 +319,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Chanterelle model: ["Chanterelle"](https://sketchfab.com/3d-models/chanterelle-136f5f6bac124b8bb7738945f12243b5) by [Zacxophone](https://sketchfab.com/Zacxophone), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Porcini model: ["Boletus Mushroom"](https://sketchfab.com/3d-models/boletus-mushroom-1b9dde383cb84944b3ffc17d4cb29ebc) by [Jonny Crabb](https://sketchfab.com/JonnyCrabb), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Stone Pot model: ["Stone Bowl"](https://sketchfab.com/3d-models/stone-bowl-1469a70e3ea54ff1ab1d442749d94b48) by [rickmaolly](https://sketchfab.com/rickmaolly), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Herb Tray model: ["Health Pack: Mortar and Pestle Herb Crafting Set"](https://sketchfab.com/3d-models/health-pack-mortar-and-pestle-herb-crafting-set-98c25d51e2d84fc48153adf1df7ed520) by [Michael Neocleous](https://sketchfab.com/mikegneo), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
