@@ -76,6 +76,7 @@ public class StonePot : IWhiteHiltCustomPiece
 
             CustomPiece piece = new(PrefabName, "piece_cauldron", pieceConfig);
             piece.PiecePrefab.transform.localScale = Vector3.one * Scale;
+            TryApplyVisual(piece.PiecePrefab);
 
             // Recipes match their station by name, so a unique name keeps the cauldron recipes out of the pot.
             CraftingStation station = piece.PiecePrefab.GetComponent<CraftingStation>();
@@ -97,6 +98,38 @@ public class StonePot : IWhiteHiltCustomPiece
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    // Only the pot hanging from the tripod is replaced, so the chain, tripod and fire effects stay vanilla.
+    private static void TryApplyVisual(GameObject piecePrefab)
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        try
+        {
+            Transform pot = piecePrefab.transform.Find("new/cauldron (1)")
+                ?? throw new InvalidOperationException("the hanging pot new/cauldron (1) was not found");
+            Mesh vanillaPot = pot.GetComponent<MeshFilter>().sharedMesh;
+            float lidHeight = piecePrefab.transform.InverseTransformPoint(pot.TransformPoint(vanillaPot.bounds.max)).y;
+            VisualHelper.ReplaceMesh(pot.gameObject, ForagingAssets.LoadMesh("stonepot"), ForagingAssets.LoadTexture("stonepot_albedo"), hang: true);
+
+            // The stone pot has a lid, so the boiling water would show below it. Steam rises from the lid instead.
+            Transform fire = piecePrefab.transform.Find("HaveFire");
+            fire?.Find("Waterplane")?.gameObject.SetActive(false);
+            fire?.Find("bubbles")?.gameObject.SetActive(false);
+            Transform steam = fire?.Find("steam");
+            if (steam != null)
+            {
+                steam.localPosition = new Vector3(steam.localPosition.x, lidHeight, steam.localPosition.z);
+            }
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
     }
 }

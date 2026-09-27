@@ -234,6 +234,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Lingonberry Mead (frost resistance) and Roseroot Mead (faster stamina regeneration), brewed in the Cauldron and fermented like vanilla meads
 
 #### Changed
+- The Stone Pot has its own model: a lidded stone pot hanging from the tripod, instead of a shrunken vanilla cauldron
 - Mountain Stew and Roseroot Broth now need Stone Pot level 2, so a Herb Rack next to the pot
 
 ### v0.3.0 - 2026-09-27
@@ -317,6 +318,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 
 - Chanterelle model: ["Chanterelle"](https://sketchfab.com/3d-models/chanterelle-136f5f6bac124b8bb7738945f12243b5) by [Zacxophone](https://sketchfab.com/Zacxophone), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Porcini model: ["Boletus Mushroom"](https://sketchfab.com/3d-models/boletus-mushroom-1b9dde383cb84944b3ffc17d4cb29ebc) by [Jonny Crabb](https://sketchfab.com/JonnyCrabb), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Stone Pot model: ["Stone Bowl"](https://sketchfab.com/3d-models/stone-bowl-1469a70e3ea54ff1ab1d442749d94b48) by [rickmaolly](https://sketchfab.com/rickmaolly), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.

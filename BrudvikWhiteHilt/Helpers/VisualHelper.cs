@@ -25,7 +25,8 @@ public static class VisualHelper
     /// <param name="visualRoot">Object whose meshes are replaced.</param>
     /// <param name="mesh">Replacement mesh, with its pivot at the base.</param>
     /// <param name="texture">Albedo texture for the replacement mesh.</param>
-    public static void ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture)
+    /// <param name="hang">Fit the width instead of the height and keep the top in place, for a model that hangs where the old one hung.</param>
+    public static void ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture, bool hang = false)
     {
         Transform root = visualRoot.transform;
         MeshRenderer[] renderers = visualRoot.GetComponentsInChildren<MeshRenderer>(true)
@@ -55,9 +56,11 @@ public static class VisualHelper
             renderer.enabled = false;
         }
 
-        float scale = target.size.y / mesh.bounds.size.y;
-        Vector3 meshBase = new(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z);
-        Vector3 targetBase = new(target.center.x, target.min.y, target.center.z);
+        float scale = hang
+            ? Mathf.Max(target.size.x, target.size.z) / Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z)
+            : target.size.y / mesh.bounds.size.y;
+        Vector3 meshBase = new(mesh.bounds.center.x, hang ? mesh.bounds.max.y : mesh.bounds.min.y, mesh.bounds.center.z);
+        Vector3 targetBase = new(target.center.x, hang ? target.max.y : target.min.y, target.center.z);
 
         GameObject model = new($"{mesh.name}_model") { layer = renderers[0].gameObject.layer };
         model.transform.SetParent(root, false);

@@ -42,6 +42,7 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 ```
 - `visualRoot`: the item prefab, or `Pickable.m_hideWhenPicked` for a pickable, so the model hides when picked.
 - `ReplaceMesh` fits the new mesh to the **height** of the vanilla meshes and puts it on the same base. So pick a vanilla prefab of similar size and shape to clone, e.g. `Mushroom` / `Pickable_Mushroom`.
+- For a model with very different proportions that hangs, pass `hang: true`: it fits the **width** and keeps the **top** in place. The Stone Pot uses it on `piece_cauldron`'s `new/cauldron (1)`, so only the hanging pot changes and the tripod, chain and fire effects stay vanilla.
 - Item prefabs contain an **inactive** held/equip copy of the model (`Mushroom/equipoffset/pie (1)` sits 50 m below the item). `ReplaceMesh` only measures renderers whose parents are all `activeSelf` up to the root. `activeInHierarchy` does not work, because Jotunn's prefab container is disabled. Without this the dropped item became about 50 m tall.
 - To see a vanilla prefab's real hierarchy, use UnityPy (`pip install UnityPy`) on `valheim_Data/StreamingAssets` and print transforms, `activeSelf`, scales and mesh bounds. Verify with it before guessing.
 - Examples: [ForageableBase.cs](../../../BrudvikWhiteHilt/Items/Foraging/ForageableBase.cs), [Chanterelle.cs](../../../BrudvikWhiteHilt/Items/Foraging/Chanterelle/Chanterelle.cs), [VisualHelper.cs](../../../BrudvikWhiteHilt/Helpers/VisualHelper.cs), [ForagingAssets.cs](../../../BrudvikWhiteHilt/Helpers/ForagingAssets.cs).
