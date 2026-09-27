@@ -54,8 +54,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Config.SettingChanged += (_, _) => RefreshConfig();
         SynchronizationManager.OnConfigurationSynchronized += (_, _) => RefreshConfig();
 
-        // Register a callback to add cloned items when prefabs are registered
-        PrefabManager.OnPrefabsRegistered += AddClonedItems;
+        // Items must exist before the main menu's ObjectDB copy, or the character preview drops White Hilt gear.
+        PrefabManager.OnVanillaPrefabsAvailable += AddClonedItems;
 
         // Pickables must exist before the first ZNetScene and ZoneSystem, or their vegetation is missing in that session.
         PrefabManager.OnVanillaPrefabsAvailable += AddForageables;
@@ -131,7 +131,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         }
 
         // Unregister the callback to prevent duplicate items
-        PrefabManager.OnPrefabsRegistered -= AddClonedItems;
+        PrefabManager.OnVanillaPrefabsAvailable -= AddClonedItems;
     }
 
     /// <summary>

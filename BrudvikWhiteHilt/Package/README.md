@@ -230,6 +230,9 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Extra drops from vanilla plants now depend on the biome: a Mushroom gives a Chanterelle in the Meadows and a Porcini in the Black Forest
 - If a custom model fails to load, the item keeps the vanilla look instead of disappearing
 
+#### Fixed
+- White Hilt items are now registered at the main menu instead of on the first world load, so equipped White Hilt gear no longer disappears from the character preview
+
 ### v0.2.0 - 2026-09-27
 
 #### Added
