@@ -52,4 +52,7 @@ public class MountainStew : WhiteHiltFoodBase
 
     /// <inheritdoc/>
     protected override float Regen => 4f;
+
+    /// <inheritdoc/>
+    protected override int MinStationLevel => 2;
 }

@@ -82,7 +82,7 @@ Each item class must implement:
 - Mistlands: Black Marble, Eitr, Yggdrasil Wood, Carapace
 - Ashlands: Flametal, Askvin materials
 
-**Exception – Stone Pot food**: Recipes cooked in the Stone Pot (`Items/Food/`) may use food ingredients from any biome up to and including the **Mountains** (e.g. Wolf Meat, Onion, and the White Hilt Mountains forageables). The ingredients gate the food naturally, so these recipes stay at `ProgressionTier.Start` and must not get tier materials such as Bronze or Silver. Gear, tools, pieces and potions still follow the Swamp rule.
+**Exception – Stone Pot food and foraging meads**: Recipes cooked in the Stone Pot (`Items/Food/`) and the meads brewed from White Hilt forageables (`Items/Meads/`) may use food ingredients from any biome up to and including the **Mountains** (e.g. Wolf Meat, Onion, and the White Hilt Mountains forageables). The ingredients gate them naturally, so these recipes stay at `ProgressionTier.Start` and must not get tier materials such as Bronze or Silver. Gear, tools, pieces and the Gift potions still follow the Swamp rule.
 
 ### CopyFrom Item References
 

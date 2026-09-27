@@ -1,0 +1,55 @@
+using Jotunn.Configs;
+using Jotunn.Managers;
+using UnityEngine;
+
+namespace BrudvikWhiteHilt.Items.Meads.RoserootMead;
+
+/// <summary>
+/// A mead that makes stamina regenerate faster.
+/// </summary>
+public class RoserootMead : WhiteHiltMeadBase
+{
+    /// <summary>
+    /// Constructor for the RoserootMead class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public RoserootMead(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltRoserootMead";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Roseroot Mead";
+
+    /// <inheritdoc/>
+    protected override string Description => "A golden mead brewed with roseroot and crowberries. Your breath comes back faster on the long climbs.";
+
+    /// <inheritdoc/>
+    protected override string EffectTooltip => "Stamina regenerates 50% faster";
+
+    /// <inheritdoc/>
+    protected override string CopyMeadFrom => "MeadStaminaMedium";
+
+    /// <inheritdoc/>
+    protected override string CopyMeadBaseFrom => "MeadBaseStaminaMedium";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "Honey", Amount = 10, Recover = false },
+        new() { Item = Foraging.Roseroot.Roseroot.PrefabName, Amount = 5, Recover = false },
+        new() { Item = Foraging.Crowberries.Crowberries.PrefabName, Amount = 5, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(1f, 0.8f, 0.5f);
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override void ConfigureEffect(SE_Stats effect)
+    {
+        effect.m_staminaRegenMultiplier = 1.5f;
+    }
+}

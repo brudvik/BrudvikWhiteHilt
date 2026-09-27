@@ -150,12 +150,13 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 ### 🍄 FORAGING & FOOD
 
-New ingredients grow in the **Meadows**, the **Black Forest** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. All recipes are available from the start; you only need the ingredients.
+New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Rack** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
 
 The plants spawn in zones that have not been generated yet. In areas you have already explored:
-- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest
+- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
+- a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp
 - **Wolves** have a 20% chance to drop 1–2 Crowberries
 
 | Item | Description | Found / Crafted | Requirements |
@@ -164,15 +165,22 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Wild Garlic** | Broad leaves with white flowers | Meadows forest shade, or extra drop from Dandelion | – |
 | **Porcini** | Brown-capped mushroom | Inside the Black Forest, or extra drop from Mushroom there | – |
 | **Lingonberries** | Tart red berries | Black Forest bushes, or extra drop from Blueberry bush | – |
+| **Cranberries** | Sour dark red berries | Swamp tussocks, or extra drop from Mushroom there | – |
+| **Sweet Gale** | Bitter bog shrub | Swamp, or extra drop from Thistle there | – |
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
+| **Herb Rack** | Stone Pot extension, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×4, Bronze ×2, Thistle ×3 |
 | **Chanterelle Stew** | Meadows: 30 health, 22 stamina, 25 min | Stone Pot | Chanterelle ×3, Wild Garlic ×1, Raw Meat ×1 |
 | **Wild Garlic Soup** | Meadows: 18 health, 32 stamina, 25 min | Stone Pot | Wild Garlic ×2, Chanterelle ×1, Raspberries ×2 |
 | **Porcini Stew** | Black Forest: 40 health, 26 stamina, 30 min | Stone Pot | Porcini ×3, Chanterelle ×1, Deer Meat ×1 |
 | **Lingonberry Soup** | Black Forest: 24 health, 42 stamina, 30 min | Stone Pot | Lingonberries ×3, Wild Garlic ×1, Honey ×1 |
-| **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
-| **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot | Roseroot ×3, Lingonberries ×1, Onion ×1 |
+| **Sweet Gale Sausages** | Swamp: 48 health, 26 stamina, 32 min | Stone Pot | Sweet Gale ×2, Wild Garlic ×1, Entrails ×3 |
+| **Cranberry Soup** | Swamp: 26 health, 48 stamina, 32 min | Stone Pot | Cranberries ×3, Lingonberries ×1, Turnip ×1 |
+| **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot level 2 | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
+| **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot level 2 | Roseroot ×3, Lingonberries ×1, Onion ×1 |
+| **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |
+| **Roseroot Mead** | Stamina regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Roseroot ×5, Crowberries ×5 |
 
 ---
 
@@ -197,7 +205,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead |
 | Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
 | Swamp | Iron | Iron ×5 | Ship, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
@@ -216,6 +224,17 @@ the license only allows it to be shipped in the pre-built mod file. If you want 
 The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run.
 
 ## Changelog
+
+### v0.4.0 - 2026-09-28
+
+#### Added
+- Cranberries and Sweet Gale in the Swamp. In existing worlds, red Mushrooms in the Swamp sometimes give Cranberries and Thistles there sometimes give Sweet Gale
+- Sweet Gale Sausages and Cranberry Soup, Swamp dishes between the Black Forest and Mountain food
+- Herb Rack: a Stone Pot extension that raises the pot to level 2
+- Lingonberry Mead (frost resistance) and Roseroot Mead (faster stamina regeneration), brewed in the Cauldron and fermented like vanilla meads
+
+#### Changed
+- Mountain Stew and Roseroot Broth now need Stone Pot level 2, so a Herb Rack next to the pot
 
 ### v0.3.0 - 2026-09-27
 

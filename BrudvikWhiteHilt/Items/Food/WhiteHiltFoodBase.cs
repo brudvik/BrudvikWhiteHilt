@@ -77,6 +77,11 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
     /// </summary>
     protected virtual float Regen => 2f;
 
+    /// <summary>
+    /// Stone Pot level needed to cook the food. Each extension next to the pot, such as the Herb Rack, adds a level.
+    /// </summary>
+    protected virtual int MinStationLevel => 1;
+
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Start;
 
@@ -125,6 +130,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
                 Name = Translations.Token(NameKey),
                 Description = Translations.Token($"{NameKey}_description"),
                 CraftingStation = StonePot.PrefabName,
+                MinStationLevel = MinStationLevel,
                 Requirements = Requirements
             };
 
