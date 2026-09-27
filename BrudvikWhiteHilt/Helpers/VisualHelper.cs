@@ -81,6 +81,34 @@ public static class VisualHelper
     }
 
     /// <summary>
+    /// Adds a second mesh to a model made by <see cref="ReplaceMesh"/>, e.g. chains hanging from it.
+    /// </summary>
+    /// <param name="model">The model to attach to. Positions are in its mesh units, where the model is 1 high.</param>
+    /// <param name="mesh">Mesh to add, with its pivot at the base.</param>
+    /// <param name="texture">Albedo texture for the added mesh.</param>
+    /// <param name="basePosition">Where the base of the added mesh goes.</param>
+    /// <param name="height">Height of the added mesh.</param>
+    /// <returns>The added model.</returns>
+    public static GameObject AddMesh(GameObject model, Mesh mesh, Texture2D texture, Vector3 basePosition, float height)
+    {
+        MeshRenderer template = model.GetComponent<MeshRenderer>();
+        Material material = new(template.sharedMaterial) { name = $"{mesh.name}_material", mainTexture = texture };
+
+        GameObject added = new($"{mesh.name}_model") { layer = model.layer };
+        added.transform.SetParent(model.transform, false);
+        float scale = height / mesh.bounds.size.y;
+        added.transform.localScale = Vector3.one * scale;
+        added.transform.localPosition = basePosition - new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
+        added.AddComponent<MeshFilter>().sharedMesh = mesh;
+
+        MeshRenderer renderer = added.AddComponent<MeshRenderer>();
+        renderer.sharedMaterial = material;
+        renderer.shadowCastingMode = template.shadowCastingMode;
+        renderer.receiveShadows = template.receiveShadows;
+        return added;
+    }
+
+    /// <summary>
     /// Multiplies the colour of every mesh material under <paramref name="root"/> with <paramref name="tint"/>.
     /// </summary>
     /// <param name="root">Object to tint.</param>

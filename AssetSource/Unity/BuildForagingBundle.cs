@@ -98,7 +98,9 @@ public static class BuildForagingBundle
         importer.textureType = TextureImporterType.Default;
         importer.sRGBTexture = true;
         importer.mipmapEnabled = true;
-        importer.maxTextureSize = 512;
+        // Atlases from convert_glb.py are one tile per part side by side, so give each tile 512 px.
+        importer.GetSourceTextureWidthAndHeight(out int width, out int height);
+        importer.maxTextureSize = width > height ? 1024 : 512;
         importer.textureCompression = TextureImporterCompression.Compressed;
         importer.isReadable = false;
         importer.SaveAndReimport();

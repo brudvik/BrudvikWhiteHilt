@@ -171,6 +171,7 @@
     <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
     <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
+    <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
+    <Compile Include="Pieces\Smithing\ChainBench\ChainBench.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
     <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />
