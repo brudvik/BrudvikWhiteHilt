@@ -23,6 +23,7 @@ namespace BrudvikWhiteHilt;
 /// </summary>
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
+[BepInDependency(Patches.Portals.PortalStationsRunePatch.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
 [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
 internal class BrudvikWhiteHilt : BaseUnityPlugin

@@ -180,7 +180,7 @@ Metal cannot go through portals. With runes it can, one metal tier at a time:
 3. Hang runes on the post (use the rune on it, like an item stand). Each rune lets that portal carry its metals. Several posts near one portal count together.
 4. With **all six runes on the same post**, the post glows and the portal carries **everything**, including dragon eggs, Hildir's chests and the Deep North boss drop.
 
-Looking at the portal shows which runes it has. Use the post to take the last rune back; a destroyed post drops its runes. Works for every portal that builds on the vanilla portal, also portals from other mods.
+Looking at the portal shows which runes it has. Use the post to take the last rune back; a destroyed post drops its runes. Works for every portal that builds on the vanilla portal, also portals from other mods, and for the stations of the Portal Stations mod (not its portable device).
 
 | Item | Lets through | Crafting Station | Requirements |
 |------|--------------|------------------|--------------|
@@ -276,6 +276,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 
 #### Added
 - Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
+- Portal runes also work on the stations of the Portal Stations mod
 - White Hilt Ship upgrades, used on the mast: Ship Lantern (light at night), Cargo Barrels (hold 8 × 4), Ship Tent (shelter and dry) and Mast Wisp (clears the mist)
 
 #### Changed

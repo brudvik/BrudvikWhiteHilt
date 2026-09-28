@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
 using HarmonyLib;
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.Portals;
 
@@ -63,24 +64,35 @@ public static class RunePortalPatch
     [HarmonyPostfix]
     private static void GetHoverTextPostfix(TeleportWorld __instance, ref string __result)
     {
-        if (__instance.m_allowAllItems)
+        if (!__instance.m_allowAllItems)
         {
-            return;
+            __result += GetRuneHoverText(__instance.transform.position);
         }
+    }
 
-        int mask = RunePortalRules.GetRunes(__instance.transform.position, out bool everything);
+    /// <summary>
+    /// Hover line telling which runes a portal at <paramref name="portalPosition"/> has, or empty without runes.
+    /// </summary>
+    /// <param name="portalPosition">Position of the portal.</param>
+    /// <returns>The localized line, starting with a newline.</returns>
+    internal static string GetRuneHoverText(Vector3 portalPosition)
+    {
+        int mask = RunePortalRules.GetRunes(portalPosition, out bool everything);
         if (everything)
         {
-            __result += Localization.instance.Localize("\n<color=orange>$whitehilt_portal_everything</color>");
+            return Localization.instance.Localize("\n<color=orange>$whitehilt_portal_everything</color>");
         }
-        else if (mask != 0)
+
+        if (mask == 0)
         {
-            string runes = string.Join(", ", Enumerable.Range(0, WhiteHiltRuneBase.Count)
-                .Where(i => (mask & (1 << i)) != 0)
-                .Select(i => WhiteHiltRuneBase.Get(i)?.NameToken)
-                .Where(name => name != null));
-            __result += Localization.instance.Localize($"\n$whitehilt_portal_runes: {runes}");
+            return string.Empty;
         }
+
+        string runes = string.Join(", ", Enumerable.Range(0, WhiteHiltRuneBase.Count)
+            .Where(i => (mask & (1 << i)) != 0)
+            .Select(i => WhiteHiltRuneBase.Get(i)?.NameToken)
+            .Where(name => name != null));
+        return Localization.instance.Localize($"\n$whitehilt_portal_runes: {runes}");
     }
 
     private static void Enter(TeleportWorld portal)

@@ -182,6 +182,7 @@
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
+    <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
