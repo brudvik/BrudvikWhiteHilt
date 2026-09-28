@@ -15,6 +15,10 @@ public static class WhiteHiltShipLook
     private const int SailSize = 512;
     private const float DragonHeightFactor = 1.4f;
 
+    // Relative to the skull's height: back towards the stern and down, so the neck sits in the stem.
+    private const float DragonBackOffset = 0.18f;
+    private const float DragonDownOffset = 0.22f;
+
     private static readonly Color cream = new(0.94f, 0.91f, 0.84f);
     private static readonly Color steel = new(0.82f, 0.84f, 0.88f);
     private static readonly Color bronze = new(0.35f, 0.22f, 0.08f);
@@ -42,6 +46,7 @@ public static class WhiteHiltShipLook
         TryStep("sail", () => PaintSail(ship.transform));
         TryStep("hull", () => PaintMaterials(visual, name => name.StartsWith("ship_diffuse"), PaintHull));
         TryStep("shields", () => ShowShields(visual));
+        TryStep("tent", () => PaintTent(visual));
     }
 
     private static void TryStep(string part, Action step)
@@ -80,6 +85,7 @@ public static class WhiteHiltShipLook
             Bounds bounds = skull.sharedMesh.bounds;
             float scale = bounds.size.y * DragonHeightFactor / dragon.bounds.size.y;
             Vector3 skullBase = new(bounds.center.x, bounds.min.y, bounds.center.z);
+            skullBase += new Vector3(DragonBackOffset, -DragonDownOffset, 0f) * bounds.size.y;
             VisualHelper.CreateModel(skull.transform, dragon, texture, renderer, skullBase - forward * (dragonBase * scale), forward, scale);
             renderer.enabled = false;
         }
@@ -207,18 +213,50 @@ public static class WhiteHiltShipLook
         PaintMaterials(shields.ToArray(), _ => true, (_, source) => VisualHelper.RecolorTexture(source, PaintShieldPixel));
     }
 
-    // Iron bands and boss turn gold, the wood becomes cream paint.
+    // The banded shield has red and white fields, a dark iron rim and a dark boss: fields become gold and cream,
+    // the iron polished gold.
     private static Color32 PaintShieldPixel(Color32 pixel)
     {
-        Color.RGBToHSV(pixel, out _, out float saturation, out float value);
-        if (value < 0.08f)
+        Color.RGBToHSV(pixel, out float hue, out float saturation, out float value);
+        if (value < 0.05f)
         {
             return pixel;
         }
 
-        Color painted = saturation < 0.2f
-            ? Color.HSVToRGB(0.11f, 0.75f, Mathf.Clamp01(value * 1.3f + 0.1f))
-            : cream * Mathf.Clamp01(value * 0.6f + 0.55f);
+        bool red = saturation > 0.4f && (hue < 0.06f || hue > 0.92f);
+        Color painted = red
+            ? Color.HSVToRGB(0.11f, 0.55f, Mathf.Clamp01(value * 1.1f + 0.1f))
+            : value > 0.45f
+                ? cream * Mathf.Clamp01(value * 0.5f + 0.55f)
+                : Color.HSVToRGB(0.12f, 0.8f, Mathf.Clamp01(value * 1.6f + 0.35f));
+        painted.a = pixel.a / 255f;
+        return painted;
+    }
+
+    // The tent is red cloth with cream edges on wooden holders: the cloth becomes cream, the edges gold.
+    private static void PaintTent(Transform visual)
+    {
+        Transform customize = visual.Find("Customize") ?? throw new InvalidOperationException("Customize not found");
+        Renderer[] tent = customize.Cast<Transform>()
+            .Where(child => child.name.StartsWith("ShipTen"))
+            .SelectMany(child => child.GetComponentsInChildren<Renderer>(true))
+            .ToArray();
+        PaintMaterials(tent, _ => true, (_, source) => VisualHelper.RecolorTexture(source, PaintTentPixel));
+    }
+
+    private static Color32 PaintTentPixel(Color32 pixel)
+    {
+        Color.RGBToHSV(pixel, out float hue, out float saturation, out float value);
+        bool red = saturation > 0.4f && (hue < 0.06f || hue > 0.92f);
+        bool edge = saturation < 0.3f && value > 0.55f;
+        if (!red && !edge)
+        {
+            return pixel;
+        }
+
+        Color painted = red
+            ? cream * Mathf.Clamp01(value * 1.6f + 0.35f)
+            : Color.HSVToRGB(0.12f, 0.75f, Mathf.Clamp01(value * 1.05f));
         painted.a = pixel.a / 255f;
         return painted;
     }
