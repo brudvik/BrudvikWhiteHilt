@@ -88,13 +88,15 @@ public static class VisualHelper
     /// <param name="texture">Albedo texture for the added mesh.</param>
     /// <param name="basePosition">Where the base of the added mesh goes.</param>
     /// <param name="height">Height of the added mesh.</param>
+    /// <param name="rotation">Rotation of the added mesh around its base, or null for none.</param>
     /// <returns>The added model.</returns>
-    public static GameObject AddMesh(GameObject model, Mesh mesh, Texture2D texture, Vector3 basePosition, float height)
+    public static GameObject AddMesh(GameObject model, Mesh mesh, Texture2D texture, Vector3 basePosition, float height, Quaternion? rotation = null)
     {
         MeshRenderer template = model.GetComponent<MeshRenderer>();
+        Quaternion localRotation = rotation ?? Quaternion.identity;
         float scale = height / mesh.bounds.size.y;
-        Vector3 position = basePosition - new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
-        return CreateModel(model.transform, mesh, texture, template, position, Quaternion.identity, scale);
+        Vector3 position = basePosition - localRotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale);
+        return CreateModel(model.transform, mesh, texture, template, position, localRotation, scale);
     }
 
     /// <summary>

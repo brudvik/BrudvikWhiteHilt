@@ -53,6 +53,8 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 - Add new `.cs` files to `BrudvikWhiteHilt.csproj` (old-style project, no globbing).
 
 ## Pitfalls (all hit once already)
+- **Unity mirrors x when it imports OBJ.** A part you measure at +x in the converted `.obj` is at -x in the game. Negate x before using a measured position in code (y and z are unchanged). The Chain Bench chains first ended up on the vise instead of the stump because of this.
+- A flat model (a curtain of chains, a plank) seen **edge-on** looks like a thin line. Check which axis is thin in the `[WhiteHilt] Mesh` bounds line and rotate it (`AddMesh(..., rotation)`) so its broad side faces the player.
 - **Never use Jotunn `AssetUtils.LoadAssetBundleFromResources`**. It disposes the stream, Unity reads bundle data lazily, and the game crashes with "ManagedStream object must be readable". `ForagingAssets` uses `AssetBundle.LoadFromMemory`.
 - Meshes are **sub-assets** of the imported model, so use `LoadAllAssets<Mesh>()`, not `LoadAsset<Mesh>(name)`. OBJ mesh names come from the `g` line, not `o`. Otherwise Unity calls the mesh `default`.
 - **Dedicated servers** (Linux, no GPU) must skip `ReplaceMesh`, `Tint`, `Recolor` and `RenderIcon`. Guard with `VisualHelper.IsHeadless`. Items, pickables and recipes must still be registered on the server.

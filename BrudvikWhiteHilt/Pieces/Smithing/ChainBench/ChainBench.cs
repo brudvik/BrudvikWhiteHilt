@@ -118,8 +118,10 @@ public class ChainBench : IWhiteHiltCustomPiece
             Transform anvil = piece.PiecePrefab.transform.Find("new") ?? throw new InvalidOperationException("the anvil new was not found");
             GameObject vise = VisualHelper.ReplaceMesh(anvil.gameObject, ForagingAssets.LoadMesh("chainvise"), ForagingAssets.LoadTexture("chainvise_albedo"));
 
-            // The stump is on the -x side of the vise, so the chains hang down its free side.
-            VisualHelper.AddMesh(vise, ForagingAssets.LoadMesh("chains"), ForagingAssets.LoadTexture("chains_albedo"), new Vector3(-0.4f, 0.15f, 0f), 0.6f);
+            // Unity mirrors x when importing OBJ, so the stump sits on +x. The chains hang on its front, turned to face out,
+            // and are lightened from the model's near-black to iron grey.
+            Texture2D chains = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("chains_albedo"), _ => new Color32(95, 95, 100, 255));
+            VisualHelper.AddMesh(vise, ForagingAssets.LoadMesh("chains"), chains, new Vector3(0.1f, 0.12f, 0.27f), 0.6f, Quaternion.Euler(0f, 90f, 0f));
 
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
