@@ -255,7 +255,7 @@ public static class WhiteHiltShipLook
         }
 
         Color painted = red
-            ? cream * Mathf.Clamp01(value * 1.6f + 0.35f)
+            ? cream * Mathf.Clamp01(value * 1.2f + 0.3f)
             : Color.HSVToRGB(0.12f, 0.75f, Mathf.Clamp01(value * 1.05f));
         painted.a = pixel.a / 255f;
         return painted;
