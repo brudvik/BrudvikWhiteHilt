@@ -4,12 +4,22 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 
 /// <summary>
-/// One portal on the shared portal map, as the server sends it to a player.
+/// One portal or ship on the shared map, as the server sends it to a player.
 /// </summary>
 public class PortalMapEntry
 {
     /// <summary>
-    /// Privacy value of a public Portal Stations station, and of every ordinary portal.
+    /// <see cref="Kind"/> of a portal or Portal Stations station.
+    /// </summary>
+    public const byte PortalKind = 0;
+
+    /// <summary>
+    /// <see cref="Kind"/> of a ship.
+    /// </summary>
+    public const byte ShipKind = 1;
+
+    /// <summary>
+    /// Privacy value of a public Portal Stations station, and of every ordinary portal and ship.
     /// </summary>
     public const int Public = 0;
 
@@ -19,12 +29,17 @@ public class PortalMapEntry
     public const int Private = 1;
 
     /// <summary>
+    /// <see cref="PortalKind"/> or <see cref="ShipKind"/>.
+    /// </summary>
+    public byte Kind { get; set; }
+
+    /// <summary>
     /// Name the players gave the portal, or empty.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// Position of the portal.
+    /// Position of the portal or ship.
     /// </summary>
     public Vector3 Position { get; set; }
 
@@ -34,7 +49,7 @@ public class PortalMapEntry
     public int Privacy { get; set; }
 
     /// <summary>
-    /// Player ID of the station's builder, used by the server to decide who sees a non-public station. Not sent.
+    /// Player ID of the builder. The server uses it for privacy and the builder's name; it is not sent.
     /// </summary>
     public long Creator { get; set; }
 
@@ -49,6 +64,16 @@ public class PortalMapEntry
     public bool Everything { get; set; }
 
     /// <summary>
+    /// Prefab hash of a ship, for its icon and type name.
+    /// </summary>
+    public int Prefab { get; set; }
+
+    /// <summary>
+    /// Name of the player who built the ship, if they are online, or empty.
+    /// </summary>
+    public string Builder { get; set; } = string.Empty;
+
+    /// <summary>
     /// Writes a list of entries to a package.
     /// </summary>
     /// <param name="entries">Entries to write.</param>
@@ -59,11 +84,14 @@ public class PortalMapEntry
         package.Write(entries.Count);
         foreach (PortalMapEntry entry in entries)
         {
+            package.Write(entry.Kind);
             package.Write(entry.Name);
             package.Write(entry.Position);
             package.Write(entry.Privacy);
             package.Write(entry.RuneMask);
             package.Write(entry.Everything);
+            package.Write(entry.Prefab);
+            package.Write(entry.Builder);
         }
 
         return package;
@@ -82,14 +110,27 @@ public class PortalMapEntry
         {
             entries.Add(new PortalMapEntry
             {
+                Kind = package.ReadByte(),
                 Name = package.ReadString(),
                 Position = package.ReadVector3(),
                 Privacy = package.ReadInt(),
                 RuneMask = package.ReadInt(),
-                Everything = package.ReadBool()
+                Everything = package.ReadBool(),
+                Prefab = package.ReadInt(),
+                Builder = package.ReadString()
             });
         }
 
         return entries;
+    }
+
+    /// <summary>
+    /// True if both entries show the same thing, so a pin can move instead of being made again.
+    /// </summary>
+    /// <param name="other">The other entry.</param>
+    /// <returns>True if only the position or the runes may differ.</returns>
+    public bool SameMarker(PortalMapEntry other)
+    {
+        return Kind == other.Kind && Prefab == other.Prefab && Name == other.Name && Privacy == other.Privacy;
     }
 }

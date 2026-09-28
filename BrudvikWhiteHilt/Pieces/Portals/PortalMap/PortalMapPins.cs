@@ -6,8 +6,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 
 /// <summary>
-/// Shows the portals from <see cref="PortalMapService"/> as pins on the local player's map. The pins are not saved
-/// and cannot be removed by the player; they follow the server's list.
+/// Shows the portals and ships from <see cref="PortalMapService"/> as pins on the local player's map. The pins are
+/// not saved and cannot be removed by the player; they follow the server's list.
 /// </summary>
 public static class PortalMapPins
 {
@@ -16,16 +16,31 @@ public static class PortalMapPins
     private static readonly List<(Minimap.PinData Pin, PortalMapEntry Entry)> pins = new();
     private static List<PortalMapEntry> entries = new();
     private static Minimap boundMap;
-    private static Sprite icon;
+    private static Sprite portalIcon;
 
     /// <summary>
-    /// Replaces the portals shown on the map.
+    /// Replaces the portals and ships shown on the map.
     /// </summary>
-    /// <param name="newEntries">The portals the player may see.</param>
+    /// <param name="newEntries">What the player may see.</param>
     public static void SetEntries(List<PortalMapEntry> newEntries)
     {
+        bool sameMarkers = newEntries.Count == entries.Count && newEntries.Zip(entries, (a, b) => a.SameMarker(b)).All(same => same);
         entries = newEntries;
-        Refresh();
+        Minimap map = Minimap.instance;
+        if (!sameMarkers || map == null || boundMap != map || pins.Count != entries.Count)
+        {
+            Refresh();
+            return;
+        }
+
+        // Only positions or runes changed, e.g. a sailing ship: move the pins instead of making them again.
+        for (int i = 0; i < pins.Count; i++)
+        {
+            pins[i].Pin.m_pos = entries[i].Position;
+            pins[i] = (pins[i].Pin, entries[i]);
+        }
+
+        map.m_pinUpdateRequired = true;
     }
 
     /// <summary>
@@ -46,11 +61,10 @@ public static class PortalMapPins
 
         pins.Clear();
         boundMap = map;
-        Sprite sprite = GetIcon();
         foreach (PortalMapEntry entry in entries)
         {
             Minimap.PinData pin = map.AddPin(entry.Position, Minimap.PinType.None, Localization.instance.Localize(Label(entry)), false, false);
-            pin.m_icon = sprite;
+            pin.m_icon = GetIcon(entry);
             pins.Add((pin, entry));
         }
     }
@@ -68,30 +82,44 @@ public static class PortalMapPins
     }
 
     /// <summary>
-    /// Text for the portal pin under the cursor on the large map, or null if there is none.
+    /// Text for the pin under the cursor on the large map, or null if there is none.
     /// </summary>
     /// <param name="worldPosition">World position under the cursor.</param>
     /// <param name="radius">How close the cursor must be, in metres.</param>
-    /// <returns>Name, privacy and runes of the portal, localized.</returns>
+    /// <returns>A portal's name, privacy and runes, or a ship's type and builder, localized.</returns>
     public static string GetHoverText(Vector3 worldPosition, float radius)
     {
-        (Minimap.PinData Pin, PortalMapEntry Entry) closest = pins
+        PortalMapEntry entry = pins
             .Where(pin => pin.Pin.m_uiElement != null && pin.Pin.m_uiElement.gameObject.activeInHierarchy)
-            .Select(pin => (pin, distance: Utils.DistanceXZ(worldPosition, pin.Pin.m_pos)))
-            .Where(candidate => candidate.distance < radius)
-            .OrderBy(candidate => candidate.distance)
-            .Select(candidate => candidate.pin)
+            .Select(pin => (pin.Entry, Distance: Utils.DistanceXZ(worldPosition, pin.Pin.m_pos)))
+            .Where(candidate => candidate.Distance < radius)
+            .OrderBy(candidate => candidate.Distance)
+            .Select(candidate => candidate.Entry)
             .FirstOrDefault();
-        if (closest.Entry == null)
+        if (entry == null)
         {
             return null;
         }
 
-        return $"{Localization.instance.Localize(Label(closest.Entry))}\n{RunePortalPatch.FormatRunes(closest.Entry.RuneMask, closest.Entry.Everything)}";
+        string label = Localization.instance.Localize(Label(entry));
+        if (entry.Kind == PortalMapEntry.ShipKind)
+        {
+            return string.IsNullOrEmpty(entry.Builder)
+                ? label
+                : $"{label}\n{Localization.instance.Localize("$whitehilt_shipmap_builder")}: {entry.Builder}";
+        }
+
+        return $"{label}\n{RunePortalPatch.FormatRunes(entry.RuneMask, entry.Everything)}";
     }
 
     private static string Label(PortalMapEntry entry)
     {
+        if (entry.Kind == PortalMapEntry.ShipKind)
+        {
+            Piece ship = GetPrefabPiece(entry.Prefab);
+            return ship != null ? ship.m_name : "$whitehilt_shipmap_ship";
+        }
+
         string name = string.IsNullOrEmpty(entry.Name) ? "$whitehilt_portalmap_unnamed" : entry.Name;
         string privacy = entry.Privacy switch
         {
@@ -103,14 +131,29 @@ public static class PortalMapPins
         return name + privacy;
     }
 
-    // The vanilla portal's build icon, so a portal pin looks like the portal in the build menu.
-    private static Sprite GetIcon()
+    // Portals get the vanilla portal's build icon, ships their own, so a Karve and a Longship look different.
+    private static Sprite GetIcon(PortalMapEntry entry)
     {
-        if (icon == null)
+        if (entry.Kind == PortalMapEntry.ShipKind)
         {
-            icon = ZNetScene.instance?.GetPrefab(PortalIconPrefab)?.GetComponent<Piece>()?.m_icon;
+            Sprite shipIcon = GetPrefabPiece(entry.Prefab)?.m_icon;
+            if (shipIcon != null)
+            {
+                return shipIcon;
+            }
         }
 
-        return icon;
+        if (portalIcon == null)
+        {
+            portalIcon = GetPrefabPiece(PortalIconPrefab.GetStableHashCode())?.m_icon;
+        }
+
+        return portalIcon;
+    }
+
+    private static Piece GetPrefabPiece(int prefabHash)
+    {
+        GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(prefabHash) : null;
+        return prefab != null ? prefab.GetComponent<Piece>() : null;
     }
 }

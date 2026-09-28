@@ -192,6 +192,7 @@
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
+    <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />
@@ -202,7 +203,7 @@
     <Compile Include="Pieces\Portals\RuneRack\RuneRackComponent.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RunePortalRules.cs" />
     <Compile Include="Pieces\Portals\PortalAstrolabe\PortalAstrolabe.cs" />
-    <Compile Include="Pieces\Portals\PortalAstrolabe\PortalAstrolabeComponent.cs" />
+    <Compile Include="Pieces\Portals\PortalMap\MapTableExtensionComponent.cs" />
     <Compile Include="Pieces\Portals\PortalMap\PortalMapEntry.cs" />
     <Compile Include="Pieces\Portals\PortalMap\PortalMapPins.cs" />
     <Compile Include="Pieces\Portals\PortalMap\PortalMapService.cs" />

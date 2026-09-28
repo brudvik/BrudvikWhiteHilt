@@ -7,28 +7,26 @@ using Jotunn.Managers;
 using System;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Pieces.Portals.PortalAstrolabe;
+namespace BrudvikWhiteHilt.Pieces.Ships.HarbourAnchor;
 
 /// <summary>
-/// A map table extension: a floating armillary with an amethyst heart. While one stands within
-/// <see cref="PortalMapService.ActivationRange"/> of a map table, every portal shows on everyone's map.
+/// A map table extension: a standing iron anchor. While one stands within <see cref="PortalMapService.ActivationRange"/>
+/// of a map table, every ship shows on everyone's map.
 /// </summary>
-public class PortalAstrolabe : IWhiteHiltCustomPiece
+public class HarbourAnchor : IWhiteHiltCustomPiece
 {
     /// <summary>
-    /// Prefab name of the Portal Astrolabe.
+    /// Prefab name of the Harbour Anchor.
     /// </summary>
-    public const string PrefabName = "piece_whitehilt_portalastrolabe";
+    public const string PrefabName = "piece_whitehilt_harbouranchor";
 
-    private const string FullName = "Portal Astrolabe";
-    private const string Description = "A floating armillary around an amethyst that senses every portal. Place it next to a map table, and every portal shows on the map for everyone, with the runes it carries.";
+    private const string FullName = "Harbour Anchor";
+    private const string Description = "A heavy iron anchor that remembers where every ship lies. Place it next to a map table, and every ship shows on the map for everyone.";
 
-    // Size in metres. The model is 0.70 wide and 0.76 deep for a height of 1.
-    private const float Height = 1.4f;
+    // Size in metres. The model is 0.70 wide and 0.16 deep for a height of 1, with its broad side facing +z.
+    private const float Height = 1.8f;
     private const float Width = 0.70f * Height;
-    private const float Depth = 0.76f * Height;
-
-    private static readonly Color glowColor = new(0.7f, 0.45f, 1f);
+    private const float Depth = 0.16f * Height;
 
     private readonly PieceManager instance;
 
@@ -51,23 +49,20 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the PortalAstrolabe class. Registers the English text.
+    /// Constructor for the HarbourAnchor class. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
-    public PortalAstrolabe(PieceManager instance)
+    public HarbourAnchor(PieceManager instance)
     {
         this.instance = instance;
         Translations.AddEnglishNameAndDescription(PrefabName, FullName, Description);
-        Translations.AddEnglish("whitehilt_astrolabe_active", "Every portal shows on the map");
-        Translations.AddEnglish("whitehilt_mapextension_inactive", "Place it within 5 m of a map table");
-        Translations.AddEnglish("whitehilt_portalmap_unnamed", "Unnamed portal");
-        Translations.AddEnglish("whitehilt_portalmap_private", "private");
-        Translations.AddEnglish("whitehilt_portalmap_guild", "guild");
-        Translations.AddEnglish("whitehilt_portalmap_group", "group");
+        Translations.AddEnglish("whitehilt_anchor_active", "Every ship shows on the map");
+        Translations.AddEnglish("whitehilt_shipmap_ship", "Ship");
+        Translations.AddEnglish("whitehilt_shipmap_builder", "Built by");
     }
 
     /// <summary>
-    /// Adds the Portal Astrolabe to the hammer.
+    /// Adds the Harbour Anchor to the hammer.
     /// </summary>
     public void Add()
     {
@@ -82,16 +77,16 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
                 CraftingStation = CraftingStations.Workbench,
                 Requirements = new RequirementConfig[]
                 {
-                    new() { Item = "FineWood", Amount = 6, Recover = true },
-                    new() { Item = "Bronze", Amount = 4, Recover = true },
-                    new() { Item = "SurtlingCore", Amount = 1, Recover = true }
+                    new() { Item = "Iron", Amount = 2, Recover = true },
+                    new() { Item = "Chain", Amount = 2, Recover = true },
+                    new() { Item = "FineWood", Amount = 4, Recover = true }
                 }
             };
 
             // The table is a plain ground piece; it gets our look below.
             CustomPiece piece = new(PrefabName, "piece_table", pieceConfig);
             GameObject prefab = piece.PiecePrefab;
-            prefab.AddComponent<MapTableExtensionComponent>().ActiveToken = "$whitehilt_astrolabe_active";
+            prefab.AddComponent<MapTableExtensionComponent>().ActiveToken = "$whitehilt_anchor_active";
             piece.Piece.m_comfort = 0;
             WearNTear wearNTear = prefab.GetComponent<WearNTear>();
             if (wearNTear != null)
@@ -113,7 +108,7 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
         }
     }
 
-    // One box around the armillary, on the server as well, so it blocks and can be hit like it looks.
+    // One box around the anchor, on the server as well, so it blocks and can be hit like it looks.
     private static void FitColliders(Transform root)
     {
         foreach (BoxCollider collider in root.GetComponentsInChildren<BoxCollider>(true))
@@ -146,27 +141,10 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
             Renderer template = prefab.transform.Find("new/high")?.GetComponent<MeshRenderer>()
                 ?? throw new InvalidOperationException("the table's renderer new/high was not found");
 
-            Mesh mesh = ForagingAssets.LoadMesh("portalastrolabe");
-            Texture2D albedo = ForagingAssets.LoadTexture("portalastrolabe_albedo");
+            Mesh mesh = ForagingAssets.LoadMesh("shipanchor");
             float scale = Height / mesh.bounds.size.y;
             Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
-            GameObject model = VisualHelper.CreateModel(prefab.transform, mesh, albedo, template, pivot, Quaternion.identity, scale);
-
-            Material material = model.GetComponent<MeshRenderer>().sharedMaterial;
-            if (material.HasProperty("_EmissionMap"))
-            {
-                // Only the amethyst glows: the clearly purple pixels of the albedo.
-                Texture2D glow = VisualHelper.RecolorTexture(albedo, pixel =>
-                {
-                    Color.RGBToHSV(pixel, out float hue, out float saturation, out float value);
-                    return hue > 0.68f && hue < 0.86f && saturation > 0.35f ? pixel : new Color32(0, 0, 0, 255);
-                });
-                material.EnableKeyword("_EMISSION");
-                material.SetTexture("_EmissionMap", glow);
-                material.SetColor("_EmissionColor", Color.white * 1.5f);
-            }
-
-            AddLight(prefab.transform);
+            VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("shipanchor_albedo"), template, pivot, Quaternion.identity, scale);
 
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
@@ -178,19 +156,5 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
         {
             Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
-    }
-
-    private static void AddLight(Transform root)
-    {
-        GameObject glow = new("AmethystGlow");
-        glow.transform.SetParent(root, false);
-        glow.transform.localPosition = new Vector3(0f, Height * 0.6f, 0f);
-
-        Light light = glow.AddComponent<Light>();
-        light.type = LightType.Point;
-        light.color = glowColor;
-        light.range = 3f;
-        light.intensity = 0.8f;
-        light.shadows = LightShadows.None;
     }
 }
