@@ -88,6 +88,7 @@ public class RuneRack : IWhiteHiltCustomPiece
                 Name = Translations.Token(PrefabName),
                 Description = Translations.Token($"{PrefabName}_description"),
                 PieceTable = PieceTables.Hammer,
+                Category = PieceCategories.Misc,
                 CraftingStation = CraftingStations.Workbench,
                 Requirements = new RequirementConfig[]
                 {
