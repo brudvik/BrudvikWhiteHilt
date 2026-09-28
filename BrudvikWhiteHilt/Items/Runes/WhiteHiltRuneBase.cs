@@ -102,6 +102,16 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
     /// </summary>
     public Texture2D RingTexture { get; private set; }
 
+    /// <summary>
+    /// Emission texture with only the carved runes lit, for the glow of a full post. Null on a dedicated server.
+    /// </summary>
+    public Texture2D GlowTexture { get; private set; }
+
+    /// <summary>
+    /// Colour of the carved runes, also used for their glow.
+    /// </summary>
+    public Color GlowColor => RuneColor;
+
     private string NameKey => Translations.ItemKey(BaseName);
 
     /// <summary>
@@ -193,6 +203,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
         {
             RingTexture = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("runering_albedo"), Recolor);
             RingTexture.name = $"{BaseName}_ring";
+            GlowTexture = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("runering_albedo"), pixel => IsCarvedRune(pixel) ? (Color32)RuneColor : new Color32(0, 0, 0, 255));
+            GlowTexture.name = $"{BaseName}_glow";
             VisualHelper.ReplaceMesh(rune.ItemPrefab, ForagingAssets.LoadMesh("runering"), RingTexture, size: RingSize);
 
             Sprite icon = VisualHelper.RenderIcon(rune.ItemPrefab);
@@ -208,9 +220,14 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
     }
 
     // The ring texture is dark grey metal with yellow runes on a black background.
+    private static bool IsCarvedRune(Color32 pixel)
+    {
+        return pixel.r > 150 && pixel.b < 90;
+    }
+
     private Color32 Recolor(Color32 pixel)
     {
-        if (pixel.r > 150 && pixel.b < 90)
+        if (IsCarvedRune(pixel))
         {
             Color32 rune = RuneColor;
             rune.a = pixel.a;

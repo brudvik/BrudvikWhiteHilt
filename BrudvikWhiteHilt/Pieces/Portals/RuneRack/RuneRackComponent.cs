@@ -23,14 +23,20 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
     private const string ZdoKey = "whitehilt_runes";
     private const string AddRuneRpc = "WhiteHiltAddRune";
     private const string TakeRuneRpc = "WhiteHiltTakeRune";
+    private const float GlowStrength = 1.5f;
+    private const float PulseSpeed = 1.5f;
 
     private static readonly List<RuneRackComponent> instances = new();
+    private static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
 
     private ZNetView nview;
     private Piece piece;
     private GameObject[] rings;
+    private Renderer[] ringRenderers;
+    private MaterialPropertyBlock glowBlock;
     private EffectFade fullSetEffect;
     private int shownMask = -1;
+    private bool glowing;
 
     /// <summary>
     /// Every loaded rune post.
@@ -130,6 +136,8 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
         piece = GetComponent<Piece>();
         Transform ringRoot = transform.Find(RingsName);
         rings = Enumerable.Range(0, WhiteHiltRuneBase.Count).Select(i => ringRoot?.Find($"rune_{i}")?.gameObject).ToArray();
+        ringRenderers = rings.Select(ring => ring != null ? ring.GetComponent<Renderer>() : null).ToArray();
+        glowBlock = new MaterialPropertyBlock();
         fullSetEffect = transform.Find(FullSetEffectName)?.GetComponent<EffectFade>();
 
         if (nview == null || nview.GetZDO() == null)
@@ -156,9 +164,19 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
 
     private void Update()
     {
-        if (nview.IsValid() && Mask != shownMask)
+        if (!nview.IsValid())
+        {
+            return;
+        }
+
+        if (Mask != shownMask)
         {
             UpdateVisuals();
+        }
+
+        if (glowing)
+        {
+            SetGlow(0.6f + 0.4f * Mathf.Sin(Time.time * PulseSpeed));
         }
     }
 
@@ -232,7 +250,31 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
             rings[i]?.SetActive((mask & (1 << i)) != 0);
         }
 
-        fullSetEffect?.SetActive(mask == WhiteHiltRuneBase.FullMask);
+        bool full = mask == WhiteHiltRuneBase.FullMask;
+        fullSetEffect?.SetActive(full);
+        if (glowing && !full)
+        {
+            SetGlow(0f);
+        }
+
+        glowing = full;
+    }
+
+    private void SetGlow(float strength)
+    {
+        for (int i = 0; i < ringRenderers.Length; i++)
+        {
+            Renderer renderer = ringRenderers[i];
+            WhiteHiltRuneBase rune = WhiteHiltRuneBase.Get(i);
+            if (renderer == null || rune == null)
+            {
+                continue;
+            }
+
+            renderer.GetPropertyBlock(glowBlock);
+            glowBlock.SetColor(emissionColor, rune.GlowColor * (strength * GlowStrength));
+            renderer.SetPropertyBlock(glowBlock);
+        }
     }
 
     private static string RuneNames(int mask)

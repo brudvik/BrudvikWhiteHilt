@@ -164,9 +164,13 @@ public class RuneRack : IWhiteHiltCustomPiece
             VisualHelper.CreateModel(root, plankMesh, ForagingAssets.LoadTexture("runerack_albedo"), wood, plankPivot, Quaternion.identity, scale);
 
             AddRings(root, wood, plankPivot, scale);
-            AddFullSetEffect(root, plankBase);
+            AddFullSetGlow(root, plankBase);
 
+            // Show every rune for the icon, so the build menu shows what the post is for.
+            Transform rings = root.Find(RuneRackComponent.RingsName);
+            SetChildrenActive(rings, true);
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
+            SetChildrenActive(rings, false);
             if (icon != null)
             {
                 piece.Piece.m_icon = icon;
@@ -202,25 +206,47 @@ public class RuneRack : IWhiteHiltCustomPiece
             Vector3 ringCenter = hookTip + new Vector3(0f, -RingDiameter * 0.35f, -0.02f);
             GameObject ring = VisualHelper.CreateModel(ringRoot.transform, ringMesh, rune.RingTexture, template, ringCenter - meshCenter, upright, ringScale);
             ring.name = $"rune_{i}";
+            Material material = ring.GetComponent<MeshRenderer>().sharedMaterial;
+            if (material.HasProperty("_EmissionMap"))
+            {
+                // Dark until the post is full; RuneRackComponent then lights each post's runes on its own.
+                material.EnableKeyword("_EMISSION");
+                material.SetTexture("_EmissionMap", rune.GlowTexture);
+                material.SetColor("_EmissionColor", Color.black);
+            }
+
             ring.SetActive(false);
         }
     }
 
-    // The glow of a connected vanilla portal, shown while every rune hangs on the post.
-    private static void AddFullSetEffect(Transform root, Vector3 plankBase)
+    // A soft light that fades in while every rune hangs on the post. The runes themselves glow too, see RuneRackComponent.
+    private static void AddFullSetGlow(Transform root, Vector3 plankBase)
     {
-        Transform glow = PrefabManager.Instance.GetPrefab("portal_wood")?.transform.Find("_target_found_red");
-        if (glow == null)
+        GameObject glow = new(RuneRackComponent.FullSetEffectName);
+        glow.transform.SetParent(root, false);
+        glow.transform.localPosition = new Vector3(0f, plankBase.y, plankBase.z + 0.4f);
+
+        Light light = glow.AddComponent<Light>();
+        light.type = LightType.Point;
+        light.color = new Color(1f, 0.8f, 0.5f);
+        light.range = 3f;
+        light.intensity = 1.2f;
+        light.shadows = LightShadows.None;
+
+        // EffectFade starts the light at zero and fades it towards full when switched on.
+        glow.AddComponent<EffectFade>().m_fadeDuration = 1.5f;
+    }
+
+    private static void SetChildrenActive(Transform parent, bool active)
+    {
+        if (parent == null)
         {
-            Jotunn.Logger.LogWarning($"{FullName}: the portal glow was not found, the full set has no effect.");
             return;
         }
 
-        GameObject effect = UnityEngine.Object.Instantiate(glow.gameObject, root);
-        effect.name = RuneRackComponent.FullSetEffectName;
-        float glowHeight = glow.Find("Particle System")?.localPosition.y ?? 1.366f;
-        effect.transform.localPosition = new Vector3(0f, plankBase.y - glowHeight + 0.1f, plankBase.z);
-        effect.transform.localRotation = Quaternion.identity;
-        effect.transform.localScale = Vector3.one * 0.6f;
+        foreach (Transform child in parent)
+        {
+            child.gameObject.SetActive(active);
+        }
     }
 }
