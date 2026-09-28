@@ -120,8 +120,9 @@ public class ChainBench : IWhiteHiltCustomPiece
 
             // Unity mirrors x when importing OBJ, so the stump sits on +x. The chains hang on its front, turned to face out,
             // and are lightened from the model's near-black to iron grey.
+            // The stump's front face spans x -0.01..0.30 at z 0.23 and its top is at 0.75; the chains fit inside that.
             Texture2D chains = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("chains_albedo"), _ => new Color32(95, 95, 100, 255));
-            VisualHelper.AddMesh(vise, ForagingAssets.LoadMesh("chains"), chains, new Vector3(0.1f, 0.12f, 0.27f), 0.6f, Quaternion.Euler(0f, 90f, 0f));
+            VisualHelper.AddMesh(vise, ForagingAssets.LoadMesh("chains"), chains, new Vector3(0.145f, 0.32f, 0.245f), 0.4f, Quaternion.Euler(0f, 90f, 0f));
 
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
