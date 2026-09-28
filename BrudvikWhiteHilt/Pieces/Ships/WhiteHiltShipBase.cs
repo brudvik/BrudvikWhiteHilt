@@ -108,7 +108,7 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
                 Jotunn.Logger.LogWarning($"{FullName} failed to load ship configuration, ship is not set to be ready for Ashlands!");
             }
 
-            ApplyVisual(item.PiecePrefab);
+            CustomizePrefab(item.PiecePrefab);
             Sprite icon = VisualHelper.RenderIcon(item.PiecePrefab);
             if (icon != null)
             {
@@ -127,8 +127,8 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
     }
 
     /// <summary>
-    /// Changes the look of the cloned ship. Keeps the vanilla look by default.
+    /// Changes the cloned ship prefab, e.g. its look or extra components. Runs on servers too. Does nothing by default.
     /// </summary>
     /// <param name="ship">The cloned ship prefab.</param>
-    protected virtual void ApplyVisual(GameObject ship) { }
+    protected virtual void CustomizePrefab(GameObject ship) { }
 }

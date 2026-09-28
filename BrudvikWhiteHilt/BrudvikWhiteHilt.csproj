@@ -114,6 +114,8 @@
     <Compile Include="Items\Runes\IronRune\IronRune.cs" />
     <Compile Include="Items\Runes\SilverRune\SilverRune.cs" />
     <Compile Include="Items\Runes\WhiteHiltRuneBase.cs" />
+    <Compile Include="Items\ShipUpgrades\ShipUpgrades.cs" />
+    <Compile Include="Items\ShipUpgrades\WhiteHiltShipUpgradeBase.cs" />
     <Compile Include="Items\Indestructible\IndestructibleShipPiece.cs" />
     <Compile Include="Items\IWhiteHiltCustomItem.cs" />
     <Compile Include="Items\Indestructible\IndestructiblePiece.cs" />
@@ -181,13 +183,17 @@
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
+    <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
     <Compile Include="Patches\Ships\TailwindPatch.cs" />
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgradeSetup.cs" />
     <Compile Include="Pieces\Smithing\ChainBench\ChainBench.cs" />
     <Compile Include="Pieces\Smithing\RuneForge\RuneForge.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RuneRack.cs" />

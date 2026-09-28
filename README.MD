@@ -147,6 +147,17 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Comfort bonus: +5
 - Its own look: a carved dragon figurehead, a white sail with gold stripes and a white-hilted sword, a whitewashed hull with gold fittings, and painted shields along the rail
 
+**Ship Upgrades** (crafted at the Workbench, used on the mast like an item on an item stand; use the mast to take the last one off):
+
+| Upgrade | Effect | Requirements |
+|---------|--------|--------------|
+| **Ship Lantern** | A lantern on deck that lights up at night | Iron ×2, Resin ×10, Surtling Core ×1 |
+| **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
+| **Ship Tent** | A tent on deck; under it you have Shelter and stay dry | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
+| **Mast Wisp** | A wisp at the top of the mast that clears the mist around the ship | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
+
+The barrels can only be taken off when the extra cargo slots are empty.
+
 ---
 
 ### ⚒️ SMITHING
@@ -265,6 +276,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 
 #### Added
 - Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
+- White Hilt Ship upgrades, used on the mast: Ship Lantern (light at night), Cargo Barrels (hold 8 × 4), Ship Tent (shelter and dry) and Mast Wisp (clears the mist)
 
 #### Changed
 - The White Hilt Ship has its own look: dragon figurehead, white and gold sail with a white-hilted sword, whitewashed hull with gold fittings and shields along the rail

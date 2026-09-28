@@ -1,5 +1,7 @@
-﻿using Jotunn.Configs;
+﻿using BrudvikWhiteHilt.Helpers;
+using Jotunn.Configs;
 using Jotunn.Managers;
+using System;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
@@ -13,7 +15,16 @@ public class WhiteHiltShip : WhiteHiltShipBase
     /// Constructor for the WhiteHiltShip class.
     /// </summary>
     /// <param name="instance"></param>
-    public WhiteHiltShip(PieceManager instance) : base(instance) { }
+    public WhiteHiltShip(PieceManager instance) : base(instance)
+    {
+        Translations.AddEnglish("whitehilt_ship_take", "Take off the last upgrade");
+        Translations.AddEnglish("whitehilt_ship_add", "Add an upgrade");
+        Translations.AddEnglish("whitehilt_ship_none", "No upgrades");
+        Translations.AddEnglish("whitehilt_ship_upgrades", "Upgrades");
+        Translations.AddEnglish("msg_whitehilt_ship_added", "Upgrade added");
+        Translations.AddEnglish("msg_whitehilt_ship_already", "The ship already has that upgrade");
+        Translations.AddEnglish("msg_whitehilt_ship_barrels_full", "Empty the extra cargo slots before taking the barrels off");
+    }
 
     /// <summary>
     /// The base name of the ship.
@@ -41,8 +52,17 @@ public class WhiteHiltShip : WhiteHiltShipBase
     public override bool Enabled => true;
 
     /// <inheritdoc/>
-    protected override void ApplyVisual(GameObject ship)
+    protected override void CustomizePrefab(GameObject ship)
     {
+        try
+        {
+            WhiteHiltShipUpgradeSetup.Prepare(ship);
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogError($"{FullName}: upgrades are not available: {ex.Message}");
+        }
+
         WhiteHiltShipLook.Apply(ship);
     }
 
