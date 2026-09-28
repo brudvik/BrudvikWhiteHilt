@@ -1,4 +1,6 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Patches.Portals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,8 +14,15 @@ namespace BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 public static class PortalMapPins
 {
     private const string PortalIconPrefab = "portal_wood";
+    private const int BadgeSize = 64;
+    private const int BadgeIconSize = 44;
+    private const float BadgeRimWidth = 4f;
 
+    private static readonly Color32 portalRim = new(190, 130, 255, 255);
+    private static readonly Color32 shipRim = new(255, 205, 90, 255);
+    private static readonly Color32 badgeFill = new(18, 18, 22, 215);
     private static readonly List<(Minimap.PinData Pin, PortalMapEntry Entry)> pins = new();
+    private static readonly Dictionary<Sprite, Sprite> badges = new();
     private static List<PortalMapEntry> entries = new();
     private static Minimap boundMap;
     private static Sprite portalIcon;
@@ -65,6 +74,7 @@ public static class PortalMapPins
         {
             Minimap.PinData pin = map.AddPin(entry.Position, Minimap.PinType.None, Localization.instance.Localize(Label(entry)), false, false);
             pin.m_icon = GetIcon(entry);
+            pin.m_doubleSize = true;
             pins.Add((pin, entry));
         }
     }
@@ -139,7 +149,7 @@ public static class PortalMapPins
             Sprite shipIcon = GetPrefabPiece(entry.Prefab)?.m_icon;
             if (shipIcon != null)
             {
-                return shipIcon;
+                return GetBadge(shipIcon, shipRim);
             }
         }
 
@@ -148,7 +158,61 @@ public static class PortalMapPins
             portalIcon = GetPrefabPiece(PortalIconPrefab.GetStableHashCode())?.m_icon;
         }
 
-        return portalIcon;
+        return GetBadge(portalIcon, portalRim);
+    }
+
+    // The build icons alone are thin and brown and vanish on busy terrain, so they sit on a dark disc with a coloured rim.
+    private static Sprite GetBadge(Sprite icon, Color32 rim)
+    {
+        if (icon == null)
+        {
+            return null;
+        }
+
+        if (badges.TryGetValue(icon, out Sprite badge))
+        {
+            return badge;
+        }
+
+        try
+        {
+            Color32[] iconPixels = VisualHelper.ReadPixels(icon.texture, BadgeIconSize, BadgeIconSize, icon.textureRect);
+            Color32[] pixels = new Color32[BadgeSize * BadgeSize];
+            float center = (BadgeSize - 1) / 2f;
+            float radius = BadgeSize / 2f - 1f;
+            int offset = (BadgeSize - BadgeIconSize) / 2;
+            for (int y = 0; y < BadgeSize; y++)
+            {
+                for (int x = 0; x < BadgeSize; x++)
+                {
+                    float distance = Mathf.Sqrt((x - center) * (x - center) + (y - center) * (y - center));
+                    Color32 color = distance > radius - BadgeRimWidth ? rim : badgeFill;
+                    color.a = (byte)(color.a * Mathf.Clamp01(radius + 1f - distance));
+
+                    int iconX = x - offset;
+                    int iconY = y - offset;
+                    if (iconX >= 0 && iconX < BadgeIconSize && iconY >= 0 && iconY < BadgeIconSize)
+                    {
+                        Color32 source = iconPixels[iconY * BadgeIconSize + iconX];
+                        Color32 lit = new((byte)Mathf.Min(255, source.r * 1.3f), (byte)Mathf.Min(255, source.g * 1.3f), (byte)Mathf.Min(255, source.b * 1.3f), 255);
+                        color = Color32.Lerp(color, lit, source.a / 255f);
+                    }
+
+                    pixels[y * BadgeSize + x] = color;
+                }
+            }
+
+            Texture2D texture = VisualHelper.CreateTexture($"{icon.name}_mapbadge", BadgeSize, BadgeSize, pixels);
+            badge = Sprite.Create(texture, new Rect(0, 0, BadgeSize, BadgeSize), new Vector2(0.5f, 0.5f));
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"Portal map: keeping the plain icon for {icon.name}: {ex.Message}");
+            badge = icon;
+        }
+
+        badges[icon] = badge;
+        return badge;
     }
 
     private static Piece GetPrefabPiece(int prefabHash)

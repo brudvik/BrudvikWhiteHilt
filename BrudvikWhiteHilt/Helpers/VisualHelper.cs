@@ -350,15 +350,27 @@ public static class VisualHelper
     /// <param name="source">Texture to read. It does not need to be CPU-readable.</param>
     /// <param name="width">Width to read at.</param>
     /// <param name="height">Height to read at.</param>
+    /// <param name="region">Part of the texture to read, in pixels, e.g. a sprite's <c>textureRect</c>; null for all of it.</param>
     /// <returns>The pixels, <paramref name="width"/> per row.</returns>
-    public static Color32[] ReadPixels(Texture source, int width, int height)
+    public static Color32[] ReadPixels(Texture source, int width, int height, Rect? region = null)
     {
         // Game textures are not CPU-readable, so copy through a render texture first.
         RenderTexture renderTexture = RenderTexture.GetTemporary(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
         RenderTexture previous = RenderTexture.active;
         try
         {
-            Graphics.Blit(source, renderTexture);
+            if (region.HasValue)
+            {
+                Rect rect = region.Value;
+                Graphics.Blit(source, renderTexture,
+                    new Vector2(rect.width / source.width, rect.height / source.height),
+                    new Vector2(rect.x / source.width, rect.y / source.height));
+            }
+            else
+            {
+                Graphics.Blit(source, renderTexture);
+            }
+
             RenderTexture.active = renderTexture;
             Texture2D copy = new(width, height, TextureFormat.RGBA32, mipChain: false, linear: false);
             copy.ReadPixels(new Rect(0, 0, width, height), 0, 0);
