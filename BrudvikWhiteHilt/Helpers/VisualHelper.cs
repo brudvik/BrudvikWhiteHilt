@@ -340,29 +340,59 @@ public static class VisualHelper
     /// <returns>The recoloured copy.</returns>
     public static Texture2D RecolorTexture(Texture source, Func<Color32, Color32> recolor)
     {
+        Color32[] pixels = ReadPixels(source, source.width, source.height).Select(recolor).ToArray();
+        return CreateTexture($"{source.name}_recolored", source.width, source.height, pixels, source);
+    }
+
+    /// <summary>
+    /// Reads the pixels of any texture, scaled to the given size. Rows run bottom to top, as in Unity.
+    /// </summary>
+    /// <param name="source">Texture to read. It does not need to be CPU-readable.</param>
+    /// <param name="width">Width to read at.</param>
+    /// <param name="height">Height to read at.</param>
+    /// <returns>The pixels, <paramref name="width"/> per row.</returns>
+    public static Color32[] ReadPixels(Texture source, int width, int height)
+    {
         // Game textures are not CPU-readable, so copy through a render texture first.
-        RenderTexture renderTexture = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+        RenderTexture renderTexture = RenderTexture.GetTemporary(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
         RenderTexture previous = RenderTexture.active;
         try
         {
             Graphics.Blit(source, renderTexture);
             RenderTexture.active = renderTexture;
-
-            Texture2D copy = new(source.width, source.height, TextureFormat.RGBA32, mipChain: true, linear: false)
-            {
-                name = $"{source.name}_recolored",
-                wrapMode = source.wrapMode,
-                filterMode = source.filterMode
-            };
-            copy.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0);
-            copy.SetPixels32(copy.GetPixels32().Select(recolor).ToArray());
-            copy.Apply(updateMipmaps: true, makeNoLongerReadable: true);
-            return copy;
+            Texture2D copy = new(width, height, TextureFormat.RGBA32, mipChain: false, linear: false);
+            copy.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            Color32[] pixels = copy.GetPixels32();
+            UnityEngine.Object.Destroy(copy);
+            return pixels;
         }
         finally
         {
             RenderTexture.active = previous;
             RenderTexture.ReleaseTemporary(renderTexture);
         }
+    }
+
+    /// <summary>
+    /// Creates a GPU-only texture from pixels.
+    /// </summary>
+    /// <param name="name">Texture name.</param>
+    /// <param name="width">Width.</param>
+    /// <param name="height">Height.</param>
+    /// <param name="pixels">Pixels, <paramref name="width"/> per row, bottom to top.</param>
+    /// <param name="settingsFrom">Texture to copy wrap and filter mode from, or null.</param>
+    /// <returns>The texture.</returns>
+    public static Texture2D CreateTexture(string name, int width, int height, Color32[] pixels, Texture settingsFrom = null)
+    {
+        Texture2D texture = new(width, height, TextureFormat.RGBA32, mipChain: true, linear: false) { name = name };
+        if (settingsFrom != null)
+        {
+            texture.wrapMode = settingsFrom.wrapMode;
+            texture.filterMode = settingsFrom.filterMode;
+        }
+
+        texture.SetPixels32(pixels);
+        texture.Apply(updateMipmaps: true, makeNoLongerReadable: true);
+        return texture;
     }
 }

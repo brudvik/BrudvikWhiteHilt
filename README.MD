@@ -145,6 +145,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Ashlands damage immune and resistant
 - Always has tailwind (full sail speed regardless of wind direction)
 - Comfort bonus: +5
+- Its own look: a carved dragon figurehead, a white sail with gold stripes and a white-hilted sword, a whitewashed hull with gold fittings, and painted shields along the rail
 
 ---
 
@@ -265,6 +266,9 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 #### Added
 - Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
 
+#### Changed
+- The White Hilt Ship has its own look: dragon figurehead, white and gold sail with a white-hilted sword, whitewashed hull with gold fittings and shields along the rail
+
 ### v0.5.0 - 2026-09-28
 
 #### Added
@@ -370,6 +374,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Rune Forge model: ["Medieval Workbench"](https://sketchfab.com/3d-models/medieval-workbench-b9e0b742add340f28f3194d1dc022d26) by [Catsnap0006](https://sketchfab.com/Catsnap0006), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Rune model: ["Rune Ring"](https://sketchfab.com/3d-models/rune-ring-266ccf4f356c45a89fe7e8d344590446) by [Christopher Turner](https://sketchfab.com/TUR17002508), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and recoloured per metal for Valheim.
 - Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.

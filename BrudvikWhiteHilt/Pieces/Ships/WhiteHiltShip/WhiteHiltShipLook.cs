@@ -1,0 +1,273 @@
+using BrudvikWhiteHilt.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
+
+/// <summary>
+/// Gives the cloned longship the White Hilt look: a carved dragon figurehead, a white sail with gold stripes and a
+/// white-hilted sword, a whitewashed hull with gold fittings and painted shields along the rail.
+/// </summary>
+public static class WhiteHiltShipLook
+{
+    private const int SailSize = 512;
+    private const float DragonHeightFactor = 1.4f;
+
+    private static readonly Color cream = new(0.94f, 0.91f, 0.84f);
+    private static readonly Color steel = new(0.82f, 0.84f, 0.88f);
+    private static readonly Color bronze = new(0.35f, 0.22f, 0.08f);
+    private static readonly Color outline = new(0.18f, 0.13f, 0.08f);
+
+    /// <summary>
+    /// Changes the look of the ship prefab. Each part keeps its vanilla look if changing it fails.
+    /// </summary>
+    /// <param name="ship">The cloned ship prefab.</param>
+    public static void Apply(GameObject ship)
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        Transform visual = ship.transform.Find("ship/visual");
+        if (visual == null)
+        {
+            Jotunn.Logger.LogWarning("White Hilt Ship: ship/visual not found, keeping the vanilla look.");
+            return;
+        }
+
+        TryStep("figurehead", () => ReplaceFigurehead(visual));
+        TryStep("sail", () => PaintSail(ship.transform));
+        TryStep("hull", () => PaintMaterials(visual, name => name.StartsWith("ship_diffuse"), PaintHull));
+        TryStep("shields", () => ShowShields(visual));
+    }
+
+    private static void TryStep(string part, Action step)
+    {
+        try
+        {
+            step();
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"White Hilt Ship: keeping the vanilla {part}: {ex.Message}");
+        }
+    }
+
+    // The skull on the bow sits in the new, worn and broken hull alike, so every copy gets the dragon.
+    private static void ReplaceFigurehead(Transform visual)
+    {
+        Mesh dragon = ForagingAssets.LoadMesh("shipdragon");
+        Texture2D texture = ForagingAssets.LoadTexture("shipdragon_albedo");
+
+        // The dragon looks along +z; the bow of the longship points along -x.
+        Quaternion forward = Quaternion.Euler(0f, -90f, 0f);
+        Vector3 dragonBase = new(dragon.bounds.center.x, dragon.bounds.min.y, dragon.bounds.center.z);
+
+        MeshFilter[] skulls = visual.GetComponentsInChildren<MeshFilter>(true)
+            .Where(filter => filter.sharedMesh != null && filter.sharedMesh.name == "skull_head")
+            .ToArray();
+        if (skulls.Length == 0)
+        {
+            throw new InvalidOperationException("no skull_head on the bow");
+        }
+
+        foreach (MeshFilter skull in skulls)
+        {
+            MeshRenderer renderer = skull.GetComponent<MeshRenderer>();
+            Bounds bounds = skull.sharedMesh.bounds;
+            float scale = bounds.size.y * DragonHeightFactor / dragon.bounds.size.y;
+            Vector3 skullBase = new(bounds.center.x, bounds.min.y, bounds.center.z);
+            VisualHelper.CreateModel(skull.transform, dragon, texture, renderer, skullBase - forward * (dragonBase * scale), forward, scale);
+            renderer.enabled = false;
+        }
+    }
+
+    private static void PaintSail(Transform ship)
+    {
+        Renderer[] sails = ship.GetComponentsInChildren<SkinnedMeshRenderer>(true)
+            .Where(renderer => renderer.sharedMaterials.Any(material => material != null && material.mainTexture != null && material.mainTexture.name.StartsWith("sail_diffuse")))
+            .ToArray<Renderer>();
+        if (sails.Length == 0)
+        {
+            throw new InvalidOperationException("no sail with the sail_diffuse texture");
+        }
+
+        PaintMaterials(sails, name => name.StartsWith("sail_diffuse"), source =>
+        {
+            Color32[] pixels = VisualHelper.ReadPixels(source, SailSize, SailSize);
+            for (int y = 0; y < SailSize; y++)
+            {
+                for (int x = 0; x < SailSize; x++)
+                {
+                    int i = y * SailSize + x;
+                    pixels[i] = PaintSailPixel(pixels[i], (x + 0.5f) / SailSize, (y + 0.5f) / SailSize);
+                }
+            }
+
+            return VisualHelper.CreateTexture("whitehilt_sail", SailSize, SailSize, pixels, source);
+        });
+    }
+
+    // Red stripes become gold, the cloth a cleaner white, and the middle stripe gets a sword with a white hilt.
+    private static Color32 PaintSailPixel(Color32 pixel, float u, float v)
+    {
+        Color sword = SwordColor(u, v);
+        if (sword.a > 0f)
+        {
+            return sword;
+        }
+
+        Color.RGBToHSV(pixel, out float hue, out float saturation, out float value);
+        bool red = saturation > 0.35f && (hue < 0.05f || hue > 0.93f);
+        Color painted = red
+            ? Color.HSVToRGB(0.11f, 0.7f, Mathf.Clamp01(value * 1.25f + 0.1f))
+            : Color.Lerp(pixel, cream * Mathf.Clamp01(value * 1.1f + 0.1f), 0.5f);
+        painted.a = 1f;
+        return painted;
+    }
+
+    // A simple sword pointing down, centred on the sail texture. Returns a clear colour outside the sword.
+    private static Color SwordColor(float u, float v)
+    {
+        float dx = Mathf.Abs(u - 0.5f);
+        const float pad = 0.007f;
+
+        if ((u - 0.5f) * (u - 0.5f) + (v - 0.8f) * (v - 0.8f) < 0.03f * 0.03f)
+        {
+            return bronze;
+        }
+
+        if (v >= 0.69f && v <= 0.77f)
+        {
+            return dx < 0.018f ? Color.white : dx < 0.018f + pad ? outline : Color.clear;
+        }
+
+        if (v >= 0.66f && v < 0.69f)
+        {
+            return dx < 0.09f ? bronze : dx < 0.09f + pad ? outline : Color.clear;
+        }
+
+        float bladeHalfWidth = v >= 0.3f ? 0.02f : 0.02f * Mathf.Clamp01((v - 0.24f) / 0.06f);
+        if (v >= 0.24f && v < 0.66f)
+        {
+            return dx < bladeHalfWidth ? steel : dx < bladeHalfWidth + pad ? outline : Color.clear;
+        }
+
+        return Color.clear;
+    }
+
+    // Wood is whitewashed; the metal fittings, found through the metallic map, turn gold.
+    private static Texture2D PaintHull(Material material, Texture source)
+    {
+        int width = source.width;
+        int height = source.height;
+        Color32[] pixels = VisualHelper.ReadPixels(source, width, height);
+        Texture metalMap = material.HasProperty("_MetallicGlossMap") ? material.GetTexture("_MetallicGlossMap") : null;
+        Color32[] metal = metalMap != null ? VisualHelper.ReadPixels(metalMap, width, height) : null;
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            Color.RGBToHSV(pixels[i], out _, out _, out float value);
+            Color painted = metal != null && metal[i].r > 127
+                ? Color.HSVToRGB(0.11f, 0.75f, Mathf.Clamp01(value * 1.4f + 0.1f))
+                : Color.Lerp(pixels[i], cream * Mathf.Clamp01(value * 1.25f + 0.15f), 0.6f);
+            painted.a = pixels[i].a / 255f;
+            pixels[i] = painted;
+        }
+
+        return VisualHelper.CreateTexture($"{source.name}_whitehilt", width, height, pixels, source);
+    }
+
+    // The vanilla longship has shields along the rail in its trader dressing. Only the shields are switched on.
+    private static void ShowShields(Transform visual)
+    {
+        Transform customize = visual.Find("Customize") ?? throw new InvalidOperationException("Customize not found");
+        Transform storage = customize.Find("storage") ?? throw new InvalidOperationException("Customize/storage not found");
+
+        foreach (Transform child in customize)
+        {
+            child.gameObject.SetActive(child == storage);
+        }
+
+        List<Renderer> shields = new();
+        foreach (Transform child in storage)
+        {
+            bool shield = child.name.StartsWith("Shield");
+            child.gameObject.SetActive(shield);
+            if (shield)
+            {
+                shields.AddRange(child.GetComponentsInChildren<Renderer>(true));
+            }
+        }
+
+        customize.gameObject.SetActive(true);
+        PaintMaterials(shields.ToArray(), _ => true, (_, source) => VisualHelper.RecolorTexture(source, PaintShieldPixel));
+    }
+
+    // Iron bands and boss turn gold, the wood becomes cream paint.
+    private static Color32 PaintShieldPixel(Color32 pixel)
+    {
+        Color.RGBToHSV(pixel, out _, out float saturation, out float value);
+        if (value < 0.08f)
+        {
+            return pixel;
+        }
+
+        Color painted = saturation < 0.2f
+            ? Color.HSVToRGB(0.11f, 0.75f, Mathf.Clamp01(value * 1.3f + 0.1f))
+            : cream * Mathf.Clamp01(value * 0.6f + 0.55f);
+        painted.a = pixel.a / 255f;
+        return painted;
+    }
+
+    private static void PaintMaterials(Transform root, Func<string, bool> matches, Func<Material, Texture, Texture2D> paint)
+    {
+        PaintMaterials(root.GetComponentsInChildren<Renderer>(true), matches, paint);
+    }
+
+    private static void PaintMaterials(Renderer[] renderers, Func<string, bool> matches, Func<Texture, Texture2D> paint)
+    {
+        PaintMaterials(renderers, matches, (_, source) => paint(source));
+    }
+
+    // Materials are shared between the hull copies, so each vanilla material is painted once and reused.
+    private static void PaintMaterials(Renderer[] renderers, Func<string, bool> matches, Func<Material, Texture, Texture2D> paint)
+    {
+        Dictionary<Material, Material> painted = new();
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.sharedMaterials;
+            bool changed = false;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material source = materials[i];
+                if (source == null || source.mainTexture == null || !matches(source.mainTexture.name))
+                {
+                    continue;
+                }
+
+                if (!painted.TryGetValue(source, out Material replacement))
+                {
+                    replacement = new Material(source) { name = $"{source.name}_whitehilt", mainTexture = paint(source, source.mainTexture) };
+                    painted[source] = replacement;
+                }
+
+                materials[i] = replacement;
+                changed = true;
+            }
+
+            if (changed)
+            {
+                renderer.sharedMaterials = materials;
+            }
+        }
+
+        if (painted.Count == 0)
+        {
+            throw new InvalidOperationException("no matching material found");
+        }
+    }
+}

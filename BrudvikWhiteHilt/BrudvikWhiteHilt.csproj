@@ -187,6 +187,7 @@
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
     <Compile Include="Pieces\Smithing\ChainBench\ChainBench.cs" />
     <Compile Include="Pieces\Smithing\RuneForge\RuneForge.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RuneRack.cs" />

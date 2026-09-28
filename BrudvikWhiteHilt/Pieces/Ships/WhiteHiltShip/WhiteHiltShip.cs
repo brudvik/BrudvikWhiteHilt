@@ -1,5 +1,6 @@
 ﻿using Jotunn.Configs;
 using Jotunn.Managers;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 
@@ -38,6 +39,12 @@ public class WhiteHiltShip : WhiteHiltShipBase
     /// Indicates whether the White Hilt ship is enabled.
     /// </summary>
     public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override void ApplyVisual(GameObject ship)
+    {
+        WhiteHiltShipLook.Apply(ship);
+    }
 
     /// <summary>
     /// The name of the ship prefab.

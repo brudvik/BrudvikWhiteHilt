@@ -4,6 +4,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships;
 
@@ -107,6 +108,13 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
                 Jotunn.Logger.LogWarning($"{FullName} failed to load ship configuration, ship is not set to be ready for Ashlands!");
             }
 
+            ApplyVisual(item.PiecePrefab);
+            Sprite icon = VisualHelper.RenderIcon(item.PiecePrefab);
+            if (icon != null)
+            {
+                item.Piece.m_icon = icon;
+            }
+
             instance.AddPiece(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -117,4 +125,10 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
             Jotunn.Logger.LogError(ex);
         }
     }
+
+    /// <summary>
+    /// Changes the look of the cloned ship. Keeps the vanilla look by default.
+    /// </summary>
+    /// <param name="ship">The cloned ship prefab.</param>
+    protected virtual void ApplyVisual(GameObject ship) { }
 }
