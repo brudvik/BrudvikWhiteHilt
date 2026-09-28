@@ -162,8 +162,10 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
         try
         {
             GameObject prefab = piece.PiecePrefab;
-            Renderer fallback = VisualHelper.HideRenderers(prefab);
-            Renderer template = PrefabManager.Instance.GetPrefab("stone_pillar")?.GetComponentInChildren<MeshRenderer>(true) ?? fallback;
+            VisualHelper.HideRenderers(prefab);
+            // The table top's material. The first renderer of both the table and the pillar is their snow cover, which drew nothing.
+            Renderer template = prefab.transform.Find("new/high")?.GetComponent<MeshRenderer>()
+                ?? throw new InvalidOperationException("the table's renderer new/high was not found");
 
             Mesh mesh = ForagingAssets.LoadMesh("valkyriestone");
             float scale = StoneHeight / mesh.bounds.size.y;
