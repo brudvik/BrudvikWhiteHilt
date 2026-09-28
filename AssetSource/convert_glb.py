@@ -5,6 +5,7 @@ and made double-sided, since the Valheim shaders cull back faces.
 
 All parts are merged into one mesh. Parts that share one texture keep it as-is. Parts with different textures,
 or with only a base colour, are packed side by side into one PNG atlas and their UVs are moved to match.
+A model with one texture and an emission map also gets <name>_emission.
 
 Usage: python convert_glb.py <input.glb> <output_dir> <name>
 """
@@ -103,6 +104,13 @@ def texture_source(gltf, primitive):
     return ("image", gltf["textures"][texture_info["index"]]["source"], colour)
 
 
+def emissive_source(gltf, primitive):
+    """Returns the image index of the material's emission map, or None."""
+    material = gltf["materials"][primitive["material"]] if "material" in primitive else {}
+    texture_info = material.get("emissiveTexture")
+    return None if texture_info is None else gltf["textures"][texture_info["index"]]["source"]
+
+
 def image_bytes(gltf, binary, index):
     image = gltf["images"][index]
     view = gltf["bufferViews"][image["bufferView"]]
@@ -196,8 +204,15 @@ def main(input_path, output_dir, name):
         extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"
         (output_dir / f"{name}_albedo{extension}").write_bytes(data)
 
-    print(f"{name}: {len(parts)} parts, {len(sources)} textures{' (atlas)' if use_atlas else ''}, {vertex_count} vertices, "
-          f"{len(indices) // 3 * 2} triangles (double-sided), original height {height:.4f}")
+    emissive = {emissive_source(gltf, primitive) for _, primitive in parts}
+    has_emission = not use_atlas and len(emissive) == 1 and None not in emissive
+    if has_emission:
+        image, data = image_bytes(gltf, binary, emissive.pop())
+        extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"
+        (output_dir / f"{name}_emission{extension}").write_bytes(data)
+
+    print(f"{name}: {len(parts)} parts, {len(sources)} textures{' (atlas)' if use_atlas else ''}{' + emission' if has_emission else ''}, "
+          f"{vertex_count} vertices, {len(indices) // 3 * 2} triangles (double-sided), original height {height:.4f}")
 
 
 if __name__ == "__main__":

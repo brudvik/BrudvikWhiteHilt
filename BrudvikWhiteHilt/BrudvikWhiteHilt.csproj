@@ -200,6 +200,8 @@
     <Compile Include="Pieces\Portals\RuneRack\RuneRack.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RuneRackComponent.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RunePortalRules.cs" />
+    <Compile Include="Pieces\Portals\ValkyrieStone\ValkyrieStone.cs" />
+    <Compile Include="Pieces\Portals\ValkyrieStone\ValkyrieStoneComponent.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
     <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />

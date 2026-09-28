@@ -193,6 +193,14 @@ Looking at the portal shows which runes it has. Use the post to take the last ru
 | **Flametal Rune** | Flametal (ore, also the legacy kind) | Rune Forge | Iron ×10 |
 | **Gold Rune** | Gold (ore) | Rune Forge | Iron ×12 |
 
+#### Valkyrie Stone
+
+A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you to where you last fell in this world (the death marker on the map) for **one Surtling Core**. You arrive with everything you carry. Each death can be travelled to once; after the next death the stone works again.
+
+| Item | Use | Crafting Station | Requirements |
+|------|-----|------------------|--------------|
+| **Valkyrie Stone** | Travel to your last death point, 1 Surtling Core per trip | Hammer (Workbench) | Stone ×20, Surtling Core ×2, Withered Bone ×5 |
+
 ---
 
 ### 🍄 FORAGING & FOOD
@@ -277,6 +285,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 #### Added
 - Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
 - Portal runes also work on the stations of the Portal Stations mod
+- Valkyrie Stone: for one Surtling Core it carries you to where you last fell, once per death
 - White Hilt Ship upgrades, used on the mast: Ship Lantern (light at night), Cargo Barrels (hold 8 × 4), Ship Tent (shelter and dry) and Mast Wisp (clears the mist)
 
 #### Changed
@@ -388,6 +397,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Rune model: ["Rune Ring"](https://sketchfab.com/3d-models/rune-ring-266ccf4f356c45a89fe7e8d344590446) by [Christopher Turner](https://sketchfab.com/TUR17002508), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and recoloured per metal for Valheim.
 - Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
+- Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.

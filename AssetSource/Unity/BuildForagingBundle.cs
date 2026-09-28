@@ -6,7 +6,7 @@ using UnityEngine;
 
 /// <summary>
 /// Builds the asset bundle with the meshes and textures used by White Hilt items.
-/// Every <c>*.obj</c> and <c>*_albedo.png</c> / <c>*_albedo.jpg</c> in Assets/Foraging is included.
+/// Every <c>*.obj</c>, <c>*_albedo</c> and <c>*_emission</c> texture (.png / .jpg) in Assets/Foraging is included.
 /// Run from the command line with <c>-executeMethod BuildForagingBundle.Build</c>.
 /// </summary>
 public static class BuildForagingBundle
@@ -22,7 +22,10 @@ public static class BuildForagingBundle
         AssetDatabase.Refresh();
 
         string[] models = FindAssets("*.obj");
-        string[] textures = FindAssets("*_albedo.png").Concat(FindAssets("*_albedo.jpg")).OrderBy(path => path).ToArray();
+        string[] textures = new[] { "*_albedo.png", "*_albedo.jpg", "*_emission.png", "*_emission.jpg" }
+            .SelectMany(FindAssets)
+            .OrderBy(path => path)
+            .ToArray();
         if (models.Length == 0)
         {
             throw new InvalidOperationException($"No models found in {SourceFolder}.");
