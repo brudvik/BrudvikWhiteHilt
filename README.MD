@@ -201,6 +201,14 @@ A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you
 |------|-----|------------------|--------------|
 | **Valkyrie Stone** | Travel to your last death point, 1 Surtling Core per trip | Hammer (Workbench) | Stone ×20, Surtling Core ×2, Withered Bone ×5 |
 
+#### Portal Astrolabe
+
+A floating armillary around a glowing amethyst. Place it within 5 m of a map table, and every portal in the world shows on everyone's map and minimap with a portal icon and its name. This covers vanilla portals, portals from other mods that build on them, and Portal Stations stations. Point at a portal on the large map to see which runes it has. Public stations show for everyone; private, guild and group stations only for the player who built them, marked as such. The server looks for changes every 10–20 seconds; remove the astrolabe and the portals disappear from the map.
+
+| Item | Use | Crafting Station | Requirements |
+|------|-----|------------------|--------------|
+| **Portal Astrolabe** | Shows every portal on the map, with its runes | Hammer (Workbench) | Fine Wood ×6, Bronze ×4, Surtling Core ×1 |
+
 ---
 
 ### 🍄 FORAGING & FOOD
@@ -286,6 +294,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
 - Portal runes also work on the stations of the Portal Stations mod
 - Valkyrie Stone: for one Surtling Core it carries you to where you last fell, once per death
+- Portal Astrolabe: a map table extension that shows every portal (also mod portals and Portal Stations) on everyone's map, with its runes on hover
 - White Hilt Ship upgrades, used on the mast: Ship Lantern (light at night), Cargo Barrels (hold 8 × 4), Ship Tent (shelter and dry) and Mast Wisp (clears the mist)
 
 #### Changed
@@ -398,6 +407,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
 - Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
+- Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.

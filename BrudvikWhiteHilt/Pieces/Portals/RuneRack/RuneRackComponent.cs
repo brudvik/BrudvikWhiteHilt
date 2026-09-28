@@ -20,7 +20,11 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
     /// </summary>
     public const string FullSetEffectName = "FullSetEffect";
 
-    private const string ZdoKey = "whitehilt_runes";
+    /// <summary>
+    /// ZDO key of the rune bit mask, read by the server for the portal map.
+    /// </summary>
+    public const string ZdoKey = "whitehilt_runes";
+
     private const string AddRuneRpc = "WhiteHiltAddRune";
     private const string TakeRuneRpc = "WhiteHiltTakeRune";
     private const float GlowStrength = 1.5f;

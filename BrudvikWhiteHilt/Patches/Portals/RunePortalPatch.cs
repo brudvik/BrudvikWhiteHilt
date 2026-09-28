@@ -78,21 +78,32 @@ public static class RunePortalPatch
     internal static string GetRuneHoverText(Vector3 portalPosition)
     {
         int mask = RunePortalRules.GetRunes(portalPosition, out bool everything);
+        return mask == 0 && !everything ? string.Empty : "\n" + FormatRunes(mask, everything);
+    }
+
+    /// <summary>
+    /// Localized text for a portal's runes: "everything", the rune names, or "no runes".
+    /// </summary>
+    /// <param name="mask">Bit mask of the runes near the portal.</param>
+    /// <param name="everything">True if one post near the portal holds every rune.</param>
+    /// <returns>The localized text.</returns>
+    internal static string FormatRunes(int mask, bool everything)
+    {
         if (everything)
         {
-            return Localization.instance.Localize("\n<color=orange>$whitehilt_portal_everything</color>");
+            return Localization.instance.Localize("<color=orange>$whitehilt_portal_everything</color>");
         }
 
         if (mask == 0)
         {
-            return string.Empty;
+            return Localization.instance.Localize("$whitehilt_runerack_empty");
         }
 
         string runes = string.Join(", ", Enumerable.Range(0, WhiteHiltRuneBase.Count)
             .Where(i => (mask & (1 << i)) != 0)
             .Select(i => WhiteHiltRuneBase.Get(i)?.NameToken)
             .Where(name => name != null));
-        return Localization.instance.Localize($"\n$whitehilt_portal_runes: {runes}");
+        return Localization.instance.Localize($"$whitehilt_portal_runes: {runes}");
     }
 
     private static void Enter(TeleportWorld portal)
