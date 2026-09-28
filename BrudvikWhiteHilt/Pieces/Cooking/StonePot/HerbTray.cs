@@ -78,24 +78,8 @@ public class HerbTray
         {
             Transform root = piece.PiecePrefab.transform;
             Transform table = root.Find("new") ?? throw new InvalidOperationException("the table new was not found");
-            Mesh mesh = ForagingAssets.LoadMesh("herbtray");
-            GameObject model = VisualHelper.ReplaceMesh(table.gameObject, mesh, ForagingAssets.LoadTexture("herbtray_albedo"), size: Size);
-
-            Vector3 center = root.InverseTransformPoint(model.transform.TransformPoint(mesh.bounds.center));
-            Vector3 extent = mesh.bounds.size * model.transform.localScale.x;
-            foreach (BoxCollider collider in root.GetComponentsInChildren<BoxCollider>(true))
-            {
-                if (collider.transform.parent != root)
-                {
-                    continue;
-                }
-
-                collider.transform.localPosition = Vector3.zero;
-                collider.transform.localRotation = Quaternion.identity;
-                collider.transform.localScale = Vector3.one;
-                collider.center = center;
-                collider.size = extent;
-            }
+            GameObject model = VisualHelper.ReplaceMesh(table.gameObject, ForagingAssets.LoadMesh("herbtray"), ForagingAssets.LoadTexture("herbtray_albedo"), size: Size);
+            VisualHelper.FitBoxColliders(root, model);
 
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)

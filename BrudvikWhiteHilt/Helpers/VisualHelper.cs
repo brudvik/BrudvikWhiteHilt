@@ -92,20 +92,92 @@ public static class VisualHelper
     public static GameObject AddMesh(GameObject model, Mesh mesh, Texture2D texture, Vector3 basePosition, float height)
     {
         MeshRenderer template = model.GetComponent<MeshRenderer>();
-        Material material = new(template.sharedMaterial) { name = $"{mesh.name}_material", mainTexture = texture };
-
-        GameObject added = new($"{mesh.name}_model") { layer = model.layer };
-        added.transform.SetParent(model.transform, false);
         float scale = height / mesh.bounds.size.y;
-        added.transform.localScale = Vector3.one * scale;
-        added.transform.localPosition = basePosition - new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
-        added.AddComponent<MeshFilter>().sharedMesh = mesh;
+        Vector3 position = basePosition - new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
+        return CreateModel(model.transform, mesh, texture, template, position, Quaternion.identity, scale);
+    }
 
-        MeshRenderer renderer = added.AddComponent<MeshRenderer>();
+    /// <summary>
+    /// Creates a child object that shows <paramref name="mesh"/> with a copy of <paramref name="template"/>'s material.
+    /// </summary>
+    /// <param name="parent">Parent of the new object.</param>
+    /// <param name="mesh">Mesh to show.</param>
+    /// <param name="texture">Albedo texture, or null to keep the template's.</param>
+    /// <param name="template">Renderer whose material, shadows and layer are copied.</param>
+    /// <param name="localPosition">Position of the mesh pivot.</param>
+    /// <param name="localRotation">Rotation.</param>
+    /// <param name="scale">Uniform scale.</param>
+    /// <returns>The new object.</returns>
+    public static GameObject CreateModel(Transform parent, Mesh mesh, Texture2D texture, Renderer template, Vector3 localPosition, Quaternion localRotation, float scale)
+    {
+        Material material = new(template.sharedMaterial) { name = $"{mesh.name}_material" };
+        if (texture != null)
+        {
+            material.mainTexture = texture;
+            if (material.HasProperty("_Color"))
+            {
+                material.color = Color.white;
+            }
+
+            foreach (string property in unusedTextureProperties.Where(material.HasProperty))
+            {
+                material.SetTexture(property, null);
+            }
+        }
+
+        GameObject created = new($"{mesh.name}_model") { layer = template.gameObject.layer };
+        created.transform.SetParent(parent, false);
+        created.transform.localPosition = localPosition;
+        created.transform.localRotation = localRotation;
+        created.transform.localScale = Vector3.one * scale;
+        created.AddComponent<MeshFilter>().sharedMesh = mesh;
+
+        MeshRenderer renderer = created.AddComponent<MeshRenderer>();
         renderer.sharedMaterial = material;
         renderer.shadowCastingMode = template.shadowCastingMode;
         renderer.receiveShadows = template.receiveShadows;
-        return added;
+        return created;
+    }
+
+    /// <summary>
+    /// Disables every mesh renderer under <paramref name="root"/>, including the inactive worn and broken looks.
+    /// </summary>
+    /// <param name="root">Object to hide.</param>
+    /// <returns>The first renderer, to copy its material from.</returns>
+    public static Renderer HideRenderers(GameObject root)
+    {
+        Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true).Where(IsMeshRenderer).ToArray();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        return renderers.FirstOrDefault() ?? throw new InvalidOperationException($"{root.name} has no mesh renderer.");
+    }
+
+    /// <summary>
+    /// Resizes the box colliders directly under <paramref name="root"/> to the bounds of <paramref name="model"/>.
+    /// </summary>
+    /// <param name="root">Piece root.</param>
+    /// <param name="model">A model made by <see cref="ReplaceMesh"/> or <see cref="CreateModel"/>.</param>
+    public static void FitBoxColliders(Transform root, GameObject model)
+    {
+        Mesh mesh = model.GetComponent<MeshFilter>().sharedMesh;
+        Vector3 center = root.InverseTransformPoint(model.transform.TransformPoint(mesh.bounds.center));
+        Vector3 size = mesh.bounds.size * model.transform.localScale.x;
+        foreach (BoxCollider collider in root.GetComponentsInChildren<BoxCollider>(true))
+        {
+            if (collider.transform.parent != root)
+            {
+                continue;
+            }
+
+            collider.transform.localPosition = Vector3.zero;
+            collider.transform.localRotation = Quaternion.identity;
+            collider.transform.localScale = Vector3.one;
+            collider.center = center;
+            collider.size = size;
+        }
     }
 
     /// <summary>
@@ -258,7 +330,13 @@ public static class VisualHelper
         return bounds;
     }
 
-    private static Texture2D RecolorTexture(Texture source, Func<Color32, Color32> recolor)
+    /// <summary>
+    /// Returns a recoloured, GPU-only copy of a texture.
+    /// </summary>
+    /// <param name="source">Texture to copy. It does not need to be CPU-readable.</param>
+    /// <param name="recolor">Returns the new colour of a pixel.</param>
+    /// <returns>The recoloured copy.</returns>
+    public static Texture2D RecolorTexture(Texture source, Func<Color32, Color32> recolor)
     {
         // Game textures are not CPU-readable, so copy through a render texture first.
         RenderTexture renderTexture = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);

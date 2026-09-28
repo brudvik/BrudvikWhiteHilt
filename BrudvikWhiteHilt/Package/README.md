@@ -159,6 +159,30 @@ The Chain Bench also counts as a forge extension, so the forge can reach level 8
 
 ---
 
+### 🌀 PORTAL RUNES
+
+Metal cannot go through portals. With runes it can, one metal tier at a time:
+
+1. Build a **Rune Forge** next to a forge and smith runes from iron.
+2. Raise a **Rune Post** within 8 m of the portal you travel **from**.
+3. Hang runes on the post (use the rune on it, like an item stand). Each rune lets that portal carry its metals. Several posts near one portal count together.
+4. With **all six runes on the same post**, the post glows and the portal carries **everything**, including dragon eggs, Hildir's chests and the Deep North boss drop.
+
+Looking at the portal shows which runes it has. Use the post to take the last rune back; a destroyed post drops its runes. Works for every portal that builds on the vanilla portal, also portals from other mods.
+
+| Item | Lets through | Crafting Station | Requirements |
+|------|--------------|------------------|--------------|
+| **Rune Forge** | Crafting station for the runes | Hammer (next to a Forge) | Fine Wood ×6, Iron ×6, Stone ×10 |
+| **Rune Post** | Holds up to six runes | Hammer (Workbench) | Wood ×6, Fine Wood ×4, Iron ×2 |
+| **Bronze Rune** | Copper, tin, bronze (ores and scrap) | Rune Forge | Iron ×2 |
+| **Iron Rune** | Iron (ore and scrap) | Rune Forge | Iron ×4 |
+| **Silver Rune** | Silver (ore) | Rune Forge | Iron ×6 |
+| **Black Metal Rune** | Black metal (scrap) | Rune Forge | Iron ×8 |
+| **Flametal Rune** | Flametal (ore, also the legacy kind) | Rune Forge | Iron ×10 |
+| **Gold Rune** | Gold (ore) | Rune Forge | Iron ×12 |
+
+---
+
 ### 🍄 FORAGING & FOOD
 
 New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
@@ -218,7 +242,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 |------|-------------|------------|---------------|
 | Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead |
 | Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
-| Swamp | Iron | Iron ×5 | Ship, Chain Bench, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
+| Swamp | Iron | Iron ×5 | Ship, Chain Bench, Rune Forge, Rune Post, all runes, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
 | Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
@@ -235,6 +259,11 @@ the license only allows it to be shipped in the pre-built mod file. If you want 
 The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run.
 
 ## Changelog
+
+### v0.6.0 - 2026-09-28
+
+#### Added
+- Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
 
 ### v0.5.0 - 2026-09-28
 
@@ -338,6 +367,9 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Herb Tray model: ["Health Pack: Mortar and Pestle Herb Crafting Set"](https://sketchfab.com/3d-models/health-pack-mortar-and-pestle-herb-crafting-set-98c25d51e2d84fc48153adf1df7ed520) by [Michael Neocleous](https://sketchfab.com/mikegneo), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Chain Bench vise: ["Medieval_Blacksmith_Vise"](https://sketchfab.com/3d-models/medieval-blacksmith-vise-27f9f65e020f4f88b65b42a510f5a433) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
 - Chain Bench chains: ["Hanging wall chains"](https://sketchfab.com/3d-models/hanging-wall-chains-97bc5d1699c94b619d0666f6eab79ea0) by [Karyu](https://sketchfab.com/karyu.lucca), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Rune Forge model: ["Medieval Workbench"](https://sketchfab.com/3d-models/medieval-workbench-b9e0b742add340f28f3194d1dc022d26) by [Catsnap0006](https://sketchfab.com/Catsnap0006), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Rune model: ["Rune Ring"](https://sketchfab.com/3d-models/rune-ring-266ccf4f356c45a89fe7e8d344590446) by [Christopher Turner](https://sketchfab.com/TUR17002508), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and recoloured per metal for Valheim.
+- Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
