@@ -1,4 +1,5 @@
 using BepInEx;
+using BrudvikWhiteHilt.Building;
 using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items;
@@ -56,6 +57,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         NearbyContainers.Initialize();
         EternalFireRules.Initialize();
         PortalSettings.Initialize();
+        BuildToolSettings.Initialize();
+        Building.Media.MediaSettings.Initialize();
+        Building.Groups.GroupSettings.Initialize();
+        Building.Terrain.TerrainSettings.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
