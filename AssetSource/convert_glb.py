@@ -7,6 +7,10 @@ All parts are merged into one mesh. Parts that share one texture keep it as-is. 
 or with only a base colour, are packed side by side into one PNG atlas and their UVs are moved to match.
 A model with one texture and an emission map also gets <name>_emission.
 
+A <name>.crop.json next to the .glb ({"min": [x, y, z], "max": [x, y, z]}, in the scaled space described above) keeps
+only the triangles whose centre lies in that box, for files that hold several objects in one mesh; the result is
+scaled and placed again.
+
 Usage: python convert_glb.py <input.glb> <output_dir> <name>
 """
 import io
@@ -143,6 +147,24 @@ def build_atlas(gltf, binary, sources):
     return buffer.getvalue()
 
 
+def crop(positions, normals, uvs, indices, box):
+    """Keeps the triangles whose centre lies inside box["min"]..box["max"] and drops the vertices nobody uses."""
+    low, high = box["min"], box["max"]
+    kept = []
+    for i in range(0, len(indices), 3):
+        triangle = indices[i:i + 3]
+        centre = [sum(positions[v][axis] for v in triangle) / 3 for axis in range(3)]
+        if all(low[axis] <= centre[axis] <= high[axis] for axis in range(3)):
+            kept += triangle
+    if not kept:
+        raise ValueError("The crop box keeps no triangles")
+    remap = {}
+    for v in kept:
+        remap.setdefault(v, len(remap))
+    order = sorted(remap, key=remap.get)
+    return ([positions[v] for v in order], [normals[v] for v in order], [uvs[v] for v in order], [remap[v] for v in kept])
+
+
 def main(input_path, output_dir, name):
     gltf, binary = read_glb(input_path)
     parts = [
@@ -181,6 +203,16 @@ def main(input_path, output_dir, name):
     height = maximum[1] - minimum[1]
     base = [(minimum[0] + maximum[0]) / 2, minimum[1], (minimum[2] + maximum[2]) / 2]
     positions = [[(p[axis] - base[axis]) / height for axis in range(3)] for p in positions]
+
+    crop_file = input_path.with_suffix(".crop.json")
+    if crop_file.exists():
+        positions, normals, uvs, indices = crop(positions, normals, uvs, indices, json.loads(crop_file.read_text()))
+        minimum = [min(p[axis] for p in positions) for axis in range(3)]
+        maximum = [max(p[axis] for p in positions) for axis in range(3)]
+        cropped_height = maximum[1] - minimum[1]
+        base = [(minimum[0] + maximum[0]) / 2, minimum[1], (minimum[2] + maximum[2]) / 2]
+        positions = [[(p[axis] - base[axis]) / cropped_height for axis in range(3)] for p in positions]
+        height *= cropped_height
 
     output_dir.mkdir(parents=True, exist_ok=True)
     vertex_count = len(positions)

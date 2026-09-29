@@ -112,6 +112,9 @@
     <Compile Include="Items\Meads\RoserootMead\RoserootMead.cs" />
     <Compile Include="Items\Meads\SweetGaleAle\SweetGaleAle.cs" />
     <Compile Include="Items\Meads\WhiteHiltMeadBase.cs" />
+    <Compile Include="Items\Navigation\AmuletGems.cs" />
+    <Compile Include="Items\Navigation\NavigatorTable.cs" />
+    <Compile Include="Items\Navigation\PathfinderAmulet.cs" />
     <Compile Include="Items\Runes\BlackMetalRune\BlackMetalRune.cs" />
     <Compile Include="Items\Runes\BronzeRune\BronzeRune.cs" />
     <Compile Include="Items\Runes\FlametalRune\FlametalRune.cs" />
@@ -188,6 +191,9 @@
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
     <Compile Include="Helpers\FireEffects.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
+    <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
+    <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
+    <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
@@ -206,6 +212,12 @@
     <Compile Include="Pieces\Defenses\DefensePieces.cs" />
     <Compile Include="Pieces\Defenses\GateLeafDriver.cs" />
     <Compile Include="Pieces\Defenses\VanillaMeshLibrary.cs" />
+    <Compile Include="Pieces\Navigation\CartographerDesk.cs" />
+    <Compile Include="Pieces\Navigation\MapTableProximity.cs" />
+    <Compile Include="Pieces\Navigation\ShipChartTable.cs" />
+    <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
+    <Compile Include="Navigation\ExplorationSkill.cs" />
+    <Compile Include="Navigation\RavenSightEffect.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />

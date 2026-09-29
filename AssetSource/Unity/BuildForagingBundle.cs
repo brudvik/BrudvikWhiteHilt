@@ -14,6 +14,9 @@ public static class BuildForagingBundle
     private const string BundleName = "whitehilt_foraging";
     private const string SourceFolder = "Assets/Foraging";
 
+    // Models the mod merges with Mesh.CombineMeshes (the navigation pieces and the Pathfinder amulet).
+    private static readonly string[] CombinedModels = { "cartodesk", "sextant", "mapscroll", "seachart", "amulet" };
+
     /// <summary>
     /// Configures the importers and writes the bundle to the project's AssetBundles folder.
     /// </summary>
@@ -91,7 +94,8 @@ public static class BuildForagingBundle
         importer.importAnimation = false;
         importer.importNormals = ModelImporterNormals.Import;
         importer.meshCompression = ModelImporterMeshCompression.Off;
-        importer.isReadable = false;
+        // Mesh.CombineMeshes reads the vertices on the CPU, so the models the mod merges into combined meshes stay readable.
+        importer.isReadable = CombinedModels.Contains(Path.GetFileNameWithoutExtension(path));
         importer.SaveAndReimport();
     }
 

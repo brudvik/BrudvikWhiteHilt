@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items;
 using BrudvikWhiteHilt.Items.Food;
 using BrudvikWhiteHilt.Items.Foraging;
+using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces;
 using BrudvikWhiteHilt.Progression;
 using HarmonyLib;
@@ -48,6 +49,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         WhiteHiltConfig.Initialize(Config);
         Translations.LoadEmbedded();
         ProgressionManager.RegisterTranslations();
+        ExplorationSkill.Register();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
@@ -122,6 +124,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         {
             customItems.ForEach(customItem => customItem.Add());
             customPieces.ForEach(customPiece => customPiece.Add());
+            ExplorationSkill.SetIconFromMapTable();
 
             Jotunn.Logger.LogInfo("All custom items have been added!");
         }
