@@ -19,6 +19,9 @@ public static class ShipSettings
     /// <summary>Whether speed, heading and wind are shown under the wind indicator while steering.</summary>
     public static ConfigEntry<bool> ShowShipHud { get; private set; }
 
+    /// <summary>Whether the drift anchor drops when the last person leaves the ship, and weighs when someone takes the helm.</summary>
+    public static ConfigEntry<bool> AutoAnchor { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -28,6 +31,8 @@ public static class ShipSettings
             "At the helm: the ship holds its course when you let go of the helm, and stops before shallow water.");
         ShowShipHud = WhiteHiltConfig.BindLocal(Section, "ShowSpeedAndHeading", true,
             "Show speed in knots, heading and the wind under the wind indicator while steering.");
+        AutoAnchor = WhiteHiltConfig.BindAdminOnly(Section, "AutoAnchor", true,
+            "The White Hilt Ship's drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm.");
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

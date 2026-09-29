@@ -164,7 +164,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Deck Brazier** | An iron brazier on the foredeck that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
 | **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Iron ×2 |
 
-The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it.
+The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it. The drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm (`Ships` → `AutoAnchor`, on by default).
 
 **Sailing help** (every ship, also vanilla ones):
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
@@ -521,6 +521,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E
+- The drift anchor drops by itself when the last person leaves the ship, and is weighed when someone takes the helm
 
 #### Changed
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber

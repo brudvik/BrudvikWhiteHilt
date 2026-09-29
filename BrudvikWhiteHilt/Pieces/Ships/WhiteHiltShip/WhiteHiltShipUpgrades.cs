@@ -64,6 +64,10 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private const float MinFishingSpeed = 2f;
     private const float AnchorDrop = 2f;
 
+    // The ship must lie empty and nearly still this long before the anchor drops on its own.
+    private const float AutoAnchorSeconds = 2f;
+    private const float AutoAnchorMaxSpeed = 2f;
+
     private const RigidbodyConstraints AnchoredConstraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY;
 
@@ -102,6 +106,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private bool? shownAnchored;
     private float holdCheckTimer;
     private float netTimer;
+    private float emptyTimer;
 
     /// <summary>
     /// Bit mask of the upgrades on the ship.
@@ -331,6 +336,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             holdCheckTimer = 0f;
         }
 
+        UpdateAutoAnchor(Time.deltaTime);
         UpdateAnchor();
         UpdateFishingNet(Time.deltaTime);
 
@@ -420,6 +426,37 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         nview.GetZDO().Set(AnchorZdoKey, anchored);
         if (anchored && ship != null)
         {
+            ship.m_speed = Ship.Speed.Stop;
+        }
+    }
+
+    // Drops the anchor when the last person has left a still ship, and weighs it when someone takes the helm.
+    private void UpdateAutoAnchor(float deltaTime)
+    {
+        if (!ShipSettings.AutoAnchor.Value || !nview.IsOwner() || ship == null || !Has(ShipDriftAnchor.Bit))
+        {
+            emptyTimer = 0f;
+            return;
+        }
+
+        bool anchored = nview.GetZDO().GetBool(AnchorZdoKey);
+        if (anchored)
+        {
+            emptyTimer = 0f;
+            if (ship.HaveControllingPlayer())
+            {
+                nview.GetZDO().Set(AnchorZdoKey, false);
+            }
+
+            return;
+        }
+
+        bool still = body == null || body.linearVelocity.magnitude < AutoAnchorMaxSpeed;
+        emptyTimer = ship.m_players.Count == 0 && still ? emptyTimer + deltaTime : 0f;
+        if (emptyTimer >= AutoAnchorSeconds)
+        {
+            emptyTimer = 0f;
+            nview.GetZDO().Set(AnchorZdoKey, true);
             ship.m_speed = Ship.Speed.Stop;
         }
     }
