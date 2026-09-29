@@ -100,6 +100,29 @@ public static class VisualHelper
     }
 
     /// <summary>
+    /// Copies a vanilla material and gives it another albedo texture, without the template's other texture maps.
+    /// </summary>
+    /// <param name="template">Material to copy the shader and settings from.</param>
+    /// <param name="texture">Albedo texture.</param>
+    /// <param name="name">Name of the new material.</param>
+    /// <returns>The new material.</returns>
+    public static Material CreateTexturedMaterial(Material template, Texture2D texture, string name)
+    {
+        Material material = new(template) { name = name, mainTexture = texture };
+        if (material.HasProperty("_Color"))
+        {
+            material.color = Color.white;
+        }
+
+        foreach (string property in unusedTextureProperties.Where(material.HasProperty))
+        {
+            material.SetTexture(property, null);
+        }
+
+        return material;
+    }
+
+    /// <summary>
     /// Creates a child object that shows <paramref name="mesh"/> with a copy of <paramref name="template"/>'s material.
     /// </summary>
     /// <param name="parent">Parent of the new object.</param>

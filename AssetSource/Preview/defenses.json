@@ -1,0 +1,14415 @@
+{
+ "pieces": [
+  {
+   "name": "pal_a",
+   "template": true,
+   "parts": [
+    {
+     "mesh": "stake",
+     "position": [
+      -0.791,
+      -0.1,
+      0.022
+     ],
+     "rotation": [
+      -0.886,
+      204.735,
+      -1.923
+     ],
+     "scale": [
+      0.947,
+      1.038,
+      0.947
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.381,
+      -0.1,
+      -0.005
+     ],
+     "rotation": [
+      0.08,
+      84.042,
+      1.949
+     ],
+     "scale": [
+      0.816,
+      0.955,
+      0.816
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.019,
+      -0.1,
+      0.007
+     ],
+     "rotation": [
+      -0.196,
+      133.636,
+      1.666
+     ],
+     "scale": [
+      0.965,
+      1.046,
+      0.965
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.396,
+      -0.1,
+      0.002
+     ],
+     "rotation": [
+      0.294,
+      151.4,
+      -1.276
+     ],
+     "scale": [
+      0.738,
+      1.044,
+      0.738
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.812,
+      -0.1,
+      0.002
+     ],
+     "rotation": [
+      1.561,
+      83.742,
+      -0.874
+     ],
+     "scale": [
+      0.901,
+      1.054,
+      0.901
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.0,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.3,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.25,
+      0.25
+     ],
+     "rotation": [
+      -0.464,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.971
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.45,
+      0.25
+     ],
+     "rotation": [
+      -1.25,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.972
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.727,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      45.167,
+      4.173,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.501,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.291,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      47.237,
+      7.422,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.555,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.176,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      41.347,
+      -14.827,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.554,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.699,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      46.312,
+      -14.247,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.539,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.707,
+      -0.08,
+      0.623
+     ],
+     "rotation": [
+      0,
+      296.384,
+      0
+     ],
+     "scale": [
+      0.416,
+      0.333,
+      0.416
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.505,
+      -0.08,
+      0.606
+     ],
+     "rotation": [
+      0,
+      201.451,
+      0
+     ],
+     "scale": [
+      0.43,
+      0.344,
+      0.43
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.105,
+      -0.08,
+      0.6
+     ],
+     "rotation": [
+      0,
+      151.403,
+      0
+     ],
+     "scale": [
+      0.57,
+      0.456,
+      0.57
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.021,
+      -0.12,
+      0.75
+     ],
+     "rotation": [
+      0,
+      7.186,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.45,
+      1.4
+     ],
+     "tint": [
+      0.55,
+      0.45,
+      0.35
+     ]
+    }
+   ]
+  },
+  {
+   "name": "pal_b",
+   "template": true,
+   "parts": [
+    {
+     "mesh": "stake",
+     "position": [
+      -0.806,
+      -0.1,
+      0.007
+     ],
+     "rotation": [
+      -1.866,
+      124.105,
+      -0.637
+     ],
+     "scale": [
+      0.957,
+      1.041,
+      0.957
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.403,
+      -0.1,
+      -0.012
+     ],
+     "rotation": [
+      1.642,
+      347.23,
+      0.077
+     ],
+     "scale": [
+      0.82,
+      0.977,
+      0.82
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.006,
+      -0.1,
+      -0.009
+     ],
+     "rotation": [
+      -0.468,
+      46.027,
+      -1.412
+     ],
+     "scale": [
+      0.995,
+      1.047,
+      0.995
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.401,
+      -0.1,
+      0.023
+     ],
+     "rotation": [
+      -0.667,
+      306.638,
+      0.006
+     ],
+     "scale": [
+      0.774,
+      0.967,
+      0.774
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.788,
+      -0.1,
+      0.026
+     ],
+     "rotation": [
+      1.25,
+      286.244,
+      1.705
+     ],
+     "scale": [
+      1.011,
+      0.979,
+      1.011
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.0,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.3,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.25,
+      0.25
+     ],
+     "rotation": [
+      -0.596,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.971
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.45,
+      0.25
+     ],
+     "rotation": [
+      -1.29,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.972
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.749,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      50.517,
+      -14.046,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.533,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.234,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      42.229,
+      13.581,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.511,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.298,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      51.454,
+      14.09,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.549,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.71,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      48.542,
+      7.129,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.535,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.868,
+      -0.08,
+      0.555
+     ],
+     "rotation": [
+      0,
+      250.596,
+      0
+     ],
+     "scale": [
+      0.48,
+      0.384,
+      0.48
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.376,
+      -0.08,
+      0.939
+     ],
+     "rotation": [
+      0,
+      148.674,
+      0
+     ],
+     "scale": [
+      0.581,
+      0.465,
+      0.581
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.635,
+      -0.08,
+      0.802
+     ],
+     "rotation": [
+      0,
+      54.448,
+      0
+     ],
+     "scale": [
+      0.59,
+      0.472,
+      0.59
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.048,
+      -0.12,
+      0.75
+     ],
+     "rotation": [
+      0,
+      9.563,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.45,
+      1.4
+     ],
+     "tint": [
+      0.55,
+      0.45,
+      0.35
+     ]
+    }
+   ]
+  },
+  {
+   "name": "pal_c",
+   "template": true,
+   "parts": [
+    {
+     "mesh": "stake",
+     "position": [
+      -0.794,
+      -0.1,
+      0.025
+     ],
+     "rotation": [
+      -0.991,
+      26.215,
+      1.669
+     ],
+     "scale": [
+      1.002,
+      1.036,
+      1.002
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.395,
+      -0.1,
+      0.018
+     ],
+     "rotation": [
+      -0.402,
+      180.339,
+      0.757
+     ],
+     "scale": [
+      0.787,
+      1.006,
+      0.787
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.005,
+      -0.1,
+      0.019
+     ],
+     "rotation": [
+      0.569,
+      346.43,
+      -0.133
+     ],
+     "scale": [
+      0.99,
+      1.029,
+      0.99
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.417,
+      -0.1,
+      -0.006
+     ],
+     "rotation": [
+      -0.288,
+      23.604,
+      0.166
+     ],
+     "scale": [
+      0.798,
+      1.037,
+      0.798
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.808,
+      -0.1,
+      -0.021
+     ],
+     "rotation": [
+      -0.739,
+      267.732,
+      -0.067
+     ],
+     "scale": [
+      0.992,
+      0.977,
+      0.992
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.0,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.3,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.25,
+      0.25
+     ],
+     "rotation": [
+      0.645,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.971
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.45,
+      0.25
+     ],
+     "rotation": [
+      -1.455,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.972
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.739,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      42.223,
+      -14.817,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.492,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.203,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      41.029,
+      4.47,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.485,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.284,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      48.549,
+      -7.886,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.537,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.805,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      51.38,
+      -4.935,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.525,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.202,
+      -0.08,
+      0.863
+     ],
+     "rotation": [
+      0,
+      290.397,
+      0
+     ],
+     "scale": [
+      0.489,
+      0.391,
+      0.489
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.181,
+      -0.08,
+      0.603
+     ],
+     "rotation": [
+      0,
+      332.845,
+      0
+     ],
+     "scale": [
+      0.597,
+      0.477,
+      0.597
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.6,
+      -0.08,
+      0.75
+     ],
+     "rotation": [
+      0,
+      33.262,
+      0
+     ],
+     "scale": [
+      0.417,
+      0.333,
+      0.417
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.044,
+      -0.12,
+      0.75
+     ],
+     "rotation": [
+      0,
+      -0.477,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.45,
+      1.4
+     ],
+     "tint": [
+      0.55,
+      0.45,
+      0.35
+     ]
+    }
+   ]
+  },
+  {
+   "name": "pal_d",
+   "template": true,
+   "parts": [
+    {
+     "mesh": "stake",
+     "position": [
+      -0.785,
+      -0.1,
+      -0.005
+     ],
+     "rotation": [
+      1.455,
+      35.936,
+      1.039
+     ],
+     "scale": [
+      0.915,
+      0.938,
+      0.915
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.409,
+      -0.1,
+      0.027
+     ],
+     "rotation": [
+      -0.566,
+      277.818,
+      -1.78
+     ],
+     "scale": [
+      0.761,
+      1.063,
+      0.761
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.003,
+      -0.1,
+      -0.024
+     ],
+     "rotation": [
+      -0.19,
+      121.413,
+      1.5
+     ],
+     "scale": [
+      0.905,
+      1.009,
+      0.905
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.391,
+      -0.1,
+      0.025
+     ],
+     "rotation": [
+      -0.05,
+      353.729,
+      -0.187
+     ],
+     "scale": [
+      0.752,
+      0.966,
+      0.752
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.806,
+      -0.1,
+      -0.009
+     ],
+     "rotation": [
+      -1.033,
+      278.797,
+      -0.737
+     ],
+     "scale": [
+      0.904,
+      0.962,
+      0.904
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.0,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.3,
+      -0.3
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.091,
+      1.091,
+      0.971
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.25,
+      0.25
+     ],
+     "rotation": [
+      -1.471,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.972
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.45,
+      0.25
+     ],
+     "rotation": [
+      0.074,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.971
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.735,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      43.092,
+      0.235,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.532,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.2,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      45.957,
+      -4.226,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.556,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.247,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      46.643,
+      -11.406,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.5,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.698,
+      -0.2,
+      0.35
+     ],
+     "rotation": [
+      49.606,
+      14.627,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.532,
+      0.45
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      -0.161,
+      -0.08,
+      0.906
+     ],
+     "rotation": [
+      0,
+      56.925,
+      0
+     ],
+     "scale": [
+      0.448,
+      0.359,
+      0.448
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.704,
+      -0.08,
+      0.591
+     ],
+     "rotation": [
+      0,
+      309.16,
+      0
+     ],
+     "scale": [
+      0.573,
+      0.458,
+      0.573
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.321,
+      -0.08,
+      0.63
+     ],
+     "rotation": [
+      0,
+      43.882,
+      0
+     ],
+     "scale": [
+      0.459,
+      0.367,
+      0.459
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "rock",
+     "position": [
+      0.009,
+      -0.12,
+      0.75
+     ],
+     "rotation": [
+      0,
+      9.345,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.45,
+      1.4
+     ],
+     "tint": [
+      0.55,
+      0.45,
+      0.35
+     ]
+    }
+   ]
+  },
+  {
+   "name": "skansevegg",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "piece": "pal_a",
+     "position": [
+      -1,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "pal_b",
+     "position": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      1.92,
+      -1.1
+     ],
+     "scale": [
+      2.0,
+      1,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.74,
+      -0.5
+     ],
+     "scale": [
+      2.0,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.74,
+      -1.7
+     ],
+     "scale": [
+      2.0,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.9,
+      0.8,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.0,
+      0.8,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.9,
+      0.8,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.95,
+      0.5,
+      -1.7
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.455,
+      1.455,
+      0.905
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.6,
+      1.4,
+      -1.7
+     ],
+     "rotation": [
+      -45.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.3,
+      1.4,
+      -1.7
+     ],
+     "rotation": [
+      -45.0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.95,
+      0.5,
+      -1.7
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.455,
+      1.455,
+      0.905
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.3,
+      1.4,
+      -1.7
+     ],
+     "rotation": [
+      -45.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.6,
+      1.4,
+      -1.7
+     ],
+     "rotation": [
+      -45.0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      1.6,
+      0
+     ],
+     "size": [
+      4.0,
+      3.3,
+      0.55
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      1.92,
+      -1.1
+     ],
+     "size": [
+      4,
+      0.16,
+      1.4
+     ]
+    }
+   ],
+   "snapPoints": [
+    -2,
+    0,
+    0,
+    2,
+    0,
+    0,
+    -2,
+    2.0,
+    0,
+    2,
+    2.0,
+    0,
+    -1,
+    2.0,
+    -1.8,
+    0,
+    2.0,
+    -1.8,
+    1,
+    2.0,
+    -1.8
+   ]
+  },
+  {
+   "name": "skansehjorne",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "piece": "pal_c",
+     "position": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "pal_d",
+     "position": [
+      0,
+      0,
+      -1
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0,
+      -0.1,
+      0
+     ],
+     "rotation": [
+      -0.154,
+      315.7,
+      0.307
+     ],
+     "scale": [
+      1.364,
+      1.059,
+      1.364
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      1.15,
+      1.92,
+      -1.15
+     ],
+     "scale": [
+      0.85,
+      1,
+      0.85
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.15,
+      1.74,
+      -0.5
+     ],
+     "scale": [
+      0.85,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.15,
+      1.74,
+      -1.9
+     ],
+     "scale": [
+      0.85,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.9,
+      0.8,
+      -1.9
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.6,
+      1.4,
+      -1.9
+     ],
+     "rotation": [
+      -45.0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.9,
+      1.4,
+      -1.6
+     ],
+     "rotation": [
+      -45.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      0.404
+     ],
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      1,
+      1.6,
+      0
+     ],
+     "size": [
+      2,
+      3.3,
+      0.55
+     ]
+    },
+    {
+     "center": [
+      0,
+      1.6,
+      -1
+     ],
+     "size": [
+      0.55,
+      3.3,
+      2
+     ]
+    },
+    {
+     "center": [
+      1.15,
+      1.92,
+      -1.15
+     ],
+     "size": [
+      1.7,
+      0.16,
+      1.7
+     ]
+    }
+   ],
+   "snapPoints": [
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    -2,
+    2,
+    2.0,
+    0,
+    0,
+    2.0,
+    -2
+   ],
+   "views": [
+    {
+     "label": "outside",
+     "yaw": 135,
+     "pitch": 15
+    },
+    {
+     "label": "inside",
+     "yaw": -45,
+     "pitch": 25
+    },
+    {
+     "label": "top",
+     "yaw": -45,
+     "pitch": 60
+    }
+   ]
+  },
+  {
+   "name": "skansehjorne45",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "piece": "pal_c",
+     "position": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "pal_d",
+     "position": [
+      -0.707,
+      0,
+      -0.707
+     ],
+     "rotation": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0,
+      -0.1,
+      0
+     ],
+     "rotation": [
+      0.002,
+      216.005,
+      -0.381
+     ],
+     "scale": [
+      1.364,
+      1.059,
+      1.364
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      1.0,
+      1.92,
+      -1.1
+     ],
+     "scale": [
+      1.0,
+      1,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.071,
+      1.92,
+      -1.485
+     ],
+     "rotation": [
+      0,
+      -45,
+      0
+     ],
+     "scale": [
+      1,
+      1,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.38,
+      1.925,
+      -0.92
+     ],
+     "rotation": [
+      0,
+      -22.5,
+      0
+     ],
+     "scale": [
+      1.3,
+      1,
+      1.3
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.0,
+      1.74,
+      -1.7
+     ],
+     "scale": [
+      1.0,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.49,
+      1.74,
+      -1.91
+     ],
+     "rotation": [
+      0,
+      -45,
+      0
+     ],
+     "scale": [
+      1,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.9,
+      0.8,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.69,
+      0.8,
+      -1.66
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -0.21,
+      0.8,
+      -2.62
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      1,
+      1.6,
+      0
+     ],
+     "size": [
+      2,
+      3.3,
+      0.55
+     ]
+    },
+    {
+     "center": [
+      -0.707,
+      1.6,
+      -0.707
+     ],
+     "size": [
+      2,
+      3.3,
+      0.55
+     ],
+     "rotation": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "center": [
+      1.0,
+      1.92,
+      -1.1
+     ],
+     "size": [
+      2,
+      0.16,
+      1.4
+     ]
+    },
+    {
+     "center": [
+      0.071,
+      1.92,
+      -1.485
+     ],
+     "size": [
+      2,
+      0.16,
+      1.4
+     ],
+     "rotation": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.38,
+      1.92,
+      -0.92
+     ],
+     "size": [
+      1.3,
+      0.16,
+      1.3
+     ],
+     "rotation": [
+      0,
+      -22.5,
+      0
+     ]
+    }
+   ],
+   "snapPoints": [
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    -1.414,
+    0,
+    -1.414,
+    2,
+    2.0,
+    0,
+    -1.414,
+    2.0,
+    -1.414
+   ],
+   "views": [
+    {
+     "label": "outside",
+     "yaw": 160,
+     "pitch": 15
+    },
+    {
+     "label": "inside",
+     "yaw": -20,
+     "pitch": 30
+    },
+    {
+     "label": "top",
+     "yaw": -20,
+     "pitch": 65
+    }
+   ]
+  },
+  {
+   "name": "skanseport",
+   "base": "wood_gate",
+   "parts": [
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -2.2,
+      2.2,
+      0
+     ],
+     "scale": [
+      0.885,
+      2.162,
+      0.885
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      2.2,
+      2.2,
+      0
+     ],
+     "scale": [
+      0.885,
+      2.162,
+      0.885
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      3.3,
+      0.0
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      2.0,
+      2.0,
+      2.238
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.787,
+      0.05,
+      0.037
+     ],
+     "rotation": [
+      -0.183,
+      352.408,
+      -0.147
+     ],
+     "scale": [
+      0.879,
+      0.883,
+      0.879
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.4,
+      0.05,
+      0.034
+     ],
+     "rotation": [
+      -0.001,
+      251.913,
+      -0.158
+     ],
+     "scale": [
+      0.76,
+      0.852,
+      0.76
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.003,
+      0.05,
+      0.041
+     ],
+     "rotation": [
+      0.131,
+      173.054,
+      -0.509
+     ],
+     "scale": [
+      0.958,
+      0.886,
+      0.958
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.589,
+      0.05,
+      0.045
+     ],
+     "rotation": [
+      -0.173,
+      22.506,
+      0.572
+     ],
+     "scale": [
+      0.772,
+      0.874,
+      0.772
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.187,
+      0.05,
+      0.048
+     ],
+     "rotation": [
+      -0.091,
+      17.786,
+      0.088
+     ],
+     "scale": [
+      0.9,
+      0.873,
+      0.9
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.0,
+      0.7,
+      0.27
+     ],
+     "scale": [
+      0.95,
+      0.325,
+      0.125
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.8,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.4,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.0,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.6,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.2,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.0,
+      0.7,
+      -0.2
+     ],
+     "scale": [
+      0.95,
+      0.5,
+      0.4
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.0,
+      2.3,
+      0.27
+     ],
+     "scale": [
+      0.95,
+      0.325,
+      0.125
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.8,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.4,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -1.0,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.6,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.2,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_left",
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.0,
+      2.3,
+      -0.2
+     ],
+     "scale": [
+      0.95,
+      0.5,
+      0.4
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.0,
+      1.5,
+      -0.28
+     ],
+     "rotation": [
+      -43.152,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.044
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.194,
+      0.05,
+      0.052
+     ],
+     "rotation": [
+      -0.234,
+      314.131,
+      -0.746
+     ],
+     "scale": [
+      0.874,
+      0.893,
+      0.874
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.584,
+      0.05,
+      0.055
+     ],
+     "rotation": [
+      -0.229,
+      49.11,
+      0.626
+     ],
+     "scale": [
+      0.727,
+      0.886,
+      0.727
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.989,
+      0.05,
+      0.062
+     ],
+     "rotation": [
+      -0.503,
+      51.36,
+      0.298
+     ],
+     "scale": [
+      0.896,
+      0.892,
+      0.896
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.403,
+      0.05,
+      0.069
+     ],
+     "rotation": [
+      -0.308,
+      191.268,
+      0.031
+     ],
+     "scale": [
+      0.717,
+      0.869,
+      0.717
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.798,
+      0.05,
+      0.023
+     ],
+     "rotation": [
+      -0.106,
+      37.529,
+      -0.073
+     ],
+     "scale": [
+      0.96,
+      0.874,
+      0.96
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.0,
+      0.7,
+      0.27
+     ],
+     "scale": [
+      0.95,
+      0.325,
+      0.125
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.2,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.6,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.0,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.4,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.8,
+      0.7,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.0,
+      0.7,
+      -0.2
+     ],
+     "scale": [
+      0.95,
+      0.5,
+      0.4
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.0,
+      2.3,
+      0.27
+     ],
+     "scale": [
+      0.95,
+      0.325,
+      0.125
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.2,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.6,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.0,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.4,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      1.8,
+      2.3,
+      0.31
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.22,
+      0.05,
+      0.22
+     ],
+     "texture": "metalwall",
+     "group": "leaf_right",
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.0,
+      2.3,
+      -0.2
+     ],
+     "scale": [
+      0.95,
+      0.5,
+      0.4
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.0,
+      1.5,
+      -0.28
+     ],
+     "rotation": [
+      -43.152,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.044
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.053,
+      3.35,
+      0.023
+     ],
+     "rotation": [
+      -1.243,
+      222.201,
+      2.681
+     ],
+     "scale": [
+      0.741,
+      0.35,
+      0.741
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.722,
+      3.35,
+      0.006
+     ],
+     "rotation": [
+      1.171,
+      142.264,
+      2.163
+     ],
+     "scale": [
+      0.649,
+      0.445,
+      0.649
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.37,
+      3.35,
+      0.025
+     ],
+     "rotation": [
+      -1.812,
+      155.793,
+      0.886
+     ],
+     "scale": [
+      0.749,
+      0.395,
+      0.749
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.018,
+      3.35,
+      -0.013
+     ],
+     "rotation": [
+      2.796,
+      347.07,
+      0.732
+     ],
+     "scale": [
+      0.642,
+      0.396,
+      0.642
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.669,
+      3.35,
+      0.008
+     ],
+     "rotation": [
+      -1.01,
+      337.685,
+      -0.948
+     ],
+     "scale": [
+      0.811,
+      0.359,
+      0.811
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.336,
+      3.35,
+      0.004
+     ],
+     "rotation": [
+      -0.113,
+      305.329,
+      -1.495
+     ],
+     "scale": [
+      0.618,
+      0.415,
+      0.618
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.017,
+      3.35,
+      0.015
+     ],
+     "rotation": [
+      0.049,
+      139.449,
+      -2.699
+     ],
+     "scale": [
+      0.815,
+      0.445,
+      0.815
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.359,
+      3.35,
+      -0.021
+     ],
+     "rotation": [
+      2.75,
+      154.487,
+      -0.399
+     ],
+     "scale": [
+      0.597,
+      0.356,
+      0.597
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.677,
+      3.35,
+      -0.005
+     ],
+     "rotation": [
+      -0.604,
+      190.636,
+      -1.16
+     ],
+     "scale": [
+      0.803,
+      0.419,
+      0.803
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.017,
+      3.35,
+      0.017
+     ],
+     "rotation": [
+      2.193,
+      0.166,
+      -2.221
+     ],
+     "scale": [
+      0.619,
+      0.46,
+      0.619
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.381,
+      3.35,
+      0.019
+     ],
+     "rotation": [
+      1.836,
+      307.324,
+      -0.161
+     ],
+     "scale": [
+      0.728,
+      0.443,
+      0.728
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.727,
+      3.35,
+      0.014
+     ],
+     "rotation": [
+      -0.764,
+      99.001,
+      -1.703
+     ],
+     "scale": [
+      0.652,
+      0.449,
+      0.652
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.061,
+      3.35,
+      0.004
+     ],
+     "rotation": [
+      -1.243,
+      290.669,
+      -1.31
+     ],
+     "scale": [
+      0.75,
+      0.354,
+      0.75
+     ]
+    },
+    {
+     "mesh": "trophy_deer",
+     "position": [
+      0,
+      3.2,
+      0.3
+     ],
+     "scale": [
+      1.1,
+      1.1,
+      1.1
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "trophy_skull",
+     "position": [
+      -2.2,
+      4.6,
+      0
+     ],
+     "scale": [
+      1.6,
+      1.6,
+      1.6
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "trophy_skull",
+     "position": [
+      2.2,
+      4.6,
+      0
+     ],
+     "scale": [
+      1.6,
+      1.6,
+      1.6
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "piece_walltorch",
+     "position": [
+      -2.2,
+      2.2,
+      0.35
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "piece_walltorch",
+     "position": [
+      2.2,
+      2.2,
+      0.35
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      3.42,
+      -1.1
+     ],
+     "scale": [
+      2.2,
+      1,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      3.24,
+      -1.7
+     ],
+     "scale": [
+      2.2,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -2.2,
+      1.65,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      1.577,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      2.2,
+      1.65,
+      -1.7
+     ],
+     "scale": [
+      0.654,
+      1.577,
+      0.654
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.452,
+      -0.05,
+      0.027
+     ],
+     "rotation": [
+      0.974,
+      244.382,
+      -0.21
+     ],
+     "scale": [
+      1.005,
+      1.426,
+      1.005
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.803,
+      -0.05,
+      0.079
+     ],
+     "rotation": [
+      0.323,
+      310.516,
+      -0.557
+     ],
+     "scale": [
+      0.739,
+      1.355,
+      0.739
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      3.116,
+      -0.05,
+      0.033
+     ],
+     "rotation": [
+      0.075,
+      166.19,
+      -0.51
+     ],
+     "scale": [
+      0.985,
+      1.432,
+      0.985
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      3.457,
+      -0.05,
+      0.08
+     ],
+     "rotation": [
+      -0.617,
+      314.478,
+      0.371
+     ],
+     "scale": [
+      0.754,
+      1.436,
+      0.754
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      3.802,
+      -0.05,
+      0.062
+     ],
+     "rotation": [
+      0.044,
+      252.544,
+      -0.711
+     ],
+     "scale": [
+      0.903,
+      1.41,
+      0.903
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      4.136,
+      -0.05,
+      0.075
+     ],
+     "rotation": [
+      -0.069,
+      219.775,
+      0.201
+     ],
+     "scale": [
+      0.815,
+      1.399,
+      0.815
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      2.4,
+      3.1,
+      -1.8
+     ],
+     "scale": [
+      0.769,
+      2.883,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      2.4,
+      4.9,
+      -0.3
+     ],
+     "scale": [
+      0.692,
+      1.261,
+      0.692
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      4.2,
+      3.1,
+      -1.8
+     ],
+     "scale": [
+      0.769,
+      2.883,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      4.2,
+      4.9,
+      -0.3
+     ],
+     "scale": [
+      0.692,
+      1.261,
+      0.692
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      3.3,
+      1.92,
+      -0.8
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      3.3,
+      1.74,
+      -1.8
+     ],
+     "scale": [
+      1.0,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      2.8,
+      3.42,
+      -0.8
+     ],
+     "scale": [
+      0.5,
+      1,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      2.8,
+      3.24,
+      -1.8
+     ],
+     "scale": [
+      0.5,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_stair",
+     "position": [
+      3.8,
+      2.0,
+      -0.8
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      0.5,
+      1.5,
+      1
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      3.3,
+      0.5,
+      -1.8
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.364,
+      1.364,
+      0.857
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.65,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      1.804
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      3.3,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      -7.815
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      3.95,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      0.513
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      2.4,
+      6.2,
+      -0.9
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.55,
+      0.55
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      4.2,
+      6.2,
+      -0.9
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.55,
+      0.55
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      3.975,
+      6.25,
+      -0.225
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      3.975,
+      6.25,
+      -1.575
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      2.625,
+      6.25,
+      -1.575
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      2.625,
+      6.25,
+      -0.225
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      3.975,
+      6.975,
+      -0.225
+     ],
+     "rotation": [
+      -35.264,
+      -135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      3.975,
+      6.975,
+      -1.575
+     ],
+     "rotation": [
+      -35.264,
+      -45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.625,
+      6.975,
+      -1.575
+     ],
+     "rotation": [
+      -35.264,
+      45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.625,
+      6.975,
+      -0.225
+     ],
+     "rotation": [
+      -35.264,
+      135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      3.3,
+      7.35,
+      -0.9
+     ],
+     "rotation": [
+      0.0,
+      238.277,
+      0.0
+     ],
+     "scale": [
+      0.455,
+      0.382,
+      0.455
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.464,
+      -0.05,
+      0.022
+     ],
+     "rotation": [
+      0.654,
+      76.225,
+      -0.188
+     ],
+     "scale": [
+      0.966,
+      1.435,
+      0.966
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -2.4,
+      3.1,
+      -1.8
+     ],
+     "scale": [
+      0.769,
+      2.883,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -2.4,
+      4.9,
+      -0.3
+     ],
+     "scale": [
+      0.692,
+      1.261,
+      0.692
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -4.2,
+      3.1,
+      -1.8
+     ],
+     "scale": [
+      0.769,
+      2.883,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -4.2,
+      4.9,
+      -0.3
+     ],
+     "scale": [
+      0.692,
+      1.261,
+      0.692
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      -3.3,
+      1.92,
+      -0.8
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -3.3,
+      1.74,
+      -1.8
+     ],
+     "scale": [
+      1.0,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      -2.8,
+      3.42,
+      -0.8
+     ],
+     "scale": [
+      0.5,
+      1,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -2.8,
+      3.24,
+      -1.8
+     ],
+     "scale": [
+      0.5,
+      0.7,
+      0.7
+     ]
+    },
+    {
+     "mesh": "wood_stair",
+     "position": [
+      -3.8,
+      2.0,
+      -0.8
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      0.5,
+      1.5,
+      1
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -3.3,
+      0.5,
+      -1.8
+     ],
+     "rotation": [
+      -0.0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.364,
+      1.364,
+      0.857
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.65,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      -2.142
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -3.3,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      -2.598
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -3.95,
+      4.1,
+      0.35
+     ],
+     "rotation": [
+      90,
+      0,
+      -7.932
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -2.4,
+      6.2,
+      -0.9
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.55,
+      0.55
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -4.2,
+      6.2,
+      -0.9
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.55,
+      0.55
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -2.625,
+      6.25,
+      -0.225
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -2.625,
+      6.25,
+      -1.575
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -3.975,
+      6.25,
+      -1.575
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -3.975,
+      6.25,
+      -0.225
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ],
+     "scale": [
+      0.675,
+      0.675,
+      0.675
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -2.625,
+      6.975,
+      -0.225
+     ],
+     "rotation": [
+      -35.264,
+      -135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -2.625,
+      6.975,
+      -1.575
+     ],
+     "rotation": [
+      -35.264,
+      -45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -3.975,
+      6.975,
+      -1.575
+     ],
+     "rotation": [
+      -35.264,
+      45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -3.975,
+      6.975,
+      -0.225
+     ],
+     "rotation": [
+      -35.264,
+      135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.113
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -3.3,
+      7.35,
+      -0.9
+     ],
+     "rotation": [
+      0.0,
+      129.157,
+      0.0
+     ],
+     "scale": [
+      0.455,
+      0.382,
+      0.455
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      1.0,
+      1.5,
+      0.05
+     ],
+     "size": [
+      2.0,
+      3.0,
+      0.5
+     ],
+     "group": "leaf_right"
+    },
+    {
+     "center": [
+      -1.0,
+      1.5,
+      0.05
+     ],
+     "size": [
+      2.0,
+      3.0,
+      0.5
+     ],
+     "group": "leaf_left"
+    },
+    {
+     "center": [
+      -2.2,
+      2.2,
+      0
+     ],
+     "size": [
+      0.5,
+      4.8,
+      0.5
+     ]
+    },
+    {
+     "center": [
+      2.2,
+      2.2,
+      0
+     ],
+     "size": [
+      0.5,
+      4.8,
+      0.5
+     ]
+    },
+    {
+     "center": [
+      0,
+      4.05,
+      0
+     ],
+     "size": [
+      4.6,
+      1.9,
+      0.5
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      3.42,
+      -1.1
+     ],
+     "size": [
+      4.4,
+      0.16,
+      1.4
+     ]
+    },
+    {
+     "center": [
+      3.3,
+      2.45,
+      0.05
+     ],
+     "size": [
+      2.1,
+      4.9,
+      0.5
+     ]
+    },
+    {
+     "center": [
+      3.3,
+      1.92,
+      -0.8
+     ],
+     "size": [
+      2.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      2.8,
+      3.42,
+      -0.8
+     ],
+     "size": [
+      1.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      3.8,
+      2.67,
+      -0.74
+     ],
+     "size": [
+      1.0,
+      0.2,
+      2.5
+     ],
+     "rotation": [
+      -36.87,
+      0.0,
+      0
+     ]
+    },
+    {
+     "center": [
+      3.3,
+      6.3,
+      -0.9
+     ],
+     "size": [
+      2.7,
+      0.1,
+      2.7
+     ]
+    },
+    {
+     "center": [
+      -3.3,
+      2.45,
+      0.05
+     ],
+     "size": [
+      2.1,
+      4.9,
+      0.5
+     ]
+    },
+    {
+     "center": [
+      -3.3,
+      1.92,
+      -0.8
+     ],
+     "size": [
+      2.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      -2.8,
+      3.42,
+      -0.8
+     ],
+     "size": [
+      1.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      -3.8,
+      2.67,
+      -0.74
+     ],
+     "size": [
+      1.0,
+      0.2,
+      2.5
+     ],
+     "rotation": [
+      -36.87,
+      0.0,
+      0
+     ]
+    },
+    {
+     "center": [
+      -3.3,
+      6.3,
+      -0.9
+     ],
+     "size": [
+      2.7,
+      0.1,
+      2.7
+     ]
+    }
+   ],
+   "snapPoints": [
+    -4.3,
+    0,
+    0,
+    4.3,
+    0,
+    0,
+    -4.3,
+    2.0,
+    0,
+    4.3,
+    2.0,
+    0
+   ],
+   "groups": [
+    {
+     "name": "leaf_right",
+     "pivot": [
+      2.0,
+      0,
+      0.05
+     ]
+    },
+    {
+     "name": "leaf_left",
+     "pivot": [
+      -2.0,
+      0,
+      0.05
+     ],
+     "mirror": true
+    }
+   ],
+   "keep": [
+    "door"
+   ]
+  },
+  {
+   "name": "skansetrapp",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "mesh": "wood_stair",
+     "position": [
+      0,
+      1,
+      -1
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "mesh": "wood_stair",
+     "position": [
+      0,
+      0,
+      -3
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -0.9,
+      0.8,
+      -0.2
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.9,
+      0.8,
+      -0.2
+     ],
+     "scale": [
+      0.654,
+      0.991,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -0.9,
+      0.325,
+      -2.0
+     ],
+     "scale": [
+      0.654,
+      0.563,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.9,
+      0.325,
+      -2.0
+     ],
+     "scale": [
+      0.654,
+      0.563,
+      0.654
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.0,
+      0.5,
+      -3.9
+     ],
+     "scale": [
+      0.385,
+      0.45,
+      0.385
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.0,
+      2.0,
+      -2.0
+     ],
+     "rotation": [
+      -27.759,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.636,
+      0.636,
+      2.045
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.0,
+      0.5,
+      -3.9
+     ],
+     "scale": [
+      0.385,
+      0.45,
+      0.385
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.0,
+      2.0,
+      -2.0
+     ],
+     "rotation": [
+      -27.759,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.636,
+      0.636,
+      2.045
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0.0,
+      0.411,
+      -2.955
+     ],
+     "size": [
+      2.0,
+      0.2,
+      2.236
+     ],
+     "rotation": [
+      -26.565,
+      0.0,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      1.411,
+      -0.955
+     ],
+     "size": [
+      2.0,
+      0.2,
+      2.236
+     ],
+     "rotation": [
+      -26.565,
+      0.0,
+      0
+     ]
+    }
+   ],
+   "snapPoints": [
+    0,
+    2.0,
+    0,
+    -1,
+    0,
+    -4,
+    1,
+    0,
+    -4
+   ],
+   "views": [
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 10
+    },
+    {
+     "label": "front",
+     "yaw": 0,
+     "pitch": 20
+    },
+    {
+     "label": "angle",
+     "yaw": -40,
+     "pitch": 30
+    }
+   ]
+  },
+  {
+   "name": "vakttarn_liten",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -0.9,
+      3.4,
+      -0.9
+     ],
+     "scale": [
+      0.769,
+      3.153,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -0.9,
+      3.4,
+      0.9
+     ],
+     "scale": [
+      0.769,
+      3.153,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.9,
+      3.4,
+      -0.9
+     ],
+     "scale": [
+      0.769,
+      3.153,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0.9,
+      3.4,
+      0.9
+     ],
+     "scale": [
+      0.769,
+      3.153,
+      0.769
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      -0.9
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      0.9
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -0.9,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.9,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      -0.9
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      0.9
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -0.9,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.9,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      4.32,
+      1.225
+     ],
+     "scale": [
+      1.45,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      4.32,
+      -1.225
+     ],
+     "scale": [
+      1.45,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      1.225,
+      4.32,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      -1.225,
+      4.32,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      1.0
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.125,
+      3.8,
+      -0.9
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.9,
+      3.8,
+      -1.125
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.125,
+      3.8,
+      0.9
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.9,
+      3.8,
+      1.125
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.125,
+      3.8,
+      -0.9
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.9,
+      3.8,
+      -1.125
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.125,
+      3.8,
+      0.9
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.9,
+      3.8,
+      1.125
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.325,
+      4.35,
+      1.359
+     ],
+     "rotation": [
+      -0.347,
+      132.541,
+      0.488
+     ],
+     "scale": [
+      0.68,
+      0.402,
+      0.68
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.987,
+      4.35,
+      1.328
+     ],
+     "rotation": [
+      -1.248,
+      67.402,
+      -0.053
+     ],
+     "scale": [
+      0.542,
+      0.392,
+      0.542
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.674,
+      4.35,
+      1.336
+     ],
+     "rotation": [
+      -0.404,
+      223.907,
+      0.051
+     ],
+     "scale": [
+      0.643,
+      0.397,
+      0.643
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.326,
+      4.35,
+      1.319
+     ],
+     "rotation": [
+      -0.354,
+      42.677,
+      -0.334
+     ],
+     "scale": [
+      0.574,
+      0.385,
+      0.574
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.001,
+      4.35,
+      1.322
+     ],
+     "rotation": [
+      1.398,
+      267.346,
+      1.36
+     ],
+     "scale": [
+      0.66,
+      0.389,
+      0.66
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.34,
+      4.35,
+      1.359
+     ],
+     "rotation": [
+      0.404,
+      328.77,
+      0.462
+     ],
+     "scale": [
+      0.535,
+      0.376,
+      0.535
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.654,
+      4.35,
+      1.333
+     ],
+     "rotation": [
+      0.633,
+      168.41,
+      -1.367
+     ],
+     "scale": [
+      0.688,
+      0.395,
+      0.688
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.002,
+      4.35,
+      1.349
+     ],
+     "rotation": [
+      0.122,
+      51.066,
+      -0.345
+     ],
+     "scale": [
+      0.557,
+      0.382,
+      0.557
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.338,
+      4.35,
+      1.346
+     ],
+     "rotation": [
+      0.124,
+      257.845,
+      -0.225
+     ],
+     "scale": [
+      0.708,
+      0.41,
+      0.708
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.0,
+      5.15,
+      1.53
+     ],
+     "rotation": [
+      90,
+      0,
+      4.54
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.301,
+      4.35,
+      1.335
+     ],
+     "rotation": [
+      -1.276,
+      353.044,
+      0.135
+     ],
+     "scale": [
+      0.696,
+      0.399,
+      0.696
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.337,
+      4.35,
+      1.016
+     ],
+     "rotation": [
+      0.741,
+      214.404,
+      -0.028
+     ],
+     "scale": [
+      0.536,
+      0.367,
+      0.536
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.331,
+      4.35,
+      0.651
+     ],
+     "rotation": [
+      1.331,
+      144.146,
+      -0.194
+     ],
+     "scale": [
+      0.689,
+      0.368,
+      0.689
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.337,
+      4.35,
+      0.318
+     ],
+     "rotation": [
+      -1.321,
+      412.996,
+      -0.153
+     ],
+     "scale": [
+      0.592,
+      0.387,
+      0.592
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.326,
+      4.35,
+      -0.003
+     ],
+     "rotation": [
+      -0.594,
+      443.229,
+      0.832
+     ],
+     "scale": [
+      0.692,
+      0.381,
+      0.692
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.335,
+      4.35,
+      -0.348
+     ],
+     "rotation": [
+      0.908,
+      383.919,
+      0.46
+     ],
+     "scale": [
+      0.547,
+      0.385,
+      0.547
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.302,
+      4.35,
+      -0.669
+     ],
+     "rotation": [
+      -1.068,
+      132.371,
+      -1.249
+     ],
+     "scale": [
+      0.717,
+      0.369,
+      0.717
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.328,
+      4.35,
+      -0.984
+     ],
+     "rotation": [
+      0.59,
+      209.54,
+      -0.444
+     ],
+     "scale": [
+      0.583,
+      0.39,
+      0.583
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.301,
+      4.35,
+      -1.318
+     ],
+     "rotation": [
+      1.07,
+      224.902,
+      0.784
+     ],
+     "scale": [
+      0.716,
+      0.379,
+      0.716
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      1.53,
+      5.15,
+      0.0
+     ],
+     "rotation": [
+      90,
+      90,
+      -1.883
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.319,
+      4.35,
+      -1.3
+     ],
+     "rotation": [
+      -0.009,
+      241.706,
+      -0.34
+     ],
+     "scale": [
+      0.713,
+      0.402,
+      0.713
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.998,
+      4.35,
+      -1.321
+     ],
+     "rotation": [
+      -0.588,
+      517.659,
+      0.243
+     ],
+     "scale": [
+      0.564,
+      0.411,
+      0.564
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.669,
+      4.35,
+      -1.314
+     ],
+     "rotation": [
+      -0.549,
+      301.125,
+      0.625
+     ],
+     "scale": [
+      0.684,
+      0.382,
+      0.684
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.335,
+      4.35,
+      -1.324
+     ],
+     "rotation": [
+      -0.302,
+      529.944,
+      -0.101
+     ],
+     "scale": [
+      0.577,
+      0.38,
+      0.577
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.007,
+      4.35,
+      -1.359
+     ],
+     "rotation": [
+      -0.893,
+      334.345,
+      -0.105
+     ],
+     "scale": [
+      0.687,
+      0.392,
+      0.687
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.319,
+      4.35,
+      -1.352
+     ],
+     "rotation": [
+      1.25,
+      522.266,
+      -0.545
+     ],
+     "scale": [
+      0.552,
+      0.412,
+      0.552
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.652,
+      4.35,
+      -1.308
+     ],
+     "rotation": [
+      0.658,
+      374.107,
+      0.82
+     ],
+     "scale": [
+      0.703,
+      0.399,
+      0.703
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.993,
+      4.35,
+      -1.323
+     ],
+     "rotation": [
+      0.013,
+      208.784,
+      -0.318
+     ],
+     "scale": [
+      0.583,
+      0.388,
+      0.583
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.342,
+      4.35,
+      -1.302
+     ],
+     "rotation": [
+      0.721,
+      496.078,
+      0.371
+     ],
+     "scale": [
+      0.696,
+      0.412,
+      0.696
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.0,
+      5.15,
+      -1.53
+     ],
+     "rotation": [
+      90,
+      180,
+      2.092
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.327,
+      4.35,
+      -1.311
+     ],
+     "rotation": [
+      -1.449,
+      497.929,
+      0.2
+     ],
+     "scale": [
+      0.699,
+      0.398,
+      0.699
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.305,
+      4.35,
+      -0.979
+     ],
+     "rotation": [
+      -0.319,
+      448.554,
+      1.316
+     ],
+     "scale": [
+      0.528,
+      0.374,
+      0.528
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.317,
+      4.35,
+      -0.65
+     ],
+     "rotation": [
+      0.009,
+      457.327,
+      1.444
+     ],
+     "scale": [
+      0.691,
+      0.4,
+      0.691
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.332,
+      4.35,
+      -0.338
+     ],
+     "rotation": [
+      -1.081,
+      421.538,
+      -0.304
+     ],
+     "scale": [
+      0.547,
+      0.389,
+      0.547
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.321,
+      4.35,
+      -0.011
+     ],
+     "rotation": [
+      -1.432,
+      479.708,
+      0.99
+     ],
+     "scale": [
+      0.718,
+      0.395,
+      0.718
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.355,
+      4.35,
+      0.316
+     ],
+     "rotation": [
+      0.448,
+      294.898,
+      -1.075
+     ],
+     "scale": [
+      0.573,
+      0.373,
+      0.573
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.319,
+      4.35,
+      0.662
+     ],
+     "rotation": [
+      1.374,
+      548.323,
+      0.868
+     ],
+     "scale": [
+      0.656,
+      0.37,
+      0.656
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.345,
+      4.35,
+      1.004
+     ],
+     "rotation": [
+      -0.395,
+      421.569,
+      0.459
+     ],
+     "scale": [
+      0.559,
+      0.39,
+      0.559
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.34,
+      4.35,
+      1.312
+     ],
+     "rotation": [
+      -0.704,
+      483.155,
+      0.232
+     ],
+     "scale": [
+      0.655,
+      0.412,
+      0.655
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -1.53,
+      5.15,
+      -0.0
+     ],
+     "rotation": [
+      90,
+      270,
+      -7.601
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      1.1
+     ],
+     "rotation": [
+      -36.87,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.071
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      1.1
+     ],
+     "rotation": [
+      -36.87,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.071
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.1,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -36.87,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.071
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.1,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -36.87,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.071
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.8,
+      -0.9
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.8,
+      0.9
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -0.9,
+      6.8,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.9,
+      6.8,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      0.875,
+      6.9,
+      0.875
+     ],
+     "scale": [
+      0.875,
+      0.875,
+      0.875
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      0.875,
+      6.9,
+      -0.875
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      0.875,
+      0.875,
+      0.875
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -0.875,
+      6.9,
+      -0.875
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      0.875,
+      0.875,
+      0.875
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -0.875,
+      6.9,
+      0.875
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ],
+     "scale": [
+      0.875,
+      0.875,
+      0.875
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.875,
+      7.825,
+      0.875
+     ],
+     "rotation": [
+      -35.264,
+      -135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.443
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.875,
+      7.825,
+      -0.875
+     ],
+     "rotation": [
+      -35.264,
+      -45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.443
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.875,
+      7.825,
+      -0.875
+     ],
+     "rotation": [
+      -35.264,
+      45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.443
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.875,
+      7.825,
+      0.875
+     ],
+     "rotation": [
+      -35.264,
+      135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.443
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0,
+      8.4,
+      0
+     ],
+     "rotation": [
+      0.0,
+      164.591,
+      0.0
+     ],
+     "scale": [
+      0.455,
+      0.382,
+      0.455
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.25,
+      2.225,
+      -0.2
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      2.119
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.75,
+      2.225,
+      -0.2
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      2.119
+     ]
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      0.4,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      0.85,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      1.3,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      1.75,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      2.2,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      2.65,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      3.1,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      3.55,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      0.5,
+      4.0,
+      -0.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "piece_walltorch",
+     "position": [
+      0.9,
+      3.0,
+      1.28
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ],
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      -0.9,
+      3.45,
+      -0.9
+     ],
+     "size": [
+      0.4,
+      6.9,
+      0.4
+     ]
+    },
+    {
+     "center": [
+      -0.9,
+      3.45,
+      0.9
+     ],
+     "size": [
+      0.4,
+      6.9,
+      0.4
+     ]
+    },
+    {
+     "center": [
+      0.9,
+      3.45,
+      -0.9
+     ],
+     "size": [
+      0.4,
+      6.9,
+      0.4
+     ]
+    },
+    {
+     "center": [
+      0.9,
+      3.45,
+      0.9
+     ],
+     "size": [
+      0.4,
+      6.9,
+      0.4
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      1.92,
+      0.5
+     ],
+     "size": [
+      2.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      1.92,
+      -0.5
+     ],
+     "size": [
+      1.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      0.5
+     ],
+     "size": [
+      2.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      4.32,
+      -0.5
+     ],
+     "size": [
+      1.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      1.225
+     ],
+     "size": [
+      2.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      -1.225
+     ],
+     "size": [
+      2.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      1.225,
+      4.32,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      -1.225,
+      4.32,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      0,
+      5.05,
+      1.33
+     ],
+     "size": [
+      2.96,
+      1.3,
+      0.3
+     ]
+    },
+    {
+     "center": [
+      1.33,
+      5.05,
+      0.0
+     ],
+     "size": [
+      2.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      5.05,
+      -1.33
+     ],
+     "size": [
+      2.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "center": [
+      -1.33,
+      5.05,
+      -0.0
+     ],
+     "size": [
+      2.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ]
+    },
+    {
+     "center": [
+      0,
+      6.95,
+      0
+     ],
+     "size": [
+      3.5,
+      0.1,
+      3.5
+     ]
+    }
+   ],
+   "snapPoints": [
+    -1.0,
+    0,
+    -0.8,
+    -0.8,
+    0,
+    -1.0,
+    -1.0,
+    0,
+    0,
+    0,
+    0,
+    -1.0,
+    -1.0,
+    0,
+    0.8,
+    0.8,
+    0,
+    -1.0,
+    1.0,
+    0,
+    -0.8,
+    -0.8,
+    0,
+    1.0,
+    1.0,
+    0,
+    0,
+    0,
+    0,
+    1.0,
+    1.0,
+    0,
+    0.8,
+    0.8,
+    0,
+    1.0
+   ],
+   "ladders": [
+    {
+     "center": [
+      0.5,
+      2.225,
+      -0.2
+     ],
+     "size": [
+      0.7,
+      4.45,
+      0.15
+     ],
+     "stops": [
+      -0.4,
+      0.05,
+      0.4,
+      -0.4,
+      2.05,
+      0.4,
+      -0.4,
+      4.45,
+      0.4
+     ]
+    }
+   ]
+  },
+  {
+   "name": "vakttarn",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.4,
+      3.4,
+      -1.4
+     ],
+     "scale": [
+      1.0,
+      3.153,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.4,
+      3.4,
+      1.4
+     ],
+     "scale": [
+      1.0,
+      3.153,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.4,
+      3.4,
+      -1.4
+     ],
+     "scale": [
+      1.0,
+      3.153,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.4,
+      3.4,
+      1.4
+     ],
+     "scale": [
+      1.0,
+      3.153,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      -1.4
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      1.4
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.4,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.4,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      1.92,
+      -1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      1.92,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      1.92,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      1.92,
+      -1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      1.92,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      1.92,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.0,
+      1.92,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.0,
+      1.92,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      -1.4
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      1.4
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.4,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.4,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      4.32,
+      -1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      4.32,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.0,
+      4.32,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      4.32,
+      -1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      4.32,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.0,
+      4.32,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.0,
+      4.32,
+      0.0
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.0,
+      4.32,
+      1.0
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      4.32,
+      1.725
+     ],
+     "scale": [
+      1.95,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      4.32,
+      -1.725
+     ],
+     "scale": [
+      1.95,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      1.725,
+      4.32,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      -1.725,
+      4.32,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      1.5
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.625,
+      3.8,
+      -1.4
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.4,
+      3.8,
+      -1.625
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.625,
+      3.8,
+      1.4
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.4,
+      3.8,
+      1.625
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.625,
+      3.8,
+      -1.4
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.4,
+      3.8,
+      -1.625
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.625,
+      3.8,
+      1.4
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.4,
+      3.8,
+      1.625
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.842,
+      4.35,
+      1.84
+     ],
+     "rotation": [
+      -0.169,
+      199.997,
+      0.362
+     ],
+     "scale": [
+      0.667,
+      0.384,
+      0.667
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.5,
+      4.35,
+      1.833
+     ],
+     "rotation": [
+      -0.36,
+      246.631,
+      -0.33
+     ],
+     "scale": [
+      0.576,
+      0.407,
+      0.576
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.163,
+      4.35,
+      1.83
+     ],
+     "rotation": [
+      -0.494,
+      33.309,
+      -1.491
+     ],
+     "scale": [
+      0.697,
+      0.406,
+      0.697
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.822,
+      4.35,
+      1.841
+     ],
+     "rotation": [
+      -0.786,
+      355.925,
+      1.127
+     ],
+     "scale": [
+      0.532,
+      0.407,
+      0.532
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.483,
+      4.35,
+      1.835
+     ],
+     "rotation": [
+      -1.04,
+      124.457,
+      1.421
+     ],
+     "scale": [
+      0.713,
+      0.387,
+      0.713
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.147,
+      4.35,
+      1.808
+     ],
+     "rotation": [
+      -0.796,
+      171.534,
+      0.407
+     ],
+     "scale": [
+      0.578,
+      0.403,
+      0.578
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.152,
+      4.35,
+      1.859
+     ],
+     "rotation": [
+      -0.593,
+      121.106,
+      -1.254
+     ],
+     "scale": [
+      0.7,
+      0.4,
+      0.7
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.498,
+      4.35,
+      1.836
+     ],
+     "rotation": [
+      -1.021,
+      64.394,
+      -0.692
+     ],
+     "scale": [
+      0.591,
+      0.408,
+      0.591
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.838,
+      4.35,
+      1.801
+     ],
+     "rotation": [
+      1.193,
+      59.035,
+      0.713
+     ],
+     "scale": [
+      0.695,
+      0.4,
+      0.695
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.166,
+      4.35,
+      1.816
+     ],
+     "rotation": [
+      0.597,
+      266.425,
+      0.459
+     ],
+     "scale": [
+      0.545,
+      0.378,
+      0.545
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.499,
+      4.35,
+      1.802
+     ],
+     "rotation": [
+      0.529,
+      265.497,
+      -1.038
+     ],
+     "scale": [
+      0.701,
+      0.408,
+      0.701
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.838,
+      4.35,
+      1.827
+     ],
+     "rotation": [
+      0.302,
+      296.224,
+      -1.484
+     ],
+     "scale": [
+      0.538,
+      0.373,
+      0.538
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -0.715,
+      5.15,
+      2.03
+     ],
+     "rotation": [
+      90,
+      0,
+      5.33
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.715,
+      5.15,
+      2.03
+     ],
+     "rotation": [
+      90,
+      0,
+      -1.335
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.84,
+      4.35,
+      1.81
+     ],
+     "rotation": [
+      1.124,
+      371.055,
+      -1.06
+     ],
+     "scale": [
+      0.681,
+      0.409,
+      0.681
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.838,
+      4.35,
+      1.505
+     ],
+     "rotation": [
+      -0.986,
+      123.514,
+      -0.058
+     ],
+     "scale": [
+      0.589,
+      0.403,
+      0.589
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.857,
+      4.35,
+      1.156
+     ],
+     "rotation": [
+      0.473,
+      429.893,
+      1.15
+     ],
+     "scale": [
+      0.644,
+      0.375,
+      0.644
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.837,
+      4.35,
+      0.819
+     ],
+     "rotation": [
+      -0.579,
+      154.766,
+      -0.86
+     ],
+     "scale": [
+      0.587,
+      0.391,
+      0.587
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.816,
+      4.35,
+      0.486
+     ],
+     "rotation": [
+      -0.173,
+      355.257,
+      1.25
+     ],
+     "scale": [
+      0.673,
+      0.404,
+      0.673
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.818,
+      4.35,
+      0.171
+     ],
+     "rotation": [
+      0.636,
+      315.08,
+      1.151
+     ],
+     "scale": [
+      0.558,
+      0.377,
+      0.558
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.832,
+      4.35,
+      -0.15
+     ],
+     "rotation": [
+      -1.464,
+      325.425,
+      0.918
+     ],
+     "scale": [
+      0.669,
+      0.384,
+      0.669
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.856,
+      4.35,
+      -0.518
+     ],
+     "rotation": [
+      1.434,
+      180.326,
+      -0.241
+     ],
+     "scale": [
+      0.544,
+      0.404,
+      0.544
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.83,
+      4.35,
+      -0.823
+     ],
+     "rotation": [
+      0.962,
+      252.979,
+      -0.554
+     ],
+     "scale": [
+      0.671,
+      0.408,
+      0.671
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.823,
+      4.35,
+      -1.153
+     ],
+     "rotation": [
+      -1.409,
+      300.458,
+      -0.676
+     ],
+     "scale": [
+      0.572,
+      0.389,
+      0.572
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.822,
+      4.35,
+      -1.508
+     ],
+     "rotation": [
+      0.26,
+      324.175,
+      -0.66
+     ],
+     "scale": [
+      0.645,
+      0.388,
+      0.645
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.848,
+      4.35,
+      -1.832
+     ],
+     "rotation": [
+      -1.215,
+      111.495,
+      -0.858
+     ],
+     "scale": [
+      0.53,
+      0.383,
+      0.53
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.03,
+      5.15,
+      0.715
+     ],
+     "rotation": [
+      90,
+      90,
+      -4.536
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.03,
+      5.15,
+      -0.715
+     ],
+     "rotation": [
+      90,
+      90,
+      7.746
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.847,
+      4.35,
+      -1.829
+     ],
+     "rotation": [
+      -1.131,
+      247.802,
+      0.636
+     ],
+     "scale": [
+      0.696,
+      0.381,
+      0.696
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.485,
+      4.35,
+      -1.826
+     ],
+     "rotation": [
+      1.216,
+      216.873,
+      1.386
+     ],
+     "scale": [
+      0.54,
+      0.391,
+      0.54
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.17,
+      4.35,
+      -1.812
+     ],
+     "rotation": [
+      -1.157,
+      308.056,
+      0.199
+     ],
+     "scale": [
+      0.72,
+      0.393,
+      0.72
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.815,
+      4.35,
+      -1.829
+     ],
+     "rotation": [
+      0.989,
+      505.262,
+      1.374
+     ],
+     "scale": [
+      0.564,
+      0.391,
+      0.564
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.494,
+      4.35,
+      -1.85
+     ],
+     "rotation": [
+      -0.164,
+      500.851,
+      -1.158
+     ],
+     "scale": [
+      0.679,
+      0.405,
+      0.679
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.157,
+      4.35,
+      -1.852
+     ],
+     "rotation": [
+      1.323,
+      225.867,
+      0.949
+     ],
+     "scale": [
+      0.544,
+      0.405,
+      0.544
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.181,
+      4.35,
+      -1.805
+     ],
+     "rotation": [
+      -0.68,
+      441.534,
+      -1.377
+     ],
+     "scale": [
+      0.719,
+      0.379,
+      0.719
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.511,
+      4.35,
+      -1.833
+     ],
+     "rotation": [
+      0.335,
+      421.04,
+      -0.528
+     ],
+     "scale": [
+      0.582,
+      0.369,
+      0.582
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.84,
+      4.35,
+      -1.801
+     ],
+     "rotation": [
+      -1.08,
+      193.589,
+      0.86
+     ],
+     "scale": [
+      0.66,
+      0.384,
+      0.66
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.165,
+      4.35,
+      -1.844
+     ],
+     "rotation": [
+      0.956,
+      305.663,
+      1.303
+     ],
+     "scale": [
+      0.556,
+      0.381,
+      0.556
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.494,
+      4.35,
+      -1.84
+     ],
+     "rotation": [
+      -1.067,
+      224.724,
+      1.071
+     ],
+     "scale": [
+      0.719,
+      0.38,
+      0.719
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.814,
+      4.35,
+      -1.851
+     ],
+     "rotation": [
+      -1.253,
+      518.852,
+      -0.859
+     ],
+     "scale": [
+      0.576,
+      0.412,
+      0.576
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.715,
+      5.15,
+      -2.03
+     ],
+     "rotation": [
+      90,
+      180,
+      6.108
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -0.715,
+      5.15,
+      -2.03
+     ],
+     "rotation": [
+      90,
+      180,
+      6.512
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.811,
+      4.35,
+      -1.811
+     ],
+     "rotation": [
+      0.631,
+      613.358,
+      -0.822
+     ],
+     "scale": [
+      0.642,
+      0.409,
+      0.642
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.833,
+      4.35,
+      -1.487
+     ],
+     "rotation": [
+      1.026,
+      571.609,
+      0.359
+     ],
+     "scale": [
+      0.55,
+      0.371,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.804,
+      4.35,
+      -1.171
+     ],
+     "rotation": [
+      -0.469,
+      417.452,
+      -1.275
+     ],
+     "scale": [
+      0.684,
+      0.405,
+      0.684
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.835,
+      4.35,
+      -0.824
+     ],
+     "rotation": [
+      -0.646,
+      596.308,
+      -0.592
+     ],
+     "scale": [
+      0.59,
+      0.411,
+      0.59
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.826,
+      4.35,
+      -0.512
+     ],
+     "rotation": [
+      1.087,
+      505.599,
+      0.299
+     ],
+     "scale": [
+      0.673,
+      0.38,
+      0.673
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.807,
+      4.35,
+      -0.179
+     ],
+     "rotation": [
+      0.264,
+      520.973,
+      1.012
+     ],
+     "scale": [
+      0.55,
+      0.382,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.848,
+      4.35,
+      0.173
+     ],
+     "rotation": [
+      0.165,
+      473.856,
+      -1.079
+     ],
+     "scale": [
+      0.708,
+      0.395,
+      0.708
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.803,
+      4.35,
+      0.514
+     ],
+     "rotation": [
+      0.268,
+      379.384,
+      1.227
+     ],
+     "scale": [
+      0.53,
+      0.403,
+      0.53
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.801,
+      4.35,
+      0.845
+     ],
+     "rotation": [
+      0.491,
+      368.685,
+      1.051
+     ],
+     "scale": [
+      0.703,
+      0.39,
+      0.703
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.855,
+      4.35,
+      1.169
+     ],
+     "rotation": [
+      0.04,
+      342.094,
+      0.267
+     ],
+     "scale": [
+      0.56,
+      0.405,
+      0.56
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.856,
+      4.35,
+      1.49
+     ],
+     "rotation": [
+      -0.127,
+      501.456,
+      1.152
+     ],
+     "scale": [
+      0.679,
+      0.411,
+      0.679
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.837,
+      4.35,
+      1.812
+     ],
+     "rotation": [
+      1.49,
+      336.528,
+      -0.527
+     ],
+     "scale": [
+      0.54,
+      0.371,
+      0.54
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.03,
+      5.15,
+      -0.715
+     ],
+     "rotation": [
+      90,
+      270,
+      1.903
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.03,
+      5.15,
+      0.715
+     ],
+     "rotation": [
+      90,
+      270,
+      -7.677
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      1.6
+     ],
+     "rotation": [
+      -25.741,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.48
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      1.6
+     ],
+     "rotation": [
+      -25.741,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.48
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.6,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -25.741,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.48
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.6,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -25.741,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.48
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.8,
+      -1.4
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.8,
+      1.4
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.4,
+      6.8,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.4,
+      6.8,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.4,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      1.125,
+      6.9,
+      1.125
+     ],
+     "scale": [
+      1.125,
+      1.125,
+      1.125
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      1.125,
+      6.9,
+      -1.125
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      1.125,
+      1.125,
+      1.125
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -1.125,
+      6.9,
+      -1.125
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      1.125,
+      1.125,
+      1.125
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -1.125,
+      6.9,
+      1.125
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ],
+     "scale": [
+      1.125,
+      1.125,
+      1.125
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.125,
+      8.075,
+      1.125
+     ],
+     "rotation": [
+      -35.264,
+      -135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.856
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.125,
+      8.075,
+      -1.125
+     ],
+     "rotation": [
+      -35.264,
+      -45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.856
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.125,
+      8.075,
+      -1.125
+     ],
+     "rotation": [
+      -35.264,
+      45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.856
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.125,
+      8.075,
+      1.125
+     ],
+     "rotation": [
+      -35.264,
+      135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      1.856
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0,
+      8.9,
+      0
+     ],
+     "rotation": [
+      0.0,
+      226.842,
+      0.0
+     ],
+     "scale": [
+      0.455,
+      0.382,
+      0.455
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.75,
+      2.225,
+      -0.7
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      2.119
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.25,
+      2.225,
+      -0.7
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      2.119
+     ]
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      0.4,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      0.85,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      1.3,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      1.75,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      2.2,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      2.65,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      3.1,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      3.55,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.0,
+      4.0,
+      -0.7
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "piece_walltorch",
+     "position": [
+      1.4,
+      3.0,
+      1.78
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ],
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      -1.4,
+      3.45,
+      -1.4
+     ],
+     "size": [
+      0.52,
+      6.9,
+      0.52
+     ]
+    },
+    {
+     "center": [
+      -1.4,
+      3.45,
+      1.4
+     ],
+     "size": [
+      0.52,
+      6.9,
+      0.52
+     ]
+    },
+    {
+     "center": [
+      1.4,
+      3.45,
+      -1.4
+     ],
+     "size": [
+      0.52,
+      6.9,
+      0.52
+     ]
+    },
+    {
+     "center": [
+      1.4,
+      3.45,
+      1.4
+     ],
+     "size": [
+      0.52,
+      6.9,
+      0.52
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      1.92,
+      0.5
+     ],
+     "size": [
+      3.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      1.92,
+      -1.0
+     ],
+     "size": [
+      2.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      0.5
+     ],
+     "size": [
+      3.0,
+      0.16,
+      2.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      4.32,
+      -1.0
+     ],
+     "size": [
+      2.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      1.725
+     ],
+     "size": [
+      3.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      -1.725
+     ],
+     "size": [
+      3.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      1.725,
+      4.32,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      3.0
+     ]
+    },
+    {
+     "center": [
+      -1.725,
+      4.32,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      3.0
+     ]
+    },
+    {
+     "center": [
+      0,
+      5.05,
+      1.83
+     ],
+     "size": [
+      3.96,
+      1.3,
+      0.3
+     ]
+    },
+    {
+     "center": [
+      1.83,
+      5.05,
+      0.0
+     ],
+     "size": [
+      3.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      5.05,
+      -1.83
+     ],
+     "size": [
+      3.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "center": [
+      -1.83,
+      5.05,
+      -0.0
+     ],
+     "size": [
+      3.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ]
+    },
+    {
+     "center": [
+      0,
+      6.95,
+      0
+     ],
+     "size": [
+      4.5,
+      0.1,
+      4.5
+     ]
+    }
+   ],
+   "snapPoints": [
+    -1.5,
+    0,
+    -1.3,
+    -1.3,
+    0,
+    -1.5,
+    -1.5,
+    0,
+    0,
+    0,
+    0,
+    -1.5,
+    -1.5,
+    0,
+    1.3,
+    1.3,
+    0,
+    -1.5,
+    1.5,
+    0,
+    -1.3,
+    -1.3,
+    0,
+    1.5,
+    1.5,
+    0,
+    0,
+    0,
+    0,
+    1.5,
+    1.5,
+    0,
+    1.3,
+    1.3,
+    0,
+    1.5
+   ],
+   "ladders": [
+    {
+     "center": [
+      1.0,
+      2.225,
+      -0.7
+     ],
+     "size": [
+      0.7,
+      4.45,
+      0.15
+     ],
+     "stops": [
+      0.1,
+      0.05,
+      -0.1,
+      0.1,
+      2.05,
+      -0.1,
+      0.1,
+      4.45,
+      -0.1
+     ]
+    }
+   ]
+  },
+  {
+   "name": "vakttarn_stor",
+   "base": "stake_wall",
+   "parts": [
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.9,
+      4.6,
+      -1.9
+     ],
+     "scale": [
+      1.192,
+      4.234,
+      1.192
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      -1.9,
+      4.6,
+      1.9
+     ],
+     "scale": [
+      1.192,
+      4.234,
+      1.192
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.9,
+      4.6,
+      -1.9
+     ],
+     "scale": [
+      1.192,
+      4.234,
+      1.192
+     ]
+    },
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      1.9,
+      4.6,
+      1.9
+     ],
+     "scale": [
+      1.192,
+      4.234,
+      1.192
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      -1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      1.75,
+      1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.9,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.9,
+      1.75,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      1.92,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      1.92,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      1.92,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      1.92,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      1.92,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      1.92,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      1.92,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      1.92,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      1.92,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      1.92,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      -1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      4.15,
+      1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.9,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.9,
+      4.15,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      4.32,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      4.32,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      4.32,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      4.32,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      4.32,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      4.32,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      4.32,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      4.32,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      4.32,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      4.32,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.55,
+      -1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      6.55,
+      1.9
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.9,
+      6.55,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.9,
+      6.55,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.75,
+      0.75
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      6.72,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      6.72,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      6.72,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -1.5,
+      6.72,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      6.72,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      6.72,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      6.72,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      -0.5,
+      6.72,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      6.72,
+      -1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      6.72,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      6.72,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0.5,
+      6.72,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      6.72,
+      -0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      6.72,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      1.5,
+      6.72,
+      1.5
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      6.72,
+      2.225
+     ],
+     "scale": [
+      2.45,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      0.0,
+      6.72,
+      -2.225
+     ],
+     "scale": [
+      2.45,
+      1,
+      0.225
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      2.225,
+      6.72,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      2.0
+     ]
+    },
+    {
+     "mesh": "wood_floor",
+     "position": [
+      -2.225,
+      6.72,
+      0.0
+     ],
+     "scale": [
+      0.225,
+      1,
+      2.0
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -2.125,
+      6.2,
+      -1.9
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.9,
+      6.2,
+      -2.125
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -2.125,
+      6.2,
+      1.9
+     ],
+     "rotation": [
+      -60.642,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.9,
+      6.2,
+      2.125
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.125,
+      6.2,
+      -1.9
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.9,
+      6.2,
+      -2.125
+     ],
+     "rotation": [
+      -60.642,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.125,
+      6.2,
+      1.9
+     ],
+     "rotation": [
+      -60.642,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.9,
+      6.2,
+      2.125
+     ],
+     "rotation": [
+      -60.642,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      0.437
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.315,
+      6.75,
+      2.348
+     ],
+     "rotation": [
+      -0.805,
+      286.548,
+      1.361
+     ],
+     "scale": [
+      0.711,
+      0.407,
+      0.711
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.997,
+      6.75,
+      2.301
+     ],
+     "rotation": [
+      -1.059,
+      178.484,
+      1.111
+     ],
+     "scale": [
+      0.544,
+      0.396,
+      0.544
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.659,
+      6.75,
+      2.328
+     ],
+     "rotation": [
+      -0.655,
+      187.108,
+      -0.594
+     ],
+     "scale": [
+      0.659,
+      0.405,
+      0.659
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.312,
+      6.75,
+      2.302
+     ],
+     "rotation": [
+      0.156,
+      100.102,
+      1.489
+     ],
+     "scale": [
+      0.563,
+      0.406,
+      0.563
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.994,
+      6.75,
+      2.355
+     ],
+     "rotation": [
+      0.443,
+      76.695,
+      1.397
+     ],
+     "scale": [
+      0.665,
+      0.392,
+      0.665
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.685,
+      6.75,
+      2.342
+     ],
+     "rotation": [
+      -1.232,
+      190.298,
+      0.985
+     ],
+     "scale": [
+      0.559,
+      0.39,
+      0.559
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.313,
+      6.75,
+      2.322
+     ],
+     "rotation": [
+      -1.154,
+      354.591,
+      0.716
+     ],
+     "scale": [
+      0.67,
+      0.386,
+      0.67
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.007,
+      6.75,
+      2.321
+     ],
+     "rotation": [
+      -1.123,
+      256.012,
+      0.445
+     ],
+     "scale": [
+      0.561,
+      0.395,
+      0.561
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.327,
+      6.75,
+      2.309
+     ],
+     "rotation": [
+      -0.937,
+      174.429,
+      -1.194
+     ],
+     "scale": [
+      0.641,
+      0.403,
+      0.641
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.656,
+      6.75,
+      2.348
+     ],
+     "rotation": [
+      -0.383,
+      358.387,
+      -0.185
+     ],
+     "scale": [
+      0.544,
+      0.408,
+      0.544
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.984,
+      6.75,
+      2.307
+     ],
+     "rotation": [
+      -0.271,
+      228.559,
+      -0.357
+     ],
+     "scale": [
+      0.661,
+      0.39,
+      0.661
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.32,
+      6.75,
+      2.343
+     ],
+     "rotation": [
+      -0.42,
+      307.231,
+      -1.044
+     ],
+     "scale": [
+      0.58,
+      0.396,
+      0.58
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.658,
+      6.75,
+      2.337
+     ],
+     "rotation": [
+      0.959,
+      108.987,
+      -1.019
+     ],
+     "scale": [
+      0.651,
+      0.384,
+      0.651
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.991,
+      6.75,
+      2.327
+     ],
+     "rotation": [
+      0.784,
+      168.432,
+      -1.462
+     ],
+     "scale": [
+      0.592,
+      0.404,
+      0.592
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.35,
+      6.75,
+      2.342
+     ],
+     "rotation": [
+      0.937,
+      280.192,
+      0.061
+     ],
+     "scale": [
+      0.653,
+      0.409,
+      0.653
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -1.287,
+      7.55,
+      2.53
+     ],
+     "rotation": [
+      90,
+      0,
+      6.65
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.0,
+      7.55,
+      2.53
+     ],
+     "rotation": [
+      90,
+      0,
+      -0.506
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      1.287,
+      7.55,
+      2.53
+     ],
+     "rotation": [
+      90,
+      0,
+      -0.023
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.315,
+      6.75,
+      2.342
+     ],
+     "rotation": [
+      -1.34,
+      207.049,
+      -1.197
+     ],
+     "scale": [
+      0.698,
+      0.395,
+      0.698
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.319,
+      6.75,
+      1.987
+     ],
+     "rotation": [
+      0.834,
+      447.318,
+      1.189
+     ],
+     "scale": [
+      0.546,
+      0.381,
+      0.546
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.321,
+      6.75,
+      1.676
+     ],
+     "rotation": [
+      0.198,
+      129.406,
+      -1.148
+     ],
+     "scale": [
+      0.674,
+      0.39,
+      0.674
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.342,
+      6.75,
+      1.314
+     ],
+     "rotation": [
+      -0.246,
+      222.39,
+      -0.695
+     ],
+     "scale": [
+      0.539,
+      0.396,
+      0.539
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.335,
+      6.75,
+      0.996
+     ],
+     "rotation": [
+      -1.216,
+      208.102,
+      1.295
+     ],
+     "scale": [
+      0.669,
+      0.368,
+      0.669
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.338,
+      6.75,
+      0.679
+     ],
+     "rotation": [
+      1.161,
+      181.21,
+      0.292
+     ],
+     "scale": [
+      0.533,
+      0.407,
+      0.533
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.336,
+      6.75,
+      0.331
+     ],
+     "rotation": [
+      0.294,
+      191.224,
+      1.09
+     ],
+     "scale": [
+      0.668,
+      0.391,
+      0.668
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.334,
+      6.75,
+      -0.012
+     ],
+     "rotation": [
+      1.472,
+      104.866,
+      -1.203
+     ],
+     "scale": [
+      0.535,
+      0.371,
+      0.535
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.314,
+      6.75,
+      -0.342
+     ],
+     "rotation": [
+      0.67,
+      356.118,
+      0.001
+     ],
+     "scale": [
+      0.708,
+      0.37,
+      0.708
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.301,
+      6.75,
+      -0.655
+     ],
+     "rotation": [
+      0.828,
+      389.619,
+      0.752
+     ],
+     "scale": [
+      0.531,
+      0.381,
+      0.531
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.32,
+      6.75,
+      -0.993
+     ],
+     "rotation": [
+      -1.416,
+      125.649,
+      -0.828
+     ],
+     "scale": [
+      0.706,
+      0.378,
+      0.706
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.328,
+      6.75,
+      -1.339
+     ],
+     "rotation": [
+      -0.644,
+      449.66,
+      -0.058
+     ],
+     "scale": [
+      0.579,
+      0.382,
+      0.579
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.356,
+      6.75,
+      -1.648
+     ],
+     "rotation": [
+      1.416,
+      199.864,
+      -0.84
+     ],
+     "scale": [
+      0.7,
+      0.388,
+      0.7
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.351,
+      6.75,
+      -1.983
+     ],
+     "rotation": [
+      -0.944,
+      208.13,
+      -0.014
+     ],
+     "scale": [
+      0.537,
+      0.385,
+      0.537
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.301,
+      6.75,
+      -2.311
+     ],
+     "rotation": [
+      -1.343,
+      99.387,
+      -0.161
+     ],
+     "scale": [
+      0.691,
+      0.381,
+      0.691
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.53,
+      7.55,
+      1.287
+     ],
+     "rotation": [
+      90,
+      90,
+      0.253
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.53,
+      7.55,
+      0.0
+     ],
+     "rotation": [
+      90,
+      90,
+      -1.032
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      2.53,
+      7.55,
+      -1.287
+     ],
+     "rotation": [
+      90,
+      90,
+      2.271
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.327,
+      6.75,
+      -2.355
+     ],
+     "rotation": [
+      -0.332,
+      304.205,
+      0.648
+     ],
+     "scale": [
+      0.665,
+      0.399,
+      0.665
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.977,
+      6.75,
+      -2.307
+     ],
+     "rotation": [
+      -0.03,
+      204.212,
+      -0.056
+     ],
+     "scale": [
+      0.531,
+      0.411,
+      0.531
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.661,
+      6.75,
+      -2.328
+     ],
+     "rotation": [
+      -1.205,
+      298.231,
+      0.971
+     ],
+     "scale": [
+      0.697,
+      0.405,
+      0.697
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.334,
+      6.75,
+      -2.322
+     ],
+     "rotation": [
+      0.622,
+      432.886,
+      0.794
+     ],
+     "scale": [
+      0.581,
+      0.405,
+      0.581
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.983,
+      6.75,
+      -2.352
+     ],
+     "rotation": [
+      1.409,
+      336.889,
+      -1.002
+     ],
+     "scale": [
+      0.698,
+      0.412,
+      0.698
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.67,
+      6.75,
+      -2.313
+     ],
+     "rotation": [
+      -1.413,
+      484.272,
+      0.821
+     ],
+     "scale": [
+      0.581,
+      0.4,
+      0.581
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.33,
+      6.75,
+      -2.355
+     ],
+     "rotation": [
+      -0.241,
+      266.95,
+      -1.186
+     ],
+     "scale": [
+      0.718,
+      0.372,
+      0.718
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.019,
+      6.75,
+      -2.307
+     ],
+     "rotation": [
+      0.233,
+      484.586,
+      -0.767
+     ],
+     "scale": [
+      0.583,
+      0.39,
+      0.583
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.343,
+      6.75,
+      -2.342
+     ],
+     "rotation": [
+      0.43,
+      373.748,
+      0.112
+     ],
+     "scale": [
+      0.656,
+      0.407,
+      0.656
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.649,
+      6.75,
+      -2.335
+     ],
+     "rotation": [
+      0.313,
+      487.463,
+      1.129
+     ],
+     "scale": [
+      0.533,
+      0.408,
+      0.533
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.982,
+      6.75,
+      -2.308
+     ],
+     "rotation": [
+      -0.877,
+      291.493,
+      -0.447
+     ],
+     "scale": [
+      0.666,
+      0.39,
+      0.666
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.334,
+      6.75,
+      -2.327
+     ],
+     "rotation": [
+      -0.903,
+      307.383,
+      -0.2
+     ],
+     "scale": [
+      0.577,
+      0.399,
+      0.577
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.673,
+      6.75,
+      -2.336
+     ],
+     "rotation": [
+      1.449,
+      343.376,
+      1.426
+     ],
+     "scale": [
+      0.704,
+      0.401,
+      0.704
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.01,
+      6.75,
+      -2.35
+     ],
+     "rotation": [
+      0.541,
+      532.805,
+      0.979
+     ],
+     "scale": [
+      0.545,
+      0.388,
+      0.545
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.313,
+      6.75,
+      -2.341
+     ],
+     "rotation": [
+      0.282,
+      263.091,
+      0.961
+     ],
+     "scale": [
+      0.655,
+      0.411,
+      0.655
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      1.287,
+      7.55,
+      -2.53
+     ],
+     "rotation": [
+      90,
+      180,
+      -7.169
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      0.0,
+      7.55,
+      -2.53
+     ],
+     "rotation": [
+      90,
+      180,
+      -4.53
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -1.287,
+      7.55,
+      -2.53
+     ],
+     "rotation": [
+      90,
+      180,
+      -7.145
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.317,
+      6.75,
+      -2.322
+     ],
+     "rotation": [
+      0.204,
+      624.694,
+      1.256
+     ],
+     "scale": [
+      0.716,
+      0.392,
+      0.716
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.329,
+      6.75,
+      -1.988
+     ],
+     "rotation": [
+      -0.85,
+      392.165,
+      -0.168
+     ],
+     "scale": [
+      0.535,
+      0.374,
+      0.535
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.331,
+      6.75,
+      -1.67
+     ],
+     "rotation": [
+      1.147,
+      375.225,
+      -0.344
+     ],
+     "scale": [
+      0.686,
+      0.406,
+      0.686
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.325,
+      6.75,
+      -1.322
+     ],
+     "rotation": [
+      1.111,
+      521.726,
+      0.176
+     ],
+     "scale": [
+      0.546,
+      0.397,
+      0.546
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.305,
+      6.75,
+      -0.995
+     ],
+     "rotation": [
+      -1.131,
+      455.005,
+      -0.727
+     ],
+     "scale": [
+      0.712,
+      0.412,
+      0.712
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.337,
+      6.75,
+      -0.65
+     ],
+     "rotation": [
+      -0.434,
+      329.732,
+      -0.54
+     ],
+     "scale": [
+      0.533,
+      0.365,
+      0.533
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.328,
+      6.75,
+      -0.33
+     ],
+     "rotation": [
+      -0.605,
+      430.428,
+      -1.187
+     ],
+     "scale": [
+      0.686,
+      0.388,
+      0.686
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.317,
+      6.75,
+      0.002
+     ],
+     "rotation": [
+      0.403,
+      511.982,
+      -0.565
+     ],
+     "scale": [
+      0.55,
+      0.374,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.339,
+      6.75,
+      0.315
+     ],
+     "rotation": [
+      1.366,
+      449.081,
+      -0.015
+     ],
+     "scale": [
+      0.678,
+      0.371,
+      0.678
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.349,
+      6.75,
+      0.664
+     ],
+     "rotation": [
+      0.944,
+      362.375,
+      -0.884
+     ],
+     "scale": [
+      0.539,
+      0.385,
+      0.539
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.305,
+      6.75,
+      1.01
+     ],
+     "rotation": [
+      0.185,
+      487.792,
+      -0.675
+     ],
+     "scale": [
+      0.709,
+      0.409,
+      0.709
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.348,
+      6.75,
+      1.351
+     ],
+     "rotation": [
+      1.109,
+      549.571,
+      0.602
+     ],
+     "scale": [
+      0.58,
+      0.381,
+      0.58
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.346,
+      6.75,
+      1.68
+     ],
+     "rotation": [
+      -1.396,
+      578.164,
+      -0.552
+     ],
+     "scale": [
+      0.649,
+      0.404,
+      0.649
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.349,
+      6.75,
+      1.982
+     ],
+     "rotation": [
+      1.156,
+      515.015,
+      -0.87
+     ],
+     "scale": [
+      0.555,
+      0.385,
+      0.555
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.358,
+      6.75,
+      2.338
+     ],
+     "rotation": [
+      0.847,
+      337.265,
+      -0.901
+     ],
+     "scale": [
+      0.691,
+      0.366,
+      0.691
+     ]
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.53,
+      7.55,
+      -1.287
+     ],
+     "rotation": [
+      90,
+      270,
+      -0.422
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.53,
+      7.55,
+      -0.0
+     ],
+     "rotation": [
+      90,
+      270,
+      2.351
+     ],
+     "tint": [
+      0.95,
+      0.55,
+      0.5
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "shield_wood",
+     "position": [
+      -2.53,
+      7.55,
+      1.287
+     ],
+     "rotation": [
+      90,
+      270,
+      -2.319
+     ],
+     "tint": [
+      0.55,
+      0.65,
+      0.95
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.006,
+      4.35,
+      2.025
+     ],
+     "rotation": [
+      0.104,
+      357.538,
+      0.044
+     ],
+     "scale": [
+      0.61,
+      0.327,
+      0.61
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.691,
+      4.35,
+      2.039
+     ],
+     "rotation": [
+      0.622,
+      233.099,
+      -1.437
+     ],
+     "scale": [
+      0.508,
+      0.301,
+      0.508
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.338,
+      4.35,
+      2.009
+     ],
+     "rotation": [
+      0.155,
+      11.342,
+      0.617
+     ],
+     "scale": [
+      0.604,
+      0.307,
+      0.604
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.023,
+      4.35,
+      1.995
+     ],
+     "rotation": [
+      0.953,
+      75.198,
+      1.236
+     ],
+     "scale": [
+      0.547,
+      0.336,
+      0.547
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.663,
+      4.35,
+      2.022
+     ],
+     "rotation": [
+      0.753,
+      217.933,
+      0.89
+     ],
+     "scale": [
+      0.635,
+      0.335,
+      0.635
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.351,
+      4.35,
+      1.997
+     ],
+     "rotation": [
+      0.873,
+      311.75,
+      1.108
+     ],
+     "scale": [
+      0.538,
+      0.299,
+      0.538
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.015,
+      4.35,
+      1.997
+     ],
+     "rotation": [
+      -0.3,
+      185.624,
+      0.509
+     ],
+     "scale": [
+      0.669,
+      0.334,
+      0.669
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.335,
+      4.35,
+      2.04
+     ],
+     "rotation": [
+      -0.994,
+      256.078,
+      -0.933
+     ],
+     "scale": [
+      0.507,
+      0.315,
+      0.507
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.666,
+      4.35,
+      2.012
+     ],
+     "rotation": [
+      -1.382,
+      199.181,
+      1.365
+     ],
+     "scale": [
+      0.668,
+      0.306,
+      0.668
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.992,
+      4.35,
+      2.005
+     ],
+     "rotation": [
+      0.746,
+      255.856,
+      0.195
+     ],
+     "scale": [
+      0.52,
+      0.313,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.351,
+      4.35,
+      2.02
+     ],
+     "rotation": [
+      -0.031,
+      24.432,
+      1.167
+     ],
+     "scale": [
+      0.656,
+      0.328,
+      0.656
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.685,
+      4.35,
+      2.034
+     ],
+     "rotation": [
+      -0.551,
+      133.607,
+      0.315
+     ],
+     "scale": [
+      0.55,
+      0.323,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.015,
+      4.35,
+      2.033
+     ],
+     "rotation": [
+      -0.819,
+      33.649,
+      0.754
+     ],
+     "scale": [
+      0.632,
+      0.318,
+      0.632
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.048,
+      4.35,
+      2.036
+     ],
+     "rotation": [
+      0.091,
+      226.805,
+      0.164
+     ],
+     "scale": [
+      0.662,
+      0.325,
+      0.662
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.022,
+      4.35,
+      1.686
+     ],
+     "rotation": [
+      -0.41,
+      275.247,
+      -0.559
+     ],
+     "scale": [
+      0.508,
+      0.317,
+      0.508
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.016,
+      4.35,
+      1.336
+     ],
+     "rotation": [
+      -0.223,
+      153.166,
+      -0.747
+     ],
+     "scale": [
+      0.613,
+      0.332,
+      0.613
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.994,
+      4.35,
+      1.021
+     ],
+     "rotation": [
+      1.116,
+      419.328,
+      -0.302
+     ],
+     "scale": [
+      0.55,
+      0.305,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.049,
+      4.35,
+      0.66
+     ],
+     "rotation": [
+      -0.168,
+      387.369,
+      -1.041
+     ],
+     "scale": [
+      0.632,
+      0.307,
+      0.632
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.02,
+      4.35,
+      0.345
+     ],
+     "rotation": [
+      0.51,
+      305.921,
+      0.458
+     ],
+     "scale": [
+      0.511,
+      0.322,
+      0.511
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.0,
+      4.35,
+      0.006
+     ],
+     "rotation": [
+      -0.147,
+      185.52,
+      0.952
+     ],
+     "scale": [
+      0.615,
+      0.327,
+      0.615
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.044,
+      4.35,
+      -0.346
+     ],
+     "rotation": [
+      1.057,
+      430.478,
+      0.455
+     ],
+     "scale": [
+      0.542,
+      0.306,
+      0.542
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.003,
+      4.35,
+      -0.692
+     ],
+     "rotation": [
+      -0.721,
+      182.966,
+      0.574
+     ],
+     "scale": [
+      0.643,
+      0.326,
+      0.643
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.004,
+      4.35,
+      -1.013
+     ],
+     "rotation": [
+      -1.359,
+      162.284,
+      -1.418
+     ],
+     "scale": [
+      0.545,
+      0.302,
+      0.545
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.008,
+      4.35,
+      -1.329
+     ],
+     "rotation": [
+      1.392,
+      442.973,
+      -0.082
+     ],
+     "scale": [
+      0.665,
+      0.299,
+      0.665
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.019,
+      4.35,
+      -1.687
+     ],
+     "rotation": [
+      0.772,
+      246.135,
+      0.647
+     ],
+     "scale": [
+      0.506,
+      0.318,
+      0.506
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.011,
+      4.35,
+      -2.01
+     ],
+     "rotation": [
+      -1.266,
+      173.445,
+      -0.176
+     ],
+     "scale": [
+      0.634,
+      0.298,
+      0.634
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      2.03,
+      4.35,
+      -2.043
+     ],
+     "rotation": [
+      -0.917,
+      384.251,
+      0.686
+     ],
+     "scale": [
+      0.644,
+      0.299,
+      0.644
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.693,
+      4.35,
+      -1.991
+     ],
+     "rotation": [
+      1.308,
+      461.751,
+      -0.114
+     ],
+     "scale": [
+      0.524,
+      0.301,
+      0.524
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.336,
+      4.35,
+      -2.02
+     ],
+     "rotation": [
+      -1.139,
+      417.83,
+      -1.058
+     ],
+     "scale": [
+      0.627,
+      0.323,
+      0.627
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.012,
+      4.35,
+      -2.008
+     ],
+     "rotation": [
+      0.872,
+      260.974,
+      -0.607
+     ],
+     "scale": [
+      0.507,
+      0.312,
+      0.507
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.693,
+      4.35,
+      -2.019
+     ],
+     "rotation": [
+      1.291,
+      529.246,
+      -1.208
+     ],
+     "scale": [
+      0.632,
+      0.333,
+      0.632
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.338,
+      4.35,
+      -2.035
+     ],
+     "rotation": [
+      -0.462,
+      187.378,
+      0.694
+     ],
+     "scale": [
+      0.506,
+      0.32,
+      0.506
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.001,
+      4.35,
+      -2.048
+     ],
+     "rotation": [
+      0.139,
+      389.325,
+      -0.486
+     ],
+     "scale": [
+      0.622,
+      0.325,
+      0.622
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.327,
+      4.35,
+      -2.017
+     ],
+     "rotation": [
+      0.827,
+      240.494,
+      -1.425
+     ],
+     "scale": [
+      0.496,
+      0.333,
+      0.496
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.68,
+      4.35,
+      -2.047
+     ],
+     "rotation": [
+      1.15,
+      373.963,
+      0.576
+     ],
+     "scale": [
+      0.67,
+      0.329,
+      0.67
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.024,
+      4.35,
+      -2.041
+     ],
+     "rotation": [
+      1.138,
+      514.017,
+      -0.049
+     ],
+     "scale": [
+      0.509,
+      0.329,
+      0.509
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.365,
+      4.35,
+      -2.014
+     ],
+     "rotation": [
+      1.318,
+      407.81,
+      1.462
+     ],
+     "scale": [
+      0.642,
+      0.311,
+      0.642
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.675,
+      4.35,
+      -2.049
+     ],
+     "rotation": [
+      -0.046,
+      338.852,
+      -1.211
+     ],
+     "scale": [
+      0.526,
+      0.334,
+      0.526
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.033,
+      4.35,
+      -2.001
+     ],
+     "rotation": [
+      1.231,
+      495.927,
+      -0.314
+     ],
+     "scale": [
+      0.611,
+      0.33,
+      0.611
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.993,
+      4.35,
+      -2.02
+     ],
+     "rotation": [
+      1.038,
+      608.951,
+      1.01
+     ],
+     "scale": [
+      0.631,
+      0.325,
+      0.631
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.05,
+      4.35,
+      -1.68
+     ],
+     "rotation": [
+      -1.057,
+      582.682,
+      0.746
+     ],
+     "scale": [
+      0.526,
+      0.306,
+      0.526
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.015,
+      4.35,
+      -1.34
+     ],
+     "rotation": [
+      1.068,
+      393.127,
+      -1.19
+     ],
+     "scale": [
+      0.606,
+      0.316,
+      0.606
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.016,
+      4.35,
+      -1.0
+     ],
+     "rotation": [
+      1.353,
+      588.117,
+      -1.13
+     ],
+     "scale": [
+      0.524,
+      0.325,
+      0.524
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.003,
+      4.35,
+      -0.667
+     ],
+     "rotation": [
+      1.053,
+      393.114,
+      0.065
+     ],
+     "scale": [
+      0.673,
+      0.327,
+      0.673
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.043,
+      4.35,
+      -0.331
+     ],
+     "rotation": [
+      -1.321,
+      422.938,
+      0.184
+     ],
+     "scale": [
+      0.529,
+      0.302,
+      0.529
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.022,
+      4.35,
+      -0.014
+     ],
+     "rotation": [
+      0.262,
+      274.508,
+      0.519
+     ],
+     "scale": [
+      0.622,
+      0.323,
+      0.622
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.995,
+      4.35,
+      0.318
+     ],
+     "rotation": [
+      0.443,
+      396.959,
+      -0.041
+     ],
+     "scale": [
+      0.527,
+      0.329,
+      0.527
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.025,
+      4.35,
+      0.67
+     ],
+     "rotation": [
+      -0.923,
+      614.661,
+      0.04
+     ],
+     "scale": [
+      0.6,
+      0.33,
+      0.6
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.016,
+      4.35,
+      1.001
+     ],
+     "rotation": [
+      -0.057,
+      522.421,
+      -0.513
+     ],
+     "scale": [
+      0.532,
+      0.301,
+      0.532
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.031,
+      4.35,
+      1.359
+     ],
+     "rotation": [
+      -0.298,
+      625.673,
+      -0.259
+     ],
+     "scale": [
+      0.605,
+      0.324,
+      0.605
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.004,
+      4.35,
+      1.685
+     ],
+     "rotation": [
+      -0.898,
+      506.875,
+      0.069
+     ],
+     "scale": [
+      0.538,
+      0.315,
+      0.538
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -2.035,
+      4.35,
+      2.031
+     ],
+     "rotation": [
+      1.009,
+      423.531,
+      -1.445
+     ],
+     "scale": [
+      0.625,
+      0.299,
+      0.625
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      2.1
+     ],
+     "rotation": [
+      -19.558,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.92
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.875,
+      2.1
+     ],
+     "rotation": [
+      -19.558,
+      -90.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.92
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.1,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -19.558,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.92
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      2.1,
+      0.875,
+      0.0
+     ],
+     "rotation": [
+      -19.558,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.909,
+      0.909,
+      1.92
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      9.2,
+      -1.9
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0.0,
+      9.2,
+      1.9
+     ],
+     "rotation": [
+      0,
+      -180.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.9,
+      9.2,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.9,
+      9.2,
+      0.0
+     ],
+     "rotation": [
+      0,
+      -90.0,
+      0
+     ],
+     "scale": [
+      1.9,
+      0.65,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      1.375,
+      9.3,
+      1.375
+     ],
+     "scale": [
+      1.375,
+      1.375,
+      1.375
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      1.375,
+      9.3,
+      -1.375
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      1.375,
+      1.375,
+      1.375
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -1.375,
+      9.3,
+      -1.375
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ],
+     "scale": [
+      1.375,
+      1.375,
+      1.375
+     ]
+    },
+    {
+     "mesh": "wood_roof_ocorner_45",
+     "position": [
+      -1.375,
+      9.3,
+      1.375
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ],
+     "scale": [
+      1.375,
+      1.375,
+      1.375
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.375,
+      10.725,
+      1.375
+     ],
+     "rotation": [
+      -35.264,
+      -135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      2.268
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.375,
+      10.725,
+      -1.375
+     ],
+     "rotation": [
+      -35.264,
+      -45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      2.268
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.375,
+      10.725,
+      -1.375
+     ],
+     "rotation": [
+      -35.264,
+      45.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      2.268
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.375,
+      10.725,
+      1.375
+     ],
+     "rotation": [
+      -35.264,
+      135.0,
+      0
+     ],
+     "scale": [
+      0.818,
+      0.818,
+      2.268
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0,
+      11.8,
+      0
+     ],
+     "rotation": [
+      0.0,
+      38.46,
+      0.0
+     ],
+     "scale": [
+      0.455,
+      0.382,
+      0.455
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.25,
+      3.425,
+      -1.2
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      3.262
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.75,
+      3.425,
+      -1.2
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      3.262
+     ]
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      0.4,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      0.85,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      1.3,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      1.75,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      2.2,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      2.65,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      3.1,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      3.55,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      4.0,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      4.45,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      4.9,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      5.35,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      5.8,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      6.25,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam_1",
+     "position": [
+      1.5,
+      6.7,
+      -1.2
+     ],
+     "scale": [
+      0.5,
+      0.175,
+      0.175
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "piece_walltorch",
+     "position": [
+      1.9,
+      3.0,
+      2.28
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ],
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      -1.9,
+      4.65,
+      -1.9
+     ],
+     "size": [
+      0.62,
+      9.3,
+      0.62
+     ]
+    },
+    {
+     "center": [
+      -1.9,
+      4.65,
+      1.9
+     ],
+     "size": [
+      0.62,
+      9.3,
+      0.62
+     ]
+    },
+    {
+     "center": [
+      1.9,
+      4.65,
+      -1.9
+     ],
+     "size": [
+      0.62,
+      9.3,
+      0.62
+     ]
+    },
+    {
+     "center": [
+      1.9,
+      4.65,
+      1.9
+     ],
+     "size": [
+      0.62,
+      9.3,
+      0.62
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      1.92,
+      0.5
+     ],
+     "size": [
+      4.0,
+      0.16,
+      3.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      1.92,
+      -1.5
+     ],
+     "size": [
+      3.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.32,
+      0.5
+     ],
+     "size": [
+      4.0,
+      0.16,
+      3.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      4.32,
+      -1.5
+     ],
+     "size": [
+      3.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      6.72,
+      0.5
+     ],
+     "size": [
+      4.0,
+      0.16,
+      3.0
+     ]
+    },
+    {
+     "center": [
+      -0.5,
+      6.72,
+      -1.5
+     ],
+     "size": [
+      3.0,
+      0.16,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      6.72,
+      2.225
+     ],
+     "size": [
+      4.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      6.72,
+      -2.225
+     ],
+     "size": [
+      4.9,
+      0.16,
+      0.45
+     ]
+    },
+    {
+     "center": [
+      2.225,
+      6.72,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      4.0
+     ]
+    },
+    {
+     "center": [
+      -2.225,
+      6.72,
+      0.0
+     ],
+     "size": [
+      0.45,
+      0.16,
+      4.0
+     ]
+    },
+    {
+     "center": [
+      0,
+      7.45,
+      2.33
+     ],
+     "size": [
+      4.96,
+      1.3,
+      0.3
+     ]
+    },
+    {
+     "center": [
+      2.33,
+      7.45,
+      0.0
+     ],
+     "size": [
+      4.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      7.45,
+      -2.33
+     ],
+     "size": [
+      4.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "center": [
+      -2.33,
+      7.45,
+      -0.0
+     ],
+     "size": [
+      4.96,
+      1.3,
+      0.3
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ]
+    },
+    {
+     "center": [
+      0,
+      4.9,
+      2.02
+     ],
+     "size": [
+      4.34,
+      1.1,
+      0.3
+     ]
+    },
+    {
+     "center": [
+      2.02,
+      4.9,
+      0.0
+     ],
+     "size": [
+      4.34,
+      1.1,
+      0.3
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      4.9,
+      -2.02
+     ],
+     "size": [
+      4.34,
+      1.1,
+      0.3
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "center": [
+      -2.02,
+      4.9,
+      -0.0
+     ],
+     "size": [
+      4.34,
+      1.1,
+      0.3
+     ],
+     "rotation": [
+      0,
+      270,
+      0
+     ]
+    },
+    {
+     "center": [
+      0,
+      9.35,
+      0
+     ],
+     "size": [
+      5.5,
+      0.1,
+      5.5
+     ]
+    }
+   ],
+   "snapPoints": [
+    -2.0,
+    0,
+    -1.8,
+    -1.8,
+    0,
+    -2.0,
+    -2.0,
+    0,
+    0,
+    0,
+    0,
+    -2.0,
+    -2.0,
+    0,
+    1.8,
+    1.8,
+    0,
+    -2.0,
+    2.0,
+    0,
+    -1.8,
+    -1.8,
+    0,
+    2.0,
+    2.0,
+    0,
+    0,
+    0,
+    0,
+    2.0,
+    2.0,
+    0,
+    1.8,
+    1.8,
+    0,
+    2.0
+   ],
+   "ladders": [
+    {
+     "center": [
+      1.5,
+      3.425,
+      -1.2
+     ],
+     "size": [
+      0.7,
+      6.85,
+      0.15
+     ],
+     "stops": [
+      0.6,
+      0.05,
+      -0.6,
+      0.6,
+      2.05,
+      -0.6,
+      0.6,
+      4.45,
+      -0.6,
+      0.6,
+      6.85,
+      -0.6
+     ]
+    }
+   ]
+  },
+  {
+   "name": "spansk_rytter",
+   "base": "piece_sharpstakes",
+   "parts": [
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.7,
+      0.0
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      1.455,
+      1.455,
+      2.095
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.59,
+      0.04,
+      -0.66
+     ],
+     "rotation": [
+      43.022,
+      -4.372,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.547,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -1.59,
+      0.04,
+      0.66
+     ],
+     "rotation": [
+      -41.999,
+      2.13,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.575,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.522,
+      0.04,
+      -0.66
+     ],
+     "rotation": [
+      48.69,
+      4.428,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.531,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      -0.522,
+      0.04,
+      0.66
+     ],
+     "rotation": [
+      -48.599,
+      -0.599,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.568,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.498,
+      0.04,
+      -0.66
+     ],
+     "rotation": [
+      43.797,
+      0.44,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.522,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      0.498,
+      0.04,
+      0.66
+     ],
+     "rotation": [
+      -45.082,
+      -2.764,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.541,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.627,
+      0.04,
+      -0.66
+     ],
+     "rotation": [
+      48.02,
+      5.365,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.566,
+      0.5
+     ]
+    },
+    {
+     "mesh": "stake",
+     "position": [
+      1.627,
+      0.04,
+      0.66
+     ],
+     "rotation": [
+      -42.273,
+      -4.28,
+      0
+     ],
+     "scale": [
+      0.5,
+      0.508,
+      0.5
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      0.7,
+      0
+     ],
+     "size": [
+      4.4,
+      1.4,
+      1.3
+     ]
+    }
+   ],
+   "snapPoints": [
+    -2.2,
+    0,
+    0,
+    2.2,
+    0,
+    0
+   ],
+   "keep": [
+    "HIT AREA"
+   ],
+   "hitArea": {
+    "center": [
+     0,
+     0.7,
+     0
+    ],
+    "size": [
+     4.6,
+     1.4,
+     1.9
+    ]
+   },
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 15
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 10
+    },
+    {
+     "label": "angle",
+     "yaw": -40,
+     "pitch": 30
+    }
+   ]
+  },
+  {
+   "name": "oversikt",
+   "parts": [
+    {
+     "piece": "skanseport",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      -6.4,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      -10.4,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      6.4,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "vakttarn_liten",
+     "position": [
+      9.4,
+      0,
+      -0.8
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      12.4,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "skansehjorne45",
+     "position": [
+      16.4,
+      0,
+      0
+     ],
+     "rotation": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      19.23,
+      0,
+      -2.83
+     ],
+     "rotation": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "piece": "vakttarn_stor",
+     "position": [
+      -14.4,
+      0,
+      -1.0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      -16.2,
+      0,
+      -5.0
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ]
+    },
+    {
+     "piece": "skansehjorne",
+     "position": [
+      -16.2,
+      0,
+      -9.0
+     ],
+     "rotation": [
+      0,
+      -90,
+      0
+     ]
+    },
+    {
+     "piece": "skansevegg",
+     "position": [
+      -12.2,
+      0,
+      -9.0
+     ],
+     "rotation": [
+      0,
+      180,
+      0
+     ]
+    },
+    {
+     "piece": "vakttarn",
+     "position": [
+      -8.8,
+      0,
+      -8.0
+     ]
+    },
+    {
+     "piece": "skansetrapp",
+     "position": [
+      -6.4,
+      0,
+      -1.8
+     ]
+    },
+    {
+     "piece": "spansk_rytter",
+     "position": [
+      -4,
+      0,
+      5
+     ]
+    },
+    {
+     "piece": "spansk_rytter",
+     "position": [
+      5,
+      0,
+      5.5
+     ],
+     "rotation": [
+      0,
+      15,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "outside",
+     "yaw": 200,
+     "pitch": 18
+    },
+    {
+     "label": "inside",
+     "yaw": 20,
+     "pitch": 30
+    },
+    {
+     "label": "top",
+     "yaw": 0,
+     "pitch": 70
+    }
+   ]
+  },
+  {
+   "name": "navigatorbord",
+   "parts": [
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      0.77,
+      0
+     ],
+     "scale": [
+      0.9,
+      1,
+      0.6
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      0.22,
+      0
+     ],
+     "scale": [
+      0.8,
+      0.6,
+      0.5
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.38,
+      0.375,
+      -0.24
+     ],
+     "scale": [
+      0.18,
+      0.75,
+      0.18
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.38,
+      0.375,
+      0.24
+     ],
+     "scale": [
+      0.18,
+      0.75,
+      0.18
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.38,
+      0.375,
+      -0.24
+     ],
+     "scale": [
+      0.18,
+      0.75,
+      0.18
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.38,
+      0.375,
+      0.24
+     ],
+     "scale": [
+      0.18,
+      0.75,
+      0.18
+     ]
+    },
+    {
+     "mesh": "seachart",
+     "position": [
+      -0.05,
+      0.855,
+      -0.2
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.4,
+      0.4,
+      0.4
+     ]
+    },
+    {
+     "mesh": "sextant",
+     "position": [
+      0.25,
+      0.86,
+      0.1
+     ],
+     "rotation": [
+      0,
+      30,
+      0
+     ],
+     "scale": [
+      0.06,
+      0.06,
+      0.06
+     ]
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.3,
+      0.851,
+      0.18
+     ],
+     "rotation": [
+      0.0,
+      5,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_1",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.3,
+      0.851,
+      -0.18
+     ],
+     "rotation": [
+      0.0,
+      -10,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_2",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.2,
+      0.302,
+      -0.05
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_3",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.2,
+      0.362,
+      -0.02
+     ],
+     "rotation": [
+      0.0,
+      4,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_4",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.05,
+      0.302,
+      0.08
+     ],
+     "rotation": [
+      0.0,
+      -3,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_5",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.05,
+      0.362,
+      0.05
+     ],
+     "rotation": [
+      0.0,
+      8,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_6",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.1,
+      0.422,
+      0.02
+     ],
+     "rotation": [
+      0.0,
+      2,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_7",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.3,
+      0.002,
+      0.0
+     ],
+     "rotation": [
+      0.0,
+      90,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_8",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.12,
+      0.002,
+      0.02
+     ],
+     "rotation": [
+      0.0,
+      92,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_9",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.15,
+      0.002,
+      -0.02
+     ],
+     "rotation": [
+      0.0,
+      88,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_10",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.21,
+      0.062,
+      0.01
+     ],
+     "rotation": [
+      0.0,
+      90,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_11",
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      0.425,
+      0
+     ],
+     "size": [
+      0.9,
+      0.85,
+      0.6
+     ]
+    }
+   ],
+   "groups": [
+    {
+     "name": "scroll_1",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_2",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_3",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_4",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_5",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_6",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_7",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_8",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_9",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_10",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_11",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 20
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 25
+    },
+    {
+     "label": "top",
+     "yaw": -30,
+     "pitch": 60
+    }
+   ]
+  },
+  {
+   "name": "kartmakerbenk",
+   "base": "piece_workbench",
+   "parts": [
+    {
+     "mesh": "cartodesk",
+     "position": [
+      0,
+      0,
+      0
+     ],
+     "scale": [
+      1.086,
+      1.086,
+      1.086
+     ]
+    },
+    {
+     "mesh": "seachart",
+     "position": [
+      0.1,
+      0.879,
+      -0.25
+     ],
+     "rotation": [
+      105.6,
+      0,
+      0
+     ],
+     "scale": [
+      0.45,
+      0.45,
+      0.45
+     ]
+    },
+    {
+     "mesh": "sextant",
+     "position": [
+      -0.55,
+      0.8,
+      0.05
+     ],
+     "rotation": [
+      15.6,
+      -20,
+      0
+     ],
+     "scale": [
+      0.06,
+      0.06,
+      0.06
+     ]
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.65,
+      0.763,
+      0.15
+     ],
+     "rotation": [
+      15.6,
+      10,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_1",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.6,
+      0.826,
+      0.12
+     ],
+     "rotation": [
+      15.6,
+      14,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_2",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.6,
+      0.866,
+      -0.22
+     ],
+     "rotation": [
+      15.6,
+      -5,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_3",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.3,
+      0.002,
+      0.55
+     ],
+     "rotation": [
+      0.0,
+      30,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_4",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.3,
+      0.002,
+      0.6
+     ],
+     "rotation": [
+      0.0,
+      75,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_5",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.8,
+      0.002,
+      0.55
+     ],
+     "rotation": [
+      0.0,
+      85,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_6",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.8,
+      0.002,
+      0.5
+     ],
+     "rotation": [
+      0.0,
+      60,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_7",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.35,
+      0.062,
+      0.58
+     ],
+     "rotation": [
+      0.0,
+      78,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_8",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      -0.3,
+      0.062,
+      0.55
+     ],
+     "rotation": [
+      0.0,
+      35,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_9",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.8,
+      0.062,
+      0.52
+     ],
+     "rotation": [
+      0.0,
+      86,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_10",
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.05,
+      0.002,
+      0.62
+     ],
+     "rotation": [
+      0.0,
+      5,
+      0.0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "group": "scroll_11",
+     "detail": true
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      0.5,
+      0
+     ],
+     "size": [
+      1.9,
+      1.0,
+      0.95
+     ]
+    }
+   ],
+   "groups": [
+    {
+     "name": "scroll_1",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_2",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_3",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_4",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_5",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_6",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_7",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_8",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_9",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_10",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "scroll_11",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "keep": [
+    "roof_check_pint",
+    "connectionEffectPoint",
+    "PlayerBase",
+    "GuidePoint",
+    "AreaMarker"
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 20
+    },
+    {
+     "label": "side",
+     "yaw": 120,
+     "pitch": 25
+    },
+    {
+     "label": "top",
+     "yaw": -30,
+     "pitch": 60
+    }
+   ]
+  },
+  {
+   "name": "stifinner",
+   "parts": [
+    {
+     "mesh": "amulet",
+     "position": [
+      0,
+      -0.07,
+      0.16
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      0.09,
+      0.09,
+      0.09
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.037,
+      0.09,
+      0.105
+     ],
+     "rotation": [
+      47.501,
+      30.964,
+      0
+     ],
+     "scale": [
+      0.027,
+      0.027,
+      0.09
+     ],
+     "tint": [
+      0.35,
+      0.25,
+      0.18
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.037,
+      0.09,
+      0.105
+     ],
+     "rotation": [
+      47.501,
+      -30.964,
+      0
+     ],
+     "scale": [
+      0.027,
+      0.027,
+      0.09
+     ],
+     "tint": [
+      0.35,
+      0.25,
+      0.18
+     ]
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      -0.028,
+      -0.039,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_1"
+    },
+    {
+     "mesh": "gem_amber",
+     "position": [
+      -0.017,
+      -0.054,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_2"
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      0.0,
+      -0.06,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_3"
+    },
+    {
+     "mesh": "gem_amber",
+     "position": [
+      0.017,
+      -0.054,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_4"
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      0.028,
+      -0.039,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_5"
+    }
+   ],
+   "groups": [
+    {
+     "name": "gem_1",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_2",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_3",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_4",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_5",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "name": "stifinner_visning",
+   "parts": [
+    {
+     "piece": "stifinner",
+     "position": [
+      0,
+      0.3,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 5
+    },
+    {
+     "label": "side",
+     "yaw": 120,
+     "pitch": 10
+    },
+    {
+     "label": "angle",
+     "yaw": -150,
+     "pitch": 30
+    }
+   ]
+  },
+  {
+   "name": "mount_Karve",
+   "parts": [
+    {
+     "mesh": "Karve",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "navigatorbord",
+     "position": [
+      -0.5,
+      0.0,
+      -2.0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "stern",
+     "yaw": 20,
+     "pitch": 30,
+     "focus": [
+      -0.5,
+      0.6,
+      -2.0
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 25,
+     "focus": [
+      -0.5,
+      0.6,
+      -2.0
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "top",
+     "yaw": 0,
+     "pitch": 70,
+     "focus": [
+      -0.5,
+      0.6,
+      -2.0
+     ],
+     "radius": 3.5
+    }
+   ]
+  },
+  {
+   "name": "mount_VikingShip",
+   "parts": [
+    {
+     "mesh": "VikingShip",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "navigatorbord",
+     "position": [
+      -1.0,
+      0.64,
+      -5.6
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "stern",
+     "yaw": 20,
+     "pitch": 30,
+     "focus": [
+      -1.0,
+      1.24,
+      -5.6
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 25,
+     "focus": [
+      -1.0,
+      1.24,
+      -5.6
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "top",
+     "yaw": 0,
+     "pitch": 70,
+     "focus": [
+      -1.0,
+      1.24,
+      -5.6
+     ],
+     "radius": 3.5
+    }
+   ]
+  },
+  {
+   "name": "mount_VikingShip_Ashlands",
+   "parts": [
+    {
+     "mesh": "VikingShip_Ashlands",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "piece": "navigatorbord",
+     "position": [
+      -0.8,
+      3.63,
+      -10.6
+     ],
+     "rotation": [
+      20,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "stern",
+     "yaw": 20,
+     "pitch": 30,
+     "focus": [
+      -0.8,
+      4.2299999999999995,
+      -10.6
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 25,
+     "focus": [
+      -0.8,
+      4.2299999999999995,
+      -10.6
+     ],
+     "radius": 2.2
+    },
+    {
+     "label": "top",
+     "yaw": 0,
+     "pitch": 70,
+     "focus": [
+      -0.8,
+      4.2299999999999995,
+      -10.6
+     ],
+     "radius": 3.5
+    }
+   ]
+  },
+  {
+   "name": "hvithjaltportal",
+   "parts": [
+    {
+     "mesh": "portal",
+     "position": [
+      0,
+      0,
+      0
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      3.6,
+      3.6,
+      3.6
+     ]
+    },
+    {
+     "mesh": "portalground",
+     "position": [
+      6,
+      0.03,
+      0
+     ],
+     "scale": [
+      0.037,
+      0.037,
+      0.037
+     ]
+    },
+    {
+     "mesh": "eternalfire",
+     "position": [
+      -4,
+      0,
+      0
+     ],
+     "scale": [
+      1.3,
+      1.3,
+      1.3
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -2.5,
+      1,
+      1.5
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 15
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 15
+    },
+    {
+     "label": "top",
+     "yaw": 180,
+     "pitch": 60
+    }
+   ]
+  }
+ ]
+}

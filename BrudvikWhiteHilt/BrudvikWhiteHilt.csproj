@@ -199,6 +199,13 @@
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\SmokeOven.cs" />
+    <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
+    <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
+    <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />
+    <Compile Include="Pieces\Defenses\DefensePieceBase.cs" />
+    <Compile Include="Pieces\Defenses\DefensePieces.cs" />
+    <Compile Include="Pieces\Defenses\GateLeafDriver.cs" />
+    <Compile Include="Pieces\Defenses\VanillaMeshLibrary.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
@@ -299,6 +306,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\whitehilt_foraging" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
+    <EmbeddedResource Include="..\AssetSource\Preview\defenses.json">
+      <Link>Pieces\Defenses\defenses.json</Link>
+      <LogicalName>BrudvikWhiteHilt.Defenses.json</LogicalName>
+    </EmbeddedResource>
     <Content Include="Package\icon.png" />
   </ItemGroup>
   <PropertyGroup>
