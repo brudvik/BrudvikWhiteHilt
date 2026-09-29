@@ -21,6 +21,18 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
+    /// Updates the speed and heading read-out after the game's ship HUD.
+    /// </summary>
+    /// <param name="__instance">The HUD.</param>
+    /// <param name="player">The local player.</param>
+    [HarmonyPatch(typeof(Hud), nameof(Hud.UpdateShipHud))]
+    [HarmonyPostfix]
+    public static void UpdateShipHud(Hud __instance, Player player)
+    {
+        ShipHud.Update(__instance, player);
+    }
+
+    /// <summary>
     /// Handles the sailing keys for the local player.
     /// </summary>
     /// <param name="__instance">The player.</param>

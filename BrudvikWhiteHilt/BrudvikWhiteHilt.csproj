@@ -299,6 +299,7 @@
     <Compile Include="Items\Ranching\GroomingComb.cs" />
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\ShipAssist.cs" />
+    <Compile Include="Pieces\Ships\ShipHud.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />

@@ -649,6 +649,9 @@
   "whitehilt_autopilot_on": "Holder kurs {0}° når du slipper roret",
   "whitehilt_autopilot_off": "Kursholder av",
   "whitehilt_autopilot_shallow": "Grunt vann forut: skipet slutter å holde kursen",
+  "whitehilt_compass": "N,NØ,Ø,SØ,S,SV,V,NV",
+  "whitehilt_shiphud_wind": "Vind fra {0}",
+  "whitehilt_shiphud_course": "Holder kurs {0}°",
 
   "whitehilt_unlock_start": "Det hvite hjaltet svarer: startutstyr er låst opp",
   "whitehilt_unlock_blackforest": "Det hvite hjaltet svarer: utstyr for Svartskogen er låst opp",
