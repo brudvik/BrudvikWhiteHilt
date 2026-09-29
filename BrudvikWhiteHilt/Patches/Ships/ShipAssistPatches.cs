@@ -21,6 +21,21 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
+    /// Thins the fog near a White Hilt Ship with the Mast Wisp, after the game has set it.
+    /// </summary>
+    /// <param name="dt">Seconds since the last update.</param>
+    [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.SetEnv))]
+    [HarmonyPostfix]
+    public static void SetEnv(float dt)
+    {
+        // Without a camera the game leaves the fog as it was, and scaling it again would thin it every update.
+        if (Utils.GetMainCamera() != null)
+        {
+            ShipFog.Apply(dt);
+        }
+    }
+
+    /// <summary>
     /// Updates the speed and heading read-out after the game's ship HUD.
     /// </summary>
     /// <param name="__instance">The HUD.</param>

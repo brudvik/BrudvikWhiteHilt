@@ -150,6 +150,26 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     }
 
     /// <summary>
+    /// Checks whether a point is within reach of a lit mast wisp, measured along the ground since the wisp sits high.
+    /// </summary>
+    /// <param name="point">World position, e.g. the local player.</param>
+    /// <param name="reach">Reach in metres.</param>
+    /// <returns>True if a White Hilt Ship with the mast wisp is that close.</returns>
+    public static bool IsNearMastWisp(Vector3 point, float reach)
+    {
+        foreach (WhiteHiltShipUpgrades ship in instances)
+        {
+            if (ship != null && ship.mastWisp != null && ship.Has(ShipMastWisp.Bit)
+                && Utils.DistanceXZ(ship.mastWisp.transform.position, point) <= reach)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Checks whether the ship has an upgrade.
     /// </summary>
     /// <param name="bit">The upgrade's bit.</param>

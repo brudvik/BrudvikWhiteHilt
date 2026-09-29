@@ -157,7 +157,7 @@ public class ShipMastWisp : WhiteHiltShipUpgradeBase
     protected override string FullName => "Mast Wisp";
 
     /// <inheritdoc/>
-    protected override string Description => "A glowing light bound with guck and ancient bark. Use it on the mast of the White Hilt Ship; it clears the mist around the ship.";
+    protected override string Description => "A glowing light bound with guck and ancient bark. Use it on the mast of the White Hilt Ship; it clears the Mistlands mist around the ship and thins ordinary fog.";
 
     /// <inheritdoc/>
     protected override string CopyFrom => "Wisp";

@@ -158,7 +158,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Ship Lantern** | A lantern on deck that lights up at night, 2.5 times as bright and twice as far as the vanilla lamp (`Ships` → `LanternBrightness`, `LanternRange`, each player's own) | Iron ×2, Resin ×10, Surtling Core ×1 |
 | **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
 | **Ship Tent** | A tent on deck; under it you have Shelter and stay dry | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
-| **Mast Wisp** | A wisp at the top of the mast that clears the mist around the ship | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
+| **Mast Wisp** | A wisp at the top of the mast that clears the Mistlands mist around the ship and thins ordinary fog for those within 15 m (`Ships` → `MastWispFogLeft`, 0.25 of the fog is left) | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
 | **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes (`Ships` → `FishingNetMinutes`) and puts it in the cargo hold. The Fishing skill of the sailor makes it catch up to twice as often and often two at a time, and raises the skill. Now and then it brings up seaweed, and on the ocean an amber pearl (`FishingNetBycatch`). The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
 | **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
 | **Deck Brazier** | An iron brazier on the foredeck that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
@@ -558,6 +558,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Indoor sound: wind, rain, sea and thunder are quieter and muffled under a roof, by how well you are covered
 - Floating items: everything dropped floats in water, e.g. a Serpent's trophy at sea (`FloatingItems`)
 - Waste Well: throw rubbish in and it is gone once closed; it can also collect items lying on the ground nearby
+- The Mast Wisp also thins ordinary fog (misty weather) for those near the ship, not only the Mistlands mist
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E

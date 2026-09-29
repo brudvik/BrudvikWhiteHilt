@@ -28,6 +28,9 @@ public static class ShipSettings
     /// <summary>Whether the fishing net also brings up seaweed, and now and then an amber pearl on the ocean.</summary>
     public static ConfigEntry<bool> FishingNetBycatch { get; private set; }
 
+    /// <summary>Fraction of the ordinary fog left near a White Hilt Ship with the mast wisp; 1 leaves the fog alone.</summary>
+    public static ConfigEntry<float> MastWispFogLeft { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -44,6 +47,9 @@ public static class ShipSettings
             new AcceptableValueRange<float>(0.5f, 30f));
         FishingNetBycatch = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetBycatch", true,
             "The fishing net sometimes also brings up seaweed, and on the ocean now and then an amber pearl.");
+        MastWispFogLeft = WhiteHiltConfig.BindAdminOnly(Section, "MastWispFogLeft", 0.25f,
+            "Near a White Hilt Ship with the Mast Wisp, this fraction of the ordinary fog is left (the Mistlands mist is cleared anyway). 1 leaves the fog alone.",
+            new AcceptableValueRange<float>(0f, 1f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
