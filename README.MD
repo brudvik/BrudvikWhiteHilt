@@ -335,6 +335,12 @@ The `Sound` section sets it: `IndoorSound` (on/off), `IndoorWindVolume` (0.25) a
 
 ---
 
+### 🌊 FLOATING ITEMS
+
+Everything dropped floats in water instead of sinking, so a Serpent killed at sea leaves its trophy and meat bobbing on the surface, and nothing is lost when a fight at sea goes overboard. Items that already lay on the sea floor come up when their area loads. The server sets it in the `FloatingItems` section: `Enabled` (on by default) and `SinkingItems`, a comma-separated list of prefab names that still sink (e.g. `Stone,Flint`).
+
+---
+
 ### 🏗️ BUILD CAMERA & TOOLBAR
 
 While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
@@ -540,6 +546,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Clock: the time of day in 24 hours at the top of the screen, with day number, a weather icon and a warning before night falls
 - Shield and ammo slots under the accessories: the shield comes and goes with one-handed weapons, and the ammo there is used first
 - Indoor sound: wind, rain, sea and thunder are quieter and muffled under a roof, by how well you are covered
+- Floating items: everything dropped floats in water, e.g. a Serpent's trophy at sea (`FloatingItems`)
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E
