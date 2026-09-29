@@ -48,10 +48,7 @@ public static class VisualHelper
             material.color = Color.white;
         }
 
-        foreach (string property in unusedTextureProperties.Where(material.HasProperty))
-        {
-            material.SetTexture(property, null);
-        }
+        ClearUnusedMaps(material);
 
         foreach (MeshRenderer renderer in renderers)
         {
@@ -114,11 +111,7 @@ public static class VisualHelper
             material.color = Color.white;
         }
 
-        foreach (string property in unusedTextureProperties.Where(material.HasProperty))
-        {
-            material.SetTexture(property, null);
-        }
-
+        ClearUnusedMaps(material);
         return material;
     }
 
@@ -144,10 +137,7 @@ public static class VisualHelper
                 material.color = Color.white;
             }
 
-            foreach (string property in unusedTextureProperties.Where(material.HasProperty))
-            {
-                material.SetTexture(property, null);
-            }
+            ClearUnusedMaps(material);
         }
 
         GameObject created = new($"{mesh.name}_model") { layer = template.gameObject.layer };
@@ -309,6 +299,21 @@ public static class VisualHelper
     private static bool IsMeshRenderer(Renderer renderer)
     {
         return renderer is MeshRenderer || renderer is SkinnedMeshRenderer;
+    }
+
+    // Without its map, a glowing template (e.g. the Thunderstone) would light the whole new model in its emission colour.
+    // The keyword stays, so selection and chest glows that set the colour still show.
+    private static void ClearUnusedMaps(Material material)
+    {
+        foreach (string property in unusedTextureProperties.Where(material.HasProperty))
+        {
+            material.SetTexture(property, null);
+        }
+
+        if (material.HasProperty("_EmissionColor"))
+        {
+            material.SetColor("_EmissionColor", Color.black);
+        }
     }
 
     // activeInHierarchy is always false inside Jotunn's disabled prefab container, so walk up to the root instead.
