@@ -122,6 +122,15 @@ public static class PortalMapPins
         return $"{label}\n{RunePortalPatch.FormatRunes(entry.RuneMask, entry.Everything)}";
     }
 
+    /// <summary>
+    /// The portal pin's icon: the vanilla portal on a dark disc with a purple rim.
+    /// </summary>
+    /// <returns>The icon, or null before the game has loaded.</returns>
+    public static Sprite GetPortalBadge()
+    {
+        return GetIcon(new PortalMapEntry());
+    }
+
     private static string Label(PortalMapEntry entry)
     {
         if (entry.Kind == PortalMapEntry.ShipKind)

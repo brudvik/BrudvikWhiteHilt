@@ -1,4 +1,6 @@
 using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Pieces.EternalFire;
+using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 /// <summary>
 /// Runs on the <see cref="Game"/> object. On the server it finds every portal and ship in the world and sends each
 /// player what they may see: portals while a Portal Astrolabe stands at a map table, ships while a Harbour Anchor does.
+/// The same scan tells whether a Surt's Brazier stands anywhere, for eternal fire.
 /// On a client it receives that list.
 /// </summary>
 public class PortalMapService : MonoBehaviour
@@ -20,6 +23,7 @@ public class PortalMapService : MonoBehaviour
     public const float ActivationRange = 5f;
 
     private const string RpcName = "WhiteHiltPortalMap";
+    private const string TravelRpcName = "WhiteHiltPortalList";
     private const string PortalStationType = "PortalStations.Stations.PortalStation";
     private const float ScanPause = 10f;
     private const float ShipUpdateInterval = 2f;
@@ -42,6 +46,11 @@ public class PortalMapService : MonoBehaviour
     private readonly List<Vector3> astrolabes = new();
     private readonly List<Vector3> anchors = new();
     private readonly Dictionary<long, string> lastSent = new();
+    private readonly Dictionary<long, string> lastSentTravel = new();
+    private readonly List<PortalDestination> scanTravel = new();
+
+    private List<PortalDestination> travel = new();
+    private Dictionary<int, bool> travelPrefabs;
 
     private List<PortalMapEntry> portals = new();
     private List<(ZDOID Id, PortalMapEntry Entry)> ships = new();
@@ -52,6 +61,8 @@ public class PortalMapService : MonoBehaviour
     private int astrolabePrefab;
     private int anchorPrefab;
     private int runePostPrefab;
+    private int brazierPrefab;
+    private bool brazierFound;
     private int sectorIndex = -1;
     private float nextScan;
     private float nextShipUpdate;
@@ -60,7 +71,9 @@ public class PortalMapService : MonoBehaviour
     {
         // A new game: the pins of the last world must not linger until this server's list arrives.
         PortalMapPins.SetEntries(new List<PortalMapEntry>());
+        PortalTravel.SetDestinations(new List<PortalDestination>());
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_PortalMap);
+        ZRoutedRpc.instance?.Register<ZPackage>(TravelRpcName, RPC_PortalList);
     }
 
     private void Update()
@@ -124,6 +137,8 @@ public class PortalMapService : MonoBehaviour
         mapTables.Clear();
         astrolabes.Clear();
         anchors.Clear();
+        scanTravel.Clear();
+        brazierFound = false;
         sectorIndex = 0;
     }
 
@@ -168,6 +183,22 @@ public class PortalMapService : MonoBehaviour
         }
 
         int prefab = zdo.GetPrefab();
+        if (prefab == brazierPrefab)
+        {
+            brazierFound = true;
+            return;
+        }
+
+        if (travelPrefabs.TryGetValue(prefab, out bool ground))
+        {
+            if (seen.Add(zdo.m_uid))
+            {
+                CollectTravelPortal(zdo, ground);
+            }
+
+            return;
+        }
+
         bool wanted = portalPrefabs.Contains(prefab) || stationPrefabs.Contains(prefab) || shipPrefabs.Contains(prefab)
             || mapTablePrefabs.Contains(prefab) || prefab == runePostPrefab || prefab == astrolabePrefab || prefab == anchorPrefab;
         if (!wanted || !seen.Add(zdo.m_uid))
@@ -217,8 +248,35 @@ public class PortalMapService : MonoBehaviour
         }
     }
 
+    private void CollectTravelPortal(ZDO zdo, bool ground)
+    {
+        string name = zdo.GetString(WhiteHiltPortalComponent.NameKey);
+        bool isPrivate = zdo.GetInt(WhiteHiltPortalComponent.PrivacyKey) != 0;
+        long creator = zdo.GetLong(ZDOVars.s_creator);
+        string id = zdo.GetString(WhiteHiltPortalComponent.IdKey);
+        scanPortals.Add(new PortalMapEntry
+        {
+            Name = name,
+            Position = zdo.GetPosition(),
+            Privacy = isPrivate ? PortalMapEntry.Private : PortalMapEntry.Public,
+            Creator = creator
+        });
+        scanTravel.Add(new PortalDestination
+        {
+            Id = string.IsNullOrEmpty(id) ? zdo.m_uid.ToString() : id,
+            Name = name,
+            Position = zdo.GetPosition(),
+            Yaw = zdo.GetRotation().eulerAngles.y,
+            Ground = ground,
+            Private = isPrivate,
+            Creator = creator
+        });
+    }
+
     private void FinishScan()
     {
+        EternalFireRules.SetBrazierPresent(brazierFound);
+        travel = scanTravel.ToList();
         foreach (PortalMapEntry portal in scanPortals)
         {
             foreach ((Vector3 position, int mask) in runePosts)
@@ -275,6 +333,11 @@ public class PortalMapService : MonoBehaviour
             {
                 ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, package);
             }
+
+            if (TryGetTravelChanged(peer.m_uid, playerID, out ZPackage travelPackage))
+            {
+                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, TravelRpcName, travelPackage);
+            }
         }
 
         if (hostPlays)
@@ -285,12 +348,46 @@ public class PortalMapService : MonoBehaviour
                 package.SetPos(0);
                 PortalMapPins.SetEntries(PortalMapEntry.Read(package));
             }
+
+            if (TryGetTravelChanged(LocalKey, hostID, out ZPackage travelPackage))
+            {
+                travelPackage.SetPos(0);
+                PortalTravel.SetDestinations(PortalDestination.Read(travelPackage));
+            }
         }
 
         foreach (long gone in lastSent.Keys.Where(key => !current.Contains(key)).ToList())
         {
             lastSent.Remove(gone);
+            lastSentTravel.Remove(gone);
         }
+    }
+
+    // Public portals for everyone, private ones only for their builder, who also sees which are theirs.
+    private bool TryGetTravelChanged(long key, long playerID, out ZPackage package)
+    {
+        List<PortalDestination> visible = travel
+            .Where(portal => !portal.Private || (portal.Creator != 0L && portal.Creator == playerID))
+            .Select(portal => new PortalDestination
+            {
+                Id = portal.Id,
+                Name = portal.Name,
+                Position = portal.Position,
+                Yaw = portal.Yaw,
+                Ground = portal.Ground,
+                Private = portal.Private,
+                Own = portal.Creator != 0L && portal.Creator == playerID
+            })
+            .ToList();
+        package = PortalDestination.Write(visible);
+        string content = Convert.ToBase64String(package.GetArray());
+        if (lastSentTravel.TryGetValue(key, out string sent) && sent == content)
+        {
+            return false;
+        }
+
+        lastSentTravel[key] = content;
+        return true;
     }
 
     // Public stations, portals and ships for everyone; other stations only for the player who built them.
@@ -317,10 +414,16 @@ public class PortalMapService : MonoBehaviour
         stationPrefabs = new HashSet<int>();
         mapTablePrefabs = new HashSet<int>();
         shipPrefabs = new HashSet<int>();
+        travelPrefabs = new Dictionary<int, bool>();
         foreach (GameObject prefab in ZNetScene.instance.m_prefabs.Where(prefab => prefab != null))
         {
             int hash = prefab.name.GetStableHashCode();
-            if (prefab.GetComponent<TeleportWorld>() != null)
+            WhiteHiltPortalComponent travelPortal = prefab.GetComponent<WhiteHiltPortalComponent>();
+            if (travelPortal != null)
+            {
+                travelPrefabs[hash] = travelPortal.Ground;
+            }
+            else if (prefab.GetComponent<TeleportWorld>() != null)
             {
                 portalPrefabs.Add(hash);
             }
@@ -341,7 +444,16 @@ public class PortalMapService : MonoBehaviour
         astrolabePrefab = PortalAstrolabe.PortalAstrolabe.PrefabName.GetStableHashCode();
         anchorPrefab = Ships.HarbourAnchor.HarbourAnchor.PrefabName.GetStableHashCode();
         runePostPrefab = RuneRack.RuneRack.PrefabName.GetStableHashCode();
-        Jotunn.Logger.LogInfo($"Portal map: {portalPrefabs.Count} portal, {stationPrefabs.Count} station, {shipPrefabs.Count} ship and {mapTablePrefabs.Count} map table prefabs");
+        brazierPrefab = SurtsBrazier.PrefabName.GetStableHashCode();
+        Jotunn.Logger.LogInfo($"Portal map: {portalPrefabs.Count} portal, {stationPrefabs.Count} station, {travelPrefabs.Count} White Hilt portal, {shipPrefabs.Count} ship and {mapTablePrefabs.Count} map table prefabs");
+    }
+
+    private void RPC_PortalList(long sender, ZPackage package)
+    {
+        if (sender == ZRoutedRpc.instance.GetServerPeerID())
+        {
+            PortalTravel.SetDestinations(PortalDestination.Read(package));
+        }
     }
 
     private void RPC_PortalMap(long sender, ZPackage package)

@@ -197,6 +197,15 @@
     <Compile Include="Patches\EternalFire\EternalFirePatches.cs" />
     <Compile Include="Pieces\EternalFire\EternalFireRules.cs" />
     <Compile Include="Pieces\EternalFire\SurtsBrazier.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalDestination.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalSettings.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravel.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravelPanel.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalComponent.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalPieces.cs" />
+    <Compile Include="Patches\Portals\HomeStonePatch.cs" />
+    <Compile Include="Patches\Portals\PortalTravelMapPatch.cs" />
+    <Compile Include="Items\Portals\HomeStone.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
