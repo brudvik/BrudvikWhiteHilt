@@ -1,4 +1,6 @@
+using BrudvikWhiteHilt.Items.Navigation;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
+using BrudvikWhiteHilt.Pieces.Navigation;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -154,6 +156,10 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         text += mask == 0 ? "$whitehilt_ship_none" : $"$whitehilt_ship_upgrades: {UpgradeNames(mask)}";
+        if (GetComponent<ShipChartTable>() is ShipChartTable table && table.Installed)
+        {
+            text += $"\n{Helpers.Translations.Token(Helpers.Translations.ItemKey(NavigatorTable.PrefabName))}";
+        }
         if (IsAnchored)
         {
             text += "\n$whitehilt_ship_anchored";
@@ -163,13 +169,19 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     }
 
     /// <summary>
-    /// Uses an upgrade item on the ship.
+    /// Uses an upgrade item on the ship. The Navigator's Table is set up here too, as on the helm.
     /// </summary>
     /// <param name="user">The player.</param>
     /// <param name="item">The item used.</param>
-    /// <returns>True if the item was an upgrade.</returns>
+    /// <returns>True if the item was an upgrade or the table.</returns>
     public bool UseItem(Humanoid user, ItemDrop.ItemData item)
     {
+        if (NavigatorTable.IsTable(item))
+        {
+            ShipChartTable table = GetComponent<ShipChartTable>();
+            return table != null && table.UseItem(user, item);
+        }
+
         WhiteHiltShipUpgradeBase upgrade = WhiteHiltShipUpgradeBase.FromItem(item);
         if (upgrade == null)
         {

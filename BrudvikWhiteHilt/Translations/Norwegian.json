@@ -47,7 +47,7 @@
   "piece_whitehilt_kartmakerbenk_description": "En skrivepult med sjøkart, sekstant og kartruller. Sett den innen 5 m fra et kartbord for å lage navigasjonsutstyr.",
   "msg_whitehilt_needmaptable": "Benken må stå innen 5 m fra et kartbord",
   "item_whitehiltcharttable": "Navigatørbord",
-  "item_whitehiltcharttable_description": "Et lite plankebord med sjøkart, sekstant og kartruller. Bruk det på roret til en karve, et langskip, en drakkar eller Hvithjalt-skipet for å sette det på dekk. Om bord avdekker kartet mer rundt deg, opptil 300 m etter hvert som utforskingsferdigheten øker.",
+  "item_whitehiltcharttable_description": "Et lite plankebord med sjøkart, sekstant og kartruller. Bruk det på roret til en karve, et langskip, en drakkar eller Hvithjalt-skipet for å sette det på dekk; på Hvithjalt-skipet tar masta imot det også. Om bord avdekker kartet mer rundt deg, opptil 300 m etter hvert som utforskingsferdigheten øker.",
   "whitehilt_charttable_take": "Ta med navigatørbordet",
   "whitehilt_charttable_sight": "Utsyn",
   "msg_whitehilt_charttable_added": "Navigatørbordet står på dekk",

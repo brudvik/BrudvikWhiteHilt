@@ -21,7 +21,7 @@ public class NavigatorTable : IWhiteHiltCustomItem
     public const string PrefabName = "WhiteHiltChartTable";
 
     private const string FullName = "Navigator's Table";
-    private const string Description = "A small plank table with a sea chart, a sextant and map scrolls. Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck. Aboard, the map uncovers further around you, up to 300 m as your Exploration skill rises.";
+    private const string Description = "A small plank table with a sea chart, a sextant and map scrolls. Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck; on the White Hilt Ship the mast takes it too. Aboard, the map uncovers further around you, up to 300 m as your Exploration skill rises.";
     private const float Size = 0.45f;
 
     private readonly ItemManager instance;
