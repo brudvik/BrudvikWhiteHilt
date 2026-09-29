@@ -31,7 +31,10 @@ public enum SlotKind
     Cape,
 
     /// <summary>The worn trinket.</summary>
-    Trinket
+    Trinket,
+
+    /// <summary>Food, eaten with its own key.</summary>
+    Food
 }
 
 /// <summary>
@@ -50,7 +53,7 @@ public static class BackpackLayout
     /// <summary>Row of the stored hotbar.</summary>
     public const int HotbarRow = MaxVisibleRows;
 
-    /// <summary>Row of the equipment slots: helmet, chest, legs, cape and trinket.</summary>
+    /// <summary>Row of the equipment slots (helmet, chest, legs, cape and trinket) and the food slots.</summary>
     public const int GearRow = HotbarRow + 1;
 
     /// <summary>Rows of the player inventory, visible and hidden.</summary>
@@ -134,6 +137,7 @@ public static class BackpackLayout
                 2 => SlotKind.Legs,
                 3 => SlotKind.Cape,
                 4 => SlotKind.Trinket,
+                >= FoodSlots.FirstColumn and < FoodSlots.FirstColumn + FoodSlots.Count => SlotKind.Food,
                 _ => SlotKind.Void
             };
         }
@@ -176,6 +180,7 @@ public static class BackpackLayout
             SlotKind.Grid or SlotKind.Hotbar => true,
             SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
                 TryGetGearSlot(item, out Vector2i slot) && slot == pos,
+            SlotKind.Food => FoodSlots.IsFood(item),
             _ => false
         };
     }

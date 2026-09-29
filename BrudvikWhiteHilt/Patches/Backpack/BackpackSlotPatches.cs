@@ -141,7 +141,7 @@ public static class BackpackSlotPatches
     }
 
     /// <summary>
-    /// Puts on what lies in the equipment slots.
+    /// Puts on what lies in the equipment slots and eats from the food slots.
     /// </summary>
     /// <param name="__instance">The player.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.Update))]
@@ -151,6 +151,20 @@ public static class BackpackSlotPatches
         if (__instance == Player.m_localPlayer)
         {
             GearSlots.Tick(__instance);
+            FoodSlots.Tick(__instance);
         }
+    }
+
+    /// <summary>
+    /// Leaves the hotbar alone while a food key with the same number is pressed.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    /// <param name="index">The hotbar slot, 1 to 8.</param>
+    /// <returns>False to skip the hotbar.</returns>
+    [HarmonyPatch(typeof(Player), nameof(Player.UseHotbarItem))]
+    [HarmonyPrefix]
+    public static bool UseHotbarItem(Player __instance, int index)
+    {
+        return __instance != Player.m_localPlayer || !FoodSlots.BlocksHotbar(index);
     }
 }

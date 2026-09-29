@@ -1,5 +1,6 @@
 using Jotunn.Managers;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,8 @@ public static class BackpackGui
 
     private static readonly PanelSection[] sections =
     {
-        new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5))
+        new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
+        new("$whitehilt_backpack_food", Row(BackpackLayout.GearRow, FoodSlots.FirstColumn, FoodSlots.Count))
     };
 
     private static readonly Dictionary<SlotKind, SlotLook> looks = new()
@@ -33,7 +35,8 @@ public static class BackpackGui
         { SlotKind.Chest, new SlotLook("ArmorLeatherChest", "$whitehilt_backpack_chest") },
         { SlotKind.Legs, new SlotLook("ArmorLeatherLegs", "$whitehilt_backpack_legs") },
         { SlotKind.Cape, new SlotLook("CapeDeerHide", "$whitehilt_backpack_cape") },
-        { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") }
+        { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") },
+        { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") }
     };
 
     private static readonly Dictionary<Vector2i, Vector2i> panelPlaces = BuildPanelPlaces();
@@ -93,6 +96,7 @@ public static class BackpackGui
                     SetActive(element, panelPlaces.ContainsKey(pos));
                     PlaceInPanel(element, size, step);
                     ShowPlaceholder(element, kind);
+                    ShowFoodKey(element, kind);
                     break;
             }
         }
@@ -202,7 +206,22 @@ public static class BackpackGui
         }
 
         element.m_tooltip.m_topic = Localization.instance.Localize(look.Name);
-        element.m_tooltip.m_text = Localization.instance.Localize("$whitehilt_backpack_slot_hint");
+        element.m_tooltip.m_text = Localization.instance.Localize(look.Hint);
+    }
+
+    private static void ShowFoodKey(InventoryElement element, SlotKind kind)
+    {
+        if (kind != SlotKind.Food || element.transform.Find("binding")?.GetComponent<TMP_Text>() is not TMP_Text binding)
+        {
+            return;
+        }
+
+        string key = Building.BuildToolSettings.KeyName(FoodSlots.Key(element.Position.x - FoodSlots.FirstColumn));
+        binding.enabled = key.Length > 0;
+        if (binding.text != key)
+        {
+            binding.text = key;
+        }
     }
 
     private static void UpdateBarLabel(InventoryGrid grid, Player player, int rows)
@@ -267,15 +286,18 @@ public static class BackpackGui
 
     private sealed class SlotLook
     {
-        public SlotLook(string prefab, string name)
+        public SlotLook(string prefab, string name, string hint = "$whitehilt_backpack_slot_hint")
         {
             Prefab = prefab;
             Name = name;
+            Hint = hint;
         }
 
         public string Prefab { get; }
 
         public string Name { get; }
+
+        public string Hint { get; }
 
         public Sprite Icon { get; set; }
     }

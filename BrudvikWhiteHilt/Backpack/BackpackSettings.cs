@@ -25,6 +25,15 @@ public static class BackpackSettings
     /// <summary>Switches between the travel bar and the build bar.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyHotbar { get; private set; }
 
+    /// <summary>Eats from the first food slot.</summary>
+    public static ConfigEntry<KeyboardShortcut> KeyFood1 { get; private set; }
+
+    /// <summary>Eats from the second food slot.</summary>
+    public static ConfigEntry<KeyboardShortcut> KeyFood2 { get; private set; }
+
+    /// <summary>Eats from the third food slot.</summary>
+    public static ConfigEntry<KeyboardShortcut> KeyFood3 { get; private set; }
+
     /// <summary>How far right of the inventory the equipment panel sits.</summary>
     public static ConfigEntry<float> PanelOffsetX { get; private set; }
 
@@ -49,6 +58,9 @@ public static class BackpackSettings
         PanelOffsetY = WhiteHiltConfig.BindLocal(Section, "PanelOffsetY", 0f, "How far up from the top of the inventory the equipment panel sits, in pixels (negative is down).");
         KeyHotbar = WhiteHiltConfig.BindLocal(KeySection, "SwitchHotbar", new KeyboardShortcut(KeyCode.Alpha9),
             "Switch between the travel bar and the build bar.");
+        KeyFood1 = WhiteHiltConfig.BindLocal(KeySection, "EatFood1", new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftAlt), "Eat from the first food slot.");
+        KeyFood2 = WhiteHiltConfig.BindLocal(KeySection, "EatFood2", new KeyboardShortcut(KeyCode.Alpha2, KeyCode.LeftAlt), "Eat from the second food slot.");
+        KeyFood3 = WhiteHiltConfig.BindLocal(KeySection, "EatFood3", new KeyboardShortcut(KeyCode.Alpha3, KeyCode.LeftAlt), "Eat from the third food slot.");
     }
 
     private static void AddTranslations()
@@ -65,5 +77,9 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_cape", "Cape");
         Translations.AddEnglish("whitehilt_backpack_trinket", "Trinket");
         Translations.AddEnglish("whitehilt_backpack_slot_hint", "Drag an item here, or right-click it in your inventory.");
+        Translations.AddEnglish("whitehilt_backpack_food", "Food");
+        Translations.AddEnglish("whitehilt_backpack_food_slot", "Food");
+        Translations.AddEnglish("whitehilt_backpack_food_empty", "That food slot is empty");
+        Translations.AddEnglish("whitehilt_backpack_food_hint", "Drag food here. The key on the slot eats it.");
     }
 }

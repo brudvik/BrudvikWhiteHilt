@@ -1,6 +1,4 @@
-using BepInEx.Configuration;
 using BrudvikWhiteHilt.Building;
-using BrudvikWhiteHilt.Building.Media;
 using Jotunn.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +42,7 @@ public static class HotbarSets
             return;
         }
 
-        if (!Typing() && Pressed(BackpackSettings.KeyHotbar))
+        if (!BackpackInput.Typing() && BackpackInput.Pressed(BackpackSettings.KeyHotbar))
         {
             Switch(player);
         }
@@ -100,17 +98,6 @@ public static class HotbarSets
     private static bool IsBuildTool(ItemDrop.ItemData item)
     {
         return item?.m_shared.m_buildPieces != null;
-    }
-
-    private static bool Pressed(ConfigEntry<KeyboardShortcut> key)
-    {
-        return key.Value.MainKey != KeyCode.None && key.Value.IsDown();
-    }
-
-    private static bool Typing()
-    {
-        return (Chat.instance != null && Chat.instance.HasFocus()) || Console.IsVisible() || TextInput.IsVisible()
-            || Menu.IsVisible() || MediaPanel.Typing;
     }
 
     private static void UpdateHudLabel(Player player)

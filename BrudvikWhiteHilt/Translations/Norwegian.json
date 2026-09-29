@@ -658,5 +658,9 @@
   "whitehilt_backpack_legs": "Bukse",
   "whitehilt_backpack_cape": "Kappe",
   "whitehilt_backpack_trinket": "Smykke",
-  "whitehilt_backpack_slot_hint": "Dra en gjenstand hit, eller høyreklikk den i sekken."
+  "whitehilt_backpack_slot_hint": "Dra en gjenstand hit, eller høyreklikk den i sekken.",
+  "whitehilt_backpack_food": "Mat",
+  "whitehilt_backpack_food_slot": "Mat",
+  "whitehilt_backpack_food_empty": "Den matplassen er tom",
+  "whitehilt_backpack_food_hint": "Dra mat hit. Tasten på plassen spiser den."
 }

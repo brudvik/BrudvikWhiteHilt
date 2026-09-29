@@ -299,6 +299,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 - **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it. The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
 - **Travel bar and build bar**: two hotbars for keys 1–8. The one not in use lies under the inventory grid, where you fill it like any row. **9** switches between them. Taking out a hammer, hoe or cultivator switches to the build bar, and putting it away switches back to the travel bar (`AutoSwitchHotbar`). Next to the hotbar a label shows which bar is active (`ShowHotbarLabel`); the key is `Backpack.Keys` → `SwitchHotbar`.
 - **Equipment slots**: a panel to the right of the inventory has slots for helmet, chest, legs, cape and trinket. What lies in a slot is worn: drag an item into its slot, or right-click it in the inventory, and it moves there and is put on. Right-click it in the slot or drag it out to take it off. Your armor no longer takes room in the grid. The panel's place can be moved with `PanelOffsetX` and `PanelOffsetY`.
+- **Food slots**: three slots for food under the equipment. **Left Alt + 1**, **2** and **3** eat from them without opening the inventory (the hotbar is not used while Alt is held). The keys are `EatFood1`–`EatFood3` in `Backpack.Keys`, and are shown on the slots.
 
 The stored bar and the slots below lie in hidden rows of the inventory, so they are saved with your character. "Place stacks" only takes from the grid. If the mod is removed, the game drops what lies in them at your feet the next time you log in.
 
@@ -498,6 +499,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Backpack: one more inventory row (8 × 5), on top of rows bought from a trader (`ExtraRows`)
 - Travel bar and build bar: two hotbars, switched with 9 or automatically when a build tool is taken out and put away
 - Equipment slots for helmet, chest, legs, cape and trinket in a panel next to the inventory; worn items no longer take room in the grid
+- Three food slots, eaten from with Left Alt + 1, 2 and 3
 
 ### v0.7.0 - 2026-09-28
 
