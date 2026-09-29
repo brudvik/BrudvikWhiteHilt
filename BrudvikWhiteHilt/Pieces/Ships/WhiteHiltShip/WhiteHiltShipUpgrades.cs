@@ -103,6 +103,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject mastWisp;
     private GameObject brazier;
     private Container chest;
+    private ShipPortal portal;
     private Ship ship;
     private Rigidbody body;
     private RigidbodyConstraints freeConstraints;
@@ -156,6 +157,17 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     public bool Has(int bit)
     {
         return (Mask & (1 << bit)) != 0;
+    }
+
+    /// <summary>
+    /// Checks whether a ship's ZDO has an upgrade, for ships that are not loaded.
+    /// </summary>
+    /// <param name="zdo">The ship's ZDO.</param>
+    /// <param name="bit">The upgrade's bit.</param>
+    /// <returns>True if the upgrade is on the ship.</returns>
+    public static bool Has(ZDO zdo, int bit)
+    {
+        return (zdo.GetInt(ZdoKey) & (1 << bit)) != 0;
     }
 
     /// <summary>
@@ -289,6 +301,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
         brazier = transform.Find(BrazierName)?.gameObject;
         chest = transform.Find(ChestName)?.GetComponent<Container>();
+        portal = transform.Find(ShipPortal.ObjectName)?.GetComponent<ShipPortal>();
         container = GetComponentsInChildren<Container>(true).FirstOrDefault(found => found.GetComponent<ShipChest>() == null);
 
         if (nview == null || nview.GetZDO() == null)
@@ -340,6 +353,11 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             SetActive(brazier, Has(ShipBrazier.Bit));
             SetActive(chest?.gameObject, Has(ShipChestUpgrade.Bit));
             holdCheckTimer = 0f;
+        }
+
+        if (portal != null)
+        {
+            portal.SetInstalled(Has(ShipPortalUpgrade.Bit));
         }
 
         UpdateAutoAnchor(Time.deltaTime);

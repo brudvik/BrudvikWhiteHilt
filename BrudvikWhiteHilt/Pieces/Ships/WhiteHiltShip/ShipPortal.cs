@@ -1,64 +1,50 @@
 using BrudvikWhiteHilt.Patches.Portals;
+using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using System;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
+namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 
 /// <summary>
-/// A White Hilt portal. Using it opens the travel map (<see cref="PortalTravelPanel"/>); Shift + Use names it. Name,
-/// privacy and id use the same ZDO keys as the Portal Stations mod, so its stations carry on as White Hilt portals.
+/// The rune circle on a White Hilt Ship's deck: a White Hilt portal that sails with the ship. Using it opens the travel
+/// map; Shift + Use names it. Name, privacy and id live in the ship's ZDO under the portal keys, so the server lists
+/// the ship among the portals and travellers arrive on its deck wherever it has sailed.
 /// </summary>
-public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, IWhiteHiltPortal
+public class ShipPortal : MonoBehaviour, Hoverable, Interactable, IWhiteHiltPortal
 {
     /// <summary>
-    /// ZDO key of the portal's name.
+    /// Name of the deck portal object added to the ship prefab.
     /// </summary>
-    public static readonly int NameKey = "stationName".GetStableHashCode();
+    public const string ObjectName = "WhiteHiltShipPortal";
 
     /// <summary>
-    /// ZDO key of the privacy: 0 public, anything else private.
+    /// Diameter of the rune circle, in metres.
     /// </summary>
-    public static readonly int PrivacyKey = "StationFilter".GetStableHashCode();
+    public const float Diameter = 1.4f;
 
     /// <summary>
-    /// ZDO key of the portal's stable id.
+    /// Centre of the circle in ship space: the starboard deck between the mast and the helm; the cargo stands to port.
     /// </summary>
-    public static readonly int IdKey = "StationGUID".GetStableHashCode();
+    public static readonly Vector3 DeckPosition = new(0.8f, 0.64f, -2.2f);
 
     private const int MaxNameLength = 30;
-    private const string SetNameRpc = "WhiteHiltPortalSetName";
-    private const string SetPrivateRpc = "WhiteHiltPortalSetPrivate";
-
-    // Serialized, so the value set on the prefab is copied to every placed portal.
-    [SerializeField]
-    private bool ground;
+    private const string SetNameRpc = "WhiteHiltShipPortalSetName";
+    private const string SetPrivateRpc = "WhiteHiltShipPortalSetPrivate";
 
     private ZNetView nview;
     private Piece piece;
+    private Collider area;
+    private GameObject visual;
+    private bool installed;
 
-    /// <summary>
-    /// True for the portal that lies on the ground.
-    /// </summary>
-    public bool Ground
-    {
-        get => ground;
-        set => ground = value;
-    }
+    /// <inheritdoc/>
+    public string PortalName => IsValid ? nview.GetZDO().GetString(WhiteHiltPortalComponent.NameKey) : string.Empty;
 
-    /// <summary>
-    /// The portal's name, or empty.
-    /// </summary>
-    public string PortalName => IsValid ? nview.GetZDO().GetString(NameKey) : string.Empty;
+    /// <inheritdoc/>
+    public bool IsPrivate => IsValid && nview.GetZDO().GetInt(WhiteHiltPortalComponent.PrivacyKey) != 0;
 
-    /// <summary>
-    /// True if only its builder may travel to it.
-    /// </summary>
-    public bool IsPrivate => IsValid && nview.GetZDO().GetInt(PrivacyKey) != 0;
-
-    /// <summary>
-    /// The portal's stable id, or empty until the owner has given it one.
-    /// </summary>
-    public string Id => IsValid ? nview.GetZDO().GetString(IdKey) : string.Empty;
+    /// <inheritdoc/>
+    public string Id => IsValid ? nview.GetZDO().GetString(WhiteHiltPortalComponent.IdKey) : string.Empty;
 
     /// <inheritdoc/>
     public Vector3 Position => transform.position;
@@ -66,19 +52,41 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
     private bool IsValid => nview != null && nview.IsValid();
 
     /// <summary>
-    /// True if the player may rename the portal and change its privacy.
+    /// Shows or hides the circle as the upgrade is put on or taken off. Called every frame by the ship.
     /// </summary>
-    /// <param name="player">The player.</param>
-    /// <returns>True if allowed.</returns>
+    /// <param name="on">True while the ship has the upgrade.</param>
+    public void SetInstalled(bool on)
+    {
+        if (on && IsValid && nview.IsOwner() && string.IsNullOrEmpty(Id))
+        {
+            nview.GetZDO().Set(WhiteHiltPortalComponent.IdKey, Guid.NewGuid().ToString());
+        }
+
+        if (installed == on)
+        {
+            return;
+        }
+
+        installed = on;
+        if (visual != null)
+        {
+            visual.SetActive(on);
+        }
+
+        if (area != null)
+        {
+            area.enabled = on;
+        }
+    }
+
+    /// <inheritdoc/>
     public bool CanEdit(Player player)
     {
         long creator = piece != null ? piece.GetCreator() : 0L;
         return !PortalSettings.OwnerOnlyEdit || creator == 0L || creator == player.GetPlayerID();
     }
 
-    /// <summary>
-    /// Switches the portal between public and private.
-    /// </summary>
+    /// <inheritdoc/>
     public void TogglePrivate()
     {
         if (IsValid)
@@ -90,7 +98,7 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
     /// <inheritdoc/>
     public string GetHoverText()
     {
-        if (!IsValid || Player.m_localPlayer == null)
+        if (!IsValid || !installed || Player.m_localPlayer == null)
         {
             return string.Empty;
         }
@@ -108,7 +116,7 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
     public string GetHoverName()
     {
         string name = PortalName;
-        string label = string.IsNullOrEmpty(name) ? (piece != null ? piece.m_name : string.Empty) : $"\"{name}\"";
+        string label = string.IsNullOrEmpty(name) ? "$whitehilt_shipportal_unnamed" : $"\"{name}\"";
         return IsPrivate ? $"{label} ($whitehilt_portalmap_private)" : label;
     }
 
@@ -121,7 +129,7 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
     /// <inheritdoc/>
     public bool Interact(Humanoid user, bool hold, bool alt)
     {
-        if (hold || !IsValid || user is not Player player)
+        if (hold || !IsValid || !installed || user is not Player player)
         {
             return false;
         }
@@ -165,8 +173,10 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
 
     private void Awake()
     {
-        nview = GetComponent<ZNetView>();
-        piece = GetComponent<Piece>();
+        nview = GetComponentInParent<ZNetView>();
+        piece = GetComponentInParent<Piece>();
+        area = GetComponent<Collider>();
+        visual = transform.Find("visual")?.gameObject;
         if (!IsValid)
         {
             return;
@@ -174,17 +184,13 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
 
         nview.Register<string>(SetNameRpc, RPC_SetName);
         nview.Register<bool>(SetPrivateRpc, RPC_SetPrivate);
-        if (nview.IsOwner() && string.IsNullOrEmpty(Id))
-        {
-            nview.GetZDO().Set(IdKey, Guid.NewGuid().ToString());
-        }
     }
 
     private void RPC_SetName(long sender, string name)
     {
         if (nview.IsOwner())
         {
-            nview.GetZDO().Set(NameKey, name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name);
+            nview.GetZDO().Set(WhiteHiltPortalComponent.NameKey, name.Length > MaxNameLength ? name.Substring(0, MaxNameLength) : name);
         }
     }
 
@@ -192,7 +198,7 @@ public class WhiteHiltPortalComponent : MonoBehaviour, Hoverable, Interactable, 
     {
         if (nview.IsOwner())
         {
-            nview.GetZDO().Set(PrivacyKey, isPrivate ? 1 : 0);
+            nview.GetZDO().Set(WhiteHiltPortalComponent.PrivacyKey, isPrivate ? 1 : 0);
         }
     }
 }

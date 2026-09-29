@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
+using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +82,13 @@ public static class PortalTravel
             return false;
         }
 
-        return TryTravelTo(player, destination.ArrivalPoint(), destination.Yaw, runesFrom);
+        if (!TryTravelTo(player, destination.ArrivalPoint(), destination.Yaw, runesFrom))
+        {
+            return false;
+        }
+
+        ShipPortalArrival.Expect(destination.ShipId);
+        return true;
     }
 
     /// <summary>

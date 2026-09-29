@@ -232,6 +232,7 @@
     <Compile Include="Pieces\EternalFire\EternalFireRules.cs" />
     <Compile Include="Pieces\EternalFire\SurtsBrazier.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalDestination.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\IWhiteHiltPortal.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalSettings.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravel.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravelPanel.cs" />
@@ -302,6 +303,8 @@
     <Compile Include="Pieces\Ships\ShipHud.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortal.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortalArrival.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Managers;
 using System;
@@ -31,6 +32,7 @@ public static class WhiteHiltShipUpgradeSetup
     private static readonly Vector3 ChestPosition = new(0.9f, 0.64f, -4.6f);
     private const float BrazierHeight = 0.9f;
     private const float BrazierFlameScale = 0.35f;
+    private const float PortalLift = 0.02f;
 
     // The top of the coals in Surt's Brazier model, as a fraction of its height.
     private const float BrazierCoals = 0.85f;
@@ -58,9 +60,19 @@ public static class WhiteHiltShipUpgradeSetup
 
         MeasureTent(ship.transform, upgrades);
         AddChest(ship.transform, container);
+        Transform portal = AddPortal(ship.transform);
 
         if (!VisualHelper.IsHeadless)
         {
+            try
+            {
+                AddPortalLook(ship.transform, portal);
+            }
+            catch (Exception ex)
+            {
+                Jotunn.Logger.LogWarning($"White Hilt Ship: the ship portal has no look: {ex.Message}");
+            }
+
             try
             {
                 AddMastWisp(ship.transform);
@@ -111,6 +123,35 @@ public static class WhiteHiltShipUpgradeSetup
         FireEffects.AddFlames(brazier.transform, "WhiteHiltBrazierFlame", coals, BrazierFlameScale);
         FireEffects.AddWarmth(brazier.transform, "WhiteHiltBrazierWarmth", coals);
         brazier.SetActive(false);
+    }
+
+    // The deck portal: a thin box on the deck planks that players hover and stand on, on the layer of the deck crates.
+    // The collider is off until the upgrade is on.
+    private static Transform AddPortal(Transform root)
+    {
+        Transform crate = root.Find("ship/visual/Customize/storage")?.GetComponentsInChildren<Collider>(true).FirstOrDefault()?.transform;
+        GameObject portal = new(ShipPortal.ObjectName);
+        portal.layer = crate != null ? crate.gameObject.layer : root.gameObject.layer;
+        portal.transform.SetParent(root, false);
+        portal.transform.localPosition = ShipPortal.DeckPosition;
+
+        BoxCollider area = portal.AddComponent<BoxCollider>();
+        area.center = new Vector3(0f, 0.03f, 0f);
+        area.size = new Vector3(ShipPortal.Diameter * 0.9f, 0.06f, ShipPortal.Diameter * 0.9f);
+        area.enabled = false;
+        portal.AddComponent<ShipPortal>();
+        return portal.transform;
+    }
+
+    // The rune circle of the ground portal, small enough for the deck.
+    private static void AddPortalLook(Transform root, Transform portal)
+    {
+        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
+            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        GameObject visual = new("visual");
+        visual.transform.SetParent(portal, false);
+        WhiteHiltGroundPortal.AddRuneCircle(visual.transform, template, ShipPortal.Diameter, PortalLift);
+        visual.SetActive(false);
     }
 
     // A copy of one of the longship's deck crates by the helm, made into a second chest on the ship's network object.

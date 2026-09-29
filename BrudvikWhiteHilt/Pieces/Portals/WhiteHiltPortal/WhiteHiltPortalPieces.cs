@@ -339,9 +339,21 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
             UnityEngine.Object.DestroyImmediate(swirl);
         }
 
+        AddRuneCircle(prefab.transform, template, Diameter, Lift);
+    }
+
+    /// <summary>
+    /// Adds the glowing rune circle model and its light.
+    /// </summary>
+    /// <param name="parent">Transform the circle lies on.</param>
+    /// <param name="template">Renderer whose material the model copies.</param>
+    /// <param name="diameter">Diameter of the circle, in metres.</param>
+    /// <param name="lift">Height above the parent, so it does not flicker with the surface below.</param>
+    public static void AddRuneCircle(Transform parent, Renderer template, float diameter, float lift)
+    {
         Mesh mesh = ForagingAssets.LoadMesh("portalground");
-        float scale = Diameter / Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z);
-        GameObject circle = VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("portalground_albedo"), template, Vector3.up * Lift, Quaternion.identity, scale);
+        float scale = diameter / Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z);
+        GameObject circle = VisualHelper.CreateModel(parent, mesh, ForagingAssets.LoadTexture("portalground_albedo"), template, Vector3.up * lift, Quaternion.identity, scale);
         Material material = circle.GetComponent<MeshRenderer>().sharedMaterial;
         if (material.HasProperty("_EmissionMap"))
         {
@@ -351,12 +363,12 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
         }
 
         GameObject light = new("WhiteHiltRuneLight");
-        light.transform.SetParent(prefab.transform, false);
+        light.transform.SetParent(parent, false);
         light.transform.localPosition = Vector3.up * 0.6f;
         Light glow = light.AddComponent<Light>();
         glow.type = LightType.Point;
         glow.color = runeGlow;
-        glow.range = Diameter;
+        glow.range = diameter;
         glow.intensity = 1.2f;
         glow.shadows = LightShadows.None;
     }

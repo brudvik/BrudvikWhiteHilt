@@ -32,6 +32,7 @@ public class WhiteHiltShip : WhiteHiltShipBase
         Translations.AddEnglish("msg_whitehilt_ship_anchor_raised", "The anchor is raised");
         Translations.AddEnglish("msg_whitehilt_ship_anchor_down", "Raise the anchor at the mast before you sail");
         Translations.AddEnglish("msg_whitehilt_ship_net_catch", "The net caught");
+        Translations.AddEnglish("whitehilt_shipportal_unnamed", "Unnamed ship portal");
     }
 
     /// <summary>

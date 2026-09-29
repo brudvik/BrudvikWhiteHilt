@@ -27,7 +27,7 @@ public class PortalTravelPanel : MonoBehaviour
     private readonly List<(Minimap.PinData Pin, PortalDestination Destination)> pins = new();
     private readonly List<GameObject> rows = new();
 
-    private WhiteHiltPortalComponent origin;
+    private IWhiteHiltPortal origin;
     private string selectedId;
     private float lastClickTime;
     private string lastClickId;
@@ -46,7 +46,7 @@ public class PortalTravelPanel : MonoBehaviour
     /// <summary>
     /// True while the panel is open.
     /// </summary>
-    public static bool IsOpen => instance != null && instance.origin != null && instance.gameObject.activeSelf;
+    public static bool IsOpen => instance != null && instance.HasOrigin && instance.gameObject.activeSelf;
 
     /// <summary>
     /// True while the player types in the search field, so the map keys do not close the map.
@@ -57,7 +57,7 @@ public class PortalTravelPanel : MonoBehaviour
     /// Opens the travel map at a portal.
     /// </summary>
     /// <param name="portal">The portal used.</param>
-    public static void Open(WhiteHiltPortalComponent portal)
+    public static void Open(IWhiteHiltPortal portal)
     {
         if (GUIManager.CustomGUIFront == null || Minimap.instance == null || Player.m_localPlayer == null)
         {
@@ -180,7 +180,10 @@ public class PortalTravelPanel : MonoBehaviour
         return button.GetComponent<Button>();
     }
 
-    private void Show(WhiteHiltPortalComponent portal)
+    // The portal is a Unity object, which compares equal to null once destroyed.
+    private bool HasOrigin => origin as Object != null;
+
+    private void Show(IWhiteHiltPortal portal)
     {
         origin = portal;
         selectedId = null;
@@ -202,12 +205,12 @@ public class PortalTravelPanel : MonoBehaviour
         PortalTravel.Changed -= RefreshList;
         PortalTravel.Changed += RefreshList;
         RefreshList();
-        CenterOn(portal.transform.position);
+        CenterOn(portal.Position);
     }
 
     private void Close()
     {
-        if (origin == null && !gameObject.activeSelf)
+        if (!HasOrigin && !gameObject.activeSelf)
         {
             return;
         }
@@ -233,7 +236,7 @@ public class PortalTravelPanel : MonoBehaviour
         Player player = Player.m_localPlayer;
         bool mapClosed = !Game.m_noMap && Minimap.instance != null && Minimap.instance.m_mode != Minimap.MapMode.Large;
         bool naming = TextInput.instance != null && TextInput.instance.m_panel != null && TextInput.instance.m_panel.activeSelf;
-        if (origin == null || player == null || player.IsDead() || mapClosed || (Input.GetKeyDown(KeyCode.Escape) && !naming))
+        if (!HasOrigin || player == null || player.IsDead() || mapClosed || (Input.GetKeyDown(KeyCode.Escape) && !naming))
         {
             Close();
             return;
@@ -267,7 +270,7 @@ public class PortalTravelPanel : MonoBehaviour
 
     private void RefreshList()
     {
-        if (origin == null || Player.m_localPlayer == null)
+        if (!HasOrigin || Player.m_localPlayer == null)
         {
             return;
         }
@@ -356,12 +359,12 @@ public class PortalTravelPanel : MonoBehaviour
 
     private void Travel(PortalDestination destination)
     {
-        if (origin == null || destination == null || IsOrigin(destination))
+        if (!HasOrigin || destination == null || IsOrigin(destination))
         {
             return;
         }
 
-        if (PortalTravel.TryTravel(Player.m_localPlayer, destination, origin.transform.position))
+        if (PortalTravel.TryTravel(Player.m_localPlayer, destination, origin.Position))
         {
             Close();
         }
@@ -374,7 +377,7 @@ public class PortalTravelPanel : MonoBehaviour
 
     private void OnRename()
     {
-        if (origin != null && origin.CanEdit(Player.m_localPlayer))
+        if (HasOrigin && origin.CanEdit(Player.m_localPlayer))
         {
             TextInput.instance.RequestText(origin, "$whitehilt_portal_name", 30);
         }
@@ -382,7 +385,7 @@ public class PortalTravelPanel : MonoBehaviour
 
     private void OnTogglePrivate()
     {
-        if (origin != null && origin.CanEdit(Player.m_localPlayer))
+        if (HasOrigin && origin.CanEdit(Player.m_localPlayer))
         {
             origin.TogglePrivate();
         }
@@ -390,7 +393,7 @@ public class PortalTravelPanel : MonoBehaviour
 
     private void OnSetHome()
     {
-        if (origin != null && !string.IsNullOrEmpty(origin.Id))
+        if (HasOrigin && !string.IsNullOrEmpty(origin.Id))
         {
             PortalTravel.SetHome(Player.m_localPlayer, origin.Id);
             RefreshList();
@@ -405,7 +408,7 @@ public class PortalTravelPanel : MonoBehaviour
 
     private bool IsOrigin(PortalDestination destination)
     {
-        return origin != null && (destination.Id == origin.Id || Utils.DistanceXZ(destination.Position, origin.transform.position) < 0.5f);
+        return HasOrigin && (destination.Id == origin.Id || Utils.DistanceXZ(destination.Position, origin.Position) < 0.5f);
     }
 
     // Moves the map so the point shows in the middle of the part the panel does not cover.
@@ -430,7 +433,7 @@ public class PortalTravelPanel : MonoBehaviour
     {
         RemovePins();
         Minimap map = Minimap.instance;
-        if (map == null || origin == null)
+        if (map == null || !HasOrigin)
         {
             return;
         }
@@ -458,7 +461,12 @@ public class PortalTravelPanel : MonoBehaviour
 
     private static string DisplayName(PortalDestination destination)
     {
-        return string.IsNullOrEmpty(destination.Name) ? Localization.instance.Localize("$whitehilt_portalmap_unnamed") : destination.Name;
+        if (string.IsNullOrEmpty(destination.Name))
+        {
+            return Localization.instance.Localize(destination.ShipId.IsNone() ? "$whitehilt_portalmap_unnamed" : "$whitehilt_shipportal_unnamed");
+        }
+
+        return destination.Name;
     }
 
     private static string FormatDistance(float metres)

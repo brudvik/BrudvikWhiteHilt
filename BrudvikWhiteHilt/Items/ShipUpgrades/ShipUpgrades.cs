@@ -344,3 +344,47 @@ public class ShipChestUpgrade : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     public override bool Enabled => true;
 }
+
+/// <summary>
+/// Lays a rune circle on the White Hilt Ship's deck: a White Hilt portal that sails with the ship.
+/// </summary>
+public class ShipPortalUpgrade : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the portal in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 8;
+
+    /// <summary>
+    /// Constructor for the ShipPortalUpgrade class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipPortalUpgrade(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltShipPortal";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Ship Portal";
+
+    /// <inheritdoc/>
+    protected override string Description => "A small rune circle for the White Hilt Ship's deck. Use it on the mast; the ship then shows in every White Hilt portal's travel list, and travellers arrive on its deck wherever it has sailed. The usual rules for ore and metal apply.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "GreydwarfEye";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "FineWood", Amount = 10, Recover = false },
+        new() { Item = "Bronze", Amount = 2, Recover = false },
+        new() { Item = "SurtlingCore", Amount = 2, Recover = false },
+        new() { Item = "GreydwarfEye", Amount = 10, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}

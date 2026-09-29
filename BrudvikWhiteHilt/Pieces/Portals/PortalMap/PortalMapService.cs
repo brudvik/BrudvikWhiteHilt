@@ -1,7 +1,9 @@
 using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Pieces.EternalFire;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
+using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +30,9 @@ public class PortalMapService : MonoBehaviour
     private const float ScanPause = 10f;
     private const float ShipUpdateInterval = 2f;
 
+    // A ship portal is sent again once its ship has sailed this far; travellers are put on the deck where it is.
+    private const float ShipPortalResend = 10f;
+
     // Non-empty sectors read per frame, as the game's own iterative ZDO search does.
     private const int SectorsPerFrame = 400;
 
@@ -48,9 +53,12 @@ public class PortalMapService : MonoBehaviour
     private readonly Dictionary<long, string> lastSent = new();
     private readonly Dictionary<long, string> lastSentTravel = new();
     private readonly List<PortalDestination> scanTravel = new();
+    private readonly List<(ZDOID Id, PortalDestination Destination)> scanTravelShips = new();
 
     private List<PortalDestination> travel = new();
+    private List<(ZDOID Id, PortalDestination Destination)> travelShips = new();
     private Dictionary<int, bool> travelPrefabs;
+    private HashSet<int> shipPortalPrefabs;
 
     private List<PortalMapEntry> portals = new();
     private List<(ZDOID Id, PortalMapEntry Entry)> ships = new();
@@ -96,10 +104,11 @@ public class PortalMapService : MonoBehaviour
             }
 
             // Ships move, so their positions are read again between the slow full scans.
-            if (ships.Count > 0 && Time.time >= nextShipUpdate)
+            if ((ships.Count > 0 || travelShips.Count > 0) && Time.time >= nextShipUpdate)
             {
                 nextShipUpdate = Time.time + ShipUpdateInterval;
                 ships.RemoveAll(ship => !UpdateShip(ship.Id, ship.Entry));
+                UpdateShipPortals();
                 Publish();
             }
         }
@@ -123,6 +132,32 @@ public class PortalMapService : MonoBehaviour
         return true;
     }
 
+    private void UpdateShipPortals()
+    {
+        foreach ((ZDOID id, PortalDestination destination) in travelShips.ToList())
+        {
+            ZDO zdo = ZDOMan.instance.GetZDO(id);
+            if (zdo == null || !WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
+            {
+                travelShips.Remove((id, destination));
+                travel.Remove(destination);
+                continue;
+            }
+
+            Vector3 position = ShipPortalPosition(zdo);
+            if (Vector3.Distance(position, destination.Position) >= ShipPortalResend)
+            {
+                destination.Position = position;
+                destination.Yaw = zdo.GetRotation().eulerAngles.y;
+            }
+        }
+    }
+
+    private static Vector3 ShipPortalPosition(ZDO zdo)
+    {
+        return zdo.GetPosition() + zdo.GetRotation() * ShipPortal.DeckPosition;
+    }
+
     private void BeginScan()
     {
         if (portalPrefabs == null)
@@ -138,6 +173,7 @@ public class PortalMapService : MonoBehaviour
         astrolabes.Clear();
         anchors.Clear();
         scanTravel.Clear();
+        scanTravelShips.Clear();
         brazierFound = false;
         sectorIndex = 0;
     }
@@ -222,6 +258,11 @@ public class PortalMapService : MonoBehaviour
         }
         else if (shipPrefabs.Contains(prefab))
         {
+            if (shipPortalPrefabs.Contains(prefab) && WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
+            {
+                CollectShipPortal(zdo);
+            }
+
             scanShips.Add((zdo.m_uid, new PortalMapEntry
             {
                 Kind = PortalMapEntry.ShipKind,
@@ -273,10 +314,29 @@ public class PortalMapService : MonoBehaviour
         });
     }
 
+    private void CollectShipPortal(ZDO zdo)
+    {
+        string id = zdo.GetString(WhiteHiltPortalComponent.IdKey);
+        PortalDestination destination = new()
+        {
+            Id = string.IsNullOrEmpty(id) ? zdo.m_uid.ToString() : id,
+            Name = zdo.GetString(WhiteHiltPortalComponent.NameKey),
+            Position = ShipPortalPosition(zdo),
+            Yaw = zdo.GetRotation().eulerAngles.y,
+            Ground = true,
+            Private = zdo.GetInt(WhiteHiltPortalComponent.PrivacyKey) != 0,
+            Creator = zdo.GetLong(ZDOVars.s_creator),
+            ShipId = zdo.m_uid
+        };
+        scanTravel.Add(destination);
+        scanTravelShips.Add((zdo.m_uid, destination));
+    }
+
     private void FinishScan()
     {
         EternalFireRules.SetBrazierPresent(brazierFound);
         travel = scanTravel.ToList();
+        travelShips = scanTravelShips.ToList();
         foreach (PortalMapEntry portal in scanPortals)
         {
             foreach ((Vector3 position, int mask) in runePosts)
@@ -376,7 +436,8 @@ public class PortalMapService : MonoBehaviour
                 Yaw = portal.Yaw,
                 Ground = portal.Ground,
                 Private = portal.Private,
-                Own = portal.Creator != 0L && portal.Creator == playerID
+                Own = portal.Creator != 0L && portal.Creator == playerID,
+                ShipId = portal.ShipId
             })
             .ToList();
         package = PortalDestination.Write(visible);
@@ -415,6 +476,7 @@ public class PortalMapService : MonoBehaviour
         mapTablePrefabs = new HashSet<int>();
         shipPrefabs = new HashSet<int>();
         travelPrefabs = new Dictionary<int, bool>();
+        shipPortalPrefabs = new HashSet<int>();
         foreach (GameObject prefab in ZNetScene.instance.m_prefabs.Where(prefab => prefab != null))
         {
             int hash = prefab.name.GetStableHashCode();
@@ -430,6 +492,10 @@ public class PortalMapService : MonoBehaviour
             else if (prefab.GetComponent<Ship>() != null)
             {
                 shipPrefabs.Add(hash);
+                if (prefab.GetComponent<WhiteHiltShipUpgrades>() != null)
+                {
+                    shipPortalPrefabs.Add(hash);
+                }
             }
             else if (prefab.GetComponent<MapTable>() != null)
             {

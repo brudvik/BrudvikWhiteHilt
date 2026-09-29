@@ -690,5 +690,8 @@
   "item_whitehiltbeltpouch_description": "En solid pung av trollhud, klinket med jern, til beltet. Bruk den for å få én rad til i sekken for godt. Hver figur kan bare bære én.",
   "msg_whitehilt_beltpouch_used": "Beltepungen gir deg én rad til",
   "msg_whitehilt_beltpouch_already": "Du bærer allerede en beltepung",
-  "msg_whitehilt_beltpouch_full": "Det er ikke plass til flere rader"
+  "msg_whitehilt_beltpouch_full": "Det er ikke plass til flere rader",
+  "item_whitehiltshipportal": "Skipsportal",
+  "item_whitehiltshipportal_description": "En liten runering til dekket på Hvithjalt-skipet. Bruk den på masta; da står skipet i reiselista til alle Hvithjalt-portaler, og reisende kommer fram på dekket uansett hvor skipet har seilt. De vanlige reglene for malm og metall gjelder.",
+  "whitehilt_shipportal_unnamed": "Skipsportal uten navn"
 }

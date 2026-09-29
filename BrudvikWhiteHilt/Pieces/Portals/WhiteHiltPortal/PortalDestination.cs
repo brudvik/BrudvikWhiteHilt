@@ -49,6 +49,12 @@ public class PortalDestination
     public long Creator { get; set; }
 
     /// <summary>
+    /// The ship a ship portal stands on, or <see cref="ZDOID.None"/> for a portal on land. The ship moves, so the
+    /// traveller is put on its deck once they arrive.
+    /// </summary>
+    public ZDOID ShipId { get; set; } = ZDOID.None;
+
+    /// <summary>
     /// Where a traveller arrives.
     /// </summary>
     /// <returns>The arrival point.</returns>
@@ -76,6 +82,7 @@ public class PortalDestination
             package.Write(destination.Ground);
             package.Write(destination.Private);
             package.Write(destination.Own);
+            package.Write(destination.ShipId);
         }
 
         return package;
@@ -100,7 +107,8 @@ public class PortalDestination
                 Yaw = package.ReadSingle(),
                 Ground = package.ReadBool(),
                 Private = package.ReadBool(),
-                Own = package.ReadBool()
+                Own = package.ReadBool(),
+                ShipId = package.ReadZDOID()
             });
         }
 

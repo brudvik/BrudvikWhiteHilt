@@ -33,7 +33,7 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
-    /// Handles the sailing keys for the local player.
+    /// Handles the sailing keys for the local player, and puts them on deck after travelling to a ship portal.
     /// </summary>
     /// <param name="__instance">The player.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.Update))]
@@ -43,6 +43,7 @@ public static class ShipAssistPatches
         if (__instance == Player.m_localPlayer)
         {
             ShipAssist.Tick(__instance);
+            Pieces.Ships.WhiteHiltShip.ShipPortalArrival.Tick(__instance);
         }
     }
 }
