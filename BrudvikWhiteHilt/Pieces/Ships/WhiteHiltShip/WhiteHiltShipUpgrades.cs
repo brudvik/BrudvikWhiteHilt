@@ -60,8 +60,14 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private const string TakeRpc = "WhiteHiltShipTakeUpgrade";
     private const string AnchorZdoKey = "whitehilt_ship_anchored";
     private const string AnchorRpc = "WhiteHiltShipToggleAnchor";
-    private const float CatchIntervalSeconds = 120f;
     private const float MinFishingSpeed = 2f;
+
+    // At Fishing 100 the net catches twice as often, and half the catches are two fish.
+    private const float SkillSpeedUp = 0.5f;
+    private const float SkillDoubleChance = 0.5f;
+    private const float SkillRaise = 0.5f;
+    private const float SeaweedChance = 0.1f;
+    private const float PearlChance = 0.03f;
     private const float AnchorDrop = 2f;
 
     // The ship must lie empty and nearly still this long before the anchor drops on its own.
@@ -490,7 +496,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         netTimer += deltaTime;
-        if (netTimer < CatchIntervalSeconds)
+        float interval = ShipSettings.FishingNetMinutes.Value * 60f * (1f - SkillSpeedUp * FishingSkill());
+        if (netTimer < interval)
         {
             return;
         }
@@ -499,20 +506,59 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         CatchFish();
     }
 
+    // The skill of the local player aboard, who owns the ship while sailing it; 0 when nobody here is aboard.
+    private float FishingSkill()
+    {
+        Player player = Player.m_localPlayer;
+        return player != null && ship.IsPlayerInBoat(player) ? player.GetSkillFactor(Skills.SkillType.Fishing) : 0f;
+    }
+
     private void CatchFish()
     {
         Inventory inventory = container?.GetInventory();
-        GameObject fish = ZNetScene.instance.GetPrefab(PickFish(WorldGenerator.instance.GetBiome(transform.position)));
-        if (inventory == null || fish == null || !inventory.CanAddItem(fish, 1))
+        Heightmap.Biome biome = WorldGenerator.instance.GetBiome(transform.position);
+        GameObject fish = ZNetScene.instance.GetPrefab(PickFish(biome));
+        if (inventory == null || fish == null)
         {
             return;
         }
 
-        inventory.AddItem(fish, 1);
+        float skill = FishingSkill();
+        int count = Random.value < SkillDoubleChance * skill ? 2 : 1;
+        Catch(inventory, fish, count);
+        if (ShipSettings.FishingNetBycatch.Value)
+        {
+            if (Random.value < SeaweedChance)
+            {
+                Catch(inventory, ZNetScene.instance.GetPrefab("FreshSeaweed"), 1);
+            }
+
+            if (biome == Heightmap.Biome.Ocean && Random.value < PearlChance)
+            {
+                Catch(inventory, ZNetScene.instance.GetPrefab("AmberPearl"), 1);
+            }
+        }
+
+        Player player = Player.m_localPlayer;
+        if (player != null && ship.IsPlayerInBoat(player))
+        {
+            player.RaiseSkill(Skills.SkillType.Fishing, SkillRaise);
+        }
+    }
+
+    private void Catch(Inventory inventory, GameObject prefab, int count)
+    {
+        if (prefab == null || !inventory.CanAddItem(prefab, count))
+        {
+            return;
+        }
+
+        inventory.AddItem(prefab, count);
         if (Player.m_localPlayer != null && ship.IsPlayerInBoat(Player.m_localPlayer))
         {
-            string fishName = fish.GetComponent<ItemDrop>().m_itemData.m_shared.m_name;
-            Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize($"$msg_whitehilt_ship_net_catch: {fishName}"));
+            string itemName = prefab.GetComponent<ItemDrop>().m_itemData.m_shared.m_name;
+            string amount = count > 1 ? $" x{count}" : string.Empty;
+            Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize($"$msg_whitehilt_ship_net_catch: {itemName}{amount}"));
         }
     }
 

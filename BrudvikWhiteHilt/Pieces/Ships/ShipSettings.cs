@@ -22,6 +22,12 @@ public static class ShipSettings
     /// <summary>Whether the drift anchor drops when the last person leaves the ship, and weighs when someone takes the helm.</summary>
     public static ConfigEntry<bool> AutoAnchor { get; private set; }
 
+    /// <summary>Minutes between the fishing net's catches, before the Fishing skill shortens it.</summary>
+    public static ConfigEntry<float> FishingNetMinutes { get; private set; }
+
+    /// <summary>Whether the fishing net also brings up seaweed, and now and then an amber pearl on the ocean.</summary>
+    public static ConfigEntry<bool> FishingNetBycatch { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -33,6 +39,11 @@ public static class ShipSettings
             "Show speed in knots, heading and the wind under the wind indicator while steering.");
         AutoAnchor = WhiteHiltConfig.BindAdminOnly(Section, "AutoAnchor", true,
             "The White Hilt Ship's drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm.");
+        FishingNetMinutes = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetMinutes", 2f,
+            "Minutes between the fishing net's catches while sailing. The Fishing skill of the sailor shortens it, to half at level 100.",
+            new AcceptableValueRange<float>(0.5f, 30f));
+        FishingNetBycatch = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetBycatch", true,
+            "The fishing net sometimes also brings up seaweed, and on the ocean now and then an amber pearl.");
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
