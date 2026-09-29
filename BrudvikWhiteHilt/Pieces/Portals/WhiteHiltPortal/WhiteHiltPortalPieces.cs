@@ -6,6 +6,7 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
@@ -166,7 +167,8 @@ public abstract class WhiteHiltPortalPieceBase : IWhiteHiltCustomPiece
             UnityEngine.Object.DestroyImmediate(trigger.gameObject);
         }
 
-        foreach (Collider collider in prefab.GetComponentsInChildren<Collider>(true))
+        // The PlayerBase area keeps its sphere: EffectArea.Awake needs a collider on its own object.
+        foreach (Collider collider in prefab.GetComponentsInChildren<Collider>(true).Where(collider => collider.GetComponent<EffectArea>() == null))
         {
             UnityEngine.Object.DestroyImmediate(collider);
         }
