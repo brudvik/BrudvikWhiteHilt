@@ -9,7 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 
 /// <summary>
-/// A small cauldron made from Meadows materials. It only cooks the White Hilt foods. A <see cref="HerbTray"/> next to it gives level 2.
+/// A small cauldron made from Meadows materials. It only cooks the White Hilt foods. A <see cref="HerbTray"/> next to it gives level 2,
+/// and a <see cref="SmokeOven"/> as well gives level 3.
 /// </summary>
 public class StonePot : IWhiteHiltCustomPiece
 {
@@ -24,6 +25,7 @@ public class StonePot : IWhiteHiltCustomPiece
 
     private readonly PieceManager instance;
     private readonly HerbTray herbTray = new();
+    private readonly SmokeOven smokeOven = new();
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -91,6 +93,7 @@ public class StonePot : IWhiteHiltCustomPiece
 
             instance.AddPiece(piece);
             herbTray.Add(instance, station);
+            smokeOven.Add(instance, station);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }

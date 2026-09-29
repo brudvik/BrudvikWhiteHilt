@@ -21,6 +21,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
     private readonly ConfigEntry<float> durationMinutes;
     private readonly ConfigEntry<float> regen;
     private ItemDrop.ItemData.SharedData shared;
+    private SE_Stats buff;
 
     /// <summary>
     /// Prefab name of the food.
@@ -82,6 +83,12 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
     /// </summary>
     protected virtual int MinStationLevel => 1;
 
+    /// <summary>
+    /// Tooltip of the buff the food gives, in English, or null for none. The buff lasts half the food's duration,
+    /// so it has worn off when the food can be eaten again.
+    /// </summary>
+    protected virtual string BuffTooltip => null;
+
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Start;
 
@@ -98,6 +105,8 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
     public string GatedPrefabName => BaseName;
 
     private string NameKey => $"item_{BaseName.ToLowerInvariant()}";
+
+    private string BuffTooltipKey => $"se_{BaseName.ToLowerInvariant()}_tooltip";
 
     /// <summary>
     /// Constructor for the WhiteHiltFoodBase class. Binds the config entries and registers the English text.
@@ -116,6 +125,10 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
 
         Translations.AddEnglish(NameKey, FullName);
         Translations.AddEnglish($"{NameKey}_description", Description);
+        if (BuffTooltip != null)
+        {
+            Translations.AddEnglish(BuffTooltipKey, BuffTooltip);
+        }
     }
 
     /// <summary>
@@ -137,7 +150,6 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
             CustomItem food = new(BaseName, CopyFrom, itemConfig);
             shared = food.ItemDrop.m_itemData.m_shared;
             shared.m_foodEitr = 0f;
-            ApplyConfig();
 
             VisualHelper.Tint(food.ItemPrefab, Tint);
             Sprite icon = VisualHelper.RenderIcon(food.ItemPrefab);
@@ -146,6 +158,14 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
                 shared.m_icons = new[] { icon };
             }
 
+            if (BuffTooltip != null)
+            {
+                buff = CreateBuff();
+                instance.AddStatusEffect(new CustomStatusEffect(buff, fixReference: false));
+                shared.m_consumeStatusEffect = buff;
+            }
+
+            ApplyConfig();
             instance.AddItem(food);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -171,5 +191,28 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
         shared.m_foodStamina = stamina.Value;
         shared.m_foodBurnTime = durationMinutes.Value * 60f;
         shared.m_foodRegen = regen.Value;
+        if (buff != null)
+        {
+            buff.m_ttl = shared.m_foodBurnTime / 2f;
+        }
+    }
+
+    /// <summary>
+    /// Sets what the buff does. Only called when <see cref="BuffTooltip"/> is set.
+    /// </summary>
+    /// <param name="effect">The food's buff, empty apart from its name, icon and tooltip.</param>
+    protected virtual void ConfigureBuff(SE_Stats effect)
+    {
+    }
+
+    private SE_Stats CreateBuff()
+    {
+        SE_Stats effect = ScriptableObject.CreateInstance<SE_Stats>();
+        effect.name = $"SE_{BaseName}";
+        effect.m_name = Translations.Token(NameKey);
+        effect.m_tooltip = Translations.Token(BuffTooltipKey);
+        effect.m_icon = shared.m_icons[0];
+        ConfigureBuff(effect);
+        return effect;
     }
 }
