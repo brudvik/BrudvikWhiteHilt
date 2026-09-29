@@ -155,14 +155,50 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
 | **Ship Tent** | A tent on deck; under it you have Shelter and stay dry | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
 | **Mast Wisp** | A wisp at the top of the mast that clears the mist around the ship | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
+| **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes and puts it in the cargo hold. The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
+| **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
 
-The barrels can only be taken off when the extra cargo slots are empty.
+The barrels can only be taken off when the extra cargo slots are empty. Taking the anchor off also raises it.
 
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
 | Item | Use | Crafting Station | Requirements |
 |------|-----|------------------|--------------|
 | **Harbour Anchor** | Shows every ship on the map | Hammer (Workbench) | Iron ×2, Chain ×2, Fine Wood ×4 |
+
+---
+
+### 🏰 DEFENCES
+
+A palisade fort for the early game, built from Valheim's own stakes, logs and planks. Every walkway is 2 m up, so the rampart, its corners and bends, the gatehouse and the first floor of every watchtower join into one walk all the way round. Each piece is one building piece with one health bar, and its meshes are merged when the game starts, so a whole fort stays light.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Palisade Rampart** | 4 m of sharpened stakes with lashing bands, base spikes and an earth bank, and a walkway behind | Hammer (Workbench) | Core Wood ×8, Wood ×10, Stone ×4 |
+| **Rampart Corner** | A square corner with a thick corner stake; the walkway goes round it | Hammer (Workbench) | Core Wood ×6, Wood ×6, Stone ×4 |
+| **Rampart Bend** | Turns the rampart by 45 degrees, either way | Hammer (Workbench) | Core Wood ×6, Wood ×6, Stone ×4 |
+| **Rampart Stairs** | Stairs from the ground up to the walkway | Hammer (Workbench) | Wood ×12 |
+| **Gatehouse** | A double gate of iron-banded stakes that opens and closes, between two roofed towers with stairs up to a walk over the gate. Torches, shields and a crown of stakes with a deer trophy | Hammer (Workbench) | Core Wood ×30, Wood ×30, Bronze ×4, Stone ×10, Resin ×6 |
+| **Small Watchtower** | 2 × 2 m, two floors, overhanging parapet and roof | Hammer (Workbench) | Core Wood ×12, Wood ×20, Stone ×4, Resin ×4 |
+| **Watchtower** | 3 × 3 m, two floors, overhanging parapet and roof | Hammer (Workbench) | Core Wood ×20, Wood ×30, Stone ×6, Resin ×6 |
+| **Large Watchtower** | 4 × 4 m, three floors with parapets on the two upper ones, and a roof | Hammer (Workbench) | Core Wood ×32, Wood ×50, Stone ×10, Resin ×10 |
+| **Cheval de Frise** | A log with crossed sharpened stakes that hurts creatures running into it | Hammer (Workbench) | Core Wood ×4, Wood ×4 |
+
+In the towers, use the ladder to climb to the next floor up, or hold the alternate key (Shift) to climb down.
+
+---
+
+### 🧭 NAVIGATION
+
+A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better. The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used within 5 m of one.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), within 5 m of a map table | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
+| **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m) | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
+| **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Amber ×2, Ruby ×1 |
+
+The table and the amulet do not add up; the wider one counts.
 
 ---
 
@@ -215,11 +251,136 @@ A floating armillary around a glowing amethyst. Place it within 5 m of a map tab
 |------|-----|------------------|--------------|
 | **Portal Astrolabe** | Shows every portal on the map, with its runes | Hammer (Workbench) | Fine Wood ×6, Bronze ×4, Surtling Core ×1 |
 
+#### White Hilt Portals
+
+One portal network instead of pairs: every White Hilt portal leads to every other. Use a portal and the large map opens with a list on the left. Search it, sort it by name or distance (shown from where you stand), pick a portal to see it on the map, or click one on the map to pick it in the list. Double-click or **Travel** to go. From the same panel you can rename the portal you stand at, make it private (only you see and reach it) and set it as your **home**. Shift + Use on a portal also names it. The ordinary portal rules apply: no ore or metal, unless rune posts stand at the portal you travel **from** (see Portal Runes).
+
+Stations built with the Portal Stations mod become White Hilt rune circles, with their names and privacy. Remove Portal Stations from the server and every client at the same time.
+
+The **Home Stone** takes you to your home portal from anywhere. It then rests for 5 minutes (configurable), shown as a status effect with the time left; dying or logging out does not end the rest. It follows the ordinary portal rules.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **White Hilt Portal** | A standing stone arch with the portal swirl | Hammer (Workbench) | Stone ×30, Fine Wood ×10, Surtling Core ×2, Greydwarf Eye ×10 |
+| **White Hilt Rune Circle** | The same portal, as a flat circle of glowing runes on the ground | Hammer (Workbench) | Stone ×20, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
+| **Home Stone** | Takes you to your home portal, then rests | Rune Forge | Stone ×4, Iron ×2, Surtling Core ×1, Greydwarf Eye ×5 |
+
+The server sends the portal list every 10–20 seconds, so a new or renamed portal shows up in the list after a short while.
+
+---
+
+### 🔥 ETERNAL FIRE
+
+**Surt's Brazier** is a workbench extension: an iron brazier holding an ember of Surt. While one burns anywhere in the world, every campfire, hearth, torch, sconce, brazier, jack-o-turnip, hot tub and stone oven burns without fuel and stays lit in rain and wind. Hovering over them shows *Eternal fire*. When the last brazier is torn down, the fires are full and burn down as usual.
+
+The config (`EternalFire` section) decides when it applies: `Progression` (default) needs the brazier in linear progression and is always on in full progression, `Always` needs no brazier, and `Off` switches it off. Fires, ovens and smelters can each be switched on or off, and single prefabs excluded. Smelters and blast furnaces are **off** by default, so coal stays part of smelting; they take coal from nearby chests instead (see below).
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Surt's Brazier** | Workbench extension; eternal fire across the world | Hammer (next to a Workbench) | Stone ×10, Bronze ×4, Surtling Core ×3, Resin ×5 |
+
+---
+
+### 📦 CRAFTING FROM CHESTS
+
+What lies in the chests, carts and ship holds within 30 m counts as your own when you **craft**, **build**, **fuel** or **smelt**, and **cook**. Requirements that are partly in chests show their amount in amber, with a small chest on the icon; the tooltip shows how many are in your inventory and how many in chests. A chest that something is taken from opens its lid and glows briefly.
+
+- Adding fuel or ore to a smelter, kiln, fire or oven takes one from the chests when your inventory has none. Hold **Shift** to fill it up in one go, first from your inventory, then from the chests.
+- Using a cooking station without raw food in your inventory puts raw food from the chests on it; with Shift, on every free slot.
+- Only chests you may open are used: private chests of others and chests inside someone else's ward are skipped, and so are chests another player has open.
+- **Left Alt + O** switches it off and on for you.
+
+The `ChestCrafting` config section sets the range (`Range` for crafting, fuel and cooking, `BuildRange` for building, both 30 m), whether to leave one of each item in a chest, which of the four uses are on, and comma-separated lists of containers and items never to take from.
+
+---
+
+### 🏗️ BUILD CAMERA & TOOLBAR
+
+While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
+
+| Tool | Key | What it does |
+|------|-----|--------------|
+| Build camera | B | A free camera that flies within 12 m of you or anywhere inside a crafting station's build range, also below ground to reach awkward spots. You stand still; pieces are aimed and placed from the camera, up to 50 m away. W A S D fly, Space up, Ctrl down, Shift faster. At the edge of the allowed area, rings show where it ends. Your Wisp light follows the camera |
+| Fly to aim | J | Flies the camera to 3 m in front of what you aim at (and switches it on) |
+| Orbit | hold Z | Circles the camera around the piece or the point you aim at; W / S go closer or further |
+| Camera speed | Num+ / Num- | Faster or slower flying |
+| Rotation step | Y | 22.5°, 15°, 5° or 1° per turn of the mouse wheel, also used for tilt and roll |
+| Tilt | Num8 / Num2, or Ctrl + wheel | Tilt the piece forward or back |
+| Roll | Num4 / Num6, or Alt + wheel | Roll the piece left or right |
+| Quick angles | Num7 / Num9 | Set the tilt or the roll to 45°, 90° or back to 0° |
+| Flip | Num5 | Turn the piece upside down |
+| Reset | Num0 | Straighten the piece and clear the nudge |
+| Snap | N | Snapping to other pieces on and off |
+| Snap point | vanilla key | Next snap point on the held piece |
+| Copy | I | Pick the piece under the crosshair with its heading, tilt and roll (Shift + middle mouse does the same) |
+| Nudge | Arrows, PgUp / PgDn | Move the piece 5 cm along its own axes, the one closest to where you look |
+| Grid | H | Keep the piece on a 0.5 m grid when it is not snapped |
+| Stamp | K | Place a copy of the last piece right next to it, on the side you look towards; press again for a row, look up for a stack. Not for ground, water or terrain pieces |
+| Undo / Redo | Ctrl + Z / Ctrl + Y | Take back the last piece you placed within 30 s, with everything it cost, and put it back again |
+| Light | L | Camera light on and off |
+
+The `BuildTools` config section sets how far the camera may fly (`CameraPlayerRange`, `CameraStationRange`), the placing reach, the undo time, and whether the camera picks up items near it (`AutoPickup`, off by default); these are synced from the server. Speed, mouse, light, nudge step, grid size, the axes and whether the toolbar and hint show are your own, and every key can be changed in `BuildTools.Keys`.
+
+#### Media: photos and films
+
+While the build camera is on:
+
+| Key | What it does |
+|-----|--------------|
+| P | Take a photo without HUD, toolbar, ghost or other build helpers. It is saved in the game's screenshot folder as `whitehilt_<date>_<time>.png`, at 2× the screen resolution (`PhotoSize`: 1, 2 or 4) |
+| O | Photo view: only the world is shown while you fly, and the mouse wheel zooms |
+| U | Media panel on the right. The cursor is free; hold the right mouse button to look around |
+
+The media panel also hides your own character, and sets the time of day and the weather. Only you see this, and everything goes back to normal when the camera is switched off.
+
+**Films** are camera paths played in real time, for recording with your own recorder (OBS, Xbox Game Bar with Win+Alt+R, ShadowPlay). Fly to a spot and press *Add here*; each point gets a small picture. Points can be updated, visited, moved up and down and deleted, and each has its time to the next point, a pause and a smooth or even transition. The camera glides along a curve through the points. A film can have a title card with title, name and date, and fade in from and out to black. *Preview* runs the path quickly with the panel shown; *Play* counts down 3-2-1 so you can start recording, then plays without HUD. Esc stops. Films are saved per world in `BepInEx/config/BrudvikWhiteHilt/media/`. The keys are in `BuildTools.Media`.
+
+#### Groups, blueprints, lines and areas
+
+These work with any build tool, with or without the build camera. The right mouse button leaves a mode.
+
+| Key | What it does |
+|-----|--------------|
+| Ctrl + A | Selection mode: click pieces to add or remove them, or Shift+click two corners to select everything in a box (PgUp / PgDn change its height). Selected pieces glow blue |
+| Ctrl + C | Copy the selection and start placing the copy |
+| Ctrl + X | Move the selection: it is torn down and put up again where you place it, for free. Sign texts and portal names follow; chests and stands must be empty |
+| Ctrl + V | Place the last copy again |
+| Delete | Tear down the selection, giving back what the hammer would |
+| Ctrl + S | Save the selection as a blueprint |
+| Ctrl + O | Blueprint panel: search, cost against what you have (chests count), place, rename, delete |
+| Ctrl + L | Line and area with the held piece: click the start, then the end. Walls, fences and beams go in a row (a line carries on from where it ended; low pieces such as fences follow the ground), floors fill the area. Press again to switch between line, area and off |
+| Ctrl + D | Clear the selection |
+
+While placing a group, a see-through preview shows where everything goes: blue when it can be placed, red when something is missing (the hint says what). The mouse wheel turns it, and the arrows and PgUp / PgDn shift it. A group is placed all or nothing, from the bottom up, with the usual rules: known recipes, crafting stations, wards and no-build zones. Ctrl + Z takes back a whole paste, move, line, area or tear-down.
+
+Blueprints are saved in `BepInEx/config/BrudvikWhiteHilt/blueprints/` in PlanBuild's `.blueprint` format, shared by all worlds. PlanBuild `.blueprint` and BuildShare `.vbuild` files put in that folder can be used too; pieces from mods you do not have are skipped. Terrain changes are not part of blueprints. The server can switch group building off and limit the number of pieces per group (`BuildTools.Groups`, no limit by default).
+
+#### White Hilt hoe and cultivator
+
+The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While you hold one, a *Terrain* or *Field* panel shows next to the build toolbar (hold Left Alt to click it). Areas are picked by clicking two corners; after the first corner the arrow keys set a fixed size. The right mouse button steps back.
+
+| Tool | Key | What it does |
+|------|-----|--------------|
+| Road (hoe) | Ctrl + R | The map opens: click points, double-click or close the map to finish. The road (4 m wide by default, stone, dirt or no surface) is built as you walk along it, since only land near you is loaded. It follows the ground with the bumps smoothed out, or keeps an even slope between the points. It stops at water, pays stone as it goes and pauses when you run out. Pause or cancel it on the panel; it is saved with the world |
+| Level (hoe) | Ctrl + F | Pick an area, then the height (PgUp / PgDn in 0.25 m steps, Shift+click to take it from where you aim, or the height reference). The preview shows how much is dug and filled and the cost. The edges slope down to the ground around |
+| Ramp (hoe) | Ctrl + G | Click the bottom and the top: an even ramp, as wide as set on the panel (arrow up/down), with length, rise and slope. The slope can be locked to 10, 15, 20 or 25 %. The next ramp starts where the last ended |
+| Paint (hoe) | Ctrl + P | Stone, dirt or grass over an area without changing its height |
+| Reset (hoe) | Ctrl + T | Put an area back to the ground as the world made it |
+| Height reference (hoe) | Ctrl + M | The panel shows the height where you aim and the difference from the reference |
+| Big brush (hoe) | Ctrl + mouse wheel | The hoe's own level, raise, smooth and paths work over 1 to 8 m, costing more for the larger area. A circle shows the size |
+| Grid (cultivator) | Ctrl + G | Plant rows x columns at once (arrows), as far apart as the plant needs to grow (PgUp / PgDn for more). Green places can be planted, red ones cannot (wrong biome, no room, not cultivated). The ground is cultivated first if *Cultivate under* is on |
+| Refill (cultivator) | Ctrl + R | Plant the empty places of the last grid again |
+| Cultivate area (cultivator) | Ctrl + F | Cultivate an area |
+| Harvest area (cultivator) | Ctrl + H | Pick every ripe crop in an area |
+| Growth (cultivator) | panel | Labels over nearby plants: time left in green, or why a plant is not growing in red |
+
+Ctrl + Z takes back terrain changes for 60 seconds, with the stone. On a server the change is taken back where the terrain is yours to change. Levelling, lowering, dirt and cultivating are free; paved stone and raised ground cost stone as with the vanilla hoe for the same area and height. The game keeps ground within 8 m of where it started; the tools warn when a change would go past that. The `BuildTools.Terrain` section lets the server switch the tools off, change the cost, allow or forbid harvesting areas, and limit the size of one change (2500 m² by default).
+
 ---
 
 ### 🍄 FORAGING & FOOD
 
-New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
+New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
 
 The plants spawn in zones that have not been generated yet. In areas you have already explored:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
@@ -240,6 +401,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
 | **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
+| **Smoke Oven** | Stone Pot extension, a clay oven for smoking fish and meat, gives level 3 together with the Herb Tray | Hammer (next to the Stone Pot) | Stone ×10, Wood ×6, Iron ×2, Resin ×5 |
 | **Chanterelle Stew** | Meadows: 30 health, 22 stamina, 25 min | Stone Pot | Chanterelle ×3, Wild Garlic ×1, Raw Meat ×1 |
 | **Wild Garlic Soup** | Meadows: 18 health, 32 stamina, 25 min | Stone Pot | Wild Garlic ×2, Chanterelle ×1, Raspberries ×2 |
 | **Porcini Stew** | Black Forest: 40 health, 26 stamina, 30 min | Stone Pot | Porcini ×3, Chanterelle ×1, Deer Meat ×1 |
@@ -248,8 +410,32 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Cranberry Soup** | Swamp: 26 health, 48 stamina, 32 min | Stone Pot | Cranberries ×3, Lingonberries ×1, Turnip ×1 |
 | **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot level 2 | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
 | **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot level 2 | Roseroot ×3, Lingonberries ×1, Onion ×1 |
+| **Smoked Fish** | 56 health, 32 stamina, 40 min. Buff: swim 50% faster, swimming uses 50% less stamina | Stone Pot level 3 | Perch ×1, Sweet Gale ×1, Lingonberries ×2 |
+| **Smoked Wolf Jerky** | 34 health, 58 stamina, 40 min. Buff: running and jumping use 20% less stamina | Stone Pot level 3 | Wolf Meat ×1, Wild Garlic ×1, Roseroot ×1 |
 | **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |
 | **Roseroot Mead** | Stamina regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Roseroot ×5, Crowberries ×5 |
+| **Cranberry Mead** | Poison resistance, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Cranberries ×10, Lingonberries ×3 |
+| **Sweet Gale Ale** | +75 carry weight, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Honey ×10, Sweet Gale ×10, Blueberries ×5 |
+| **Crowberry Wine** | Health regenerates 50% faster, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Crowberries ×10, Roseroot ×2 |
+
+---
+
+### 🐗 ANIMAL HUSBANDRY
+
+Feed, groom and keep your tame animals instead of throwing food on the ground.
+
+- **Feeding Trough**: fill it with food. Hungry animals within 15 m walk over and eat from it, taming and feeding just as with food on the ground (which they still eat first). Animals pick their favourite food first.
+- **Favourite food**: each animal has one, shown when you look at it. It tames 50% faster and keeps the animal fed twice as long. Boar: Chanterelle and Porcini · Wolf: Sausages · Lox: Crowberries · Hen: Lingonberries · Asksvin: Smoke Puff. The White Hilt forageables are added to the animals' diets.
+- **Animal Husbandry skill**: rises while you tame, feed, groom and breed animals (everyone within 30 m gets the experience). At level 100 animals near you tame in 40% less time, stay fed 50% longer, carry 30% shorter and a herd may be 2 larger.
+- **Tether Post**: use it to keep the tame animals within 10 m wandering around the post; use it with the alternative key to set them free. Works like the "stay" command, around the post.
+- **Grooming Comb**: put it on the hotbar and use it on a tame animal once a day. A groomed animal is content for a day: it breeds faster (half the pregnancy, fewer missed breeding checks) and gives one more of each drop, except the trophy, when slaughtered.
+- **Produce**: a content, fed animal puts something in a Feeding Trough within 15 m: Boar Leather Scraps and Wolf Wolf Hair every day, Lox a Lox Pelt every third day.
+
+| Item | Description | Crafted | Requirements |
+|------|-------------|---------|--------------|
+| **Feeding Trough** | Holds 8 stacks of food for animals nearby | Hammer (near Workbench) | Wood ×8, Stone ×4 |
+| **Tether Post** | A weathered post with a chain that keeps tame animals around it | Hammer (near Workbench) | Wood ×4, Leather Scraps ×2 |
+| **Grooming Comb** | Grooms a tame animal once a day | Workbench | Bone Fragments ×3, Deer Hide ×1 |
 
 ---
 
@@ -274,9 +460,9 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead |
-| Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
-| Swamp | Iron | Iron ×5 | Ship, Chain Bench, Rune Forge, Rune Post, all runes, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb |
+| Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
+| Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
 | Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
@@ -290,9 +476,37 @@ Please notice that it won't be possible to compile this `mod` out of the box. Ma
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
-The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run.
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh.
+
+The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.7.0 - 2026-09-28
+
+#### Added
+- Cranberry Mead (poison resistance), Sweet Gale Ale (+75 carry weight) and Crowberry Wine (faster health regeneration), brewed from White Hilt forageables
+- Smoke Oven: a clay oven, a second Stone Pot extension that raises the pot to level 3
+- Smoked Fish and Smoked Wolf Jerky, level 3 dishes that also give a small buff
+- Fishing Net ship upgrade: catches fish of the local waters into the cargo hold while the ship sails
+- Drift Anchor ship upgrade: lowered at the mast, it holds the ship where it is
+- Defences: Palisade Rampart with walkway, Rampart Corner, Rampart Bend (45°), Rampart Stairs, a Gatehouse with a gate that opens, small, medium and large Watchtowers with roofs and ladders, and a Cheval de Frise. All walkways join, so you can walk round the whole fort
+- Exploration skill, raised by uncovering new map
+- Cartographer's Desk, a map table extension for making navigation gear
+- Navigator's Table: set up on a ship's deck, it widens what the crew uncovers on the map, up to 300 m
+- Pathfinder's Amulet: a trinket that widens what you uncover, up to 200 m, and fills its adrenaline from new land for a 500 m Raven Sight
+- White Hilt Portal and White Hilt Rune Circle: one portal network with a travel map (searchable, sortable list next to the map), private portals and a home portal. Portal Stations stations carry on as rune circles
+- Home Stone: takes you to your home portal, then rests for 5 minutes (configurable)
+- Surt's Brazier: a workbench extension; while one stands, fires, torches, ovens and hot tubs burn without fuel and stay lit in rain (configurable, smelters optional)
+- Crafting from chests: crafting, building, fuel, ore and cooking use what lies in nearby chests, carts and ship holds, with amber counts and chests that open when taken from
+- Build camera and build toolbar for every build tool: a free camera within building reach (also below ground) with fly-to, orbit and speed keys, rotation step, tilt and roll (also on the mouse wheel), quick 45°/90° angles, flip, snap on/off, copy with rotation, nudge, grid, stamp, undo/redo, axes on the piece, height and distance read-outs, tooltips and a foldable toolbar, all with hotkeys
+- Media mode in the build camera: photos without HUD, photo view with zoom, hidden character, local time of day and weather, and camera-path films with title card and fades for recording
+- Group building: select pieces (one by one or in a box), copy, move, tear down and undo them as one; blueprints (PlanBuild .blueprint and BuildShare .vbuild are read too) with cost list; line and area tool for rows of walls and fences and fields of floor
+- White Hilt hoe tools: roads planned on the map and built as you walk, levelling areas to a height, ramps with an even or locked slope, painting and resetting areas, a height meter and a big brush, all undoable. White Hilt cultivator tools: grid planting with auto-cultivating, refilling, cultivating and harvesting areas, and growth labels
+- Animal husbandry: Feeding Trough that hungry animals eat from, favourite foods, the Animal Husbandry skill, Tether Post, Grooming Comb, and produce that content animals leave in the trough
+
+#### Changed
+- The Smoke Oven's fire and smoke use a shared helper, also used by Surt's Brazier
 
 ### v0.6.0 - 2026-09-28
 
@@ -416,6 +630,19 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
 - Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Harbour Anchor model: ["Medieval Anchor (Free)"](https://sketchfab.com/3d-models/medieval-anchor-free-5896ac54d63e4b84bd32e0b232619dfd) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- Smoke Oven model: ["Furnace"](https://sketchfab.com/3d-models/furnace-64f344213c084424ba438875e62bd452) by [Tronin Dmitry](https://sketchfab.com/kosmotron), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- Cartographer's Desk model: ["Medieval Writing Desk"](https://sketchfab.com/3d-models/medieval-writing-desk-0982348984ad4126a90ace26be1d7300) by [Dmitriy Korotkov](https://sketchfab.com/ArtDmitriyK), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Sextant model: ["Sextant"](https://sketchfab.com/3d-models/sextant-78852ce5d4264f33897b462e31069ddd) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Map scroll model: ["Old / Ancient Scroll"](https://sketchfab.com/3d-models/old-ancient-scroll-73e9333251c7490786f99e67beb41d6e) by [Kigha](https://sketchfab.com/Kigha), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Sea chart model: ["Pirate Map"](https://sketchfab.com/3d-models/pirate-map-ba468f31212e4d79b69dd09a509c0fd3) by [3000volt](https://sketchfab.com/3000volt), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Pathfinder's Amulet pendant: ["viking ornaments amulets 5"](https://sketchfab.com/3d-models/viking-ornaments-amulets-5-81611cb361aa40daa733049acaa545c4) by [leoxx300](https://sketchfab.com/leoxx300), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). One pendant cut out of the set, converted to OBJ, rescaled and made double-sided for Valheim.
+- White Hilt Portal model: ["Simple Stone portal"](https://sketchfab.com/3d-models/simple-stone-portal-e005e778460047d4a297a5c628b2cc8f) by [Lucia Criscuolo](https://sketchfab.com/Neruth), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- White Hilt Rune Circle model: ["Runic circle - remake of Frozen Throne"](https://sketchfab.com/3d-models/runic-circle-remake-of-frozen-throne-e28a908060eb4ab08fed2bea1aab92e5) by [Dawid](https://sketchfab.com/Dawid.Gerula), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Surt's Brazier model: ["Primitive Brazier (Free)"](https://sketchfab.com/3d-models/primitive-brazier-free-3b155a4948b042ffb69f1d8a4aead250) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Home Stone model: ["Rune in stone"](https://sketchfab.com/3d-models/rune-in-stone-1608283699bd414195319a41445d8055) by [Mardukblake](https://sketchfab.com/Mardukblake), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Feeding Trough model: ["Wooden Trough With Stone Stand. Lowpoly"](https://sketchfab.com/3d-models/wooden-trough-with-stone-stand-lowpoly-673baf17c3bb43e8affd610eaf31cc8a) by [Hakan Unlu](https://sketchfab.com/hakan3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
