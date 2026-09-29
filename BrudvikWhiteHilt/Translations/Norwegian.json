@@ -696,5 +696,10 @@
   "whitehilt_shipportal_unnamed": "Skipsportal uten navn",
   "whitehilt_clock_day": "Dag {0}",
   "msg_whitehilt_clock_dusk": "Natta faller om {0} timer",
-  "msg_whitehilt_clock_dusk_one": "Natta faller om en time"
+  "msg_whitehilt_clock_dusk_one": "Natta faller om en time",
+  "whitehilt_backpack_hands": "Skjold og ammunisjon",
+  "whitehilt_backpack_shield": "Skjold",
+  "whitehilt_backpack_shield_hint": "Dra et skjold hit. Det tas fram sammen med et enhåndsvåpen når den andre hånda er ledig, og legges bort med våpenet.",
+  "whitehilt_backpack_ammo": "Ammunisjon",
+  "whitehilt_backpack_ammo_hint": "Dra piler eller bolter hit. De brukes før alle andre når du tar fram en bue eller armbrøst."
 }

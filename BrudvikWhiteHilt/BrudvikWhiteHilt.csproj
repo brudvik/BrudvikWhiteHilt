@@ -258,6 +258,7 @@
     <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
     <Compile Include="Backpack\BackpackInput.cs" />
+    <Compile Include="Backpack\HandSlots.cs" />
     <Compile Include="Clock\ClockSettings.cs" />
     <Compile Include="Clock\GameClock.cs" />
     <Compile Include="Patches\Clock\ClockPatches.cs" />

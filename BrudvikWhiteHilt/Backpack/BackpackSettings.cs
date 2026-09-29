@@ -99,5 +99,12 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_accessory_hint",
             "Belts, Wisplight, Wishbone and the like. The last four also take the Home Stone and the Pathfinder's Amulet. All are worn at once, each kind once. Right-click a belt in your inventory to put it on.");
         Translations.AddEnglish("whitehilt_backpack_duplicate", "You already wear one of those");
+        Translations.AddEnglish("whitehilt_backpack_hands", "Shield and ammo");
+        Translations.AddEnglish("whitehilt_backpack_shield", "Shield");
+        Translations.AddEnglish("whitehilt_backpack_shield_hint",
+            "Drag a shield here. It is taken up with a one-handed weapon when your other hand is free, and put away with the weapon.");
+        Translations.AddEnglish("whitehilt_backpack_ammo", "Ammo");
+        Translations.AddEnglish("whitehilt_backpack_ammo_hint",
+            "Drag arrows or bolts here. They are used before any others when you take up a bow or crossbow.");
     }
 }

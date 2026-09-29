@@ -40,13 +40,19 @@ public enum SlotKind
     Potion,
 
     /// <summary>A worn accessory such as a belt or Wisplight; each kind once.</summary>
-    Utility
+    Utility,
+
+    /// <summary>A shield, taken up with a one-handed weapon.</summary>
+    Shield,
+
+    /// <summary>Ammo, used before any other of its kind.</summary>
+    Ammo
 }
 
 /// <summary>
 /// The rows of the local player's inventory. The visible rows are the vanilla rows (4, more when bought from a trader)
 /// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar,
-/// the equipment and food slots and the accessory slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
+/// the equipment and food slots, the accessory slots and the shield and ammo slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
 /// </summary>
 public static class BackpackLayout
 {
@@ -65,8 +71,11 @@ public static class BackpackLayout
     /// <summary>Row of the accessory slots. The first is the game's own utility slot, the others are added by the mod.</summary>
     public const int UtilityRow = GearRow + 1;
 
+    /// <summary>Row of the shield and ammo slots.</summary>
+    public const int HandRow = UtilityRow + 1;
+
     /// <summary>Rows of the player inventory, visible and hidden.</summary>
-    public const int TotalRows = UtilityRow + 1;
+    public const int TotalRows = HandRow + 1;
 
     private const string VanillaRowsKey = "invrows";
     private const int DefaultVanillaRows = 4;
@@ -161,6 +170,11 @@ public static class BackpackLayout
             return pos.x < FoodSlots.PotionColumn + FoodSlots.PotionCount ? SlotKind.Potion : SlotKind.Void;
         }
 
+        if (pos.y == HandRow)
+        {
+            return pos == HandSlots.ShieldSlot ? SlotKind.Shield : pos == HandSlots.AmmoSlot ? SlotKind.Ammo : SlotKind.Void;
+        }
+
         return SlotKind.Void;
     }
 
@@ -208,6 +222,8 @@ public static class BackpackLayout
             SlotKind.Food => FoodSlots.IsFood(item),
             SlotKind.Potion => FoodSlots.IsPotion(item),
             SlotKind.Utility => UtilitySlots.Fits(item, pos) && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
+            SlotKind.Shield => HandSlots.IsShield(item),
+            SlotKind.Ammo => HandSlots.IsAmmo(item),
             _ => false
         };
     }

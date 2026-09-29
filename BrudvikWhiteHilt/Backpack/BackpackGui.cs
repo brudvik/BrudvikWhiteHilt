@@ -29,7 +29,8 @@ public static class BackpackGui
     {
         new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
         new("$whitehilt_backpack_food", FoodSlots.Positions(), StatsHeight + TotalHeight),
-        new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count))
+        new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count)),
+        new("$whitehilt_backpack_hands", Row(BackpackLayout.HandRow, 0, HandSlots.Count))
     };
 
     private static readonly Dictionary<SlotKind, SlotLook> looks = new()
@@ -41,7 +42,9 @@ public static class BackpackGui
         { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") },
         { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") },
         { SlotKind.Potion, new SlotLook("MeadHealthMinor", "$whitehilt_backpack_potion", "$whitehilt_backpack_potion_hint") },
-        { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") }
+        { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") },
+        { SlotKind.Shield, new SlotLook("ShieldWood", "$whitehilt_backpack_shield", "$whitehilt_backpack_shield_hint") },
+        { SlotKind.Ammo, new SlotLook("ArrowWood", "$whitehilt_backpack_ammo", "$whitehilt_backpack_ammo_hint") }
     };
 
     private static readonly Dictionary<Vector2i, Vector2i> panelPlaces = BuildPanelPlaces();

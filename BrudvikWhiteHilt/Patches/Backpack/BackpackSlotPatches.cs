@@ -35,7 +35,8 @@ public static class BackpackSlotPatches
     }
 
     /// <summary>
-    /// Moves a newly equipped helmet, armor, cape or trinket into its slot.
+    /// Moves a newly equipped helmet, armor, cape or trinket into its slot, and takes up the shield and ammo from their
+    /// slots with a weapon.
     /// </summary>
     /// <param name="__instance">The character.</param>
     /// <param name="item">The item.</param>
@@ -47,6 +48,40 @@ public static class BackpackSlotPatches
         if (__result && __instance is Player player)
         {
             GearSlots.OnEquipped(player, item);
+            HandSlots.OnEquipped(player, item);
+        }
+    }
+
+    /// <summary>
+    /// Notes a one-handed weapon put away, so the shield from its slot follows.
+    /// </summary>
+    /// <param name="__instance">The character.</param>
+    /// <param name="item">The item.</param>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UnequipItem))]
+    [HarmonyPostfix]
+    public static void UnequipItem(Humanoid __instance, ItemDrop.ItemData item)
+    {
+        if (__instance is Player player)
+        {
+            HandSlots.OnUnequipped(player, item);
+        }
+    }
+
+    /// <summary>
+    /// Ammo in the ammo slot is used before any other of its kind.
+    /// </summary>
+    /// <param name="__instance">The inventory.</param>
+    /// <param name="ammoName">The ammo type asked for.</param>
+    /// <param name="matchPrefabName">A particular ammo asked for, or null.</param>
+    /// <param name="__result">The ammo found.</param>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.GetAmmoItem))]
+    [HarmonyPostfix]
+    public static void GetAmmoItem(Inventory __instance, string ammoName, string matchPrefabName, ref ItemDrop.ItemData __result)
+    {
+        if (matchPrefabName == null && BackpackLayout.IsLocalInventory(__instance)
+            && HandSlots.SlotAmmo(__instance, ammoName) is ItemDrop.ItemData ammo)
+        {
+            __result = ammo;
         }
     }
 
@@ -182,6 +217,7 @@ public static class BackpackSlotPatches
             GearSlots.Tick(__instance);
             FoodSlots.Tick(__instance);
             UtilitySlots.Tick(__instance);
+            HandSlots.Tick(__instance);
         }
     }
 
