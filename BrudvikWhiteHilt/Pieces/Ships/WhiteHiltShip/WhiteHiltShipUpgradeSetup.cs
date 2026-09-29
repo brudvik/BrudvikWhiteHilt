@@ -26,6 +26,9 @@ public static class WhiteHiltShipUpgradeSetup
 
     // On the foredeck planks, in front of the tent (which ends about 2.7 m before the mast). Measured on the longship.
     private static readonly Vector3 BrazierPosition = new(0f, 0.73f, 4.2f);
+
+    // On the starboard deck just forward of the helm; the cargo crates stand to port.
+    private static readonly Vector3 ChestPosition = new(0.9f, 0.64f, -4.6f);
     private const float BrazierHeight = 0.9f;
     private const float BrazierFlameScale = 0.35f;
 
@@ -54,6 +57,7 @@ public static class WhiteHiltShipUpgradeSetup
         }
 
         MeasureTent(ship.transform, upgrades);
+        AddChest(ship.transform, container);
 
         if (!VisualHelper.IsHeadless)
         {
@@ -107,6 +111,32 @@ public static class WhiteHiltShipUpgradeSetup
         FireEffects.AddFlames(brazier.transform, "WhiteHiltBrazierFlame", coals, BrazierFlameScale);
         FireEffects.AddWarmth(brazier.transform, "WhiteHiltBrazierWarmth", coals);
         brazier.SetActive(false);
+    }
+
+    // A copy of one of the longship's deck crates by the helm, made into a second chest on the ship's network object.
+    private static void AddChest(Transform root, Container hold)
+    {
+        Transform crate = root.Find("ship/visual/Customize/storage")?.Cast<Transform>().FirstOrDefault(child => child.GetComponent<MeshFilter>() != null)
+            ?? throw new InvalidOperationException("no crate under Customize/storage");
+
+        GameObject chest = UnityEngine.Object.Instantiate(crate.gameObject);
+        chest.SetActive(false);
+        chest.name = WhiteHiltShipUpgrades.ChestName;
+        chest.transform.SetParent(root, false);
+        chest.transform.localPosition = ChestPosition;
+        chest.transform.localRotation = Quaternion.Inverse(root.rotation) * crate.rotation;
+        chest.transform.localScale = crate.lossyScale;
+
+        chest.AddComponent<ShipChest>();
+        Container container = chest.AddComponent<Container>();
+        container.m_name = "$item_whitehiltshipchest";
+        container.m_width = 4;
+        container.m_height = 2;
+        container.m_bkg = hold.m_bkg;
+        container.m_openEffects = hold.m_openEffects;
+        container.m_closeEffects = hold.m_closeEffects;
+        container.m_privacy = Container.PrivacySetting.Public;
+        container.m_rootObjectOverride = root.GetComponent<ZNetView>();
     }
 
     // The vanilla trader lamp is dim for a whole deck; its flicker keeps whatever intensity the light starts with.

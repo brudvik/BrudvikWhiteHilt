@@ -162,8 +162,9 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes and puts it in the cargo hold. The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
 | **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
 | **Deck Brazier** | An iron brazier on the foredeck that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
+| **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Iron ×2 |
 
-The barrels can only be taken off when the extra cargo slots are empty. Taking the anchor off also raises it.
+The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it.
 
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
@@ -511,6 +512,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Home Stone return trip: used again within 2 minutes of going home, it takes you back to where you were
 - Belt Pouch: used once, it gives the character one more inventory row for good
 - Deck Brazier ship upgrade: a fire on the foredeck that burns without fuel, warms the crew and counts for resting
+- Sea Chest ship upgrade: a 4 × 2 chest by the helm besides the cargo hold
 
 #### Changed
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber

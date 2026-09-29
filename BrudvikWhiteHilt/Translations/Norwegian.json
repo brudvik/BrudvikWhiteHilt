@@ -643,6 +643,9 @@
   "item_whitehiltshipdriftanchor_description": "Et jernanker i kjetting til Hvithjalt-skipet. Bruk det på masta; senk det ved masta, så ligger skipet stille uansett hvordan vinden blåser.",
   "item_whitehiltshipbrazier": "Dekksgrue",
   "item_whitehiltshipbrazier_description": "Et fyrfat av jern med en surtlingglo til Hvithjalt-skipet. Bruk det på masta; det brenner på fordekket uten ved, holder mannskapet varmt og teller som bål når du hviler.",
+  "item_whitehiltshipchest": "Sjøkiste",
+  "item_whitehiltshipchest_description": "En jernbeslått sjøkiste til Hvithjalt-skipet. Bruk den på masta; den står ved roret og rommer 4 x 2 ved siden av lasterommet, fin til utstyr.",
+  "msg_whitehilt_ship_chest_full": "Tøm sjøkista før du tar den av",
 
   "whitehilt_unlock_start": "Det hvite hjaltet svarer: startutstyr er låst opp",
   "whitehilt_unlock_blackforest": "Det hvite hjaltet svarer: utstyr for Svartskogen er låst opp",

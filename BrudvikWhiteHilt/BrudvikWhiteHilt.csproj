@@ -248,6 +248,7 @@
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
     <Compile Include="Patches\Ships\ShipAnchorPatch.cs" />
+    <Compile Include="Patches\Ships\ShipChestPatches.cs" />
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Pieces\Ranching\TetherPost\TetherPostComponent.cs" />
     <Compile Include="Items\Ranching\GroomingComb.cs" />
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />

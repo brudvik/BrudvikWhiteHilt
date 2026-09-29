@@ -31,6 +31,11 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     public const string BrazierName = "WhiteHiltShipBrazier";
 
     /// <summary>
+    /// Name of the sea chest object added to the ship prefab.
+    /// </summary>
+    public const string ChestName = "WhiteHiltShipChest";
+
+    /// <summary>
     /// Cargo hold size without barrels (vanilla longship).
     /// </summary>
     public static readonly Vector2i SmallHold = new(6, 3);
@@ -87,6 +92,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
     private GameObject brazier;
+    private Container chest;
     private Ship ship;
     private Rigidbody body;
     private RigidbodyConstraints freeConstraints;
@@ -226,6 +232,12 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             return true;
         }
 
+        if (bit == ShipChestUpgrade.Bit && chest != null && chest.GetInventory() != null && chest.GetInventory().NrOfItems() > 0)
+        {
+            user.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ship_chest_full");
+            return true;
+        }
+
         nview.InvokeRPC(TakeRpc, bit);
         return true;
     }
@@ -265,6 +277,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         tent = customize != null ? customize.Cast<Transform>().Where(IsTentPart).Select(child => child.gameObject).ToArray() : tent;
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
         brazier = transform.Find(BrazierName)?.gameObject;
+        chest = transform.Find(ChestName)?.GetComponent<Container>();
+        container = GetComponentsInChildren<Container>(true).FirstOrDefault(found => found.GetComponent<ShipChest>() == null);
 
         if (nview == null || nview.GetZDO() == null)
         {
@@ -313,6 +327,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             SetActive(mastWisp, Has(ShipMastWisp.Bit));
             SetActive(anchor?.gameObject, Has(ShipDriftAnchor.Bit));
             SetActive(brazier, Has(ShipBrazier.Bit));
+            SetActive(chest?.gameObject, Has(ShipChestUpgrade.Bit));
             holdCheckTimer = 0f;
         }
 

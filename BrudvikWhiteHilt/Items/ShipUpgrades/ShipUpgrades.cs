@@ -302,3 +302,45 @@ public class ShipBrazier : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     public override bool Enabled => true;
 }
+
+/// <summary>
+/// Puts a sea chest next to the White Hilt Ship's helm, a 4 x 2 chest besides the cargo hold.
+/// </summary>
+public class ShipChestUpgrade : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the chest in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 7;
+
+    /// <summary>
+    /// Constructor for the ShipChestUpgrade class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipChestUpgrade(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltShipChest";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Sea Chest";
+
+    /// <inheritdoc/>
+    protected override string Description => "An iron-bound sea chest for the White Hilt Ship. Use it on the mast; it stands by the helm and holds 4 x 2 besides the cargo hold, handy for gear.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "FineWood";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "FineWood", Amount = 10, Recover = false },
+        new() { Item = "Iron", Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}
