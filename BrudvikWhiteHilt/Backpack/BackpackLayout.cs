@@ -36,6 +36,9 @@ public enum SlotKind
     /// <summary>Food, eaten with its own key.</summary>
     Food,
 
+    /// <summary>A potion or mead, drunk with its own key.</summary>
+    Potion,
+
     /// <summary>A worn accessory such as a belt or Wisplight; each kind once.</summary>
     Utility
 }
@@ -150,7 +153,12 @@ public static class BackpackLayout
 
         if (pos.y == UtilityRow)
         {
-            return pos.x < UtilitySlots.Count ? SlotKind.Utility : SlotKind.Void;
+            if (pos.x < UtilitySlots.Count)
+            {
+                return SlotKind.Utility;
+            }
+
+            return pos.x < FoodSlots.PotionColumn + FoodSlots.PotionCount ? SlotKind.Potion : SlotKind.Void;
         }
 
         return SlotKind.Void;
@@ -198,6 +206,7 @@ public static class BackpackLayout
             SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
                 TryGetGearSlot(item, out Vector2i slot) && slot == pos,
             SlotKind.Food => FoodSlots.IsFood(item),
+            SlotKind.Potion => FoodSlots.IsPotion(item),
             SlotKind.Utility => UtilitySlots.Fits(item, pos) && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
             _ => false
         };

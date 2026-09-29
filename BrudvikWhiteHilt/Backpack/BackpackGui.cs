@@ -26,7 +26,7 @@ public static class BackpackGui
     private static readonly PanelSection[] sections =
     {
         new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
-        new("$whitehilt_backpack_food", Row(BackpackLayout.GearRow, FoodSlots.FirstColumn, FoodSlots.Count)),
+        new("$whitehilt_backpack_food", FoodSlots.Positions()),
         new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count))
     };
 
@@ -38,6 +38,7 @@ public static class BackpackGui
         { SlotKind.Cape, new SlotLook("CapeDeerHide", "$whitehilt_backpack_cape") },
         { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") },
         { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") },
+        { SlotKind.Potion, new SlotLook("MeadHealthMinor", "$whitehilt_backpack_potion", "$whitehilt_backpack_potion_hint") },
         { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") }
     };
 
@@ -218,12 +219,13 @@ public static class BackpackGui
 
     private static void ShowFoodKey(InventoryElement element, SlotKind kind)
     {
-        if (kind != SlotKind.Food || element.transform.Find("binding")?.GetComponent<TMP_Text>() is not TMP_Text binding)
+        if ((kind != SlotKind.Food && kind != SlotKind.Potion)
+            || element.transform.Find("binding")?.GetComponent<TMP_Text>() is not TMP_Text binding)
         {
             return;
         }
 
-        string key = Building.BuildToolSettings.KeyName(FoodSlots.Key(element.Position.x - FoodSlots.FirstColumn));
+        string key = Building.BuildToolSettings.KeyName(FoodSlots.Key(FoodSlots.IndexOf(element.Position)));
         binding.enabled = key.Length > 0;
         binding.textWrappingMode = TextWrappingModes.NoWrap;
         binding.overflowMode = TextOverflowModes.Overflow;
