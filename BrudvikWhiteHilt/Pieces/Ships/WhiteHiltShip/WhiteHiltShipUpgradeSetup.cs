@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Managers;
 using System;
 using System.Linq;
@@ -65,7 +66,27 @@ public static class WhiteHiltShipUpgradeSetup
             {
                 Jotunn.Logger.LogWarning($"White Hilt Ship: the drift anchor has no look: {ex.Message}");
             }
+
+            BrightenLantern(ship.transform);
         }
+    }
+
+    // The vanilla trader lamp is dim for a whole deck; its flicker keeps whatever intensity the light starts with.
+    private static void BrightenLantern(Transform root)
+    {
+        Light light = root.Find("ship/visual/Customize/TraderLamp")?.GetComponentInChildren<Light>(true);
+        if (light == null)
+        {
+            Jotunn.Logger.LogWarning("White Hilt Ship: the lantern light was not found");
+            return;
+        }
+
+        float brightness = WhiteHiltConfig.BindLocal("Ships", "LanternBrightness", 2.5f,
+            "How many times brighter the Ship Lantern shines than the vanilla lamp. Needs a restart.").Value;
+        float reach = WhiteHiltConfig.BindLocal("Ships", "LanternRange", 2f,
+            "How many times further the Ship Lantern reaches than the vanilla lamp. Needs a restart.").Value;
+        light.intensity *= Mathf.Max(0f, brightness);
+        light.range *= Mathf.Max(0.1f, reach);
     }
 
     private static void MeasureTent(Transform root, WhiteHiltShipUpgrades upgrades)

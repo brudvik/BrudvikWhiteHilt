@@ -155,7 +155,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 | Upgrade | Effect | Requirements |
 |---------|--------|--------------|
-| **Ship Lantern** | A lantern on deck that lights up at night | Iron ×2, Resin ×10, Surtling Core ×1 |
+| **Ship Lantern** | A lantern on deck that lights up at night, 2.5 times as bright and twice as far as the vanilla lamp (`Ships` → `LanternBrightness`, `LanternRange`, each player's own) | Iron ×2, Resin ×10, Surtling Core ×1 |
 | **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
 | **Ship Tent** | A tent on deck; under it you have Shelter and stay dry | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
 | **Mast Wisp** | A wisp at the top of the mast that clears the mist around the ship | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
@@ -513,6 +513,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 #### Changed
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber
 - The Navigator's Table can also be set up at the White Hilt Ship's mast, where the other upgrades go, and is listed there
+- The Ship Lantern shines 2.5 times as bright and reaches twice as far (configurable)
 
 ### v0.7.0 - 2026-09-28
 
