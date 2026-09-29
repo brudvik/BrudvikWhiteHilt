@@ -82,7 +82,46 @@ public class ShipChartTable : MonoBehaviour
 
         DefenseModelBuilder.Build(table.transform, groups, DefenseModelBuilder.Flatten(layout, layout.Get(TableLayout)));
         table.AddComponent<SkillScrolls>();
+        AddCollider(table.transform);
         table.SetActive(false);
+    }
+
+    // One box around the table and its scrolls, on the ship's vehicle layer, so players walk around it and can point at it.
+    private static void AddCollider(Transform table)
+    {
+        Bounds bounds = default;
+        bool first = true;
+        foreach (MeshFilter filter in table.GetComponentsInChildren<MeshFilter>(true).Where(filter => filter.sharedMesh != null))
+        {
+            Bounds mesh = filter.sharedMesh.bounds;
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 local = mesh.center + Vector3.Scale(mesh.extents, new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1));
+                Vector3 point = table.InverseTransformPoint(filter.transform.TransformPoint(local));
+                if (first)
+                {
+                    bounds = new Bounds(point, Vector3.zero);
+                    first = false;
+                }
+                else
+                {
+                    bounds.Encapsulate(point);
+                }
+            }
+        }
+
+        if (first)
+        {
+            return;
+        }
+
+        int vehicle = LayerMask.NameToLayer("vehicle");
+        GameObject collider = new("collider") { layer = vehicle >= 0 ? vehicle : table.gameObject.layer };
+        collider.transform.SetParent(table, false);
+        BoxCollider box = collider.AddComponent<BoxCollider>();
+        box.center = bounds.center;
+        box.size = bounds.size;
+        collider.AddComponent<ShipChartTableHover>();
     }
 
     /// <summary>

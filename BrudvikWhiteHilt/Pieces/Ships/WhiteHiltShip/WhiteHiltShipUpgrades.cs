@@ -102,6 +102,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
     private GameObject brazier;
+    private GameObject tentColliders;
     private Container chest;
     private ShipPortal portal;
     private Ship ship;
@@ -320,6 +321,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         tent = customize != null ? customize.Cast<Transform>().Where(IsTentPart).Select(child => child.gameObject).ToArray() : tent;
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
         brazier = transform.Find(BrazierName)?.gameObject;
+        tentColliders = transform.Find(ShipTentColliders.ObjectName)?.gameObject;
         chest = transform.Find(ChestName)?.GetComponent<Container>();
         portal = transform.Find(ShipPortal.ObjectName)?.GetComponent<ShipPortal>();
         container = GetComponentsInChildren<Container>(true).FirstOrDefault(found => found.GetComponent<ShipChest>() == null);
@@ -367,6 +369,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             {
                 SetActive(part, Has(ShipTent.Bit));
             }
+
+            SetActive(tentColliders, Has(ShipTent.Bit));
 
             SetActive(mastWisp, Has(ShipMastWisp.Bit));
             SetActive(anchor?.gameObject, Has(ShipDriftAnchor.Bit));

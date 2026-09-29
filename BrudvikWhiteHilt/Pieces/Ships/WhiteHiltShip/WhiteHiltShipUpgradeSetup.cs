@@ -122,6 +122,12 @@ public static class WhiteHiltShipUpgradeSetup
         Vector3 coals = Vector3.up * (BrazierCoals * BrazierHeight);
         FireEffects.AddFlames(brazier.transform, "WhiteHiltBrazierFlame", coals, BrazierFlameScale);
         FireEffects.AddWarmth(brazier.transform, "WhiteHiltBrazierWarmth", coals);
+
+        GameObject block = new("collider") { layer = CrateLayer(root) };
+        block.transform.SetParent(brazier.transform, false);
+        BoxCollider box = block.AddComponent<BoxCollider>();
+        box.center = new Vector3(0f, BrazierHeight / 2f, 0f);
+        box.size = new Vector3(mesh.bounds.size.x * scale, BrazierHeight, mesh.bounds.size.z * scale);
         brazier.SetActive(false);
     }
 
@@ -129,9 +135,7 @@ public static class WhiteHiltShipUpgradeSetup
     // The collider is off until the upgrade is on.
     private static Transform AddPortal(Transform root)
     {
-        Transform crate = root.Find("ship/visual/Customize/storage")?.GetComponentsInChildren<Collider>(true).FirstOrDefault()?.transform;
-        GameObject portal = new(ShipPortal.ObjectName);
-        portal.layer = crate != null ? crate.gameObject.layer : root.gameObject.layer;
+        GameObject portal = new(ShipPortal.ObjectName) { layer = CrateLayer(root) };
         portal.transform.SetParent(root, false);
         portal.transform.localPosition = ShipPortal.DeckPosition;
 
@@ -235,6 +239,24 @@ public static class WhiteHiltShipUpgradeSetup
         area.min = new Vector3(area.min.x, area.min.y - TentHeadroom, area.min.z);
         upgrades.m_tentCenter = area.center;
         upgrades.m_tentSize = area.size;
+
+        try
+        {
+            // The beam under the ridge is not part of the cloth's surface.
+            Transform beam = customize.Find("ShipTen2_beam");
+            ShipTentColliders.Build(root, cloth.Where(filter => beam == null || !filter.transform.IsChildOf(beam)), CrateLayer(root));
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"White Hilt Ship: the tent cannot be stood on: {ex.Message}");
+        }
+    }
+
+    // Deck parts block players like the longship's own crates do.
+    private static int CrateLayer(Transform root)
+    {
+        Transform crate = root.Find("ship/visual/Customize/storage")?.GetComponentsInChildren<Collider>(true).FirstOrDefault()?.transform;
+        return crate != null ? crate.gameObject.layer : root.gameObject.layer;
     }
 
     // The light, particles and mist force field of the vanilla wisplight ball, without its network root.

@@ -569,6 +569,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - The drift anchor drops by itself when the last person leaves the ship, and is weighed when someone takes the helm
 
 #### Changed
+- The Navigator's Table and the Deck Brazier block players like the deck crates; the table has its own hover text, and Shift + Use on it takes it back
+- The White Hilt Ship's tent can be stood on (with a walkway along the steep ridge) and still walked under
 - Portal and ship markers on the map are smaller, grow and shrink with the zoom, and the player and ship markers are always drawn above them
 - The Fishing Net's catches follow the Fishing skill (up to twice as often, often two fish, and it raises the skill), bring up seaweed and now and then an amber pearl, and its interval can be set
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber

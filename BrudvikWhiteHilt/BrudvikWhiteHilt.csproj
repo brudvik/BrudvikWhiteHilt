@@ -320,6 +320,8 @@
     <Compile Include="Pieces\Ships\ShipHud.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipTentColliders.cs" />
+    <Compile Include="Pieces\Navigation\ShipChartTableHover.cs" />
     <Compile Include="Pieces\Ships\ShipFog.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortal.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortalArrival.cs" />
