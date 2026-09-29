@@ -19,6 +19,8 @@ public static class BackpackGui
     private const float Padding = 14f;
     private const float TitleHeight = 24f;
     private const float SectionGap = 8f;
+    private const float StatsHeight = 16f;
+    private const float TotalHeight = 20f;
     private const int PanelColumns = 5;
 
     private static readonly Color PlaceholderColor = new(1f, 1f, 1f, 0.2f);
@@ -26,7 +28,7 @@ public static class BackpackGui
     private static readonly PanelSection[] sections =
     {
         new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
-        new("$whitehilt_backpack_food", FoodSlots.Positions()),
+        new("$whitehilt_backpack_food", FoodSlots.Positions(), StatsHeight + TotalHeight),
         new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count))
     };
 
@@ -47,6 +49,8 @@ public static class BackpackGui
     private static Text barLabel;
     private static RectTransform panel;
     private static float sideOverhang;
+    private static readonly Text[] slotStats = new Text[FoodSlots.SlotCount];
+    private static Text foodTotal;
 
     /// <summary>
     /// Sizes the inventory window for the visible rows and the stored hotbar.
@@ -112,6 +116,7 @@ public static class BackpackGui
 
         grid.m_gridRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (rows + 1) * step + BarGap);
         UpdateBarLabel(grid, player, rows);
+        UpdateFoodStats(player);
     }
 
     private static Vector2i[] Row(int y, int fromX, int count)
@@ -141,7 +146,13 @@ public static class BackpackGui
 
     private static float SectionTop(int section, float slotHeight)
     {
-        return Padding + section * (TitleHeight + slotHeight + SectionGap);
+        float top = Padding;
+        for (int i = 0; i < section && i < sections.Length; i++)
+        {
+            top += TitleHeight + slotHeight + sections[i].Extra + SectionGap;
+        }
+
+        return top;
     }
 
     private static void EnsurePanel(InventoryGui gui, Vector2 size, float step)
@@ -157,9 +168,10 @@ public static class BackpackGui
             panel.pivot = new Vector2(0f, 1f);
             for (int i = 0; i < sections.Length; i++)
             {
-                AddTitle(sections[i].Title, width - Padding * 2f, SectionTop(i, size.y));
+                AddText(sections[i].Title, Padding, SectionTop(i, size.y), width - Padding * 2f, TitleHeight, 16, TextAnchor.MiddleLeft);
             }
 
+            AddFoodStats(size, step, width);
             sideOverhang = SideBoxOverhang(gui);
         }
 
@@ -197,15 +209,71 @@ public static class BackpackGui
         return overhang;
     }
 
-    private static void AddTitle(string title, float width, float top)
+    private static Text AddText(string text, float left, float top, float width, float height, int fontSize, TextAnchor alignment)
     {
-        GameObject go = GUIManager.Instance.CreateText(Localization.instance.Localize(title), panel, new Vector2(0f, 1f), new Vector2(0f, 1f),
-            Vector2.zero, GUIManager.Instance.AveriaSerifBold, 16, GUIManager.Instance.ValheimOrange, true, Color.black, width, TitleHeight, false);
-        Text text = go.GetComponent<Text>();
-        text.alignment = TextAnchor.MiddleLeft;
-        text.raycastTarget = false;
-        text.rectTransform.pivot = new Vector2(0f, 1f);
-        text.rectTransform.anchoredPosition = new Vector2(Padding, -top);
+        GameObject go = GUIManager.Instance.CreateText(Localization.instance.Localize(text), panel, new Vector2(0f, 1f), new Vector2(0f, 1f),
+            Vector2.zero, GUIManager.Instance.AveriaSerifBold, fontSize, GUIManager.Instance.ValheimOrange, true, Color.black, width, height, false);
+        Text label = go.GetComponent<Text>();
+        label.alignment = alignment;
+        label.raycastTarget = false;
+        label.rectTransform.pivot = new Vector2(0f, 1f);
+        label.rectTransform.anchoredPosition = new Vector2(left, -top);
+        return label;
+    }
+
+    // One line under each food and potion slot, and the total under the row.
+    private static void AddFoodStats(Vector2 size, float step, float width)
+    {
+        float statsTop = 0f;
+        for (int i = 0; i < FoodSlots.SlotCount; i++)
+        {
+            Vector2i place = panelPlaces[FoodSlots.Position(i)];
+            statsTop = SectionTop(place.y, size.y) + TitleHeight + size.y + 1f;
+            float left = Padding + place.x * step - (step - size.x) / 2f;
+            slotStats[i] = AddText(string.Empty, left, statsTop, step, StatsHeight, 12, TextAnchor.UpperCenter);
+            slotStats[i].color = Color.white;
+        }
+
+        foodTotal = AddText(string.Empty, Padding, statsTop + StatsHeight, width - Padding * 2f, TotalHeight, 13, TextAnchor.MiddleLeft);
+        foodTotal.color = Color.white;
+        foodTotal.resizeTextForBestFit = true;
+        foodTotal.resizeTextMinSize = 9;
+        foodTotal.resizeTextMaxSize = 13;
+    }
+
+    private static void UpdateFoodStats(Player player)
+    {
+        if (foodTotal == null)
+        {
+            return;
+        }
+
+        Vector3 total = Vector3.zero;
+        for (int i = 0; i < FoodSlots.SlotCount; i++)
+        {
+            Vector2i pos = FoodSlots.Position(i);
+            ItemDrop.ItemData item = player.m_inventory.GetItemAt(pos.x, pos.y);
+            Vector3 values = FoodSlots.Values(item);
+            total += values;
+            SetText(slotStats[i], item == null ? string.Empty : StatLine(values));
+        }
+
+        SetText(foodTotal, string.Format(Localization.instance.Localize("$whitehilt_backpack_food_total"),
+            Mathf.RoundToInt(total.x), Mathf.RoundToInt(total.y), Mathf.RoundToInt(total.z)));
+    }
+
+    private static string StatLine(Vector3 values)
+    {
+        string line = $"<color=#ff8080>{Mathf.RoundToInt(values.x)}</color> <color=#ffff80>{Mathf.RoundToInt(values.y)}</color>";
+        return values.z > 0f ? $"{line} <color=#9999ff>{Mathf.RoundToInt(values.z)}</color>" : line;
+    }
+
+    private static void SetText(Text text, string value)
+    {
+        if (text != null && text.text != value)
+        {
+            text.text = value;
+        }
     }
 
     private static void PlaceInPanel(InventoryElement element, Vector2 size, float step)
@@ -333,15 +401,18 @@ public static class BackpackGui
 
     private sealed class PanelSection
     {
-        public PanelSection(string title, Vector2i[] slots)
+        public PanelSection(string title, Vector2i[] slots, float extra = 0f)
         {
             Title = title;
             Slots = slots;
+            Extra = extra;
         }
 
         public string Title { get; }
 
         public Vector2i[] Slots { get; }
+
+        public float Extra { get; }
     }
 
     private sealed class SlotLook

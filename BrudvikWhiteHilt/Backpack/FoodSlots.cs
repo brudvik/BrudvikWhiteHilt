@@ -92,6 +92,27 @@ public static class FoodSlots
     }
 
     /// <summary>
+    /// What one of the item gives: food its health, stamina and eitr, a potion what it restores at once and over time.
+    /// </summary>
+    /// <param name="item">The item, or null.</param>
+    /// <returns>Health, stamina and eitr as x, y and z.</returns>
+    public static Vector3 Values(ItemDrop.ItemData item)
+    {
+        if (IsFood(item))
+        {
+            return new Vector3(item.m_shared.m_food, item.m_shared.m_foodStamina, item.m_shared.m_foodEitr);
+        }
+
+        if (IsPotion(item) && item.m_shared.m_consumeStatusEffect is SE_Stats stats)
+        {
+            return new Vector3(stats.m_healthUpFront + stats.m_healthOverTime, stats.m_staminaUpFront + stats.m_staminaOverTime,
+                stats.m_eitrUpFront + stats.m_eitrOverTime);
+        }
+
+        return Vector3.zero;
+    }
+
+    /// <summary>
     /// The key of a food or potion slot.
     /// </summary>
     /// <param name="index">The slot: 0 to 2 food, 3 and 4 potions.</param>

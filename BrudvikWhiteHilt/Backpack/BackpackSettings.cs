@@ -90,6 +90,8 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_food_empty", "That food slot is empty");
         Translations.AddEnglish("whitehilt_backpack_food_hint", "Drag food here. The key on the slot eats it.");
         Translations.AddEnglish("whitehilt_backpack_potion", "Potion");
+        Translations.AddEnglish("whitehilt_backpack_food_total",
+            "Total  <color=#ff8080>{0}</color> health  <color=#ffff80>{1}</color> stamina  <color=#9999ff>{2}</color> eitr");
         Translations.AddEnglish("whitehilt_backpack_potion_empty", "That potion slot is empty");
         Translations.AddEnglish("whitehilt_backpack_potion_hint", "Drag a potion or mead here. The key on the slot drinks it.");
         Translations.AddEnglish("whitehilt_backpack_accessories", "Accessories");

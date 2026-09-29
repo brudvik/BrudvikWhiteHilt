@@ -664,6 +664,7 @@
   "whitehilt_backpack_food_empty": "Den matplassen er tom",
   "whitehilt_backpack_food_hint": "Dra mat hit. Tasten på plassen spiser den.",
   "whitehilt_backpack_potion": "Drikk",
+  "whitehilt_backpack_food_total": "Totalt  <color=#ff8080>{0}</color> helse  <color=#ffff80>{1}</color> utholdenhet  <color=#9999ff>{2}</color> eitr",
   "whitehilt_backpack_potion_empty": "Den drikkeplassen er tom",
   "whitehilt_backpack_potion_hint": "Dra en drikk eller mjød hit. Tasten på plassen drikker den.",
   "whitehilt_backpack_accessories": "Tilbehør",
