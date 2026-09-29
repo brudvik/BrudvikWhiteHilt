@@ -66,6 +66,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Groups.GroupSettings.Initialize();
         Building.Terrain.TerrainSettings.Initialize();
         Backpack.BackpackSettings.Initialize();
+        Items.Accessories.MegingjordUpgrade.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();

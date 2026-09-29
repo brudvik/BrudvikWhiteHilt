@@ -59,6 +59,9 @@ All armor pieces are indestructible with: armor per level +10, movement modifier
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **White Hilt Megingjord** | Belt of Dyrnwyn - +700 carry weight | Forge (Level 2) | Iron ×10, Ymir Remains ×10, Megingjord ×1 |
+| **Megingjord upgrade** | The trader's Megingjord can be upgraded to quality 4. Each level adds +50 carry weight on top of its own +150 (+300 at quality 4); the tooltip shows the total | Forge (level 2, 3 and 4) | Per level: Iron ×8, Chain ×1, Troll Hide ×3, Surtling Core ×1 |
+
+The upgrade can be switched off (`Megingjord` → `Upgrades`) and the carry weight per level changed (`CarryWeightPerLevel`).
 
 ---
 
@@ -502,6 +505,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Equipment slots for helmet, chest, legs, cape and trinket in a panel next to the inventory; worn items no longer take room in the grid
 - Three food slots, eaten from with Left Alt + 1, 2 and 3
 - Five accessory slots: belts, Wisplight, Wishbone and the like are worn at once, each kind once
+- Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
 
 ### v0.7.0 - 2026-09-28
 

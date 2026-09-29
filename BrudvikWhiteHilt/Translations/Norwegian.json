@@ -666,5 +666,6 @@
   "whitehilt_backpack_accessories": "Tilbehør",
   "whitehilt_backpack_accessory": "Tilbehør",
   "whitehilt_backpack_accessory_hint": "Belter og annet tilbehør. Alle fem brukes samtidig, men hver type bare én gang. Høyreklikk en i sekken for å ta den på.",
-  "whitehilt_backpack_duplicate": "Du har allerede på en slik"
+  "whitehilt_backpack_duplicate": "Du har allerede på en slik",
+  "whitehilt_megingjord_total": "Bæreevne på dette nivået"
 }
