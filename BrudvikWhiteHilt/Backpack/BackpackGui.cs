@@ -46,6 +46,7 @@ public static class BackpackGui
 
     private static Text barLabel;
     private static RectTransform panel;
+    private static float sideOverhang;
 
     /// <summary>
     /// Sizes the inventory window for the visible rows and the stored hotbar.
@@ -158,9 +159,42 @@ public static class BackpackGui
             {
                 AddTitle(sections[i].Title, width - Padding * 2f, SectionTop(i, size.y));
             }
+
+            sideOverhang = SideBoxOverhang(gui);
         }
 
-        Place(panel, new Vector2(BackpackSettings.PanelOffsetX.Value, BackpackSettings.PanelOffsetY.Value));
+        Place(panel, new Vector2(sideOverhang + BackpackSettings.PanelOffsetX.Value, BackpackSettings.PanelOffsetY.Value));
+    }
+
+    // The armor and weight boxes stick out to the right of the inventory window; the panel goes beyond them.
+    private static float SideBoxOverhang(InventoryGui gui)
+    {
+        float overhang = 0f;
+        float right = gui.m_player.rect.xMax;
+        Vector3[] corners = new Vector3[4];
+        foreach (TMP_Text text in new[] { gui.m_armor, gui.m_weight })
+        {
+            if (text == null)
+            {
+                continue;
+            }
+
+            foreach (Transform box in new[] { text.transform, text.transform.parent })
+            {
+                if (box is not RectTransform rect || box == gui.m_player)
+                {
+                    continue;
+                }
+
+                rect.GetWorldCorners(corners);
+                foreach (Vector3 corner in corners)
+                {
+                    overhang = Mathf.Max(overhang, gui.m_player.InverseTransformPoint(corner).x - right);
+                }
+            }
+        }
+
+        return overhang;
     }
 
     private static void AddTitle(string title, float width, float top)
@@ -227,8 +261,23 @@ public static class BackpackGui
 
         string key = Building.BuildToolSettings.KeyName(FoodSlots.Key(FoodSlots.IndexOf(element.Position)));
         binding.enabled = key.Length > 0;
-        binding.textWrappingMode = TextWrappingModes.NoWrap;
-        binding.overflowMode = TextOverflowModes.Overflow;
+        if (!binding.enableAutoSizing)
+        {
+            // The vanilla label is sized for one digit; stretch it over the slot's top edge and shrink the text to fit.
+            RectTransform rect = binding.rectTransform;
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = new Vector2(3f, -2f);
+            rect.sizeDelta = new Vector2(-6f, 16f);
+            binding.alignment = TextAlignmentOptions.TopLeft;
+            binding.fontSizeMax = Mathf.Min(binding.fontSize, 14f);
+            binding.fontSizeMin = 8f;
+            binding.enableAutoSizing = true;
+            binding.textWrappingMode = TextWrappingModes.NoWrap;
+            binding.overflowMode = TextOverflowModes.Truncate;
+        }
+
         if (binding.text != key)
         {
             binding.text = key;
