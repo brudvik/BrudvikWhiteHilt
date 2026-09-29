@@ -569,6 +569,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - The drift anchor drops by itself when the last person leaves the ship, and is weighed when someone takes the helm
 
 #### Changed
+- Portal and ship markers on the map are smaller, grow and shrink with the zoom, and the player and ship markers are always drawn above them
 - The Fishing Net's catches follow the Fishing skill (up to twice as often, often two fish, and it raises the skill), bring up seaweed and now and then an amber pearl, and its interval can be set
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber
 - The Navigator's Table can also be set up at the White Hilt Ship's mast, where the other upgrades go, and is listed there

@@ -23,9 +23,17 @@ public static class PortalMapPatch
 
     [HarmonyPatch(typeof(Minimap), nameof(Minimap.Start))]
     [HarmonyPostfix]
-    private static void MinimapStartPostfix()
+    private static void MinimapStartPostfix(Minimap __instance)
     {
+        PortalMapPins.MarkersOnTop(__instance);
         PortalMapPins.Refresh();
+    }
+
+    [HarmonyPatch(typeof(Minimap), nameof(Minimap.UpdatePins))]
+    [HarmonyPostfix]
+    private static void UpdatePinsPostfix(Minimap __instance)
+    {
+        PortalMapPins.ScalePins(__instance);
     }
 
     [HarmonyPatch(typeof(Minimap), nameof(Minimap.Update))]

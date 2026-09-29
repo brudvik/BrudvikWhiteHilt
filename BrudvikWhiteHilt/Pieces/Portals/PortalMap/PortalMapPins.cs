@@ -18,6 +18,15 @@ public static class PortalMapPins
     private const int BadgeIconSize = 44;
     private const float BadgeRimWidth = 4f;
 
+    // Badge size against the map's normal pin size at the reference zoom; it grows zoomed in and shrinks zoomed out.
+    private const float PinScale = 0.8f;
+    private const float LargeReferenceZoom = 0.1f;
+    private const float SmallReferenceZoom = 0.01f;
+    private const float ZoomPower = 0.4f;
+    private const float MinZoomScale = 0.5f;
+    private const float MaxZoomScale = 1.6f;
+    private const float SelectedScale = 1.4f;
+
     private static readonly Color32 portalRim = new(190, 130, 255, 255);
     private static readonly Color32 shipRim = new(255, 205, 90, 255);
     private static readonly Color32 badgeFill = new(18, 18, 22, 215);
@@ -74,7 +83,6 @@ public static class PortalMapPins
         {
             Minimap.PinData pin = map.AddPin(entry.Position, Minimap.PinType.None, Localization.instance.Localize(Label(entry)), false, false);
             pin.m_icon = GetIcon(entry);
-            pin.m_doubleSize = true;
             pins.Add((pin, entry));
         }
     }
@@ -120,6 +128,84 @@ public static class PortalMapPins
         }
 
         return $"{label}\n{RunePortalPatch.FormatRunes(entry.RuneMask, entry.Everything)}";
+    }
+
+    /// <summary>
+    /// Sizes the portal and ship badges, also those of the travel map, by the zoom: larger zoomed in, smaller zoomed out.
+    /// A badge marked double size (the portal picked in the travel map) is a little larger. Called after the map places
+    /// its pins.
+    /// </summary>
+    /// <param name="map">The map.</param>
+    public static void ScalePins(Minimap map)
+    {
+        if (badges.Count == 0)
+        {
+            return;
+        }
+
+        bool large = map.m_mode == Minimap.MapMode.Large;
+        float zoom = large ? map.LargeZoom : map.SmallZoom;
+        float reference = large ? LargeReferenceZoom : SmallReferenceZoom;
+        float zoomScale = Mathf.Clamp(Mathf.Pow(reference / Mathf.Max(zoom, 0.0001f), ZoomPower), MinZoomScale, MaxZoomScale);
+        float baseSize = (large ? map.m_pinSizeLarge : map.m_pinSizeSmall) * PinScale * zoomScale;
+        foreach (Minimap.PinData pin in map.m_pins)
+        {
+            if (pin.m_uiElement == null || pin.m_icon == null || !badges.ContainsValue(pin.m_icon))
+            {
+                continue;
+            }
+
+            float size = pin.m_doubleSize ? baseSize * SelectedScale : baseSize;
+            if (!Mathf.Approximately(pin.m_uiElement.rect.width, size))
+            {
+                pin.m_uiElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
+                pin.m_uiElement.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Draws the player and ship markers above all pins, so a portal or the ship you sail cannot hide you.
+    /// </summary>
+    /// <param name="map">The map.</param>
+    public static void MarkersOnTop(Minimap map)
+    {
+        BringAbove(map.m_largeShipMarker, map.m_pinRootLarge);
+        BringAbove(map.m_largeMarker, map.m_pinRootLarge);
+        BringAbove(map.m_smallShipMarker, map.m_pinRootSmall);
+        BringAbove(map.m_smallMarker, map.m_pinRootSmall);
+    }
+
+    // Moves the marker's branch after the pins' branch under their closest shared parent.
+    private static void BringAbove(Transform marker, Transform pinRoot)
+    {
+        if (marker == null || pinRoot == null)
+        {
+            return;
+        }
+
+        Transform markerBranch = marker;
+        while (markerBranch.parent != null && !pinRoot.IsChildOf(markerBranch.parent))
+        {
+            markerBranch = markerBranch.parent;
+        }
+
+        Transform shared = markerBranch.parent;
+        if (shared == null || pinRoot.IsChildOf(markerBranch))
+        {
+            return;
+        }
+
+        Transform pinBranch = pinRoot;
+        while (pinBranch.parent != shared)
+        {
+            pinBranch = pinBranch.parent;
+        }
+
+        if (markerBranch.GetSiblingIndex() < pinBranch.GetSiblingIndex())
+        {
+            markerBranch.SetSiblingIndex(pinBranch.GetSiblingIndex());
+        }
     }
 
     /// <summary>
