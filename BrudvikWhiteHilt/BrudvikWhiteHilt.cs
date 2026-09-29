@@ -10,6 +10,7 @@ using BrudvikWhiteHilt.Pieces;
 using BrudvikWhiteHilt.Pieces.EternalFire;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Progression;
+using BrudvikWhiteHilt.Ranching;
 using HarmonyLib;
 using Jotunn.Managers;
 using Jotunn.Utils;
@@ -54,6 +55,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Translations.LoadEmbedded();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
+        HusbandrySkill.Register();
+        FavoriteFoods.RegisterTranslations();
+        AnimalCare.RegisterTranslations();
         NearbyContainers.Initialize();
         EternalFireRules.Initialize();
         PortalSettings.Initialize();
@@ -74,6 +78,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         // Pickables must exist before the first ZNetScene and ZoneSystem, or their vegetation is missing in that session.
         PrefabManager.OnVanillaPrefabsAvailable += AddForageables;
         PrefabManager.OnPrefabsRegistered += AddForageableCreatureDrops;
+        PrefabManager.OnPrefabsRegistered += FavoriteFoods.AddToDiets;
 
         // Apply Harmony patches using the plugin's GUID
         var harmony = new Harmony(PluginGUID);
@@ -136,6 +141,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             customItems.ForEach(customItem => customItem.Add());
             customPieces.ForEach(customPiece => customPiece.Add());
             ExplorationSkill.SetIconFromMapTable();
+            HusbandrySkill.SetIconFromBoarTrophy();
 
             Jotunn.Logger.LogInfo("All custom items have been added!");
         }

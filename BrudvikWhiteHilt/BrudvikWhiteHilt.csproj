@@ -251,6 +251,9 @@
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
+    <Compile Include="Patches\Ranching\AnimalCarePatches.cs" />
+    <Compile Include="Patches\Ranching\FeedingTroughPatch.cs" />
+    <Compile Include="Patches\Ranching\TamingPatches.cs" />
     <Compile Include="Patches\Ships\TailwindPatch.cs" />
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
@@ -268,7 +271,15 @@
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
     <Compile Include="Navigation\RavenSightEffect.cs" />
+    <Compile Include="Ranching\AnimalCare.cs" />
+    <Compile Include="Ranching\FavoriteFoods.cs" />
+    <Compile Include="Ranching\HusbandrySkill.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
+    <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTrough.cs" />
+    <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTroughComponent.cs" />
+    <Compile Include="Pieces\Ranching\TetherPost\TetherPost.cs" />
+    <Compile Include="Pieces\Ranching\TetherPost\TetherPostComponent.cs" />
+    <Compile Include="Items\Ranching\GroomingComb.cs" />
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
