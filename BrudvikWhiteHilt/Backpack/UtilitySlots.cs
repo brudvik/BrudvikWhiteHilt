@@ -5,8 +5,8 @@ namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
 /// Five accessory slots for belts, Wisplight, Wishbone and the like. The first is the game's own utility slot; the other
-/// four give their item's effects, stats and weight as if it were worn, without showing it on the character.
-/// Each kind of accessory can be worn once.
+/// four give their item's effects, stats and weight as if it were worn, without showing it on the character, and also
+/// take the White Hilt items registered with <see cref="AllowInExtraSlots"/>. Each kind of accessory can be worn once.
 /// </summary>
 public static class UtilitySlots
 {
@@ -15,6 +15,7 @@ public static class UtilitySlots
 
     private const float CheckSeconds = 1f;
 
+    private static readonly HashSet<string> extraItems = new();
     private static readonly List<ItemDrop.ItemData> worn = new();
     private static readonly HashSet<StatusEffect> applied = new();
     private static Player wornBy;
@@ -26,6 +27,39 @@ public static class UtilitySlots
 
     /// <summary>Weight of the extra accessories, counted as worn equipment.</summary>
     public static float Weight { get; private set; }
+
+    /// <summary>
+    /// Lets an item that is not a vanilla accessory lie in the extra slots, e.g. the Home Stone.
+    /// </summary>
+    /// <param name="sharedName">The item's name token, e.g. <c>$item_whitehilthomestone</c>.</param>
+    public static void AllowInExtraSlots(string sharedName)
+    {
+        extraItems.Add(sharedName);
+    }
+
+    /// <summary>
+    /// Whether an item fits an accessory slot: the game's own slot takes only vanilla accessories, the extra slots also
+    /// the registered White Hilt items.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <param name="pos">The accessory slot.</param>
+    /// <returns>True if it fits.</returns>
+    public static bool Fits(ItemDrop.ItemData item, Vector2i pos)
+    {
+        return item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility
+            || (pos.x > 0 && extraItems.Contains(item.m_shared.m_name));
+    }
+
+    /// <summary>
+    /// True if the player wears an item with this name in one of the extra slots.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="sharedName">The item's name token.</param>
+    /// <returns>True when worn there.</returns>
+    public static bool IsWornExtra(Player player, string sharedName)
+    {
+        return player == wornBy && worn.Exists(item => item != null && item.m_shared.m_name == sharedName);
+    }
 
     /// <summary>
     /// True for one of the four accessory slots added by the mod.

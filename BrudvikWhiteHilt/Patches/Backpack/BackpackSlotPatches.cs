@@ -159,8 +159,8 @@ public static class BackpackSlotPatches
             return true;
         }
 
-        if (toPlayer && item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility
-            && BackpackLayout.KindAt(pos, BackpackLayout.VisibleRows(player)) == SlotKind.Utility)
+        if (toPlayer && BackpackLayout.KindAt(pos, BackpackLayout.VisibleRows(player)) == SlotKind.Utility
+            && UtilitySlots.Fits(item, pos))
         {
             player.Message(MessageHud.MessageType.Center, "$whitehilt_backpack_duplicate");
         }

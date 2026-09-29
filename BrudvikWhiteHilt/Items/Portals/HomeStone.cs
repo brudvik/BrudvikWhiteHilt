@@ -63,6 +63,7 @@ public class HomeStone : IWhiteHiltCustomItem
         Translations.AddEnglish($"{EffectKey}_tooltip", "The Home Stone can take you home again when this ends.");
         Translations.AddEnglish("msg_whitehilt_homestone_nohome", "Set a home at a White Hilt portal first");
         Translations.AddEnglish("msg_whitehilt_homestone_resting", "The Home Stone is still resting");
+        Backpack.UtilitySlots.AllowInExtraSlots(Translations.Token(Translations.ItemKey(PrefabName)));
     }
 
     /// <summary>

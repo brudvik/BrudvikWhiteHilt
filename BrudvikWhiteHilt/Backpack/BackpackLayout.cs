@@ -198,8 +198,7 @@ public static class BackpackLayout
             SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
                 TryGetGearSlot(item, out Vector2i slot) && slot == pos,
             SlotKind.Food => FoodSlots.IsFood(item),
-            SlotKind.Utility => item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility
-                && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
+            SlotKind.Utility => UtilitySlots.Fits(item, pos) && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
             _ => false
         };
     }

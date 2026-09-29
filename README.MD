@@ -304,7 +304,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 - **Travel bar and build bar**: two hotbars for keys 1–8. The one not in use lies under the inventory grid, where you fill it like any row. **9** switches between them. Taking out a hammer, hoe or cultivator switches to the build bar, and putting it away switches back to the travel bar (`AutoSwitchHotbar`). Next to the hotbar a label shows which bar is active (`ShowHotbarLabel`); the key is `Backpack.Keys` → `SwitchHotbar`.
 - **Equipment slots**: a panel to the right of the inventory has slots for helmet, chest, legs, cape and trinket. What lies in a slot is worn: drag an item into its slot, or right-click it in the inventory, and it moves there and is put on. Right-click it in the slot or drag it out to take it off. Your armor no longer takes room in the grid. The panel's place can be moved with `PanelOffsetX` and `PanelOffsetY`.
 - **Food slots**: three slots for food under the equipment. **Left Alt + 1**, **2** and **3** eat from them without opening the inventory (the hotbar is not used while Alt is held). The keys are `EatFood1`–`EatFood3` in `Backpack.Keys`, and are shown on the slots.
-- **Accessory slots**: five slots for belts, Wisplight, Wishbone and the like, all worn at once. The first is the game's own slot and shows on your character; the other four give their effects, stats and weight without showing. Each kind can be worn only once, so two Megingjords do not stack. Right-clicking an accessory in the inventory puts it in the first free slot.
+- **Accessory slots**: five slots for belts, Wisplight, Wishbone and the like, all worn at once. The first is the game's own slot and shows on your character; the other four give their effects, stats and weight without showing. Each kind can be worn only once, so two Megingjords do not stack. Right-clicking an accessory in the inventory puts it in the first free slot. The four extra slots also hold the **Home Stone** (right-click it there to go home) and the **Pathfinder's Amulet**, which then widens the uncovered map as when worn as trinket; its adrenaline and Raven Sight need the trinket slot.
 
 The stored bar and the slots below lie in hidden rows of the inventory, so they are saved with your character. "Place stacks" only takes from the grid. If the mod is removed, the game drops what lies in them at your feet the next time you log in.
 
@@ -505,7 +505,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Travel bar and build bar: two hotbars, switched with 9 or automatically when a build tool is taken out and put away
 - Equipment slots for helmet, chest, legs, cape and trinket in a panel next to the inventory; worn items no longer take room in the grid
 - Three food slots, eaten from with Left Alt + 1, 2 and 3
-- Five accessory slots: belts, Wisplight, Wishbone and the like are worn at once, each kind once
+- Five accessory slots: belts, Wisplight, Wishbone and the like are worn at once, each kind once; the extra slots also hold the Home Stone and the Pathfinder's Amulet
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
 - Belt Pouch: used once, it gives the character one more inventory row for good
 

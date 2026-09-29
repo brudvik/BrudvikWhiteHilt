@@ -225,6 +225,8 @@ public static class BackpackGui
 
         string key = Building.BuildToolSettings.KeyName(FoodSlots.Key(element.Position.x - FoodSlots.FirstColumn));
         binding.enabled = key.Length > 0;
+        binding.textWrappingMode = TextWrappingModes.NoWrap;
+        binding.overflowMode = TextOverflowModes.Overflow;
         if (binding.text != key)
         {
             binding.text = key;

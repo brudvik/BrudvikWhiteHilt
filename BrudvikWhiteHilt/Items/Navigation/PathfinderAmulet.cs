@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.Defenses;
@@ -72,14 +73,25 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
         Translations.AddEnglish(EffectKey, "Pathfinder");
         Translations.AddEnglish($"{EffectKey}_tooltip", "The map uncovers further around you. New land fills your adrenaline.");
         RavenSightEffect.RegisterEnglish();
+        UtilitySlots.AllowInExtraSlots(Translations.Token(Translations.ItemKey(PrefabName)));
     }
 
     /// <summary>
-    /// Returns true if the player wears the amulet.
+    /// Returns true if the player wears the amulet, as trinket or in an extra accessory slot.
     /// </summary>
     /// <param name="player">The player.</param>
     /// <returns>True while it is worn.</returns>
     public static bool IsWorn(Player player)
+    {
+        return IsWornAsTrinket(player) || UtilitySlots.IsWornExtra(player, Translations.Token(Translations.ItemKey(PrefabName)));
+    }
+
+    /// <summary>
+    /// Returns true if the player wears the amulet as trinket; only then does it fill the adrenaline.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>True while it is the worn trinket.</returns>
+    public static bool IsWornAsTrinket(Player player)
     {
         return player != null && player.m_trinketItem != null && player.m_trinketItem.m_shared.m_name == Translations.Token(Translations.ItemKey(PrefabName));
     }
@@ -91,7 +103,7 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
     /// <param name="squareMetres">Area of the newly uncovered map.</param>
     public static void OnExplored(Player player, float squareMetres)
     {
-        if (IsWorn(player))
+        if (IsWornAsTrinket(player))
         {
             player.AddAdrenaline(squareMetres * AdrenalinePerSquareMetre);
         }
