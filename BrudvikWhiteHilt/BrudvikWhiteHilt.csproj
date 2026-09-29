@@ -189,6 +189,10 @@
     <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
+    <Compile Include="Patches\Crafting\NearbyContainerPatches.cs" />
+    <Compile Include="Patches\Crafting\NearbyContainerStationPatches.cs" />
+    <Compile Include="Crafting\ContainerPulse.cs" />
+    <Compile Include="Crafting\NearbyContainers.cs" />
     <Compile Include="Helpers\FireEffects.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />

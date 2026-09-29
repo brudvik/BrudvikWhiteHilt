@@ -1,4 +1,5 @@
 using BepInEx;
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items;
 using BrudvikWhiteHilt.Items.Food;
@@ -50,6 +51,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Translations.LoadEmbedded();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
+        NearbyContainers.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
