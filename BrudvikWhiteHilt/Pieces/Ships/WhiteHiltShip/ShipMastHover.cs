@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 
 /// <summary>
-/// Makes the mast of the White Hilt Ship the place where upgrades are used and taken off.
+/// Makes the mast of the White Hilt Ship the place where upgrades are used and taken off, and where the anchor is lowered.
 /// </summary>
 public class ShipMastHover : MonoBehaviour, Hoverable, Interactable
 {
@@ -31,7 +31,12 @@ public class ShipMastHover : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public bool Interact(Humanoid user, bool hold, bool alt)
     {
-        return !hold && upgrades != null && upgrades.TakeLast(user);
+        if (hold || upgrades == null)
+        {
+            return false;
+        }
+
+        return alt ? upgrades.ToggleAnchor(user) : upgrades.TakeLast(user);
     }
 
     /// <inheritdoc/>

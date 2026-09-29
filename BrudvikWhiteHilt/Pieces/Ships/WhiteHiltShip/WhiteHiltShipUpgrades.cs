@@ -7,7 +7,8 @@ namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 
 /// <summary>
 /// Holds the upgrades used on a White Hilt Ship and switches the matching parts on: a lantern that lights at night,
-/// barrels with a bigger cargo hold, a tent that gives shelter and a mast wisp that clears the mist.
+/// barrels with a bigger cargo hold, a tent that gives shelter, a mast wisp that clears the mist, a fishing net that
+/// fills the hold while sailing and an anchor that holds the ship still.
 /// The upgrades are a bit mask in the ship's ZDO, so every player sees the same ship.
 /// </summary>
 public class WhiteHiltShipUpgrades : MonoBehaviour
@@ -16,6 +17,11 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     /// Name of the mast wisp object added to the ship prefab.
     /// </summary>
     public const string MastWispName = "WhiteHiltMastWisp";
+
+    /// <summary>
+    /// Name of the anchor object added to the ship prefab.
+    /// </summary>
+    public const string AnchorName = "WhiteHiltShipAnchor";
 
     /// <summary>
     /// Cargo hold size without barrels (vanilla longship).
@@ -40,8 +46,31 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private const string ZdoKey = "whitehilt_ship_upgrades";
     private const string AddRpc = "WhiteHiltShipAddUpgrade";
     private const string TakeRpc = "WhiteHiltShipTakeUpgrade";
+    private const string AnchorZdoKey = "whitehilt_ship_anchored";
+    private const string AnchorRpc = "WhiteHiltShipToggleAnchor";
+    private const float CatchIntervalSeconds = 120f;
+    private const float MinFishingSpeed = 2f;
+    private const float AnchorDrop = 2f;
+
+    private const RigidbodyConstraints AnchoredConstraints =
+        RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY;
 
     private static readonly List<WhiteHiltShipUpgrades> instances = new();
+
+    // Fish1 perch, Fish2 pike, Fish3 tuna, Fish5 trollfish, Fish6 giant herring, Fish7 grouper, Fish8 coral cod,
+    // Fish9 anglerfish, Fish10 northern salmon, Fish11 magmafish, Fish12 pufferfish.
+    private static readonly Dictionary<Heightmap.Biome, (string Prefab, float Weight)[]> fishByBiome = new()
+    {
+        [Heightmap.Biome.Meadows] = new[] { ("Fish1", 0.7f), ("Fish2", 0.3f) },
+        [Heightmap.Biome.BlackForest] = new[] { ("Fish2", 0.6f), ("Fish1", 0.25f), ("Fish5", 0.15f) },
+        [Heightmap.Biome.Swamp] = new[] { ("Fish6", 0.7f), ("Fish1", 0.3f) },
+        [Heightmap.Biome.Mountain] = new[] { ("Fish1", 1f) },
+        [Heightmap.Biome.Plains] = new[] { ("Fish7", 0.7f), ("Fish1", 0.3f) },
+        [Heightmap.Biome.Ocean] = new[] { ("Fish3", 0.5f), ("Fish8", 0.35f), ("Fish12", 0.15f) },
+        [Heightmap.Biome.Mistlands] = new[] { ("Fish9", 0.6f), ("Fish12", 0.4f) },
+        [Heightmap.Biome.DeepNorth] = new[] { ("Fish10", 1f) },
+        [Heightmap.Biome.AshLands] = new[] { ("Fish11", 1f) }
+    };
 
     private ZNetView nview;
     private Container container;
@@ -50,13 +79,25 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject[] barrels = new GameObject[0];
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
+    private Ship ship;
+    private Rigidbody body;
+    private RigidbodyConstraints freeConstraints;
+    private Transform anchor;
+    private Vector3 anchorRaised;
     private int shownMask = -1;
+    private bool? shownAnchored;
     private float holdCheckTimer;
+    private float netTimer;
 
     /// <summary>
     /// Bit mask of the upgrades on the ship.
     /// </summary>
     public int Mask => nview != null && nview.IsValid() ? nview.GetZDO().GetInt(ZdoKey) : 0;
+
+    /// <summary>
+    /// True while the ship has the anchor upgrade and the anchor is lowered.
+    /// </summary>
+    public bool IsAnchored => Has(ShipDriftAnchor.Bit) && nview.GetZDO().GetBool(AnchorZdoKey);
 
     /// <summary>
     /// Returns the upgraded ship with a tent over the given point, if any.
@@ -107,7 +148,17 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         text += "[<color=yellow><b>1-8</b></color>] $whitehilt_ship_add\n";
+        if (Has(ShipDriftAnchor.Bit))
+        {
+            text += $"[<color=yellow><b>$KEY_AltPlace + $KEY_Use</b></color>] {(IsAnchored ? "$whitehilt_ship_anchor_raise" : "$whitehilt_ship_anchor_lower")}\n";
+        }
+
         text += mask == 0 ? "$whitehilt_ship_none" : $"$whitehilt_ship_upgrades: {UpgradeNames(mask)}";
+        if (IsAnchored)
+        {
+            text += "\n$whitehilt_ship_anchored";
+        }
+
         return Localization.instance.Localize(text);
     }
 
@@ -161,10 +212,32 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Lowers or raises the anchor.
+    /// </summary>
+    /// <param name="user">The player.</param>
+    /// <returns>True if the ship has an anchor.</returns>
+    public bool ToggleAnchor(Humanoid user)
+    {
+        if (!Has(ShipDriftAnchor.Bit))
+        {
+            return false;
+        }
+
+        user.Message(MessageHud.MessageType.Center, IsAnchored ? "$msg_whitehilt_ship_anchor_raised" : "$msg_whitehilt_ship_anchor_lowered");
+        nview.InvokeRPC(AnchorRpc);
+        return true;
+    }
+
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
         container = GetComponentInChildren<Container>(true);
+        ship = GetComponent<Ship>();
+        body = GetComponent<Rigidbody>();
+        freeConstraints = body != null ? body.constraints : RigidbodyConstraints.None;
+        anchor = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == AnchorName);
+        anchorRaised = anchor != null ? anchor.localPosition : Vector3.zero;
 
         Transform customize = transform.Find("ship/visual/Customize");
         Transform storage = customize?.Find("storage");
@@ -181,6 +254,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
         nview.Register<int>(AddRpc, RPC_Add);
         nview.Register<int>(TakeRpc, RPC_Take);
+        nview.Register(AnchorRpc, RPC_ToggleAnchor);
         WearNTear wearNTear = GetComponent<WearNTear>();
         if (wearNTear != null)
         {
@@ -218,8 +292,12 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             }
 
             SetActive(mastWisp, Has(ShipMastWisp.Bit));
+            SetActive(anchor?.gameObject, Has(ShipDriftAnchor.Bit));
             holdCheckTimer = 0f;
         }
+
+        UpdateAnchor();
+        UpdateFishingNet(Time.deltaTime);
 
         // The hold and the lantern are checked once a second; the hold only after the container has loaded its cargo.
         holdCheckTimer -= Time.deltaTime;
@@ -288,7 +366,102 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         nview.GetZDO().Set(ZdoKey, Mask & ~(1 << bit));
+        if (bit == ShipDriftAnchor.Bit)
+        {
+            nview.GetZDO().Set(AnchorZdoKey, false);
+        }
+
         Drop(bit);
+    }
+
+    private void RPC_ToggleAnchor(long sender)
+    {
+        if (!nview.IsOwner() || !Has(ShipDriftAnchor.Bit))
+        {
+            return;
+        }
+
+        bool anchored = !nview.GetZDO().GetBool(AnchorZdoKey);
+        nview.GetZDO().Set(AnchorZdoKey, anchored);
+        if (anchored && ship != null)
+        {
+            ship.m_speed = Ship.Speed.Stop;
+        }
+    }
+
+    // Freezing the drift and the turn, but not the bobbing, keeps the ship on the waves where it lies.
+    private void UpdateAnchor()
+    {
+        bool anchored = IsAnchored;
+        if (anchored == shownAnchored)
+        {
+            return;
+        }
+
+        shownAnchored = anchored;
+        if (body != null)
+        {
+            body.constraints = anchored ? freeConstraints | AnchoredConstraints : freeConstraints;
+        }
+
+        if (anchor != null)
+        {
+            anchor.localPosition = anchored ? anchorRaised + Vector3.down * AnchorDrop : anchorRaised;
+        }
+    }
+
+    private void UpdateFishingNet(float deltaTime)
+    {
+        if (!nview.IsOwner() || ship == null || !Has(ShipFishingNet.Bit) || IsAnchored || Mathf.Abs(ship.GetSpeed()) < MinFishingSpeed)
+        {
+            return;
+        }
+
+        netTimer += deltaTime;
+        if (netTimer < CatchIntervalSeconds)
+        {
+            return;
+        }
+
+        netTimer = 0f;
+        CatchFish();
+    }
+
+    private void CatchFish()
+    {
+        Inventory inventory = container?.GetInventory();
+        GameObject fish = ZNetScene.instance.GetPrefab(PickFish(WorldGenerator.instance.GetBiome(transform.position)));
+        if (inventory == null || fish == null || !inventory.CanAddItem(fish, 1))
+        {
+            return;
+        }
+
+        inventory.AddItem(fish, 1);
+        if (Player.m_localPlayer != null && ship.IsPlayerInBoat(Player.m_localPlayer))
+        {
+            string fishName = fish.GetComponent<ItemDrop>().m_itemData.m_shared.m_name;
+            Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize($"$msg_whitehilt_ship_net_catch: {fishName}"));
+        }
+    }
+
+    private static string PickFish(Heightmap.Biome biome)
+    {
+        if (!fishByBiome.TryGetValue(biome, out (string Prefab, float Weight)[] fish))
+        {
+            fish = fishByBiome[Heightmap.Biome.Ocean];
+        }
+
+        float roll = Random.value * fish.Sum(entry => entry.Weight);
+        foreach ((string prefab, float weight) in fish)
+        {
+            roll -= weight;
+            if (roll <= 0f)
+            {
+                return prefab;
+            }
+        }
+
+        return fish[fish.Length - 1].Prefab;
     }
 
     private void DropAll()
@@ -303,6 +476,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         nview.GetZDO().Set(ZdoKey, 0);
+        nview.GetZDO().Set(AnchorZdoKey, false);
     }
 
     private void Drop(int bit)

@@ -173,3 +173,88 @@ public class ShipMastWisp : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     public override bool Enabled => true;
 }
+
+/// <summary>
+/// Trails a net behind the White Hilt Ship that catches fish for the cargo hold while the ship sails.
+/// </summary>
+public class ShipFishingNet : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the fishing net in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 4;
+
+    /// <summary>
+    /// Constructor for the ShipFishingNet class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipFishingNet(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltShipFishingNet";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Fishing Net";
+
+    /// <inheritdoc/>
+    protected override string Description => "A hide-strip net for the White Hilt Ship. Use it on the mast; while the ship sails, it catches the fish of the waters it sails through and puts them in the cargo hold.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "FishingRod";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "FineWood", Amount = 4, Recover = false },
+        new() { Item = "LeatherScraps", Amount = 10, Recover = false },
+        new() { Item = "DeerHide", Amount = 4, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}
+
+/// <summary>
+/// Hangs an anchor on the White Hilt Ship. Lowered, it holds the ship where it is.
+/// </summary>
+public class ShipDriftAnchor : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the anchor in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 5;
+
+    /// <summary>
+    /// Constructor for the ShipDriftAnchor class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipDriftAnchor(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltShipDriftAnchor";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Drift Anchor";
+
+    /// <inheritdoc/>
+    protected override string Description => "An iron anchor on a chain for the White Hilt Ship. Use it on the mast; lower it at the mast and the ship stays where it is, however the wind blows.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "Chain";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "Iron", Amount = 4, Recover = false },
+        new() { Item = "Chain", Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}

@@ -191,6 +191,7 @@
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
+    <Compile Include="Patches\Ships\ShipAnchorPatch.cs" />
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />

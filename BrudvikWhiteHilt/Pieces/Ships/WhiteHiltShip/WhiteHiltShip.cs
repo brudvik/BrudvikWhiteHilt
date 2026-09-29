@@ -24,6 +24,13 @@ public class WhiteHiltShip : WhiteHiltShipBase
         Translations.AddEnglish("msg_whitehilt_ship_added", "Upgrade added");
         Translations.AddEnglish("msg_whitehilt_ship_already", "The ship already has that upgrade");
         Translations.AddEnglish("msg_whitehilt_ship_barrels_full", "Empty the extra cargo slots before taking the barrels off");
+        Translations.AddEnglish("whitehilt_ship_anchor_lower", "Lower the anchor");
+        Translations.AddEnglish("whitehilt_ship_anchor_raise", "Raise the anchor");
+        Translations.AddEnglish("whitehilt_ship_anchored", "At anchor");
+        Translations.AddEnglish("msg_whitehilt_ship_anchor_lowered", "The anchor is lowered");
+        Translations.AddEnglish("msg_whitehilt_ship_anchor_raised", "The anchor is raised");
+        Translations.AddEnglish("msg_whitehilt_ship_anchor_down", "Raise the anchor at the mast before you sail");
+        Translations.AddEnglish("msg_whitehilt_ship_net_catch", "The net caught");
     }
 
     /// <summary>

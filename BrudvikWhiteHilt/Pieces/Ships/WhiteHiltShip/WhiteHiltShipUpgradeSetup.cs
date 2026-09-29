@@ -14,6 +14,12 @@ public static class WhiteHiltShipUpgradeSetup
     // Players stand on the deck below the tent cloth, so the sheltered area reaches this far below it.
     private const float TentHeadroom = 2.5f;
     private const float WispAboveMast = 0.15f;
+    private const float AnchorHeight = 1.4f;
+
+    // Where the anchor hangs over the starboard rail, as fractions of the float collider: towards the bow, just above it.
+    private const float AnchorTowardsBow = 0.55f;
+    private const float AnchorOutside = 0.1f;
+    private const float AnchorAbove = 0.3f;
 
     private static readonly string[] wispParts = { "demister_ball (2)", "effects", "Particle System Force Field" };
 
@@ -47,6 +53,15 @@ public static class WhiteHiltShipUpgradeSetup
             catch (Exception ex)
             {
                 Jotunn.Logger.LogWarning($"White Hilt Ship: the mast wisp has no look: {ex.Message}");
+            }
+
+            try
+            {
+                AddAnchor(ship.transform);
+            }
+            catch (Exception ex)
+            {
+                Jotunn.Logger.LogWarning($"White Hilt Ship: the drift anchor has no look: {ex.Message}");
             }
         }
     }
@@ -118,5 +133,43 @@ public static class WhiteHiltShipUpgradeSetup
         }
 
         wisp.SetActive(false);
+    }
+
+    // The Harbour Anchor model, hung over the starboard rail near the bow. The ship root's +z is the bow.
+    private static void AddAnchor(Transform root)
+    {
+        BoxCollider hull = root.GetComponent<Ship>()?.m_floatCollider ?? throw new InvalidOperationException("the ship has no float collider");
+        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
+            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        Mesh mesh = ForagingAssets.LoadMesh("shipanchor");
+
+        Bounds bounds = default;
+        for (int corner = 0; corner < 8; corner++)
+        {
+            Vector3 local = hull.center + Vector3.Scale(hull.size / 2f, new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1));
+            Vector3 point = root.InverseTransformPoint(hull.transform.TransformPoint(local));
+            if (corner == 0)
+            {
+                bounds = new Bounds(point, Vector3.zero);
+            }
+            else
+            {
+                bounds.Encapsulate(point);
+            }
+        }
+
+        GameObject anchor = new(WhiteHiltShipUpgrades.AnchorName);
+        anchor.transform.SetParent(root, false);
+        anchor.transform.localPosition = new Vector3(
+            bounds.max.x + AnchorOutside,
+            bounds.max.y + AnchorAbove,
+            bounds.center.z + bounds.extents.z * AnchorTowardsBow);
+
+        // The anchor is flat along z; turned a quarter, its broad side faces out from the hull.
+        Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
+        float scale = AnchorHeight / mesh.bounds.size.y;
+        Vector3 pivot = -(rotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale));
+        VisualHelper.CreateModel(anchor.transform, mesh, ForagingAssets.LoadTexture("shipanchor_albedo"), template, pivot, rotation, scale);
+        anchor.SetActive(false);
     }
 }
