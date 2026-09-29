@@ -200,7 +200,7 @@ A new skill, **Exploration**, rises with every patch of map you uncover for the 
 |------|-------------|------------------|--------------|
 | **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), within 5 m of a map table | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
 | **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m) | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
-| **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Amber ×2, Ruby ×1 |
+| **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Silver Necklace ×1, Ruby ×1 |
 
 The table and the amulet do not add up; the wider one counts.
 
@@ -509,6 +509,9 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
 - Home Stone return trip: used again within 2 minutes of going home, it takes you back to where you were
 - Belt Pouch: used once, it gives the character one more inventory row for good
+
+#### Changed
+- The Pathfinder's Amulet costs a Silver Necklace instead of two Amber
 
 ### v0.7.0 - 2026-09-28
 

@@ -124,7 +124,7 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
                 Requirements = new RequirementConfig[]
                 {
                     new() { Item = "Bronze", Amount = 3 },
-                    new() { Item = "Amber", Amount = 2 },
+                    new() { Item = "SilverNecklace", Amount = 1 },
                     new() { Item = "Ruby", Amount = 1 }
                 }
             });
