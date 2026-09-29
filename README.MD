@@ -161,7 +161,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Mast Wisp** | A wisp at the top of the mast that clears the Mistlands mist around the ship and thins ordinary fog for those within 15 m (`Ships` → `MastWispFogLeft`, 0.25 of the fog is left) | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
 | **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes (`Ships` → `FishingNetMinutes`) and puts it in the cargo hold. The Fishing skill of the sailor makes it catch up to twice as often and often two at a time, and raises the skill. Now and then it brings up seaweed, and on the ocean an amber pearl (`FishingNetBycatch`). The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
 | **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
-| **Deck Brazier** | An iron brazier on the foredeck that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
+| **Deck Brazier** | An iron brazier on the starboard deck under the tent that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
 | **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Iron ×2 |
 | **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×10, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
 
@@ -553,7 +553,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
 - Home Stone return trip: used again within 2 minutes of going home, it takes you back to where you were
 - Belt Pouch: used once, it gives the character one more inventory row for good
-- Deck Brazier ship upgrade: a fire on the foredeck that burns without fuel, warms the crew and counts for resting
+- Deck Brazier ship upgrade: a fire under the tent that burns without fuel, warms the crew and counts for resting
 - Sea Chest ship upgrade: a 4 × 2 chest by the helm besides the cargo hold
 - Ship Portal ship upgrade: a rune circle on deck that makes the ship a White Hilt portal destination, following it wherever it sails
 - Clock: the time of day in 24 hours at the top of the screen, with day number, a weather icon and a warning before night falls

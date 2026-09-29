@@ -25,8 +25,8 @@ public static class WhiteHiltShipUpgradeSetup
     private const float AnchorRingBelowRail = 0.15f;
     private const float RailBand = 0.4f;
 
-    // On the foredeck planks, in front of the tent (which ends about 2.7 m before the mast). Measured on the longship.
-    private static readonly Vector3 BrazierPosition = new(0f, 0.73f, 4.2f);
+    // On the starboard deck under the front of the tent, off the walkway and clear of the cargo hatch on the foredeck.
+    private static readonly Vector3 BrazierPosition = new(1.1f, 0.64f, 2.0f);
 
     // On the starboard deck just forward of the helm; the cargo crates stand to port.
     private static readonly Vector3 ChestPosition = new(0.9f, 0.64f, -4.6f);
@@ -104,11 +104,10 @@ public static class WhiteHiltShipUpgradeSetup
         }
     }
 
-    // Surt's Brazier model on the foredeck, in front of the tent, with the campfire's flames and warmth.
+    // Surt's Brazier model on the deck under the tent, with the campfire's flames and warmth.
     private static void AddBrazier(Transform root)
     {
-        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
-            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        Renderer template = HullTemplate(root);
         Mesh mesh = ForagingAssets.LoadMesh("eternalfire");
 
         GameObject brazier = new(WhiteHiltShipUpgrades.BrazierName);
@@ -150,8 +149,7 @@ public static class WhiteHiltShipUpgradeSetup
     // The rune circle of the ground portal, small enough for the deck.
     private static void AddPortalLook(Transform root, Transform portal)
     {
-        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
-            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        Renderer template = HullTemplate(root);
         GameObject visual = new("visual");
         visual.transform.SetParent(portal, false);
         WhiteHiltGroundPortal.AddRuneCircle(visual.transform, template, ShipPortal.Diameter, PortalLift);
@@ -252,6 +250,21 @@ public static class WhiteHiltShipUpgradeSetup
         }
     }
 
+    // The hull's renderer, whose material and shadow mode the added models copy. The first renderer under ship/visual
+    // is the mast's inactive cloth-collider helper, not a visible part of the ship.
+    private static Renderer HullTemplate(Transform root)
+    {
+        Renderer hull = root.Find("ship/visual/hull_new/hull")?.GetComponent<MeshRenderer>();
+        if (hull != null && hull.sharedMaterial != null)
+        {
+            return hull;
+        }
+
+        return root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>()
+            .FirstOrDefault(renderer => renderer.sharedMaterial != null && renderer.sharedMaterial.mainTexture != null)
+            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+    }
+
     // Deck parts block players like the longship's own crates do.
     private static int CrateLayer(Transform root)
     {
@@ -292,8 +305,7 @@ public static class WhiteHiltShipUpgradeSetup
     // The Harbour Anchor model, hung on the outside of the starboard rail near the bow. The ship root's +z is the bow.
     private static void AddAnchor(Transform root)
     {
-        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
-            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        Renderer template = HullTemplate(root);
         Mesh mesh = ForagingAssets.LoadMesh("shipanchor");
         Vector3 ring = FindStarboardRail(root);
 
