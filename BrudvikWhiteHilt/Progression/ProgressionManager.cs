@@ -10,6 +10,9 @@ namespace BrudvikWhiteHilt.Progression;
 /// </summary>
 public static class ProgressionManager
 {
+    // Hud.m_requirementItems in the game's build HUD; Hud.SetupPieceInfo throws on a piece that needs more.
+    private const int HudRequirementSlots = 6;
+
     private static readonly (ProgressionTier Tier, string Material, int Amount)[] tierMaterials =
     {
         (ProgressionTier.BlackForest, "Bronze", 5),
@@ -99,7 +102,7 @@ public static class ProgressionManager
 
             ProgressionTier? tier = ResolveTier(entry, linear);
             recipe.m_enabled = tier.HasValue && tier.Value <= unlockedTier;
-            recipe.m_resources = GetRequirements(entry.GatedPrefabName, recipe.m_resources, linear ? tier : null);
+            recipe.m_resources = GetRequirements(entry.GatedPrefabName, recipe.m_resources, linear ? tier : null, int.MaxValue);
         }
 
         bool piecesChanged = false;
@@ -115,7 +118,9 @@ public static class ProgressionManager
             bool enabled = tier.HasValue && tier.Value <= unlockedTier;
             piecesChanged |= piece.m_enabled != enabled;
             piece.m_enabled = enabled;
-            piece.m_resources = GetRequirements(pair.Key, piece.m_resources, linear ? tier : null);
+            // The build HUD shows 6 slots, and the crafting station takes one of them.
+            int room = HudRequirementSlots - (piece.m_craftingStation != null ? 1 : 0);
+            piece.m_resources = GetRequirements(pair.Key, piece.m_resources, linear ? tier : null, room);
         }
 
         return piecesChanged;
@@ -162,7 +167,7 @@ public static class ProgressionManager
         return ProgressionTier.Start;
     }
 
-    private static Piece.Requirement[] GetRequirements(string prefabName, Piece.Requirement[] current, ProgressionTier? linearTier)
+    private static Piece.Requirement[] GetRequirements(string prefabName, Piece.Requirement[] current, ProgressionTier? linearTier, int maxRequirements)
     {
         if (!originalRequirements.TryGetValue(prefabName, out var original))
         {
@@ -190,7 +195,11 @@ public static class ProgressionManager
 
             ItemDrop material = GetItemDrop(tierMaterial.Material);
             bool alreadyRequired = original.Any(requirement => requirement.m_resItem != null && requirement.m_resItem.name == tierMaterial.Material);
-            if (material != null && !alreadyRequired)
+            if (material != null && !alreadyRequired && original.Length >= maxRequirements)
+            {
+                Jotunn.Logger.LogWarning($"{prefabName}: no room for the tier cost {tierMaterial.Material}, the build menu shows at most {maxRequirements} requirements");
+            }
+            else if (material != null && !alreadyRequired)
             {
                 requirements = original
                     .Append(new Piece.Requirement { m_resItem = material, m_amount = tierMaterial.Amount, m_recover = false })
