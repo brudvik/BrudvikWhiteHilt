@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Defenses;
 
@@ -35,7 +34,14 @@ public class DefenseLayout
         using Stream stream = typeof(DefenseLayout).Assembly.GetManifestResourceStream(ResourceName)
             ?? throw new InvalidOperationException($"Embedded resource '{ResourceName}' not found.");
         using StreamReader reader = new(stream);
-        loaded = JsonUtility.FromJson<DefenseLayout>(reader.ReadToEnd());
+
+        // Unity's JsonUtility left every field empty for the mod's types in game; Jotunn's SimpleJson fills them by reflection.
+        loaded = SimpleJson.SimpleJson.DeserializeObject<DefenseLayout>(reader.ReadToEnd());
+        if (loaded?.pieces == null || loaded.pieces.Length == 0)
+        {
+            throw new InvalidOperationException($"Embedded resource '{ResourceName}' has no pieces.");
+        }
+
         return loaded;
     }
 
