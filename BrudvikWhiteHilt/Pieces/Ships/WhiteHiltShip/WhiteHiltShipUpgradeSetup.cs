@@ -14,12 +14,14 @@ public static class WhiteHiltShipUpgradeSetup
     // Players stand on the deck below the tent cloth, so the sheltered area reaches this far below it.
     private const float TentHeadroom = 2.5f;
     private const float WispAboveMast = 0.15f;
-    private const float AnchorHeight = 1.4f;
+    private const float AnchorHeight = 1.1f;
 
-    // Where the anchor hangs over the starboard rail, as fractions of the float collider: towards the bow, just above it.
+    // Where the anchor hangs on the starboard rail: towards the bow as a fraction of the hull's half length, just outside
+    // the planks, with its ring a little below the rail top.
     private const float AnchorTowardsBow = 0.55f;
-    private const float AnchorOutside = 0.1f;
-    private const float AnchorAbove = 0.3f;
+    private const float AnchorOutside = 0.12f;
+    private const float AnchorRingBelowRail = 0.15f;
+    private const float RailBand = 0.4f;
 
     private static readonly string[] wispParts = { "demister_ball (2)", "effects", "Particle System Force Field" };
 
@@ -135,35 +137,17 @@ public static class WhiteHiltShipUpgradeSetup
         wisp.SetActive(false);
     }
 
-    // The Harbour Anchor model, hung over the starboard rail near the bow. The ship root's +z is the bow.
+    // The Harbour Anchor model, hung on the outside of the starboard rail near the bow. The ship root's +z is the bow.
     private static void AddAnchor(Transform root)
     {
-        BoxCollider hull = root.GetComponent<Ship>()?.m_floatCollider ?? throw new InvalidOperationException("the ship has no float collider");
         Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
             ?? throw new InvalidOperationException("no hull renderer under ship/visual");
         Mesh mesh = ForagingAssets.LoadMesh("shipanchor");
-
-        Bounds bounds = default;
-        for (int corner = 0; corner < 8; corner++)
-        {
-            Vector3 local = hull.center + Vector3.Scale(hull.size / 2f, new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1));
-            Vector3 point = root.InverseTransformPoint(hull.transform.TransformPoint(local));
-            if (corner == 0)
-            {
-                bounds = new Bounds(point, Vector3.zero);
-            }
-            else
-            {
-                bounds.Encapsulate(point);
-            }
-        }
+        Vector3 ring = FindStarboardRail(root);
 
         GameObject anchor = new(WhiteHiltShipUpgrades.AnchorName);
         anchor.transform.SetParent(root, false);
-        anchor.transform.localPosition = new Vector3(
-            bounds.max.x + AnchorOutside,
-            bounds.max.y + AnchorAbove,
-            bounds.center.z + bounds.extents.z * AnchorTowardsBow);
+        anchor.transform.localPosition = new Vector3(ring.x + AnchorOutside, ring.y - AnchorRingBelowRail - AnchorHeight, ring.z);
 
         // The anchor is flat along z; turned a quarter, its broad side faces out from the hull.
         Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
@@ -171,5 +155,38 @@ public static class WhiteHiltShipUpgradeSetup
         Vector3 pivot = -(rotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale));
         VisualHelper.CreateModel(anchor.transform, mesh, ForagingAssets.LoadTexture("shipanchor_albedo"), template, pivot, rotation, scale);
         anchor.SetActive(false);
+    }
+
+    // The top of the starboard rail near the bow, in ship root space, read from the hull mesh: the widest vertex in a
+    // band across the hull, and the highest vertex along that side.
+    private static Vector3 FindStarboardRail(Transform root)
+    {
+        Transform visual = root.Find("ship/visual") ?? throw new InvalidOperationException("ship/visual not found");
+        Transform tent = visual.Find("Customize");
+        MeshFilter hull = visual.GetComponentsInChildren<MeshFilter>(true)
+            .Where(filter => filter.sharedMesh != null && filter.sharedMesh.isReadable && (tent == null || !filter.transform.IsChildOf(tent)))
+            .OrderByDescending(filter => Footprint(root, filter))
+            .FirstOrDefault()
+            ?? throw new InvalidOperationException("no readable hull mesh under ship/visual");
+
+        Vector3[] points = hull.sharedMesh.vertices.Select(vertex => root.InverseTransformPoint(hull.transform.TransformPoint(vertex))).ToArray();
+        float minZ = points.Min(point => point.z);
+        float maxZ = points.Max(point => point.z);
+        float z = (minZ + maxZ) / 2f + (maxZ - minZ) / 2f * AnchorTowardsBow;
+        Vector3[] band = points.Where(point => Mathf.Abs(point.z - z) < RailBand).ToArray();
+        if (band.Length == 0)
+        {
+            throw new InvalidOperationException("the hull mesh has no vertices near the anchor");
+        }
+
+        float x = band.Max(point => point.x);
+        float y = band.Where(point => point.x > x - RailBand).Max(point => point.y);
+        return new Vector3(x, y, z);
+    }
+
+    private static float Footprint(Transform root, MeshFilter filter)
+    {
+        Vector3 size = root.InverseTransformVector(filter.transform.TransformVector(filter.sharedMesh.bounds.size));
+        return Mathf.Abs(size.x * size.z);
     }
 }
