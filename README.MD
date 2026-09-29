@@ -327,6 +327,14 @@ The `Clock` section sets whether it shows (`Enabled`), the day number (`ShowDay`
 
 ---
 
+### 🔊 INDOOR SOUND
+
+Wind, rain, sea and thunder are quieter and muffled under a roof, as heard through walls, so a house is a quiet place to cook and craft in. How much follows how well you are covered: a little under an open roof, most in a closed house (the game's own shelter), and some under the tent of the White Hilt Ship. Only the weather's sound changes; fires, cooking, crafting and doors sound as before. Dungeons are left alone.
+
+The `Sound` section sets it: `IndoorSound` (on/off), `IndoorWindVolume` (0.25) and `IndoorRainVolume` (0.3) inside a closed house, `IndoorMuffle` with `MuffleCutoffHz` (1200, lower is more muffled), `FadeSeconds` (1.5) and `ShipTentCounts`.
+
+---
+
 ### 🏗️ BUILD CAMERA & TOOLBAR
 
 While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
@@ -531,6 +539,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Ship Portal ship upgrade: a rune circle on deck that makes the ship a White Hilt portal destination, following it wherever it sails
 - Clock: the time of day in 24 hours at the top of the screen, with day number, a weather icon and a warning before night falls
 - Shield and ammo slots under the accessories: the shield comes and goes with one-handed weapons, and the ammo there is used first
+- Indoor sound: wind, rain, sea and thunder are quieter and muffled under a roof, by how well you are covered
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E
