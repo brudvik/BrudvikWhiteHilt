@@ -60,6 +60,7 @@ public static class BuildTools
 
         GroupTools.Tick(player);
         ExitTerrainTools(player);
+        RepairTools.Tick(player);
         if (TerrainSettings.HoldingHoe(player))
         {
             HoeTools.Tick(player);
@@ -71,7 +72,7 @@ public static class BuildTools
         if (Pressed(MediaSettings.KeyPhoto)) WithCamera(player, () => MediaMode.TakePhoto(MediaPanel.Host));
         if (Pressed(MediaSettings.KeyPhotoView)) WithCamera(player, MediaMode.TogglePhotoView);
         if (Pressed(MediaSettings.KeyPanel)) WithCamera(player, MediaPanel.Toggle);
-        if (!MediaMode.PhotoView && !MediaPanel.IsOpen && !GroupTools.Active && !HoeTools.Active && !FarmTools.Active && !HoeTools.WheelSetsBrush(player))
+        if (!MediaMode.PhotoView && !MediaPanel.IsOpen && !GroupTools.Active && !HoeTools.Active && !FarmTools.Active && !HoeTools.WheelSetsBrush(player) && !RepairTools.WheelSetsRadius(player))
         {
             HandleWheel(player);
         }
@@ -95,6 +96,7 @@ public static class BuildTools
         if (Pressed(BuildToolSettings.KeyUndo)) Undo(player);
         if (Pressed(BuildToolSettings.KeyRedo)) Redo(player);
         if (Pressed(BuildToolSettings.KeyLight)) ToggleLight(player);
+        if (Pressed(BuildToolSettings.KeyRepair) && !TerrainSettings.HoldingHoe(player) && !TerrainSettings.HoldingCultivator(player)) ToggleRepair(player);
         if (GroupTools.Active || HoeTools.Active || FarmTools.Active)
         {
             return;
@@ -253,6 +255,13 @@ public static class BuildTools
     public static void ToggleLight(Player player)
     {
         player.Message(MessageHud.MessageType.TopLeft, BuildCamera.ToggleLight() ? "$msg_whitehilt_build_light_on" : "$msg_whitehilt_build_light_off");
+    }
+
+    /// <summary>Repair mode on or off.</summary>
+    /// <param name="player">The local player.</param>
+    public static void ToggleRepair(Player player)
+    {
+        RepairTools.ToggleMode(player);
     }
 
     /// <summary>

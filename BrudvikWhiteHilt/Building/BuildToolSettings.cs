@@ -36,6 +36,18 @@ public static class BuildToolSettings
     /// <summary>How long after placing a piece it may be undone with a full refund, in seconds.</summary>
     public static ConfigEntry<float> UndoSeconds { get; private set; }
 
+    /// <summary>Whether the hammer's repair may cover every piece within a radius at once.</summary>
+    public static ConfigEntry<bool> RepairAreaEnabled { get; private set; }
+
+    /// <summary>Largest repair radius in metres.</summary>
+    public static ConfigEntry<float> RepairMaxRadius { get; private set; }
+
+    /// <summary>Stamina, eitr and tool wear per piece repaired in an area, as a share of a single vanilla repair.</summary>
+    public static ConfigEntry<float> RepairAreaCost { get; private set; }
+
+    /// <summary>The player's repair radius in metres, 0 for only the aimed piece.</summary>
+    public static ConfigEntry<float> RepairRadius { get; private set; }
+
     /// <summary>Whether the toolbar is shown while a build tool is held.</summary>
     public static ConfigEntry<bool> ShowToolbar { get; private set; }
 
@@ -162,6 +174,9 @@ public static class BuildToolSettings
     /// <summary>Makes the build camera slower.</summary>
     public static ConfigEntry<KeyboardShortcut> KeySpeedDown { get; private set; }
 
+    /// <summary>Switches to the repair piece and back.</summary>
+    public static ConfigEntry<KeyboardShortcut> KeyRepair { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -182,6 +197,13 @@ public static class BuildToolSettings
         UndoSeconds = WhiteHiltConfig.BindAdminOnly(Section, "UndoSeconds", 30f,
             "How long after placing a piece it may be undone with a full refund, in seconds. 0 turns undo off.",
             new AcceptableValueRange<float>(0f, 600f));
+        RepairAreaEnabled = WhiteHiltConfig.BindAdminOnly(Section, "RepairArea", true,
+            "The hammer's repair may fix every damaged piece within a radius at once; the mouse wheel sets the radius.");
+        RepairMaxRadius = WhiteHiltConfig.BindAdminOnly(Section, "RepairMaxRadius", 30f,
+            "Largest repair radius in metres.", new AcceptableValueRange<float>(1f, 100f));
+        RepairAreaCost = WhiteHiltConfig.BindAdminOnly(Section, "RepairAreaCost", 0.25f,
+            "Stamina, eitr and tool wear per piece repaired in an area, as a share of repairing it on its own. 0 makes area repair free.",
+            new AcceptableValueRange<float>(0f, 1f));
 
         ShowToolbar = WhiteHiltConfig.BindLocal(Section, "ShowToolbar", true, "Show the build toolbar on the left while holding a build tool.");
         ShowHint = WhiteHiltConfig.BindLocal(Section, "ShowHint", true, "Show the build camera key hint bottom-left while holding a build tool.");
@@ -195,6 +217,8 @@ public static class BuildToolSettings
         GridSize = WhiteHiltConfig.BindLocal(Section, "GridSize", 0.5f, "Grid size in metres.");
         ShowAxes = WhiteHiltConfig.BindLocal(Section, "ShowAxes", true, "Draw red, green and blue axes on the piece being placed.");
         ToolbarCollapsed = WhiteHiltConfig.BindLocal(Section, "ToolbarCollapsed", false, "Fold the toolbar to its title and status lines. Click the title to switch.");
+        RepairRadius = WhiteHiltConfig.BindLocal(Section, "RepairRadius", 10f,
+            "Repair radius in metres, 0 for only the piece you aim at. The mouse wheel changes it in repair mode.");
 
         CursorKey = WhiteHiltConfig.BindLocal(KeySection, "Cursor", KeyCode.LeftAlt, "Hold to show the cursor and click the toolbar.");
         TiltWheelModifier = WhiteHiltConfig.BindLocal(KeySection, "TiltWheelModifier", KeyCode.LeftControl, "Hold and turn the mouse wheel to tilt the piece.");
@@ -226,6 +250,7 @@ public static class BuildToolSettings
         KeyQuickRoll = BindKey("QuickRoll", KeyCode.Keypad9, "Set the roll to 45, 90 or 0 degrees.");
         KeySpeedUp = BindKey("SpeedUp", KeyCode.KeypadPlus, "Make the build camera faster.");
         KeySpeedDown = BindKey("SpeedDown", KeyCode.KeypadMinus, "Make the build camera slower.");
+        KeyRepair = BindKey("Repair", new KeyboardShortcut(KeyCode.R, KeyCode.LeftControl), "Repair mode on and off: switches to the hammer's repair and back.");
     }
 
     /// <summary>
@@ -316,6 +341,17 @@ public static class BuildToolSettings
         Translations.AddEnglish("whitehilt_build_undo", "Undo");
         Translations.AddEnglish("whitehilt_build_redo", "Redo");
         Translations.AddEnglish("whitehilt_build_light", "Light");
+        Translations.AddEnglish("whitehilt_build_repair", "Repair");
+        Translations.AddEnglish("whitehilt_repair_single", "one piece");
+        Translations.AddEnglish("whitehilt_repair_hint", "Repair {0}: {1} damaged pieces in the circle, up and down. Click to repair them, mouse wheel for the size");
+        Translations.AddEnglish("whitehilt_repair_hint_aim", "Repair {0}: aim at the building. Mouse wheel for the size");
+        Translations.AddEnglish("whitehilt_repair_hint_single", "Repair {0}: click the piece to repair. Mouse wheel for a larger area");
+        Translations.AddEnglish("whitehilt_build_tip_repair", "Switches to the hammer's repair and back. The mouse wheel sets how far around the aimed point pieces are repaired; damaged pieces glow.");
+        Translations.AddEnglish("msg_whitehilt_repair_none", "This tool cannot repair");
+        Translations.AddEnglish("msg_whitehilt_repair_nothing", "Nothing here needs repair");
+        Translations.AddEnglish("msg_whitehilt_repair_done", "Repaired {0} of {1} pieces");
+        Translations.AddEnglish("msg_whitehilt_repair_blocked", "{0} are warded or need a crafting station nearby");
+        Translations.AddEnglish("msg_whitehilt_repair_tired", "Stopped: out of stamina, or the tool is worn out");
         Translations.AddEnglish("whitehilt_build_footer",
             "Hold [{0}] to click the buttons\n[{1}]+wheel tilt   [{2}]+wheel roll\nHold [{3}] to circle the piece\nNudge {5}: {4}");
         Translations.AddEnglish("whitehilt_build_hint", "[{0}] Build camera    Hold [{1}] for the cursor");

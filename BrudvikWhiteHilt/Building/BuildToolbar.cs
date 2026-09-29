@@ -38,6 +38,7 @@ public class BuildToolbar : MonoBehaviour
     private Text snapLabel;
     private Text gridLabel;
     private Text lightLabel;
+    private Text repairLabel;
     private Text selectLabel;
     private Text lineLabel;
     private Text footer;
@@ -188,6 +189,8 @@ public class BuildToolbar : MonoBehaviour
         lineLabel = AddButton(parent, 0f, half, GroupTools.CycleLine, "line");
         Label(AddButton(parent, right, half, GroupTools.Paste, "paste"), GroupSettings.KeyPaste, "$whitehilt_group_paste");
         NextRow();
+        repairLabel = AddButton(parent, 0f, full, BuildTools.ToggleRepair, "repair");
+        NextRow();
         Label(AddButton(parent, 0f, half, BuildTools.Undo, "undo"), BuildToolSettings.KeyUndo, "$whitehilt_build_undo");
         Label(AddButton(parent, right, half, BuildTools.Redo, "redo"), BuildToolSettings.KeyRedo, "$whitehilt_build_redo");
         NextRow();
@@ -249,6 +252,8 @@ public class BuildToolbar : MonoBehaviour
             + ": " + (BuildRotation.GridOn ? on : off);
         lightLabel.text = Key(BuildToolSettings.KeyName(BuildToolSettings.KeyLight)) + Localization.instance.Localize("$whitehilt_build_light")
             + ": " + (BuildCamera.LightOn ? on : off);
+        repairLabel.text = Key(BuildToolSettings.KeyName(BuildToolSettings.KeyRepair)) + Localization.instance.Localize("$whitehilt_build_repair")
+            + ": " + RepairTools.StateText(player);
         int selectedCount = BuildSelection.Count;
         selectLabel.text = Key(BuildToolSettings.KeyName(GroupSettings.KeySelect)) + Localization.instance.Localize("$whitehilt_group_select")
             + ": " + (GroupTools.Mode == GroupTools.ToolMode.Select ? on : off) + (selectedCount > 0 ? $" ({selectedCount})" : string.Empty);
@@ -273,7 +278,7 @@ public class BuildToolbar : MonoBehaviour
                 BuildTools.FormatFactor(BuildCamera.SpeedFactor), BuildToolSettings.KeyName(MediaSettings.KeyPhoto),
                 BuildToolSettings.KeyName(MediaSettings.KeyPhotoView), BuildToolSettings.KeyName(MediaSettings.KeyPanel))
             : string.Format(Localization.instance.Localize("$whitehilt_build_hint"), cameraKey, cursorKey);
-        string modeHint = string.Join("\n", new[] { GroupTools.HintLine, Terrain.HoeTools.HintLine, Terrain.FarmTools.HintLine, Terrain.RoadBuilder.HintLine }
+        string modeHint = string.Join("\n", new[] { GroupTools.HintLine, RepairTools.HintLine, Terrain.HoeTools.HintLine, Terrain.FarmTools.HintLine, Terrain.RoadBuilder.HintLine }
             .Where(line => !string.IsNullOrEmpty(line)));
         if (modeHint.Length > 0)
         {

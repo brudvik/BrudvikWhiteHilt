@@ -113,7 +113,7 @@ public static class BuildToolPatches
     }
 
     /// <summary>
-    /// Keeps vanilla from also turning the piece while the wheel tilts or rolls it.
+    /// Keeps vanilla from also turning the piece while the wheel tilts or rolls it, or sets the repair radius.
     /// </summary>
     /// <param name="__instance">The player.</param>
     /// <param name="__state">The heading before vanilla's update.</param>
@@ -121,7 +121,7 @@ public static class BuildToolPatches
     [HarmonyPostfix]
     public static void UpdatePlacementPostfix(Player __instance, int __state)
     {
-        if (__instance == Player.m_localPlayer && BuildTools.WheelModifierHeld)
+        if (__instance == Player.m_localPlayer && (BuildTools.WheelModifierHeld || RepairTools.WheelSetsRadius(__instance)))
         {
             __instance.m_placeRotation = __state;
         }
@@ -139,6 +139,19 @@ public static class BuildToolPatches
         {
             BuildCamera.RestoreEye(__instance);
         }
+    }
+
+    /// <summary>
+    /// Repairs every damaged piece around the aimed point while the repair radius is above 0.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    /// <param name="toolItem">The build tool.</param>
+    /// <returns>False when the area repair took over.</returns>
+    [HarmonyPatch(typeof(Player), nameof(Player.Repair))]
+    [HarmonyPrefix]
+    public static bool Repair(Player __instance, ItemDrop.ItemData toolItem)
+    {
+        return __instance != Player.m_localPlayer || !__instance.InPlaceMode() || !RepairTools.RepairArea(__instance, toolItem);
     }
 
     /// <summary>
