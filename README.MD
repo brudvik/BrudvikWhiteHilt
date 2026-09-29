@@ -294,7 +294,13 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ---
 
-### 🏗️ BUILD CAMERA & TOOLBAR
+### � BACKPACK
+
+- **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it. The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
+
+---
+
+### �🏗️ BUILD CAMERA & TOOLBAR
 
 While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
 
@@ -481,6 +487,11 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.8.0 - 2026-09-29
+
+#### Added
+- Backpack: one more inventory row (8 × 5), on top of rows bought from a trader (`ExtraRows`)
 
 ### v0.7.0 - 2026-09-28
 

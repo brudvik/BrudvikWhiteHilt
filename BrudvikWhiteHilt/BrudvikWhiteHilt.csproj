@@ -251,6 +251,9 @@
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
+    <Compile Include="Backpack\BackpackLayout.cs" />
+    <Compile Include="Backpack\BackpackSettings.cs" />
+    <Compile Include="Patches\Backpack\BackpackLayoutPatches.cs" />
     <Compile Include="Patches\Ranching\AnimalCarePatches.cs" />
     <Compile Include="Patches\Ranching\FeedingTroughPatch.cs" />
     <Compile Include="Patches\Ranching\TamingPatches.cs" />

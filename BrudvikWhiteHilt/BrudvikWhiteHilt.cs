@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.7.0";
+    public const string PluginVersion = "0.8.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -65,6 +65,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
         Building.Terrain.TerrainSettings.Initialize();
+        Backpack.BackpackSettings.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
@@ -178,6 +179,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void RefreshConfig()
     {
         ProgressionManager.Refresh();
+        Backpack.BackpackLayout.Refresh();
         forageables.ForEach(forageable => forageable.ApplyConfig());
         foreach (WhiteHiltFoodBase food in customItems.OfType<WhiteHiltFoodBase>())
         {
