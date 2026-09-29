@@ -1,25 +1,54 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
-/// Config for the backpack, section "Backpack". The rules are server-synced; keys are the player's own.
+/// Config for the backpack, section "Backpack". The rules are server-synced; keys and what is shown are the player's own.
 /// </summary>
 public static class BackpackSettings
 {
     private const string Section = "Backpack";
+    private const string KeySection = "Backpack.Keys";
 
     /// <summary>Rows added to every player's inventory, on top of the vanilla rows.</summary>
     public static ConfigEntry<int> ExtraRows { get; private set; }
+
+    /// <summary>Whether the hotbar switches to the build bar when a build tool is taken out, and back when it is put away.</summary>
+    public static ConfigEntry<bool> AutoSwitchHotbar { get; private set; }
+
+    /// <summary>Whether the name of the active bar is shown next to the hotbar.</summary>
+    public static ConfigEntry<bool> ShowHotbarLabel { get; private set; }
+
+    /// <summary>Switches between the travel bar and the build bar.</summary>
+    public static ConfigEntry<KeyboardShortcut> KeyHotbar { get; private set; }
 
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
     public static void Initialize()
     {
+        AddTranslations();
+
         ExtraRows = WhiteHiltConfig.BindAdminOnly(Section, "ExtraRows", 1,
             "Rows added to every player's inventory, on top of the rows the game gives (4, or more when bought from a trader).",
             new AcceptableValueRange<int>(0, 2));
+
+        AutoSwitchHotbar = WhiteHiltConfig.BindLocal(Section, "AutoSwitchHotbar", true,
+            "Switch to the build bar when you take out a hammer, hoe or cultivator, and back to the travel bar when you put it away.");
+        ShowHotbarLabel = WhiteHiltConfig.BindLocal(Section, "ShowHotbarLabel", true, "Show which bar is active next to the hotbar.");
+        KeyHotbar = WhiteHiltConfig.BindLocal(KeySection, "SwitchHotbar", new KeyboardShortcut(KeyCode.Alpha9),
+            "Switch between the travel bar and the build bar.");
+    }
+
+    private static void AddTranslations()
+    {
+        Translations.AddEnglish("whitehilt_hotbar_travel", "Travel bar");
+        Translations.AddEnglish("whitehilt_hotbar_build", "Build bar");
+        Translations.AddEnglish("whitehilt_hotbar_short_travel", "Travel");
+        Translations.AddEnglish("whitehilt_hotbar_short_build", "Build");
+        Translations.AddEnglish("whitehilt_hotbar_stored", "{0}   [{1}] switches");
     }
 }

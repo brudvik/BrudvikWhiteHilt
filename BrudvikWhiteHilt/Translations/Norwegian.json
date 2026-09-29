@@ -646,5 +646,10 @@
   "whitehilt_unlock_mountain": "Det hvite hjaltet svarer: utstyr for Fjellet er låst opp",
   "whitehilt_unlock_plains": "Det hvite hjaltet svarer: utstyr for Slettene er låst opp",
   "whitehilt_unlock_mistlands": "Det hvite hjaltet svarer: utstyr for Tåkeheim er låst opp",
-  "whitehilt_unlock_ashlands": "Det hvite hjaltet svarer: utstyr for Askelandet er låst opp"
+  "whitehilt_unlock_ashlands": "Det hvite hjaltet svarer: utstyr for Askelandet er låst opp",
+  "whitehilt_hotbar_travel": "Turlinje",
+  "whitehilt_hotbar_build": "Byggelinje",
+  "whitehilt_hotbar_short_travel": "Tur",
+  "whitehilt_hotbar_short_build": "Bygg",
+  "whitehilt_hotbar_stored": "{0}   [{1}] bytter"
 }

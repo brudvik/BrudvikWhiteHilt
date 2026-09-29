@@ -4,7 +4,8 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Backpack;
 
 /// <summary>
-/// Gives the player the extra inventory rows: the vanilla row count (bought from traders) is kept, and the extra rows go on top.
+/// Gives the player the extra inventory rows and the hidden rows: the vanilla row count (bought from traders) is kept,
+/// and the extra rows go on top.
 /// </summary>
 [HarmonyPatch]
 public static class BackpackLayoutPatches
@@ -34,6 +35,35 @@ public static class BackpackLayoutPatches
         if (__instance == Player.m_localPlayer)
         {
             BackpackLayout.Apply(__instance);
+        }
+    }
+
+    /// <summary>
+    /// Runs the hotbar switching for the local player.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.Update))]
+    [HarmonyPostfix]
+    public static void PlayerUpdate(Player __instance)
+    {
+        if (__instance == Player.m_localPlayer)
+        {
+            HotbarSets.Tick(__instance);
+        }
+    }
+
+    /// <summary>
+    /// Lays out the player's grid after vanilla has filled it.
+    /// </summary>
+    /// <param name="__instance">The grid.</param>
+    /// <param name="player">The player the grid shows, null for containers.</param>
+    [HarmonyPatch(typeof(InventoryGrid), nameof(InventoryGrid.UpdateGui))]
+    [HarmonyPostfix]
+    public static void UpdateGui(InventoryGrid __instance, Player player)
+    {
+        if (player != null && player == Player.m_localPlayer && BackpackLayout.IsLocalInventory(__instance.m_inventory))
+        {
+            BackpackGui.Arrange(__instance, player);
         }
     }
 }
