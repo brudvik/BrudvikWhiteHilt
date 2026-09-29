@@ -667,5 +667,10 @@
   "whitehilt_backpack_accessory": "Tilbehør",
   "whitehilt_backpack_accessory_hint": "Belter og annet tilbehør. Alle fem brukes samtidig, men hver type bare én gang. Høyreklikk en i sekken for å ta den på.",
   "whitehilt_backpack_duplicate": "Du har allerede på en slik",
-  "whitehilt_megingjord_total": "Bæreevne på dette nivået"
+  "whitehilt_megingjord_total": "Bæreevne på dette nivået",
+  "item_whitehiltbeltpouch": "Beltepung",
+  "item_whitehiltbeltpouch_description": "En solid pung av trollhud, klinket med jern, til beltet. Bruk den for å få én rad til i sekken for godt. Hver figur kan bare bære én.",
+  "msg_whitehilt_beltpouch_used": "Beltepungen gir deg én rad til",
+  "msg_whitehilt_beltpouch_already": "Du bærer allerede en beltepung",
+  "msg_whitehilt_beltpouch_full": "Det er ikke plass til flere rader"
 }

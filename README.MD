@@ -60,6 +60,7 @@ All armor pieces are indestructible with: armor per level +10, movement modifier
 |------|-------------|------------------|--------------|
 | **White Hilt Megingjord** | Belt of Dyrnwyn - +700 carry weight | Forge (Level 2) | Iron ×10, Ymir Remains ×10, Megingjord ×1 |
 | **Megingjord upgrade** | The trader's Megingjord can be upgraded to quality 4. Each level adds +50 carry weight on top of its own +150 (+300 at quality 4); the tooltip shows the total | Forge (level 2, 3 and 4) | Per level: Iron ×8, Chain ×1, Troll Hide ×3, Surtling Core ×1 |
+| **Belt Pouch** | Use it once for one more inventory row for good (one per character). The row is a vanilla row, so it stays without the mod | Workbench (Level 2) | Troll Hide ×6, Leather Scraps ×10, Iron ×4 |
 
 The upgrade can be switched off (`Megingjord` → `Upgrades`) and the carry weight per level changed (`CarryWeightPerLevel`).
 
@@ -299,7 +300,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ### � BACKPACK
 
-- **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it. The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
+- **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it, and so does the row from a **Belt Pouch** (see Accessories). The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
 - **Travel bar and build bar**: two hotbars for keys 1–8. The one not in use lies under the inventory grid, where you fill it like any row. **9** switches between them. Taking out a hammer, hoe or cultivator switches to the build bar, and putting it away switches back to the travel bar (`AutoSwitchHotbar`). Next to the hotbar a label shows which bar is active (`ShowHotbarLabel`); the key is `Backpack.Keys` → `SwitchHotbar`.
 - **Equipment slots**: a panel to the right of the inventory has slots for helmet, chest, legs, cape and trinket. What lies in a slot is worn: drag an item into its slot, or right-click it in the inventory, and it moves there and is put on. Right-click it in the slot or drag it out to take it off. Your armor no longer takes room in the grid. The panel's place can be moved with `PanelOffsetX` and `PanelOffsetY`.
 - **Food slots**: three slots for food under the equipment. **Left Alt + 1**, **2** and **3** eat from them without opening the inventory (the hotbar is not used while Alt is held). The keys are `EatFood1`–`EatFood3` in `Backpack.Keys`, and are shown on the slots.
@@ -477,7 +478,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 |------|-------------|------------|---------------|
 | Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb |
 | Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
-| Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
+| Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts, Belt Pouch · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
 | Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
@@ -506,6 +507,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Three food slots, eaten from with Left Alt + 1, 2 and 3
 - Five accessory slots: belts, Wisplight, Wishbone and the like are worn at once, each kind once
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
+- Belt Pouch: used once, it gives the character one more inventory row for good
 
 ### v0.7.0 - 2026-09-28
 

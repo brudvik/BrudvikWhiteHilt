@@ -252,6 +252,7 @@
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
     <Compile Include="Backpack\BackpackGui.cs" />
+    <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
     <Compile Include="Backpack\BackpackInput.cs" />
     <Compile Include="Backpack\BackpackLayout.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Backpack\GearSlots.cs" />
     <Compile Include="Backpack\HotbarSets.cs" />
     <Compile Include="Backpack\UtilitySlots.cs" />
+    <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
     <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />
     <Compile Include="Patches\Backpack\BackpackInventoryPatches.cs" />
     <Compile Include="Patches\Backpack\BackpackLayoutPatches.cs" />
