@@ -166,6 +166,9 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it.
 
+**Sailing help** (every ship, also vanilla ones):
+- **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
+
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
 | Item | Use | Crafting Station | Requirements |
@@ -513,6 +516,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Belt Pouch: used once, it gives the character one more inventory row for good
 - Deck Brazier ship upgrade: a fire on the foredeck that burns without fuel, warms the crew and counts for resting
 - Sea Chest ship upgrade: a 4 × 2 chest by the helm besides the cargo hold
+- Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 
 #### Changed
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber
