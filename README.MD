@@ -261,13 +261,13 @@ One portal network instead of pairs: every White Hilt portal leads to every othe
 
 Stations built with the Portal Stations mod become White Hilt rune circles, with their names and privacy. Remove Portal Stations from the server and every client at the same time.
 
-The **Home Stone** takes you to your home portal from anywhere. It then rests for 5 minutes (configurable), shown as a status effect with the time left; dying or logging out does not end the rest. It follows the ordinary portal rules.
+The **Home Stone** takes you to your home portal from anywhere. It then rests for 5 minutes (configurable), shown as a status effect with the time left; dying or logging out does not end the rest. Within 2 minutes of going home (`HomeReturnMinutes`, 0 turns it off), using it again takes you back to where you were, even while it rests. It follows the ordinary portal rules, both ways.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **White Hilt Portal** | A standing stone arch with the portal swirl | Hammer (Workbench) | Stone ×30, Fine Wood ×10, Surtling Core ×2, Greydwarf Eye ×10 |
 | **White Hilt Rune Circle** | The same portal, as a flat circle of glowing runes on the ground | Hammer (Workbench) | Stone ×20, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
-| **Home Stone** | Takes you to your home portal, then rests | Rune Forge | Stone ×4, Iron ×2, Surtling Core ×1, Greydwarf Eye ×5 |
+| **Home Stone** | Takes you to your home portal, then rests; used again within 2 minutes, it takes you back | Rune Forge | Stone ×4, Iron ×2, Surtling Core ×1, Greydwarf Eye ×5 |
 
 The server sends the portal list every 10–20 seconds, so a new or renamed portal shows up in the list after a short while.
 
@@ -507,6 +507,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Three food slots and two potion slots, used with Left Alt + 1 to 5
 - Five accessory slots: belts, Wisplight, Wishbone and the like are worn at once, each kind once; the extra slots also hold the Home Stone and the Pathfinder's Amulet
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
+- Home Stone return trip: used again within 2 minutes of going home, it takes you back to where you were
 - Belt Pouch: used once, it gives the character one more inventory row for good
 
 ### v0.7.0 - 2026-09-28

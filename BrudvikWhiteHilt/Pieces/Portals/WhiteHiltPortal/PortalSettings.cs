@@ -14,6 +14,7 @@ public static class PortalSettings
     private static ConfigEntry<bool> teleportAnything;
     private static ConfigEntry<bool> ownerOnlyEdit;
     private static ConfigEntry<float> homeCooldownMinutes;
+    private static ConfigEntry<float> homeReturnMinutes;
     private static ConfigEntry<bool> sortByDistance;
 
     /// <summary>
@@ -30,6 +31,11 @@ public static class PortalSettings
     /// Minutes the Home Stone rests after use.
     /// </summary>
     public static float HomeCooldownMinutes => homeCooldownMinutes != null ? homeCooldownMinutes.Value : 5f;
+
+    /// <summary>
+    /// Minutes after going home in which the Home Stone takes the player back to where they came from; 0 turns it off.
+    /// </summary>
+    public static float HomeReturnMinutes => homeReturnMinutes != null ? homeReturnMinutes.Value : 2f;
 
     /// <summary>
     /// True if the travel list is sorted by distance instead of by name. Each player's own choice.
@@ -56,6 +62,9 @@ public static class PortalSettings
         ownerOnlyEdit = WhiteHiltConfig.BindAdminOnly(Section, "OwnerOnlyEdit", true, "Only the builder of a portal may rename it and make it private.");
         homeCooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "HomeCooldownMinutes", 5f, "Minutes before the Home Stone can be used again.",
             new AcceptableValueRange<float>(0f, 240f));
+        homeReturnMinutes = WhiteHiltConfig.BindAdminOnly(Section, "HomeReturnMinutes", 2f,
+            "Minutes after going home in which the Home Stone takes you back to where you were, even while it rests. 0 turns this off.",
+            new AcceptableValueRange<float>(0f, 60f));
         sortByDistance = WhiteHiltConfig.BindLocal(Section, "SortByDistance", false, "Sort the portal list by distance instead of by name.");
 
         Translations.AddEnglish("whitehilt_portal_travel", "Travel");

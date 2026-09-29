@@ -81,6 +81,19 @@ public static class PortalTravel
             return false;
         }
 
+        return TryTravelTo(player, destination.ArrivalPoint(), destination.Yaw, runesFrom);
+    }
+
+    /// <summary>
+    /// Takes the player to a spot in the world, if the world and their inventory allow it, as a portal would.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="position">Where to arrive.</param>
+    /// <param name="yaw">Which way to face, in degrees.</param>
+    /// <param name="runesFrom">Position whose rune posts count; null for the ordinary rules.</param>
+    /// <returns>True if the player is on their way.</returns>
+    public static bool TryTravelTo(Player player, Vector3 position, float yaw, Vector3? runesFrom)
+    {
         if (ZoneSystem.instance.GetGlobalKey(GlobalKeys.NoPortals))
         {
             player.Message(MessageHud.MessageType.Center, "$msg_blocked");
@@ -100,7 +113,7 @@ public static class PortalTravel
             return false;
         }
 
-        player.TeleportTo(destination.ArrivalPoint(), Quaternion.Euler(0f, destination.Yaw, 0f), distantTeleport: true);
+        player.TeleportTo(position, Quaternion.Euler(0f, yaw, 0f), distantTeleport: true);
         Game.instance.IncrementPlayerStat(PlayerStatType.PortalsUsed);
         return true;
     }

@@ -7,6 +7,7 @@ using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Portals;
@@ -14,6 +15,7 @@ namespace BrudvikWhiteHilt.Items.Portals;
 /// <summary>
 /// The Home Stone: a small rune stone that takes its bearer to their home portal. It then rests for a while, shown as a
 /// status effect with the time left; the rest is saved with the character, so dying or logging out does not end it.
+/// Within a short while after going home, it takes its bearer back to where they were, even while it rests.
 /// The ordinary portal rules apply: no ore or metal.
 /// </summary>
 public class HomeStone : IWhiteHiltCustomItem
@@ -24,8 +26,9 @@ public class HomeStone : IWhiteHiltCustomItem
     public const string PrefabName = "WhiteHiltHomeStone";
 
     private const string FullName = "Home Stone";
-    private const string Description = "A small stone with a carved rune that remembers your home portal. Use it to go home; set your home at any White Hilt portal. It needs a rest after each journey, and cannot carry ore or metal.";
+    private const string Description = "A small stone with a carved rune that remembers your home portal. Use it to go home; set your home at any White Hilt portal. Use it again within a short while to go back to where you were. It needs a rest after each journey home, and cannot carry ore or metal.";
     private const string RestKey = "whitehilt_homestone_ready";
+    private const string ReturnKey = "whitehilt_homestone_return";
     private const string EffectKey = "se_whitehilthomestone";
     private const float Size = 0.25f;
 
@@ -63,6 +66,8 @@ public class HomeStone : IWhiteHiltCustomItem
         Translations.AddEnglish($"{EffectKey}_tooltip", "The Home Stone can take you home again when this ends.");
         Translations.AddEnglish("msg_whitehilt_homestone_nohome", "Set a home at a White Hilt portal first");
         Translations.AddEnglish("msg_whitehilt_homestone_resting", "The Home Stone is still resting");
+        Translations.AddEnglish("msg_whitehilt_homestone_return", "Use the Home Stone within {0} minutes to go back");
+        Translations.AddEnglish("msg_whitehilt_homestone_back", "The Home Stone takes you back");
         Backpack.UtilitySlots.AllowInExtraSlots(Translations.Token(Translations.ItemKey(PrefabName)));
     }
 
@@ -77,11 +82,22 @@ public class HomeStone : IWhiteHiltCustomItem
     }
 
     /// <summary>
-    /// Takes the player home if the stone has rested and a home portal is set.
+    /// Takes the player back if they went home a moment ago, else home if the stone has rested and a home portal is set.
     /// </summary>
     /// <param name="player">The local player.</param>
     public static void Use(Player player)
     {
+        if (TryGetReturn(player, out Vector3 back, out float backYaw))
+        {
+            if (PortalTravel.TryTravelTo(player, back, backYaw, runesFrom: null))
+            {
+                player.m_customData.Remove(ReturnKey);
+                player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_homestone_back");
+            }
+
+            return;
+        }
+
         double remaining = RemainingSeconds(player);
         if (remaining > 0)
         {
@@ -97,13 +113,25 @@ public class HomeStone : IWhiteHiltCustomItem
             return;
         }
 
+        Vector3 from = player.transform.position;
+        float fromYaw = player.transform.eulerAngles.y;
         if (!PortalTravel.TryTravel(player, PortalTravel.Find(home), runesFrom: null))
         {
             return;
         }
 
-        DateTime ready = ZNet.instance.GetTime().AddMinutes(PortalSettings.HomeCooldownMinutes);
-        player.m_customData[RestKey] = ready.Ticks.ToString(CultureInfo.InvariantCulture);
+        DateTime now = ZNet.instance.GetTime();
+        player.m_customData[RestKey] = now.AddMinutes(PortalSettings.HomeCooldownMinutes).Ticks.ToString(CultureInfo.InvariantCulture);
+        float returnMinutes = PortalSettings.HomeReturnMinutes;
+        if (returnMinutes > 0f)
+        {
+            player.m_customData[ReturnKey] = string.Join(";", new[] { from.x, from.y, from.z, fromYaw }
+                .Select(value => value.ToString("R", CultureInfo.InvariantCulture))
+                .Append(now.AddMinutes(returnMinutes).Ticks.ToString(CultureInfo.InvariantCulture)));
+            player.Message(MessageHud.MessageType.TopLeft,
+                string.Format(Localization.instance.Localize("$msg_whitehilt_homestone_return"), returnMinutes.ToString("0.#", CultureInfo.CurrentCulture)));
+        }
+
         ShowRest(player);
     }
 
@@ -171,6 +199,36 @@ public class HomeStone : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    // Where the player came from before going home, while the way back is still open.
+    private static bool TryGetReturn(Player player, out Vector3 position, out float yaw)
+    {
+        position = Vector3.zero;
+        yaw = 0f;
+        if (ZNet.instance == null || !player.m_customData.TryGetValue(ReturnKey, out string value))
+        {
+            return false;
+        }
+
+        string[] parts = value.Split(';');
+        float[] numbers = new float[4];
+        bool valid = parts.Length == 5 && long.TryParse(parts[4], NumberStyles.Integer, CultureInfo.InvariantCulture, out long ticks)
+            && ZNet.instance.GetTime().Ticks < ticks;
+        for (int i = 0; valid && i < numbers.Length; i++)
+        {
+            valid = float.TryParse(parts[i], NumberStyles.Float, CultureInfo.InvariantCulture, out numbers[i]);
+        }
+
+        if (!valid)
+        {
+            player.m_customData.Remove(ReturnKey);
+            return false;
+        }
+
+        position = new Vector3(numbers[0], numbers[1], numbers[2]);
+        yaw = numbers[3];
+        return true;
     }
 
     private static double RemainingSeconds(Player player)
