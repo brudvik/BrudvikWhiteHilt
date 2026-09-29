@@ -708,5 +708,14 @@
   "whitehilt_wastewell_collect_off": "Samler ikke opp ting fra bakken",
   "whitehilt_wastewell_toggle": "Slå oppsamling fra bakken av/på",
   "whitehilt_wastewell_hint": "Det som kastes nedi er borte {0} s etter at brønnen er lukket",
-  "msg_whitehilt_wastewell_gone": "Brønnen slukte {0} ting"
+  "msg_whitehilt_wastewell_gone": "Brønnen slukte {0} ting",
+  "piece_whitehilt_repairanvil": "Reparasjonsambolt",
+  "piece_whitehilt_repairanvil_description": "En ambolt på en stubbe. Bruk den for å reparere alt du har på deg på én gang, uansett hvilken stasjon som laget det.",
+  "whitehilt_anvil_repair": "Reparer alt du har på deg",
+  "whitehilt_anvil_repair_all": "Reparer alt du bærer",
+  "whitehilt_anvil_worn": "{0} slitte ting",
+  "whitehilt_anvil_cost": "Pris per ting",
+  "msg_whitehilt_anvil_nothing": "Ingenting trenger reparasjon",
+  "msg_whitehilt_anvil_repaired": "Reparerte {0} ting",
+  "msg_whitehilt_anvil_missing": "Du trenger {0} {1}"
 }

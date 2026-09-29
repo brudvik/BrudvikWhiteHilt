@@ -220,8 +220,11 @@ The table and the amulet do not add up; the wider one counts.
 |------|-------------|------------------|--------------|
 | **Chain Bench** | Forge extension with a smith's vise. While it stands next to the forge, the forge can make Chains | Hammer (next to the Forge) | Wood ×10, Iron ×4, Stone ×4 |
 | **Chain** (vanilla item) | Made at the forge, only with a Chain Bench attached | Forge + Chain Bench | Iron ×2, Coal ×1 |
+| **Repair Anvil** | An anvil on a stump. Use it to repair everything you wear at once (weapons, armor, cape, accessories and the shield in its slot), whatever station made it, with the forge's repair sound | Hammer (near a Forge) | Bronze ×5, Wood ×4 |
 
 The Chain Bench also counts as a forge extension, so the forge can reach level 8.
+
+The Repair Anvil is free to use by default. The server sets it in the `RepairAnvil` section: `CostPerItem` (e.g. `Resin:1,Iron:1` per repaired item; empty is free), `WholeInventory` (repair everything carried, off) and `RaiseCraftingSkill` (on).
 
 ---
 
@@ -559,6 +562,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Floating items: everything dropped floats in water, e.g. a Serpent's trophy at sea (`FloatingItems`)
 - Waste Well: throw rubbish in and it is gone once closed; it can also collect items lying on the ground nearby
 - The Mast Wisp also thins ordinary fog (misty weather) for those near the ship, not only the Mistlands mist
+- Repair Anvil: repairs everything you wear at once, free by default (`RepairAnvil`)
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E
@@ -717,6 +721,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
 - Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
 - Waste Well model: ["Stone Well"](https://sketchfab.com/3d-models/stone-well-1498f53c9df54a289439f09ca89fc7d5) by [Andrew Jepson](https://sketchfab.com/ajepson), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture (tiling baked in), converted to OBJ, rescaled and made double-sided for Valheim.
+- Repair Anvil model: ["Asset02 Medieval Anvil"](https://sketchfab.com/3d-models/asset02-medieval-anvil-f6123f83e46345ccac727e35d91392ee) by [Margot D.](https://sketchfab.com/Winterll), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Harbour Anchor model: ["Medieval Anchor (Free)"](https://sketchfab.com/3d-models/medieval-anchor-free-5896ac54d63e4b84bd32e0b232619dfd) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
 - Smoke Oven model: ["Furnace"](https://sketchfab.com/3d-models/furnace-64f344213c084424ba438875e62bd452) by [Tronin Dmitry](https://sketchfab.com/kosmotron), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.

@@ -71,6 +71,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Sound.IndoorSoundSettings.Initialize();
         Drops.FloatingItems.Initialize();
         Pieces.Waste.WasteWellSettings.Initialize();
+        Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
