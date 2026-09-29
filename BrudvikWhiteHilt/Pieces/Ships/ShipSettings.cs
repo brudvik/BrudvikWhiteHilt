@@ -35,5 +35,6 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_compass", "N,NE,E,SE,S,SW,W,NW");
         Translations.AddEnglish("whitehilt_shiphud_wind", "Wind from {0}");
         Translations.AddEnglish("whitehilt_shiphud_course", "Holding course {0}°");
+        Translations.AddEnglish("whitehilt_ship_push", "Push the ship");
     }
 }

@@ -4,14 +4,22 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
-/// Sailing help on every ship: holding the course while nobody is at the helm. Added to each ship when it wakes.
-/// The ship's owner steers, so the course is kept in the ship's ZDO for whoever owns it next.
+/// Sailing help on every ship: holding the course while nobody is at the helm, and pushing a stranded ship from the
+/// shore. Added to each ship when it wakes. The ship's owner steers and moves it, so the course is kept in the ship's
+/// ZDO for whoever owns it next.
 /// </summary>
-public class ShipAssist : MonoBehaviour
+public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 {
     private const string AutopilotRpc = "WhiteHiltAutopilot";
     private const string ShallowRpc = "WhiteHiltAutopilotShallow";
+    private const string PushRpc = "WhiteHiltShipPush";
     private const float CheckInterval = 0.5f;
+
+    // A push gives the ship this speed away from the pusher, and a little lift off the ground.
+    private const float PushSpeed = 2.5f;
+    private const float PushLift = 0.6f;
+    private const float PushInterval = 0.5f;
+    private const float MaxPushableSpeed = 1.5f;
 
     // Degrees off course that give full rudder, and how much the turn rate damps it.
     private const float FullRudderDegrees = 25f;
@@ -31,6 +39,7 @@ public class ShipAssist : MonoBehaviour
     private Rigidbody body;
     private bool wasControlled;
     private float nextCheck;
+    private float nextPush;
 
     /// <summary>
     /// True while the ship holds its course when nobody is at the helm.
@@ -83,6 +92,60 @@ public class ShipAssist : MonoBehaviour
         return Mathf.Repeat(transform.eulerAngles.y, 360f);
     }
 
+    /// <summary>
+    /// Offers to push the ship to a player standing next to it on shore while it lies still.
+    /// </summary>
+    /// <returns>The hover text, empty when the ship can not be pushed.</returns>
+    public string GetHoverText()
+    {
+        return CanPush(Player.m_localPlayer) ? Localization.instance.Localize("[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_ship_push") : string.Empty;
+    }
+
+    /// <inheritdoc/>
+    public string GetHoverName()
+    {
+        return string.Empty;
+    }
+
+    /// <inheritdoc/>
+    public float GetHoverOffset()
+    {
+        return 0f;
+    }
+
+    /// <summary>
+    /// Pushes the ship away from the player; holding the key keeps pushing.
+    /// </summary>
+    /// <param name="user">The player.</param>
+    /// <param name="hold">True while the key is held.</param>
+    /// <param name="alt">True with the alternative key.</param>
+    /// <returns>True if the ship was pushed.</returns>
+    public bool Interact(Humanoid user, bool hold, bool alt)
+    {
+        if (user is not Player player || !CanPush(player) || Time.time < nextPush)
+        {
+            return false;
+        }
+
+        nextPush = Time.time + PushInterval;
+        Vector3 away = transform.position - player.transform.position;
+        away.y = 0f;
+        nview.InvokeRPC(PushRpc, away.normalized);
+        return true;
+    }
+
+    /// <inheritdoc/>
+    public bool UseItem(Humanoid user, ItemDrop.ItemData item)
+    {
+        return false;
+    }
+
+    private bool CanPush(Player player)
+    {
+        return player != null && ship != null && nview != null && nview.IsValid() && !ship.IsPlayerInBoat(player)
+            && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed;
+    }
+
     private void ToggleCourse(Player player)
     {
         bool on = !HoldingCourse;
@@ -105,6 +168,7 @@ public class ShipAssist : MonoBehaviour
 
         nview.Register<bool, float>(AutopilotRpc, RPC_Autopilot);
         nview.Register(ShallowRpc, RPC_Shallow);
+        nview.Register<Vector3>(PushRpc, RPC_Push);
     }
 
     private void FixedUpdate()
@@ -184,6 +248,17 @@ public class ShipAssist : MonoBehaviour
         nview.GetZDO().Set(AutopilotKey, on);
         nview.GetZDO().Set(CourseKey, course);
         wasControlled = ship != null && ship.HaveControllingPlayer();
+    }
+
+    private void RPC_Push(long sender, Vector3 direction)
+    {
+        if (!nview.IsOwner() || body == null)
+        {
+            return;
+        }
+
+        body.WakeUp();
+        body.AddForce(direction.normalized * PushSpeed + Vector3.up * PushLift, ForceMode.VelocityChange);
     }
 
     private void RPC_Shallow(long sender)
