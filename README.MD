@@ -306,7 +306,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ---
 
-### � BACKPACK
+### 🎒 BACKPACK
 
 - **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it, and so does the row from a **Belt Pouch** (see Accessories). The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
 - **Travel bar and build bar**: two hotbars for keys 1–8. The one not in use lies under the inventory grid, where you fill it like any row. **9** switches between them. Taking out a hammer, hoe or cultivator switches to the build bar, and putting it away switches back to the travel bar (`AutoSwitchHotbar`). Next to the hotbar a label shows which bar is active (`ShowHotbarLabel`); the key is `Backpack.Keys` → `SwitchHotbar`.
@@ -318,7 +318,15 @@ The stored bar and the slots below lie in hidden rows of the inventory, so they 
 
 ---
 
-### �🏗️ BUILD CAMERA & TOOLBAR
+### 🕰️ CLOCK
+
+The time of day in 24 hours at the top of the screen, e.g. **Day 42 · 14:37**, with an icon for the weather (sun, moon, clouds, rain, storm, snow, mist or ash). Sunrise is 06:00 and night falls at 18:00, as the game's own day and night. Two in-game hours before dark a warning shows and the clock turns orange until night falls. The clock is hidden in the inventory, in build mode, on the large map, in menus and with the HUD; during a boss fight it moves below the boss's health bar.
+
+The `Clock` section sets whether it shows (`Enabled`), the day number (`ShowDay`), the weather icon (`ShowWeather`), rounding (`RoundMinutes`, 1 = every minute), the warning (`DuskWarningHours`, 0 = off), `FontSize` and `OffsetY`; `Clock.Keys` → `ToggleClock` binds a key to show and hide it. A server can turn the clock off for everyone with `AllowClock`.
+
+---
+
+### 🏗️ BUILD CAMERA & TOOLBAR
 
 While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
 
@@ -520,6 +528,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Deck Brazier ship upgrade: a fire on the foredeck that burns without fuel, warms the crew and counts for resting
 - Sea Chest ship upgrade: a 4 × 2 chest by the helm besides the cargo hold
 - Ship Portal ship upgrade: a rune circle on deck that makes the ship a White Hilt portal destination, following it wherever it sails
+- Clock: the time of day in 24 hours at the top of the screen, with day number, a weather icon and a warning before night falls
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E

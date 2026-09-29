@@ -258,6 +258,9 @@
     <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
     <Compile Include="Backpack\BackpackInput.cs" />
+    <Compile Include="Clock\ClockSettings.cs" />
+    <Compile Include="Clock\GameClock.cs" />
+    <Compile Include="Patches\Clock\ClockPatches.cs" />
     <Compile Include="Backpack\BackpackLayout.cs" />
     <Compile Include="Backpack\BackpackSettings.cs" />
     <Compile Include="Backpack\FoodSlots.cs" />
@@ -403,6 +406,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\whitehilt_foraging" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
+    <EmbeddedResource Include="Assets\WeatherAsh.png" />
+    <EmbeddedResource Include="Assets\WeatherCloud.png" />
+    <EmbeddedResource Include="Assets\WeatherFog.png" />
+    <EmbeddedResource Include="Assets\WeatherMoon.png" />
+    <EmbeddedResource Include="Assets\WeatherRain.png" />
+    <EmbeddedResource Include="Assets\WeatherSnow.png" />
+    <EmbeddedResource Include="Assets\WeatherStorm.png" />
+    <EmbeddedResource Include="Assets\WeatherSun.png" />
     <EmbeddedResource Include="..\AssetSource\Preview\defenses.json">
       <Link>Pieces\Defenses\defenses.json</Link>
       <LogicalName>BrudvikWhiteHilt.Defenses.json</LogicalName>
