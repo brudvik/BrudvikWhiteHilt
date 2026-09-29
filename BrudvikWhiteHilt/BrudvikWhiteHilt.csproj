@@ -258,6 +258,7 @@
     <Compile Include="Backpack\FoodSlots.cs" />
     <Compile Include="Backpack\GearSlots.cs" />
     <Compile Include="Backpack\HotbarSets.cs" />
+    <Compile Include="Backpack\UtilitySlots.cs" />
     <Compile Include="Patches\Backpack\BackpackInventoryPatches.cs" />
     <Compile Include="Patches\Backpack\BackpackLayoutPatches.cs" />
     <Compile Include="Patches\Backpack\BackpackSlotPatches.cs" />

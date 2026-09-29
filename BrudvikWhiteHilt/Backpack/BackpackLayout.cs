@@ -34,13 +34,16 @@ public enum SlotKind
     Trinket,
 
     /// <summary>Food, eaten with its own key.</summary>
-    Food
+    Food,
+
+    /// <summary>A worn accessory such as a belt or Wisplight; each kind once.</summary>
+    Utility
 }
 
 /// <summary>
 /// The rows of the local player's inventory. The visible rows are the vanilla rows (4, more when bought from a trader)
-/// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar
-/// and the equipment slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
+/// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar,
+/// the equipment and food slots and the accessory slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
 /// </summary>
 public static class BackpackLayout
 {
@@ -56,8 +59,11 @@ public static class BackpackLayout
     /// <summary>Row of the equipment slots (helmet, chest, legs, cape and trinket) and the food slots.</summary>
     public const int GearRow = HotbarRow + 1;
 
+    /// <summary>Row of the accessory slots. The first is the game's own utility slot, the others are added by the mod.</summary>
+    public const int UtilityRow = GearRow + 1;
+
     /// <summary>Rows of the player inventory, visible and hidden.</summary>
-    public const int TotalRows = GearRow + 1;
+    public const int TotalRows = UtilityRow + 1;
 
     private const string VanillaRowsKey = "invrows";
     private const int DefaultVanillaRows = 4;
@@ -142,17 +148,28 @@ public static class BackpackLayout
             };
         }
 
+        if (pos.y == UtilityRow)
+        {
+            return pos.x < UtilitySlots.Count ? SlotKind.Utility : SlotKind.Void;
+        }
+
         return SlotKind.Void;
     }
 
     /// <summary>
-    /// The equipment slot an item is worn in, if any.
+    /// The slot an item is worn in by the game itself, if any. Accessories go in the first accessory slot.
     /// </summary>
     /// <param name="item">The item.</param>
     /// <param name="slot">The slot's position.</param>
-    /// <returns>True for helmets, chest and leg armor, capes and trinkets.</returns>
+    /// <returns>True for helmets, chest and leg armor, capes, trinkets and accessories.</returns>
     public static bool TryGetGearSlot(ItemDrop.ItemData item, out Vector2i slot)
     {
+        if (item?.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility)
+        {
+            slot = new Vector2i(0, UtilityRow);
+            return true;
+        }
+
         int column = item?.m_shared.m_itemType switch
         {
             ItemDrop.ItemData.ItemType.Helmet => 0,
@@ -181,6 +198,8 @@ public static class BackpackLayout
             SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
                 TryGetGearSlot(item, out Vector2i slot) && slot == pos,
             SlotKind.Food => FoodSlots.IsFood(item),
+            SlotKind.Utility => item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility
+                && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
             _ => false
         };
     }

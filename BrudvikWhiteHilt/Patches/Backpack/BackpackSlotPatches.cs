@@ -6,11 +6,34 @@ namespace BrudvikWhiteHilt.Patches.Backpack;
 
 /// <summary>
 /// Keeps worn items in their equipment slots: equipping moves an item into its slot, right-clicking an item in a slot
-/// takes it off, and the inventory window may only drop items where they may lie.
+/// takes it off, and the inventory window may only drop items where they may lie. The extra accessory slots add their
+/// items' effects, stats and weight.
 /// </summary>
 [HarmonyPatch]
 public static class BackpackSlotPatches
 {
+    /// <summary>
+    /// Sends an accessory to a free extra slot when the game's own slot is taken, and refuses a second of the same kind.
+    /// </summary>
+    /// <param name="__instance">The character.</param>
+    /// <param name="item">The item.</param>
+    /// <param name="__result">False when handled here.</param>
+    /// <returns>False to skip the game's equipping.</returns>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.EquipItem))]
+    [HarmonyPrefix]
+    public static bool EquipItemPrefix(Humanoid __instance, ItemDrop.ItemData item, ref bool __result)
+    {
+        if (__instance is not Player player || player != Player.m_localPlayer || GearSlots.Dropping
+            || item?.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Utility || player.IsItemEquiped(item)
+            || !BackpackLayout.IsLocalInventory(player.m_inventory) || UtilitySlots.BeforeEquip(player, item))
+        {
+            return true;
+        }
+
+        __result = false;
+        return false;
+    }
+
     /// <summary>
     /// Moves a newly equipped helmet, armor, cape or trinket into its slot.
     /// </summary>
@@ -39,7 +62,7 @@ public static class BackpackSlotPatches
     public static bool ToggleEquipped(Player __instance, ItemDrop.ItemData item, ref bool __result)
     {
         if (__instance != Player.m_localPlayer || __instance.InAttack() || !BackpackLayout.IsLocalInventory(__instance.m_inventory)
-            || !GearSlots.InSlot(item))
+            || (!GearSlots.InSlot(item) && !UtilitySlots.IsExtraSlot(item.m_gridPos)))
         {
             return true;
         }
@@ -136,6 +159,12 @@ public static class BackpackSlotPatches
             return true;
         }
 
+        if (toPlayer && item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Utility
+            && BackpackLayout.KindAt(pos, BackpackLayout.VisibleRows(player)) == SlotKind.Utility)
+        {
+            player.Message(MessageHud.MessageType.Center, "$whitehilt_backpack_duplicate");
+        }
+
         __result = false;
         return false;
     }
@@ -152,6 +181,51 @@ public static class BackpackSlotPatches
         {
             GearSlots.Tick(__instance);
             FoodSlots.Tick(__instance);
+            UtilitySlots.Tick(__instance);
+        }
+    }
+
+    /// <summary>
+    /// Adds the extra accessories to the summed equipment modifiers (movement, stamina use, resistances and so on).
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.UpdateModifiers))]
+    [HarmonyPostfix]
+    public static void UpdateModifiers(Player __instance)
+    {
+        if (__instance == Player.m_localPlayer)
+        {
+            UtilitySlots.AddModifiers(__instance.m_equipmentModifierValues);
+        }
+    }
+
+    /// <summary>
+    /// Adds the extra accessories' eitr regeneration.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    /// <param name="__result">The equipment's eitr regeneration modifier.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.GetEquipmentEitrRegenModifier))]
+    [HarmonyPostfix]
+    public static void GetEquipmentEitrRegenModifier(Player __instance, ref float __result)
+    {
+        if (__instance == Player.m_localPlayer)
+        {
+            __result += UtilitySlots.EitrRegen;
+        }
+    }
+
+    /// <summary>
+    /// Counts the extra accessories as worn equipment weight.
+    /// </summary>
+    /// <param name="__instance">The character.</param>
+    /// <param name="__result">The weight of the worn equipment.</param>
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.GetEquipmentWeight))]
+    [HarmonyPostfix]
+    public static void GetEquipmentWeight(Humanoid __instance, ref float __result)
+    {
+        if (__instance == Player.m_localPlayer)
+        {
+            __result += UtilitySlots.Weight;
         }
     }
 

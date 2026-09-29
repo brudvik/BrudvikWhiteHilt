@@ -81,5 +81,10 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_food_slot", "Food");
         Translations.AddEnglish("whitehilt_backpack_food_empty", "That food slot is empty");
         Translations.AddEnglish("whitehilt_backpack_food_hint", "Drag food here. The key on the slot eats it.");
+        Translations.AddEnglish("whitehilt_backpack_accessories", "Accessories");
+        Translations.AddEnglish("whitehilt_backpack_accessory", "Accessory");
+        Translations.AddEnglish("whitehilt_backpack_accessory_hint",
+            "Belts, Wisplight, Wishbone and the like. All five are worn at once, but each kind only once. Right-click one in your inventory to put it on.");
+        Translations.AddEnglish("whitehilt_backpack_duplicate", "You already wear one of those");
     }
 }

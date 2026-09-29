@@ -1,0 +1,246 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BrudvikWhiteHilt.Backpack;
+
+/// <summary>
+/// Five accessory slots for belts, Wisplight, Wishbone and the like. The first is the game's own utility slot; the other
+/// four give their item's effects, stats and weight as if it were worn, without showing it on the character.
+/// Each kind of accessory can be worn once.
+/// </summary>
+public static class UtilitySlots
+{
+    /// <summary>Number of accessory slots.</summary>
+    public const int Count = 5;
+
+    private const float CheckSeconds = 1f;
+
+    private static readonly List<ItemDrop.ItemData> worn = new();
+    private static readonly HashSet<StatusEffect> applied = new();
+    private static Player wornBy;
+    private static float[] modifierSums;
+    private static float nextCheck;
+
+    /// <summary>Eitr regeneration added by the extra accessories.</summary>
+    public static float EitrRegen { get; private set; }
+
+    /// <summary>Weight of the extra accessories, counted as worn equipment.</summary>
+    public static float Weight { get; private set; }
+
+    /// <summary>
+    /// True for one of the four accessory slots added by the mod.
+    /// </summary>
+    /// <param name="pos">The grid position.</param>
+    /// <returns>True for an extra slot.</returns>
+    public static bool IsExtraSlot(Vector2i pos)
+    {
+        return pos.y == BackpackLayout.UtilityRow && pos.x >= 1 && pos.x < Count;
+    }
+
+    /// <summary>
+    /// True if the item is worn in one of the extra slots by the given player.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="item">The item.</param>
+    /// <returns>True when worn in an extra slot.</returns>
+    public static bool IsWornExtra(Player player, ItemDrop.ItemData item)
+    {
+        return player == wornBy && worn.Contains(item);
+    }
+
+    /// <summary>
+    /// The accessories in the extra slots of the local player.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>The worn extra accessories, empty for other players.</returns>
+    public static IReadOnlyList<ItemDrop.ItemData> Extras(Player player)
+    {
+        return player == wornBy ? worn : System.Array.Empty<ItemDrop.ItemData>();
+    }
+
+    /// <summary>
+    /// True if another accessory slot already holds the same kind of item. The target position itself is not counted,
+    /// since what lies there is swapped out.
+    /// </summary>
+    /// <param name="inventory">The player's inventory.</param>
+    /// <param name="item">The item to put in.</param>
+    /// <param name="pos">The target position.</param>
+    /// <returns>True when the same kind is already worn.</returns>
+    public static bool WornElsewhere(Inventory inventory, ItemDrop.ItemData item, Vector2i pos)
+    {
+        for (int x = 0; x < Count; x++)
+        {
+            if (x == pos.x && pos.y == BackpackLayout.UtilityRow)
+            {
+                continue;
+            }
+
+            ItemDrop.ItemData other = inventory.GetItemAt(x, BackpackLayout.UtilityRow);
+            if (other != null && other != item && other.m_shared.m_name == item.m_shared.m_name)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Handles equipping an accessory from the grid: the game's slot when it is free, else a free extra slot, else the
+    /// game swaps out the one in its slot. Refused when the same kind is already worn.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="item">The accessory.</param>
+    /// <returns>True when the game should equip it itself.</returns>
+    public static bool BeforeEquip(Player player, ItemDrop.ItemData item)
+    {
+        Inventory inventory = player.m_inventory;
+        if (item.m_gridPos.y == BackpackLayout.UtilityRow || inventory.GetItemAt(0, BackpackLayout.UtilityRow) == null)
+        {
+            return true;
+        }
+
+        if (WornElsewhere(inventory, item, new Vector2i(-1, -1)))
+        {
+            player.Message(MessageHud.MessageType.Center, "$whitehilt_backpack_duplicate");
+            return false;
+        }
+
+        for (int x = 1; x < Count; x++)
+        {
+            if (inventory.GetItemAt(x, BackpackLayout.UtilityRow) == null)
+            {
+                item.m_gridPos = new Vector2i(x, BackpackLayout.UtilityRow);
+                inventory.Changed();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Keeps the effects of the extra accessories on the player. Called every frame for the local player.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    public static void Tick(Player player)
+    {
+        bool changed = player != wornBy;
+        if (changed)
+        {
+            wornBy = player;
+            worn.Clear();
+            applied.Clear();
+        }
+
+        if (BackpackLayout.IsLocalInventory(player.m_inventory) && !player.IsDead())
+        {
+            for (int x = 1; x < Count; x++)
+            {
+                ItemDrop.ItemData item = player.m_inventory.GetItemAt(x, BackpackLayout.UtilityRow);
+                int index = x - 1;
+                ItemDrop.ItemData current = index < worn.Count ? worn[index] : null;
+                if (item != current)
+                {
+                    changed = true;
+                }
+            }
+        }
+        else
+        {
+            changed |= worn.Exists(item => item != null);
+        }
+
+        if (changed)
+        {
+            Collect(player);
+            player.UpdateModifiers();
+        }
+
+        if (changed || Time.time >= nextCheck)
+        {
+            nextCheck = Time.time + CheckSeconds;
+            ApplyStatusEffects(player);
+        }
+    }
+
+    /// <summary>
+    /// Adds the extra accessories' equipment modifiers to the player's.
+    /// </summary>
+    /// <param name="values">The player's summed equipment modifiers.</param>
+    public static void AddModifiers(float[] values)
+    {
+        if (modifierSums == null || values == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < values.Length && i < modifierSums.Length; i++)
+        {
+            values[i] += modifierSums[i];
+        }
+    }
+
+    private static void Collect(Player player)
+    {
+        worn.Clear();
+        bool active = BackpackLayout.IsLocalInventory(player.m_inventory) && !player.IsDead();
+        for (int x = 1; x < Count; x++)
+        {
+            worn.Add(active ? player.m_inventory.GetItemAt(x, BackpackLayout.UtilityRow) : null);
+        }
+
+        EitrRegen = 0f;
+        Weight = 0f;
+        System.Reflection.FieldInfo[] fields = Player.s_equipmentModifierSourceFields;
+        modifierSums = fields != null ? new float[fields.Length] : null;
+        foreach (ItemDrop.ItemData item in worn)
+        {
+            if (item == null)
+            {
+                continue;
+            }
+
+            EitrRegen += item.m_shared.m_eitrRegenModifier;
+            Weight += item.m_shared.m_weight;
+            for (int i = 0; modifierSums != null && i < fields.Length; i++)
+            {
+                if (fields[i].GetValue(item.m_shared) is float value)
+                {
+                    modifierSums[i] += value;
+                }
+            }
+        }
+    }
+
+    private static void ApplyStatusEffects(Player player)
+    {
+        HashSet<StatusEffect> desired = new();
+        foreach (ItemDrop.ItemData item in worn)
+        {
+            if (item != null && item.m_shared.m_equipStatusEffect != null)
+            {
+                desired.Add(item.m_shared.m_equipStatusEffect);
+            }
+        }
+
+        foreach (StatusEffect effect in applied)
+        {
+            if (!desired.Contains(effect) && !player.m_equipmentStatusEffects.Contains(effect))
+            {
+                player.m_seman.RemoveStatusEffect(effect.NameHash());
+            }
+        }
+
+        foreach (StatusEffect effect in desired)
+        {
+            if (!player.m_seman.HaveStatusEffect(effect.NameHash()))
+            {
+                player.m_seman.AddStatusEffect(effect);
+            }
+        }
+
+        applied.Clear();
+        applied.UnionWith(desired);
+    }
+}

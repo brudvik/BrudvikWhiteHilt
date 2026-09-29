@@ -4,15 +4,25 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
-/// Equipment slots for helmet, chest, legs, cape and trinket. What lies in a slot is worn, and what is worn lies in its
-/// slot: putting an item in a slot puts it on, equipping it from the grid moves it into the slot, and right-clicking it
-/// or dragging it out takes it off. The slots are hidden rows of the player's inventory, shown in a panel.
+/// Equipment slots for helmet, chest, legs, cape, trinket and the first accessory. What lies in a slot is worn, and what
+/// is worn lies in its slot: putting an item in a slot puts it on, equipping it from the grid moves it into the slot, and
+/// right-clicking it or dragging it out takes it off. The slots are hidden rows of the player's inventory, shown in a panel.
 /// </summary>
 public static class GearSlots
 {
     private const float RetrySeconds = 2f;
 
-    private static readonly Dictionary<int, ItemDrop.ItemData> lastTried = new();
+    private static readonly Vector2i[] slots =
+    {
+        new(0, BackpackLayout.GearRow),
+        new(1, BackpackLayout.GearRow),
+        new(2, BackpackLayout.GearRow),
+        new(3, BackpackLayout.GearRow),
+        new(4, BackpackLayout.GearRow),
+        new(0, BackpackLayout.UtilityRow)
+    };
+
+    private static readonly Dictionary<Vector2i, ItemDrop.ItemData> lastTried = new();
     private static float nextRetry;
 
     /// <summary>
@@ -115,18 +125,18 @@ public static class GearSlots
             nextRetry = Time.time + RetrySeconds;
         }
 
-        for (int x = 0; x <= 4; x++)
+        foreach (Vector2i slot in slots)
         {
-            ItemDrop.ItemData item = player.m_inventory.GetItemAt(x, BackpackLayout.GearRow);
+            ItemDrop.ItemData item = player.m_inventory.GetItemAt(slot.x, slot.y);
             if (item == null || player.IsItemEquiped(item) || player.IsEquipActionQueued(item))
             {
-                lastTried.Remove(x);
+                lastTried.Remove(slot);
                 continue;
             }
 
-            if (retry || !lastTried.TryGetValue(x, out ItemDrop.ItemData tried) || tried != item)
+            if (retry || !lastTried.TryGetValue(slot, out ItemDrop.ItemData tried) || tried != item)
             {
-                lastTried[x] = item;
+                lastTried[slot] = item;
                 player.EquipItem(item);
             }
         }

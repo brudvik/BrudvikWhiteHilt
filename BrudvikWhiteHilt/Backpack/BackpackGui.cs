@@ -8,8 +8,8 @@ namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
 /// Lays out the player's inventory grid: hides the rows not in use, shows the stored hotbar under the grid and moves the
-/// equipment slots into a panel next to the inventory. The slots stay vanilla inventory elements, so dragging, tooltips
-/// and right-click work as usual.
+/// equipment, food and accessory slots into a panel next to the inventory. The slots stay vanilla inventory elements, so
+/// dragging, tooltips and right-click work as usual.
 /// </summary>
 public static class BackpackGui
 {
@@ -26,7 +26,8 @@ public static class BackpackGui
     private static readonly PanelSection[] sections =
     {
         new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
-        new("$whitehilt_backpack_food", Row(BackpackLayout.GearRow, FoodSlots.FirstColumn, FoodSlots.Count))
+        new("$whitehilt_backpack_food", Row(BackpackLayout.GearRow, FoodSlots.FirstColumn, FoodSlots.Count)),
+        new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count))
     };
 
     private static readonly Dictionary<SlotKind, SlotLook> looks = new()
@@ -36,7 +37,8 @@ public static class BackpackGui
         { SlotKind.Legs, new SlotLook("ArmorLeatherLegs", "$whitehilt_backpack_legs") },
         { SlotKind.Cape, new SlotLook("CapeDeerHide", "$whitehilt_backpack_cape") },
         { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") },
-        { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") }
+        { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") },
+        { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") }
     };
 
     private static readonly Dictionary<Vector2i, Vector2i> panelPlaces = BuildPanelPlaces();
@@ -97,6 +99,11 @@ public static class BackpackGui
                     PlaceInPanel(element, size, step);
                     ShowPlaceholder(element, kind);
                     ShowFoodKey(element, kind);
+                    if (element.m_used && UtilitySlots.IsExtraSlot(pos))
+                    {
+                        element.m_equiped.enabled = true;
+                    }
+
                     break;
             }
         }

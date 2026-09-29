@@ -662,5 +662,9 @@
   "whitehilt_backpack_food": "Mat",
   "whitehilt_backpack_food_slot": "Mat",
   "whitehilt_backpack_food_empty": "Den matplassen er tom",
-  "whitehilt_backpack_food_hint": "Dra mat hit. Tasten på plassen spiser den."
+  "whitehilt_backpack_food_hint": "Dra mat hit. Tasten på plassen spiser den.",
+  "whitehilt_backpack_accessories": "Tilbehør",
+  "whitehilt_backpack_accessory": "Tilbehør",
+  "whitehilt_backpack_accessory_hint": "Belter og annet tilbehør. Alle fem brukes samtidig, men hver type bare én gang. Høyreklikk en i sekken for å ta den på.",
+  "whitehilt_backpack_duplicate": "Du har allerede på en slik"
 }
