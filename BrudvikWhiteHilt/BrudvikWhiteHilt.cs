@@ -6,6 +6,7 @@ using BrudvikWhiteHilt.Items.Food;
 using BrudvikWhiteHilt.Items.Foraging;
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces;
+using BrudvikWhiteHilt.Pieces.EternalFire;
 using BrudvikWhiteHilt.Progression;
 using HarmonyLib;
 using Jotunn.Managers;
@@ -52,6 +53,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
         NearbyContainers.Initialize();
+        EternalFireRules.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();

@@ -194,6 +194,9 @@
     <Compile Include="Crafting\ContainerPulse.cs" />
     <Compile Include="Crafting\NearbyContainers.cs" />
     <Compile Include="Helpers\FireEffects.cs" />
+    <Compile Include="Patches\EternalFire\EternalFirePatches.cs" />
+    <Compile Include="Pieces\EternalFire\EternalFireRules.cs" />
+    <Compile Include="Pieces\EternalFire\SurtsBrazier.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
