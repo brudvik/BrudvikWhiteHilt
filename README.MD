@@ -341,6 +341,16 @@ Everything dropped floats in water instead of sinking, so a Serpent killed at se
 
 ---
 
+### 🗑️ WASTE WELL
+
+| **Piece** | Description | Crafting Station | Requirements |
+|---|---|---|---|
+| **Waste Well** | A stone well for rubbish. Open it (E) and throw things in: 5 seconds after it is closed they are gone, so opening it again before then gets them back. Shift + Use makes the well collect items that have lain on the ground within 8 m for 30 seconds or more; it never takes hatching eggs or items placed as decorations. Chest crafting never takes from it | Workbench | Stone ×20, Wood ×6 |
+
+The server sets it in the `WasteWell` section: `DisposeDelaySeconds` (5), `CollectRadius` (8), `MinItemAgeSeconds` (30) and `KeepItems`, prefab names never collected from the ground.
+
+---
+
 ### 🏗️ BUILD CAMERA & TOOLBAR
 
 While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
@@ -547,6 +557,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Shield and ammo slots under the accessories: the shield comes and goes with one-handed weapons, and the ammo there is used first
 - Indoor sound: wind, rain, sea and thunder are quieter and muffled under a roof, by how well you are covered
 - Floating items: everything dropped floats in water, e.g. a Serpent's trophy at sea (`FloatingItems`)
+- Waste Well: throw rubbish in and it is gone once closed; it can also collect items lying on the ground nearby
 - Hold course (H at the helm): every ship keeps its heading when you let go of the helm, and stops before shallow water
 - Speed in knots, heading and wind direction under the wind indicator while steering
 - Push a stranded ship off the shore with E
@@ -704,6 +715,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
 - Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
+- Waste Well model: ["Stone Well"](https://sketchfab.com/3d-models/stone-well-1498f53c9df54a289439f09ca89fc7d5) by [Andrew Jepson](https://sketchfab.com/ajepson), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture (tiling baked in), converted to OBJ, rescaled and made double-sided for Valheim.
 - Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Harbour Anchor model: ["Medieval Anchor (Free)"](https://sketchfab.com/3d-models/medieval-anchor-free-5896ac54d63e4b84bd32e0b232619dfd) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
 - Smoke Oven model: ["Furnace"](https://sketchfab.com/3d-models/furnace-64f344213c084424ba438875e62bd452) by [Tronin Dmitry](https://sketchfab.com/kosmotron), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.

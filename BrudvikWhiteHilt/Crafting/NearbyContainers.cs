@@ -313,7 +313,8 @@ public static class NearbyContainers
                 || openByOther
                 || !container.CheckAccess(playerId)
                 || (container.m_checkGuardStone && !PrivateArea.CheckAccess(containerPosition, 0f, flash: false))
-                || excludedContainerSet.Contains(Utils.GetPrefabName(container.m_nview.gameObject)))
+                || excludedContainerSet.Contains(Utils.GetPrefabName(container.m_nview.gameObject))
+                || container.GetComponent<Pieces.Waste.WasteWellComponent>() != null)
             {
                 continue;
             }

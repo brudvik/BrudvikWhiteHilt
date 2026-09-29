@@ -5,6 +5,8 @@ and made double-sided, since the Valheim shaders cull back faces.
 
 All parts are merged into one mesh. Parts that share one texture keep it as-is. Parts with different textures,
 or with only a base colour, are packed side by side into one PNG atlas and their UVs are moved to match.
+Tiling UVs (outside 0..1) are wrapped per triangle into the first repeat, and the few repeats a triangle still spans
+are baked into its atlas tile.
 A model with one texture and an emission map also gets <name>_emission.
 
 A <name>.crop.json next to the .glb ({"min": [x, y, z], "max": [x, y, z]}, in the scaled space described above) keeps
@@ -122,8 +124,8 @@ def image_bytes(gltf, binary, index):
     return image, binary[start : start + view["byteLength"]]
 
 
-def build_atlas(gltf, binary, sources):
-    """Packs one tile per source side by side. Returns the PNG bytes and each source's (column, columns)."""
+def build_atlas(gltf, binary, sources, repeats):
+    """Packs one tile per source side by side, each repeated as often as its UVs need. Returns the PNG bytes."""
     from PIL import Image
 
     tiles = []
@@ -136,6 +138,13 @@ def build_atlas(gltf, binary, sources):
         tile = tile.resize((min(tile.width, TILE_SIZE), min(tile.height, TILE_SIZE)))
         if rgba != (255, 255, 255, 255):
             tile = Image.merge("RGBA", [band.point(lambda v, f=f: v * f // 255) for band, f in zip(tile.split(), rgba)])
+        across, down = repeats.get((kind, index, colour), (1, 1))
+        if (across, down) != (1, 1):
+            repeated = Image.new("RGBA", (tile.width * across, tile.height * down))
+            for x in range(across):
+                for y in range(down):
+                    repeated.paste(tile, (x * tile.width, y * tile.height))
+            tile = repeated.resize((TILE_SIZE, TILE_SIZE))
         tiles.append(tile)
 
     size = max(max(tile.width, tile.height) for tile in tiles)
@@ -147,22 +156,38 @@ def build_atlas(gltf, binary, sources):
     return buffer.getvalue()
 
 
-def crop(positions, normals, uvs, indices, box):
+def crop(positions, normals, corners, indices, box):
     """Keeps the triangles whose centre lies inside box["min"]..box["max"] and drops the vertices nobody uses."""
     low, high = box["min"], box["max"]
-    kept = []
+    kept, kept_corners = [], []
     for i in range(0, len(indices), 3):
         triangle = indices[i:i + 3]
         centre = [sum(positions[v][axis] for v in triangle) / 3 for axis in range(3)]
         if all(low[axis] <= centre[axis] <= high[axis] for axis in range(3)):
             kept += triangle
+            kept_corners += corners[i:i + 3]
     if not kept:
         raise ValueError("The crop box keeps no triangles")
     remap = {}
     for v in kept:
         remap.setdefault(v, len(remap))
     order = sorted(remap, key=remap.get)
-    return ([positions[v] for v in order], [normals[v] for v in order], [uvs[v] for v in order], [remap[v] for v in kept])
+    return ([positions[v] for v in order], [normals[v] for v in order], kept_corners, [remap[v] for v in kept])
+
+
+def wrap_triangles(uvs, triangle_indices):
+    """Shifts each triangle's UVs by whole repeats so they start in the first one. Returns the corner UVs and how many
+    repeats across and down the widest triangle still spans."""
+    corners, across, down = [], 1, 1
+    for i in range(0, len(triangle_indices), 3):
+        triangle = [uvs[v] for v in triangle_indices[i:i + 3]]
+        shift_u = math.floor(min(u for u, _ in triangle) + 1e-4)
+        shift_v = math.floor(min(v for _, v in triangle) + 1e-4)
+        shifted = [(u - shift_u, v - shift_v) for u, v in triangle]
+        across = max(across, math.ceil(max(u for u, _ in shifted) - 1e-4))
+        down = max(down, math.ceil(max(v for _, v in shifted) - 1e-4))
+        corners += shifted
+    return corners, across, down
 
 
 def main(input_path, output_dir, name):
@@ -181,7 +206,8 @@ def main(input_path, output_dir, name):
     # One plain texture is copied as-is, anything else goes into an atlas.
     use_atlas = len(sources) > 1 or sources[0][0] == "colour" or tuple(sources[0][2]) != (1.0, 1.0, 1.0, 1.0)
 
-    positions, normals, uvs, indices = [], [], [], []
+    positions, normals, corners, indices = [], [], [], []
+    corner_sources, repeats = [], {}
     for (node_index, primitive), source in zip(parts, part_sources):
         matrix = world_matrix(gltf, node_index)
         offset = len(positions)
@@ -190,13 +216,26 @@ def main(input_path, output_dir, name):
         positions += [transform(matrix, p, 1.0) for p in part_positions]
         normals += [normalize(transform(matrix, n, 0.0)) for n in read_accessor(gltf, binary, attributes["NORMAL"])]
         part_uvs = read_accessor(gltf, binary, attributes["TEXCOORD_0"]) if "TEXCOORD_0" in attributes and source[0] == "image" else [(0.5, 0.5)] * len(part_positions)
+        part_indices = [i[0] for i in read_accessor(gltf, binary, primitive["indices"])]
         if use_atlas:
-            if any(not (-0.001 <= u <= 1.001 and -0.001 <= v <= 1.001) for u, v in part_uvs):
-                raise ValueError("UVs outside 0..1 repeat the texture and cannot be packed into an atlas")
-            column, columns = sources.index(source), len(sources)
-            part_uvs = [((min(max(u, 0.0), 1.0) + column) / columns, v) for u, v in part_uvs]
-        uvs += part_uvs
-        indices += [offset + i[0] for i in read_accessor(gltf, binary, primitive["indices"])]
+            part_corners, across, down = wrap_triangles(part_uvs, part_indices)
+            known = repeats.get(source, (1, 1))
+            repeats[source] = (max(known[0], across), max(known[1], down))
+        else:
+            part_corners = [part_uvs[i] for i in part_indices]
+        corners += part_corners
+        corner_sources += [source] * len(part_indices)
+        indices += [offset + i for i in part_indices]
+
+    if use_atlas:
+        columns = len(sources)
+        uvs = []
+        for (u, v), source in zip(corners, corner_sources):
+            across, down = repeats[source]
+            u = min(max(u / across, 0.0), 1.0)
+            v = min(max(v / down, 0.0), 1.0)
+            uvs.append(((u + sources.index(source)) / columns, v))
+        corners = uvs
 
     minimum = [min(p[axis] for p in positions) for axis in range(3)]
     maximum = [max(p[axis] for p in positions) for axis in range(3)]
@@ -206,7 +245,7 @@ def main(input_path, output_dir, name):
 
     crop_file = input_path.with_suffix(".crop.json")
     if crop_file.exists():
-        positions, normals, uvs, indices = crop(positions, normals, uvs, indices, json.loads(crop_file.read_text()))
+        positions, normals, corners, indices = crop(positions, normals, corners, indices, json.loads(crop_file.read_text()))
         minimum = [min(p[axis] for p in positions) for axis in range(3)]
         maximum = [max(p[axis] for p in positions) for axis in range(3)]
         cropped_height = maximum[1] - minimum[1]
@@ -219,18 +258,19 @@ def main(input_path, output_dir, name):
     # Unity names the mesh after the group, not the object.
     lines = [f"o {name}", f"g {name}"]
     lines += [f"v {x:.6f} {y:.6f} {z:.6f}" for x, y, z in positions]
-    # glTF puts the UV origin top-left, OBJ bottom-left.
-    lines += [f"vt {u:.6f} {1.0 - v:.6f}" for u, v in uvs]
+    # glTF puts the UV origin top-left, OBJ bottom-left. UVs are per corner, so a vertex may carry several.
+    lines += [f"vt {u:.6f} {1.0 - v:.6f}" for u, v in corners]
     lines += [f"vn {x:.6f} {y:.6f} {z:.6f}" for x, y, z in normals]
     lines += [f"vn {-x:.6f} {-y:.6f} {-z:.6f}" for x, y, z in normals]
     for i in range(0, len(indices), 3):
         a, b, c = (index + 1 for index in indices[i : i + 3])
-        lines.append(f"f {a}/{a}/{a} {b}/{b}/{b} {c}/{c}/{c}")
-        lines.append(f"f {a}/{a}/{a + vertex_count} {c}/{c}/{c + vertex_count} {b}/{b}/{b + vertex_count}")
+        ta, tb, tc = i + 1, i + 2, i + 3
+        lines.append(f"f {a}/{ta}/{a} {b}/{tb}/{b} {c}/{tc}/{c}")
+        lines.append(f"f {a}/{ta}/{a + vertex_count} {c}/{tc}/{c + vertex_count} {b}/{tb}/{b + vertex_count}")
     (output_dir / f"{name}.obj").write_text("\n".join(lines) + "\n", encoding="ascii")
 
     if use_atlas:
-        (output_dir / f"{name}_albedo.png").write_bytes(build_atlas(gltf, binary, sources))
+        (output_dir / f"{name}_albedo.png").write_bytes(build_atlas(gltf, binary, sources, repeats))
     else:
         image, data = image_bytes(gltf, binary, sources[0][1])
         extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"

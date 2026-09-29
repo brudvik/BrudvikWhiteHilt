@@ -268,6 +268,10 @@
     <Compile Include="Patches\Sound\IndoorSoundPatches.cs" />
     <Compile Include="Drops\FloatingItems.cs" />
     <Compile Include="Patches\Drops\FloatingItemsPatch.cs" />
+    <Compile Include="Pieces\Waste\WasteWell.cs" />
+    <Compile Include="Pieces\Waste\WasteWellComponent.cs" />
+    <Compile Include="Pieces\Waste\WasteWellSettings.cs" />
+    <Compile Include="Patches\Waste\WasteWellPatches.cs" />
     <Compile Include="Backpack\BackpackLayout.cs" />
     <Compile Include="Backpack\BackpackSettings.cs" />
     <Compile Include="Backpack\FoodSlots.cs" />
