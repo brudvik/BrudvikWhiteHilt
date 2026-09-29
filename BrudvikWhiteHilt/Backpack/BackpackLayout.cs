@@ -16,13 +16,28 @@ public enum SlotKind
     Grid,
 
     /// <summary>The stored hotbar, swapped with the first row.</summary>
-    Hotbar
+    Hotbar,
+
+    /// <summary>The worn helmet.</summary>
+    Helmet,
+
+    /// <summary>The worn chest armor.</summary>
+    Chest,
+
+    /// <summary>The worn leg armor.</summary>
+    Legs,
+
+    /// <summary>The worn cape.</summary>
+    Cape,
+
+    /// <summary>The worn trinket.</summary>
+    Trinket
 }
 
 /// <summary>
 /// The rows of the local player's inventory. The visible rows are the vanilla rows (4, more when bought from a trader)
-/// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar,
-/// so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
+/// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar
+/// and the equipment slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
 /// </summary>
 public static class BackpackLayout
 {
@@ -35,8 +50,11 @@ public static class BackpackLayout
     /// <summary>Row of the stored hotbar.</summary>
     public const int HotbarRow = MaxVisibleRows;
 
+    /// <summary>Row of the equipment slots: helmet, chest, legs, cape and trinket.</summary>
+    public const int GearRow = HotbarRow + 1;
+
     /// <summary>Rows of the player inventory, visible and hidden.</summary>
-    public const int TotalRows = HotbarRow + 1;
+    public const int TotalRows = GearRow + 1;
 
     private const string VanillaRowsKey = "invrows";
     private const int DefaultVanillaRows = 4;
@@ -102,7 +120,46 @@ public static class BackpackLayout
             return SlotKind.Grid;
         }
 
-        return pos.y == HotbarRow ? SlotKind.Hotbar : SlotKind.Void;
+        if (pos.y == HotbarRow)
+        {
+            return SlotKind.Hotbar;
+        }
+
+        if (pos.y == GearRow)
+        {
+            return pos.x switch
+            {
+                0 => SlotKind.Helmet,
+                1 => SlotKind.Chest,
+                2 => SlotKind.Legs,
+                3 => SlotKind.Cape,
+                4 => SlotKind.Trinket,
+                _ => SlotKind.Void
+            };
+        }
+
+        return SlotKind.Void;
+    }
+
+    /// <summary>
+    /// The equipment slot an item is worn in, if any.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <param name="slot">The slot's position.</param>
+    /// <returns>True for helmets, chest and leg armor, capes and trinkets.</returns>
+    public static bool TryGetGearSlot(ItemDrop.ItemData item, out Vector2i slot)
+    {
+        int column = item?.m_shared.m_itemType switch
+        {
+            ItemDrop.ItemData.ItemType.Helmet => 0,
+            ItemDrop.ItemData.ItemType.Chest => 1,
+            ItemDrop.ItemData.ItemType.Legs => 2,
+            ItemDrop.ItemData.ItemType.Shoulder => 3,
+            ItemDrop.ItemData.ItemType.Trinket => 4,
+            _ => -1
+        };
+        slot = new Vector2i(column, GearRow);
+        return column >= 0;
     }
 
     /// <summary>
@@ -117,6 +174,8 @@ public static class BackpackLayout
         return KindAt(pos, VisibleRows(player)) switch
         {
             SlotKind.Grid or SlotKind.Hotbar => true,
+            SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
+                TryGetGearSlot(item, out Vector2i slot) && slot == pos,
             _ => false
         };
     }
@@ -183,6 +242,7 @@ public static class BackpackLayout
             BackpackGui.ResizeWindow(InventoryGui.instance, rows);
         }
 
+        GearSlots.MoveWornIntoSlots(player);
         MoveMisplacedItems(player, rows);
     }
 

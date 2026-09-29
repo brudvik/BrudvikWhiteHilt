@@ -6,15 +6,40 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
-/// Lays out the player's inventory grid: hides the rows not in use and shows the stored hotbar under the grid.
-/// The slots stay vanilla inventory elements, so dragging, tooltips and right-click work as usual.
+/// Lays out the player's inventory grid: hides the rows not in use, shows the stored hotbar under the grid and moves the
+/// equipment slots into a panel next to the inventory. The slots stay vanilla inventory elements, so dragging, tooltips
+/// and right-click work as usual.
 /// </summary>
 public static class BackpackGui
 {
     /// <summary>Space between the grid and the stored hotbar, for its label.</summary>
     public const float BarGap = 26f;
 
+    private const float Padding = 14f;
+    private const float TitleHeight = 24f;
+    private const float SectionGap = 8f;
+    private const int PanelColumns = 5;
+
+    private static readonly Color PlaceholderColor = new(1f, 1f, 1f, 0.2f);
+
+    private static readonly PanelSection[] sections =
+    {
+        new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5))
+    };
+
+    private static readonly Dictionary<SlotKind, SlotLook> looks = new()
+    {
+        { SlotKind.Helmet, new SlotLook("HelmetLeather", "$whitehilt_backpack_helmet") },
+        { SlotKind.Chest, new SlotLook("ArmorLeatherChest", "$whitehilt_backpack_chest") },
+        { SlotKind.Legs, new SlotLook("ArmorLeatherLegs", "$whitehilt_backpack_legs") },
+        { SlotKind.Cape, new SlotLook("CapeDeerHide", "$whitehilt_backpack_cape") },
+        { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") }
+    };
+
+    private static readonly Dictionary<Vector2i, Vector2i> panelPlaces = BuildPanelPlaces();
+
     private static Text barLabel;
+    private static RectTransform panel;
 
     /// <summary>
     /// Sizes the inventory window for the visible rows and the stored hotbar.
@@ -35,17 +60,23 @@ public static class BackpackGui
     public static void Arrange(InventoryGrid grid, Player player)
     {
         List<InventoryElement> elements = grid.m_elements;
-        if (elements.Count != BackpackLayout.Width * BackpackLayout.TotalRows)
+        InventoryGui gui = InventoryGui.instance;
+        if (gui == null || elements.Count != BackpackLayout.Width * BackpackLayout.TotalRows)
         {
             return;
         }
 
         int rows = BackpackLayout.VisibleRows(player);
-        float barOffset = rows * grid.m_elementSpace + BarGap;
+        float step = grid.m_elementSpace;
+        float barOffset = rows * step + BarGap;
+        Vector2 size = ((RectTransform)elements[0].transform).rect.size;
+        EnsurePanel(gui, size, step);
+
         foreach (InventoryElement element in elements)
         {
             Vector2i pos = element.Position;
-            switch (BackpackLayout.KindAt(pos, rows))
+            SlotKind kind = BackpackLayout.KindAt(pos, rows);
+            switch (kind)
             {
                 case SlotKind.Grid:
                     SetActive(element, true);
@@ -55,14 +86,123 @@ public static class BackpackGui
                     RectTransform top = (RectTransform)elements[pos.x].transform;
                     Place((RectTransform)element.transform, top.anchoredPosition + new Vector2(0f, -barOffset));
                     break;
-                default:
+                case SlotKind.Void:
                     SetActive(element, false);
+                    break;
+                default:
+                    SetActive(element, panelPlaces.ContainsKey(pos));
+                    PlaceInPanel(element, size, step);
+                    ShowPlaceholder(element, kind);
                     break;
             }
         }
 
-        grid.m_gridRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (rows + 1) * grid.m_elementSpace + BarGap);
+        grid.m_gridRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (rows + 1) * step + BarGap);
         UpdateBarLabel(grid, player, rows);
+    }
+
+    private static Vector2i[] Row(int y, int fromX, int count)
+    {
+        Vector2i[] slots = new Vector2i[count];
+        for (int i = 0; i < count; i++)
+        {
+            slots[i] = new Vector2i(fromX + i, y);
+        }
+
+        return slots;
+    }
+
+    private static Dictionary<Vector2i, Vector2i> BuildPanelPlaces()
+    {
+        Dictionary<Vector2i, Vector2i> places = new();
+        for (int section = 0; section < sections.Length; section++)
+        {
+            for (int column = 0; column < sections[section].Slots.Length; column++)
+            {
+                places[sections[section].Slots[column]] = new Vector2i(column, section);
+            }
+        }
+
+        return places;
+    }
+
+    private static float SectionTop(int section, float slotHeight)
+    {
+        return Padding + section * (TitleHeight + slotHeight + SectionGap);
+    }
+
+    private static void EnsurePanel(InventoryGui gui, Vector2 size, float step)
+    {
+        if (panel == null || panel.parent != gui.m_player)
+        {
+            float width = Padding * 2f + (PanelColumns - 1) * step + size.x;
+            float height = SectionTop(sections.Length, size.y) - SectionGap + Padding;
+            GameObject go = GUIManager.Instance.CreateWoodpanel(gui.m_player, new Vector2(1f, 1f), new Vector2(1f, 1f), Vector2.zero,
+                width, height, false);
+            go.name = "WhiteHiltEquipmentPanel";
+            panel = (RectTransform)go.transform;
+            panel.pivot = new Vector2(0f, 1f);
+            for (int i = 0; i < sections.Length; i++)
+            {
+                AddTitle(sections[i].Title, width - Padding * 2f, SectionTop(i, size.y));
+            }
+        }
+
+        Place(panel, new Vector2(BackpackSettings.PanelOffsetX.Value, BackpackSettings.PanelOffsetY.Value));
+    }
+
+    private static void AddTitle(string title, float width, float top)
+    {
+        GameObject go = GUIManager.Instance.CreateText(Localization.instance.Localize(title), panel, new Vector2(0f, 1f), new Vector2(0f, 1f),
+            Vector2.zero, GUIManager.Instance.AveriaSerifBold, 16, GUIManager.Instance.ValheimOrange, true, Color.black, width, TitleHeight, false);
+        Text text = go.GetComponent<Text>();
+        text.alignment = TextAnchor.MiddleLeft;
+        text.raycastTarget = false;
+        text.rectTransform.pivot = new Vector2(0f, 1f);
+        text.rectTransform.anchoredPosition = new Vector2(Padding, -top);
+    }
+
+    private static void PlaceInPanel(InventoryElement element, Vector2 size, float step)
+    {
+        if (!panelPlaces.TryGetValue(element.Position, out Vector2i place))
+        {
+            return;
+        }
+
+        RectTransform rect = (RectTransform)element.transform;
+        if (rect.parent != panel)
+        {
+            rect.SetParent(panel, false);
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(0f, 1f);
+        }
+
+        float left = Padding + place.x * step;
+        float top = -(SectionTop(place.y, size.y) + TitleHeight);
+        Place(rect, new Vector2(left + rect.pivot.x * size.x, top - (1f - rect.pivot.y) * size.y));
+    }
+
+    private static void ShowPlaceholder(InventoryElement element, SlotKind kind)
+    {
+        if (element.m_used || !looks.TryGetValue(kind, out SlotLook look))
+        {
+            return;
+        }
+
+        if (look.Icon == null && ObjectDB.instance != null)
+        {
+            look.Icon = ObjectDB.instance.GetItemPrefab(look.Prefab)?.GetComponent<ItemDrop>()?.m_itemData.GetIcon();
+        }
+
+        if (look.Icon != null)
+        {
+            element.m_icon.enabled = true;
+            element.m_icon.sprite = look.Icon;
+            element.m_icon.color = PlaceholderColor;
+        }
+
+        element.m_tooltip.m_topic = Localization.instance.Localize(look.Name);
+        element.m_tooltip.m_text = Localization.instance.Localize("$whitehilt_backpack_slot_hint");
     }
 
     private static void UpdateBarLabel(InventoryGrid grid, Player player, int rows)
@@ -110,5 +250,33 @@ public static class BackpackGui
         {
             rect.anchoredPosition = position;
         }
+    }
+
+    private sealed class PanelSection
+    {
+        public PanelSection(string title, Vector2i[] slots)
+        {
+            Title = title;
+            Slots = slots;
+        }
+
+        public string Title { get; }
+
+        public Vector2i[] Slots { get; }
+    }
+
+    private sealed class SlotLook
+    {
+        public SlotLook(string prefab, string name)
+        {
+            Prefab = prefab;
+            Name = name;
+        }
+
+        public string Prefab { get; }
+
+        public string Name { get; }
+
+        public Sprite Icon { get; set; }
     }
 }

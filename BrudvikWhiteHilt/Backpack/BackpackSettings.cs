@@ -25,6 +25,12 @@ public static class BackpackSettings
     /// <summary>Switches between the travel bar and the build bar.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyHotbar { get; private set; }
 
+    /// <summary>How far right of the inventory the equipment panel sits.</summary>
+    public static ConfigEntry<float> PanelOffsetX { get; private set; }
+
+    /// <summary>How far up from the top of the inventory the equipment panel sits.</summary>
+    public static ConfigEntry<float> PanelOffsetY { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -39,6 +45,8 @@ public static class BackpackSettings
         AutoSwitchHotbar = WhiteHiltConfig.BindLocal(Section, "AutoSwitchHotbar", true,
             "Switch to the build bar when you take out a hammer, hoe or cultivator, and back to the travel bar when you put it away.");
         ShowHotbarLabel = WhiteHiltConfig.BindLocal(Section, "ShowHotbarLabel", true, "Show which bar is active next to the hotbar.");
+        PanelOffsetX = WhiteHiltConfig.BindLocal(Section, "PanelOffsetX", 12f, "How far right of the inventory the equipment panel sits, in pixels.");
+        PanelOffsetY = WhiteHiltConfig.BindLocal(Section, "PanelOffsetY", 0f, "How far up from the top of the inventory the equipment panel sits, in pixels (negative is down).");
         KeyHotbar = WhiteHiltConfig.BindLocal(KeySection, "SwitchHotbar", new KeyboardShortcut(KeyCode.Alpha9),
             "Switch between the travel bar and the build bar.");
     }
@@ -50,5 +58,12 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_hotbar_short_travel", "Travel");
         Translations.AddEnglish("whitehilt_hotbar_short_build", "Build");
         Translations.AddEnglish("whitehilt_hotbar_stored", "{0}   [{1}] switches");
+        Translations.AddEnglish("whitehilt_backpack_equipment", "Equipment");
+        Translations.AddEnglish("whitehilt_backpack_helmet", "Helmet");
+        Translations.AddEnglish("whitehilt_backpack_chest", "Chest");
+        Translations.AddEnglish("whitehilt_backpack_legs", "Legs");
+        Translations.AddEnglish("whitehilt_backpack_cape", "Cape");
+        Translations.AddEnglish("whitehilt_backpack_trinket", "Trinket");
+        Translations.AddEnglish("whitehilt_backpack_slot_hint", "Drag an item here, or right-click it in your inventory.");
     }
 }

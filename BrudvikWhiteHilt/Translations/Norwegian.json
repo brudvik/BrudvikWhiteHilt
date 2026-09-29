@@ -651,5 +651,12 @@
   "whitehilt_hotbar_build": "Byggelinje",
   "whitehilt_hotbar_short_travel": "Tur",
   "whitehilt_hotbar_short_build": "Bygg",
-  "whitehilt_hotbar_stored": "{0}   [{1}] bytter"
+  "whitehilt_hotbar_stored": "{0}   [{1}] bytter",
+  "whitehilt_backpack_equipment": "Utstyr",
+  "whitehilt_backpack_helmet": "Hjelm",
+  "whitehilt_backpack_chest": "Brynje",
+  "whitehilt_backpack_legs": "Bukse",
+  "whitehilt_backpack_cape": "Kappe",
+  "whitehilt_backpack_trinket": "Smykke",
+  "whitehilt_backpack_slot_hint": "Dra en gjenstand hit, eller høyreklikk den i sekken."
 }
