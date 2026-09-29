@@ -24,6 +24,14 @@ public static class WhiteHiltShipUpgradeSetup
     private const float AnchorRingBelowRail = 0.15f;
     private const float RailBand = 0.4f;
 
+    // On the foredeck planks, in front of the tent (which ends about 2.7 m before the mast). Measured on the longship.
+    private static readonly Vector3 BrazierPosition = new(0f, 0.73f, 4.2f);
+    private const float BrazierHeight = 0.9f;
+    private const float BrazierFlameScale = 0.35f;
+
+    // The top of the coals in Surt's Brazier model, as a fraction of its height.
+    private const float BrazierCoals = 0.85f;
+
     private static readonly string[] wispParts = { "demister_ball (2)", "effects", "Particle System Force Field" };
 
     /// <summary>
@@ -68,7 +76,37 @@ public static class WhiteHiltShipUpgradeSetup
             }
 
             BrightenLantern(ship.transform);
+
+            try
+            {
+                AddBrazier(ship.transform);
+            }
+            catch (Exception ex)
+            {
+                Jotunn.Logger.LogWarning($"White Hilt Ship: the deck brazier has no look: {ex.Message}");
+            }
         }
+    }
+
+    // Surt's Brazier model on the foredeck, in front of the tent, with the campfire's flames and warmth.
+    private static void AddBrazier(Transform root)
+    {
+        Renderer template = root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(renderer => renderer.sharedMaterial != null)
+            ?? throw new InvalidOperationException("no hull renderer under ship/visual");
+        Mesh mesh = ForagingAssets.LoadMesh("eternalfire");
+
+        GameObject brazier = new(WhiteHiltShipUpgrades.BrazierName);
+        brazier.transform.SetParent(root, false);
+        brazier.transform.localPosition = BrazierPosition;
+
+        float scale = BrazierHeight / mesh.bounds.size.y;
+        Vector3 pivot = -(new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale);
+        VisualHelper.CreateModel(brazier.transform, mesh, ForagingAssets.LoadTexture("eternalfire_albedo"), template, pivot, Quaternion.identity, scale);
+
+        Vector3 coals = Vector3.up * (BrazierCoals * BrazierHeight);
+        FireEffects.AddFlames(brazier.transform, "WhiteHiltBrazierFlame", coals, BrazierFlameScale);
+        FireEffects.AddWarmth(brazier.transform, "WhiteHiltBrazierWarmth", coals);
+        brazier.SetActive(false);
     }
 
     // The vanilla trader lamp is dim for a whole deck; its flicker keeps whatever intensity the light starts with.

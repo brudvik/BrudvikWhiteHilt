@@ -161,6 +161,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Mast Wisp** | A wisp at the top of the mast that clears the mist around the ship | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
 | **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes and puts it in the cargo hold. The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
 | **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
+| **Deck Brazier** | An iron brazier on the foredeck that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
 
 The barrels can only be taken off when the extra cargo slots are empty. Taking the anchor off also raises it.
 
@@ -509,6 +510,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Megingjord upgrades at the forge up to quality 4, +50 carry weight per level
 - Home Stone return trip: used again within 2 minutes of going home, it takes you back to where you were
 - Belt Pouch: used once, it gives the character one more inventory row for good
+- Deck Brazier ship upgrade: a fire on the foredeck that burns without fuel, warms the crew and counts for resting
 
 #### Changed
 - The Pathfinder's Amulet costs a Silver Necklace instead of two Amber

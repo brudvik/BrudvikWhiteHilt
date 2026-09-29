@@ -258,3 +258,47 @@ public class ShipDriftAnchor : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     public override bool Enabled => true;
 }
+
+/// <summary>
+/// Sets an iron brazier on the White Hilt Ship's foredeck: it burns without fuel and warms those nearby, counting as a
+/// fire for resting.
+/// </summary>
+public class ShipBrazier : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the brazier in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 6;
+
+    /// <summary>
+    /// Constructor for the ShipBrazier class.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipBrazier(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltShipBrazier";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Deck Brazier";
+
+    /// <inheritdoc/>
+    protected override string Description => "An iron brazier with a surtling ember for the White Hilt Ship. Use it on the mast; it burns on the foredeck without fuel, keeps the crew warm and counts as a fire for resting.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "SurtlingCore";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "Iron", Amount = 4, Recover = false },
+        new() { Item = "Stone", Amount = 10, Recover = false },
+        new() { Item = "SurtlingCore", Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}

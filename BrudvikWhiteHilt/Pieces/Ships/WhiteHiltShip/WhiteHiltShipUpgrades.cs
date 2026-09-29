@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 /// <summary>
 /// Holds the upgrades used on a White Hilt Ship and switches the matching parts on: a lantern that lights at night,
 /// barrels with a bigger cargo hold, a tent that gives shelter, a mast wisp that clears the mist, a fishing net that
-/// fills the hold while sailing and an anchor that holds the ship still.
+/// fills the hold while sailing, an anchor that holds the ship still and a brazier that keeps the crew warm.
 /// The upgrades are a bit mask in the ship's ZDO, so every player sees the same ship.
 /// </summary>
 public class WhiteHiltShipUpgrades : MonoBehaviour
@@ -24,6 +24,11 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     /// Name of the anchor object added to the ship prefab.
     /// </summary>
     public const string AnchorName = "WhiteHiltShipAnchor";
+
+    /// <summary>
+    /// Name of the deck brazier object added to the ship prefab.
+    /// </summary>
+    public const string BrazierName = "WhiteHiltShipBrazier";
 
     /// <summary>
     /// Cargo hold size without barrels (vanilla longship).
@@ -81,6 +86,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject[] barrels = new GameObject[0];
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
+    private GameObject brazier;
     private Ship ship;
     private Rigidbody body;
     private RigidbodyConstraints freeConstraints;
@@ -258,6 +264,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         barrels = storage != null ? storage.Cast<Transform>().Where(child => !child.name.StartsWith("Shield")).Select(child => child.gameObject).ToArray() : barrels;
         tent = customize != null ? customize.Cast<Transform>().Where(IsTentPart).Select(child => child.gameObject).ToArray() : tent;
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
+        brazier = transform.Find(BrazierName)?.gameObject;
 
         if (nview == null || nview.GetZDO() == null)
         {
@@ -305,6 +312,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
             SetActive(mastWisp, Has(ShipMastWisp.Bit));
             SetActive(anchor?.gameObject, Has(ShipDriftAnchor.Bit));
+            SetActive(brazier, Has(ShipBrazier.Bit));
             holdCheckTimer = 0f;
         }
 

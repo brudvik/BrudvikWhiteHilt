@@ -17,7 +17,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem
     /// <summary>
     /// Number of upgrades.
     /// </summary>
-    public const int Count = 6;
+    public const int Count = 7;
 
     private static readonly WhiteHiltShipUpgradeBase[] all = new WhiteHiltShipUpgradeBase[Count];
 

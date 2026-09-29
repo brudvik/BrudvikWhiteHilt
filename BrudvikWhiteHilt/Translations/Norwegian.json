@@ -641,6 +641,8 @@
   "item_whitehiltshipfishingnet_description": "Et garn av skinnstrimler til Hvithjalt-skipet. Bruk det på masta; mens skipet seiler, fanger det fisken i farvannet og legger den i lasterommet.",
   "item_whitehiltshipdriftanchor": "Drivanker",
   "item_whitehiltshipdriftanchor_description": "Et jernanker i kjetting til Hvithjalt-skipet. Bruk det på masta; senk det ved masta, så ligger skipet stille uansett hvordan vinden blåser.",
+  "item_whitehiltshipbrazier": "Dekksgrue",
+  "item_whitehiltshipbrazier_description": "Et fyrfat av jern med en surtlingglo til Hvithjalt-skipet. Bruk det på masta; det brenner på fordekket uten ved, holder mannskapet varmt og teller som bål når du hviler.",
 
   "whitehilt_unlock_start": "Det hvite hjaltet svarer: startutstyr er låst opp",
   "whitehilt_unlock_blackforest": "Det hvite hjaltet svarer: utstyr for Svartskogen er låst opp",

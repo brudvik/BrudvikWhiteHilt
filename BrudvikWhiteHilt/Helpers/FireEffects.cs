@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Helpers;
 
 /// <summary>
-/// Copies the campfire's flames, light, crackle and smoke onto other pieces. Warmth and burning are left out.
+/// Copies the campfire's flames, light, crackle, smoke and warmth onto other pieces. Burning is left out.
 /// </summary>
 public static class FireEffects
 {
@@ -44,6 +44,20 @@ public static class FireEffects
     {
         Transform anchor = CreateAnchor(parent, name, localPosition);
         CopyPart(GetCampfire(), "SmokeSpawner", anchor).transform.localPosition = Vector3.zero;
+        return anchor;
+    }
+
+    /// <summary>
+    /// Adds the campfire's warmth at a point: it keeps people nearby warm and counts as a fire for resting. It does not burn.
+    /// </summary>
+    /// <param name="parent">Object the warmth belongs to.</param>
+    /// <param name="name">Name of the new child.</param>
+    /// <param name="localPosition">Centre of the warm area, in the parent's space.</param>
+    /// <returns>The new child.</returns>
+    public static Transform AddWarmth(Transform parent, string name, Vector3 localPosition)
+    {
+        Transform anchor = CreateAnchor(parent, name, localPosition);
+        CopyPart(GetCampfire(), "FireWarmth", anchor).transform.localPosition = Vector3.zero;
         return anchor;
     }
 
