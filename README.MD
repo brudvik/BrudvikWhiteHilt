@@ -719,6 +719,17 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.15.0 - 2026-09-30
+
+#### Added
+- The Brudvik White Hilt logo: in the main menu with the mod version, and on a black loading screen when entering a world, teleporting and respawning (`Branding` → `LoadingScreenLogo`)
+- White Hilt Banners in white and black, in the normal size and half again as big
+- White Hilt Banner Cape: a white troll hide cape with the logo on the back
+- The logo is the Thunderstore icon and heads this README
+
+#### Changed
+- White Hilt Ship: the sail is white with gold stripes along the edges and the logo in the middle, and the shields along the rail carry the logo, all turned upright
+
 ### v0.14.0 - 2026-09-30
 
 #### Added
