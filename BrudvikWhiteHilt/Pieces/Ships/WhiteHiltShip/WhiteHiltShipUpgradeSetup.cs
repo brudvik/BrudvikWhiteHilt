@@ -21,12 +21,15 @@ public static class WhiteHiltShipUpgradeSetup
     // Where the anchor hangs on the starboard rail: towards the bow as a fraction of the hull's half length, just outside
     // the planks, with its ring a little below the rail top.
     private const float AnchorTowardsBow = 0.55f;
-    private const float AnchorOutside = 0.12f;
+    private const float AnchorOutside = 0.03f;
     private const float AnchorRingBelowRail = 0.15f;
+    private const float AnchorMaxTilt = 30f;
     private const float RailBand = 0.4f;
 
-    // On the starboard deck under the front of the tent, off the walkway and clear of the cargo hatch on the foredeck.
-    private static readonly Vector3 BrazierPosition = new(1.1f, 0.64f, 2.0f);
+    // On the port deck just forward of the cargo crates, out of the walkway; used if the crates are not found.
+    private static readonly Vector3 BrazierFallback = new(-0.9f, 0.64f, -2.2f);
+    private const float DeckHeight = 0.64f;
+    private const float BrazierClearance = 0.15f;
 
     // On the starboard deck just forward of the helm; the cargo crates stand to port.
     private static readonly Vector3 ChestPosition = new(0.9f, 0.64f, -4.6f);
@@ -110,11 +113,13 @@ public static class WhiteHiltShipUpgradeSetup
         Renderer template = HullTemplate(root);
         Mesh mesh = ForagingAssets.LoadMesh("eternalfire");
 
+        float scale = BrazierHeight / mesh.bounds.size.y;
+        float radius = Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z) * scale / 2f;
+
         GameObject brazier = new(WhiteHiltShipUpgrades.BrazierName);
         brazier.transform.SetParent(root, false);
-        brazier.transform.localPosition = BrazierPosition;
+        brazier.transform.localPosition = InFrontOfPortCrates(root, radius);
 
-        float scale = BrazierHeight / mesh.bounds.size.y;
         Vector3 pivot = -(new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale);
         VisualHelper.CreateModel(brazier.transform, mesh, ForagingAssets.LoadTexture("eternalfire_albedo"), template, pivot, Quaternion.identity, scale);
 
@@ -128,6 +133,43 @@ public static class WhiteHiltShipUpgradeSetup
         box.center = new Vector3(0f, BrazierHeight / 2f, 0f);
         box.size = new Vector3(mesh.bounds.size.x * scale, BrazierHeight, mesh.bounds.size.z * scale);
         brazier.SetActive(false);
+    }
+
+    // On the deck just towards the bow from the port-side cargo crates, in ship root space.
+    private static Vector3 InFrontOfPortCrates(Transform root, float radius)
+    {
+        Transform storage = root.Find("ship/visual/Customize/storage");
+        Bounds[] crates = storage == null ? Array.Empty<Bounds>() : storage.GetComponentsInChildren<MeshFilter>(true)
+            .Where(filter => filter.sharedMesh != null)
+            .Select(filter => RootBounds(root, filter))
+            .Where(bounds => bounds.center.x < 0f)
+            .ToArray();
+        if (crates.Length == 0)
+        {
+            Jotunn.Logger.LogWarning("White Hilt Ship: no port crates found, the brazier uses its fallback spot");
+            return BrazierFallback;
+        }
+
+        Bounds all = crates[0];
+        foreach (Bounds bounds in crates.Skip(1))
+        {
+            all.Encapsulate(bounds);
+        }
+
+        return new Vector3(all.center.x, DeckHeight, all.max.z + BrazierClearance + radius);
+    }
+
+    private static Bounds RootBounds(Transform root, MeshFilter filter)
+    {
+        Bounds mesh = filter.sharedMesh.bounds;
+        Bounds result = new(root.InverseTransformPoint(filter.transform.TransformPoint(mesh.center)), Vector3.zero);
+        for (int corner = 0; corner < 8; corner++)
+        {
+            Vector3 local = mesh.center + Vector3.Scale(mesh.extents, new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1));
+            result.Encapsulate(root.InverseTransformPoint(filter.transform.TransformPoint(local)));
+        }
+
+        return result;
     }
 
     // The deck portal: a thin box on the deck planks that players hover and stand on, on the layer of the deck crates.
@@ -307,23 +349,26 @@ public static class WhiteHiltShipUpgradeSetup
     {
         Renderer template = HullTemplate(root);
         Mesh mesh = ForagingAssets.LoadMesh("shipanchor");
-        Vector3 ring = FindStarboardRail(root);
+        Vector3 ring = FindStarboardRail(root, out float tilt);
 
+        // Hung from its ring and tilted so it lies along the hull as the planks slope in below the rail.
         GameObject anchor = new(WhiteHiltShipUpgrades.AnchorName);
         anchor.transform.SetParent(root, false);
-        anchor.transform.localPosition = new Vector3(ring.x + AnchorOutside, ring.y - AnchorRingBelowRail - AnchorHeight, ring.z);
+        anchor.transform.localPosition = new Vector3(ring.x + AnchorOutside, ring.y - AnchorRingBelowRail, ring.z);
+        anchor.transform.localRotation = Quaternion.Euler(0f, 0f, -tilt);
 
         // The anchor is flat along z; turned a quarter, its broad side faces out from the hull.
         Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
         float scale = AnchorHeight / mesh.bounds.size.y;
-        Vector3 pivot = -(rotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale));
+        Vector3 pivot = -(rotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale)) + Vector3.down * AnchorHeight;
         VisualHelper.CreateModel(anchor.transform, mesh, ForagingAssets.LoadTexture("shipanchor_albedo"), template, pivot, rotation, scale);
         anchor.SetActive(false);
     }
 
     // The top of the starboard rail near the bow, in ship root space, read from the hull mesh: the widest vertex in a
-    // band across the hull, and the highest vertex along that side.
-    private static Vector3 FindStarboardRail(Transform root)
+    // band across the hull, and the highest vertex along that side. Tilt is the hull's inward slope over the anchor's
+    // height, in degrees.
+    private static Vector3 FindStarboardRail(Transform root, out float tilt)
     {
         Transform visual = root.Find("ship/visual") ?? throw new InvalidOperationException("ship/visual not found");
         Transform tent = visual.Find("Customize");
@@ -345,6 +390,11 @@ public static class WhiteHiltShipUpgradeSetup
 
         float x = band.Max(point => point.x);
         float y = band.Where(point => point.x > x - RailBand).Max(point => point.y);
+
+        float bottom = y - AnchorRingBelowRail - AnchorHeight;
+        Vector3[] low = band.Where(point => point.x > 0f && Mathf.Abs(point.y - bottom) < RailBand).ToArray();
+        tilt = low.Length == 0 ? 0f
+            : Mathf.Clamp(Mathf.Atan2(x - low.Max(point => point.x), y - bottom) * Mathf.Rad2Deg, 0f, AnchorMaxTilt);
         return new Vector3(x, y, z);
     }
 

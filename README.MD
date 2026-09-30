@@ -684,6 +684,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Console command `whitehilt_rest` to check the resting pose
 
 #### Changed
+- White Hilt Ship: the deck brazier stands on the port side just in front of the cargo crates, out of the walkway
+- White Hilt Ship: the drift anchor hangs closer to the hull and follows its slope
 - Dog: stands closer to the water bowl when drinking
 - Dog: a playful puppy's hop is a smooth arc of the body instead of the wolf's jump
 
