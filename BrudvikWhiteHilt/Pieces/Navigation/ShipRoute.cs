@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.Ships;
+using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,6 +39,7 @@ public class ShipRoute : MonoBehaviour
     private Ship ship;
     private ShipChartTable table;
     private ShipAssist assist;
+    private WhiteHiltShipUpgrades upgrades;
     private uint readRevision = uint.MaxValue;
     private float nextCheck;
 
@@ -144,6 +146,7 @@ public class ShipRoute : MonoBehaviour
         ship = GetComponent<Ship>();
         table = GetComponent<ShipChartTable>();
         assist = GetComponent<ShipAssist>();
+        upgrades = GetComponent<WhiteHiltShipUpgrades>();
         if (nview == null || nview.GetZDO() == null)
         {
             return;
@@ -215,6 +218,12 @@ public class ShipRoute : MonoBehaviour
         if (ship.m_players.Count == 0 || ship.HaveControllingPlayer() || table == null || !table.Installed)
         {
             StopSailing(zdo, ship.HaveControllingPlayer() ? "$whitehilt_route_taken" : null);
+            return;
+        }
+
+        if (upgrades != null && upgrades.IsAnchored)
+        {
+            StopSailing(zdo, "$whitehilt_route_anchored");
             return;
         }
 
@@ -305,6 +314,7 @@ public class ShipRoute : MonoBehaviour
         zdo.Set(pointKey, 0);
         zdo.Set(sailingKey, true);
         assist?.StopHolding();
+        upgrades?.WeighAnchor();
         nview.InvokeRPC(ZNetView.Everybody, MessageRpc, "$whitehilt_route_started");
     }
 

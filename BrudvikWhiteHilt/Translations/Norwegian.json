@@ -677,6 +677,7 @@
   "whitehilt_route_stopped": "Skipet slutter å seile ruten",
   "whitehilt_route_taken": "Du tar roret: skipet slutter å seile ruten",
   "whitehilt_route_shallow": "Grunt vann forut: skipet stopper",
+  "whitehilt_route_anchored": "Ankeret er senket: skipet slutter å seile ruten",
   "whitehilt_compass": "N,NØ,Ø,SØ,S,SV,V,NV",
   "whitehilt_shiphud_wind": "Vind fra {0}",
   "whitehilt_shiphud_course": "Holder kurs {0}°",

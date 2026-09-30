@@ -303,6 +303,17 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Weighs the anchor. Only on the ship's owner.
+    /// </summary>
+    public void WeighAnchor()
+    {
+        if (nview != null && nview.IsValid() && nview.IsOwner())
+        {
+            nview.GetZDO().Set(AnchorZdoKey, false);
+        }
+    }
+
     private void Awake()
     {
         nview = GetComponent<ZNetView>();

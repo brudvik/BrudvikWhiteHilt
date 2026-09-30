@@ -84,5 +84,6 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_route_stopped", "The ship stops sailing the route");
         Translations.AddEnglish("whitehilt_route_taken", "You take the helm: the ship stops sailing the route");
         Translations.AddEnglish("whitehilt_route_shallow", "Shallow water ahead: the ship stops");
+        Translations.AddEnglish("whitehilt_route_anchored", "The anchor is down: the ship stops sailing the route");
     }
 }
