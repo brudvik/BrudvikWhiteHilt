@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfTyr;
 public class GiftOfTyrEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -37,7 +32,6 @@ public class GiftOfTyrEffect : SE_Stats
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
         m_addMaxCarryWeight = 100f; // Stand your ground with heavy loads
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfSurt;
 public class GiftOfSurtEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -44,7 +39,6 @@ public class GiftOfSurtEffect : SE_Stats
             new HitData.DamageModPair { m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Immune }
         };
         
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

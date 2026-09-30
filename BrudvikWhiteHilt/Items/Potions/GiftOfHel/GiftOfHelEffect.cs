@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfHel;
 public class GiftOfHelEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Whether the resurrection has been used.
     /// </summary>
     private bool m_resurrectionUsed = false;
@@ -42,7 +37,6 @@ public class GiftOfHelEffect : SE_Stats
         m_activationAnimation = "emote_challenge";
         m_ttl = 1800f; // 30 minutes or until triggered
         m_resurrectionUsed = false;
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

@@ -9,11 +9,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfLoki;
 public class GiftOfLokiEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -35,7 +30,6 @@ public class GiftOfLokiEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

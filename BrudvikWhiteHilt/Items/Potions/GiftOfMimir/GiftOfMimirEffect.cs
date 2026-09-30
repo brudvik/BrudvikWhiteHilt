@@ -15,11 +15,6 @@ public class GiftOfMimirEffect : SE_Stats
     private const float CreatureRevealInterval = 1f;
     private const float CreatureRange = 100f;
 
-    /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
     private readonly List<Minimap.PinData> creaturePins = new();
     private readonly List<Character> nearbyCharacters = new();
     private float m_revealTimer = 0f;
@@ -49,7 +44,6 @@ public class GiftOfMimirEffect : SE_Stats
         m_ttl = 1200f;
         m_revealTimer = 0f;
         m_creatureTimer = 0f;
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

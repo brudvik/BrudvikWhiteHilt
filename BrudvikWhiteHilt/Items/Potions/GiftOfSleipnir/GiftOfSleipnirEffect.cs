@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfSleipnir;
 public class GiftOfSleipnirEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -38,7 +33,6 @@ public class GiftOfSleipnirEffect : SE_Stats
         m_ttl = 1200f;
         m_speedModifier = 0.5f;
         m_jumpModifier = new UnityEngine.Vector3(0, 1.5f, 0);
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

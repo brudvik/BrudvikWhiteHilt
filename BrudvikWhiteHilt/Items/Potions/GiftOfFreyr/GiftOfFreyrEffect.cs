@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfFreyr;
 public class GiftOfFreyrEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -39,7 +34,6 @@ public class GiftOfFreyrEffect : SE_Stats
         m_healthRegenMultiplier = 2f;
         m_staminaRegenMultiplier = 2f;
         m_addMaxCarryWeight = 150f; // Carry more resources
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

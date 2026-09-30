@@ -15,11 +15,6 @@ public class GiftOfHuginEffect : SE_Stats
     private Player player;
 
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -39,7 +34,6 @@ public class GiftOfHuginEffect : SE_Stats
     {
         m_activationAnimation = "emote_challenge";
         m_ttl = 1f; // Instant effect, just need a brief duration
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

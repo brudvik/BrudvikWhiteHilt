@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfIdunn;
 public class GiftOfIdunnEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -39,7 +34,6 @@ public class GiftOfIdunnEffect : SE_Stats
         m_healthRegenMultiplier = 5f;   // 5x health regen
         m_staminaRegenMultiplier = 5f;  // 5x stamina regen
         m_eitrRegenMultiplier = 5f;     // 5x eitr regen
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

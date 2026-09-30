@@ -10,11 +10,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfBaldur;
 public class GiftOfBaldurEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -38,7 +33,6 @@ public class GiftOfBaldurEffect : SE_Stats
         m_ttl = 1200f;
         m_stealthModifier = -0.99f; // Nearly impossible to detect
         m_noiseModifier = -0.99f;   // Nearly silent
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

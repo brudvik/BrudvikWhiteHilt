@@ -11,11 +11,6 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfRatatoskr;
 public class GiftOfRatatoskrEffect : SE_Stats
 {
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -40,7 +35,6 @@ public class GiftOfRatatoskrEffect : SE_Stats
         m_speedModifier = 0.75f;
         m_runStaminaDrainModifier = -0.8f;
         m_jumpModifier = new Vector3(0, 0.5f, 0);
-        EffectHash = GetHashCode();
     }
 
     /// <summary>

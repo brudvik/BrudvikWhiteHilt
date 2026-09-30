@@ -20,11 +20,6 @@ public class GiftOfFenrirEffect : SE_Stats
     public const float LifeSteal = 0.15f;
 
     /// <summary>
-    /// The hash of the effect. This is used to identify the effect.
-    /// </summary>
-    public int? EffectHash = null;
-
-    /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
     /// <param name="effectName"></param>
@@ -47,7 +42,6 @@ public class GiftOfFenrirEffect : SE_Stats
         m_activationAnimation = "emote_challenge";
         m_ttl = 1200f;
         m_speedModifier = 0.25f; // Faster movement
-        EffectHash = GetHashCode();
     }
 
     /// <summary>
