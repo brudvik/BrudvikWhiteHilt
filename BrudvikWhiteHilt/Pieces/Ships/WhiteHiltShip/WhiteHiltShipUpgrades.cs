@@ -577,7 +577,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
         float skill = FishingSkill();
         int count = Random.value < SkillDoubleChance * skill ? 2 : 1;
-        Catch(inventory, fish, count);
+        bool caught = Catch(inventory, fish, count);
         if (ShipSettings.FishingNetBycatch.Value)
         {
             if (Random.value < SeaweedChance)
@@ -592,17 +592,17 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         Player player = Player.m_localPlayer;
-        if (player != null && ship.IsPlayerInBoat(player))
+        if (caught && player != null && ship.IsPlayerInBoat(player))
         {
             player.RaiseSkill(Skills.SkillType.Fishing, SkillRaise);
         }
     }
 
-    private void Catch(Inventory inventory, GameObject prefab, int count)
+    private bool Catch(Inventory inventory, GameObject prefab, int count)
     {
         if (prefab == null || !inventory.CanAddItem(prefab, count))
         {
-            return;
+            return false;
         }
 
         inventory.AddItem(prefab, count);
@@ -612,6 +612,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             string amount = count > 1 ? $" x{count}" : string.Empty;
             Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize($"$msg_whitehilt_ship_net_catch: {itemName}{amount}"));
         }
+
+        return true;
     }
 
     private static string PickFish(Heightmap.Biome biome)
