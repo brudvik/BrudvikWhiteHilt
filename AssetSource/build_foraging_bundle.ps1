@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    Builds BrudvikWhiteHilt/Assets/whitehilt_foraging from the models in AssetSource/Models.
+    Builds BrudvikWhiteHilt/Assets/whitehilt_foraging from the models in AssetSource/Models and the sounds in AssetSource/Sounds.
 .DESCRIPTION
-    Converts the glTF models to OBJ/PNG, creates the Unity project in BrudvikWhiteHiltUnity (git-ignored) on first run,
+    Converts the glTF models to OBJ/PNG, copies the .wav sounds, creates the Unity project in BrudvikWhiteHiltUnity (git-ignored) on first run,
     builds the asset bundle in batch mode and copies it into the mod's embedded assets.
     Unity must be the same version as Valheim (see valheim_Data/../UnityPlayer.dll).
 #>
@@ -51,6 +51,14 @@ foreach ($model in $models) {
     python (Join-Path $PSScriptRoot 'convert_glb.py') $model.FullName $foragingAssets $model.BaseName.ToLowerInvariant()
     if ($LASTEXITCODE -ne 0) {
         throw "Model conversion failed for $($model.Name)"
+    }
+}
+
+# The file name, in lower case, becomes the AudioClip name.
+$sounds = Join-Path $PSScriptRoot 'Sounds'
+if (Test-Path $sounds) {
+    foreach ($sound in Get-ChildItem $sounds -Filter *.wav) {
+        Copy-Item $sound.FullName (Join-Path $foragingAssets $sound.Name.ToLowerInvariant()) -Force
     }
 }
 

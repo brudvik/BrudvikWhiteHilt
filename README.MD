@@ -500,6 +500,68 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 
 ---
 
+### 🐕 DOG
+
+Buy a puppy from the Bog Witch, carry it home in your pack and let it out. It grows up over ten days if you care for it, and a grown dog follows you and fights for you.
+
+- **Buying**: the Bog Witch sells a brown, a black and white and a golden puppy for 1000 coins each. You can have one dog at a time. When it dies or runs away, you can buy a new one. A puppy from a litter or one left behind by an old dog can only be let out by a player who has no dog.
+- **Letting it out**: use the puppy from the hotbar or right-click it in the inventory. You must be under the open sky, and you give it a name. The nearest Dog House within 30 m is its home; without one, home is where you let it out. A Dog House you build near its home later becomes the new home.
+- **Care**: the dog needs food, a Dog House and a Dog Bed under a roof within 30 m of home. It eats meat from the Dog Bowl, a Feeding Trough or the ground. Its hover text shows how far it has grown and what it lacks.
+- **Growing**: the puppy only grows on days it has eaten and has both a house and a bed. It stays around home, cannot be commanded and does not fight. At 100% it is a grown dog about the size of a large hound. Use it to make it follow you or stay, like a tame wolf.
+- **Rest**: at night the dog walks home and sleeps in its bed. When you sleep in a bed within 30 m of its home, it lies down on the floor beside you instead. Without a bed it sleeps in the house, and in the rain it shelters there. It gets up at dawn, when you tell it to follow you, when it is hurt and when it sees an enemy.
+- **Neglect**: a dog that has had no house or bed at home for 3 days runs away. A dog that has not eaten for 15 days starves to death. While the dog's area is not loaded, at most one day counts, so a long journey does not kill it.
+- **Death**: a dead dog leaves its remains, which carry its name and how many days it lived. Cut a Dog's Gravestone from them at the stonecutter, and raise it with the hammer as a Dog's Grave: the name and age are chiselled into the stone. The dog does not come back.
+- **Learning**: the Dog House, Dog Bed, Dog Bowl, Dog Water Bowl, Dog's Grave, Dog Whistle, collars, Bone Broth, gravestone, Stick, Dog Treat, Dog Bandage and Dog Coat stay unknown until you buy your first puppy.
+- **Following**: a grown dog sits down when you stand still for 3 seconds and gets up when you walk on. It goes through portals with you when it is within 10 m, and keeps following after it has been out of range.
+- **Bond**: every creature the dog kills, or you kill with the dog within 30 m, gives it experience equal to the creature's health. Each of its 10 levels gives +10% health and +5% damage. Level 1 takes 250 experience, level 10 takes 25 000.
+- **Guard dog**: at home, the dog barks when an enemy comes within 30 m of it, and you get a message when you are within 150 m.
+- **Sniffing**: while it follows you, the dog barks at the nearest berry, mushroom or White Hilt plant within 25 m every 20 seconds and marks it on the map for a minute.
+- **Cuddling**: petting your dog once a game day gives you Cuddled for 10 minutes: health and stamina regenerate 10% faster.
+- **Collars**: use a collar from the hotbar while looking at the dog. The old collar comes back, and a dead dog drops its collar.
+- **Bone Broth**: dog food from the Stone Pot. A dog that eats it is fed for two days and healed by half, and a puppy grows twice as fast for a day.
+- **Dog Whistle**: blow it to call your dog, or, when it follows you, to send it home. A dog more than 50 m away is brought over at once. It only reaches a dog in the loaded area around you.
+- **Map**: your dog and its house are marked on the map.
+- **Warnings**: once a game day you get a message, wherever you are, when the dog has not eaten for 3 days, has no dog house or bed and may run away, or is about to starve. Turn it off with `[Dog] OwnerWarnings`.
+- **Life**: the tail wags when you are near, after a meal and after a cuddle. While it sits or lies, its head turns to follow you. A puppy has a big head and big paws that grow into a grown dog's proportions. The dog barks, whines when hungry or hurt, and snores in its sleep.
+- **Greeting and play**: a grown dog at home runs to greet you when you come home. A puppy sometimes plays around you at home, running in circles and jumping.
+- **Stick**: throw a Stick from the hotbar and your grown, following dog fetches it and brings it back to you (+10 bond experience).
+- **Ships**: a following dog boards with you when the ship is almost still, and sits on deck until you go ashore.
+- **Water**: with a Dog Water Bowl at home the dog walks over and drinks a few times a day. A puppy that has drunk within the last day grows 25% faster.
+- **Digging**: at most once a game day, in daylight, the dog may dig a hole in open ground near home and leave what it found: bone fragments, coins, flint, amber or, rarely, an amber pearl. You get a message within 50 m.
+- **Age**: the hover text shows how many days the dog has lived. A dog lives about 160 game days (give or take 10%). Its muzzle starts to grey at 40% of its life and is grey at 75%. At 85% it is old: you get a message, and the hover text says so. When its time has come it dies in its sleep at home, or wherever it is a few days later, and leaves a puppy of its own colour in the dog house.
+- **Litters**: two grown dogs of different players, both fed, happy and with bond level 3 or more, may have a puppy when they spend a night within 8 m of each other at one's home (25% a night, at most once every 20 days). The puppy, in one of the parents' colours, lies by the dog house, and both owners get a message.
+- **Tricks**: make an emote near your dog. *Sit* makes it sit, *Rest* lie down and stay, *Point* stay, *Come here* come and follow, *Bow* or *Kneel* give paw, and *Dance* roll over. Stay and come need no teaching; the others take three lessons, each with a Dog Treat in your pack. A known trick gives 2 bond experience.
+- **Mood**: the dog is happy in company and gets lonely when left alone. Cuddles, treats, play, fetching and meals cheer it up; hunger, cold and poison bring it down. A happy dog deals up to 10% more damage, a lonely one 10% less and does not guard.
+- **Weather**: the dog shakes the water off after a swim or when it comes in from the rain. Without a Dog Coat it freezes in the mountains and in frost: it shivers and slowly loses health (never below 20%), unless it is by a fire. The coat shows on the dog.
+- **Health**: a dog below 35% health limps and runs slower. Swamp water can poison it: it loses health for a while (never below 10%). A Dog Bandage heals half its health and clears the poison; Bone Broth clears the poison too, and resting at home heals slowly.
+- **Habits**: the dog yawns, scratches behind its ear, stretches when it gets up, and rolls onto its back for a belly rub when you pet it lying down.
+- **Grave**: stand by a Dog's Grave for a moment to get Good Memories (stamina regenerates 15% faster for 30 minutes, once a game day). At dusk the dog's ghost sometimes sits by its grave for a little while.
+- **Puppy**: the puppy in your pack is a sleeping puppy in its coat colour, made at start-up from the game's own wolf.
+
+| Item | Description | Crafted | Requirements |
+|------|-------------|---------|--------------|
+| **Puppy** (brown, black and white, golden) | A puppy to let out at home | Bog Witch | 1000 coins |
+| **Dog House** | A small house lined with a pelt; marks the dog's home | Hammer (near Workbench) | Wood ×12, Resin ×2, Deer Hide ×2 |
+| **Dog Bed** | A wicker basket lined with a pelt; must stand under a roof | Hammer (near Workbench) | Wood ×4, Leather Scraps ×4, Deer Hide ×1 |
+| **Dog Whistle** | Calls the dog or sends it home | Workbench | Bone Fragments ×4, Leather Scraps ×2 |
+| **Leather Dog Collar** | +4 armour for the dog | Workbench | Leather Scraps ×6, Bronze ×1 |
+| **Iron Dog Collar** | +8 armour for the dog | Forge | Iron ×3, Chain ×1, Leather Scraps ×2 |
+| **Bone Broth** (×2) | Dog food: fed for two days, heals, faster growth | Stone Pot | Raw Meat ×2, Bone Fragments ×3, Mushroom ×2 |
+| **Dog Bowl** | A bark bowl that holds 2 stacks of food | Hammer (near Workbench) | Wood ×2 |
+| **Dog Water Bowl** | A bark bowl of water; the dog drinks from it and a puppy grows faster | Hammer (near Workbench) | Wood ×2, Resin ×2 |
+| **Dog's Gravestone** | A stone with the dog's name and age chiselled in | Stonecutter | Dog's Remains ×1, Stone ×10 |
+| **Dog's Grave** | The gravestone raised over the grave, with the inscription on its face | Hammer | Dog's Gravestone ×1 |
+| **Stick** | Throw it for your dog to fetch | Crafting menu | Wood ×1 |
+| **Dog Treat** (×6) | Teaches tricks; cheers the dog up | Stone Pot | Raw Meat ×1, Bone Fragments ×1 |
+| **Dog Bandage** (×2) | Heals half the dog's health and clears poison | Workbench | Leather Scraps ×2, Resin ×1, Dandelion ×1 |
+| **Dog Coat** | Keeps the dog from freezing | Workbench (level 2) | Deer Hide ×2, Leather Scraps ×4, Troll Hide ×1 |
+
+**Settings** (`[Dog]`, admin-only and synced): `Price` (1000), `GrowDays` (10), `StarveDays` (15), `RunAwayDays` (3), `LifeDays` (160, 0 = never dies of old age), `HealthPerBondLevel` (0.1), `DamagePerBondLevel` (0.05) and `CuddleMinutes` (10). `OwnerWarnings` is your own.
+
+**Console command:** `whitehilt_rest lie|sleep|sit|off` lays the nearest dog down (needs `devcommands`), to check the resting pose.
+
+---
+
 ### 🌑 DIFFICULTY, BEASTS & BLOOD MOON
 
 The world grows more dangerous as you progress. The server combines four things into a **pressure** from 0 to 1 and sends it to every player. The value changes slowly, so it does not jump when someone logs in or out:
@@ -585,7 +647,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb, Dog House, Dog Bed, Dog Bowl, Dog's Grave |
 | Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
 | Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts, Belt Pouch · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
@@ -601,11 +663,29 @@ Please notice that it won't be possible to compile this `mod` out of the box. Ma
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
-The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh.
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle.
 
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.11.0 - 2026-09-30
+
+#### Added
+- Dog: the Bog Witch sells puppies in three colours. A puppy grows up over ten days while it has food, a Dog House and a Dog Bed under a roof. A grown dog follows you and fights for you
+- Dog House, Dog Bed, Dog Bowl, Dog Water Bowl and Dog's Grave, known once you buy your first puppy
+- Dog's Gravestone at the stonecutter: the dog's name and age are chiselled into its grave
+- Naming the puppy, sitting, portal travel, bond levels, guard dog, sniffing for forage, cuddling, collars, Bone Broth, the Dog Whistle and map pins for the dog and its house
+- The dog sleeps in its bed at night, beside your bed when you sleep near its home, and shelters in its house in the rain, in a lying pose made for the wolf skeleton
+- The dog drinks from its water bowl, digs up small finds near home, greys around the muzzle with age and in the end dies of old age, leaving a puppy behind
+- Litters, tricks taught with Dog Treats, mood, shaking off water, freezing without a Dog Coat, limping and swamp poison with the Dog Bandage, yawning, scratching, stretching and belly rubs
+- Good Memories at the dog's grave, and its ghost at dusk
+- A neglected dog runs away, a starving one dies, and a dead dog leaves remains for its grave
+- Console command `whitehilt_rest` to check the resting pose
+
+#### Changed
+- Dog: stands closer to the water bowl when drinking
+- Dog: a playful puppy's hop is a smooth arc of the body instead of the wolf's jump
 
 ### v0.10.0 - 2026-09-30
 
@@ -819,6 +899,16 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Feeding Trough model: ["Wooden Trough With Stone Stand. Lowpoly"](https://sketchfab.com/3d-models/wooden-trough-with-stone-stand-lowpoly-673baf17c3bb43e8affd610eaf31cc8a) by [Hakan Unlu](https://sketchfab.com/hakan3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
+- Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Bed model: ["Wicker_Basket"](https://sketchfab.com/3d-models/wicker-basket-c8e8dc18b73946daaa4d51f81783ceab) by [National Heritage Administration](https://sketchfab.com/NHA_Asset), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Lid cut away, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Bowl model: ["Bark_bowl_package"](https://sketchfab.com/3d-models/bark-bowl-package-81641c44d91f40de85bbe36c5a346223) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). The low bowl taken out of the set, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Whistle model: ["Wajia Flute"](https://sketchfab.com/3d-models/wajia-flute-e6d1c436d3bc41f99f49b5dc2c821b2f) by [3D Vault](https://sketchfab.com/3DVault), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Leather Dog Collar model: ["Leather Collar"](https://sketchfab.com/3d-models/leather-collar-de6857a0957b4047bff8c031877a255e) by [AnyRPG](https://sketchfab.com/anyrpg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Iron Dog Collar model: ["Spiked collar"](https://sketchfab.com/3d-models/spiked-collar-15d2eb02ee8d43f0b40f807d2d0f33a0) by [strakacher21](https://sketchfab.com/strakacher21), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and coloured as iron for Valheim.
+- Dog bark: ["Barking 1.wav"](https://freesound.org/people/Mrthenoronha/sounds/420450/) by [Mrthenoronha](https://freesound.org/people/Mrthenoronha/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Dog whine: ["Dog Whine 5.wav"](https://freesound.org/people/esperri/sounds/118970/) by [esperri](https://freesound.org/people/esperri/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Happy dog bark: ["Dog bark2.wav"](https://freesound.org/people/MisterTood/sounds/9032/) by [MisterTood](https://freesound.org/people/MisterTood/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.

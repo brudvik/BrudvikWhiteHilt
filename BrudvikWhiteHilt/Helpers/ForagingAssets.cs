@@ -37,6 +37,17 @@ public static class ForagingAssets
             ?? throw new InvalidOperationException($"Texture '{name}' not found in {ResourceName}.");
     }
 
+    /// <summary>
+    /// Loads a sound from the bundle.
+    /// </summary>
+    /// <param name="name">Sound name (the .wav file name in lower case, without extension).</param>
+    /// <returns>The sound.</returns>
+    public static AudioClip LoadAudio(string name)
+    {
+        return GetBundle().LoadAllAssets<AudioClip>().FirstOrDefault(clip => clip.name == name)
+            ?? throw new InvalidOperationException($"Sound '{name}' not found in {ResourceName}.");
+    }
+
     private static AssetBundle GetBundle()
     {
         if (bundle == null)

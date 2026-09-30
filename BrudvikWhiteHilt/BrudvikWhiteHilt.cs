@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.10.0";
+    public const string PluginVersion = "0.11.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -76,6 +76,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();
         Difficulty.Beasts.BeastRegistry.Initialize();
+        Companions.CompanionRest.Initialize();
+        Companions.DogSettings.Initialize();
+        Companions.DogRegistry.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
