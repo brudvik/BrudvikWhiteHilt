@@ -1,0 +1,61 @@
+using BrudvikWhiteHilt.Helpers;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace BrudvikWhiteHilt.Branding;
+
+/// <summary>
+/// The White Hilt logo with the mod version in the bottom right corner of the main menu.
+/// </summary>
+public static class MainMenuLogo
+{
+    private const string ObjectName = "WhiteHiltMenuLogo";
+    private const float Size = 140f;
+    private const float LabelHeight = 24f;
+    private const float Margin = 24f;
+
+    /// <summary>
+    /// Adds the logo to the main menu once.
+    /// </summary>
+    /// <param name="startup">The main menu.</param>
+    public static void Create(FejdStartup startup)
+    {
+        if (VisualHelper.IsHeadless || startup.m_mainMenu == null || startup.m_mainMenu.transform.Find(ObjectName) != null)
+        {
+            return;
+        }
+
+        RectTransform root = new GameObject(ObjectName, typeof(RectTransform)).GetComponent<RectTransform>();
+        root.SetParent(startup.m_mainMenu.transform, false);
+        root.anchorMin = root.anchorMax = root.pivot = new Vector2(1f, 0f);
+        root.anchoredPosition = new Vector2(-Margin, Margin);
+        root.sizeDelta = new Vector2(Size, Size + LabelHeight);
+
+        RectTransform logo = new GameObject("Logo", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+        logo.SetParent(root, false);
+        logo.anchorMin = logo.anchorMax = logo.pivot = new Vector2(0.5f, 1f);
+        logo.anchoredPosition = Vector2.zero;
+        logo.sizeDelta = new Vector2(Size, Size);
+        Image image = logo.GetComponent<Image>();
+        image.sprite = WhiteHiltLogo.Sprite;
+        image.preserveAspect = true;
+        image.raycastTarget = false;
+
+        // A copy of the vanilla version label, so the font and style match the menu.
+        if (startup.m_versionLabel != null)
+        {
+            TMP_Text label = Object.Instantiate(startup.m_versionLabel, root);
+            label.name = "Version";
+            RectTransform labelRect = label.rectTransform;
+            labelRect.anchorMin = new Vector2(0f, 0f);
+            labelRect.anchorMax = new Vector2(1f, 0f);
+            labelRect.pivot = new Vector2(0.5f, 0f);
+            labelRect.anchoredPosition = Vector2.zero;
+            labelRect.sizeDelta = new Vector2(0f, LabelHeight);
+            label.alignment = TextAlignmentOptions.Center;
+            label.raycastTarget = false;
+            label.text = "White Hilt v" + global::BrudvikWhiteHilt.BrudvikWhiteHilt.PluginVersion;
+        }
+    }
+}

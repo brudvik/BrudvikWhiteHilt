@@ -1,5 +1,7 @@
 # BrudvikWhiteHilt
 
+![Brudvik White Hilt](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/BrudvikWhiteHilt/Package/icon.png)
+
 ## Overview
 
 BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. Combines good with my mod: [BrudvikStackedChest](https://github.com/brudvik/BrudvikStackedChest).
@@ -53,6 +55,8 @@ All armor pieces are indestructible with: armor per level +10, movement modifier
 | **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Chestplate ×1 |
 | **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Greaves ×1 |
 | **White Hilt Shield** | The Indestructible Shield of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Buckler ×1 |
+
+The **White Hilt Banner Cape** is not part of the indestructible set: a white troll hide cape with the White Hilt logo on the back and the troll hide cape's stats, without the troll set bonus. Workbench (Level 2): Troll Hide ×4, Leather Scraps ×4, Bone Fragments ×2.
 
 ---
 
@@ -152,7 +156,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Always has tailwind (full sail speed regardless of wind direction) (`Ships` → `AlwaysTailwind`)
 - Sails five times harder than the vanilla code default (`Ships` → `SailForce`, 0.5)
 - Comfort bonus: +5
-- Its own look: a carved dragon figurehead, a white sail with gold stripes and a white-hilted sword, a whitewashed hull with gold fittings, and painted shields along the rail
+- Its own look: a carved dragon figurehead, a white sail with gold stripes along the edges and the White Hilt logo in the middle, a whitewashed hull with gold fittings, and shields with the logo along the rail
 
 **Ship Upgrades** (crafted at the Workbench, used on the mast like an item on an item stand; use the mast to take the last one off):
 
@@ -331,6 +335,21 @@ The stored bar and the slots below lie in hidden rows of the inventory, so they 
 The time of day in 24 hours at the top of the screen, e.g. **Day 42 · 14:37**, with an icon for the weather (sun, moon, clouds, rain, storm, snow, mist or ash). Sunrise is 06:00 and night falls at 18:00, as the game's own day and night. Two in-game hours before dark a warning shows and the clock turns orange until night falls. The clock is hidden in the inventory, in build mode, on the large map, in menus and with the HUD; during a boss fight it moves below the boss's health bar.
 
 The `Clock` section sets whether it shows (`Enabled`), the day number (`ShowDay`), the weather icon (`ShowWeather`), rounding (`RoundMinutes`, 1 = every minute), the warning (`DuskWarningHours`, 0 = off), `FontSize` and `OffsetY`; `Clock.Keys` → `ToggleClock` binds a key to show and hide it. A server can turn the clock off for everyone with `AllowClock`.
+
+---
+
+### 🏳️ WHITE HILT LOGO & BANNERS
+
+The White Hilt logo shows in the bottom right corner of the main menu with the mod version. When you enter a world, teleport or respawn, the loading screen is black with the logo in the middle and the tips below it; sleeping keeps the vanilla screen. `Branding` → `LoadingScreenLogo` switches the loading screen back to vanilla.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **White Hilt Banner (white)** | A white banner with the logo and a gold border | Workbench | Leather Scraps ×6, Fine Wood ×2, Bone Fragments ×2 |
+| **White Hilt Banner (black)** | A black banner with the logo and a gold border | Workbench | Leather Scraps ×6, Fine Wood ×2, Bone Fragments ×2 |
+| **Large White Hilt Banner (white)** | The white banner, half again as big | Workbench | Leather Scraps ×6, Fine Wood ×2, Bone Fragments ×2 |
+| **Large White Hilt Banner (black)** | The black banner, half again as big | Workbench | Leather Scraps ×6, Fine Wood ×2, Bone Fragments ×2 |
+
+The banners are the vanilla banner with new cloth. The logo reads the right way from one side and mirrored from the other, like any painted cloth.
 
 ---
 

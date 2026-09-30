@@ -69,6 +69,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Backpack.BackpackSettings.Initialize();
         Pieces.Ships.ShipSettings.Initialize();
         Clock.ClockSettings.Initialize();
+        Branding.BrandingSettings.Initialize();
         Sound.IndoorSoundSettings.Initialize();
         Drops.FloatingItems.Initialize();
         Pieces.Waste.WasteWellSettings.Initialize();

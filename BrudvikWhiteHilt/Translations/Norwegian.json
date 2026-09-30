@@ -911,5 +911,15 @@
   "piece_whitehilt_plant_pickable_description": "Plant den, og plukk den igjen når den har vokst ut.",
   "piece_whitehilt_plant_debris_description": "Legg den der du vil ha den, og plukk den opp igjen.",
   "piece_whitehilt_plant_flora_description": "Pynt. Den blir stående slik den er plantet.",
-  "msg_whitehilt_plant_cantremove": "Det kan ikke fjernes med kultivatoren her"
+  "msg_whitehilt_plant_cantremove": "Det kan ikke fjernes med kultivatoren her",
+  "piece_whitehilt_banner_white": "Hvithjalt-banner (hvitt)",
+  "piece_whitehilt_banner_white_description": "Et hvitt banner med Hvithjalt.",
+  "piece_whitehilt_banner_black": "Hvithjalt-banner (svart)",
+  "piece_whitehilt_banner_black_description": "Et svart banner med Hvithjalt.",
+  "piece_whitehilt_banner_white_large": "Stort Hvithjalt-banner (hvitt)",
+  "piece_whitehilt_banner_white_large_description": "Et hvitt banner med Hvithjalt, halvannen gang så stort.",
+  "piece_whitehilt_banner_black_large": "Stort Hvithjalt-banner (svart)",
+  "piece_whitehilt_banner_black_large_description": "Et svart banner med Hvithjalt, halvannen gang så stort.",
+  "item_whitehiltbannercape": "Hvithjalt-bannerkappe",
+  "item_whitehiltbannercape_description": "En hvit kappe med Hvithjalt på ryggen."
 }

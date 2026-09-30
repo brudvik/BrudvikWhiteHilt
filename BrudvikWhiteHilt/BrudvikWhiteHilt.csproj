@@ -259,6 +259,14 @@
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
     <Compile Include="Patches\Planting\PlantingPatches.cs" />
+    <Compile Include="Patches\Branding\BrandingPatches.cs" />
+    <Compile Include="Branding\BrandingSettings.cs" />
+    <Compile Include="Branding\LoadingScreenLogo.cs" />
+    <Compile Include="Branding\MainMenuLogo.cs" />
+    <Compile Include="Helpers\WhiteHiltLogo.cs" />
+    <Compile Include="Pieces\Banners\WhiteHiltBannerBase.cs" />
+    <Compile Include="Pieces\Banners\WhiteHiltBanners.cs" />
+    <Compile Include="Items\Armors\WhiteHiltBannerCape\WhiteHiltBannerCape.cs" />
     <Compile Include="Planting\PlantableDefinition.cs" />
     <Compile Include="Planting\Plantables.cs" />
     <Compile Include="Planting\PlantingSettings.cs" />
@@ -475,6 +483,7 @@
     <EmbeddedResource Include="Assets\whitehilt_foraging" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
     <EmbeddedResource Include="Assets\WeatherAsh.png" />
+    <EmbeddedResource Include="Assets\Logo\WhiteHiltLogo.png" />
     <EmbeddedResource Include="Assets\WeatherCloud.png" />
     <EmbeddedResource Include="Assets\WeatherFog.png" />
     <EmbeddedResource Include="Assets\WeatherMoon.png" />

@@ -7,22 +7,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 
 /// <summary>
-/// Gives the cloned longship the White Hilt look: a carved dragon figurehead, a white sail with gold stripes and a
-/// white-hilted sword, a whitewashed hull with gold fittings and painted shields along the rail.
+/// Gives the cloned longship the White Hilt look: a carved dragon figurehead, a white sail with gold edge stripes and the
+/// White Hilt logo, a whitewashed hull with gold fittings and shields with the logo along the rail.
 /// </summary>
 public static class WhiteHiltShipLook
 {
-    private const int SailSize = 512;
+    private const int SailSize = 1024;
     private const float DragonHeightFactor = 1.4f;
+
+    // The vanilla sail has five vertical stripes of 0.203 u: red, white, red, white, red. The middle three become one field.
+    private const float SailFieldStart = 0.203f;
+    private const float SailFieldEnd = 0.805f;
+    private const float SailStripeWidth = 0.203f;
+
+    private const int ShieldTextureSize = 512;
+    private const float ShieldLogoRadius = 0.2187f * 0.95f;
 
     // Relative to the skull's height: back towards the stern and down, so the neck sits in the stem.
     private const float DragonBackOffset = 0.18f;
     private const float DragonDownOffset = 0.22f;
 
     private static readonly Color cream = new(0.94f, 0.91f, 0.84f);
-    private static readonly Color steel = new(0.82f, 0.84f, 0.88f);
-    private static readonly Color bronze = new(0.35f, 0.22f, 0.08f);
-    private static readonly Color outline = new(0.18f, 0.13f, 0.08f);
+
+    // A logo 4 m across; the sail cloth is 9.03 m per u and 7.36 m per v.
+    private static readonly Vector2 sailLogoRadius = new(2f / 9.03f, 2f / 7.36f);
+    private static readonly Vector2 shieldFaceCenter = new(0.246f, 0.7338f);
 
     /// <summary>
     /// Changes the look of the ship prefab. Each part keeps its vanilla look if changing it fails.
@@ -103,66 +112,47 @@ public static class WhiteHiltShipLook
 
         PaintMaterials(sails, name => name.StartsWith("sail_diffuse"), source =>
         {
-            Color32[] pixels = VisualHelper.ReadPixels(source, SailSize, SailSize);
+            Color32[] vanilla = VisualHelper.ReadPixels(source, SailSize, SailSize);
+            Color32[] pixels = new Color32[vanilla.Length];
+            int stripeShift = Mathf.RoundToInt(SailStripeWidth * SailSize);
             for (int y = 0; y < SailSize; y++)
             {
                 for (int x = 0; x < SailSize; x++)
                 {
-                    int i = y * SailSize + x;
-                    pixels[i] = PaintSailPixel(pixels[i], (x + 0.5f) / SailSize, (y + 0.5f) / SailSize);
+                    float u = (x + 0.5f) / SailSize;
+                    bool field = u >= SailFieldStart && u < SailFieldEnd;
+                    bool middleStripe = u >= SailFieldStart + SailStripeWidth && u < SailFieldEnd - SailStripeWidth;
+
+                    // The middle red stripe takes the grain of the white stripe beside it, so the field is one cloth.
+                    Color32 cloth = vanilla[y * SailSize + (middleStripe ? x - stripeShift : x)];
+                    pixels[y * SailSize + x] = PaintSailPixel(cloth, field);
                 }
             }
 
+            WhiteHiltLogo.Paint(pixels, SailSize, SailSize, new Vector2(0.5f, 0.5f), sailLogoRadius, ClothShade);
             return VisualHelper.CreateTexture("whitehilt_sail", SailSize, SailSize, pixels, source);
         });
     }
 
-    // Red stripes become gold, the cloth a cleaner white, and the middle stripe gets a sword with a white hilt.
-    private static Color32 PaintSailPixel(Color32 pixel, float u, float v)
+    // The red stripes along the edges become gold; the field between them is plain white cloth.
+    private static Color32 PaintSailPixel(Color32 pixel, bool field)
     {
-        Color sword = SwordColor(u, v);
-        if (sword.a > 0f)
-        {
-            return sword;
-        }
-
         Color.RGBToHSV(pixel, out float hue, out float saturation, out float value);
         bool red = saturation > 0.35f && (hue < 0.05f || hue > 0.93f);
-        Color painted = red
-            ? Color.HSVToRGB(0.11f, 0.7f, Mathf.Clamp01(value * 1.25f + 0.1f))
-            : Color.Lerp(pixel, cream * Mathf.Clamp01(value * 1.1f + 0.1f), 0.5f);
+        Color painted = field
+            ? cream * Mathf.Clamp01(value * 1.1f + 0.1f)
+            : red
+                ? Color.HSVToRGB(0.11f, 0.7f, Mathf.Clamp01(value * 1.25f + 0.1f))
+                : Color.Lerp(pixel, cream * Mathf.Clamp01(value * 1.1f + 0.1f), 0.5f);
         painted.a = 1f;
         return painted;
     }
 
-    // A simple sword pointing down, centred on the sail texture. Returns a clear colour outside the sword.
-    private static Color SwordColor(float u, float v)
+    // Keeps the folds and grain of the cloth below in the logo painted over it.
+    private static float ClothShade(Color32 cloth)
     {
-        float dx = Mathf.Abs(u - 0.5f);
-        const float pad = 0.007f;
-
-        if ((u - 0.5f) * (u - 0.5f) + (v - 0.8f) * (v - 0.8f) < 0.03f * 0.03f)
-        {
-            return bronze;
-        }
-
-        if (v >= 0.69f && v <= 0.77f)
-        {
-            return dx < 0.018f ? Color.white : dx < 0.018f + pad ? outline : Color.clear;
-        }
-
-        if (v >= 0.66f && v < 0.69f)
-        {
-            return dx < 0.09f ? bronze : dx < 0.09f + pad ? outline : Color.clear;
-        }
-
-        float bladeHalfWidth = v >= 0.3f ? 0.02f : 0.02f * Mathf.Clamp01((v - 0.24f) / 0.06f);
-        if (v >= 0.24f && v < 0.66f)
-        {
-            return dx < bladeHalfWidth ? steel : dx < bladeHalfWidth + pad ? outline : Color.clear;
-        }
-
-        return Color.clear;
+        Color.RGBToHSV(cloth, out _, out _, out float value);
+        return Mathf.Clamp(value / 0.9f, 0.75f, 1.05f);
     }
 
     // Wood is whitewashed; the metal fittings, found through the metallic map, turn gold.
@@ -205,12 +195,40 @@ public static class WhiteHiltShipLook
             child.gameObject.SetActive(shield);
             if (shield)
             {
+                TurnUpright(child, visual.up);
                 shields.AddRange(child.GetComponentsInChildren<Renderer>(true));
             }
         }
 
         customize.gameObject.SetActive(true);
-        PaintMaterials(shields.ToArray(), _ => true, (_, source) => VisualHelper.RecolorTexture(source, PaintShieldPixel));
+        PaintMaterials(shields.ToArray(), _ => true, (_, source) => PaintShield(source));
+    }
+
+    private static Texture2D PaintShield(Texture source)
+    {
+        int size = source.name.StartsWith("shieldwood_d") ? ShieldTextureSize : source.width;
+        Color32[] pixels = VisualHelper.ReadPixels(source, size, size).Select(PaintShieldPixel).ToArray();
+        if (size == ShieldTextureSize)
+        {
+            WhiteHiltLogo.Paint(pixels, size, size, shieldFaceCenter, Vector2.one * ShieldLogoRadius, ClothShade);
+        }
+
+        return VisualHelper.CreateTexture($"{source.name}_whitehilt", size, size, pixels, source);
+    }
+
+    // The shields hang turned every way, so each is turned about its own face until the logo stands upright.
+    // The painted face of ShieldIron looks along local -z, and the top of the texture points along local -y.
+    private static void TurnUpright(Transform shield, Vector3 up)
+    {
+        Vector3 normal = shield.TransformDirection(Vector3.back);
+        Vector3 textureUp = Vector3.ProjectOnPlane(shield.TransformDirection(Vector3.down), normal);
+        Vector3 wanted = Vector3.ProjectOnPlane(up, normal);
+        if (wanted.sqrMagnitude < 0.01f || textureUp.sqrMagnitude < 0.01f)
+        {
+            return;
+        }
+
+        shield.RotateAround(shield.position, normal, Vector3.SignedAngle(textureUp, wanted, normal));
     }
 
     // The banded shield has red and white fields, a dark iron rim and a dark boss: fields become gold and cream,
