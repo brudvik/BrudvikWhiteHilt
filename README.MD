@@ -673,6 +673,18 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.13.0 - 2026-09-30
+
+#### Added
+- White Hilt Sword, Bow, Buckler and Tower Shield: new models in the White Hilt style, with a white hilt, a white bow grip and white-painted shield boards, and new icons
+- White Hilt Battleaxe, Mace, Sledge, Spear, Atgeir, Knife and Crossbow: new models in the same style, with white grips, a white atgeir shaft, a white knife grip and a white crossbow stock
+- White Hilt Bow: the limbs bend and the string is pulled back to the drawing hand, and it snaps forward when the arrow is loosed
+- White Hilt Staffs of Fire, Ice and Lightning: a dark scepter with a white grip wrap, with a red, blue or green flame on its head while held
+- Exploration 50: map that others have shared through a map table is shown like your own, without the see-through layer
+
+#### Changed
+- White Hilt Crossbow: now a real crossbow (based on the Arbalest) that shoots bolts and reloads, instead of a bow; the White Hilt Bolts can finally be used
+
 ### v0.12.0 - 2026-09-30
 
 #### Added
