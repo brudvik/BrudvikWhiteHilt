@@ -53,6 +53,16 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 - Examples: [ForageableBase.cs](../../../BrudvikWhiteHilt/Items/Foraging/ForageableBase.cs), [Chanterelle.cs](../../../BrudvikWhiteHilt/Items/Foraging/Chanterelle/Chanterelle.cs), [VisualHelper.cs](../../../BrudvikWhiteHilt/Helpers/VisualHelper.cs), [ForagingAssets.cs](../../../BrudvikWhiteHilt/Helpers/ForagingAssets.cs).
 - Add new `.cs` files to `BrudvikWhiteHilt.csproj` (old-style project, no globbing).
 
+### Weapons and shields (held items)
+- The hand is the origin of the item's `attach` child: `VisEquipment.AttachItem` puts the attach copy on the hand joint with an identity transform, so only the children's transforms count.
+- Put `<name>.weapon.json` next to the glb: the mesh is then written in attach space in metres (no height-1 placement) and `WhiteHiltWeaponBase.ModelName` swaps it in with `VisualHelper.ReplaceWeaponMesh` (reuses the vanilla model object, so its collider and LOD entry stay). Fields: `axes` (glb direction for Unity X, Y, Z; must have determinant -1, the converter checks), `grip` (glb point for the hand), `length`+`measure` or `scale`, optional `offset`.
+- Tilted vanilla models (bows, shields): `python AssetSource\Preview\frame_axes.py <prefab> <child> <glb for local X> <Y> <Z>` prints `axes` that line up with the vanilla child's frame, and where the hand is in its mesh space. Shields: the hand is on the back, so that tells front from back (ShieldBanded's front is local -z, ShieldIronTower's +z).
+- Check every fit with `python AssetSource\Preview\weapon_fit.py AssetSource\Models\<name>.glb <vanilla prefab>` (red vanilla, blue new, cross = hand, green = sword trail) before building.
+- Theme: `<name>.paint.json` recolours texture areas (`material` name or a `min`/`max` box in the final mesh space) keeping the shading; the White Hilt look is ivory `[0.92, 0.9, 0.84]` on hilts, grips and shield boards.
+- A mesh the mod deforms at runtime (the bow flex) must be in `BuildForagingBundle.CombinedModels` so it stays readable.
+- `split` in weapon.json writes parts (by material) as their own OBJ with the same texture, optionally bent into a V (`pull`, `span`). The crossbow uses it for its string, straight and drawn back; `WhiteHiltCrossbow.OnModelApplied` puts them on the Unloaded/Loaded objects that the vanilla `WeaponLoadState` toggles.
+- Vanilla MeshColliders under attach are replaced by a BoxCollider (`ReplaceWeaponMesh`); a multi-material renderer (Battleaxe) gets one material.
+
 ## Pitfalls (all hit once already)
 - **Unity mirrors x when it imports OBJ.** A part you measure at +x in the converted `.obj` is at -x in the game. Negate x before using a measured position in code (y and z are unchanged). The Chain Bench chains first ended up on the vise instead of the stump because of this.
 - A flat model (a curtain of chains, a plank) seen **edge-on** looks like a thin line. Check which axis is thin in the `[WhiteHilt] Mesh` bounds line and rotate it (`AddMesh(..., rotation)`) so its broad side faces the player.

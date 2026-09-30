@@ -13,6 +13,18 @@ A <name>.crop.json next to the .glb ({"min": [x, y, z], "max": [x, y, z]}, in th
 only the triangles whose centre lies in that box, for files that hold several objects in one mesh; the result is
 scaled and placed again.
 
+A <name>.weapon.json replaces the height-1 placement with the item's "attach" space in metres, so the mesh can sit
+under a weapon's attach transform with an identity transform (the hand is the origin):
+  {"axes": [<+X>, <+Y>, <+Z>],  glb directions for Unity's axes, as "x"/"-z" or [x, y, z] vectors
+   "grip": [x, y, z],           glb point that becomes the origin (the hand)
+   "length": 1.2, "measure": 2, extent in metres along that Unity axis (or "scale": metres per glb unit)
+   "offset": [x, y, z],        optional shift in metres, applied last
+   "split": [{"name": "n", "materials": ["Rope"], "pull": [x, y, z], "span": [axis, length]}]}
+     optional parts written as their own OBJ (same texture) and left out of the main mesh; "pull" (glb units)
+     bends the part into a V along the span axis, e.g. a crossbow string drawn back to its latch.
+A <name>.paint.json recolours parts of the texture: {"paint": [{"material": "Wood"} or {"min": [...], "max": [...]}
+(in the final mesh space), "colour": [r, g, b], "strength": 0.9}]}.
+
 Usage: python convert_glb.py <input.glb> <output_dir> <name>
 """
 import io
@@ -190,6 +202,107 @@ def wrap_triangles(uvs, triangle_indices):
     return corners, across, down
 
 
+def axis_vector(spec):
+    if isinstance(spec, str):
+        vector = [0.0, 0.0, 0.0]
+        vector["xyz".index(spec[-1])] = -1.0 if spec.startswith("-") else 1.0
+        return vector
+    return normalize(list(spec))
+
+
+def weapon_space(positions, normals, spec, scale=None):
+    """Maps glb positions into a weapon's attach space in metres (Unity axes). Returns positions, normals, scale."""
+    axes = [axis_vector(axis) for axis in spec["axes"]]
+    for a in range(3):
+        for b in range(a + 1, 3):
+            if abs(sum(axes[a][k] * axes[b][k] for k in range(3))) > 1e-3:
+                raise ValueError("weapon.json axes must be perpendicular")
+    x, y, z = axes
+    determinant = (x[0] * (y[1] * z[2] - y[2] * z[1]) - x[1] * (y[0] * z[2] - y[2] * z[0]) + x[2] * (y[0] * z[1] - y[1] * z[0]))
+    # glTF is right-handed and Unity left-handed, so a mapping that does not mirror the model has determinant -1.
+    if determinant > 0:
+        raise ValueError("weapon.json axes mirror the model; negate one axis")
+    grip = spec["grip"]
+    mapped = [[sum((p[k] - grip[k]) * axis[k] for k in range(3)) for axis in axes] for p in positions]
+    measure = spec.get("measure", 1)
+    extent = max(p[measure] for p in mapped) - min(p[measure] for p in mapped)
+    scale = scale or (spec["scale"] if "scale" in spec else spec["length"] / extent)
+    offset = spec.get("offset", (0.0, 0.0, 0.0))
+    positions = [[v * scale + o for v, o in zip(p, offset)] for p in mapped]
+    normals = [normalize([sum(n[k] * axis[k] for k in range(3)) for axis in axes]) for n in normals]
+    return positions, normals, scale
+
+
+def paint(image, positions, indices, corners, corner_materials, rules, wrap):
+    """Recolours the texture under the triangles each rule selects, keeping the shading of the original."""
+    from PIL import Image, ImageDraw, ImageFilter, ImageStat
+
+    image = image.convert("RGB")
+    width, height = image.size
+    for rule in rules:
+        mask = Image.new("L", image.size, 0)
+        draw = ImageDraw.Draw(mask)
+        selected = 0
+        for i in range(0, len(indices), 3):
+            if "material" in rule:
+                if corner_materials[i] != rule["material"]:
+                    continue
+            else:
+                centre = [sum(positions[v][axis] for v in indices[i:i + 3]) / 3 for axis in range(3)]
+                if not all(rule["min"][axis] <= centre[axis] <= rule["max"][axis] for axis in range(3)):
+                    continue
+            triangle = corners[i:i + 3]
+            if wrap:
+                shift_u, shift_v = math.floor(min(u for u, _ in triangle)), math.floor(min(v for _, v in triangle))
+                triangle = [(u - shift_u, v - shift_v) for u, v in triangle]
+            draw.polygon([(u * width, v * height) for u, v in triangle], fill=255)
+            selected += 1
+        if selected == 0:
+            raise ValueError(f"paint rule {rule} selects no triangles")
+        mask = mask.filter(ImageFilter.MaxFilter(3))
+        grey = image.convert("L")
+        mean = max(1.0, ImageStat.Stat(grey, mask).mean[0])
+        tinted = Image.merge("RGB", [
+            grey.point(lambda level, c=c: min(255, round(c * 255 * (0.6 + 0.4 * level / mean))))
+            for c in rule["colour"]])
+        image.paste(Image.blend(image, tinted, rule.get("strength", 0.9)), mask=mask)
+        print(f"  painted {selected} triangles {rule.get('material', '')}")
+    buffer = io.BytesIO()
+    image.save(buffer, "PNG")
+    return buffer.getvalue()
+
+
+def subset(positions, normals, corners, indices, triangles):
+    """Returns the mesh made of the given triangles (their first corner index), without unused vertices."""
+    remap, kept_corners, kept = {}, [], []
+    for i in triangles:
+        for corner in range(i, i + 3):
+            kept.append(remap.setdefault(indices[corner], len(remap)))
+            kept_corners.append(corners[corner])
+    order = sorted(remap, key=remap.get)
+    return [positions[v] for v in order], [normals[v] for v in order], kept_corners, kept
+
+
+def write_obj(path, name, positions, normals, corners, indices, weapon):
+    """Writes a double-sided OBJ. UVs are per corner, so a vertex may carry several."""
+    vertex_count = len(positions)
+    # Unity names the mesh after the group, not the object.
+    lines = [f"o {name}", f"g {name}"]
+    # Unity negates x when it imports an OBJ; weapon space is already in Unity axes, so undo that in advance.
+    mirror = -1.0 if weapon else 1.0
+    lines += [f"v {x * mirror:.6f} {y:.6f} {z:.6f}" for x, y, z in positions]
+    # glTF puts the UV origin top-left, OBJ bottom-left.
+    lines += [f"vt {u:.6f} {1.0 - v:.6f}" for u, v in corners]
+    lines += [f"vn {x * mirror:.6f} {y:.6f} {z:.6f}" for x, y, z in normals]
+    lines += [f"vn {-x * mirror:.6f} {-y:.6f} {-z:.6f}" for x, y, z in normals]
+    for i in range(0, len(indices), 3):
+        a, b, c = (index + 1 for index in indices[i : i + 3])
+        ta, tb, tc = i + 1, i + 2, i + 3
+        lines.append(f"f {a}/{ta}/{a} {b}/{tb}/{b} {c}/{tc}/{c}")
+        lines.append(f"f {a}/{ta}/{a + vertex_count} {c}/{tc}/{c + vertex_count} {b}/{tb}/{b + vertex_count}")
+    path.write_text("\n".join(lines) + "\n", encoding="ascii")
+
+
 def main(input_path, output_dir, name):
     gltf, binary = read_glb(input_path)
     parts = [
@@ -207,7 +320,7 @@ def main(input_path, output_dir, name):
     use_atlas = len(sources) > 1 or sources[0][0] == "colour" or tuple(sources[0][2]) != (1.0, 1.0, 1.0, 1.0)
 
     positions, normals, corners, indices = [], [], [], []
-    corner_sources, repeats = [], {}
+    corner_sources, corner_materials, repeats = [], [], {}
     for (node_index, primitive), source in zip(parts, part_sources):
         matrix = world_matrix(gltf, node_index)
         offset = len(positions)
@@ -225,6 +338,8 @@ def main(input_path, output_dir, name):
             part_corners = [part_uvs[i] for i in part_indices]
         corners += part_corners
         corner_sources += [source] * len(part_indices)
+        material_name = gltf["materials"][primitive["material"]].get("name") if "material" in primitive else None
+        corner_materials += [material_name] * len(part_indices)
         indices += [offset + i for i in part_indices]
 
     if use_atlas:
@@ -237,14 +352,22 @@ def main(input_path, output_dir, name):
             uvs.append(((u + sources.index(source)) / columns, v))
         corners = uvs
 
-    minimum = [min(p[axis] for p in positions) for axis in range(3)]
-    maximum = [max(p[axis] for p in positions) for axis in range(3)]
-    height = maximum[1] - minimum[1]
-    base = [(minimum[0] + maximum[0]) / 2, minimum[1], (minimum[2] + maximum[2]) / 2]
-    positions = [[(p[axis] - base[axis]) / height for axis in range(3)] for p in positions]
+    weapon_file = input_path.with_suffix(".weapon.json")
+    weapon = json.loads(weapon_file.read_text()) if weapon_file.exists() else None
+    splits = weapon.get("split", []) if weapon else []
+    if weapon:
+        raw_positions, raw_normals = positions, normals
+        positions, normals, scale = weapon_space(positions, normals, weapon)
+        height = 1.0 / scale
+    else:
+        minimum = [min(p[axis] for p in positions) for axis in range(3)]
+        maximum = [max(p[axis] for p in positions) for axis in range(3)]
+        height = maximum[1] - minimum[1]
+        base = [(minimum[0] + maximum[0]) / 2, minimum[1], (minimum[2] + maximum[2]) / 2]
+        positions = [[(p[axis] - base[axis]) / height for axis in range(3)] for p in positions]
 
     crop_file = input_path.with_suffix(".crop.json")
-    if crop_file.exists():
+    if not weapon and crop_file.exists():
         positions, normals, corners, indices = crop(positions, normals, corners, indices, json.loads(crop_file.read_text()))
         minimum = [min(p[axis] for p in positions) for axis in range(3)]
         maximum = [max(p[axis] for p in positions) for axis in range(3)]
@@ -255,26 +378,32 @@ def main(input_path, output_dir, name):
 
     output_dir.mkdir(parents=True, exist_ok=True)
     vertex_count = len(positions)
-    # Unity names the mesh after the group, not the object.
-    lines = [f"o {name}", f"g {name}"]
-    lines += [f"v {x:.6f} {y:.6f} {z:.6f}" for x, y, z in positions]
-    # glTF puts the UV origin top-left, OBJ bottom-left. UVs are per corner, so a vertex may carry several.
-    lines += [f"vt {u:.6f} {1.0 - v:.6f}" for u, v in corners]
-    lines += [f"vn {x:.6f} {y:.6f} {z:.6f}" for x, y, z in normals]
-    lines += [f"vn {-x:.6f} {-y:.6f} {-z:.6f}" for x, y, z in normals]
-    for i in range(0, len(indices), 3):
-        a, b, c = (index + 1 for index in indices[i : i + 3])
-        ta, tb, tc = i + 1, i + 2, i + 3
-        lines.append(f"f {a}/{ta}/{a} {b}/{tb}/{b} {c}/{tc}/{c}")
-        lines.append(f"f {a}/{ta}/{a + vertex_count} {c}/{tc}/{c + vertex_count} {b}/{tb}/{b + vertex_count}")
-    (output_dir / f"{name}.obj").write_text("\n".join(lines) + "\n", encoding="ascii")
+    split_materials = {material for split in splits for material in split["materials"]}
+    main_triangles = [i for i in range(0, len(indices), 3) if corner_materials[i] not in split_materials]
+    write_obj(output_dir / f"{name}.obj", name, *subset(positions, normals, corners, indices, main_triangles), bool(weapon))
+    for split in splits:
+        triangles = [i for i in range(0, len(indices), 3) if corner_materials[i] in split["materials"]]
+        part_positions, part_normals, part_corners, part_indices = subset(raw_positions, raw_normals, corners, indices, triangles)
+        if "pull" in split:
+            axis, length = split["span"]
+            part_positions = [[v + pull * max(0.0, 1.0 - abs(p[axis]) / length) for v, pull in zip(p, split["pull"])] for p in part_positions]
+        part_positions, part_normals, _ = weapon_space(part_positions, part_normals, weapon, scale)
+        write_obj(output_dir / f"{split['name']}.obj", split["name"], part_positions, part_normals, part_corners, part_indices, True)
+        print(f"  split {split['name']}: {len(part_indices) // 3} triangles")
 
+    paint_file = input_path.with_suffix(".paint.json")
     if use_atlas:
-        (output_dir / f"{name}_albedo.png").write_bytes(build_atlas(gltf, binary, sources, repeats))
+        data, extension = build_atlas(gltf, binary, sources, repeats), ".png"
     else:
         image, data = image_bytes(gltf, binary, sources[0][1])
         extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"
-        (output_dir / f"{name}_albedo{extension}").write_bytes(data)
+    if paint_file.exists():
+        from PIL import Image
+
+        rules = json.loads(paint_file.read_text())["paint"]
+        data = paint(Image.open(io.BytesIO(data)), positions, indices, corners, corner_materials, rules, not use_atlas)
+        extension = ".png"
+    (output_dir / f"{name}_albedo{extension}").write_bytes(data)
 
     emissive = {emissive_source(gltf, primitive) for _, primitive in parts}
     has_emission = not use_atlas and len(emissive) == 1 and None not in emissive
