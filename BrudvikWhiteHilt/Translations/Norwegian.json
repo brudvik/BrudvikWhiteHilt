@@ -297,6 +297,7 @@
   "piece_whitehilt_portalground": "Hvithjalt-runesirkel",
   "piece_whitehilt_portalground_description": "En sirkel av glødende runer på bakken som fører til alle de andre Hvithjalt-portalene. Stå på den og bruk den for å åpne reisekartet; Shift + Bruk gir den navn.",
   "whitehilt_portal_travel": "Reis",
+  "whitehilt_portal_take_me_home": "Ta meg hjem",
   "whitehilt_portal_rename": "Gi portalen navn",
   "whitehilt_portal_name": "Portalnavn",
   "whitehilt_portal_notowner": "Bare byggeren kan endre denne portalen",

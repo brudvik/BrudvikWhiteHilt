@@ -68,6 +68,7 @@ public static class PortalSettings
         sortByDistance = WhiteHiltConfig.BindLocal(Section, "SortByDistance", false, "Sort the portal list by distance instead of by name.");
 
         Translations.AddEnglish("whitehilt_portal_travel", "Travel");
+        Translations.AddEnglish("whitehilt_portal_take_me_home", "Take me home");
         Translations.AddEnglish("whitehilt_portal_rename", "Name the portal");
         Translations.AddEnglish("whitehilt_portal_name", "Portal name");
         Translations.AddEnglish("whitehilt_portal_notowner", "Only the builder can change this portal");

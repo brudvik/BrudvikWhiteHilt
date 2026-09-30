@@ -17,6 +17,8 @@ public class PortalTravelPanel : MonoBehaviour
     private const float PanelWidth = 440f;
     private const float RowHeight = 40f;
     private const float DoubleClickTime = 0.4f;
+    private const float HandleSize = 8f;
+    private const float HandleBorder = 4f;
 
     private static readonly Color selectedColor = new(1f, 0.75f, 0.3f);
     private static readonly Color otherColor = new(0.9f, 0.88f, 0.8f);
@@ -42,6 +44,7 @@ public class PortalTravelPanel : MonoBehaviour
     private RectTransform listContent;
     private Button renameButton;
     private Button privateButton;
+    private Button homeButton;
 
     /// <summary>
     /// True while the panel is open.
@@ -150,14 +153,15 @@ public class PortalTravelPanel : MonoBehaviour
         search.onValueChanged.AddListener(_ => RefreshList());
         CreateButton(panel, top, new Vector2(140f, -138f), 125f, OnToggleSort, out sortLabel);
 
-        GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, 8f, 4f, GUIManager.Instance.ValheimScrollbarHandleColorBlock,
+        GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, HandleSize, HandleBorder, GUIManager.Instance.ValheimScrollbarHandleColorBlock,
             new Color(0f, 0f, 0f, 0.35f), PanelWidth - 40f, 400f);
         RectTransform scrollRect = (RectTransform)scroll.transform;
         scrollRect.anchorMin = new Vector2(0f, 0f);
         scrollRect.anchorMax = new Vector2(1f, 1f);
         scrollRect.pivot = new Vector2(0.5f, 0.5f);
-        scrollRect.offsetMin = new Vector2(20f, 80f);
+        scrollRect.offsetMin = new Vector2(20f, 70f);
         scrollRect.offsetMax = new Vector2(-20f, -165f);
+        StretchScrollView(scrollRect);
         listContent = scroll.GetComponentInChildren<ScrollRect>().content;
         VerticalLayoutGroup layout = listContent.GetComponent<VerticalLayoutGroup>();
         layout.spacing = 4f;
@@ -166,10 +170,45 @@ public class PortalTravelPanel : MonoBehaviour
         layout.childControlWidth = true;
         layout.childForceExpandWidth = true;
 
-        CreateButton(panel, bottom, new Vector2(-95f, 40f), 180f, OnTravel, out Text travelLabel);
+        CreateButton(panel, bottom, new Vector2(-135f, 40f), 125f, OnTravel, out Text travelLabel);
         travelLabel.text = Localization.instance.Localize("$whitehilt_portal_travel");
-        CreateButton(panel, bottom, new Vector2(95f, 40f), 180f, Close, out Text closeLabel);
+        homeButton = CreateButton(panel, bottom, new Vector2(0f, 40f), 125f, OnTravelHome, out Text homeTravelLabel);
+        homeTravelLabel.text = Localization.instance.Localize("$whitehilt_portal_take_me_home");
+        CreateButton(panel, bottom, new Vector2(135f, 40f), 125f, Close, out Text closeLabel);
         closeLabel.text = Localization.instance.Localize("$whitehilt_portal_close");
+    }
+
+    // Jotunn sizes the parts of a scroll view once, at the size it is made with; stretch them with the view instead.
+    private static void StretchScrollView(RectTransform root)
+    {
+        foreach (RectTransform part in root.GetComponentsInChildren<RectTransform>(true))
+        {
+            switch (part.name)
+            {
+                case "Scroll View":
+                case "Viewport":
+                    Stretch(part, Vector2.zero, Vector2.zero);
+                    break;
+                case "Scrollbar Vertical":
+                    float x = part.anchoredPosition.x;
+                    part.anchorMin = new Vector2(1f, 0f);
+                    part.anchorMax = new Vector2(1f, 1f);
+                    part.sizeDelta = new Vector2(HandleSize, -(2f * HandleBorder + HandleSize));
+                    part.anchoredPosition = new Vector2(x, 0f);
+                    break;
+                case "Sliding Area" when part.parent != null && part.parent.name == "Scrollbar Vertical":
+                    Stretch(part, Vector2.zero, Vector2.zero);
+                    break;
+            }
+        }
+    }
+
+    private static void Stretch(RectTransform rect, Vector2 offsetMin, Vector2 offsetMax)
+    {
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = offsetMin;
+        rect.offsetMax = offsetMax;
     }
 
     private static Button CreateButton(Transform parent, Vector2 anchor, Vector2 position, float width, UnityEngine.Events.UnityAction onClick, out Text label)
@@ -264,6 +303,7 @@ public class PortalTravelPanel : MonoBehaviour
         renameLabel.text = Localization.instance.Localize("$whitehilt_portal_rename");
         privateLabel.text = Localization.instance.Localize(origin.IsPrivate ? "$whitehilt_portal_make_public" : "$whitehilt_portal_make_private");
         bool isHome = !string.IsNullOrEmpty(origin.Id) && PortalTravel.GetHome(player) == origin.Id;
+        homeButton.interactable = !isHome && PortalTravel.Find(PortalTravel.GetHome(player)) != null;
         homeLabel.text = Localization.instance.Localize(isHome ? $"★ $whitehilt_portal_is_home" : "$whitehilt_portal_set_home");
         sortLabel.text = Localization.instance.Localize(PortalSettings.SortByDistance ? "$whitehilt_portal_sort_distance" : "$whitehilt_portal_sort_name");
     }
@@ -373,6 +413,11 @@ public class PortalTravelPanel : MonoBehaviour
     private void OnTravel()
     {
         Travel(PortalTravel.Find(selectedId));
+    }
+
+    private void OnTravelHome()
+    {
+        Travel(PortalTravel.Find(PortalTravel.GetHome(Player.m_localPlayer)));
     }
 
     private void OnRename()

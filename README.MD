@@ -693,6 +693,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Backpack: three coin slots next to the shield and ammo
 - Backpack: a potion slot shows what the potion restores (or its regeneration bonus or effect) instead of 0, and the total counts only food
 - Dog: a playful puppy's hop is a smooth arc of the body instead of the wolf's jump
+- Portal travel map: the list reaches down to the buttons, and "Take me home" between Travel and Close goes straight to your home portal
 
 ### v0.10.0 - 2026-09-30
 
