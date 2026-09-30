@@ -8,6 +8,8 @@ using UnityEngine;
 /// <summary>
 /// Renders preview images of pieces put together from exported vanilla meshes, so a layout can be tried without the game.
 /// Run with <c>-executeMethod PreviewRender.Render -previewLayout &lt;layout.json&gt; -previewMeshes &lt;dir&gt; -previewOut &lt;dir&gt;</c>.
+/// With <c>-previewTransparent</c> every piece is rendered from its first view only, without ground, on a transparent
+/// background (<c>-previewSize</c> pixels square), for the documentation.
 /// </summary>
 public static class PreviewRender
 {
@@ -17,6 +19,7 @@ public static class PreviewRender
     private static readonly Dictionary<string, MeshData> meshes = new();
     private static readonly Dictionary<string, Material> materials = new();
     private static string meshFolder;
+    private static bool transparent;
 
     /// <summary>
     /// Builds every piece in the layout and writes one PNG per piece with three views.
@@ -31,6 +34,8 @@ public static class PreviewRender
         Layout layout = JsonUtility.FromJson<Layout>(File.ReadAllText(layoutPath));
         Dictionary<string, PieceData> pieces = layout.pieces.ToDictionary(piece => piece.name);
         string[] only = (TryArgument("-previewOnly") ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        transparent = Environment.GetCommandLineArgs().Contains("-previewTransparent");
+        int size = int.TryParse(TryArgument("-previewSize"), out int parsed) ? parsed : 1024;
 
         foreach (PieceData piece in layout.pieces.Where(piece => !piece.template && (only.Length == 0 || only.Contains(piece.name))))
         {
@@ -45,16 +50,25 @@ public static class PreviewRender
             Bounds bounds = MeasureBounds(root);
 
             View[] views = piece.views != null && piece.views.Length > 0 ? piece.views : DefaultViews;
+            string file = Path.Combine(outFolder, piece.name + ".png");
+            if (transparent)
+            {
+                Texture2D single = RenderView(bounds, views[0], size, size);
+                File.WriteAllBytes(file, single.EncodeToPNG());
+                UnityEngine.Object.DestroyImmediate(single);
+                Debug.Log($"[Preview] {piece.name}: {Stats(root)} -> {file}");
+                continue;
+            }
+
             Texture2D sheet = new(ViewWidth * views.Length, ViewHeight, TextureFormat.RGB24, false);
             for (int i = 0; i < views.Length; i++)
             {
-                Texture2D image = RenderView(bounds, views[i]);
+                Texture2D image = RenderView(bounds, views[i], ViewWidth, ViewHeight);
                 sheet.SetPixels(i * ViewWidth, 0, ViewWidth, ViewHeight, image.GetPixels());
                 UnityEngine.Object.DestroyImmediate(image);
             }
 
             sheet.Apply();
-            string file = Path.Combine(outFolder, piece.name + ".png");
             File.WriteAllBytes(file, sheet.EncodeToPNG());
             Debug.Log($"[Preview] {piece.name}: {Stats(root)} -> {file}");
         }
@@ -131,6 +145,11 @@ public static class PreviewRender
         sun.shadows = LightShadows.Soft;
         sun.transform.rotation = Quaternion.Euler(45f, 150f, 0f);
 
+        if (transparent)
+        {
+            return;
+        }
+
         GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
         ground.transform.localScale = Vector3.one * 10f;
         Material grass = new(Shader.Find("Standard")) { color = new Color(0.33f, 0.4f, 0.22f) };
@@ -138,13 +157,13 @@ public static class PreviewRender
         ground.GetComponent<MeshRenderer>().sharedMaterial = grass;
     }
 
-    private static Texture2D RenderView(Bounds bounds, View view)
+    private static Texture2D RenderView(Bounds bounds, View view, int width, int height)
     {
         GameObject cameraObject = new("Camera");
         Camera camera = cameraObject.AddComponent<Camera>();
         camera.fieldOfView = 35f;
         camera.clearFlags = CameraClearFlags.SolidColor;
-        camera.backgroundColor = new Color(0.62f, 0.72f, 0.82f);
+        camera.backgroundColor = transparent ? new Color(0f, 0f, 0f, 0f) : new Color(0.62f, 0.72f, 0.82f);
         camera.nearClipPlane = 0.1f;
         camera.farClipPlane = 500f;
 
@@ -156,16 +175,21 @@ public static class PreviewRender
         camera.nearClipPlane = Mathf.Min(0.1f, distance * 0.1f);
         camera.transform.position = center - rotation * Vector3.forward * distance;
         camera.transform.rotation = rotation;
-        camera.aspect = (float)ViewWidth / ViewHeight;
+        camera.aspect = (float)width / height;
 
-        RenderTexture target = new(ViewWidth, ViewHeight, 24) { antiAliasing = 4 };
+        RenderTexture target = new(width, height, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 };
         camera.targetTexture = target;
         camera.Render();
 
         RenderTexture previous = RenderTexture.active;
         RenderTexture.active = target;
-        Texture2D image = new(ViewWidth, ViewHeight, TextureFormat.RGB24, false);
-        image.ReadPixels(new Rect(0, 0, ViewWidth, ViewHeight), 0, 0);
+        Texture2D image = new(width, height, transparent ? TextureFormat.RGBA32 : TextureFormat.RGB24, false);
+        image.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        if (transparent)
+        {
+            Unpremultiply(image);
+        }
+
         image.Apply();
         RenderTexture.active = previous;
 
@@ -173,6 +197,26 @@ public static class PreviewRender
         UnityEngine.Object.DestroyImmediate(target);
         UnityEngine.Object.DestroyImmediate(cameraObject);
         return image;
+    }
+
+    // Edges were blended over a black clear colour; dividing by alpha keeps them from turning dark on a light page.
+    private static void Unpremultiply(Texture2D image)
+    {
+        Color32[] pixels = image.GetPixels32();
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            Color32 pixel = pixels[i];
+            if (pixel.a > 0 && pixel.a < 255)
+            {
+                pixels[i] = new Color32(
+                    (byte)Math.Min(255, pixel.r * 255 / pixel.a),
+                    (byte)Math.Min(255, pixel.g * 255 / pixel.a),
+                    (byte)Math.Min(255, pixel.b * 255 / pixel.a),
+                    pixel.a);
+            }
+        }
+
+        image.SetPixels32(pixels);
     }
 
     private static Bounds MeasureBounds(GameObject root)

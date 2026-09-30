@@ -117,7 +117,7 @@ Use Semantic Versioning: `MAJOR.MINOR.PATCH.BUILD`
 When making changes:
 1. Determine version increment type based on changes
 2. Update `AssemblyVersion` and `AssemblyFileVersion` in `AssemblyInfo.cs`
-3. Update `README.MD` changelog
+3. Add an entry to `CHANGELOG.md`
 
 ## README.MD Maintenance
 
@@ -126,35 +126,51 @@ When making changes:
 The README contains these sections (maintain this order):
 1. Overview
 2. Installation
-3. Features (categorized by item type)
-4. Changelog
-5. License/Credits
+3. Features (only a title, a one-line description and a link per feature page in `docs/`)
+4. Compilation
+5. Changelog (only a link to `CHANGELOG.md`; never write entries in the README)
+6. Credits
+7. Known issues
 
-### Changelog Format
+The README is also the Thunderstore page, so links from it use absolute GitHub URLs (`https://github.com/brudvik/BrudvikWhiteHilt/blob/master/...`); relative links break there.
 
-Add entries at the TOP of the Changelog section:
+## Feature Pages (`docs/`)
+
+Every feature group has its own page in `docs/`, e.g. `docs/dog.md`, `docs/ships.md`, `docs/equipment.md`. The page holds everything about it: tables, recipes, keys, config settings and console commands. Each page starts with `# <emoji> <Title>` and a link back to `../README.MD`; its sections use `##` and `###`.
+
+- Changing a feature: update its page in `docs/`, and its one-line description in the README if the summary no longer fits.
+- New feature group: create `docs/<name>.md` and add a `### <emoji> [Title](absolute URL)` entry with a one-line description to the README's Features list.
+- A README feature entry may show one picture under its heading: `<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/<image>.png" alt="Name" height="120">`.
+- Links between pages are relative (`[White Hilt gear](equipment.md)`).
+- Pictures live in `docs/images/` and are rendered from the models with `python AssetSource\Preview\render_showcase.py` (list in `AssetSource/Preview/showcase.json`). New models get an entry there and an `<img ... height="140">` in the image row above their table.
+
+## CHANGELOG.md Maintenance
+
+The changelog lives in `CHANGELOG.md` in the repository root, and every change that bumps the version MUST get an entry there. `publish.ps1` ships it in the Thunderstore package next to the README.
+
+Add entries at the TOP, right under the intro line, newest version first:
 
 ```markdown
-## Changelog
+## vX.Y.Z - YYYY-MM-DD
 
-### [X.Y.Z] - YYYY-MM-DD
-
-#### Added
+### Added
 - New feature or item descriptions
 
-#### Changed
+### Changed
 - Modifications to existing features
 
-#### Fixed
+### Fixed
 - Bug fixes and corrections
 
-#### Removed
+### Removed
 - Removed features (if any)
 ```
 
+Leave out empty subsections.
+
 ### Feature Tables
 
-When adding new items, update the appropriate table in README.MD:
+When adding new items, update the appropriate table in the feature's page in `docs/`:
 
 ```markdown
 | **Item Name** | Description | Crafting Station | Requirements |
@@ -187,8 +203,8 @@ Before committing changes:
 2. ✅ Crafting requirements use Swamp-tier or earlier materials
 3. ✅ `Enabled` property is set appropriately
 4. ✅ Version number incremented in `AssemblyInfo.cs`
-5. ✅ Changelog updated in `README.MD`
-6. ✅ Feature tables updated if new items added
+5. ✅ Changelog updated in `CHANGELOG.md`
+6. ✅ Feature pages in `docs/` updated (and the README summary if needed)
 7. ✅ Code compiles without errors
 8. ✅ Naming follows conventions
 

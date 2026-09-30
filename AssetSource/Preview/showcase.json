@@ -1,0 +1,66 @@
+﻿{
+  "comment": "Images for docs/. Each entry is rendered by render_showcase.py into docs/images/<image>.png. Source: 'piece' (a piece in defenses.json), 'models' (bundle models at their own origin, as the mod converts them) or 'compose' (a compose_preview.py spec). 'view' is yaw/pitch/zoom as in PreviewRender.",
+  "defaultView": { "yaw": 150, "pitch": 20 },
+  "images": [
+    { "image": "palisade_rampart", "piece": "skansevegg", "view": { "yaw": 140, "pitch": 25 } },
+    { "image": "rampart_corner", "piece": "skansehjorne", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "rampart_bend", "piece": "skansehjorne45", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "rampart_stairs", "piece": "skansetrapp", "view": { "yaw": 140, "pitch": 25 } },
+    { "image": "gatehouse", "piece": "skanseport", "view": { "yaw": 150, "pitch": 20 } },
+    { "image": "small_watchtower", "piece": "vakttarn_liten", "view": { "yaw": 140, "pitch": 15 } },
+    { "image": "watchtower", "piece": "vakttarn", "view": { "yaw": 140, "pitch": 15 } },
+    { "image": "large_watchtower", "piece": "vakttarn_stor", "view": { "yaw": 140, "pitch": 15 } },
+    { "image": "cheval_de_frise", "piece": "spansk_rytter", "view": { "yaw": 140, "pitch": 25 } },
+    { "image": "fort_overview", "piece": "oversikt", "view": { "yaw": 140, "pitch": 35 } },
+
+    { "image": "cartographers_desk", "piece": "kartmakerbenk", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "navigators_table", "piece": "navigatorbord", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "pathfinders_amulet", "piece": "stifinner_visning" },
+    { "image": "white_hilt_portal", "models": ["portal"] },
+
+    { "image": "white_hilt_sword", "models": ["whsword"] },
+    { "image": "white_hilt_bow", "models": ["whbow"] },
+    { "image": "white_hilt_battleaxe", "models": ["whbattleaxe"] },
+    { "image": "white_hilt_spear", "models": ["whspear"] },
+    { "image": "white_hilt_mace", "models": ["whmace"] },
+    { "image": "white_hilt_atgeir", "models": ["whatgeir"] },
+    { "image": "white_hilt_knife", "models": ["whknife"] },
+    { "image": "white_hilt_sledge", "models": ["whsledge"] },
+    { "image": "white_hilt_crossbow", "models": ["whcrossbow", "whcrossbowstringloaded"] },
+    { "image": "white_hilt_staff", "models": ["whstaff"] },
+    { "image": "white_hilt_tower_shield", "models": ["whtowershield"] },
+    { "image": "white_hilt_buckler", "models": ["whbuckler"] },
+
+    { "image": "chain_bench", "models": ["chainvise"] },
+    { "image": "repair_anvil", "models": ["repairanvil"] },
+    { "image": "rune_forge", "models": ["runebench"] },
+    { "image": "rune_post", "models": ["runerack"] },
+    { "image": "rune", "models": ["runering"] },
+    { "image": "portal_astrolabe", "models": ["portalastrolabe"] },
+    { "image": "rune_circle", "models": ["portalground"], "view": { "yaw": 150, "pitch": 45 } },
+    { "image": "home_stone", "models": ["homestone"] },
+    { "image": "surts_brazier", "models": ["eternalfire"] },
+    { "image": "waste_well", "models": ["wastewell"] },
+    { "image": "harbour_anchor", "models": ["shipanchor"] },
+
+    { "image": "chanterelle", "models": ["chanterelle"] },
+    { "image": "porcini", "models": ["porcini"] },
+    { "image": "stone_pot", "models": ["stonepot"] },
+    { "image": "herb_tray", "models": ["herbtray"] },
+    { "image": "smoke_oven", "models": ["smokeoven"] },
+
+    { "image": "feeding_trough", "models": ["trough"] },
+    { "image": "tether_post", "models": ["tetherpost"] },
+    { "image": "grooming_comb", "models": ["comb"] },
+
+    { "image": "dog_house", "models": ["doghouse"] },
+    { "image": "dog_bed", "models": ["dogbed"] },
+    { "image": "dog_bowl", "models": ["dogbowl"] },
+    { "image": "dog_whistle", "models": ["dogwhistle"] },
+    { "image": "leather_dog_collar", "models": ["dogcollarleather"] },
+
+    { "image": "paint_bench", "compose": "paintbench.preview.json", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "white_hilt_paint_brush", "models": ["whpaintbrush"] },
+    { "image": "paint_pot", "models": ["paintbucket"] }
+  ]
+}

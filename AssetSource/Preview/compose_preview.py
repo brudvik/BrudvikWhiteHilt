@@ -72,10 +72,13 @@ def write_mesh(name, vertices, normals, uvs, triangles):
     texture = f"{name}_albedo"
     (MESHES / "textures").mkdir(parents=True, exist_ok=True)
     source = next((SOURCE / f"{texture}{ext}" for ext in (".png", ".jpg") if (SOURCE / f"{texture}{ext}").exists()), None)
-    if source is None or source.suffix != ".png":
-        print(f"  {name}: no PNG texture, rendered untextured")
-    else:
+    if source is None:
+        print(f"  {name}: no texture, rendered untextured")
+    elif source.suffix == ".png":
         shutil.copyfile(source, MESHES / "textures" / f"{texture}.png")
+    else:
+        from PIL import Image
+        Image.open(source).save(MESHES / "textures" / f"{texture}.png")
     data = {"parts": [{
         "texture": texture,
         "vertices": [c for v in vertices for c in v],

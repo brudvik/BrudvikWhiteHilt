@@ -63,6 +63,7 @@ if($Target.Equals("Release")) {
     New-Item -Type Directory -Path "$PackagePath\plugins" -Force
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
     Copy-Item -Path "$ProjectPath\..\README.MD" -Destination "$PackagePath\README.md" -Force -ErrorAction Stop
+    Copy-Item -Path "$ProjectPath\..\CHANGELOG.md" -Destination "$PackagePath\CHANGELOG.md" -Force -ErrorAction Stop
 
     # Compress-Archive in PS 5.1 writes backslash entry names, which Thunderstore rejects
     Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem

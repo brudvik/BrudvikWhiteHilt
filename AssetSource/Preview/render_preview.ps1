@@ -4,7 +4,8 @@
 .DESCRIPTION
     Exports the vanilla meshes named in the layout (first run, or with -Export) with export_vanilla.py into the
     git-ignored BrudvikWhiteHiltUnity project, then renders every piece in the layout with Unity in batch mode.
-    One PNG per piece lands in BrudvikWhiteHiltUnity/Preview/out.
+    One PNG per piece lands in BrudvikWhiteHiltUnity/Preview/out (or -Out). -Transparent renders only each piece's first
+    view, without ground, on a transparent background of -Size pixels square.
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File AssetSource\Preview\render_preview.ps1 -Only skansevegg
 #>
@@ -12,6 +13,9 @@ param(
     [string]$Layout = (Join-Path $PSScriptRoot 'defenses.json'),
     [string]$Only = '',
     [string[]]$Export = @(),
+    [string]$Out = '',
+    [switch]$Transparent,
+    [int]$Size = 1024,
     [string]$UnityPath = "C:\Program Files\Unity\Hub\Editor\6000.0.75f1\Editor\Unity.exe"
 )
 
@@ -20,7 +24,10 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $project = Join-Path $repoRoot 'BrudvikWhiteHiltUnity'
 $meshes = Join-Path $project 'Preview\vanilla'
-$out = Join-Path $project 'Preview\out'
+if (-not $Out) {
+    $Out = Join-Path $project 'Preview\out'
+}
+$out = $Out
 $logFile = Join-Path $env:TEMP 'whitehilt_preview.log'
 
 if (-not (Test-Path (Join-Path $project 'Assets'))) {
@@ -45,6 +52,9 @@ $arguments = @('-batchmode', '-quit', '-projectPath', "`"$project`"", '-executeM
     '-previewLayout', "`"$Layout`"", '-previewMeshes', "`"$meshes`"", '-previewOut', "`"$out`"", '-logFile', "`"$logFile`"")
 if ($Only) {
     $arguments += @('-previewOnly', $Only)
+}
+if ($Transparent) {
+    $arguments += @('-previewTransparent', '-previewSize', $Size)
 }
 
 # Unity.exe is a GUI application, so the call operator would not wait for it. No -nographics: the cameras must render.
