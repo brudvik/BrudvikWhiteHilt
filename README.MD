@@ -675,6 +675,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 #### Added
 - White Hilt Ship: the sail force and the constant tailwind can be set in the config (`Ships` → `SailForce`, `AlwaysTailwind`); the defaults are unchanged
+- Build tools: how many steps undo remembers and how fast terrain jobs run can be set in the config (`BuildTools` → `UndoSteps`, `BuildTools.Terrain` → `UndoSteps`, `EditsPerFrame`); the defaults are unchanged
 
 #### Changed
 - White Hilt Ship: "Take me there" weighs the anchor, and lowering the anchor stops the route
@@ -686,6 +687,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 #### Removed
 - Unused code for indestructible ships and pieces
+- An unused field on every Gift effect
 
 ### v0.11.0 - 2026-09-30
 
