@@ -754,6 +754,11 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.19.1 - 2026-09-30
+
+#### Fixed
+- Pathfinder's Amulet: the character locked up when Raven Sight ended (NullReferenceException in StatusEffect.RemoveStartEffects every frame); the raven effects are no longer start effects
+
 ### v0.19.0 - 2026-09-30
 
 #### Added

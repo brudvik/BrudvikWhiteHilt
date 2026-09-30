@@ -23,6 +23,9 @@ public class RavenSightEffect : StatusEffect
     // Raven effects from Hugin and Munin; whichever exist in this game version are played.
     private static readonly string[] ravenEffects = { "fx_raven_despawn", "vfx_raven_feathers", "sfx_raven_kaw", "sfx_raven_poof" };
 
+    // Not m_startEffects: vanilla RemoveStartEffects throws on instances without a ZNetView, and the thrown Stop froze the player.
+    private static EffectList ravenEffectList;
+
     /// <summary>
     /// Registers the English text. Call from a constructor, before Valheim loads its languages.
     /// </summary>
@@ -44,7 +47,7 @@ public class RavenSightEffect : StatusEffect
         effect.m_name = Translations.Token(EffectKey);
         effect.m_tooltip = Translations.Token($"{EffectKey}_tooltip");
         effect.m_ttl = Duration;
-        effect.m_startEffects = CreateRavenEffects();
+        ravenEffectList = CreateRavenEffects();
         return effect;
     }
 
@@ -55,6 +58,11 @@ public class RavenSightEffect : StatusEffect
     public override void Setup(Character character)
     {
         base.Setup(character);
+        if (character != null)
+        {
+            ravenEffectList?.Create(character.GetCenterPoint(), character.transform.rotation, character.transform);
+        }
+
         if (character != null && character == Player.m_localPlayer && Minimap.instance != null)
         {
             Minimap.instance.Explore(character.transform.position, RevealRadius);
