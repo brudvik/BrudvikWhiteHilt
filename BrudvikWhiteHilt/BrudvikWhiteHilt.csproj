@@ -263,6 +263,16 @@
     <Compile Include="Clock\ClockSettings.cs" />
     <Compile Include="Clock\GameClock.cs" />
     <Compile Include="Patches\Clock\ClockPatches.cs" />
+    <Compile Include="Difficulty\CreatureStars.cs" />
+    <Compile Include="Difficulty\DifficultyCommands.cs" />
+    <Compile Include="Difficulty\DifficultyService.cs" />
+    <Compile Include="Difficulty\DifficultySettings.cs" />
+    <Compile Include="Difficulty\DifficultyState.cs" />
+    <Compile Include="Difficulty\StarHud.cs" />
+    <Compile Include="Difficulty\StarScale.cs" />
+    <Compile Include="Difficulty\WhiteHiltGear.cs" />
+    <Compile Include="Patches\Difficulty\CreatureLevelPatches.cs" />
+    <Compile Include="Patches\Difficulty\DifficultyWorldPatches.cs" />
     <Compile Include="Sound\IndoorAudioFilter.cs" />
     <Compile Include="Sound\IndoorSound.cs" />
     <Compile Include="Sound\IndoorSoundSettings.cs" />

@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.9.0";
+    public const string PluginVersion = "0.10.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -73,6 +73,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Pieces.Waste.WasteWellSettings.Initialize();
         Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
+        Difficulty.DifficultySettings.Initialize();
+        Difficulty.DifficultyCommands.Register();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
@@ -112,6 +114,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
                 {
                     customItems.Add(customItem);
                     ProgressionManager.RegisterItem(customItem);
+                    Difficulty.WhiteHiltGear.Register(customItem);
                 }
             }
 

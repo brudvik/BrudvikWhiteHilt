@@ -500,6 +500,40 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 
 ---
 
+### 🌑 DIFFICULTY
+
+The world grows more dangerous as you progress. The server combines four things into a **pressure** from 0 to 1 and sends it to every player. The value changes slowly, so it does not jump when someone logs in or out:
+
+| Factor | Measured as | Full at | Weight |
+|--------|-------------|---------|--------|
+| Players | Players online (the game already strengthens creatures near several players) | 5 | 0.15 |
+| Time | Days in the world | 120 | 0.20 |
+| Biomes | Biomes visited by the furthest player online | 7 (Meadows to Ashlands) | 0.45 |
+| White Hilt gear | Share of players online wearing a White Hilt weapon or at least two White Hilt armour pieces | 100% | 0.20 |
+
+**Stars**
+- The vanilla chance of 1 and 2 stars goes from 10% up to 20% per star at full pressure.
+- A creature that reaches 2 stars may go further. At full pressure the chance is 25% for a 3rd star, 20% for a 4th and 15% for a 5th, so 5 star creatures are very rare.
+- The biomes you have visited set the highest star count: 4 biomes give 3 stars, 5 give 4 and 7 give 5.
+- Each biome also has a limit: the Meadows stay at 2 stars, the Black Forest has at most 3 and the Swamp at most 4.
+- Only one creature with 4 or 5 stars comes per spawn group.
+- Bosses, tame animals, fish and raids are never changed.
+
+**Strength, loot and size**
+- Every new creature gets up to 20% more health and 10% more damage from the pressure.
+- Stars above 2 add less than vanilla stars: +50% health and +25% damage each. A 5 star creature has 4.5× health and 2.75× damage, never more than 6× and 3×.
+- Loot is 5×, 6× and 7× for 3, 4 and 5 stars, not 8×, 16× and 32×.
+- Creatures with 3 to 5 stars grow 8%, 16% and 25% on top of the vanilla 2 star size. Large creatures such as trolls grow half as much, and nothing grows indoors.
+- 3 to 5 stars are shown over the creature.
+
+**Console command:** `whitehilt_difficulty` shows the pressure and what it is made of.
+
+Everything is set in the `[Difficulty]`, `[Difficulty.Stars]` and `[Difficulty.Size]` sections. `Difficulty.OverridePressure` fixes the pressure for testing. The star part turns itself off while Creature Level and Loot Control is installed.
+
+If the mod is removed, creatures with 3 to 5 stars that are still in the world use the vanilla formulas (up to 6× health and 32× loot).
+
+---
+
 ### ⚙️ PROGRESSION (CONFIG)
 
 Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server.
@@ -542,6 +576,13 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.10.0 - 2026-09-30
+
+#### Added
+- Dynamic difficulty: players online, days, biomes visited and White Hilt gear worn add up to a pressure. The pressure raises star chances and gives creatures more health and damage
+- Creatures with up to 5 stars. How many stars can appear depends on the biomes visited and has a limit per biome. Stars above 2 add less strength and loot than vanilla stars, and the creatures grow
+- Console command `whitehilt_difficulty`
 
 ### v0.9.0 - 2026-09-30
 
