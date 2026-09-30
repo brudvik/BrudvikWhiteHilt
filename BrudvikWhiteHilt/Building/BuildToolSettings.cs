@@ -36,6 +36,9 @@ public static class BuildToolSettings
     /// <summary>How long after placing a piece it may be undone with a full refund, in seconds.</summary>
     public static ConfigEntry<float> UndoSeconds { get; private set; }
 
+    /// <summary>How many build steps are remembered for undo.</summary>
+    public static ConfigEntry<int> UndoSteps { get; private set; }
+
     /// <summary>Whether the hammer's repair may cover every piece within a radius at once.</summary>
     public static ConfigEntry<bool> RepairAreaEnabled { get; private set; }
 
@@ -215,6 +218,7 @@ public static class BuildToolSettings
         LightRange = WhiteHiltConfig.BindLocal(Section, "LightRange", 40f, "Reach of the build camera light in metres.");
         NudgeStep = WhiteHiltConfig.BindLocal(Section, "NudgeStep", 0.05f, "How far one nudge moves the piece, in metres.");
         GridSize = WhiteHiltConfig.BindLocal(Section, "GridSize", 0.5f, "Grid size in metres.");
+        UndoSteps = WhiteHiltConfig.BindLocal(Section, "UndoSteps", 30, "How many build steps are remembered for undo and redo.");
         ShowAxes = WhiteHiltConfig.BindLocal(Section, "ShowAxes", true, "Draw red, green and blue axes on the piece being placed.");
         ToolbarCollapsed = WhiteHiltConfig.BindLocal(Section, "ToolbarCollapsed", false, "Fold the toolbar to its title and status lines. Click the title to switch.");
         RepairRadius = WhiteHiltConfig.BindLocal(Section, "RepairRadius", 10f,

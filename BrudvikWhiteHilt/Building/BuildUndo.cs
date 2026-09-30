@@ -11,13 +11,13 @@ namespace BrudvikWhiteHilt.Building;
 /// </summary>
 public static class BuildUndo
 {
-    private const int MaxSteps = 30;
-
     private static readonly List<Step> steps = new();
     private static readonly List<PieceSnapshot> undone = new();
 
     private static Step group;
     private static bool restoring;
+
+    private static int MaxSteps => Mathf.Max(1, BuildToolSettings.UndoSteps.Value);
 
     /// <summary>True while <see cref="Player.PlacePiece"/> runs for the local player.</summary>
     public static bool Capturing { get; set; }
@@ -158,7 +158,7 @@ public static class BuildUndo
             if (step.Placed.Count == 1 && step.Removed.Count == 0)
             {
                 undone.Add(PieceSnapshot.Of(alive[0]));
-                if (undone.Count > MaxSteps)
+                while (undone.Count > MaxSteps)
                 {
                     undone.RemoveAt(0);
                 }
@@ -223,7 +223,7 @@ public static class BuildUndo
     private static void Add(Step step)
     {
         steps.Add(step);
-        if (steps.Count > MaxSteps)
+        while (steps.Count > MaxSteps)
         {
             steps.RemoveAt(0);
         }

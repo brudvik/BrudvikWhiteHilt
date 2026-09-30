@@ -12,9 +12,6 @@ namespace BrudvikWhiteHilt.Building.Terrain;
 /// </summary>
 public static class TerrainEdit
 {
-    private const int OpsPerFrame = 40;
-    private const int MaxUndoSteps = 10;
-
     private static readonly Queue<Job> jobs = new();
     private static readonly HashSet<TerrainComp> dirty = new();
     private static readonly List<Heightmap> heightmaps = new();
@@ -81,7 +78,7 @@ public static class TerrainEdit
     /// </summary>
     public static void Tick()
     {
-        int budget = OpsPerFrame;
+        int budget = Mathf.Max(1, TerrainSettings.EditsPerFrame.Value);
         while (budget > 0)
         {
             if (current == null)
@@ -258,7 +255,7 @@ public static class TerrainEdit
         if (job.Undoable && job.Before.Count > 0)
         {
             undoSteps.Add(job);
-            if (undoSteps.Count > MaxUndoSteps)
+            while (undoSteps.Count > Mathf.Max(1, TerrainSettings.UndoSteps.Value))
             {
                 undoSteps.RemoveAt(0);
             }

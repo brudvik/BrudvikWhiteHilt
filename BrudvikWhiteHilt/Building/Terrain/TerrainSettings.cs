@@ -31,6 +31,12 @@ public static class TerrainSettings
     /// <summary>How long terrain changes may be undone, in seconds.</summary>
     public static ConfigEntry<float> UndoSeconds { get; private set; }
 
+    /// <summary>How many terrain jobs are remembered for undo.</summary>
+    public static ConfigEntry<int> UndoSteps { get; private set; }
+
+    /// <summary>Terrain operations applied per frame while a job runs.</summary>
+    public static ConfigEntry<int> EditsPerFrame { get; private set; }
+
     /// <summary>Whether growth markers show over plants while holding the cultivator.</summary>
     public static ConfigEntry<bool> ShowGrowth { get; private set; }
 
@@ -95,6 +101,9 @@ public static class TerrainSettings
             new AcceptableValueRange<float>(0f, 600f));
         ShowGrowth = WhiteHiltConfig.BindLocal(Section, "ShowGrowth", true, "Show growth markers over plants while holding the White Hilt cultivator.");
         RoadWidth = WhiteHiltConfig.BindLocal(Section, "RoadWidth", 4f, "Width of new roads in metres.");
+        UndoSteps = WhiteHiltConfig.BindLocal(Section, "UndoSteps", 10, "How many terrain jobs are remembered for undo.");
+        EditsPerFrame = WhiteHiltConfig.BindLocal(Section, "EditsPerFrame", 40,
+            "Terrain operations applied per frame while a job runs. Higher finishes large jobs sooner but can stutter.");
 
         KeyRoad = BindKey("Road", KeyCode.R, "Hoe: plan a road on the map. Cultivator: replant the empty places of the last grid.");
         KeyArea = BindKey("Area", KeyCode.F, "Hoe: level an area. Cultivator: cultivate an area.");
