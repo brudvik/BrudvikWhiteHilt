@@ -367,7 +367,7 @@ public static class GroupTools
             else if (Aim(player, player.m_removeRayMask, out RaycastHit pieceHit))
             {
                 Piece piece = pieceHit.collider.GetComponentInParent<Piece>();
-                if (piece != null && GroupPlacer.Resolve(Utils.GetPrefabName(piece.gameObject)) != null)
+                if (piece != null && GroupPlacer.Resolve(Utils.GetPrefabName(piece.gameObject)) != null && !Planting.Plantables.IsWild(piece))
                 {
                     BuildSelection.Toggle(piece);
                 }

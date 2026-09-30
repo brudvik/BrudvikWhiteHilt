@@ -65,6 +65,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
         Building.Terrain.TerrainSettings.Initialize();
+        Planting.PlantingSettings.Initialize();
         Backpack.BackpackSettings.Initialize();
         Pieces.Ships.ShipSettings.Initialize();
         Clock.ClockSettings.Initialize();
@@ -91,8 +92,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
 
         // Pickables must exist before the first ZNetScene and ZoneSystem, or their vegetation is missing in that session.
         PrefabManager.OnVanillaPrefabsAvailable += AddForageables;
+        PrefabManager.OnVanillaPrefabsAvailable += AddSaplings;
         PrefabManager.OnPrefabsRegistered += AddForageableCreatureDrops;
         PrefabManager.OnPrefabsRegistered += FavoriteFoods.AddToDiets;
+        PrefabManager.OnPrefabsRegistered += Planting.Plantables.Apply;
 
         // Apply Harmony patches using the plugin's GUID
         var harmony = new Harmony(PluginGUID);
@@ -180,6 +183,15 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     }
 
     /// <summary>
+    /// Adds the sapling prefabs that grow into other vanilla trees.
+    /// </summary>
+    private void AddSaplings()
+    {
+        Planting.Saplings.Create();
+        PrefabManager.OnVanillaPrefabsAvailable -= AddSaplings;
+    }
+
+    /// <summary>
     /// Adds the forageables as drops on vanilla creatures. Runs for every ZNetScene, since it edits vanilla prefabs.
     /// </summary>
     private void AddForageableCreatureDrops()
@@ -194,6 +206,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         ProgressionManager.Refresh();
         Backpack.BackpackLayout.Refresh();
+        Planting.Plantables.Apply();
         forageables.ForEach(forageable => forageable.ApplyConfig());
         foreach (WhiteHiltFoodBase food in customItems.OfType<WhiteHiltFoodBase>())
         {

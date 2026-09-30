@@ -258,6 +258,12 @@
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />
     <Compile Include="Patches\Progression\ProgressionPatches.cs" />
+    <Compile Include="Patches\Planting\PlantingPatches.cs" />
+    <Compile Include="Planting\PlantableDefinition.cs" />
+    <Compile Include="Planting\Plantables.cs" />
+    <Compile Include="Planting\PlantingSettings.cs" />
+    <Compile Include="Planting\SaplingDefinition.cs" />
+    <Compile Include="Planting\Saplings.cs" />
     <Compile Include="Backpack\BackpackGui.cs" />
     <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />

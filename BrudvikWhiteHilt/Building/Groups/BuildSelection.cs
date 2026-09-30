@@ -80,7 +80,7 @@ public static class BuildSelection
         foreach (Piece piece in buffer)
         {
             if (piece != null && box.Contains(piece.transform.position) && GroupPlacer.Resolve(Utils.GetPrefabName(piece.gameObject)) != null
-                && selected.Add(piece))
+                && !Planting.Plantables.IsWild(piece) && selected.Add(piece))
             {
                 Highlight(piece);
             }
