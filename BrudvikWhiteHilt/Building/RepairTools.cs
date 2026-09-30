@@ -42,7 +42,7 @@ public static class RepairTools
     public static bool Selected(Player player)
     {
         Piece piece = player != null && player.InPlaceMode() ? player.m_buildPieces?.GetSelectedPiece() : null;
-        return piece != null && piece.m_repairPiece;
+        return piece != null && piece.m_repairPiece && !Painting.PaintBrush.IsPaintPiece(piece);
     }
 
     /// <summary>
@@ -326,7 +326,7 @@ public static class RepairTools
         foreach (GameObject prefab in table.m_pieces)
         {
             Piece piece = prefab != null ? prefab.GetComponent<Piece>() : null;
-            if (piece != null && piece.m_repairPiece)
+            if (piece != null && piece.m_repairPiece && !Painting.PaintBrush.IsPaintPiece(piece))
             {
                 return piece;
             }

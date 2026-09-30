@@ -126,7 +126,8 @@ public static class BuildToolPatches
     [HarmonyPostfix]
     public static void UpdatePlacementPostfix(Player __instance, int __state)
     {
-        if (__instance == Player.m_localPlayer && (BuildTools.WheelModifierHeld || RepairTools.WheelSetsRadius(__instance)))
+        if (__instance == Player.m_localPlayer && (BuildTools.WheelModifierHeld || RepairTools.WheelSetsRadius(__instance)
+            || global::BrudvikWhiteHilt.Painting.PaintBrush.WheelSetsRadius(__instance)))
         {
             __instance.m_placeRotation = __state;
         }
@@ -147,16 +148,23 @@ public static class BuildToolPatches
     }
 
     /// <summary>
-    /// Repairs every damaged piece around the aimed point while the repair radius is above 0.
+    /// Paints with the White Hilt Paint Brush, or repairs every damaged piece around the aimed point while the repair
+    /// radius is above 0.
     /// </summary>
     /// <param name="__instance">The player.</param>
     /// <param name="toolItem">The build tool.</param>
-    /// <returns>False when the area repair took over.</returns>
+    /// <param name="repairPiece">The selected repair-style piece.</param>
+    /// <returns>False when the brush or the area repair took over.</returns>
     [HarmonyPatch(typeof(Player), nameof(Player.Repair))]
     [HarmonyPrefix]
-    public static bool Repair(Player __instance, ItemDrop.ItemData toolItem)
+    public static bool Repair(Player __instance, ItemDrop.ItemData toolItem, Piece repairPiece)
     {
-        return __instance != Player.m_localPlayer || !__instance.InPlaceMode() || !RepairTools.RepairArea(__instance, toolItem);
+        if (__instance != Player.m_localPlayer || !__instance.InPlaceMode())
+        {
+            return true;
+        }
+
+        return !global::BrudvikWhiteHilt.Painting.PaintBrush.HandleClick(__instance, toolItem, repairPiece) && !RepairTools.RepairArea(__instance, toolItem);
     }
 
     /// <summary>

@@ -77,7 +77,7 @@ public static class BuildTools
         if (Pressed(MediaSettings.KeyPhoto)) WithCamera(player, () => MediaMode.TakePhoto(MediaPanel.Host));
         if (Pressed(MediaSettings.KeyPhotoView)) WithCamera(player, MediaMode.TogglePhotoView);
         if (Pressed(MediaSettings.KeyPanel)) WithCamera(player, MediaPanel.Toggle);
-        if (!MediaMode.PhotoView && !MediaPanel.IsOpen && !GroupTools.Active && !HoeTools.Active && !FarmTools.Active && !HoeTools.WheelSetsBrush(player) && !RepairTools.WheelSetsRadius(player))
+        if (!MediaMode.PhotoView && !MediaPanel.IsOpen && !GroupTools.Active && !HoeTools.Active && !FarmTools.Active && !HoeTools.WheelSetsBrush(player) && !RepairTools.WheelSetsRadius(player) && !Painting.PaintBrush.WheelSetsRadius(player))
         {
             HandleWheel(player);
         }

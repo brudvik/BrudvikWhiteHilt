@@ -337,6 +337,16 @@
     <Compile Include="Backpack\HotbarSupply.cs" />
     <Compile Include="Pieces\Structure\BeamPieceBase.cs" />
     <Compile Include="Pieces\Structure\BeamPieces.cs" />
+    <Compile Include="Painting\DyeCatalog.cs" />
+    <Compile Include="Painting\PaintBrush.cs" />
+    <Compile Include="Painting\PaintColor.cs" />
+    <Compile Include="Painting\PaintedPieces.cs" />
+    <Compile Include="Painting\PaintMixerPanel.cs" />
+    <Compile Include="Painting\PaintSettings.cs" />
+    <Compile Include="Items\Painting\WhiteHiltPaintBrush.cs" />
+    <Compile Include="Items\Painting\WhiteHiltPaintPot.cs" />
+    <Compile Include="Pieces\Painting\PaintBench.cs" />
+    <Compile Include="Patches\Painting\PaintPatches.cs" />
     <Compile Include="Backpack\UtilitySlots.cs" />
     <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
     <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />

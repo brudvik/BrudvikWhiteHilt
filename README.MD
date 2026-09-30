@@ -371,6 +371,23 @@ More lengths and angles of the vanilla beams and poles, in the hammer right afte
 
 ---
 
+### 🎨 PAINTING
+
+Paint or stain any building piece in the colour you choose. The colour is saved on the piece, so everyone sees it and it stays; without the mod the pieces just look vanilla again.
+
+| Item / Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Paint Bench** | Use crafts the brush. **Shift + Use** opens the colour wheel | Workbench | Fine Wood ×10, Bronze ×3, Resin ×6, Leather Scraps ×4 |
+| **White Hilt Paint Brush** | Everlasting build tool with four actions: **Paint**, **Stain**, **Remove paint**, **Pick colour** | Paint Bench | Fine Wood ×2, Bronze ×1, Feathers ×3 |
+| **Paint Pot** | Mixed at the bench; covers 20 pieces, shown as its durability. Use it to load the brush | Paint Bench (colour wheel) | Dyes + Resin ×1 |
+
+- **Colour wheel**: pick hue and saturation on the wheel and brightness on the bar, or type hex or RGB. Eight saved colours (`Painting` → `Favourites`).
+- **Dyes**: food and animal products up to the Swamp (berries, mushrooms, dandelion, thistle, carrot, turnip, blood, bones, feathers, hides, guck, ooze, coal, resin and a few dishes). Their colours are measured from their icons, and the bench picks the mix of up to three that comes closest, from your inventory and nearby chests, and shows how close it is. The pot gets exactly the colour you chose.
+- **Paint** bleaches the texture first, so light colours and white work; **Stain** tints over the wood, so the grain shows but it can only darken.
+- The mouse wheel sets the brush radius (0 = only the aimed piece, up to `MaxRadius`, 8 m); the pieces in reach show the colour before you click. Paint and stain respect wards.
+
+---
+
 ### 🔊 INDOOR SOUND
 
 Wind, rain, sea and thunder are quieter and muffled under a roof, as heard through walls, so a house is a quiet place to cook and craft in. How much follows how well you are covered: a little under an open roof, most in a closed house (the game's own shelter), and some under the tent of the White Hilt Ship. Only the weather's sound changes; fires, cooking, crafting and doors sound as before. Dungeons are left alone.
@@ -737,6 +754,11 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.19.0 - 2026-09-30
+
+#### Added
+- Painting: the Paint Bench with a colour wheel that mixes paint pots from dyes in your inventory and nearby chests, and the everlasting White Hilt Paint Brush that paints, stains, cleans and picks colours on building pieces, one piece or a whole radius at a time
+
 ### v0.18.0 - 2026-09-30
 
 #### Added
@@ -1085,6 +1107,11 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - White Hilt Knife model: ["Seax Sword"](https://sketchfab.com/3d-models/seax-sword-06c33a65b47e409b84c607b1e79c63a1) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
 - White Hilt Crossbow model: ["LowPoly Crossbow Asset"](https://sketchfab.com/3d-models/lowpoly-crossbow-asset-bf49c17143ba418fa9abcf2724ae8e0b) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided, the stock painted white and a drawn string added for Valheim.
 - White Hilt Tower Shield model: ["Medieval Kite Shield"](https://sketchfab.com/3d-models/medieval-kite-shield-ef454e3700a7462eb27af245e685529a) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the boards painted white for Valheim.
+- White Hilt Paint Brush model: ["Paint Brush"](https://sketchfab.com/3d-models/paint-brush-5e68e46fe7c146e298e81a31f6454ac8) by [KOH4RU](https://sketchfab.com/KOH4RU), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, texture downscaled, converted to OBJ, rescaled, made double-sided and the handle painted white for Valheim.
+- Paint Bench table: ["Medieval Table (Free)"](https://sketchfab.com/3d-models/medieval-table-free-6d4f897c019f4a55aeda23cda6e6fb57) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Texture downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Bench palette: ["Color palette"](https://sketchfab.com/3d-models/color-palette-82e2019ab9754e208dadc9f0a23e7161) by [Alberto](https://sketchfab.com/onzoalberto), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, the paint blobs and board coloured, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Pot and Paint Bench bucket: ["Stylized Low Poly Wooden Bucket | Game Ready"](https://sketchfab.com/3d-models/stylized-low-poly-wooden-bucket-game-ready-b55447c9da0e462b95dbf9dfbe97f061) by [Null__](https://sketchfab.com/Nullqw), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the water coloured as paint, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Bench brushes: ["Brush in a cup"](https://sketchfab.com/3d-models/brush-in-a-cup-3518d3fbb5634c3eac5d210ed1c4b558) by [Spiketus](https://sketchfab.com/Spiketus), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the saucer removed, converted to OBJ, rescaled and made double-sided for Valheim.
 
 - Refactored WearNTear configuration to shared helper class.
 - Added pickaxe damage immunity to indestructible items.
