@@ -60,7 +60,7 @@
   "se_whitehiltravensight_tooltip": "Odins ravner viser deg landet 500 m rundt.",
   "msg_whitehilt_ravensight": "Ravnene viser deg landet rundt deg",
   "whitehilt_skill_exploration": "Utforsking",
-  "whitehilt_skill_exploration_description": "Å avdekke kartet. Gir navigatørbordet og Stifinner større utsyn.",
+  "whitehilt_skill_exploration_description": "Å avdekke kartet. Gir navigatørbordet og Stifinner større utsyn, og fra nivå 50 vises kart andre har delt som ditt eget.",
   "whitehilt_skill_husbandry": "Dyrehold",
   "whitehilt_skill_husbandry_description": "Å temme, fôre og avle dyr. Dyr i nærheten av deg temmes raskere, holder seg mette lenger og får unger raskere og i større flokker.",
   "whitehilt_favorite_food": "Favorittmat",

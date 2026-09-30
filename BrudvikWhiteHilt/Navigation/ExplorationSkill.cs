@@ -43,7 +43,7 @@ public static class ExplorationSkill
     /// </summary>
     public static void Register()
     {
-        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", "Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal.");
+        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", "Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal, and from level 50 shows map shared by others like your own.");
         config = new SkillConfig
         {
             Identifier = Identifier,

@@ -203,7 +203,7 @@ In the towers, use the ladder to climb to the next floor up, or hold the alterna
 
 ### 🧭 NAVIGATION
 
-A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better. The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used within 5 m of one.
+A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better. From level 50, map that others have shared with you through a map table is shown just like map you uncovered yourself, without the see-through layer (hiding shared map data brings the layer back). The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used within 5 m of one.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|

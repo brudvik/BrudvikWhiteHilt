@@ -244,6 +244,7 @@
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
+    <Compile Include="Patches\Navigation\SharedMapRevealPatches.cs" />
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
@@ -347,6 +348,7 @@
     <Compile Include="Navigation\ExplorationSkill.cs" />
     <Compile Include="Navigation\RavenSightEffect.cs" />
     <Compile Include="Navigation\SeaRouteFinder.cs" />
+    <Compile Include="Navigation\SharedMapReveal.cs" />
     <Compile Include="Ranching\AnimalCare.cs" />
     <Compile Include="Ranching\FavoriteFoods.cs" />
     <Compile Include="Ranching\HusbandrySkill.cs" />
