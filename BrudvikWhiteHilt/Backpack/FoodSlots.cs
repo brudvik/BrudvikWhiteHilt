@@ -105,11 +105,45 @@ public static class FoodSlots
 
         if (IsPotion(item) && item.m_shared.m_consumeStatusEffect is SE_Stats stats)
         {
-            return new Vector3(stats.m_healthUpFront + stats.m_healthOverTime, stats.m_staminaUpFront + stats.m_staminaOverTime,
+            float staminaOverTime = stats.m_staminaOverTimeIsFraction
+                ? stats.m_staminaOverTime * (Player.m_localPlayer?.GetMaxStamina() ?? 0f)
+                : stats.m_staminaOverTime;
+            return new Vector3(stats.m_healthUpFront + stats.m_healthOverTime, stats.m_staminaUpFront + staminaOverTime,
                 stats.m_eitrUpFront + stats.m_eitrOverTime);
         }
 
         return Vector3.zero;
+    }
+
+    /// <summary>
+    /// What a potion that restores nothing does: its regeneration bonuses, or else the name of its effect.
+    /// </summary>
+    /// <param name="item">The potion.</param>
+    /// <returns>A short rich-text line, or an empty string.</returns>
+    public static string PotionEffect(ItemDrop.ItemData item)
+    {
+        if (item?.m_shared.m_consumeStatusEffect is not StatusEffect effect)
+        {
+            return string.Empty;
+        }
+
+        if (effect is SE_Stats stats)
+        {
+            string regen = (Regen(stats.m_healthRegenMultiplier, "#ff8080") + Regen(stats.m_staminaRegenMultiplier, "#ffff80")
+                + Regen(stats.m_eitrRegenMultiplier, "#9999ff")).Trim();
+            if (regen.Length > 0)
+            {
+                return regen;
+            }
+        }
+
+        return Localization.instance.Localize(effect.m_name);
+    }
+
+    private static string Regen(float multiplier, string color)
+    {
+        int percent = Mathf.RoundToInt((multiplier - 1f) * 100f);
+        return percent == 0 ? string.Empty : $" <color={color}>{(percent > 0 ? "+" : string.Empty)}{percent}%</color>";
     }
 
     /// <summary>

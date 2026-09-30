@@ -317,6 +317,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 - **Food and potion slots**: three slots for food and two for potions and meads under the equipment. **Left Alt + 1**, **2** and **3** eat from the food slots, **Left Alt + 4** and **5** drink from the potion slots, without opening the inventory (the hotbar is not used while Alt is held). The keys are `EatFood1`–`EatFood3` and `DrinkPotion1`–`DrinkPotion2` in `Backpack.Keys`, and are shown on the slots. Under each slot the health (red), stamina (yellow) and eitr (blue) it gives is shown, for a potion what it restores, and under the row the total of all five.
 - **Accessory slots**: five slots for belts, Wisplight, Wishbone and the like, all worn at once. The first is the game's own slot and shows on your character; the other four give their effects, stats and weight without showing. Each kind can be worn only once, so two Megingjords do not stack. Right-clicking an accessory in the inventory puts it in the first free slot. The four extra slots also hold the **Home Stone** (right-click it there to go home) and the **Pathfinder's Amulet**, which then widens the uncovered map as when worn as trinket; its adrenaline and Raven Sight need the trinket slot.
 - **Shield and ammo slots**: under the accessories lie a slot for a shield and one for arrows or bolts. Taking up a one-handed weapon (sword, axe, mace, knife, spear, club) with the other hand free also takes up the shield from its slot, and putting the weapon away puts the shield away with it; switching to another one-handed weapon keeps it. Taking up a bow or crossbow takes the ammo from its slot, and when the equipped ammo runs out that ammo is used before any other of its kind. Right-clicking the shield or ammo in its slot equips it by hand.
+- **Coin slots**: next to the shield and ammo lie three slots for coins, up to 2997 in all. Coins you pick up or are paid fill them before the grid, and traders take from them as from the rest of your inventory.
 
 The stored bar and the slots below lie in hidden rows of the inventory, so they are saved with your character. "Place stacks" only takes from the grid. If the mod is removed, the game drops what lies in them at your feet the next time you log in.
 
@@ -687,6 +688,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - White Hilt Ship: the deck brazier stands on the port side just in front of the cargo crates, out of the walkway
 - White Hilt Ship: the drift anchor hangs closer to the hull and follows its slope
 - Dog: stands closer to the water bowl when drinking
+- Backpack: three coin slots next to the shield and ammo
+- Backpack: a potion slot shows what the potion restores (or its regeneration bonus or effect) instead of 0, and the total counts only food
 - Dog: a playful puppy's hop is a smooth arc of the body instead of the wolf's jump
 
 ### v0.10.0 - 2026-09-30

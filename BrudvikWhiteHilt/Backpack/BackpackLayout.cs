@@ -46,7 +46,10 @@ public enum SlotKind
     Shield,
 
     /// <summary>Ammo, used before any other of its kind.</summary>
-    Ammo
+    Ammo,
+
+    /// <summary>Coins, filled before a new stack goes into the grid.</summary>
+    Coins
 }
 
 /// <summary>
@@ -172,7 +175,17 @@ public static class BackpackLayout
 
         if (pos.y == HandRow)
         {
-            return pos == HandSlots.ShieldSlot ? SlotKind.Shield : pos == HandSlots.AmmoSlot ? SlotKind.Ammo : SlotKind.Void;
+            if (pos == HandSlots.ShieldSlot)
+            {
+                return SlotKind.Shield;
+            }
+
+            if (pos == HandSlots.AmmoSlot)
+            {
+                return SlotKind.Ammo;
+            }
+
+            return pos.x >= HandSlots.CoinColumn && pos.x < HandSlots.CoinColumn + HandSlots.CoinCount ? SlotKind.Coins : SlotKind.Void;
         }
 
         return SlotKind.Void;
@@ -224,6 +237,7 @@ public static class BackpackLayout
             SlotKind.Utility => UtilitySlots.Fits(item, pos) && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),
             SlotKind.Shield => HandSlots.IsShield(item),
             SlotKind.Ammo => HandSlots.IsAmmo(item),
+            SlotKind.Coins => HandSlots.IsCoins(item),
             _ => false
         };
     }

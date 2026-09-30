@@ -14,6 +14,7 @@ namespace BrudvikWhiteHilt.Patches.Backpack;
 public static class BackpackInventoryPatches
 {
     private static Vector2i? reservedSlot;
+    private static bool coinsIncoming;
 
     /// <summary>
     /// New items go into the visible grid only.
@@ -31,8 +32,34 @@ public static class BackpackInventoryPatches
             return true;
         }
 
-        __result = reservedSlot ?? BackpackLayout.FindGridSlot(__instance, BackpackLayout.VisibleRows(Player.m_localPlayer), topFirst);
+        __result = reservedSlot ?? (coinsIncoming ? HandSlots.EmptyCoinSlot(__instance) : null)
+            ?? BackpackLayout.FindGridSlot(__instance, BackpackLayout.VisibleRows(Player.m_localPlayer), topFirst);
         return false;
+    }
+
+    /// <summary>
+    /// A new stack of coins goes into an empty coin slot before the grid.
+    /// </summary>
+    /// <param name="__instance">The inventory.</param>
+    /// <param name="item">The item.</param>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.AddItem), new[] { typeof(ItemDrop.ItemData) })]
+    [HarmonyPrefix]
+    public static void AddItem(Inventory __instance, ItemDrop.ItemData item)
+    {
+        coinsIncoming = BackpackLayout.IsLocalInventory(__instance) && HandSlots.IsCoins(item);
+    }
+
+    /// <summary>
+    /// Clears the coin routing again.
+    /// </summary>
+    /// <param name="__exception">An exception thrown by the method, passed on.</param>
+    /// <returns>The same exception.</returns>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.AddItem), new[] { typeof(ItemDrop.ItemData) })]
+    [HarmonyFinalizer]
+    public static Exception AddItemFinalizer(Exception __exception)
+    {
+        coinsIncoming = false;
+        return __exception;
     }
 
     /// <summary>
@@ -88,6 +115,10 @@ public static class BackpackInventoryPatches
         }
 
         int empty = BackpackLayout.EmptyGridSlots(__instance, BackpackLayout.VisibleRows(Player.m_localPlayer));
+        if (HandSlots.IsCoins(item))
+        {
+            empty += HandSlots.EmptyCoinSlots(__instance);
+        }
         __result = __instance.FindFreeStackSpace(item.m_shared.m_name, item.m_worldLevel) + empty * item.m_shared.m_maxStackSize >= stack;
         return false;
     }

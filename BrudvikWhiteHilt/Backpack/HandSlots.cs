@@ -3,13 +3,22 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Backpack;
 
 /// <summary>
-/// A slot for a shield and one for ammo under the accessories. The shield in its slot is taken up with a one-handed
-/// weapon and put away with it; the ammo in its slot is used before any other of its kind.
+/// A slot for a shield and one for ammo under the accessories, and three for coins. The shield in its slot is taken up
+/// with a one-handed weapon and put away with it; the ammo in its slot is used before any other of its kind; new coins
+/// go into an empty coin slot before the grid.
 /// </summary>
 public static class HandSlots
 {
-    /// <summary>Number of slots in the row.</summary>
+    /// <summary>Number of shield and ammo slots.</summary>
     public const int Count = 2;
+
+    /// <summary>Column of the first coin slot.</summary>
+    public const int CoinColumn = Count;
+
+    /// <summary>Number of coin slots.</summary>
+    public const int CoinCount = 3;
+
+    private const string CoinsName = "$item_coins";
 
     /// <summary>Where the shield slot lies in the inventory.</summary>
     public static readonly Vector2i ShieldSlot = new(0, BackpackLayout.HandRow);
@@ -39,6 +48,53 @@ public static class HandSlots
     {
         ItemDrop.ItemData.ItemType? type = item?.m_shared.m_itemType;
         return type == ItemDrop.ItemData.ItemType.Ammo || type == ItemDrop.ItemData.ItemType.AmmoNonEquipable;
+    }
+
+    /// <summary>
+    /// True for coins.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>True for coins.</returns>
+    public static bool IsCoins(ItemDrop.ItemData item)
+    {
+        return item?.m_shared.m_name == CoinsName;
+    }
+
+    /// <summary>
+    /// The first empty coin slot.
+    /// </summary>
+    /// <param name="inventory">The player's inventory.</param>
+    /// <returns>The position, or null when all hold coins.</returns>
+    public static Vector2i? EmptyCoinSlot(Inventory inventory)
+    {
+        for (int x = CoinColumn; x < CoinColumn + CoinCount; x++)
+        {
+            if (inventory.GetItemAt(x, BackpackLayout.HandRow) == null)
+            {
+                return new Vector2i(x, BackpackLayout.HandRow);
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Number of empty coin slots.
+    /// </summary>
+    /// <param name="inventory">The player's inventory.</param>
+    /// <returns>The count.</returns>
+    public static int EmptyCoinSlots(Inventory inventory)
+    {
+        int empty = 0;
+        for (int x = CoinColumn; x < CoinColumn + CoinCount; x++)
+        {
+            if (inventory.GetItemAt(x, BackpackLayout.HandRow) == null)
+            {
+                empty++;
+            }
+        }
+
+        return empty;
     }
 
     /// <summary>

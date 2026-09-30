@@ -30,7 +30,7 @@ public static class BackpackGui
         new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
         new("$whitehilt_backpack_food", FoodSlots.Positions(), StatsHeight + TotalHeight),
         new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count)),
-        new("$whitehilt_backpack_hands", Row(BackpackLayout.HandRow, 0, HandSlots.Count))
+        new("$whitehilt_backpack_hands", Row(BackpackLayout.HandRow, 0, HandSlots.Count + HandSlots.CoinCount))
     };
 
     private static readonly Dictionary<SlotKind, SlotLook> looks = new()
@@ -44,7 +44,8 @@ public static class BackpackGui
         { SlotKind.Potion, new SlotLook("MeadHealthMinor", "$whitehilt_backpack_potion", "$whitehilt_backpack_potion_hint") },
         { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") },
         { SlotKind.Shield, new SlotLook("ShieldWood", "$whitehilt_backpack_shield", "$whitehilt_backpack_shield_hint") },
-        { SlotKind.Ammo, new SlotLook("ArrowWood", "$whitehilt_backpack_ammo", "$whitehilt_backpack_ammo_hint") }
+        { SlotKind.Ammo, new SlotLook("ArrowWood", "$whitehilt_backpack_ammo", "$whitehilt_backpack_ammo_hint") },
+        { SlotKind.Coins, new SlotLook("Coins", "$whitehilt_backpack_coins", "$whitehilt_backpack_coins_hint") }
     };
 
     private static readonly Dictionary<Vector2i, Vector2i> panelPlaces = BuildPanelPlaces();
@@ -235,6 +236,9 @@ public static class BackpackGui
             float left = Padding + place.x * step - (step - size.x) / 2f;
             slotStats[i] = AddText(string.Empty, left, statsTop, step, StatsHeight, 12, TextAnchor.UpperCenter);
             slotStats[i].color = Color.white;
+            slotStats[i].resizeTextForBestFit = true;
+            slotStats[i].resizeTextMinSize = 8;
+            slotStats[i].resizeTextMaxSize = 12;
         }
 
         foodTotal = AddText(string.Empty, Padding, statsTop + StatsHeight, width - Padding * 2f, TotalHeight, 13, TextAnchor.MiddleLeft);
@@ -257,8 +261,14 @@ public static class BackpackGui
             Vector2i pos = FoodSlots.Position(i);
             ItemDrop.ItemData item = player.m_inventory.GetItemAt(pos.x, pos.y);
             Vector3 values = FoodSlots.Values(item);
-            total += values;
-            SetText(slotStats[i], item == null ? string.Empty : StatLine(values));
+            if (i < FoodSlots.Count)
+            {
+                total += values;
+            }
+
+            string line = item == null ? string.Empty
+                : FoodSlots.IsPotion(item) && values == Vector3.zero ? FoodSlots.PotionEffect(item) : StatLine(values);
+            SetText(slotStats[i], line);
         }
 
         SetText(foodTotal, string.Format(Localization.instance.Localize("$whitehilt_backpack_food_total"),
