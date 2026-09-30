@@ -1,4 +1,6 @@
+using BrudvikWhiteHilt.Planting;
 using Jotunn.Managers;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +9,7 @@ namespace BrudvikWhiteHilt.Building.Terrain;
 
 /// <summary>
 /// Small labels over the plants near the player while the White Hilt cultivator is held: time left to grow in green,
-/// or why a plant is not growing in red.
+/// or why a plant is not growing in red. Picked berry bushes, mushrooms and flowers show when they grow back in blue.
 /// </summary>
 public static class GrowthMarkers
 {
@@ -15,10 +17,12 @@ public static class GrowthMarkers
     private const float RefreshInterval = 0.5f;
     private const int MaxMarkers = 60;
     private const float Lift = 0.8f;
+    private const double ReadySoonSeconds = 30.0;
 
     private static readonly Color growing = new(0.5f, 1f, 0.5f);
     private static readonly Color stuck = new(1f, 0.45f, 0.35f);
-    private static readonly List<Plant> plants = new();
+    private static readonly Color regrowing = new(0.6f, 0.85f, 1f);
+    private static readonly List<Component> targets = new();
     private static readonly List<Text> labels = new();
 
     private static GameObject root;
@@ -58,15 +62,15 @@ public static class GrowthMarkers
         Camera camera = GameCamera.instance.m_camera;
         for (int i = 0; i < labels.Count; i++)
         {
-            Plant plant = i < plants.Count ? plants[i] : null;
+            Component target = i < targets.Count ? targets[i] : null;
             Text label = labels[i];
-            if (plant == null)
+            if (target == null)
             {
                 label.gameObject.SetActive(false);
                 continue;
             }
 
-            Vector3 screen = camera.WorldToScreenPoint(plant.transform.position + Vector3.up * Lift);
+            Vector3 screen = camera.WorldToScreenPoint(target.transform.position + Vector3.up * Lift);
             bool visible = screen.z > 0f;
             label.gameObject.SetActive(visible);
             if (visible)
@@ -78,42 +82,60 @@ public static class GrowthMarkers
 
     private static void Refresh(Player player)
     {
-        plants.Clear();
+        targets.Clear();
         if (plantMask == 0)
         {
-            plantMask = LayerMask.GetMask("Default", "static_solid", "Default_small", "piece", "piece_nonsolid");
+            plantMask = LayerMask.GetMask("Default", "static_solid", "Default_small", "piece", "piece_nonsolid", "item");
         }
 
-        HashSet<Plant> seen = new();
+        bool pickables = PlantingSettings.ShowRegrowTimers.Value;
+        HashSet<Component> seen = new();
         foreach (Collider collider in Physics.OverlapSphere(player.transform.position, Range, plantMask))
         {
             Plant plant = collider.GetComponentInParent<Plant>();
-            if (plant != null && plant.m_nview != null && plant.m_nview.IsValid() && seen.Add(plant))
+            if (plant != null)
             {
-                plants.Add(plant);
+                if (plant.m_nview != null && plant.m_nview.IsValid() && seen.Add(plant))
+                {
+                    targets.Add(plant);
+                }
+
+                continue;
+            }
+
+            Pickable pickable = pickables ? collider.GetComponentInParent<Pickable>() : null;
+            if (pickable != null && RegrowSeconds(pickable) >= 0.0 && seen.Add(pickable))
+            {
+                targets.Add(pickable);
             }
         }
 
-        plants.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position)
+        targets.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position)
             .CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
-        if (plants.Count > MaxMarkers)
+        if (targets.Count > MaxMarkers)
         {
-            plants.RemoveRange(MaxMarkers, plants.Count - MaxMarkers);
+            targets.RemoveRange(MaxMarkers, targets.Count - MaxMarkers);
         }
 
-        while (labels.Count < plants.Count)
+        while (labels.Count < targets.Count)
         {
             labels.Add(CreateLabel());
         }
 
-        for (int i = 0; i < plants.Count; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
-            Plant plant = plants[i];
             Text label = labels[i];
+            if (targets[i] is Pickable pickable)
+            {
+                label.text = TimeLeft(RegrowSeconds(pickable));
+                label.color = regrowing;
+                continue;
+            }
+
+            Plant plant = (Plant)targets[i];
             if (plant.GetStatus() == Plant.Status.Healthy)
             {
-                double left = plant.GetGrowTime() - plant.TimeSincePlanted();
-                label.text = left > 30.0 ? Duration(left) : Localization.instance.Localize("$whitehilt_farm_ready");
+                label.text = TimeLeft(plant.GetGrowTime() - plant.TimeSincePlanted());
                 label.color = growing;
             }
             else
@@ -124,6 +146,30 @@ public static class GrowthMarkers
                 label.color = stuck;
             }
         }
+    }
+
+    // Seconds until a picked pickable grows back, or -1 if it is not waiting to grow back.
+    private static double RegrowSeconds(Pickable pickable)
+    {
+        if (pickable.m_nview == null || !pickable.m_nview.IsValid() || !pickable.m_picked || pickable.m_respawnTimeMinutes <= 0f
+            || ZNet.instance == null)
+        {
+            return -1.0;
+        }
+
+        long pickedTime = pickable.m_nview.GetZDO().GetLong(ZDOVars.s_pickedTime, 0L);
+        if (pickedTime <= 1L)
+        {
+            return -1.0;
+        }
+
+        double elapsed = (ZNet.instance.GetTime() - new DateTime(pickedTime)).TotalSeconds;
+        return Math.Max(0.0, pickable.m_respawnTimeMinutes * 60.0 - elapsed);
+    }
+
+    private static string TimeLeft(double seconds)
+    {
+        return seconds > ReadySoonSeconds ? Duration(seconds) : Localization.instance.Localize("$whitehilt_farm_ready");
     }
 
     private static string Duration(double seconds)

@@ -437,7 +437,7 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 | Refill (cultivator) | Ctrl + R | Plant the empty places of the last grid again |
 | Cultivate area (cultivator) | Ctrl + F | Cultivate an area |
 | Harvest area (cultivator) | Ctrl + H | Pick every ripe crop in an area |
-| Growth (cultivator) | panel | Labels over nearby plants: time left in green, or why a plant is not growing in red |
+| Growth (cultivator) | panel | Labels over nearby plants: time left in green, or why a plant is not growing in red. Picked berry bushes, mushrooms and flowers show when they grow back in blue |
 
 Ctrl + Z takes back terrain changes for 60 seconds, with the stone. On a server the change is taken back where the terrain is yours to change. Levelling, lowering, dirt and cultivating are free; paved stone and raised ground cost stone as with the vanilla hoe for the same area and height. The game keeps ground within 8 m of where it started; the tools warn when a change would go past that. The `BuildTools.Terrain` section lets the server switch the tools off, change the cost, allow or forbid harvesting areas, and limit the size of one change (2500 m² by default).
 
