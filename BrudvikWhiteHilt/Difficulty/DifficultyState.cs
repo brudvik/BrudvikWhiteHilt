@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Clock;
 using System;
 using System.Globalization;
 using UnityEngine;
@@ -89,6 +90,41 @@ public static class DifficultyState
     }
 
     /// <summary>
+    /// The time of day in hours, as the White Hilt clock shows it.
+    /// </summary>
+    /// <returns>Hours from 0 to 24, or 12 before the world has loaded.</returns>
+    public static float Hours()
+    {
+        return EnvMan.instance != null && ZNet.instance != null ? GameClock.Hours() : 12f;
+    }
+
+    /// <summary>
+    /// Whether an hour is at night, from 18:00 to 06:00.
+    /// </summary>
+    /// <param name="hours">The hour.</param>
+    /// <returns>True at night.</returns>
+    public static bool IsNightHour(float hours)
+    {
+        return hours < 6f || hours >= 18f;
+    }
+
+    /// <summary>
+    /// Number of the current night. It changes at nightfall and stays the same through the next day.
+    /// </summary>
+    /// <returns>The night number.</returns>
+    public static long NightId()
+    {
+        if (EnvMan.instance == null || ZNet.instance == null)
+        {
+            return 0L;
+        }
+
+        // Nightfall is at 0.85 of the game's raw day fraction.
+        double days = ZNet.instance.GetTimeSeconds() / EnvMan.instance.m_dayLengthSec;
+        return (long)Math.Floor(days + 0.15);
+    }
+
+    /// <summary>
     /// A readable summary for the console.
     /// </summary>
     /// <returns>The summary.</returns>
@@ -99,6 +135,7 @@ public static class DifficultyState
         string raw = RawPressure.ToString("0.00", culture);
         return $"White Hilt difficulty: pressure {pressure} (target {raw})\n" +
                $"  players online {Players}, day {Days}, biomes visited {Biomes}, wearing White Hilt gear {GearPlayers}\n" +
-               $"  highest stars from biomes {UnlockedMaxStars}, stars {(CreatureStars.Active ? "on" : "off")}";
+               $"  highest stars from biomes {UnlockedMaxStars}, stars {(CreatureStars.Active ? "on" : "off")}, " +
+               $"hour {Hours().ToString("00.0", culture)}, night {NightId()}";
     }
 }

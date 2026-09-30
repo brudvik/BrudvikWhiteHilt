@@ -75,6 +75,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();
+        Difficulty.Beasts.BeastRegistry.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();

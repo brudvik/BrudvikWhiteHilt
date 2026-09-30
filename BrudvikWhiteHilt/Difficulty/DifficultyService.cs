@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Difficulty.Beasts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +7,17 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Difficulty;
 
 /// <summary>
-/// Runs on the <see cref="Game"/> object. On the server it computes the pressure and sends it to every client.
-/// On a client it publishes the biomes the player has visited.
+/// Runs on the <see cref="Game"/> object. On the server it computes the pressure, answers beast
+/// requests and sends the state to every client. On a client it publishes the biomes the player has visited, watches for
+/// the dark hour and spawns the beasts the server allows.
 /// </summary>
 public class DifficultyService : MonoBehaviour
 {
     private const string StateRpc = "WhiteHiltDifficulty";
+    private const string BeastRequestRpc = "WhiteHiltBeastRequest";
+    private const string BeastSpawnRpc = "WhiteHiltBeastSpawn";
+    private const string AdminRpc = "WhiteHiltDifficultyAdmin";
+    private const string AdminReplyRpc = "WhiteHiltDifficultyReply";
     private const string BiomesKey = "whitehilt_biomes";
     private const float ComputeInterval = 10f;
     private const float SendInterval = 30f;
@@ -23,19 +29,52 @@ public class DifficultyService : MonoBehaviour
         Heightmap.Biome.Plains, Heightmap.Biome.Mistlands, Heightmap.Biome.AshLands
     };
 
+    private readonly List<Vector3> beastsTonight = new();
+    private readonly Dictionary<long, int> requestsTonight = new();
     private float smoothedPlayers = -1f;
     private float smoothedGear = -1f;
     private float nextCompute;
     private float lastCompute;
     private float nextSend;
+    private long serverNight = long.MinValue;
 
     private float nextClient;
+    private long clientNight = long.MinValue;
+    private int clientRequests;
     private int publishedBiomes = -1;
+
+    /// <summary>
+    /// Sends an admin command to the server.
+    /// </summary>
+    /// <param name="command">beast.</param>
+    /// <param name="argument">The beast.</param>
+    public static void SendAdmin(string command, string argument)
+    {
+        if (ZRoutedRpc.instance == null || ZNet.instance == null)
+        {
+            Print("Join a world first.");
+            return;
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), AdminRpc, command, argument ?? string.Empty);
+    }
+
+    private static void Print(string message)
+    {
+        if (global::Console.instance != null)
+        {
+            global::Console.instance.Print(message);
+        }
+    }
 
     private void Start()
     {
         DifficultyState.Reset();
         ZRoutedRpc.instance?.Register<ZPackage>(StateRpc, RPC_State);
+        ZRoutedRpc.instance?.Register<Vector3, int, bool>(BeastRequestRpc, RPC_BeastRequest);
+        ZRoutedRpc.instance?.Register<string>(BeastSpawnRpc, RPC_BeastSpawn);
+        ZRoutedRpc.instance?.Register<string, string>(AdminRpc, RPC_Admin);
+        ZRoutedRpc.instance?.Register<string>(AdminReplyRpc, RPC_AdminReply);
     }
 
     private void Update()
@@ -64,6 +103,14 @@ public class DifficultyService : MonoBehaviour
 
     private void UpdateServer()
     {
+        long night = DifficultyState.NightId();
+        if (night != serverNight)
+        {
+            serverNight = night;
+            beastsTonight.Clear();
+            requestsTonight.Clear();
+        }
+
         if (Time.time < nextCompute)
         {
             return;
@@ -174,6 +221,7 @@ public class DifficultyService : MonoBehaviour
 
         nextClient = Time.time + ClientInterval;
         PublishBiomes(player);
+        WatchForBeast(player);
     }
 
     private void PublishBiomes(Player player)
@@ -188,11 +236,153 @@ public class DifficultyService : MonoBehaviour
         player.m_nview.GetZDO().Set(BiomesKey, Math.Max(1, count));
     }
 
+    private void WatchForBeast(Player player)
+    {
+        if (!DifficultySettings.Enabled.Value || !DifficultySettings.BeastsEnabled.Value || player.IsDead() || player.InInterior() || player.IsTeleporting())
+        {
+            return;
+        }
+
+        if (!InWindow(DifficultyState.Hours()))
+        {
+            return;
+        }
+
+        long night = DifficultyState.NightId();
+        if (night != clientNight)
+        {
+            clientNight = night;
+            clientRequests = 0;
+        }
+
+        if (clientRequests >= 1)
+        {
+            return;
+        }
+
+        Heightmap.Biome biome = player.GetCurrentBiome();
+        bool atSea = Ship.GetLocalShip() != null;
+        if (BeastDefinition.Resolve(biome, atSea) == null
+            || !DifficultySettings.IsBadWeather(EnvMan.instance.GetCurrentEnvironment())
+            || EffectArea.IsPointInsideArea(player.transform.position, EffectArea.Type.PlayerBase) != null)
+        {
+            return;
+        }
+
+        clientRequests++;
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), BeastRequestRpc, player.transform.position, (int)biome, atSea);
+    }
+
+    private static bool InWindow(float hours)
+    {
+        float start = DifficultySettings.WindowStart.Value;
+        float end = DifficultySettings.WindowEnd.Value;
+        return start <= end ? hours >= start && hours < end : hours >= start || hours < end;
+    }
+
     private void RPC_State(long sender, ZPackage package)
     {
         if (sender == ZRoutedRpc.instance.GetServerPeerID() && !ZNet.instance.IsServer())
         {
             DifficultyState.Read(package);
+        }
+    }
+
+    private void RPC_BeastRequest(long sender, Vector3 position, int biome, bool atSea)
+    {
+        if (!ZNet.instance.IsServer() || !DifficultySettings.Enabled.Value || !DifficultySettings.BeastsEnabled.Value)
+        {
+            return;
+        }
+
+        requestsTonight.TryGetValue(sender, out int made);
+        if (made >= 1)
+        {
+            return;
+        }
+
+        requestsTonight[sender] = made + 1;
+        BeastDefinition beast = BeastDefinition.Resolve((Heightmap.Biome)biome, atSea);
+        if (!CanCome(beast) || beastsTonight.Any(other => Vector3.Distance(other, position) < DifficultySettings.BeastSpacing.Value))
+        {
+            return;
+        }
+
+        float chance = DifficultySettings.BeastChance.Value / 100f * (0.5f + DifficultyState.Pressure);
+        if (UnityEngine.Random.value >= Mathf.Min(chance, 0.95f))
+        {
+            return;
+        }
+
+        beastsTonight.Add(position);
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, BeastSpawnRpc, beast.Key);
+    }
+
+    private static bool CanCome(BeastDefinition beast)
+    {
+        return beast != null && DifficultySettings.IsBeastEnabled(beast.Key)
+            && (!DifficultySettings.BeastRequiresBoss.Value || (ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(beast.BossKey)));
+    }
+
+    private void RPC_BeastSpawn(long sender, string key)
+    {
+        Player player = Player.m_localPlayer;
+        BeastDefinition beast = BeastDefinition.Find(key);
+        if (sender == ZRoutedRpc.instance.GetServerPeerID() && player != null && beast != null)
+        {
+            BeastSpawner.Spawn(player, beast);
+        }
+    }
+
+    private void RPC_Admin(long sender, string command, string argument)
+    {
+        if (!ZNet.instance.IsServer())
+        {
+            return;
+        }
+
+        if (!IsAdmin(sender))
+        {
+            Reply(sender, "Only admins can do that.");
+            return;
+        }
+
+        switch (command)
+        {
+            case "beast":
+                BeastDefinition beast = BeastDefinition.Find(argument);
+                if (beast == null)
+                {
+                    Reply(sender, $"Unknown beast '{argument}'. Use one of: {string.Join(", ", BeastDefinition.All.Select(each => each.Key))}");
+                    return;
+                }
+
+                ZRoutedRpc.instance.InvokeRoutedRPC(sender, BeastSpawnRpc, beast.Key);
+                break;
+        }
+    }
+
+    private static bool IsAdmin(long sender)
+    {
+        if (sender == ZRoutedRpc.instance.m_id)
+        {
+            return true;
+        }
+
+        ZNetPeer peer = ZNet.instance.GetPeer(sender);
+        return peer?.m_socket != null && ZNet.instance.IsAdmin(peer.m_socket.GetHostName());
+    }
+
+    private static void Reply(long target, string message)
+    {
+        ZRoutedRpc.instance.InvokeRoutedRPC(target, AdminReplyRpc, message);
+    }
+
+    private void RPC_AdminReply(long sender, string message)
+    {
+        if (sender == ZRoutedRpc.instance.GetServerPeerID())
+        {
+            Print(message);
         }
     }
 }

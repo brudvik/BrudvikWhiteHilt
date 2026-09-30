@@ -1,4 +1,6 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Difficulty.Beasts;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,7 @@ using System.Linq;
 namespace BrudvikWhiteHilt.Difficulty;
 
 /// <summary>
-/// Config for the dynamic difficulty: the pressure score and creature stars and sizes.
+/// Config for the dynamic difficulty: the pressure score, creature stars and sizes, and beasts.
 /// Everything is admin-only and synced from the server.
 /// </summary>
 public static class DifficultySettings
@@ -15,11 +17,15 @@ public static class DifficultySettings
     private const string Section = "Difficulty";
     private const string StarsSection = "Difficulty.Stars";
     private const string SizeSection = "Difficulty.Size";
+    private const string BeastsSection = "Difficulty.Beasts";
 
+    private static readonly Dictionary<string, ConfigEntry<bool>> beastEnabled = new();
     private static readonly Dictionary<Heightmap.Biome, int> biomeMaxStars = new();
     private static readonly HashSet<string> largeCreatures = new(StringComparer.OrdinalIgnoreCase);
+    private static string[] badWeather = new string[0];
     private static string parsedBiomeMaxStars;
     private static string parsedLargeCreatures;
+    private static string parsedBadWeather;
 
     /// <summary>Whether the dynamic difficulty is on at all.</summary>
     public static ConfigEntry<bool> Enabled { get; private set; }
@@ -123,8 +129,47 @@ public static class DifficultySettings
     /// <summary>Prefab names of large creatures, comma separated.</summary>
     public static ConfigEntry<string> LargeCreatures { get; private set; }
 
+    /// <summary>Whether beasts come in the dark hour.</summary>
+    public static ConfigEntry<bool> BeastsEnabled { get; private set; }
+
+    /// <summary>Hour the dark hour starts.</summary>
+    public static ConfigEntry<float> WindowStart { get; private set; }
+
+    /// <summary>Hour the dark hour ends.</summary>
+    public static ConfigEntry<float> WindowEnd { get; private set; }
+
+    /// <summary>Parts of weather names that count as bad weather, comma separated.</summary>
+    public static ConfigEntry<string> BadWeather { get; private set; }
+
+    /// <summary>Chance in percent per player and night, at pressure 0.5.</summary>
+    public static ConfigEntry<float> BeastChance { get; private set; }
+
+    /// <summary>Health multiplier of a beast on top of 5 stars.</summary>
+    public static ConfigEntry<float> BeastHealth { get; private set; }
+
+    /// <summary>Damage multiplier of a beast on top of 5 stars.</summary>
+    public static ConfigEntry<float> BeastDamage { get; private set; }
+
+    /// <summary>Speed multiplier of beasts; needs a restart.</summary>
+    public static ConfigEntry<float> BeastSpeed { get; private set; }
+
+    /// <summary>Whether a beast needs its biome's boss to be defeated.</summary>
+    public static ConfigEntry<bool> BeastRequiresBoss { get; private set; }
+
+    /// <summary>Whether beasts sink into the ground at dawn when no one is near.</summary>
+    public static ConfigEntry<bool> DespawnAtDawn { get; private set; }
+
+    /// <summary>Nearest distance a beast appears from the player.</summary>
+    public static ConfigEntry<float> SpawnDistanceMin { get; private set; }
+
+    /// <summary>Farthest distance a beast appears from the player.</summary>
+    public static ConfigEntry<float> SpawnDistanceMax { get; private set; }
+
+    /// <summary>Two beasts in one night are at least this far apart.</summary>
+    public static ConfigEntry<float> BeastSpacing { get; private set; }
+
     /// <summary>
-    /// Binds the config entries. Call from the plugin's Awake.
+    /// Binds the config entries and registers the English texts. Call from the plugin's Awake.
     /// </summary>
     public static void Initialize()
     {
@@ -132,6 +177,7 @@ public static class DifficultySettings
         AcceptableValueRange<float> weight = new(0f, 10f);
         AcceptableValueRange<float> percent = new(0f, 100f);
         AcceptableValueRange<int> biomes = new(1, 7);
+        AcceptableValueRange<float> hours = new(0f, 24f);
 
         Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true,
             "Creatures get stronger and more often starred as the world progresses: players online, days played, biomes visited and White Hilt gear worn are combined into a pressure from 0 to 1.");
@@ -156,16 +202,16 @@ public static class DifficultySettings
         BiomesFor5Stars = WhiteHiltConfig.BindAdminOnly(StarsSection, "BiomesFor5Stars", 7, "Biomes visited before 5 star creatures appear.", biomes);
         BiomeMaxStars = WhiteHiltConfig.BindAdminOnly(StarsSection, "BiomeMaxStars",
             "Meadows:2, BlackForest:3, Swamp:4, Mountain:5, Plains:5, Mistlands:5, AshLands:5, DeepNorth:5, Ocean:5",
-            "Highest star count of creatures spawning in each biome.");
+            "Highest star count of creatures spawning in each biome. Beasts ignore this.");
         HealthPerExtraStar = WhiteHiltConfig.BindAdminOnly(StarsSection, "HealthPerExtraStar", 0.5f, "Extra health per star above 2, as a share of base health (vanilla stars give 1.0).", new AcceptableValueRange<float>(0f, 2f));
         DamagePerExtraStar = WhiteHiltConfig.BindAdminOnly(StarsSection, "DamagePerExtraStar", 0.25f, "Extra damage per star above 2, as a share of base damage (vanilla stars give 0.5).", new AcceptableValueRange<float>(0f, 1f));
         PressureHealthBonus = WhiteHiltConfig.BindAdminOnly(StarsSection, "PressureHealthBonus", 0.2f, "Extra health of every new creature at full pressure (0.2 = +20%).", share);
         PressureDamageBonus = WhiteHiltConfig.BindAdminOnly(StarsSection, "PressureDamageBonus", 0.1f, "Extra damage of every new creature at full pressure (0.1 = +10%).", share);
-        MaxHealthMultiplier = WhiteHiltConfig.BindAdminOnly(StarsSection, "MaxHealthMultiplier", 6f, "Highest total health multiplier of a creature.", new AcceptableValueRange<float>(3f, 20f));
-        MaxDamageMultiplier = WhiteHiltConfig.BindAdminOnly(StarsSection, "MaxDamageMultiplier", 3f, "Highest total damage multiplier of any creature.", new AcceptableValueRange<float>(2f, 10f));
+        MaxHealthMultiplier = WhiteHiltConfig.BindAdminOnly(StarsSection, "MaxHealthMultiplier", 6f, "Highest total health multiplier of a creature, beasts excepted.", new AcceptableValueRange<float>(3f, 20f));
+        MaxDamageMultiplier = WhiteHiltConfig.BindAdminOnly(StarsSection, "MaxDamageMultiplier", 3f, "Highest total damage multiplier of any creature, beasts included.", new AcceptableValueRange<float>(2f, 10f));
         Drops3Stars = WhiteHiltConfig.BindAdminOnly(StarsSection, "Drops3Stars", 5, "Loot multiplier of 3 star creatures (vanilla formula would give 8).", new AcceptableValueRange<int>(1, 32));
         Drops4Stars = WhiteHiltConfig.BindAdminOnly(StarsSection, "Drops4Stars", 6, "Loot multiplier of 4 star creatures (vanilla formula would give 16).", new AcceptableValueRange<int>(1, 32));
-        Drops5Stars = WhiteHiltConfig.BindAdminOnly(StarsSection, "Drops5Stars", 7, "Loot multiplier of 5 star creatures (vanilla formula would give 32).", new AcceptableValueRange<int>(1, 32));
+        Drops5Stars = WhiteHiltConfig.BindAdminOnly(StarsSection, "Drops5Stars", 7, "Loot multiplier of 5 star creatures and beasts (vanilla formula would give 32).", new AcceptableValueRange<int>(1, 32));
         IncludeRaids = WhiteHiltConfig.BindAdminOnly(StarsSection, "IncludeRaids", false, "Raids also get the extra stars and the pressure bonus.");
 
         SizeEnabled = WhiteHiltConfig.BindAdminOnly(SizeSection, "Enabled", true, "Creatures with 3 or more stars grow. Not indoors, as in dungeons.");
@@ -174,7 +220,45 @@ public static class DifficultySettings
         LargeCreatureFactor = WhiteHiltConfig.BindAdminOnly(SizeSection, "LargeCreatureFactor", 0.5f, "Share of the growth large creatures get, so they do not get stuck.", share);
         LargeCreatures = WhiteHiltConfig.BindAdminOnly(SizeSection, "LargeCreatures",
             "Troll, Lox, Abomination, SeekerBrute, StoneGolem, Serpent, BonemawSerpent, Gjall, Morgen, GoblinBrute",
-            "Prefab names of large creatures, comma separated.");
+            "Prefab names of large creatures, comma separated. Beasts are always large.");
+
+        BeastsEnabled = WhiteHiltConfig.BindAdminOnly(BeastsSection, "Enabled", true,
+            "In the dark hour, in bad weather, a black 5 star beast may come for a player outside the Meadows and away from their base.");
+        WindowStart = WhiteHiltConfig.BindAdminOnly(BeastsSection, "WindowStart", 0f, "Hour the dark hour starts. It lasts only a minute or two of real time; the beast stays until dawn.", hours);
+        WindowEnd = WhiteHiltConfig.BindAdminOnly(BeastsSection, "WindowEnd", 2f, "Hour the dark hour ends.", hours);
+        BadWeather = WhiteHiltConfig.BindAdminOnly(BeastsSection, "BadWeather", "rain, storm, thunder",
+            "Parts of weather names that count as bad weather, comma separated. Wet weather always counts.");
+        BeastChance = WhiteHiltConfig.BindAdminOnly(BeastsSection, "Chance", 20f, "Chance in percent per player and night at pressure 0.5; from half of it at pressure 0 to 1.5 times at full pressure.", percent);
+        BeastHealth = WhiteHiltConfig.BindAdminOnly(BeastsSection, "HealthMultiplier", 1.5f, "Health multiplier on top of 5 stars. Not limited by MaxHealthMultiplier.", new AcceptableValueRange<float>(1f, 10f));
+        BeastDamage = WhiteHiltConfig.BindAdminOnly(BeastsSection, "DamageMultiplier", 1.15f, "Damage multiplier on top of 5 stars, still limited by MaxDamageMultiplier.", new AcceptableValueRange<float>(1f, 5f));
+        BeastSpeed = WhiteHiltConfig.BindAdminOnly(BeastsSection, "SpeedMultiplier", 0.9f, "Speed multiplier, so you can get away. Needs a restart.", new AcceptableValueRange<float>(0.5f, 1.5f));
+        BeastRequiresBoss = WhiteHiltConfig.BindAdminOnly(BeastsSection, "RequiresBoss", true, "A beast only comes once its biome's boss is defeated (the Elder for the Black Forest, Bonemass for the Swamp and the sea, and so on).");
+        DespawnAtDawn = WhiteHiltConfig.BindAdminOnly(BeastsSection, "DespawnAtDawn", true, "Beasts sink into the ground by day when no player is near.");
+        SpawnDistanceMin = WhiteHiltConfig.BindAdminOnly(BeastsSection, "SpawnDistanceMin", 50f, "Nearest distance a beast appears from the player.", new AcceptableValueRange<float>(20f, 100f));
+        SpawnDistanceMax = WhiteHiltConfig.BindAdminOnly(BeastsSection, "SpawnDistanceMax", 70f, "Farthest distance a beast appears from the player.", new AcceptableValueRange<float>(20f, 100f));
+        BeastSpacing = WhiteHiltConfig.BindAdminOnly(BeastsSection, "Spacing", 150f, "Two beasts in one night appear at least this far apart.", new AcceptableValueRange<float>(0f, 1000f));
+        foreach (BeastDefinition beast in BeastDefinition.All)
+        {
+            beastEnabled[beast.Key] = WhiteHiltConfig.BindAdminOnly(BeastsSection, beast.Key, true, $"{beast.EnglishName} ({beast.BaseCreature}).");
+        }
+
+        Translations.AddEnglish("msg_whitehilt_beast_near", "Something big stirs in the dark...");
+        foreach (BeastDefinition beast in BeastDefinition.All)
+        {
+            Translations.AddEnglish(beast.NameKey, beast.EnglishName);
+            Translations.AddEnglishNameAndDescription(beast.TrophyKey, $"{beast.EnglishName} Trophy",
+                "Torn from a beast of the dark hour. A power sleeps in it, waiting to be woken.");
+        }
+    }
+
+    /// <summary>
+    /// Whether a beast is switched on.
+    /// </summary>
+    /// <param name="key">The beast's key.</param>
+    /// <returns>True if it may come.</returns>
+    public static bool IsBeastEnabled(string key)
+    {
+        return beastEnabled.TryGetValue(key, out ConfigEntry<bool> entry) && entry.Value;
     }
 
     /// <summary>
@@ -215,7 +299,29 @@ public static class DifficultySettings
             largeCreatures.UnionWith(SplitList(parsedLargeCreatures));
         }
 
-        return largeCreatures.Contains(prefabName);
+        return largeCreatures.Contains(prefabName) || BeastDefinition.ByPrefab(prefabName) != null;
+    }
+
+    /// <summary>
+    /// Whether the weather counts as bad for beasts.
+    /// </summary>
+    /// <param name="env">Current environment.</param>
+    /// <returns>True if it is bad weather.</returns>
+    public static bool IsBadWeather(EnvSetup env)
+    {
+        if (env == null)
+        {
+            return false;
+        }
+
+        if (parsedBadWeather != BadWeather.Value)
+        {
+            parsedBadWeather = BadWeather.Value;
+            badWeather = SplitList(parsedBadWeather).Select(part => part.ToLowerInvariant()).ToArray();
+        }
+
+        string name = env.m_name?.ToLowerInvariant() ?? string.Empty;
+        return env.m_isWet || badWeather.Any(name.Contains);
     }
 
     private static IEnumerable<string> SplitList(string value)

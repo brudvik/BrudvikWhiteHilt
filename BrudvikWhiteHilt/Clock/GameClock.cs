@@ -77,8 +77,12 @@ public static class GameClock
             && (Minimap.instance == null || Minimap.instance.m_mode != Minimap.MapMode.Large);
     }
 
+    /// <summary>
+    /// The time of day in hours, 0 to 24, as the clock shows it.
+    /// </summary>
+    /// <returns>The hour; sunrise is 6 and nightfall 18.</returns>
     // The game's day fraction runs 0.15 - 0.85 of the day for daylight; rescaled, daylight is 06:00 - 18:00.
-    private static float Hours()
+    internal static float Hours()
     {
         EnvMan env = EnvMan.instance;
         if (env.m_debugTimeOfDay)

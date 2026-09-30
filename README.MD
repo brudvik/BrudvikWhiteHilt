@@ -500,7 +500,7 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 
 ---
 
-### 🌑 DIFFICULTY
+### 🌑 DIFFICULTY & BEASTS
 
 The world grows more dangerous as you progress. The server combines four things into a **pressure** from 0 to 1 and sends it to every player. The value changes slowly, so it does not jump when someone logs in or out:
 
@@ -526,11 +526,33 @@ The world grows more dangerous as you progress. The server combines four things 
 - Creatures with 3 to 5 stars grow 8%, 16% and 25% on top of the vanilla 2 star size. Large creatures such as trolls grow half as much, and nothing grows indoors.
 - 3 to 5 stars are shown over the creature.
 
-**Console command:** `whitehilt_difficulty` shows the pressure and what it is made of.
+**Beasts of the dark hour**
 
-Everything is set in the `[Difficulty]`, `[Difficulty.Stars]` and `[Difficulty.Size]` sections. `Difficulty.OverridePressure` fixes the pressure for testing. The star part turns itself off while Creature Level and Loot Control is installed.
+Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star beast may come for a player who is outside, away from their base and not in the Meadows. The dark hour lasts only a minute or two of real time; the beast then stays until dawn.
+- The server rolls once per player per night: 10% at pressure 0, 20% at 0.5 and 30% at full pressure.
+- Only one beast comes within 150 m.
+- A beast has 1.5× the health of a 5 star creature, and 15% more damage within the 3× limit. It is 10% slower, so you can get away.
+- It is about as strong as the biome's boss; bring friends.
+- A beast only comes once its biome's boss is defeated.
+- By day it sinks into the ground when no one is near.
+- It always drops its black trophy. The trophies will get a use later.
 
-If the mod is removed, creatures with 3 to 5 stars that are still in the world use the vanilla formulas (up to 6× health and 32× loot).
+| Beast | Biome | Needs | Health (base ×) |
+|-------|-------|-------|-----------------|
+| **Black Troll** | Black Forest | The Elder | 600 × 6.75 |
+| **Black Abomination** | Swamp | Bonemass | 800 × 6.75 |
+| **Black Stone Golem** | Mountain | Moder | 800 × 6.75 |
+| **Black Fuling Berserker** | Plains | Yagluth | 800 × 6.75 |
+| **Black Seeker Soldier** | Mistlands | The Queen | 1500 × 6.75 |
+| **Black Morgen** | Ashlands | Fader | 1600 × 6.75 |
+| **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |
+| **Black Bonemaw** | Ashlands sea, on a ship | Fader | 1100 × 6.75 |
+
+**Console commands:** `whitehilt_difficulty` shows the pressure and what it is made of. Admins can also use `whitehilt_beast [beast or biome]`.
+
+Everything is set in the `[Difficulty]`, `[Difficulty.Stars]`, `[Difficulty.Size]` and `[Difficulty.Beasts]` sections. `Difficulty.OverridePressure` fixes the pressure for testing. The star part turns itself off while Creature Level and Loot Control is installed.
+
+If the mod is removed, creatures with 3 to 5 stars that are still in the world use the vanilla formulas (up to 6× health and 32× loot). Beasts sink into the ground at dawn, so few are left.
 
 ---
 
@@ -582,7 +604,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 #### Added
 - Dynamic difficulty: players online, days, biomes visited and White Hilt gear worn add up to a pressure. The pressure raises star chances and gives creatures more health and damage
 - Creatures with up to 5 stars. How many stars can appear depends on the biomes visited and has a limit per biome. Stars above 2 add less strength and loot than vanilla stars, and the creatures grow
-- Console command `whitehilt_difficulty`
+- Beasts of the dark hour: black 5 star creatures that come between 00:00 and 02:00 in bad weather. There is one per biome and two at sea, and each drops its own trophy
+- Console commands `whitehilt_difficulty` and `whitehilt_beast`
 
 ### v0.9.0 - 2026-09-30
 

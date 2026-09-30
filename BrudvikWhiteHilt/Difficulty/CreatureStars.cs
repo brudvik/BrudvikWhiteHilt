@@ -1,4 +1,5 @@
 using BepInEx.Bootstrap;
+using BrudvikWhiteHilt.Difficulty.Beasts;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,6 +18,9 @@ public static class CreatureStars
 
     /// <summary>ZDO key of a creature's damage bonus.</summary>
     public const string DamageKey = "whitehilt_dmg";
+
+    /// <summary>ZDO key that marks a beast.</summary>
+    public const string BeastKey = "whitehilt_beast";
 
     /// <summary>Level of a 5 star creature.</summary>
     public const int MaxLevel = 6;
@@ -167,7 +171,8 @@ public static class CreatureStars
         }
 
         float levelFactor = level <= 3 ? level : 3f + (level - 3) * DifficultySettings.HealthPerExtraStar.Value;
-        return Mathf.Min(levelFactor * bonus, DifficultySettings.MaxHealthMultiplier.Value);
+        float total = levelFactor * bonus;
+        return zdo.GetBool(BeastKey) ? total : Mathf.Min(total, DifficultySettings.MaxHealthMultiplier.Value);
     }
 
     /// <summary>
@@ -247,13 +252,14 @@ public static class CreatureStars
     }
 
     /// <summary>
-    /// Whether stars and bonuses may change a creature: no players, bosses or tame creatures.
+    /// Whether stars and bonuses may change a creature: no players, bosses, tame creatures or beasts.
     /// </summary>
     /// <param name="character">The creature.</param>
     /// <returns>True if it may be changed.</returns>
     public static bool IsEligible(Character character)
     {
-        return !character.IsPlayer() && !character.IsBoss() && !character.IsTamed();
+        return !character.IsPlayer() && !character.IsBoss() && !character.IsTamed()
+            && BeastDefinition.ByPrefab(Utils.GetPrefabName(character.gameObject)) == null;
     }
 
     private static bool AppliesToCurrentSpawn()
