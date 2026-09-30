@@ -335,6 +335,8 @@
     <Compile Include="Backpack\GearSlots.cs" />
     <Compile Include="Backpack\HotbarSets.cs" />
     <Compile Include="Backpack\HotbarSupply.cs" />
+    <Compile Include="Pieces\Structure\BeamPieceBase.cs" />
+    <Compile Include="Pieces\Structure\BeamPieces.cs" />
     <Compile Include="Backpack\UtilitySlots.cs" />
     <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
     <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />

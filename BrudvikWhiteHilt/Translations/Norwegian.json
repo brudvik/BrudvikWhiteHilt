@@ -923,5 +923,22 @@
   "piece_whitehilt_banner_black_large": "Stort Hvithjalt-banner (svart)",
   "piece_whitehilt_banner_black_large_description": "Et svart banner med Hvithjalt, halvannen gang så stort.",
   "item_whitehiltbannercape": "Hvithjalt-bannerkappe",
-  "item_whitehiltbannercape_description": "En hvit kappe med Hvithjalt på ryggen."
+  "item_whitehiltbannercape_description": "En hvit kappe med Hvithjalt på ryggen.",
+
+  "piece_whitehilt_wood_beam_4": "Trebjelke 4 m",
+  "piece_whitehilt_wood_beam_4_description": "En trebjelke dobbelt så lang som den vanlige.",
+  "piece_whitehilt_wood_pole_4": "Trestolpe 4 m",
+  "piece_whitehilt_wood_pole_4_description": "En trestolpe dobbelt så lang som den på 2 m.",
+  "piece_whitehilt_woodiron_beam_4": "Jernbeslått bjelke 4 m",
+  "piece_whitehilt_woodiron_beam_4_description": "En jernbeslått bjelke dobbelt så lang som den vanlige.",
+  "piece_whitehilt_woodiron_pole_4": "Jernbeslått stolpe 4 m",
+  "piece_whitehilt_woodiron_pole_4_description": "En jernbeslått stolpe dobbelt så lang som den vanlige.",
+  "piece_whitehilt_woodiron_beam_1": "Jernbeslått bjelke 1 m",
+  "piece_whitehilt_woodiron_beam_1_description": "En kort jernbeslått bjelke, halvparten så lang som den vanlige.",
+  "piece_whitehilt_woodiron_pole_1": "Jernbeslått stolpe 1 m",
+  "piece_whitehilt_woodiron_pole_1_description": "En kort jernbeslått stolpe, halvparten så lang som den vanlige.",
+  "piece_whitehilt_woodiron_beam_26": "Jernbeslått bjelke 26°",
+  "piece_whitehilt_woodiron_beam_26_description": "En jernbeslått bjelke i vinkelen til et 26°-tak.",
+  "piece_whitehilt_woodiron_beam_45": "Jernbeslått bjelke 45°",
+  "piece_whitehilt_woodiron_beam_45_description": "En jernbeslått bjelke i vinkelen til et 45°-tak."
 }

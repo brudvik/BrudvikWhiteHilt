@@ -354,6 +354,23 @@ The banners are the vanilla banner with new cloth. The logo reads the right way 
 
 ---
 
+### 🪵 BEAMS & POLES
+
+More lengths and angles of the vanilla beams and poles, in the hammer right after the original. They keep the vanilla material, strength, station and category, and cost the vanilla recipe times the factor below (rounded, at least 1). As with the vanilla Log Beam, a long piece counts as one piece for support, so it reaches further out.
+
+| Piece | Made from | Cost | Look |
+|-------|-----------|------|------|
+| **Wood beam 4m** | Wood beam | ×2 | Stretched, as vanilla makes its 1 m and 2 m poles |
+| **Wood pole 4m** | Wood pole (2 m) | ×2 | Stretched |
+| **Wood iron beam 4m** | Wood iron beam | ×2 | Two beams end to end: iron fittings at the ends and in the middle |
+| **Wood iron pole 4m** | Wood iron pole | ×2 | Two poles end to end |
+| **Wood iron beam 1m** | Wood iron beam | ×0.5 | Shortened |
+| **Wood iron pole 1m** | Wood iron pole | ×0.5 | Shortened |
+| **Wood iron beam 26°** | Wood iron beam | ×1 | Tilted to the 26° roof, snaps like the vanilla 26° wood beam |
+| **Wood iron beam 45°** | Wood iron beam | ×1 | Tilted to the 45° roof, snaps like the vanilla 45° wood beam |
+
+---
+
 ### 🔊 INDOOR SOUND
 
 Wind, rain, sea and thunder are quieter and muffled under a roof, as heard through walls, so a house is a quiet place to cook and craft in. How much follows how well you are covered: a little under an open roof, most in a closed house (the game's own shelter), and some under the tent of the White Hilt Ship. Only the weather's sound changes; fires, cooking, crafting and doors sound as before. Dungeons are left alone.
@@ -719,6 +736,11 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.18.0 - 2026-09-30
+
+#### Added
+- Beams and poles: Wood beam 4m, Wood pole 4m, Wood iron beam 4m and Wood iron pole 4m, Wood iron beam and pole 1m, and Wood iron beams at 26° and 45°, each with its own icon and right after its original in the hammer
 
 ### v0.17.0 - 2026-09-30
 
