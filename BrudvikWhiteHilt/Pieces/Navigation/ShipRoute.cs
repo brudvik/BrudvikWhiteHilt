@@ -22,10 +22,14 @@ public class ShipRoute : MonoBehaviour
 
     // A marker is reached this close; the route's turning points a little sooner, so the ship starts its turn in time.
     private const float MarkerReached = 60f;
-    private const float PointReached = 40f;
+    private const float PointReached = 20f;
     private const float SlowNearEnd = 150f;
     private const float SlowTurnDegrees = 50f;
-    private const float CheckInterval = 0.5f;
+    private const float CheckInterval = 0.25f;
+
+    // Headings tried around an obstacle, each way from the course.
+    private const float AvoidStep = 15f;
+    private const float MaxAvoid = 75f;
 
     private static readonly int markersKey = "whitehilt_route_markers".GetStableHashCode();
     private static readonly int pathKey = "whitehilt_route_path".GetStableHashCode();
@@ -42,6 +46,10 @@ public class ShipRoute : MonoBehaviour
     private WhiteHiltShipUpgrades upgrades;
     private uint readRevision = uint.MaxValue;
     private float nextCheck;
+    private float avoidOffset;
+
+    /// <summary>The ship the route belongs to.</summary>
+    public Ship Ship => ship;
 
     /// <summary>The markers still ahead, in order.</summary>
     public IReadOnlyList<Vector3> Markers
@@ -77,6 +85,21 @@ public class ShipRoute : MonoBehaviour
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// How far the ship still has to sail along the route.
+    /// </summary>
+    /// <returns>The distance in metres, 0 when not sailing.</returns>
+    public float Remaining()
+    {
+        if (!Sailing)
+        {
+            return 0f;
+        }
+
+        Read();
+        return Remaining(nview.GetZDO().GetInt(pointKey));
     }
 
     /// <summary>
@@ -244,31 +267,78 @@ public class ShipRoute : MonoBehaviour
 
         Vector3 next = path[point];
         float course = Bearing(here, next);
-        assist?.SteerTowards(course);
+        if (Time.time >= nextCheck)
+        {
+            nextCheck = Time.time + CheckInterval;
+            if (!FindWayAround(course, Utils.DistanceXZ(here, next) + PointReached))
+            {
+                StopSailing(zdo, "$whitehilt_route_shallow");
+                return;
+            }
+        }
 
-        float left = Utils.DistanceXZ(here, next);
+        float heading = course + avoidOffset;
+        assist?.SteerTowards(heading);
+
+        float left = Remaining(point);
+        bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), heading)) > SlowTurnDegrees;
+        ship.m_speed = left < SlowNearEnd || turning || avoidOffset != 0f ? Ship.Speed.Half : Ship.Speed.Full;
+    }
+
+    // Keeps the course when it is clear, else the nearest clear heading, trying the side already taken first.
+    // Looks no further than the next turning point, so land beyond the turn does not count.
+    private bool FindWayAround(float course, float maxDistance)
+    {
+        if (assist == null)
+        {
+            avoidOffset = 0f;
+            return true;
+        }
+
+        float look = Mathf.Min(assist.Lookahead(), maxDistance);
+        if (!assist.Blocked(course, look))
+        {
+            avoidOffset = 0f;
+            return true;
+        }
+
+        float side = avoidOffset < 0f ? -1f : 1f;
+        for (float angle = AvoidStep; angle <= MaxAvoid; angle += AvoidStep)
+        {
+            foreach (float sign in new[] { side, -side })
+            {
+                if (!assist.Blocked(course + sign * angle, look))
+                {
+                    avoidOffset = sign * angle;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private float Remaining(int point)
+    {
+        if (point >= path.Count)
+        {
+            return 0f;
+        }
+
+        float left = Utils.DistanceXZ(transform.position, path[point]);
         for (int i = point + 1; i < path.Count; i++)
         {
             left += Utils.DistanceXZ(path[i - 1], path[i]);
         }
 
-        bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), course)) > SlowTurnDegrees;
-        ship.m_speed = left < SlowNearEnd || turning ? Ship.Speed.Half : Ship.Speed.Full;
-
-        if (Time.time >= nextCheck)
-        {
-            nextCheck = Time.time + CheckInterval;
-            if (assist != null && assist.ShallowAhead(Utils.DistanceXZ(here, next) + PointReached))
-            {
-                StopSailing(zdo, "$whitehilt_route_shallow");
-            }
-        }
+        return left;
     }
 
     private void StopSailing(ZDO zdo, string message)
     {
         zdo.Set(sailingKey, false);
         ship.m_speed = Ship.Speed.Stop;
+        avoidOffset = 0f;
         if (!string.IsNullOrEmpty(message))
         {
             nview.InvokeRPC(ZNetView.Everybody, MessageRpc, message);

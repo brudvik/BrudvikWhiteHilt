@@ -720,6 +720,15 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.17.0 - 2026-09-30
+
+#### Added
+- "Take me there": everyone aboard sees the speed in knots, heading, wind and the time left to arrival (minutes:seconds) while the ship sails the route
+
+#### Changed
+- "Take me there" steers around rocks and shallows it meets: it sweeps the water ahead as wide as the hull and as deep as the keel, also for rocks under water, turns up to 75° off course and slows to half sail. It stops only when no way around is found
+- Routes keep further from land: each straight leg is checked on the sea floor every 4 m and 9 m to each side, and the ship turns 20 m before a turning point instead of 40 m
+
 ### v0.16.0 - 2026-09-30
 
 #### Added
@@ -809,7 +818,7 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - A neglected dog runs away, a starving one dies, and a dead dog leaves remains for its grave
 - Console command `whitehilt_rest` to check the resting pose
 - Navigator's Table route: at Exploration 30, Use on the table opens the map to set up to 5 route markers. They belong to the ship, so everyone aboard sees them on the map, and an arrow on the minimap points to the next one with the distance. A marker is ticked off when the ship comes within 60 m
-- "Take me there" at Exploration 50: the ship plots a course through deep water around land and sails it on its own, under sail only, slowing for turns and near the end. It stops when someone takes the helm, everyone leaves, the water turns shallow or it arrives. Markers on land are moved to the nearest deep water. Docks and other building in the water are not known to the route (`RouteMarkersLevel`, `RouteSailLevel`)
+- "Take me there" at Exploration 50: the ship plots a course through deep water around land and sails it on its own, under sail only, slowing for turns and near the end. It steers around rocks and shallows ahead (also rocks under water) and stops when someone takes the helm, everyone leaves, no way around is found or it arrives. While it sails, everyone aboard sees speed, heading, wind and the time left to arrival under the wind indicator. Markers on land are moved to the nearest deep water. Docks and other building in the water are not known to the route (`RouteMarkersLevel`, `RouteSailLevel`)
 
 #### Changed
 - White Hilt Ship: the deck brazier stands on the port side just in front of the cargo crates, out of the walkway

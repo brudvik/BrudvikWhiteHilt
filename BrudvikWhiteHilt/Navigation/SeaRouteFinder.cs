@@ -13,13 +13,23 @@ public static class SeaRouteFinder
 {
     private const float Cell = 32f;
     private const float Draft = 3f;
-    private const float Margin = 14f;
+
+    // Reaches past the cell's half width, so two neighbouring water cells always leave room between them.
+    private const float Margin = 18f;
+
+    // Straight legs are checked on the ground itself every few metres, this far to each side of the line.
+    private const float LineStep = 4f;
+    private const float LineClearance = 9f;
     private const float WorldRadius = 10000f;
     private const int MaxNodes = 250000;
     private const double MillisecondsPerFrame = 4.0;
     private const int SnapCells = 20;
 
-    private static readonly Vector2[] samples = { Vector2.zero, new(Margin, Margin), new(Margin, -Margin), new(-Margin, Margin), new(-Margin, -Margin) };
+    private static readonly Vector2[] samples =
+    {
+        Vector2.zero, new(Margin, Margin), new(Margin, -Margin), new(-Margin, Margin), new(-Margin, -Margin),
+        new(Margin, 0f), new(-Margin, 0f), new(0f, Margin), new(0f, -Margin)
+    };
     private static readonly (int X, int Z, float Cost)[] steps =
     {
         (1, 0, 1f), (-1, 0, 1f), (0, 1, 1f), (0, -1, 1f),
@@ -66,7 +76,9 @@ public static class SeaRouteFinder
             snapped.Add(ToWorld(goal.Value));
         }
 
-        done(Simplify(cells, water), snapped);
+        List<Vector3> route = null;
+        yield return Simplify(cells, water, result => route = result);
+        done(route, snapped);
     }
 
     private static IEnumerator Search((int X, int Z) start, (int X, int Z) goal, Dictionary<long, bool> water, Action<List<(int X, int Z)>> done)
@@ -148,24 +160,61 @@ public static class SeaRouteFinder
     }
 
     // Keeps only the turning points, skipping every point the ship can sail past in a straight line.
-    private static List<Vector3> Simplify(List<(int X, int Z)> cells, Dictionary<long, bool> water)
+    private static IEnumerator Simplify(List<(int X, int Z)> cells, Dictionary<long, bool> water, Action<List<Vector3>> done)
     {
         List<Vector3> route = new();
         int from = 0;
         route.Add(ToWorld(cells[0]));
+        System.Diagnostics.Stopwatch clock = System.Diagnostics.Stopwatch.StartNew();
         while (from < cells.Count - 1)
         {
             int to = cells.Count - 1;
-            while (to > from + 1 && !ClearLine(cells[from], cells[to], water))
+            while (to > from + 1 && !(ClearLine(cells[from], cells[to], water) && DeepLine(ToWorld(cells[from]), ToWorld(cells[to]))))
             {
                 to--;
+                if (clock.Elapsed.TotalMilliseconds > MillisecondsPerFrame)
+                {
+                    yield return null;
+                    clock.Restart();
+                }
             }
 
             route.Add(ToWorld(cells[to]));
             from = to;
         }
 
-        return route;
+        done(route);
+    }
+
+    // The ground itself along the line and to both sides of it, finer than the cells.
+    private static bool DeepLine(Vector3 start, Vector3 end)
+    {
+        Vector3 along = end - start;
+        along.y = 0f;
+        float length = along.magnitude;
+        if (length < 0.01f)
+        {
+            return true;
+        }
+
+        Vector3 direction = along / length;
+        Vector3 side = new(direction.z, 0f, -direction.x);
+        float limit = ZoneSystem.instance.m_waterLevel - Draft;
+        int steps = Mathf.CeilToInt(length / LineStep);
+        for (int i = 0; i <= steps; i++)
+        {
+            Vector3 point = start + direction * (length * i / steps);
+            for (int lane = -1; lane <= 1; lane++)
+            {
+                Vector3 sample = point + side * (lane * LineClearance);
+                if (WorldGenerator.instance.GetHeight(sample.x, sample.z) > limit)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private static bool ClearLine((int X, int Z) a, (int X, int Z) b, Dictionary<long, bool> water)

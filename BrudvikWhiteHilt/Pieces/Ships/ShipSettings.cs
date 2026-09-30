@@ -77,6 +77,7 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_compass", "N,NE,E,SE,S,SW,W,NW");
         Translations.AddEnglish("whitehilt_shiphud_wind", "Wind from {0}");
         Translations.AddEnglish("whitehilt_shiphud_course", "Holding course {0}°");
+        Translations.AddEnglish("whitehilt_shiphud_eta", "Arrival in {0}");
         Translations.AddEnglish("whitehilt_ship_push", "Push the ship");
         Translations.AddEnglish("whitehilt_route_open", "Route markers");
         Translations.AddEnglish("whitehilt_route_need_markers", "Exploration {0} is needed to set route markers");
@@ -93,7 +94,7 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_route_arrived", "The ship has arrived");
         Translations.AddEnglish("whitehilt_route_stopped", "The ship stops sailing the route");
         Translations.AddEnglish("whitehilt_route_taken", "You take the helm: the ship stops sailing the route");
-        Translations.AddEnglish("whitehilt_route_shallow", "Shallow water ahead: the ship stops");
+        Translations.AddEnglish("whitehilt_route_shallow", "No way past the rocks or shallows ahead: the ship stops");
         Translations.AddEnglish("whitehilt_route_anchored", "The anchor is down: the ship stops sailing the route");
     }
 }

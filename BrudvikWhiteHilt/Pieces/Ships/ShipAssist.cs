@@ -32,8 +32,12 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private const float MinLookahead = 12f;
     private const float MaxLookahead = 60f;
 
+    // Room kept free on each side of the hull when sweeping ahead for rocks.
+    private const float SideClearance = 1.5f;
+
     private static readonly int AutopilotKey = "whitehilt_autopilot".GetStableHashCode();
     private static readonly int CourseKey = "whitehilt_autopilot_course".GetStableHashCode();
+    private static int obstacleMask;
 
     private ZNetView nview;
     private Ship ship;
@@ -264,6 +268,61 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// How far ahead to look for obstacles, further the faster the ship sails.
+    /// </summary>
+    /// <returns>The distance ahead of the bow, in metres.</returns>
+    public float Lookahead()
+    {
+        return Mathf.Clamp(ship.GetSpeed() * LookaheadSeconds, MinLookahead, MaxLookahead);
+    }
+
+    /// <summary>
+    /// True if ground, rocks, docks or other ships lie within the keel's depth on a heading, as wide as the hull.
+    /// Sees rocks under water, which the ground height does not.
+    /// </summary>
+    /// <param name="course">The heading to sweep, in degrees from north.</param>
+    /// <param name="distance">How far ahead of the bow.</param>
+    /// <returns>True if something is in the way.</returns>
+    public bool Blocked(float course, float distance)
+    {
+        if (ZoneSystem.instance == null)
+        {
+            return false;
+        }
+
+        if (obstacleMask == 0)
+        {
+            obstacleMask = LayerMask.GetMask("Default", "static_solid", "Default_small", "piece", "terrain", "vehicle");
+        }
+
+        Vector3 hull = HullSize();
+        Vector3 direction = Quaternion.Euler(0f, course, 0f) * Vector3.forward;
+        float water = ZoneSystem.instance.m_waterLevel;
+        Vector3 center = new(transform.position.x, water - Draft / 2f, transform.position.z);
+        Vector3 half = new(hull.x / 2f + SideClearance, Draft / 2f, 0.5f);
+        float bow = hull.z / 2f;
+        foreach (RaycastHit hit in Physics.BoxCastAll(center, half, direction, Quaternion.LookRotation(direction), bow + distance, obstacleMask,
+            QueryTriggerInteraction.Ignore))
+        {
+            // Zero distance means the box started inside it: the ship's own hull, or ground it already lies beside.
+            if (hit.distance <= 0f || hit.collider.transform.IsChildOf(transform) || (body != null && hit.collider.attachedRigidbody == body))
+            {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private Vector3 HullSize()
+    {
+        BoxCollider box = ship.m_floatCollider;
+        return box != null ? Vector3.Scale(box.size, box.transform.lossyScale) : new Vector3(4f, 0f, 12f);
     }
 
     private void RPC_Autopilot(long sender, bool on, float course)
