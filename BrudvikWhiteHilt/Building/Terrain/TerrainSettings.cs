@@ -167,7 +167,8 @@ public static class TerrainSettings
         Translations.AddEnglish("whitehilt_terrain_ramp_end", "top");
         Translations.AddEnglish("whitehilt_terrain_ramp_info", "Length {0} m   rise {1} m   slope {2}% ({3})   {4}");
         Translations.AddEnglish("whitehilt_terrain_hint_road",
-            "Road: click points on the map, double-click or close the map to finish   {0} points, {1} m");
+            "Road: click points on the map, double-click or close the map to finish   Arrows up/down: width   {0} points, {1} m");
+        Translations.AddEnglish("msg_whitehilt_terrain_road_width", "Road width {0}");
         Translations.AddEnglish("whitehilt_terrain_cost", "Cost: {0}");
         Translations.AddEnglish("whitehilt_terrain_free", "Free");
         Translations.AddEnglish("whitehilt_farm_grid", "Grid");

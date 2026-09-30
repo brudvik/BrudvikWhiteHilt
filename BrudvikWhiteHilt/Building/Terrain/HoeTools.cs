@@ -219,6 +219,16 @@ public static class HoeTools
     }
 
     /// <summary>
+    /// Makes ramps and new roads wider or narrower, 1 to 12 m.
+    /// </summary>
+    /// <param name="metres">Metres to add.</param>
+    public static void ChangeWidth(float metres)
+    {
+        Width = Mathf.Clamp(Width + metres, 1f, 12f);
+        plan = null;
+    }
+
+    /// <summary>
     /// Next width.
     /// </summary>
     public static void CycleWidth()
@@ -416,14 +426,12 @@ public static class HoeTools
         bool aimed = AreaPicker.Aim(out Vector3 aim);
         if (BuildToolSettings.KeyNudgeForward.Value.IsDown())
         {
-            Width = Mathf.Min(12f, Width + 1f);
-            plan = null;
+            ChangeWidth(1f);
         }
 
         if (BuildToolSettings.KeyNudgeBack.Value.IsDown())
         {
-            Width = Mathf.Max(1f, Width - 1f);
-            plan = null;
+            ChangeWidth(-1f);
         }
 
         string info = string.Empty;

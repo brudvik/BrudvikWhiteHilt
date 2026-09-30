@@ -379,7 +379,7 @@ The server sets it in the `WasteWell` section: `DisposeDelaySeconds` (5), `Colle
 
 ### 🏗️ BUILD CAMERA & TOOLBAR
 
-While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
+While you hold a build tool (hammer, hoe, cultivator, or a build tool from another mod such as Clutter), a toolbar shows on the left and a key hint bottom-left. **Hold Left Alt** to get the mouse cursor and click the buttons; hovering a button explains it, and clicking the toolbar's title folds it down to its status lines. Every button also has a hotkey. On Linux with KDE Plasma, Alt + mouse may be taken by the window manager for moving windows; change the `Cursor` key in the config, or set the window-action modifier to Meta in KDE's settings. The status lines show the piece's heading, tilt and roll, its height above the ground and its distance from the last piece you placed. Red, green and blue lines on the piece show its own axes.
 
 | Tool | Key | What it does |
 |------|-----|--------------|
@@ -445,7 +445,7 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 
 | Tool | Key | What it does |
 |------|-----|--------------|
-| Road (hoe) | Ctrl + R | The map opens: click points, double-click or close the map to finish. The road (4 m wide by default, stone, dirt or no surface) is built as you walk along it, since only land near you is loaded. It follows the ground with the bumps smoothed out, or keeps an even slope between the points. It stops at water, pays stone as it goes and pauses when you run out. Pause or cancel it on the panel; it is saved with the world |
+| Road (hoe) | Ctrl + R | The map opens: click points, double-click or close the map to finish. The road (4 m wide by default; the up/down arrow keys change the width while the map is open, 1 to 12 m; stone, dirt or no surface) is built as you walk along it, since only land near you is loaded. It follows the ground with the bumps smoothed out, or keeps an even slope between the points. It stops at water, pays stone as it goes and pauses when you run out. Pause or cancel it on the panel; it is saved with the world |
 | Level (hoe) | Ctrl + F | Pick an area, then the height (PgUp / PgDn in 0.25 m steps, Shift+click to take it from where you aim, or the height reference). The preview shows how much is dug and filled and the cost. The edges slope down to the ground around |
 | Ramp (hoe) | Ctrl + G | Click the bottom and the top: an even ramp, as wide as set on the panel (arrow up/down), with length, rise and slope. The slope can be locked to 10, 15, 20 or 25 %. The next ramp starts where the last ended |
 | Paint (hoe) | Ctrl + P | Stone, dirt or grass over an area without changing its height |
@@ -718,6 +718,14 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.15.3 - 2026-09-30
+
+#### Added
+- Road planning: the up/down arrow keys change the road width on the map (1 to 12 m), so it no longer needs the cursor
+
+#### Fixed
+- Build tools: holding Left Alt showed the cursor but it would not move on Linux. The game locked and unlocked it every frame; it now stays unlocked while the key is held
 
 ### v0.15.2 - 2026-09-30
 

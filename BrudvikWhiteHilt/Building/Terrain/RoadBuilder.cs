@@ -155,6 +155,10 @@ public static class RoadBuilder
         {
             FinishPlanning(player);
         }
+        else if (Planning)
+        {
+            HandleWidthKeys(player);
+        }
 
         if (road == null || road.Paused || Time.time < nextTick || TerrainEdit.Busy)
         {
@@ -163,6 +167,22 @@ public static class RoadBuilder
 
         nextTick = Time.time + TickInterval;
         BuildNear(player);
+    }
+
+    private static void HandleWidthKeys(Player player)
+    {
+        if (Minimap.InTextInput() || Minimap.instance.m_nameInput.gameObject.activeSelf)
+        {
+            return;
+        }
+
+        float change = BuildToolSettings.KeyNudgeForward.Value.IsDown() ? 1f : BuildToolSettings.KeyNudgeBack.Value.IsDown() ? -1f : 0f;
+        if (change != 0f)
+        {
+            HoeTools.ChangeWidth(change);
+            player.Message(MessageHud.MessageType.Center,
+                string.Format(Localization.instance.Localize("$msg_whitehilt_terrain_road_width"), HoeTools.Metres(HoeTools.Width)));
+        }
     }
 
     private static void FinishPlanning(Player player)

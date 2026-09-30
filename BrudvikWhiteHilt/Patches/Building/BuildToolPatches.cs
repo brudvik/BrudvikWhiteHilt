@@ -59,15 +59,20 @@ public static class BuildToolPatches
     /// <summary>
     /// Frees the cursor while the toolbar's cursor key is held.
     /// </summary>
+    /// <returns>False to skip vanilla's capture while the cursor is out.</returns>
     [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateMouseCapture))]
-    [HarmonyPostfix]
-    public static void UpdateMouseCapture()
+    [HarmonyPrefix]
+    public static bool UpdateMouseCapture()
     {
-        if (BuildToolbar.CursorMode && !(MediaPanel.IsOpen && Input.GetMouseButton(1)))
+        if (!BuildToolbar.CursorMode || (MediaPanel.IsOpen && Input.GetMouseButton(1)))
         {
-            ZCursor.LockState = CursorLockMode.None;
-            ZCursor.Show();
+            return true;
         }
+
+        // Locking and unlocking in the same frame re-grabs the pointer on Linux, so it stays stuck in the middle.
+        ZCursor.LockState = CursorLockMode.None;
+        ZCursor.Show();
+        return false;
     }
 
     /// <summary>
