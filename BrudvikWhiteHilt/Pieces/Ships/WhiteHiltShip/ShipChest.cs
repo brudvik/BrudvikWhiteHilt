@@ -35,6 +35,12 @@ public class ShipChest : MonoBehaviour
         container.m_inventory.m_onChanged += container.OnContainerChanged;
         container.m_nview.Register<long>(OpenRpc, (sender, playerID) => RequestOpen(container, sender));
         container.m_nview.Register<bool>(OpenedRpc, (_, granted) => Opened(container, granted));
+        WearNTear wearNTear = container.m_nview.GetComponent<WearNTear>();
+        if (wearNTear != null)
+        {
+            wearNTear.m_onDestroyed += container.OnDestroyed;
+        }
+
         container.InvokeRepeating(nameof(Container.CheckForChanges), 0f, 1f);
     }
 
