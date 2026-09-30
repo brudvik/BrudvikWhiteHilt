@@ -27,16 +27,5 @@ public static class WearNTearHelper
         wearNTear.m_damages.m_frost = HitData.DamageModifier.Immune;
         wearNTear.m_damages.m_lightning = HitData.DamageModifier.Immune;
         wearNTear.m_damages.m_poison = HitData.DamageModifier.Immune;
-        wearNTear.m_onDamaged += () => ResetHealth(wearNTear, health);
-    }
-
-    /// <summary>
-    /// Resets the health of the WearNTear component when damaged.
-    /// </summary>
-    /// <param name="wearNTear">The WearNTear component.</param>
-    /// <param name="health">The health value to reset to.</param>
-    private static void ResetHealth(WearNTear wearNTear, float health)
-    {
-        wearNTear.m_health = health;
     }
 }
