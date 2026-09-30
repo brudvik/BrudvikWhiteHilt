@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Backpack;
+using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships;
@@ -37,6 +38,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private ZNetView nview;
     private Ship ship;
     private Rigidbody body;
+    private WhiteHiltShipUpgrades upgrades;
     private bool wasControlled;
     private float nextCheck;
     private float nextPush;
@@ -143,7 +145,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private bool CanPush(Player player)
     {
         return player != null && ship != null && nview != null && nview.IsValid() && !ship.IsPlayerInBoat(player)
-            && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed;
+            && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);
     }
 
     private void ToggleCourse(Player player)
@@ -161,6 +163,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         nview = GetComponent<ZNetView>();
         ship = GetComponent<Ship>();
         body = GetComponent<Rigidbody>();
+        upgrades = GetComponent<WhiteHiltShipUpgrades>();
         if (nview == null || nview.GetZDO() == null)
         {
             return;
