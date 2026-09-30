@@ -202,6 +202,7 @@ public static class GroupTools
         if (Mode == ToolMode.Select)
         {
             Exit();
+            BuildSelection.Clear();
         }
         else
         {
@@ -383,6 +384,7 @@ public static class GroupTools
             else
             {
                 Exit();
+                BuildSelection.Clear();
                 return;
             }
         }

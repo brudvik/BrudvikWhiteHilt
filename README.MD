@@ -425,7 +425,7 @@ These work with any build tool, with or without the build camera. The right mous
 
 | Key | What it does |
 |-----|--------------|
-| Ctrl + A | Selection mode: click pieces to add or remove them, or Shift+click two corners to select everything in a box (PgUp / PgDn change its height). Selected pieces glow blue |
+| Ctrl + A | Selection mode: click pieces to add or remove them, or Shift+click two corners to select everything in a box (PgUp / PgDn change its height). Selected pieces glow blue. Leaving selection mode (Ctrl + A again, right-click or putting the hammer away) clears the selection |
 | Ctrl + C | Copy the selection and start placing the copy |
 | Ctrl + X | Move the selection: it is torn down and put up again where you place it, for free. Sign texts and portal names follow; chests and stands must be empty |
 | Ctrl + V | Place the last copy again |
@@ -718,6 +718,11 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.15.2 - 2026-09-30
+
+#### Fixed
+- Group tools: turning selection mode off left the selected pieces glowing blue (and still selected). Leaving selection mode now clears the selection
 
 ### v0.15.1 - 2026-09-30
 

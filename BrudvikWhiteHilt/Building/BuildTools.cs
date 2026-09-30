@@ -45,6 +45,11 @@ public static class BuildTools
         {
             if (GroupTools.Active)
             {
+                if (GroupTools.Mode == GroupTools.ToolMode.Select)
+                {
+                    BuildSelection.Clear();
+                }
+
                 GroupTools.Exit();
             }
 
