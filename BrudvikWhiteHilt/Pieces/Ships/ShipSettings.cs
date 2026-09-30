@@ -37,6 +37,12 @@ public static class ShipSettings
     /// <summary>Exploration level needed to let the ship sail the route on its own.</summary>
     public static ConfigEntry<int> RouteSailLevel { get; private set; }
 
+    /// <summary>Sail force of the White Hilt Ship; the vanilla code default is 0.1.</summary>
+    public static ConfigEntry<float> SailForce { get; private set; }
+
+    /// <summary>Whether the wind always blows from behind a White Hilt Ship with people aboard.</summary>
+    public static ConfigEntry<bool> AlwaysTailwind { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -60,6 +66,10 @@ public static class ShipSettings
             "Exploration level needed to set route markers on the map at a ship's Navigator's Table.", new AcceptableValueRange<int>(0, 100));
         RouteSailLevel = WhiteHiltConfig.BindAdminOnly(Section, "RouteSailLevel", 50,
             "Exploration level needed for \"Take me there\": the ship sails the route on its own.", new AcceptableValueRange<int>(0, 100));
+        SailForce = WhiteHiltConfig.BindAdminOnly(Section, "SailForce", 0.5f,
+            "How hard the wind drives the White Hilt Ship's sail. The vanilla code default is 0.1.", new AcceptableValueRange<float>(0.05f, 1f));
+        AlwaysTailwind = WhiteHiltConfig.BindAdminOnly(Section, "AlwaysTailwind", true,
+            "The wind always blows from behind the White Hilt Ship, as with Moder's power.");
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

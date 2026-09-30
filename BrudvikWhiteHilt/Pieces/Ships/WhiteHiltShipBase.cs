@@ -100,7 +100,6 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
                 if (shipSettings != null)
                 {
                     shipSettings.m_ashlandsReady = true;
-                    shipSettings.m_sailForceFactor = 0.5f;
                 }
             }
             else

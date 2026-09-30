@@ -394,6 +394,11 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             portal.SetInstalled(Has(ShipPortalUpgrade.Bit));
         }
 
+        if (ship != null)
+        {
+            ship.m_sailForceFactor = ShipSettings.SailForce.Value;
+        }
+
         UpdateAutoAnchor(Time.deltaTime);
         UpdateAnchor();
         UpdateFishingNet(Time.deltaTime);
