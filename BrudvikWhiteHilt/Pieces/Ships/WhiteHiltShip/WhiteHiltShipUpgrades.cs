@@ -55,10 +55,10 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     /// </summary>
     public Vector3 m_tentSize;
 
-    private const string ZdoKey = "whitehilt_ship_upgrades";
+    private static readonly int ZdoKey = "whitehilt_ship_upgrades".GetStableHashCode();
     private const string AddRpc = "WhiteHiltShipAddUpgrade";
     private const string TakeRpc = "WhiteHiltShipTakeUpgrade";
-    private const string AnchorZdoKey = "whitehilt_ship_anchored";
+    private static readonly int AnchorZdoKey = "whitehilt_ship_anchored".GetStableHashCode();
     private const string AnchorRpc = "WhiteHiltShipToggleAnchor";
     private const float MinFishingSpeed = 2f;
 
@@ -306,7 +306,6 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
-        container = GetComponentInChildren<Container>(true);
         ship = GetComponent<Ship>();
         body = GetComponent<Rigidbody>();
         freeConstraints = body != null ? body.constraints : RigidbodyConstraints.None;

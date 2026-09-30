@@ -91,11 +91,11 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
             };
 
             IndestructiblePiece item = new(BaseName, CopyFrom, pieceConfig);
-            item.Piece.m_comfort = 5;
 
             // Set the ship to be ready for Ashlands
             if (item.Piece != null)
             {
+                item.Piece.m_comfort = 5;
                 var shipSettings = item.Piece.GetComponent<Ship>();
                 if (shipSettings != null)
                 {
