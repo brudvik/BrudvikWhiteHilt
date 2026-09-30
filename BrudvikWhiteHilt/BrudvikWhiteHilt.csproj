@@ -263,6 +263,7 @@
     <Compile Include="Clock\ClockSettings.cs" />
     <Compile Include="Clock\GameClock.cs" />
     <Compile Include="Patches\Clock\ClockPatches.cs" />
+    <Compile Include="Difficulty\BloodMoonSky.cs" />
     <Compile Include="Difficulty\CreatureStars.cs" />
     <Compile Include="Difficulty\DifficultyCommands.cs" />
     <Compile Include="Difficulty\DifficultyService.cs" />

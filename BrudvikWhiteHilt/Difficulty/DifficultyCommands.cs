@@ -7,7 +7,7 @@ using System.Linq;
 namespace BrudvikWhiteHilt.Difficulty;
 
 /// <summary>
-/// Console commands: whitehilt_difficulty shows the state; whitehilt_beast is for admins.
+/// Console commands: whitehilt_difficulty shows the state; whitehilt_bloodmoon and whitehilt_beast are for admins.
 /// </summary>
 public static class DifficultyCommands
 {
@@ -17,6 +17,7 @@ public static class DifficultyCommands
     public static void Register()
     {
         CommandManager.Instance.AddConsoleCommand(new DifficultyCommand());
+        CommandManager.Instance.AddConsoleCommand(new BloodMoonCommand());
         CommandManager.Instance.AddConsoleCommand(new BeastCommand());
     }
 
@@ -32,11 +33,28 @@ public static class DifficultyCommands
     {
         public override string Name => "whitehilt_difficulty";
 
-        public override string Help => "Shows the White Hilt difficulty: the pressure and what it is made of.";
+        public override string Help => "Shows the White Hilt difficulty: pressure, what it is made of and the blood moon.";
 
         public override void Run(string[] args)
         {
             Print(DifficultyState.Describe());
+        }
+    }
+
+    private sealed class BloodMoonCommand : ConsoleCommand
+    {
+        public override string Name => "whitehilt_bloodmoon";
+
+        public override string Help => "[start|stop] Admin: starts a blood moon tonight, or stops it.";
+
+        public override void Run(string[] args)
+        {
+            DifficultyService.SendAdmin("bloodmoon", args.Length > 0 ? args[0] : "start");
+        }
+
+        public override List<string> CommandOptionList()
+        {
+            return new List<string> { "start", "stop" };
         }
     }
 
@@ -66,7 +84,7 @@ public static class DifficultyCommands
         private static string CurrentBeast()
         {
             Player player = Player.m_localPlayer;
-            return player == null ? null : BeastDefinition.Resolve(player.GetCurrentBiome(), Ship.GetLocalShip() != null)?.Key;
+            return player == null ? null : BeastDefinition.Resolve(player.GetCurrentBiome(), Ship.GetLocalShip() != null, true)?.Key;
         }
     }
 }

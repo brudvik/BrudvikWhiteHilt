@@ -9,7 +9,7 @@ using System.Linq;
 namespace BrudvikWhiteHilt.Difficulty;
 
 /// <summary>
-/// Config for the dynamic difficulty: the pressure score, creature stars and sizes, and beasts.
+/// Config for the dynamic difficulty: the pressure score, creature stars and sizes, beasts and the blood moon.
 /// Everything is admin-only and synced from the server.
 /// </summary>
 public static class DifficultySettings
@@ -18,6 +18,7 @@ public static class DifficultySettings
     private const string StarsSection = "Difficulty.Stars";
     private const string SizeSection = "Difficulty.Size";
     private const string BeastsSection = "Difficulty.Beasts";
+    private const string BloodMoonSection = "Difficulty.BloodMoon";
 
     private static readonly Dictionary<string, ConfigEntry<bool>> beastEnabled = new();
     private static readonly Dictionary<Heightmap.Biome, int> biomeMaxStars = new();
@@ -168,6 +169,30 @@ public static class DifficultySettings
     /// <summary>Two beasts in one night are at least this far apart.</summary>
     public static ConfigEntry<float> BeastSpacing { get; private set; }
 
+    /// <summary>Whether blood moons happen.</summary>
+    public static ConfigEntry<bool> BloodMoonEnabled { get; private set; }
+
+    /// <summary>Chance in percent per night, at pressure 0.5.</summary>
+    public static ConfigEntry<float> BloodMoonChance { get; private set; }
+
+    /// <summary>Nights that must pass between two blood moons.</summary>
+    public static ConfigEntry<int> BloodMoonMinNights { get; private set; }
+
+    /// <summary>Multiplier of the beast chance during a blood moon.</summary>
+    public static ConfigEntry<float> BloodMoonBeastChance { get; private set; }
+
+    /// <summary>Beast rolls per player during a blood moon.</summary>
+    public static ConfigEntry<int> BloodMoonBeastRolls { get; private set; }
+
+    /// <summary>Multiplier of all star chances during a blood moon.</summary>
+    public static ConfigEntry<float> BloodMoonStarChance { get; private set; }
+
+    /// <summary>Whether beasts come to the Meadows during a blood moon.</summary>
+    public static ConfigEntry<bool> BloodMoonMeadows { get; private set; }
+
+    /// <summary>Whether the night turns red during a blood moon.</summary>
+    public static ConfigEntry<bool> RedSky { get; private set; }
+
     /// <summary>
     /// Binds the config entries and registers the English texts. Call from the plugin's Awake.
     /// </summary>
@@ -242,7 +267,19 @@ public static class DifficultySettings
             beastEnabled[beast.Key] = WhiteHiltConfig.BindAdminOnly(BeastsSection, beast.Key, true, $"{beast.EnglishName} ({beast.BaseCreature}).");
         }
 
+        BloodMoonEnabled = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "Enabled", true,
+            "A rare night when the moon bleeds: beasts come all night without bad weather, and starred creatures are more common. Needs at least one defeated boss.");
+        BloodMoonChance = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "Chance", 4f, "Chance in percent per night at pressure 0.5; from half of it at pressure 0 to 1.5 times at full pressure.", percent);
+        BloodMoonMinNights = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "MinNightsBetween", 5, "Nights that must pass between two blood moons.", new AcceptableValueRange<int>(0, 100));
+        BloodMoonBeastChance = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "BeastChanceMultiplier", 3f, "Multiplier of the beast chance.", new AcceptableValueRange<float>(1f, 10f));
+        BloodMoonBeastRolls = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "BeastRollsPerNight", 2, "Beast rolls per player during the night.", new AcceptableValueRange<int>(1, 5));
+        BloodMoonStarChance = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "StarChanceMultiplier", 1.5f, "Multiplier of every star chance.", new AcceptableValueRange<float>(1f, 5f));
+        BloodMoonMeadows = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "IncludeMeadows", true, "Black Trolls may come to the Meadows once the Elder is defeated.");
+        RedSky = WhiteHiltConfig.BindAdminOnly(BloodMoonSection, "RedSky", true, "The night light, fog and aurora turn red.");
+
         Translations.AddEnglish("msg_whitehilt_beast_near", "Something big stirs in the dark...");
+        Translations.AddEnglish("msg_whitehilt_bloodmoon_start", "The moon bleeds...");
+        Translations.AddEnglish("msg_whitehilt_bloodmoon_end", "The blood moon fades");
         foreach (BeastDefinition beast in BeastDefinition.All)
         {
             Translations.AddEnglish(beast.NameKey, beast.EnglishName);

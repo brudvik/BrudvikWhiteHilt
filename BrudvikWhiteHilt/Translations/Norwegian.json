@@ -730,6 +730,8 @@
   "msg_whitehilt_anvil_repaired": "Reparerte {0} ting",
   "msg_whitehilt_anvil_missing": "Du trenger {0} {1}",
   "msg_whitehilt_beast_near": "Noe stort rører seg i mørket …",
+  "msg_whitehilt_bloodmoon_start": "Månen blør …",
+  "msg_whitehilt_bloodmoon_end": "Blodmånen blekner",
   "enemy_whitehilt_blacktroll": "Svarttroll",
   "enemy_whitehilt_blackabomination": "Svart styggedom",
   "enemy_whitehilt_blackstonegolem": "Svart steingolem",

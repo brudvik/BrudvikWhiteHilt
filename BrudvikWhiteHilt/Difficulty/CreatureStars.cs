@@ -79,7 +79,8 @@ public static class CreatureStars
             return 1f;
         }
 
-        return 1f + DifficultyState.Pressure * (DifficultySettings.LevelUpChanceMax.Value - 1f);
+        float multiplier = 1f + DifficultyState.Pressure * (DifficultySettings.LevelUpChanceMax.Value - 1f);
+        return DifficultyState.BloodMoon ? multiplier * DifficultySettings.BloodMoonStarChance.Value : multiplier;
     }
 
     /// <summary>
@@ -138,7 +139,7 @@ public static class CreatureStars
         Vector3 position = character.transform.position;
         Heightmap.Biome biome = WorldGenerator.instance != null ? WorldGenerator.instance.GetBiome(position) : Heightmap.Biome.None;
         int maxLevel = Mathf.Min(DifficultyState.UnlockedMaxStars, DifficultySettings.GetBiomeMaxStars(biome)) + 1;
-        float scale = DifficultyState.Pressure;
+        float scale = DifficultyState.Pressure * (DifficultyState.BloodMoon ? DifficultySettings.BloodMoonStarChance.Value : 1f);
         while (level < maxLevel && level < MaxLevel && Random.value < StepChance(level) / 100f * scale)
         {
             level++;

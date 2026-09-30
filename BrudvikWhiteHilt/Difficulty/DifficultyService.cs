@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Difficulty;
 
 /// <summary>
-/// Runs on the <see cref="Game"/> object. On the server it computes the pressure, answers beast
+/// Runs on the <see cref="Game"/> object. On the server it computes the pressure, schedules blood moons, answers beast
 /// requests and sends the state to every client. On a client it publishes the biomes the player has visited, watches for
 /// the dark hour and spawns the beasts the server allows.
 /// </summary>
@@ -23,6 +23,9 @@ public class DifficultyService : MonoBehaviour
     private const float SendInterval = 30f;
     private const float ClientInterval = 2f;
 
+    // During a blood moon a player's second beast roll waits this long after the first.
+    private const float BloodMoonRollGap = 120f;
+
     private static readonly Heightmap.Biome[] landBiomes =
     {
         Heightmap.Biome.Meadows, Heightmap.Biome.BlackForest, Heightmap.Biome.Swamp, Heightmap.Biome.Mountain,
@@ -37,17 +40,23 @@ public class DifficultyService : MonoBehaviour
     private float lastCompute;
     private float nextSend;
     private long serverNight = long.MinValue;
+    private long rolledNight = long.MinValue;
+    private long bloodMoonNight = long.MinValue;
+    private long lastBloodMoonNight = long.MinValue;
+    private bool sentBloodMoon;
 
     private float nextClient;
     private long clientNight = long.MinValue;
     private int clientRequests;
+    private float lastRequest;
+    private bool shownBloodMoon;
     private int publishedBiomes = -1;
 
     /// <summary>
     /// Sends an admin command to the server.
     /// </summary>
-    /// <param name="command">beast.</param>
-    /// <param name="argument">The beast.</param>
+    /// <param name="command">bloodmoon or beast.</param>
+    /// <param name="argument">start/stop, or the beast.</param>
     public static void SendAdmin(string command, string argument)
     {
         if (ZRoutedRpc.instance == null || ZNet.instance == null)
@@ -104,6 +113,7 @@ public class DifficultyService : MonoBehaviour
     private void UpdateServer()
     {
         long night = DifficultyState.NightId();
+        bool isNight = DifficultyState.IsNightHour(DifficultyState.Hours());
         if (night != serverNight)
         {
             serverNight = night;
@@ -111,20 +121,27 @@ public class DifficultyService : MonoBehaviour
             requestsTonight.Clear();
         }
 
-        if (Time.time < nextCompute)
+        if (isNight && rolledNight != night)
+        {
+            rolledNight = night;
+            RollBloodMoon(night);
+        }
+
+        bool bloodMoon = DifficultySettings.Enabled.Value && DifficultySettings.BloodMoonEnabled.Value && bloodMoonNight == night && isNight;
+        if (Time.time < nextCompute && bloodMoon == sentBloodMoon)
         {
             return;
         }
 
         nextCompute = Time.time + ComputeInterval;
-        Compute();
-        if (Time.time >= nextSend)
+        Compute(bloodMoon);
+        if (Time.time >= nextSend || bloodMoon != sentBloodMoon)
         {
             Broadcast();
         }
     }
 
-    private void Compute()
+    private void Compute(bool bloodMoon)
     {
         List<ZDO> players = PlayerZdos();
         int count = players.Count;
@@ -153,7 +170,7 @@ public class DifficultyService : MonoBehaviour
             raw = pressure = forced;
         }
 
-        DifficultyState.Set(pressure, raw, biomes, count, day, gear);
+        DifficultyState.Set(pressure, raw, bloodMoon, biomes, count, day, gear);
     }
 
     private static float Smooth(float current, float target, float elapsed)
@@ -201,9 +218,36 @@ public class DifficultyService : MonoBehaviour
         return players;
     }
 
+    private void RollBloodMoon(long night)
+    {
+        if (!DifficultySettings.Enabled.Value || !DifficultySettings.BloodMoonEnabled.Value || !AnyBossDefeated())
+        {
+            return;
+        }
+
+        if (lastBloodMoonNight != long.MinValue && night - lastBloodMoonNight <= DifficultySettings.BloodMoonMinNights.Value)
+        {
+            return;
+        }
+
+        float chance = DifficultySettings.BloodMoonChance.Value / 100f * (0.5f + DifficultyState.Pressure);
+        if (UnityEngine.Random.value < chance)
+        {
+            bloodMoonNight = night;
+            lastBloodMoonNight = night;
+            Jotunn.Logger.LogInfo($"Difficulty: a blood moon rises (night {night})");
+        }
+    }
+
+    private static bool AnyBossDefeated()
+    {
+        return ZoneSystem.instance != null && BeastDefinition.BossKeys.Any(ZoneSystem.instance.GetGlobalKey);
+    }
+
     private void Broadcast()
     {
         nextSend = Time.time + SendInterval;
+        sentBloodMoon = DifficultyState.BloodMoon;
         ZPackage package = DifficultyState.Write();
         foreach (ZNetPeer peer in ZNet.instance.GetPeers())
         {
@@ -221,6 +265,7 @@ public class DifficultyService : MonoBehaviour
 
         nextClient = Time.time + ClientInterval;
         PublishBiomes(player);
+        AnnounceBloodMoon(player);
         WatchForBeast(player);
     }
 
@@ -236,6 +281,18 @@ public class DifficultyService : MonoBehaviour
         player.m_nview.GetZDO().Set(BiomesKey, Math.Max(1, count));
     }
 
+    private void AnnounceBloodMoon(Player player)
+    {
+        bool up = DifficultyState.BloodMoon;
+        if (up == shownBloodMoon)
+        {
+            return;
+        }
+
+        shownBloodMoon = up;
+        player.Message(MessageHud.MessageType.Center, up ? "$msg_whitehilt_bloodmoon_start" : "$msg_whitehilt_bloodmoon_end");
+    }
+
     private void WatchForBeast(Player player)
     {
         if (!DifficultySettings.Enabled.Value || !DifficultySettings.BeastsEnabled.Value || player.IsDead() || player.InInterior() || player.IsTeleporting())
@@ -243,7 +300,9 @@ public class DifficultyService : MonoBehaviour
             return;
         }
 
-        if (!InWindow(DifficultyState.Hours()))
+        bool bloodMoon = DifficultyState.BloodMoon;
+        float hours = DifficultyState.Hours();
+        if (bloodMoon ? !DifficultyState.IsNightHour(hours) : !InWindow(hours))
         {
             return;
         }
@@ -255,21 +314,23 @@ public class DifficultyService : MonoBehaviour
             clientRequests = 0;
         }
 
-        if (clientRequests >= 1)
+        int allowed = bloodMoon ? DifficultySettings.BloodMoonBeastRolls.Value : 1;
+        if (clientRequests >= allowed || (clientRequests > 0 && Time.time - lastRequest < BloodMoonRollGap))
         {
             return;
         }
 
         Heightmap.Biome biome = player.GetCurrentBiome();
         bool atSea = Ship.GetLocalShip() != null;
-        if (BeastDefinition.Resolve(biome, atSea) == null
-            || !DifficultySettings.IsBadWeather(EnvMan.instance.GetCurrentEnvironment())
+        if (BeastDefinition.Resolve(biome, atSea, bloodMoon) == null
+            || (!bloodMoon && !DifficultySettings.IsBadWeather(EnvMan.instance.GetCurrentEnvironment()))
             || EffectArea.IsPointInsideArea(player.transform.position, EffectArea.Type.PlayerBase) != null)
         {
             return;
         }
 
         clientRequests++;
+        lastRequest = Time.time;
         ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), BeastRequestRpc, player.transform.position, (int)biome, atSea);
     }
 
@@ -295,20 +356,22 @@ public class DifficultyService : MonoBehaviour
             return;
         }
 
+        bool bloodMoon = DifficultyState.BloodMoon;
         requestsTonight.TryGetValue(sender, out int made);
-        if (made >= 1)
+        if (made >= (bloodMoon ? DifficultySettings.BloodMoonBeastRolls.Value : 1))
         {
             return;
         }
 
         requestsTonight[sender] = made + 1;
-        BeastDefinition beast = BeastDefinition.Resolve((Heightmap.Biome)biome, atSea);
+        BeastDefinition beast = BeastDefinition.Resolve((Heightmap.Biome)biome, atSea, bloodMoon);
         if (!CanCome(beast) || beastsTonight.Any(other => Vector3.Distance(other, position) < DifficultySettings.BeastSpacing.Value))
         {
             return;
         }
 
-        float chance = DifficultySettings.BeastChance.Value / 100f * (0.5f + DifficultyState.Pressure);
+        float chance = DifficultySettings.BeastChance.Value / 100f * (0.5f + DifficultyState.Pressure)
+            * (bloodMoon ? DifficultySettings.BloodMoonBeastChance.Value : 1f);
         if (UnityEngine.Random.value >= Mathf.Min(chance, 0.95f))
         {
             return;
@@ -349,6 +412,9 @@ public class DifficultyService : MonoBehaviour
 
         switch (command)
         {
+            case "bloodmoon":
+                SetBloodMoon(sender, !string.Equals(argument, "stop", StringComparison.OrdinalIgnoreCase));
+                break;
             case "beast":
                 BeastDefinition beast = BeastDefinition.Find(argument);
                 if (beast == null)
@@ -360,6 +426,25 @@ public class DifficultyService : MonoBehaviour
                 ZRoutedRpc.instance.InvokeRoutedRPC(sender, BeastSpawnRpc, beast.Key);
                 break;
         }
+    }
+
+    private void SetBloodMoon(long sender, bool start)
+    {
+        long night = DifficultyState.NightId();
+        bool isNight = DifficultyState.IsNightHour(DifficultyState.Hours());
+        if (start)
+        {
+            bloodMoonNight = isNight ? night : night + 1;
+            lastBloodMoonNight = bloodMoonNight;
+            Reply(sender, isNight ? "The blood moon rises." : "The blood moon rises at nightfall.");
+        }
+        else
+        {
+            bloodMoonNight = long.MinValue;
+            Reply(sender, "The blood moon is stopped.");
+        }
+
+        nextCompute = 0f;
     }
 
     private static bool IsAdmin(long sender)

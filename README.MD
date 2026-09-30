@@ -500,7 +500,7 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 
 ---
 
-### 🌑 DIFFICULTY & BEASTS
+### 🌑 DIFFICULTY, BEASTS & BLOOD MOON
 
 The world grows more dangerous as you progress. The server combines four things into a **pressure** from 0 to 1 and sends it to every player. The value changes slowly, so it does not jump when someone logs in or out:
 
@@ -539,7 +539,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 
 | Beast | Biome | Needs | Health (base ×) |
 |-------|-------|-------|-----------------|
-| **Black Troll** | Black Forest | The Elder | 600 × 6.75 |
+| **Black Troll** | Black Forest (and the Meadows in a blood moon) | The Elder | 600 × 6.75 |
 | **Black Abomination** | Swamp | Bonemass | 800 × 6.75 |
 | **Black Stone Golem** | Mountain | Moder | 800 × 6.75 |
 | **Black Fuling Berserker** | Plains | Yagluth | 800 × 6.75 |
@@ -548,9 +548,17 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 | **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |
 | **Black Bonemaw** | Ashlands sea, on a ship | Fader | 1100 × 6.75 |
 
-**Console commands:** `whitehilt_difficulty` shows the pressure and what it is made of. Admins can also use `whitehilt_beast [beast or biome]`.
+**Blood moon**
 
-Everything is set in the `[Difficulty]`, `[Difficulty.Stars]`, `[Difficulty.Size]` and `[Difficulty.Beasts]` sections. `Difficulty.OverridePressure` fixes the pressure for testing. The star part turns itself off while Creature Level and Loot Control is installed.
+A rare night, at most one in every 6 nights and only after a boss is defeated. The chance is 2% to 6% per night, depending on the pressure.
+- The moonlight, fog and aurora turn red.
+- Beasts come all night, and bad weather is not needed.
+- The chance of a beast is three times as high, and each player gets up to two rolls.
+- Every star chance is 1.5× higher.
+
+**Console commands:** `whitehilt_difficulty` shows the pressure and what it is made of. Admins can also use `whitehilt_bloodmoon start|stop` and `whitehilt_beast [beast or biome]`.
+
+Everything is set in the `[Difficulty]`, `[Difficulty.Stars]`, `[Difficulty.Size]`, `[Difficulty.Beasts]` and `[Difficulty.BloodMoon]` sections. `Difficulty.OverridePressure` fixes the pressure for testing. The star part turns itself off while Creature Level and Loot Control is installed.
 
 If the mod is removed, creatures with 3 to 5 stars that are still in the world use the vanilla formulas (up to 6× health and 32× loot). Beasts sink into the ground at dawn, so few are left.
 
@@ -605,7 +613,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Dynamic difficulty: players online, days, biomes visited and White Hilt gear worn add up to a pressure. The pressure raises star chances and gives creatures more health and damage
 - Creatures with up to 5 stars. How many stars can appear depends on the biomes visited and has a limit per biome. Stars above 2 add less strength and loot than vanilla stars, and the creatures grow
 - Beasts of the dark hour: black 5 star creatures that come between 00:00 and 02:00 in bad weather. There is one per biome and two at sea, and each drops its own trophy
-- Console commands `whitehilt_difficulty` and `whitehilt_beast`
+- Blood moon: a rare red night when beasts come all night and stars are more common
+- Console commands `whitehilt_difficulty`, `whitehilt_bloodmoon` and `whitehilt_beast`
 
 ### v0.9.0 - 2026-09-30
 

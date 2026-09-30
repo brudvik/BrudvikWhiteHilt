@@ -25,7 +25,7 @@ public sealed class BeastDefinition
     };
 
     /// <summary>
-    /// Global keys of the defeated bosses.
+    /// Global keys of the defeated bosses; any of them allows a blood moon.
     /// </summary>
     public static readonly string[] BossKeys =
     {
@@ -81,12 +81,18 @@ public sealed class BeastDefinition
     /// </summary>
     /// <param name="biome">Biome the player is in.</param>
     /// <param name="atSea">Whether the player is on a ship.</param>
+    /// <param name="bloodMoon">Whether a blood moon is up; then the Black Troll also comes to the Meadows.</param>
     /// <returns>The beast, or null if none comes there.</returns>
-    public static BeastDefinition Resolve(Heightmap.Biome biome, bool atSea)
+    public static BeastDefinition Resolve(Heightmap.Biome biome, bool atSea, bool bloodMoon)
     {
         if (atSea)
         {
             return All.FirstOrDefault(beast => beast.Sea && beast.Biome == (biome == Heightmap.Biome.AshLands ? Heightmap.Biome.AshLands : Heightmap.Biome.Ocean));
+        }
+
+        if (biome == Heightmap.Biome.Meadows)
+        {
+            return bloodMoon && DifficultySettings.BloodMoonMeadows.Value ? All[0] : null;
         }
 
         return All.FirstOrDefault(beast => !beast.Sea && beast.Biome == biome);
