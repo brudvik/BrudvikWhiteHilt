@@ -700,6 +700,17 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.14.0 - 2026-09-30
+
+#### Added
+- Planting: the cultivator plants vanilla berry bushes, mushrooms, flowers, debris (branch, stone, flint) and decorative flora (small trees, bushes, shrubs, vines, ferns), unlocked by having had one of each ingredient; growth and yields stay vanilla. Replaces PlantEverything (without its picked models)
+- Saplings: ancient (swamp tree) and autumn birch, plus Yggdrasil and ashwood that are off by default
+- Cultivator removes berry bushes, mushrooms, flowers and debris, picking them first
+- Growth markers of the White Hilt cultivator also show when picked berry bushes, mushrooms and flowers grow back
+
+#### Changed
+- Group tools no longer select wild berry bushes, mushrooms, flowers or debris
+
 ### v0.13.0 - 2026-09-30
 
 #### Added
