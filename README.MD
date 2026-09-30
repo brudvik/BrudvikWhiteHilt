@@ -320,6 +320,7 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 - **Extra row**: the inventory has one more row (8 × 5). Rows bought from a trader come on top of it, and so does the row from a **Belt Pouch** (see Accessories). The server sets how many extra rows everyone gets (`Backpack` section, `ExtraRows`, 0–2, default 1). When the setting is lowered, what lies in the rows that disappear is dropped at your feet.
 - **Travel bar and build bar**: two hotbars for keys 1–8. The one not in use lies under the inventory grid, where you fill it like any row. **9** switches between them. Taking out a hammer, hoe or cultivator switches to the build bar, and putting it away switches back to the travel bar (`AutoSwitchHotbar`). Next to the hotbar a label shows which bar is active (`ShowHotbarLabel`); the key is `Backpack.Keys` → `SwitchHotbar`.
+- **Ammo and casts on the hotbar**: under a bow, crossbow or fishing rod the arrows, bolts or bait it will use are shown with how many you have left; the count turns red at 20 or fewer (`LowAmmoWarning`, 0 = off) and shows a red 0 when you are out. Under a staff the number of casts your current eitr allows is shown in blue. Turn them off with `ShowHotbarAmmo` and `ShowHotbarCasts`.
 - **Equipment slots**: a panel to the right of the inventory has slots for helmet, chest, legs, cape and trinket. What lies in a slot is worn: drag an item into its slot, or right-click it in the inventory, and it moves there and is put on. Right-click it in the slot or drag it out to take it off. Your armor no longer takes room in the grid. The panel's place can be moved with `PanelOffsetX` and `PanelOffsetY`.
 - **Food and potion slots**: three slots for food and two for potions and meads under the equipment. **Left Alt + 1**, **2** and **3** eat from the food slots, **Left Alt + 4** and **5** drink from the potion slots, without opening the inventory (the hotbar is not used while Alt is held). The keys are `EatFood1`–`EatFood3` and `DrinkPotion1`–`DrinkPotion2` in `Backpack.Keys`, and are shown on the slots. Under each slot the health (red), stamina (yellow) and eitr (blue) it gives is shown, for a potion what it restores, and under the row the total of all five.
 - **Accessory slots**: five slots for belts, Wisplight, Wishbone and the like, all worn at once. The first is the game's own slot and shows on your character; the other four give their effects, stats and weight without showing. Each kind can be worn only once, so two Megingjords do not stack. Right-clicking an accessory in the inventory puts it in the first free slot. The four extra slots also hold the **Home Stone** (right-click it there to go home) and the **Pathfinder's Amulet**, which then widens the uncovered map as when worn as trinket; its adrenaline and Raven Sight need the trinket slot.
@@ -718,6 +719,11 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.16.0 - 2026-09-30
+
+#### Added
+- Hotbar: under a bow, crossbow or fishing rod the arrows, bolts or bait it will use are shown with how many are left, red at 20 or fewer (`ShowHotbarAmmo`, `LowAmmoWarning`). Under a staff, how many casts your current eitr allows (`ShowHotbarCasts`)
 
 ### v0.15.3 - 2026-09-30
 

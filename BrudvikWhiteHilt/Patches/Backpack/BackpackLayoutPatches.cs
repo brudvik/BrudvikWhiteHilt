@@ -53,6 +53,18 @@ public static class BackpackLayoutPatches
     }
 
     /// <summary>
+    /// Shows ammo and staff casts under the hotbar slots after vanilla has drawn them.
+    /// </summary>
+    /// <param name="__instance">The hotbar.</param>
+    /// <param name="player">The local player.</param>
+    [HarmonyPatch(typeof(HotkeyBar), nameof(HotkeyBar.UpdateIcons))]
+    [HarmonyPostfix]
+    public static void HotkeyBarUpdateIcons(HotkeyBar __instance, Player player)
+    {
+        HotbarSupply.Update(__instance, player);
+    }
+
+    /// <summary>
     /// Lays out the player's grid after vanilla has filled it.
     /// </summary>
     /// <param name="__instance">The grid.</param>

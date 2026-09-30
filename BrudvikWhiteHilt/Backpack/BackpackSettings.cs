@@ -22,6 +22,15 @@ public static class BackpackSettings
     /// <summary>Whether the name of the active bar is shown next to the hotbar.</summary>
     public static ConfigEntry<bool> ShowHotbarLabel { get; private set; }
 
+    /// <summary>Whether bows, crossbows and fishing rods on the hotbar show their ammo and how much is left.</summary>
+    public static ConfigEntry<bool> ShowHotbarAmmo { get; private set; }
+
+    /// <summary>The ammo count turns red at or below this; 0 for never.</summary>
+    public static ConfigEntry<int> LowAmmoWarning { get; private set; }
+
+    /// <summary>Whether staffs on the hotbar show how many casts the current eitr allows.</summary>
+    public static ConfigEntry<bool> ShowHotbarCasts { get; private set; }
+
     /// <summary>Switches between the travel bar and the build bar.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyHotbar { get; private set; }
 
@@ -60,6 +69,11 @@ public static class BackpackSettings
         AutoSwitchHotbar = WhiteHiltConfig.BindLocal(Section, "AutoSwitchHotbar", true,
             "Switch to the build bar when you take out a hammer, hoe or cultivator, and back to the travel bar when you put it away.");
         ShowHotbarLabel = WhiteHiltConfig.BindLocal(Section, "ShowHotbarLabel", true, "Show which bar is active next to the hotbar.");
+        ShowHotbarAmmo = WhiteHiltConfig.BindLocal(Section, "ShowHotbarAmmo", true,
+            "Under a bow, crossbow or fishing rod on the hotbar, show the arrows, bolts or bait it will use and how many are left.");
+        LowAmmoWarning = WhiteHiltConfig.BindLocal(Section, "LowAmmoWarning", 20, "The ammo count turns red at or below this many. 0 turns the warning off.");
+        ShowHotbarCasts = WhiteHiltConfig.BindLocal(Section, "ShowHotbarCasts", true,
+            "Under a staff on the hotbar, show how many casts your current eitr allows.");
         PanelOffsetX = WhiteHiltConfig.BindLocal(Section, "PanelOffsetX", 12f, "How far right of the inventory the equipment panel sits, in pixels.");
         PanelOffsetY = WhiteHiltConfig.BindLocal(Section, "PanelOffsetY", 0f, "How far up from the top of the inventory the equipment panel sits, in pixels (negative is down).");
         KeyHotbar = WhiteHiltConfig.BindLocal(KeySection, "SwitchHotbar", new KeyboardShortcut(KeyCode.Alpha9),
