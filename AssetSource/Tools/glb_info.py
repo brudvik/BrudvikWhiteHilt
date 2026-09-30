@@ -1,5 +1,6 @@
 """Shows what is in a glb: author and license, each mesh part with its material and its bounds as the model stands
-(node transforms applied, glTF axes: y up), materials, textures and totals.
+(node transforms applied, glTF axes: y up), materials, textures, skins, animations and totals. For a rigged model the
+part bounds are the bind pose; use preview_animations.py to see it posed.
 
 Usage:
   python glb_info.py <file.glb> [...]
@@ -71,6 +72,11 @@ def summary(path):
         except Exception:
             width = height = "?"
         print(f"  image {index} {image.get('mimeType')} {width}x{height} {size:,} bytes")
+    for index, skin in enumerate(gltf.get("skins", [])):
+        print(f"  skin {index} {len(skin['joints'])} joints")
+    for animation in gltf.get("animations", []):
+        length = max((gltf["accessors"][sampler["input"]].get("max", [0])[0] for sampler in animation["samplers"]), default=0)
+        print(f"  animation {animation.get('name', '')!r}: {len(animation['channels'])} channels, {length:.2f} s")
 
 
 def profile(path, axis, slices):

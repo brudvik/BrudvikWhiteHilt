@@ -29,7 +29,10 @@ public static class DyeCatalog
         "Blueberries", "Carrot", "MushroomYellow", "Thistle", "TrollHide", "GreydwarfEye", "QueensJam", "CarrotSoup",
 
         // Swamp
-        "Turnip", "Bloodbag", "Guck", "Ooze", "Entrails", "WitheredBone", "Root", "BlackSoup", "TurnipStew"
+        "Turnip", "Bloodbag", "Guck", "Ooze", "Entrails", "WitheredBone", "Root", "BlackSoup", "TurnipStew",
+
+        // Ocean, once Bonemass is slain
+        Kraken.KrakenRegistry.InkName
     };
 
     private static List<Dye> dyes;

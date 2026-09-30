@@ -2,11 +2,13 @@
 
 Prints the hierarchy with active flags, local position, rotation (Euler) and scale, mesh names and bounds, materials
 and components (MonoBehaviours with their script class, or their first fields when the script lives in another file).
-With --materials, also each material's shader, keywords, textures and colours. With --hash, Valheim's
-GetStableHashCode of names (ZDO keys, prefab hashes in logs).
+With --materials, also each material's shader, keywords, textures and colours. With --values, the field values of every
+MonoBehaviour (numbers, flags, names of referenced prefabs; an item's shared data and attack), and each Animator's
+controller with its states, parameters and clips. With --hash, Valheim's GetStableHashCode of names (ZDO keys, prefab
+hashes in logs).
 
 Usage:
-  python vanilla_prefab.py <prefab> [...] [--bundle <file name>] [--materials] [--all-bundles]
+  python vanilla_prefab.py <prefab> [...] [--bundle <file name>] [--materials] [--values] [--all-bundles]
   python vanilla_prefab.py --hash <name> [...]
 Item prefabs live in SoftRef bundle c4210710, which is searched first; --all-bundles also searches the rest (slow,
 a minute or two). Found bundles are cached in BrudvikWhiteHiltUnity/Preview/prefab_bundles.json.
@@ -119,7 +121,7 @@ def describe_material(pointer_owner, pointer, depth):
     print(f"{indent}  colours={colours}")
 
 
-def walk(transform, depth, materials):
+def walk(transform, depth, materials, values=False):
     game_object = transform.m_GameObject.read()
     notes = []
     renderers = []
@@ -165,8 +167,63 @@ def walk(transform, depth, materials):
         for owner, pointers in renderers:
             for pointer in pointers:
                 describe_material(owner, pointer, depth)
+    if values:
+        describe_values(game_object, depth)
     for child in transform.m_Children:
-        walk(child.read(), depth + 1, materials)
+        walk(child.read(), depth + 1, materials, values)
+
+
+def short(owner, value, depth=0):
+    """A field value made readable: references become names, zero damage and long lists are left out."""
+    if isinstance(value, dict) and "m_PathID" in value:
+        if value["m_PathID"] == 0:
+            return None
+        try:
+            target = follow(owner, value)
+            return target.read().m_Name if target else "?"
+        except Exception:
+            return "?"
+    if isinstance(value, dict):
+        if depth > 1:
+            return "{...}"
+        shown = {key: short(owner, item, depth + 1) for key, item in value.items() if item not in (0, 0.0, "", None, [])}
+        return shown or None
+    if isinstance(value, list):
+        if len(value) > 12 or depth > 1:
+            return f"[{len(value)} items]"
+        return [short(owner, item, depth + 1) for item in value]
+    if isinstance(value, float):
+        return round(value, 3)
+    return value
+
+
+def describe_values(game_object, depth):
+    indent = "  " * depth + "    "
+    for component in game_object.m_Components:
+        pointer = component.component if hasattr(component, "component") else component
+        owner = pointer.assetsfile if hasattr(pointer, "assetsfile") else pointer.assets_file
+        try:
+            if pointer.type.name == "MonoBehaviour":
+                tree = pointer.read_typetree()
+                if "m_itemData" in tree:
+                    shared = tree["m_itemData"]["m_shared"]
+                    print(f"{indent}item {short(owner, {k: v for k, v in shared.items() if k != 'm_attack' and k != 'm_secondaryAttack'})}")
+                    print(f"{indent}  attack {short(owner, shared.get('m_attack', {}))}")
+                    continue
+                fields = {key: short(owner, value) for key, value in tree.items() if key not in SKIP_FIELDS and not key.endswith("Effects")}
+                print(f"{indent}values {{{', '.join(f'{k}: {v}' for k, v in fields.items() if v not in (None, 0, 0.0, '', []))}}}")
+            elif pointer.type.name == "Animator":
+                tree = pointer.read_typetree()
+                controller = follow(owner, tree["m_Controller"])
+                if controller is None:
+                    continue
+                data = controller.read_typetree()
+                names = sorted({name for _, name in data.get("m_TOS", []) if name and "->" not in name and "." not in name})
+                clips = [clip.read().m_Name for clip in (follow(controller.assets_file, c) for c in data.get("m_AnimationClips", [])) if clip]
+                print(f"{indent}animator {data.get('m_Name')}: states and parameters {names}")
+                print(f"{indent}  clips {clips}")
+        except Exception as error:
+            print(f"{indent}{pointer.type.name}: {error}")
 
 
 def find_root(path, name):
@@ -207,6 +264,7 @@ def main():
     parser.add_argument("names", nargs="*")
     parser.add_argument("--bundle")
     parser.add_argument("--materials", action="store_true")
+    parser.add_argument("--values", action="store_true")
     parser.add_argument("--all-bundles", action="store_true")
     parser.add_argument("--hash", action="store_true")
     args = parser.parse_args()
@@ -225,7 +283,7 @@ def main():
                 continue
             if root is not None:
                 print(f"===== {name} in {path.name}")
-                walk(root, 0, args.materials)
+                walk(root, 0, args.materials, args.values)
                 known[name] = str(path)
                 break
         else:

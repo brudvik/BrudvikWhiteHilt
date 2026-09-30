@@ -1,0 +1,24 @@
+{
+  "source": "Lurker - Rigged and Animated by Greeble3d, CC BY 4.0, https://sketchfab.com/3d-models/28b3e1a216904de7ad212368fb9d8f59",
+  "drop": ["Object_15", "Object_19"],
+  "pose": { "take": "Armature|Idle_1", "frame": 0 },
+  "eyes": {
+    "bone": "Forehead_02",
+    "radius": 0.32,
+    "positions": [[1.0, -2.62, 7.6], [-1.0, -2.62, 7.6]],
+    "colour": [1.0, 0.35, 0.05],
+    "emission": 4.0
+  },
+  "clips": [
+    { "name": "idle", "take": "Armature|Idle_1", "loop": true },
+    { "name": "idle2", "take": "Armature|Idle_2", "loop": true },
+    { "name": "attack", "take": "Armature|Attack_Heavy", "loop": false },
+    { "name": "die", "take": "Armature|Die", "loop": false }
+  ],
+  "front_bone": "Front_04",
+  "controller": {
+    "idle": "idle",
+    "attacks": [ { "trigger": "kraken_slam", "clip": "attack", "hit": 0.62 } ],
+    "always_animate": true
+  }
+}

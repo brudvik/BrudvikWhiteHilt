@@ -113,6 +113,12 @@ Buy a puppy from the Bog Witch and raise it into a companion that follows, fight
 
 A world that grows harder as you progress: up to 5 stars, black beasts in the dark hour and the rare blood moon.
 
+### 🐙 [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken" height="120">
+
+Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your ship with its tentacles.
+
 ### ⚙️ [Progression (config)](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
 Full or linear mode that unlocks White Hilt gear biome by biome, plus the foraging and food settings.
@@ -123,7 +129,7 @@ Please notice that it won't be possible to compile this `mod` out of the box. Ma
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
 
-The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle.
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
 
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
@@ -188,6 +194,8 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Paint Bench palette: ["Color palette"](https://sketchfab.com/3d-models/color-palette-82e2019ab9754e208dadc9f0a23e7161) by [Alberto](https://sketchfab.com/onzoalberto), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, the paint blobs and board coloured, converted to OBJ, rescaled and made double-sided for Valheim.
 - Paint Pot and Paint Bench bucket: ["Stylized Low Poly Wooden Bucket | Game Ready"](https://sketchfab.com/3d-models/stylized-low-poly-wooden-bucket-game-ready-b55447c9da0e462b95dbf9dfbe97f061) by [Null__](https://sketchfab.com/Nullqw), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the water coloured as paint, converted to OBJ, rescaled and made double-sided for Valheim.
 - Paint Bench brushes: ["Brush in a cup"](https://sketchfab.com/3d-models/brush-in-a-cup-3518d3fbb5634c3eac5d210ed1c4b558) by [Spiketus](https://sketchfab.com/Spiketus), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the saucer removed, converted to OBJ, rescaled and made double-sided for Valheim.
+- Kraken model: ["Lurker - Rigged and Animated"](https://sketchfab.com/3d-models/28b3e1a216904de7ad212368fb9d8f59) by [Greeble3d](https://sketchfab.com/Greeble3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Two parts with broken skinning removed, glowing eyes added, merged into one mesh, converted to FBX with four of its animations and rescaled for Valheim.
+- Octopus model: ["Octopus"](https://sketchfab.com/3d-models/f9c0186d5ac54bcfada2b6113de40ede) by [rkuhlf](https://sketchfab.com/rkuhlf), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with its animations and rescaled for Valheim.
 
 ## Known issues
 

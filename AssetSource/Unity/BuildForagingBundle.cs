@@ -6,7 +6,8 @@ using UnityEngine;
 
 /// <summary>
 /// Builds the asset bundle with the meshes, textures and sounds used by White Hilt items.
-/// Every <c>*.obj</c>, <c>*_albedo</c> and <c>*_emission</c> texture (.png / .jpg) and <c>*.wav</c> in Assets/Foraging is included.
+/// Every <c>*.obj</c>, <c>*_albedo</c> and <c>*_emission</c> texture (.png / .jpg) and <c>*.wav</c> in Assets/Foraging is included,
+/// and the animated creature prefabs from Assets/Creatures (see <see cref="BuildCreatures"/>).
 /// Run from the command line with <c>-executeMethod BuildForagingBundle.Build</c>.
 /// </summary>
 public static class BuildForagingBundle
@@ -50,13 +51,15 @@ public static class BuildForagingBundle
             ConfigureSound(sound);
         }
 
+        string[] creatures = BuildCreatures.Prepare();
+
         string outputPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "AssetBundles");
         Directory.CreateDirectory(outputPath);
 
         AssetBundleBuild build = new()
         {
             assetBundleName = BundleName,
-            assetNames = models.Concat(textures).Concat(sounds).ToArray()
+            assetNames = models.Concat(textures).Concat(sounds).Concat(creatures).ToArray()
         };
 
         AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
@@ -87,7 +90,7 @@ public static class BuildForagingBundle
             Debug.Log($"[WhiteHilt] Sound '{clip.name}': {clip.length:0.00} s");
         }
 
-        Debug.Log($"[WhiteHilt] Built {BundleName} with {models.Length} models, {textures.Length} textures and {sounds.Length} sounds");
+        Debug.Log($"[WhiteHilt] Built {BundleName} with {models.Length} models, {textures.Length} textures, {sounds.Length} sounds and {creatures.Length} creatures");
     }
 
     private static string[] FindAssets(string pattern)

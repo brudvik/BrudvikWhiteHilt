@@ -1,6 +1,6 @@
 ---
 name: valheim-custom-model
-description: 'Add a free 3D model (glTF/.glb from Sketchfab, Poly Haven, Quaternius, etc.) to the BrudvikWhiteHilt Valheim mod. Use when: adding a new model, mesh, texture or asset bundle; replacing the look of a cloned vanilla item, pickable, plant, food or piece; searching for free models; checking model licenses; rebuilding whitehilt_foraging. Covers license check, glb conversion, Unity 6 asset bundle build, runtime mesh swap, icons, dedicated-server safety and in-game testing.'
+description: 'Add a free 3D model (glTF/.glb from Sketchfab, Poly Haven, Quaternius, etc.) to the BrudvikWhiteHilt Valheim mod. Use when: adding a new model, mesh, texture or asset bundle; adding an animated creature or monster from a rigged model (Blender + Unity animator); replacing the look of a cloned vanilla item, pickable, plant, food or piece; searching for free models; checking model licenses; rebuilding whitehilt_foraging. Covers license check, glb conversion, Unity 6 asset bundle build, runtime mesh swap, icons, dedicated-server safety and in-game testing.'
 argument-hint: 'Model file or what the model should be used for'
 ---
 
@@ -15,7 +15,7 @@ No custom shaders or prefabs are shipped. The bundle only contains meshes and te
 - If a vanilla model with a tint (`VisualHelper.Tint`) or a hue shift (`VisualHelper.Recolor`) is good enough, use that instead. It needs no asset work.
 
 ## Tools (AssetSource/Tools, run with the repo's .venv python; usage at the top of each file)
-- `find_models.py "<term>" [...]`: Sketchfab search limited to CC0/CC BY and a face budget, numbered contact sheet in `%TEMP%\wh_models\sheet.png`; `--uids <uid> ...` sheets chosen models with descriptions.
+- `find_models.py "<term>" [...]`: Sketchfab search limited to CC0/CC BY and a face budget, numbered contact sheet in `%TEMP%\wh_models\sheet.png`; `--uids <uid> ...` sheets chosen models with descriptions; `--animated` only rigged, animated ones.
 - `glb_info.py <file.glb>`: author/license/source, every part with its material and bounds as the model stands, materials, image sizes. `--profile <axis>` slices it; `--sides out.png --right x,y,z --up x,y,z` draws both sides with flat material colours (front vs back).
 - `glb_edit.py <file.glb> --colour <material>=r,g,b --drop <node> --keep <node> --max-texture 1024 [--out]`: fix a download before converting (in place without `--out`).
 - `vanilla_prefab.py <prefab> [--materials] [--all-bundles]`: a vanilla prefab's hierarchy with local position/rotation/scale, mesh bounds, colliders, materials (shader, textures, colours); `--hash <name>` gives Valheim's stable hash.
@@ -71,6 +71,14 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 - A mesh the mod deforms at runtime (the bow flex) must be in `BuildForagingBundle.CombinedModels` so it stays readable.
 - `split` in weapon.json writes parts (by material) as their own OBJ with the same texture, optionally bent into a V (`pull`, `span`). The crossbow uses it for its string, straight and drawn back; `WhiteHiltCrossbow.OnModelApplied` puts them on the Unloaded/Loaded objects that the vanilla `WeaponLoadState` toggles.
 - Vanilla MeshColliders under attach are replaced by a BoxCollider (`ReplaceWeaponMesh`); a multi-material renderer (Battleaxe) gets one material.
+
+## Animated creatures (rigged glTF, first used for the Kraken and the octopus in 0.20.0)
+- Find: `find_models.py "<term>" --animated` (animation count per model). Check the download: `glb_info.py` lists skins and animations; `preview_animations.py <file.glb>` renders every animation with Blender and prints each part's posed bounds. A part hundreds of metres away has broken skinning: drop it (the Lurker's eyes and upper beak were).
+- Source: `AssetSource/Creatures/<name>.glb` + `<name>.creature.json` (`drop`; `pose` + `eyes` = glowing spheres skinned to a bone, positions in Blender world space at that pose; `clips` = actions to keep with their new names and loop flags; `front_bone` turns the model to face +z; `controller`: `idle`, optional `move` + `move_speed` (1D blend on forward_speed), `attacks` [{trigger, clip, hit = normalised time of the OnAttackTrigger event}], `always_animate`). Needs Blender (found under Program Files).
+- Build: `build_foraging_bundle.ps1` runs `Tools/export_creature.py` in Blender (one joined mesh, textures as `<name>_<material>_albedo/_normal.png`, `<name>.materials.json`, FBX), then Unity's `BuildCreatures.cs` makes `<name>_visual.prefab` (model under an empty root, Animator with Valheim's parameter names, attack states tagged `attack`, other clips as states for `Animator.Play`, Standard materials). The log prints how many curves of each clip bind and the idle bounds. `-UnityOnly` rebuilds without converting again.
+- Check: `AssetSource\Preview\render_creatures.ps1` renders `<name>_anim.png` (every state, front = +z faces the camera) and a transparent 3/4 `<name>.png` for the docs. Unity does not update skinning between renders in batch mode, so the preview bakes each pose with `BakeMesh`.
+- Use: `CreatureVisual.Attach(parent, "<name>", CreatureVisual.TemplateOf(vanillaCreature), position, rotation, scale)` moves the textures onto copies of a vanilla creature material (skipped on a dedicated server). On a cloned creature: empty `Visual`, attach, add `CharacterAnimEvent` on the Animator object (Jotunn's `CustomCreature` needs both), and give the weapon `m_attackAnimation` = the trigger with `m_attackChainLevels = 1` and `m_attackRandomAnimations = 0` (else a number is appended). See `Kraken/KrakenRegistry.cs`.
+- Vanilla values: `vanilla_prefab.py <prefab> --values` prints component fields (an item's shared data and attack) and animator states/clips; `vanilla_environments.py` prints the weather table (fog, wind, weights per biome).
 
 ## Pitfalls (all hit once already)
 - **Parts with only a base colour and the same colour share one atlas tile**, so a `paint.json` rule per material paints them all (the palette's seven paint blobs, all grey 0.8 in the glb, came out one colour). Set distinct colours in the glb with `glb_edit.py --colour <material>=r,g,b` instead. A part you do not want at all is dropped with `glb_edit.py --drop <node>`. That is cleaner than a crop box when the part touches the rest.

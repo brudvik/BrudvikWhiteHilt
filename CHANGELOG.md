@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.20.0 - 2026-10-01
+
+### Added
+- Kraken: on a calm, foggy night at sea the Kraken rises beside your ship, raises tentacles around it and holds it fast until it is slain; it drops Kraken Tentacle, Kraken Ink and the Kraken Trophy. Damage to the crew and to the ship can each be scaled or turned off in the config; `whitehilt_kraken` shows the conditions and `whitehilt_kraken summon` calls it (admins)
+- Octopus: an animated octopus swims in the ocean and can be caught with a fishing rod
+- Stone Pot dishes Octopus Stew and Kraken Feast; Kraken Ink is a black dye at the Paint Bench
+- Animated creatures in the asset pipeline: rigged glTF models are converted with Blender and built into Unity prefabs with an animator (`AssetSource/Creatures`, `export_creature.py`, `render_creatures.ps1`)
+
 ## v0.19.1 - 2026-09-30
 
 ### Fixed

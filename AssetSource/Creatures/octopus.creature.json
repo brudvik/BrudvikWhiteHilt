@@ -1,0 +1,15 @@
+{
+  "source": "Octopus by rkuhlf, CC BY 4.0, https://sketchfab.com/3d-models/f9c0186d5ac54bcfada2b6113de40ede",
+  "clips": [
+    { "name": "idle", "take": "Idle", "loop": true },
+    { "name": "move", "take": "Walk", "loop": true },
+    { "name": "dart", "take": "Dart", "loop": false }
+  ],
+  "controller": {
+    "idle": "idle",
+    "move": "move",
+    "move_speed": 1.5,
+    "attacks": [],
+    "always_animate": false
+  }
+}

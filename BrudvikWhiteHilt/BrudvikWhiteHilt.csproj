@@ -70,6 +70,7 @@
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
     <Compile Include="Helpers\ForagingAssets.cs" />
+    <Compile Include="Helpers\CreatureVisual.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
     <Compile Include="Helpers\StatusEffectHelper.cs" />
     <Compile Include="Helpers\Translations.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
     <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
     <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
+    <Compile Include="Items\Food\OctopusStew\OctopusStew.cs" />
+    <Compile Include="Items\Food\KrakenFeast\KrakenFeast.cs" />
     <Compile Include="Items\Food\SmokedWolfJerky\SmokedWolfJerky.cs" />
     <Compile Include="Items\Food\SweetGaleSausages\SweetGaleSausages.cs" />
     <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
@@ -316,6 +319,16 @@
     <Compile Include="Difficulty\Beasts\BeastSpawner.cs" />
     <Compile Include="Patches\Difficulty\CreatureLevelPatches.cs" />
     <Compile Include="Patches\Difficulty\DifficultyWorldPatches.cs" />
+    <Compile Include="Kraken\KrakenBody.cs" />
+    <Compile Include="Kraken\KrakenCommands.cs" />
+    <Compile Include="Kraken\KrakenCorpse.cs" />
+    <Compile Include="Kraken\KrakenRegistry.cs" />
+    <Compile Include="Kraken\KrakenService.cs" />
+    <Compile Include="Kraken\KrakenSettings.cs" />
+    <Compile Include="Kraken\KrakenSpawner.cs" />
+    <Compile Include="Kraken\KrakenTentacle.cs" />
+    <Compile Include="Kraken\OctopusSwim.cs" />
+    <Compile Include="Patches\Kraken\KrakenPatches.cs" />
     <Compile Include="Sound\IndoorAudioFilter.cs" />
     <Compile Include="Sound\IndoorSound.cs" />
     <Compile Include="Sound\IndoorSoundSettings.cs" />

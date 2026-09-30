@@ -48,6 +48,17 @@ public static class ForagingAssets
             ?? throw new InvalidOperationException($"Sound '{name}' not found in {ResourceName}.");
     }
 
+    /// <summary>
+    /// Loads a prefab from the bundle, such as an animated creature visual (&lt;name&gt;_visual).
+    /// </summary>
+    /// <param name="name">Prefab name.</param>
+    /// <returns>The prefab.</returns>
+    public static GameObject LoadPrefab(string name)
+    {
+        return GetBundle().LoadAsset<GameObject>(name)
+            ?? throw new InvalidOperationException($"Prefab '{name}' not found in {ResourceName}.");
+    }
+
     private static AssetBundle GetBundle()
     {
         if (bundle == null)
