@@ -14,15 +14,22 @@ No custom shaders or prefabs are shipped. The bundle only contains meshes and te
 - A new item, pickable or piece needs a look that no vanilla prefab has.
 - If a vanilla model with a tint (`VisualHelper.Tint`) or a hue shift (`VisualHelper.Recolor`) is good enough, use that instead. It needs no asset work.
 
+## Tools (AssetSource/Tools, run with the repo's .venv python; usage at the top of each file)
+- `find_models.py "<term>" [...]`: Sketchfab search limited to CC0/CC BY and a face budget, numbered contact sheet in `%TEMP%\wh_models\sheet.png`; `--uids <uid> ...` sheets chosen models with descriptions.
+- `glb_info.py <file.glb>`: author/license/source, every part with its material and bounds as the model stands, materials, image sizes. `--profile <axis>` slices it; `--sides out.png --right x,y,z --up x,y,z` draws both sides with flat material colours (front vs back).
+- `glb_edit.py <file.glb> --colour <material>=r,g,b --drop <node> --keep <node> --max-texture 1024 [--out]`: fix a download before converting (in place without `--out`).
+- `vanilla_prefab.py <prefab> [--materials] [--all-bundles]`: a vanilla prefab's hierarchy with local position/rotation/scale, mesh bounds, colliders, materials (shader, textures, colours); `--hash <name>` gives Valheim's stable hash.
+- `AssetSource/Preview/compose_preview.py`, `weapon_fit.py`, `frame_axes.py`: see below.
+
 ## 1. Find and check the model
-- Search with the Sketchfab API: `https://api.sketchfab.com/v3/search?type=models&q=<term>&downloadable=true` (add `&license=cc0` to filter). Other sources are Poly Haven (`https://api.polyhaven.com/assets?type=models`), Quaternius and Kenney. The last two are CC0 and stylized.
+- Search with `find_models.py` (or the Sketchfab API directly: `https://api.sketchfab.com/v3/search?type=models&q=<term>&downloadable=true&license=cc0`). Other sources are Poly Haven (`https://api.polyhaven.com/assets?type=models`), Quaternius and Kenney. The last two are CC0 and stylized.
 - **Licenses**: CC0 is fine. CC BY is fine with credit in the README `## Credits`. Do **not** use NC (NonCommercial) or unclear licenses like Sketchfab "Free Standard".
 - **Budget**: at most about 5 000 faces, texture ≤ 1024 px. It gets downscaled to 512. Photogrammetry models with 40k+ faces or 8K textures are too heavy.
 - **Shape**: any number of mesh parts. [convert_glb.py](../../../AssetSource/convert_glb.py) merges them into one mesh. Parts that share one base colour texture keep it as-is (PNG or JPEG). Parts with **different textures** or with **only a base colour** (no texture) are packed side by side into one PNG atlas, and their UVs are moved to match. Tiling UVs (outside 0..1) are wrapped per triangle into the first repeat, and the few repeats a triangle still spans are baked into its tile (the Waste Well needed this). Atlases get 512 px per tile in Unity, at most 4096 wide.
 - **Emission**: a model with one texture and an `emissiveTexture` also gets `<name>_emission` in the bundle. Put it on `_EmissionMap` (enable `_EMISSION`), optionally recoloured with `VisualHelper.RecolorTexture`; the Valkyrie Stone does this.
 - Sketchfab downloads need a login, so the user downloads the `.glb` themselves.
-- Read the license from the file itself before using it. It sits in `asset.extras`: author, license, source.
-- **Look at the thumbnail before recommending a model.** Names and tags lie: the first "Porcini mushroom" (CC BY, 210 faces) turned out to be an auto-generated orange blob. Download the 256 px thumbnails from the API result (`thumbnails.images[].url`) with `Invoke-WebRequest -UseBasicParsing`, put them on one contact sheet with System.Drawing, and view it.
+- Read the license from the file itself before using it (`glb_info.py` prints it). It sits in `asset.extras`: author, license, source.
+- **Look at the thumbnail before recommending a model.** Names and tags lie: the first "Porcini mushroom" (CC BY, 210 faces) turned out to be an auto-generated orange blob. `find_models.py` draws the contact sheet; view it.
 
 ## 2. Build the bundle
 1. Copy the file to `AssetSource/Models/<name>.glb`. The lower-case file name becomes the mesh name `<name>` and the texture name `<name>_albedo` (`.png` or `.jpg`, whatever the model contains).
@@ -32,6 +39,8 @@ No custom shaders or prefabs are shipped. The bundle only contains meshes and te
    - It copies the result to `BrudvikWhiteHilt/Assets/whitehilt_foraging`, which is embedded in the DLL.
 3. Check the `[WhiteHilt] Mesh '<name>' ... bounds` line. Y must be the height (Extents.y = 0.5). The full log is `%TEMP%\whitehilt_unity_build.log`.
 4. To check the orientation before Unity, run `python AssetSource\preview_obj.py <file.obj> <out.png>` on a converted OBJ and view the PNG. It shows front and side silhouettes. A model lying on its side shows up there at once.
+5. **Composite preview (do this before testing in game)**: for a model with props on it (a bench with tools, a table with a bucket), write `AssetSource/Preview/<name>.preview.json` with the same numbers as the code (`base` fitted like `ReplaceMesh(size:)` or by `height`, `props` placed like `AddMesh`: base position in base-model units, height, yaw) and run `python AssetSource\Preview\compose_preview.py AssetSource\Preview\<name>.preview.json`. It renders textured views with Unity into `BrudvikWhiteHiltUnity/Preview/out/<name>.png`; view it. Example: `paintbench.preview.json`, matching `PaintBench.props`. It caught a palette rendered all orange and a leftover saucer before anyone started the game.
+   - Held items use `AssetSource\Preview\weapon_fit.py` instead (see below).
 
 ## 3. Use it in code
 ```csharp
@@ -49,7 +58,7 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 - To build a piece from scratch, `VisualHelper.HideRenderers(prefab)` hides every vanilla look (new, worn, broken) and `VisualHelper.CreateModel(parent, mesh, texture, templateRenderer, position, rotation, scale)` adds meshes that reuse a vanilla material. Vanilla meshes can be reused too: the Rune Post copies `wood_pole2/New` for its posts. For a glow, prefer an emission map (only the lit parts bright, e.g. carved runes) pulsed per instance with a `MaterialPropertyBlock`, plus a small point light faded by `EffectFade`. Vanilla effects are sized for their own piece: `portal_wood/_target_found_red` on the Rune Post was a huge, far too intense flame swirl. For a piece that swaps looks as it takes damage (e.g. `piece_workbench`), call `ReplaceMesh` on each of `New`, `Worn` and `Broken`.
 - `VisualHelper.RecolorTexture(texture, pixel => ...)` returns a recoloured copy of any texture, e.g. one ring texture in six metal colours.
 - Item prefabs contain an **inactive** held/equip copy of the model (`Mushroom/equipoffset/pie (1)` sits 50 m below the item). `ReplaceMesh` only measures renderers whose parents are all `activeSelf` up to the root. `activeInHierarchy` does not work, because Jotunn's prefab container is disabled. Without this the dropped item became about 50 m tall.
-- To see a vanilla prefab's real hierarchy, use UnityPy (`pip install UnityPy`) on `valheim_Data/StreamingAssets` and print transforms, `activeSelf`, scales and mesh bounds. Verify with it before guessing.
+- To see a vanilla prefab's real hierarchy, run `AssetSource\Tools\vanilla_prefab.py <prefab>` (UnityPy on `valheim_Data/StreamingAssets`: transforms, `activeSelf`, scales, mesh bounds, materials). Verify with it before guessing.
 - Examples: [ForageableBase.cs](../../../BrudvikWhiteHilt/Items/Foraging/ForageableBase.cs), [Chanterelle.cs](../../../BrudvikWhiteHilt/Items/Foraging/Chanterelle/Chanterelle.cs), [VisualHelper.cs](../../../BrudvikWhiteHilt/Helpers/VisualHelper.cs), [ForagingAssets.cs](../../../BrudvikWhiteHilt/Helpers/ForagingAssets.cs).
 - Add new `.cs` files to `BrudvikWhiteHilt.csproj` (old-style project, no globbing).
 
@@ -64,6 +73,7 @@ Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab); // null on a server or f
 - Vanilla MeshColliders under attach are replaced by a BoxCollider (`ReplaceWeaponMesh`); a multi-material renderer (Battleaxe) gets one material.
 
 ## Pitfalls (all hit once already)
+- **Parts with only a base colour and the same colour share one atlas tile**, so a `paint.json` rule per material paints them all (the palette's seven paint blobs, all grey 0.8 in the glb, came out one colour). Set distinct colours in the glb with `glb_edit.py --colour <material>=r,g,b` instead. A part you do not want at all is dropped with `glb_edit.py --drop <node>`. That is cleaner than a crop box when the part touches the rest.
 - **Unity mirrors x when it imports OBJ.** A part you measure at +x in the converted `.obj` is at -x in the game. Negate x before using a measured position in code (y and z are unchanged). The Chain Bench chains first ended up on the vise instead of the stump because of this.
 - A flat model (a curtain of chains, a plank) seen **edge-on** looks like a thin line. Check which axis is thin in the `[WhiteHilt] Mesh` bounds line and rotate it (`AddMesh(..., rotation)`) so its broad side faces the player.
 - **Never use Jotunn `AssetUtils.LoadAssetBundleFromResources`**. It disposes the stream, Unity reads bundle data lazily, and the game crashes with "ManagedStream object must be readable". `ForagingAssets` uses `AssetBundle.LoadFromMemory`.
