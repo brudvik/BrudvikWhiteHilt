@@ -57,6 +57,7 @@ public class ShipChartTable : MonoBehaviour
         }
 
         shipPrefab.AddComponent<ShipChartTable>();
+        shipPrefab.AddComponent<ShipRoute>();
         if (VisualHelper.IsHeadless)
         {
             return;

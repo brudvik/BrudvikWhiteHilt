@@ -31,6 +31,12 @@ public static class ShipSettings
     /// <summary>Fraction of the ordinary fog left near a White Hilt Ship with the mast wisp; 1 leaves the fog alone.</summary>
     public static ConfigEntry<float> MastWispFogLeft { get; private set; }
 
+    /// <summary>Exploration level needed to set route markers at the Navigator's Table.</summary>
+    public static ConfigEntry<int> RouteMarkersLevel { get; private set; }
+
+    /// <summary>Exploration level needed to let the ship sail the route on its own.</summary>
+    public static ConfigEntry<int> RouteSailLevel { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -50,6 +56,10 @@ public static class ShipSettings
         MastWispFogLeft = WhiteHiltConfig.BindAdminOnly(Section, "MastWispFogLeft", 0.25f,
             "Near a White Hilt Ship with the Mast Wisp, this fraction of the ordinary fog is left (the Mistlands mist is cleared anyway). 1 leaves the fog alone.",
             new AcceptableValueRange<float>(0f, 1f));
+        RouteMarkersLevel = WhiteHiltConfig.BindAdminOnly(Section, "RouteMarkersLevel", 30,
+            "Exploration level needed to set route markers on the map at a ship's Navigator's Table.", new AcceptableValueRange<int>(0, 100));
+        RouteSailLevel = WhiteHiltConfig.BindAdminOnly(Section, "RouteSailLevel", 50,
+            "Exploration level needed for \"Take me there\": the ship sails the route on its own.", new AcceptableValueRange<int>(0, 100));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
@@ -58,5 +68,21 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_shiphud_wind", "Wind from {0}");
         Translations.AddEnglish("whitehilt_shiphud_course", "Holding course {0}°");
         Translations.AddEnglish("whitehilt_ship_push", "Push the ship");
+        Translations.AddEnglish("whitehilt_route_open", "Route markers");
+        Translations.AddEnglish("whitehilt_route_need_markers", "Exploration {0} is needed to set route markers");
+        Translations.AddEnglish("whitehilt_route_need_sail", "Exploration {0} needed");
+        Translations.AddEnglish("whitehilt_route_hint", "Left-click: add a marker ({0}/{1})    Right-click: remove one");
+        Translations.AddEnglish("whitehilt_route_full", "The route has all its markers");
+        Translations.AddEnglish("whitehilt_route_sail", "Take me there");
+        Translations.AddEnglish("whitehilt_route_stop", "Stop sailing");
+        Translations.AddEnglish("whitehilt_route_clear", "Clear");
+        Translations.AddEnglish("whitehilt_route_close", "Close");
+        Translations.AddEnglish("whitehilt_route_plotting", "Plotting a course...");
+        Translations.AddEnglish("whitehilt_route_none", "No sea route found to the markers");
+        Translations.AddEnglish("whitehilt_route_started", "The ship sails the route");
+        Translations.AddEnglish("whitehilt_route_arrived", "The ship has arrived");
+        Translations.AddEnglish("whitehilt_route_stopped", "The ship stops sailing the route");
+        Translations.AddEnglish("whitehilt_route_taken", "You take the helm: the ship stops sailing the route");
+        Translations.AddEnglish("whitehilt_route_shallow", "Shallow water ahead: the ship stops");
     }
 }

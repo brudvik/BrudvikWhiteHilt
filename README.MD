@@ -207,7 +207,7 @@ A new skill, **Exploration**, rises with every patch of map you uncover for the 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), within 5 m of a map table | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
-| **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck; on the White Hilt Ship the mast takes it too, like the ship upgrades (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m) | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
+| **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck; on the White Hilt Ship the mast takes it too, like the ship upgrades (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m). Use on the table opens the map for route markers at Exploration 30 (up to 5, shown to everyone aboard, with an arrow on the minimap toward the next one); at Exploration 50 "Take me there" lets the ship sail the route on its own | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
 | **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Silver Necklace ×1, Ruby ×1 |
 
 The table and the amulet do not add up; the wider one counts.
@@ -683,6 +683,8 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 - Good Memories at the dog's grave, and its ghost at dusk
 - A neglected dog runs away, a starving one dies, and a dead dog leaves remains for its grave
 - Console command `whitehilt_rest` to check the resting pose
+- Navigator's Table route: at Exploration 30, Use on the table opens the map to set up to 5 route markers. They belong to the ship, so everyone aboard sees them on the map, and an arrow on the minimap points to the next one with the distance. A marker is ticked off when the ship comes within 60 m
+- "Take me there" at Exploration 50: the ship plots a course through deep water around land and sails it on its own, under sail only, slowing for turns and near the end. It stops when someone takes the helm, everyone leaves, the water turns shallow or it arrives. Markers on land are moved to the nearest deep water. Docks and other building in the water are not known to the route (`RouteMarkersLevel`, `RouteSailLevel`)
 
 #### Changed
 - White Hilt Ship: the deck brazier stands on the port side just in front of the cargo crates, out of the walkway

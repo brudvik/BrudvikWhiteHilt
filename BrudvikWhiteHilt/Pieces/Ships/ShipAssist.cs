@@ -197,9 +197,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             nview.GetZDO().Set(CourseKey, Heading(transform));
         }
 
-        float error = Mathf.DeltaAngle(Heading(transform), Course);
-        float turnRate = body != null ? body.angularVelocity.y * Mathf.Rad2Deg : 0f;
-        ship.m_rudderValue = Mathf.Clamp((error - turnRate * TurnDamping) / FullRudderDegrees, -1f, 1f);
+        SteerTowards(Course);
 
         if (Time.time >= nextCheck)
         {
@@ -213,7 +211,34 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         }
     }
 
-    private bool ShallowAhead()
+    /// <summary>
+    /// Turns the rudder toward a heading, damped by how fast the ship already turns. Only on the ship's owner.
+    /// </summary>
+    /// <param name="course">The heading, in degrees from north.</param>
+    public void SteerTowards(float course)
+    {
+        float error = Mathf.DeltaAngle(Heading(transform), course);
+        float turnRate = body != null ? body.angularVelocity.y * Mathf.Rad2Deg : 0f;
+        ship.m_rudderValue = Mathf.Clamp((error - turnRate * TurnDamping) / FullRudderDegrees, -1f, 1f);
+    }
+
+    /// <summary>
+    /// Stops holding the course. Only on the ship's owner.
+    /// </summary>
+    public void StopHolding()
+    {
+        if (nview != null && nview.IsValid() && nview.IsOwner())
+        {
+            nview.GetZDO().Set(AutopilotKey, false);
+        }
+    }
+
+    /// <summary>
+    /// True if the water ahead is too shallow for the keel, looking further the faster the ship sails.
+    /// </summary>
+    /// <param name="maxDistance">Looks no further than this.</param>
+    /// <returns>True before shallow water.</returns>
+    public bool ShallowAhead(float maxDistance = float.MaxValue)
     {
         float speed = ship.GetSpeed();
         if (speed < 0.5f || ZoneSystem.instance == null)
@@ -221,7 +246,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             return false;
         }
 
-        float distance = Mathf.Clamp(speed * LookaheadSeconds, MinLookahead, MaxLookahead);
+        float distance = Mathf.Min(Mathf.Clamp(speed * LookaheadSeconds, MinLookahead, MaxLookahead), maxDistance);
         float water = ZoneSystem.instance.m_waterLevel;
         foreach (float part in new[] { 0.5f, 1f })
         {

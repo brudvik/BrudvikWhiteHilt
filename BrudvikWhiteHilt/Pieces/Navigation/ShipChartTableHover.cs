@@ -15,7 +15,9 @@ public class ShipChartTableHover : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public string GetHoverText()
     {
-        return table != null ? Localization.instance.Localize(GetHoverName() + table.GetHoverText()) : string.Empty;
+        return table != null
+            ? Localization.instance.Localize(GetHoverName() + "\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_route_open" + table.GetHoverText())
+            : string.Empty;
     }
 
     /// <inheritdoc/>
@@ -33,7 +35,18 @@ public class ShipChartTableHover : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public bool Interact(Humanoid user, bool hold, bool alt)
     {
-        return alt && !hold && table != null && table.Take();
+        if (hold || table == null)
+        {
+            return false;
+        }
+
+        if (alt)
+        {
+            return table.Take();
+        }
+
+        return user is Player player && player == Player.m_localPlayer && table.Installed
+            && ShipRoutePlanner.Open(player, table.GetComponent<ShipRoute>());
     }
 
     /// <inheritdoc/>

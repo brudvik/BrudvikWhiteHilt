@@ -246,6 +246,7 @@
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
+    <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
@@ -340,9 +341,13 @@
     <Compile Include="Pieces\Navigation\CartographerDesk.cs" />
     <Compile Include="Pieces\Navigation\MapTableProximity.cs" />
     <Compile Include="Pieces\Navigation\ShipChartTable.cs" />
+    <Compile Include="Pieces\Navigation\RouteArrow.cs" />
+    <Compile Include="Pieces\Navigation\ShipRoute.cs" />
+    <Compile Include="Pieces\Navigation\ShipRoutePlanner.cs" />
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
     <Compile Include="Navigation\RavenSightEffect.cs" />
+    <Compile Include="Navigation\SeaRouteFinder.cs" />
     <Compile Include="Ranching\AnimalCare.cs" />
     <Compile Include="Ranching\FavoriteFoods.cs" />
     <Compile Include="Ranching\HusbandrySkill.cs" />

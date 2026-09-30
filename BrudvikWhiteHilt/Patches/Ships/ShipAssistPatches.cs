@@ -58,6 +58,7 @@ public static class ShipAssistPatches
         if (__instance == Player.m_localPlayer)
         {
             ShipAssist.Tick(__instance);
+            Pieces.Navigation.ShipRoutePlanner.Tick(__instance);
             Pieces.Ships.WhiteHiltShip.ShipPortalArrival.Tick(__instance);
         }
     }
