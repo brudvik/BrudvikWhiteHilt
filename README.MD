@@ -147,7 +147,8 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 **Ship Features:**
 - Immune to fire, blunt, slash, pierce, chop, pickaxe, spirit, frost, lightning, and poison damage
 - Ashlands damage immune and resistant
-- Always has tailwind (full sail speed regardless of wind direction)
+- Always has tailwind (full sail speed regardless of wind direction) (`Ships` → `AlwaysTailwind`)
+- Sails five times harder than the vanilla code default (`Ships` → `SailForce`, 0.5)
 - Comfort bonus: +5
 - Its own look: a carved dragon figurehead, a white sail with gold stripes and a white-hilted sword, a whitewashed hull with gold fittings, and painted shields along the rail
 
@@ -669,6 +670,22 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
+
+### v0.12.0 - 2026-09-30
+
+#### Added
+- White Hilt Ship: the sail force and the constant tailwind can be set in the config (`Ships` → `SailForce`, `AlwaysTailwind`); the defaults are unchanged
+
+#### Changed
+- White Hilt Ship: "Take me there" weighs the anchor, and lowering the anchor stops the route
+- White Hilt Ship: "Push the ship" is not offered while the ship lies at anchor
+- White Hilt Ship: the fishing net only raises the Fishing skill when it catches something
+
+#### Fixed
+- White Hilt Ship: the sea chest drops its items when the ship is taken down, like the cargo hold
+
+#### Removed
+- Unused code for indestructible ships and pieces
 
 ### v0.11.0 - 2026-09-30
 
