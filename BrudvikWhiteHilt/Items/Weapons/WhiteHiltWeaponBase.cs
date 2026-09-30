@@ -4,6 +4,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Weapons;
@@ -144,7 +145,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
             Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab);
             if (icon != null)
             {
-                item.ItemData.m_icons = new[] { icon };
+                // Keep one entry per vanilla variant: GetIcon indexes m_icons by the saved m_variant.
+                item.ItemData.m_icons = Enumerable.Repeat(icon, Math.Max(1, item.ItemData.m_icons?.Length ?? 0)).ToArray();
             }
         }
         catch (Exception ex)

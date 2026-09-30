@@ -719,6 +719,11 @@ The defences and the navigation pieces are laid out by `AssetSource/Preview/buil
 
 ## Changelog
 
+### v0.15.1 - 2026-09-30
+
+#### Fixed
+- The inventory threw an error every frame when it held a White Hilt Buckler or Tower Shield painted in a colour other than the first: the new icon now covers every paint variant
+
 ### v0.15.0 - 2026-09-30
 
 #### Added

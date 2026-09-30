@@ -124,7 +124,9 @@ public class WhiteHiltBannerCape : IWhiteHiltCustomItem
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {
-                item.ItemDrop.m_itemData.m_shared.m_icons = new[] { icon };
+                // Keep one entry per vanilla variant: GetIcon indexes m_icons by the saved m_variant.
+                ItemDrop.ItemData.SharedData shared = item.ItemDrop.m_itemData.m_shared;
+                shared.m_icons = Enumerable.Repeat(icon, Math.Max(1, shared.m_icons?.Length ?? 0)).ToArray();
             }
         }
         catch (Exception ex)
