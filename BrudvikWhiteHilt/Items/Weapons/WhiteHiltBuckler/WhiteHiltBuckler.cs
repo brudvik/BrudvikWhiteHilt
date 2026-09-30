@@ -35,6 +35,11 @@ public class WhiteHiltBuckler : WhiteHiltWeaponBase
     protected override string CopyFrom => "ShieldBanded";
 
     /// <summary>
+    /// Worn Round Shield by iedalton, with white-painted boards.
+    /// </summary>
+    protected override string ModelName => "whbuckler";
+
+    /// <summary>
     /// Indicates whether the White Hilt Buckler is enabled.
     /// </summary>
     public override bool Enabled => true;

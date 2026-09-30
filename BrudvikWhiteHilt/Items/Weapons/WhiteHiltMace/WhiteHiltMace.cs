@@ -35,6 +35,11 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
     protected override string CopyFrom => "MaceIron";
 
     /// <summary>
+    /// Brass Viking Mace by Asylum Nox, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whmace";
+
+    /// <summary>
     /// Indicates whether the White Hilt Mace is enabled.
     /// </summary>
     public override bool Enabled => true;

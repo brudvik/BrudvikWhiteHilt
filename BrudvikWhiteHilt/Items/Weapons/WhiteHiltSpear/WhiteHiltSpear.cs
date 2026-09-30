@@ -35,6 +35,11 @@ public class WhiteHiltSpear : WhiteHiltWeaponBase
     protected override string CopyFrom => "SpearElderbark";
 
     /// <summary>
+    /// Winterbite by Peter Nox, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whspear";
+
+    /// <summary>
     /// Indicates whether the White Hilt Spear is enabled.
     /// </summary>
     public override bool Enabled => true;

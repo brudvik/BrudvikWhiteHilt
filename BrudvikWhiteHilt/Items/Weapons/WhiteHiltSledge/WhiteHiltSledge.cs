@@ -35,6 +35,11 @@ public class WhiteHiltSledge : WhiteHiltWeaponBase
     protected override string CopyFrom => "SledgeIron";
 
     /// <summary>
+    /// Viking Warhammer by Peter Nox, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whsledge";
+
+    /// <summary>
     /// Indicates whether the White Hilt Sledge is enabled.
     /// </summary>
     public override bool Enabled => true;

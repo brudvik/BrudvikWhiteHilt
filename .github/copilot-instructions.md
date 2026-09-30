@@ -91,6 +91,8 @@ Use Swamp-tier or earlier base items:
 - Shields: `ShieldBanded`, `ShieldIronTower`
 - Armor: Iron-tier armor pieces
 
+Exception: the White Hilt Crossbow copies `CrossbowArbalest`, the only vanilla crossbow, so it shoots bolts and reloads. Its recipe still follows the Swamp rule.
+
 ## Version Management
 
 ### Version Number Format

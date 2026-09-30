@@ -4,6 +4,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Weapons;
 
@@ -44,6 +45,12 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
     /// Indicates whether the weapon is enabled or not.
     /// </summary>
     public abstract bool Enabled { get; }
+
+    /// <summary>
+    /// Name of the mesh in the White Hilt asset bundle that replaces the vanilla look (texture <c>&lt;name&gt;_albedo</c>),
+    /// or null to keep the vanilla look.
+    /// </summary>
+    protected virtual string ModelName => null;
 
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Swamp;
@@ -100,6 +107,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
             item.ItemData.m_damages.m_fire += 10;
             item.ItemData.m_damages.m_pierce += 10;
 
+            TryApplyModel(item);
+
             instance.AddItem(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -108,6 +117,39 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Called after the model from <see cref="ModelName"/> is in place, to add behaviour to it.
+    /// </summary>
+    /// <param name="model">The object that shows the model, under the item's attach child.</param>
+    protected virtual void OnModelApplied(GameObject model)
+    {
+    }
+
+    private void TryApplyModel(IndestructibleItem item)
+    {
+        if (ModelName == null || VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        // A broken look must not remove the item, or players would lose it from their inventories.
+        try
+        {
+            GameObject model = VisualHelper.ReplaceWeaponMesh(item.ItemPrefab, ForagingAssets.LoadMesh(ModelName), ForagingAssets.LoadTexture($"{ModelName}_albedo"));
+            OnModelApplied(model);
+
+            Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab);
+            if (icon != null)
+            {
+                item.ItemData.m_icons = new[] { icon };
+            }
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
     }
 }

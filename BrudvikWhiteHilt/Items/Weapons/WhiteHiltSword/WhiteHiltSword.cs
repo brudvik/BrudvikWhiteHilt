@@ -36,6 +36,11 @@ public class WhiteHiltSword : WhiteHiltWeaponBase
     protected override string CopyFrom => "SwordDyrnwyn";
 
     /// <summary>
+    /// Decorated Viking King Sword by Asylum Nox, with a white hilt.
+    /// </summary>
+    protected override string ModelName => "whsword";
+
+    /// <summary>
     /// Indicates whether the White Hilt Bow is enabled.
     /// </summary>
     public override bool Enabled => true;

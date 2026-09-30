@@ -1,0 +1,115 @@
+using Jotunn.Managers;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BrudvikWhiteHilt.Items.Weapons;
+
+/// <summary>
+/// Puts a coloured flame on the head of a White Hilt staff, lit while the staff is held.
+/// The flame is the Staff of Embers' own, recoloured, so the three staffs share one look.
+/// </summary>
+public static class StaffFlame
+{
+    // Just above the scepter head in attach space, from AssetSource/Models/whstaff.weapon.json.
+    private static readonly Vector3 headTip = new(0f, 0f, 1.16f);
+    private static readonly Dictionary<Texture, Material> greyMaterials = new();
+
+    /// <summary>
+    /// Replaces the vanilla staff effects under <paramref name="model"/>'s attach child with a flame in <paramref name="colour"/>.
+    /// </summary>
+    /// <param name="model">The staff model under the attach child.</param>
+    /// <param name="colour">Flame and light colour.</param>
+    public static void Apply(GameObject model, Color colour)
+    {
+        Transform attach = model.transform.parent;
+        DestroyChild(model.transform, "effects");
+        DestroyChild(attach, "equiped");
+
+        Transform source = PrefabManager.Instance.GetPrefab("StaffFireball")?.transform.Find("attach/equiped");
+        Transform flames = source?.Find("flames");
+        if (flames == null)
+        {
+            Jotunn.Logger.LogWarning("StaffFireball has no attach/equiped/flames; the staff gets no flame.");
+            return;
+        }
+
+        // VisEquipment switches on a child named "equiped" only in the hand, like the vanilla staff flames.
+        GameObject equipped = Object.Instantiate(source.gameObject, attach, false);
+        equipped.name = "equiped";
+        equipped.SetActive(false);
+        equipped.transform.localRotation = Quaternion.identity;
+        equipped.transform.localPosition = headTip - flames.localPosition;
+
+        foreach (ParticleSystem particles in equipped.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            Recolor(particles, colour);
+        }
+
+        GameObject lightObject = new("Point light");
+        lightObject.transform.SetParent(equipped.transform, false);
+        lightObject.transform.localPosition = flames.localPosition;
+        Light light = lightObject.AddComponent<Light>();
+        light.type = LightType.Point;
+        light.color = colour;
+        light.range = 3f;
+        light.intensity = 1.5f;
+        light.shadows = LightShadows.None;
+    }
+
+    private static void DestroyChild(Transform parent, string name)
+    {
+        Transform child = parent.Find(name);
+        if (child != null)
+        {
+            Object.DestroyImmediate(child.gameObject);
+        }
+    }
+
+    private static void Recolor(ParticleSystem particles, Color colour)
+    {
+        ParticleSystem.MainModule main = particles.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(colour);
+
+        ParticleSystem.ColorOverLifetimeModule overLifetime = particles.colorOverLifetime;
+        if (overLifetime.enabled)
+        {
+            Gradient original = overLifetime.color.gradient ?? overLifetime.color.gradientMax;
+            Gradient gradient = new();
+            gradient.SetKeys(
+                new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
+                original?.alphaKeys ?? new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1f) });
+            overLifetime.color = new ParticleSystem.MinMaxGradient(gradient);
+        }
+
+        // The fire textures carry their own orange, so they are made grey and take the colour from the particles.
+        ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+        Material source = renderer != null ? renderer.sharedMaterial : null;
+        if (source?.mainTexture == null)
+        {
+            return;
+        }
+
+        if (!greyMaterials.TryGetValue(source.mainTexture, out Material grey))
+        {
+            Texture2D texture = Helpers.VisualHelper.RecolorTexture(source.mainTexture, pixel =>
+            {
+                byte level = (byte)Mathf.Max(pixel.r, pixel.g, pixel.b);
+                return new Color32(level, level, level, pixel.a);
+            });
+            grey = new Material(source) { name = $"{source.name}_grey", mainTexture = texture };
+            foreach (string property in new[] { "_TintColor", "_Color", "_EmissionColor" })
+            {
+                if (grey.HasProperty(property))
+                {
+                    Color tint = grey.GetColor(property);
+                    float level = Mathf.Max(tint.r, tint.g, tint.b);
+                    grey.SetColor(property, new Color(level, level, level, tint.a));
+                }
+            }
+
+            greyMaterials[source.mainTexture] = grey;
+        }
+
+        renderer.sharedMaterial = grey;
+    }
+}

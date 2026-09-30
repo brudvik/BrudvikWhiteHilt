@@ -35,6 +35,11 @@ public class WhiteHiltTowerShield : WhiteHiltWeaponBase
     protected override string CopyFrom => "ShieldIronTower";
 
     /// <summary>
+    /// Medieval Kite Shield by iedalton, with white-painted boards.
+    /// </summary>
+    protected override string ModelName => "whtowershield";
+
+    /// <summary>
     /// Indicates whether the White Hilt Tower Shield is enabled.
     /// </summary>
     public override bool Enabled => true;

@@ -1,5 +1,6 @@
 ﻿using Jotunn.Configs;
 using Jotunn.Managers;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltBow;
 
@@ -35,6 +36,11 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
     protected override string CopyFrom => "BowHuntsman";
 
     /// <summary>
+    /// Bow of the Pack Hunter by Asylum Nox, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whbow";
+
+    /// <summary>
     /// Indicates whether the White Hilt Bow is enabled.
     /// </summary>
     public override bool Enabled => true;
@@ -48,4 +54,13 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
         new() { Item = "Feathers", Amount = 20, Recover = false },
         new() { Item = "BowFineWood", Amount = 1, Recover = false }
     };
+
+    /// <summary>
+    /// Lets the limbs bend and the string follow the drawing hand.
+    /// </summary>
+    /// <param name="model">The bow model under the attach child.</param>
+    protected override void OnModelApplied(GameObject model)
+    {
+        model.AddComponent<WhiteHiltBowFlex>();
+    }
 }

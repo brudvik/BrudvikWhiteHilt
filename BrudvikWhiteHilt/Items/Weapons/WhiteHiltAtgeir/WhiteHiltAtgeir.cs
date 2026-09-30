@@ -35,6 +35,11 @@ public class WhiteHiltAtgeir : WhiteHiltWeaponBase
     protected override string CopyFrom => "AtgeirIron";
 
     /// <summary>
+    /// Polearm from Weapon Set by Asylum Nox, with a white shaft.
+    /// </summary>
+    protected override string ModelName => "whatgeir";
+
+    /// <summary>
     /// Indicates whether the White Hilt Atgeir is enabled.
     /// </summary>
     public override bool Enabled => true;

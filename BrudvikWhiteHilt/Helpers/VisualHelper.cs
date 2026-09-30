@@ -78,6 +78,66 @@ public static class VisualHelper
     }
 
     /// <summary>
+    /// Shows <paramref name="mesh"/> in place of a cloned weapon's vanilla model. The mesh must already be in the item's
+    /// attach space (the hand is the origin), as convert_glb.py writes it for a model with a <c>.weapon.json</c>.
+    /// </summary>
+    /// <param name="itemPrefab">The cloned item prefab, with an <c>attach</c> child.</param>
+    /// <param name="mesh">Replacement mesh in attach space.</param>
+    /// <param name="texture">Albedo texture for the replacement mesh.</param>
+    /// <returns>The object that now shows the mesh: the vanilla model's own object, so its collider and LOD entry stay.</returns>
+    public static GameObject ReplaceWeaponMesh(GameObject itemPrefab, Mesh mesh, Texture2D texture)
+    {
+        Transform attach = itemPrefab.transform.Find("attach")
+            ?? throw new InvalidOperationException($"{itemPrefab.name} has no attach child.");
+        MeshRenderer[] renderers = attach.GetComponentsInChildren<MeshRenderer>(true)
+            .Where(renderer => renderer.enabled && IsActiveBelow(renderer.transform, attach) && renderer.GetComponent<MeshFilter>()?.sharedMesh != null)
+            .ToArray();
+        if (renderers.Length == 0)
+        {
+            throw new InvalidOperationException($"{itemPrefab.name} has no weapon mesh to replace.");
+        }
+
+        MeshRenderer target = renderers[0];
+        foreach (MeshRenderer other in renderers.Skip(1))
+        {
+            other.enabled = false;
+        }
+
+        Transform model = target.transform;
+        if (model.parent != attach)
+        {
+            model.SetParent(attach, false);
+        }
+
+        model.localPosition = Vector3.zero;
+        model.localRotation = Quaternion.identity;
+        model.localScale = Vector3.one;
+        model.GetComponent<MeshFilter>().sharedMesh = mesh;
+        target.sharedMaterials = new[] { CreateTexturedMaterial(target.sharedMaterial, texture, $"{mesh.name}_material") };
+
+        // Vanilla mesh colliders are shaped like the old model; a box around the new one is enough for a dropped item.
+        foreach (MeshCollider meshCollider in attach.GetComponentsInChildren<MeshCollider>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(meshCollider);
+        }
+
+        BoxCollider box = model.GetComponent<BoxCollider>();
+        if (box == null && attach.GetComponentInChildren<Collider>(true) == null)
+        {
+            box = model.gameObject.AddComponent<BoxCollider>();
+        }
+
+        if (box != null)
+        {
+            box.center = mesh.bounds.center;
+            box.size = mesh.bounds.size;
+        }
+
+        itemPrefab.GetComponent<LODGroup>()?.RecalculateBounds();
+        return model.gameObject;
+    }
+
+    /// <summary>
     /// Adds a second mesh to a model made by <see cref="ReplaceMesh"/>, e.g. chains hanging from it.
     /// </summary>
     /// <param name="model">The model to attach to. Positions are in its mesh units, where the model is 1 high.</param>

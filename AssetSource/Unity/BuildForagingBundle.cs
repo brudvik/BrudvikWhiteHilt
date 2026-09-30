@@ -14,8 +14,8 @@ public static class BuildForagingBundle
     private const string BundleName = "whitehilt_foraging";
     private const string SourceFolder = "Assets/Foraging";
 
-    // Models the mod merges with Mesh.CombineMeshes (the navigation pieces and the Pathfinder amulet).
-    private static readonly string[] CombinedModels = { "cartodesk", "sextant", "mapscroll", "seachart", "amulet" };
+    // Models the mod reads on the CPU: merged with Mesh.CombineMeshes (navigation pieces, Pathfinder amulet) or bent (White Hilt Bow).
+    private static readonly string[] CombinedModels = { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "whbow" };
 
     /// <summary>
     /// Configures the importers and writes the bundle to the project's AssetBundles folder.

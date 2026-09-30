@@ -35,6 +35,11 @@ public class WhiteHiltKnife : WhiteHiltWeaponBase
     protected override string CopyFrom => "KnifeChitin";
 
     /// <summary>
+    /// Seax Sword by iedalton, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whknife";
+
+    /// <summary>
     /// Indicates whether the White Hilt Knife is enabled.
     /// </summary>
     public override bool Enabled => true;

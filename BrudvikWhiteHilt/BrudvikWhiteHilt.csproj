@@ -175,6 +175,7 @@
     <Compile Include="Items\Weapons\WhiteHiltAtgeir\WhiteHiltAtgeir.cs" />
     <Compile Include="Items\Weapons\WhiteHiltBattleaxe\WhiteHiltBattleaxe.cs" />
     <Compile Include="Items\Weapons\WhiteHiltBow\WhiteHiltBow.cs" />
+    <Compile Include="Items\Weapons\WhiteHiltBow\WhiteHiltBowFlex.cs" />
     <Compile Include="Items\Weapons\WhiteHiltBuckler\WhiteHiltBuckler.cs" />
     <Compile Include="Items\Weapons\WhiteHiltCrossbow\WhiteHiltCrossbow.cs" />
     <Compile Include="Items\Weapons\WhiteHiltKnife\WhiteHiltKnife.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
     <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
+    <Compile Include="Items\Weapons\StaffFlame.cs" />
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
     <Compile Include="Patches\Crafting\NearbyContainerPatches.cs" />
     <Compile Include="Patches\Crafting\NearbyContainerStationPatches.cs" />

@@ -35,6 +35,11 @@ public class WhiteHiltBattleaxe : WhiteHiltWeaponBase
     protected override string CopyFrom => "Battleaxe";
 
     /// <summary>
+    /// Nordic Axe - Cloudcleaver by Peter Nox, with a white grip.
+    /// </summary>
+    protected override string ModelName => "whbattleaxe";
+
+    /// <summary>
     /// Indicates whether the White Hilt Battleaxe is enabled.
     /// </summary>
     public override bool Enabled => true;

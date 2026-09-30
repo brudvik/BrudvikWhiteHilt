@@ -1,0 +1,10 @@
+{
+  "axes": [[0.0, 0.0, 1.0], [-0.0, 1.0, 0.0], [1.0, 0.0, 0.0]],
+  "grip": [0.154, 0, 0],
+  "scale": 0.85,
+  "offset": [0, 0, 0.2],
+  "split": [
+    { "name": "whcrossbowstring", "materials": ["Rope"] },
+    { "name": "whcrossbowstringloaded", "materials": ["Rope"], "pull": [-0.2, 0, 0], "span": [2, 0.643] }
+  ]
+}
