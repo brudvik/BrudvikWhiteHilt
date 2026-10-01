@@ -249,6 +249,7 @@
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
+    <Compile Include="Patches\Navigation\MapAreaPatches.cs" />
     <Compile Include="Patches\Navigation\PortraitPatches.cs" />
     <Compile Include="Patches\Navigation\SharedMapRevealPatches.cs" />
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
@@ -396,6 +397,10 @@
     <Compile Include="Pieces\Navigation\ShipRoutePlanner.cs" />
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
+    <Compile Include="Navigation\Areas\MapArea.cs" />
+    <Compile Include="Navigation\Areas\MapAreaOverlay.cs" />
+    <Compile Include="Navigation\Areas\MapAreaService.cs" />
+    <Compile Include="Navigation\Areas\MapAreaSettings.cs" />
     <Compile Include="Navigation\Portraits\PortraitCapture.cs" />
     <Compile Include="Navigation\Portraits\PortraitNetwork.cs" />
     <Compile Include="Navigation\Portraits\PortraitPins.cs" />

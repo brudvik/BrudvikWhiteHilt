@@ -1014,5 +1014,12 @@
   "whitehilt_brush_hud": "Kost {0}   {1} igjen   radius {2}",
   "whitehilt_brush_hud_empty": "Kosten er tom: bruk en malingskrukke   radius {0}",
   "whitehilt_brush_single": "ett element",
-  "whitehilt_paint_tooltip": "Farge"
+  "whitehilt_paint_tooltip": "Farge",
+  "whitehilt_area_base": "Base",
+  "whitehilt_area_outpost": "Utpost",
+  "whitehilt_area_building": "Bygg",
+  "whitehilt_area_field": "Åker",
+  "whitehilt_area_pasture": "Beite",
+  "whitehilt_area_plants": "{0} planter",
+  "whitehilt_area_animals": "{0} dyr"
 }

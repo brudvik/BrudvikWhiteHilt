@@ -35,3 +35,31 @@ Other players are shown on the map as a portrait of their Viking on a see-throug
 |-----------------|-------------|
 | `whitehilt_portrait` | Shows which players' portraits are known |
 | `whitehilt_portrait test` | Adds or removes a pin with your own portrait 20 m east of you |
+
+## 🏰 Built areas, fields, pastures and wards
+
+The map shows where people have built. The server looks through the whole world every half minute and groups what it finds into areas of 16 m squares; squares up to two apart belong to the same area, so a path or garden between houses does not split a base.
+
+| Area | What counts | Drawn as |
+|------|-------------|----------|
+| **Base** | Player-built pieces with a bed and a fire | Filled in the builder's colour, gold border |
+| **Outpost** | Player-built pieces with a workbench (or other crafting station) or a portal | Builder's colour, blue border |
+| **Building** | Other player-built pieces | Builder's colour, white border |
+| **Field** | Planted crops, growing or ripe (ripe ones only beside a farm, since seeds also grow wild) | Green |
+| **Pasture** | Tamed animals | Brown, with the number of animals |
+| **Ward** | Every ward | Dashed ring showing its reach: green when on, grey when off |
+
+- Each builder has their own colour, the same for everyone. The area takes the colour of whoever built most of it.
+- Only areas where you have uncovered the map are drawn.
+- Zoom in on the large map to see the names. A sign in the area whose text starts with `#` names it (`#Brudvik`); otherwise it shows the kind and the builder.
+- Ships and carts are left out; the Harbour Anchor shows ships.
+
+| Setting (section `Map.Areas`) | Default | Description |
+|-------------------------------|---------|-------------|
+| `AllowAreas` (server) | true | Find areas and wards at all |
+| `ShowOthers` (server) | true | Players see everyone's buildings; off: only their own, and the fields and pastures beside them |
+| `MinPieces` (server) | 5 | Fewest pieces for a built area (a lone campfire is left out) |
+| `MinPlants` (server) | 4 | Fewest crops for a field |
+| `MinAnimals` (server) | 2 | Fewest tamed animals for a pasture |
+| `ShowBuildings` / `ShowFields` / `ShowPastures` / `ShowWards` | true | What you draw on your own map |
+| `ShowLabels` | true | Names on the large map when zoomed in |

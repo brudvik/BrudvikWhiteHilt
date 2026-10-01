@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.23.0 - 2026-10-01
+
+### Added
+- Built areas on the map: everything players have built is outlined and filled in the builder's colour, with a gold border for a base (bed and fire), blue for an outpost (workbench or portal) and white for other buildings. Fields of planted crops are drawn green, pastures with tamed animals brown with the number of animals, and wards as a dashed ring showing their reach. Zoomed in, the large map shows names; a sign whose text starts with `#` names the area. Only uncovered map is drawn; the server decides whether players see each other's buildings and how many pieces, plants or animals make an area
+
 ## v0.22.0 - 2026-10-01
 
 ### Added

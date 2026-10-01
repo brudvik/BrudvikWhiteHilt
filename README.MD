@@ -45,7 +45,7 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, and other players shown on the map as portraits of their Vikings.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
