@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.22.0 - 2026-10-01
+
+### Added
+- Player portraits on the map: other players are shown as a portrait of their Viking on a see-through black disc with the name under it, instead of the red figure. The portrait is taken once in the main menu (bare head, neutral light), shared once per look and cached by the other players; players without one get their first letter. `whitehilt_portrait test` shows a test pin with your own portrait
+
 ## v0.21.0 - 2026-10-01
 
 ### Added

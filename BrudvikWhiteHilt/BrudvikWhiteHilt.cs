@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.21.0";
+    public const string PluginVersion = "0.22.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -69,6 +69,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Backpack.BackpackSettings.Initialize();
         Pieces.Ships.ShipSettings.Initialize();
         Clock.ClockSettings.Initialize();
+        Navigation.Portraits.PortraitSettings.Initialize();
         Painting.PaintSettings.Initialize();
         Branding.BrandingSettings.Initialize();
         Sound.IndoorSoundSettings.Initialize();

@@ -15,3 +15,23 @@ A new skill, **Exploration**, rises with every patch of map you uncover for the 
 | **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Silver Necklace ×1, Ruby ×1 |
 
 The table and the amulet do not add up; the wider one counts.
+
+## 🖼️ Player portraits on the map
+
+Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure.
+
+- Your portrait is taken in the main menu when the character is shown: bare head (no helmet), hair and beard, in neutral light. A new one is only taken when the look changes (body, hair, beard or colours).
+- When you join, the others get the portrait once (about 10 KB). They keep it on disk, so the next time only a short fingerprint is sent. Nothing extra is needed on the server.
+- A player without a portrait gets the first letter of the name on a coloured disc.
+- Names are always shown on the large map; on the minimap only if you turn it on.
+- Portraits are stored in `BepInEx/config/WhiteHilt/portraits/`. Delete `own_<id>.bin` to have yours taken again.
+
+| Setting (section `Map`) | Default | Description |
+|-------------------------|---------|-------------|
+| `PlayerPortraits` | true | Show portraits, and take and share your own |
+| `ShowNamesOnMinimap` | false | Show names under the portraits on the minimap too |
+
+| Console command | Description |
+|-----------------|-------------|
+| `whitehilt_portrait` | Shows which players' portraits are known |
+| `whitehilt_portrait test` | Adds or removes a pin with your own portrait 20 m east of you |
