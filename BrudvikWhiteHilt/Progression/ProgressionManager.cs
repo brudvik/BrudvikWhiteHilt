@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using BrudvikWhiteHilt.Helpers;
 
@@ -26,7 +27,8 @@ public static class ProgressionManager
     private static readonly Dictionary<string, IWhiteHiltProgressionEntry> itemEntries = new();
     private static readonly Dictionary<string, IWhiteHiltProgressionEntry> pieceEntries = new();
     private static readonly Dictionary<string, Piece.Requirement[]> originalRequirements = new();
-    private static readonly Dictionary<string, (ProgressionTier Tier, Piece.Requirement[] Requirements)> linearRequirements = new();
+    private static readonly Dictionary<string, (string Text, Piece.Requirement[] Requirements)> configuredRequirements = new();
+    private static readonly Dictionary<string, (ProgressionTier Tier, Piece.Requirement[] Base, Piece.Requirement[] Requirements)> linearRequirements = new();
     private static Player trackedPlayer;
     private static ProgressionTier trackedTier;
 
@@ -53,7 +55,7 @@ public static class ProgressionManager
     public static void RegisterItem(IWhiteHiltProgressionEntry entry)
     {
         itemEntries[entry.GatedPrefabName] = entry;
-        WhiteHiltConfig.BindTierOverride(entry);
+        WhiteHiltConfig.BindEntry(entry);
     }
 
     /// <summary>
@@ -63,7 +65,7 @@ public static class ProgressionManager
     public static void RegisterPiece(IWhiteHiltProgressionEntry entry)
     {
         pieceEntries[entry.GatedPrefabName] = entry;
-        WhiteHiltConfig.BindTierOverride(entry);
+        WhiteHiltConfig.BindEntry(entry);
     }
 
     /// <summary>
@@ -102,7 +104,7 @@ public static class ProgressionManager
 
             ProgressionTier? tier = ResolveTier(entry, linear);
             recipe.m_enabled = tier.HasValue && tier.Value <= unlockedTier;
-            recipe.m_resources = GetRequirements(entry.GatedPrefabName, recipe.m_resources, linear ? tier : null, int.MaxValue);
+            recipe.m_resources = GetRequirements(entry, recipe.m_resources, linear ? tier : null, int.MaxValue);
         }
 
         bool piecesChanged = false;
@@ -120,7 +122,7 @@ public static class ProgressionManager
             piece.m_enabled = enabled;
             // The build HUD shows 6 slots, and the crafting station takes one of them.
             int room = HudRequirementSlots - (piece.m_craftingStation != null ? 1 : 0);
-            piece.m_resources = GetRequirements(pair.Key, piece.m_resources, linear ? tier : null, room);
+            piece.m_resources = GetRequirements(pair.Value, piece.m_resources, linear ? tier : null, room);
         }
 
         return piecesChanged;
@@ -129,7 +131,7 @@ public static class ProgressionManager
     private static ProgressionTier? ResolveTier(IWhiteHiltProgressionEntry entry, bool linear)
     {
         TierOverride tierOverride = WhiteHiltConfig.GetTierOverride(entry.Id);
-        if (tierOverride == TierOverride.Never)
+        if (tierOverride == TierOverride.Never || !WhiteHiltConfig.IsEnabled(entry.Id))
         {
             return null;
         }
@@ -167,20 +169,22 @@ public static class ProgressionManager
         return ProgressionTier.Start;
     }
 
-    private static Piece.Requirement[] GetRequirements(string prefabName, Piece.Requirement[] current, ProgressionTier? linearTier, int maxRequirements)
+    private static Piece.Requirement[] GetRequirements(IWhiteHiltProgressionEntry entry, Piece.Requirement[] current, ProgressionTier? linearTier, int maxRequirements)
     {
-        if (!originalRequirements.TryGetValue(prefabName, out var original))
+        string prefabName = entry.GatedPrefabName;
+        if (!originalRequirements.TryGetValue(prefabName, out var builtIn))
         {
-            original = current ?? new Piece.Requirement[0];
-            originalRequirements[prefabName] = original;
+            builtIn = current ?? new Piece.Requirement[0];
+            originalRequirements[prefabName] = builtIn;
         }
 
+        Piece.Requirement[] original = GetConfiguredRequirements(entry, builtIn, maxRequirements);
         if (!linearTier.HasValue)
         {
             return original;
         }
 
-        if (linearRequirements.TryGetValue(prefabName, out var cached) && cached.Tier == linearTier.Value)
+        if (linearRequirements.TryGetValue(prefabName, out var cached) && cached.Tier == linearTier.Value && cached.Base == original)
         {
             return cached.Requirements;
         }
@@ -207,8 +211,56 @@ public static class ProgressionManager
             }
         }
 
-        linearRequirements[prefabName] = (linearTier.Value, requirements);
+        linearRequirements[prefabName] = (linearTier.Value, original, requirements);
         return requirements;
+    }
+
+    private static Piece.Requirement[] GetConfiguredRequirements(IWhiteHiltProgressionEntry entry, Piece.Requirement[] builtIn, int maxRequirements)
+    {
+        string text = WhiteHiltConfig.GetRecipeOverride(entry.Id);
+        if (text.Length == 0)
+        {
+            return builtIn;
+        }
+
+        if (configuredRequirements.TryGetValue(entry.GatedPrefabName, out var cached) && cached.Text == text)
+        {
+            return cached.Requirements;
+        }
+
+        List<Piece.Requirement> requirements = new();
+        foreach (string part in text.Split(','))
+        {
+            string[] fields = part.Split(':');
+            string name = fields[0].Trim();
+            if (name.Length == 0)
+            {
+                continue;
+            }
+
+            ItemDrop material = GetItemDrop(name);
+            int amountPerLevel = 0;
+            if (material == null || fields.Length < 2 || fields.Length > 3
+                || !int.TryParse(fields[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int amount) || amount < 0
+                || (fields.Length == 3 && !int.TryParse(fields[2].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out amountPerLevel)))
+            {
+                Jotunn.Logger.LogWarning($"{entry.Id}: skipping \"{part.Trim()}\" in the recipe config");
+                continue;
+            }
+
+            requirements.Add(new Piece.Requirement { m_resItem = material, m_amount = amount, m_amountPerLevel = amountPerLevel, m_recover = true });
+        }
+
+        if (requirements.Count > maxRequirements)
+        {
+            Jotunn.Logger.LogWarning($"{entry.Id}: the build menu shows at most {maxRequirements} requirements, the rest of the recipe config is left out");
+            requirements = requirements.Take(maxRequirements).ToList();
+        }
+
+        // A config with nothing usable would make it free, so the built-in recipe stays.
+        Piece.Requirement[] result = requirements.Count > 0 ? requirements.ToArray() : builtIn;
+        configuredRequirements[entry.GatedPrefabName] = (text, result);
+        return result;
     }
 
     private static void AnnounceNewTier(Player player, ProgressionTier unlockedTier, bool linear)

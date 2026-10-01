@@ -11,8 +11,12 @@ public static class WhiteHiltConfig
 {
     private const string GeneralSection = "General";
     private const string TiersSection = "Tiers";
+    private const string ContentSection = "Content";
+    private const string RecipesSection = "Recipes";
 
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
+    private static readonly Dictionary<string, ConfigEntry<bool>> enabledEntries = new();
+    private static readonly Dictionary<string, ConfigEntry<string>> recipeOverrides = new();
     private static ConfigFile configFile;
 
     /// <summary>
@@ -50,11 +54,25 @@ public static class WhiteHiltConfig
     }
 
     /// <summary>
-    /// Binds the tier override entry for an item or piece.
+    /// Binds the on/off switch, the recipe override and the tier override for an item or piece.
     /// </summary>
     /// <param name="entry">The item or piece.</param>
-    public static void BindTierOverride(IWhiteHiltProgressionEntry entry)
+    public static void BindEntry(IWhiteHiltProgressionEntry entry)
     {
+        enabledEntries[entry.Id] = configFile.Bind(
+            ContentSection,
+            entry.Id,
+            true,
+            AdminOnly($"{entry.DisplayName}. Off: it can no longer be crafted or built. Existing copies are kept."));
+
+        recipeOverrides[entry.Id] = configFile.Bind(
+            RecipesSection,
+            entry.Id,
+            string.Empty,
+            AdminOnly($"{entry.DisplayName}. Empty: the built-in recipe.\n" +
+                      "Otherwise a comma separated list of Prefab:Amount or Prefab:Amount:AmountPerLevel, e.g. \"Iron:10:5, FineWood:4\". " +
+                      "Unknown prefabs are skipped with a warning."));
+
         tierOverrides[entry.Id] = configFile.Bind(
             TiersSection,
             entry.Id,
@@ -71,6 +89,26 @@ public static class WhiteHiltConfig
     public static TierOverride GetTierOverride(string id)
     {
         return tierOverrides.TryGetValue(id, out var entry) ? entry.Value : TierOverride.Default;
+    }
+
+    /// <summary>
+    /// Gets whether an item or piece is switched on.
+    /// </summary>
+    /// <param name="id">The entry's identifier.</param>
+    /// <returns>False only if the config switches it off.</returns>
+    public static bool IsEnabled(string id)
+    {
+        return !enabledEntries.TryGetValue(id, out var entry) || entry.Value;
+    }
+
+    /// <summary>
+    /// Gets the configured recipe of an item or piece.
+    /// </summary>
+    /// <param name="id">The entry's identifier.</param>
+    /// <returns>The recipe text, or an empty string for the built-in recipe.</returns>
+    public static string GetRecipeOverride(string id)
+    {
+        return recipeOverrides.TryGetValue(id, out var entry) ? entry.Value?.Trim() ?? string.Empty : string.Empty;
     }
 
     /// <summary>
