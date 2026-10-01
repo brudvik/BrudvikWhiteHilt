@@ -173,10 +173,11 @@ public static class WhiteHiltConfig
     /// <param name="key">Config key.</param>
     /// <param name="defaultValue">Default value.</param>
     /// <param name="description">Description shown in the config file.</param>
+    /// <param name="acceptableValues">Optional allowed range or list.</param>
     /// <returns>The bound entry.</returns>
-    public static ConfigEntry<T> BindLocal<T>(string section, string key, T defaultValue, string description)
+    public static ConfigEntry<T> BindLocal<T>(string section, string key, T defaultValue, string description, AcceptableValueBase acceptableValues = null)
     {
-        return configFile.Bind(section, key, defaultValue, description);
+        return configFile.Bind(section, key, defaultValue, new ConfigDescription(description, acceptableValues));
     }
 
     /// <summary>

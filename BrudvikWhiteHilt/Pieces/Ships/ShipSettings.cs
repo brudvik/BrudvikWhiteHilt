@@ -124,6 +124,33 @@ public static class ShipSettings
     /// <summary>Whether everyone aboard a ship can zoom out as far as the helmsman.</summary>
     public static ConfigEntry<bool> CameraZoomAllAboard { get; private set; }
 
+    /// <summary>Whether the camera swings around the ship when it sets off on a route; the player's own.</summary>
+    public static ConfigEntry<bool> RouteCameraSweep { get; private set; }
+
+    /// <summary>Whether the HUD is hidden during the route camera sweep.</summary>
+    public static ConfigEntry<bool> RouteCameraSweepHideHud { get; private set; }
+
+    /// <summary>Seconds the route camera sweep takes, hold included.</summary>
+    public static ConfigEntry<float> RouteCameraSweepSeconds { get; private set; }
+
+    /// <summary>Seconds the sweep stays still in front of the sail.</summary>
+    public static ConfigEntry<float> RouteCameraSweepHoldSeconds { get; private set; }
+
+    /// <summary>The sweep's distance from the sail, in ship lengths.</summary>
+    public static ConfigEntry<float> RouteCameraSweepDistance { get; private set; }
+
+    /// <summary>The sweep's height above the middle of the sail, in ship lengths.</summary>
+    public static ConfigEntry<float> RouteCameraSweepHeight { get; private set; }
+
+    /// <summary>Degrees to the side of the bow where the sweep stops to show the sail.</summary>
+    public static ConfigEntry<float> RouteCameraSweepAngle { get; private set; }
+
+    /// <summary>Seconds the camera takes back to the player when the sweep is interrupted.</summary>
+    public static ConfigEntry<float> RouteCameraSweepCancelSeconds { get; private set; }
+
+    /// <summary>Degrees the view must turn within about a second to interrupt the sweep.</summary>
+    public static ConfigEntry<float> RouteCameraSweepCancelLook { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -213,6 +240,24 @@ public static class ShipSettings
             new AcceptableValueRange<float>(0f, 10f));
         CameraZoomAllAboard = WhiteHiltConfig.BindAdminOnly(Section, "CameraZoomAllAboard", true,
             "Everyone aboard a ship, also those standing on deck or sitting, can zoom out as far as the one at the helm.");
+        RouteCameraSweep = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweep", true,
+            "When a ship sets off on its route (\"Take me there\" or explorer mode), the camera of everyone sitting aboard swings out around the ship, past the front of the sail, and back behind you. A quick swing of the mouse takes the camera back at once.");
+        RouteCameraSweepHideHud = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepHideHud", true,
+            "Hide the HUD while the camera swings around the ship.");
+        RouteCameraSweepSeconds = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepSeconds", 10f,
+            "Seconds the camera takes to swing around the ship, the pause in front of the sail included.", new AcceptableValueRange<float>(4f, 30f));
+        RouteCameraSweepHoldSeconds = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepHoldSeconds", 1.5f,
+            "Seconds the camera stays still in front of the sail. At most half the whole swing.", new AcceptableValueRange<float>(0f, 10f));
+        RouteCameraSweepDistance = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepDistance", 1.3f,
+            "How far out the camera swings from the sail, in ship lengths, so small and large ships fill the picture alike.", new AcceptableValueRange<float>(0.5f, 4f));
+        RouteCameraSweepHeight = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepHeight", 0.3f,
+            "How high the camera swings above the middle of the sail, in ship lengths. 0 is level with the sail.", new AcceptableValueRange<float>(-0.3f, 2f));
+        RouteCameraSweepAngle = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepAngle", 30f,
+            "Degrees to the side of the bow where the camera stops to show the sail, so the figurehead and the mast leave the sail free. 0 is straight ahead.", new AcceptableValueRange<float>(0f, 90f));
+        RouteCameraSweepCancelSeconds = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepCancelSeconds", 0.5f,
+            "Seconds the camera takes back to you when the swing is interrupted by the mouse, standing up or opening a menu.", new AcceptableValueRange<float>(0.1f, 3f));
+        RouteCameraSweepCancelLook = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepCancelLook", 90f,
+            "Degrees you must turn the view within about a second to take the camera back. Looking calmly up and around, or zooming, does not interrupt the swing.", new AcceptableValueRange<float>(10f, 720f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

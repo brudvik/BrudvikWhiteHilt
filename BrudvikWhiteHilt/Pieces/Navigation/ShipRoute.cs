@@ -57,6 +57,8 @@ public class ShipRoute : MonoBehaviour
     private float avoidOffset;
     private bool reefed;
     private bool nearLand;
+    private bool underwayKnown;
+    private bool wasUnderway;
 
     /// <summary>The ship the route belongs to.</summary>
     public Ship Ship => ship;
@@ -229,6 +231,24 @@ public class ShipRoute : MonoBehaviour
         zdo.Set(key, Pack(points).GetArray());
     }
 
+    // Every client watches for the moment the ship sets off; a route already under way when it loads does not count.
+    private void Update()
+    {
+        if (nview == null || !nview.IsValid())
+        {
+            return;
+        }
+
+        bool underway = Sailing && nview.GetZDO().GetBool(underwayKey);
+        if (underway && underwayKnown && !wasUnderway)
+        {
+            RouteCameraSweep.Begin(ship);
+        }
+
+        underwayKnown = true;
+        wasUnderway = underway;
+    }
+
     private void FixedUpdate()
     {
         if (ship == null || nview == null || !nview.IsValid() || !nview.IsOwner())
@@ -347,7 +367,12 @@ public class ShipRoute : MonoBehaviour
         return false;
     }
 
-    private static bool Seated(Player player)
+    /// <summary>
+    /// Whether a player sits, lies in a bed or is attached to something, as a route needs before the ship sets off.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>True if seated.</returns>
+    public static bool Seated(Player player)
     {
         return player.IsSitting() || player.InBed() || player.IsAttached();
     }

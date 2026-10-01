@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Pieces.Navigation;
 using BrudvikWhiteHilt.Pieces.Ships;
 using HarmonyLib;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Patches.Ships;
 
 /// <summary>
-/// Lets the camera zoom further out at the helm and, if set, for everyone aboard a ship.
+/// Lets the camera zoom further out at the helm and, if set, for everyone aboard a ship, and swings it around the
+/// ship when it sets off on a route.
 /// </summary>
 [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateCamera))]
 public static class ShipCameraZoomPatch
@@ -33,6 +35,16 @@ public static class ShipCameraZoomPatch
         __instance.m_maxDistance = ShipSettings.CameraZoomAllAboard.Value && IsAboard(Player.m_localPlayer)
             ? Mathf.Max(vanillaMaxDistance, boat)
             : vanillaMaxDistance;
+    }
+
+    /// <summary>
+    /// Moves the camera along the route sweep, if one runs.
+    /// </summary>
+    /// <param name="__instance">The game camera.</param>
+    [HarmonyPostfix]
+    public static void Postfix(GameCamera __instance)
+    {
+        RouteCameraSweep.Apply(__instance);
     }
 
     private static bool IsAboard(Player player)

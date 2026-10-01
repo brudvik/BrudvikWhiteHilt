@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.39.0 - 2026-10-01
+
+### Added
+- **Camera sweep when a ship sets off on its route**: with "Take me there" or explorer mode, the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once. Each player's own settings `Ships` → `RouteCameraSweep*`. See [Ships](docs/ships.md)
+
 ## v0.38.0 - 2026-10-01
 
 ### Added

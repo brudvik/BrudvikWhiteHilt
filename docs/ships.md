@@ -38,6 +38,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
 - **Speed and heading**: while steering, the speed in knots, the heading in degrees and compass point, where the wind comes from and the held course are shown under the wind indicator (`ShowSpeedAndHeading`).
 - **Camera zoom**: at the helm the camera zooms 2 m further out than in vanilla (`CameraExtraZoom`), and everyone aboard, standing on deck or sitting, can zoom out just as far (`CameraZoomAllAboard`).
+- **Camera sweep**: when a ship sets off on its route ("Take me there" or explorer mode, see [Navigation](navigation.md)), the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once.
 - **Push the ship**: standing on shore or in the water next to a ship that lies still, look at it and press **E** (hold to keep pushing). It is pushed away from you, off a beach or a rock.
 
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
@@ -81,5 +82,19 @@ Section `[Ships]` (admin only, synced from the server):
 | `RouteExploreNearLand` | 120 | Within this many metres of land, explorer mode never uses full sail |
 | `CameraExtraZoom` | 2 | Metres the camera can zoom further out at the helm than in vanilla; 0 keeps the vanilla limit |
 | `CameraZoomAllAboard` | true | Everyone aboard can zoom out as far as the one at the helm |
+
+Each player's own settings in `[Ships]`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `RouteCameraSweep` | true | The camera swings around the ship when it sets off on a route |
+| `RouteCameraSweepHideHud` | true | The HUD is hidden during the sweep |
+| `RouteCameraSweepSeconds` | 10 | Seconds the whole sweep takes |
+| `RouteCameraSweepHoldSeconds` | 1.5 | Seconds the camera stays still in front of the sail |
+| `RouteCameraSweepDistance` | 1.3 | Distance from the sail, in ship lengths |
+| `RouteCameraSweepHeight` | 0.3 | Height above the middle of the sail, in ship lengths |
+| `RouteCameraSweepAngle` | 30 | Degrees to the side of the bow where the camera stops |
+| `RouteCameraSweepCancelSeconds` | 0.5 | Seconds back to you when the sweep is interrupted |
+| `RouteCameraSweepCancelLook` | 90 | Degrees the view must turn within about a second to interrupt; calm looking around and zooming do not |
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.
