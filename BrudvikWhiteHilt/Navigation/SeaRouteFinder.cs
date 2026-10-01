@@ -54,6 +54,7 @@ public static class SeaRouteFinder
         }
 
         List<(int X, int Z)> cells = new() { start.Value };
+        List<int> stops = new();
         List<Vector3> snapped = new();
         foreach (Vector3 target in targets)
         {
@@ -73,11 +74,12 @@ public static class SeaRouteFinder
             }
 
             cells.AddRange(leg.GetRange(1, leg.Count - 1));
+            stops.Add(cells.Count - 1);
             snapped.Add(ToWorld(goal.Value));
         }
 
         List<Vector3> route = null;
-        yield return Simplify(cells, water, result => route = result);
+        yield return Simplify(cells, stops, water, result => route = result);
         done(route, snapped);
     }
 
@@ -159,16 +161,23 @@ public static class SeaRouteFinder
         done(null);
     }
 
-    // Keeps only the turning points, skipping every point the ship can sail past in a straight line.
-    private static IEnumerator Simplify(List<(int X, int Z)> cells, Dictionary<long, bool> water, Action<List<Vector3>> done)
+    // Keeps only the turning points, skipping every point the ship can sail past in a straight line,
+    // but never a marker: each leg ends on its marker's cell.
+    private static IEnumerator Simplify(List<(int X, int Z)> cells, List<int> stops, Dictionary<long, bool> water, Action<List<Vector3>> done)
     {
         List<Vector3> route = new();
         int from = 0;
+        int stop = 0;
         route.Add(ToWorld(cells[0]));
         System.Diagnostics.Stopwatch clock = System.Diagnostics.Stopwatch.StartNew();
         while (from < cells.Count - 1)
         {
-            int to = cells.Count - 1;
+            while (stops[stop] <= from)
+            {
+                stop++;
+            }
+
+            int to = stops[stop];
             while (to > from + 1 && !(ClearLine(cells[from], cells[to], water) && DeepLine(ToWorld(cells[from]), ToWorld(cells[to]))))
             {
                 to--;

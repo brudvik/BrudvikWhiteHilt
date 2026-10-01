@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.31.0 - 2026-10-01
+
+### Fixed
+- "Take me there" with several markers sailed straight for the last one when the way there was open water. It now sails past every marker in turn
+
 ## v0.30.0 - 2026-10-01
 
 ### Added
