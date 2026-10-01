@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.25.0 - 2026-10-01
+
+### Added
+- Production timers on smelters, kilns, spinning wheels, windmills, the eitr refinery, fermenters, cooking stations, ovens, beehives, sap collectors, fires, eggs and breeding tame animals: time left, fuel for the queue, when food burns, and why a station has stopped, in the hover text
+- Labels over working stations near you, an overview of the stations around you (K), and messages when a station finishes, fills up, stops or is about to burn the food. Each kind can be turned off in the `Production` config
+
 ## v0.24.0 - 2026-10-01
 
 ### Added

@@ -306,6 +306,14 @@
     <Compile Include="Clock\ClockSettings.cs" />
     <Compile Include="Clock\GameClock.cs" />
     <Compile Include="Patches\Clock\ClockPatches.cs" />
+    <Compile Include="Production\ProductionLabels.cs" />
+    <Compile Include="Production\ProductionNotifier.cs" />
+    <Compile Include="Production\ProductionOverview.cs" />
+    <Compile Include="Production\ProductionReader.cs" />
+    <Compile Include="Production\ProductionRegistry.cs" />
+    <Compile Include="Production\ProductionSettings.cs" />
+    <Compile Include="Production\ProductionStatus.cs" />
+    <Compile Include="Patches\Production\ProductionPatches.cs" />
     <Compile Include="Difficulty\BloodMoonSky.cs" />
     <Compile Include="Difficulty\CreatureStars.cs" />
     <Compile Include="Difficulty\DifficultyCommands.cs" />

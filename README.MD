@@ -65,6 +65,10 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 Surt's Brazier for fires without fuel, crafting and building from nearby chests, and the Waste Well.
 
+### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
+
+Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven, beehive, fire, egg and breeding animal, with labels, an overview and messages.
+
 ### 🎒 [Backpack](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/backpack.md)
 
 An extra row, two hotbars, and slots for equipment, food, potions, accessories, shield, ammo and coins.
