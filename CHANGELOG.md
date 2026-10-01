@@ -5,7 +5,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## v0.25.1 - 2026-10-01
 
 ### Fixed
-- Dogs no longer breed. Two players' dogs near each other could breed even faster than wolves
+- Dogs no longer breed like vanilla wolves: two players' dogs near each other could get wolf cubs, faster than wolves do. Litters with real puppies work as before
 
 ## v0.25.0 - 2026-10-01
 
