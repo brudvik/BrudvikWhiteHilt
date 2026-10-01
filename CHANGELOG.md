@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.32.0 - 2026-10-01
+
+### Added
+- **Stone Dowser**, cut at the stonecutter (Stone ×20, Iron ×2, Greydwarf Eye ×5) and worn in an accessory slot. It leads to the nearest clearing that still has rocks for the Mysterious Rock: a pin on the map with the number of rocks left, and the direction and distance when it changes. Near a rock it pings like the Wishbone, at a lower pitch. Settings under `Gear.WhiteHiltStoneDowser`. See [Navigation](docs/navigation.md)
+
 ## v0.31.0 - 2026-10-01
 
 ### Added

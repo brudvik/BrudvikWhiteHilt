@@ -18,6 +18,18 @@ From Exploration 25 the **Lookout** (O) opens up the map around you and shows se
 
 The table and the amulet do not add up; the wider one counts.
 
+## 🪨 Stone Dowser
+
+The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest clearings around a big boulder, 22 in each. The **Stone Dowser** helps you find the next clearing, the way the Wishbone finds silver.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Stone Dowser** | A Wishbone in grey stone, worn in an accessory slot. Every 30 seconds it finds the nearest clearing within 3000 m that still has rocks, marks it on the map with the number left, and tells you the direction and distance when it changes. Within 40 m of a rock it pings like the Wishbone, faster the closer you come, at a lower pitch so the two can be told apart | Stonecutter | Stone ×20, Iron ×2, Greydwarf Eye ×5 |
+
+- The server knows every clearing in the world, also those nobody has been near; those count as full.
+- In a clearing someone has visited, only the rocks not yet picked count. Clearings with none left are skipped.
+- Taking the dowser off removes the pin.
+
 ## 🖼️ Player portraits on the map
 
 Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure.
@@ -83,3 +95,9 @@ All admin only, synced from the server.
 | `[Gear.WhiteHiltChartTable] Weight` | 10 | Weight of the Navigator's Table item |
 | `[Gear.WhiteHiltPathfinder] MaxAdrenaline` | 50 | Adrenaline needed for Raven Sight |
 | `[Gear.WhiteHiltPathfinder] AdrenalinePerSquareMetre` | 0.0001 | Adrenaline per square metre of new map |
+| `[Gear.WhiteHiltStoneDowser] SearchRadius` | 3000 | Metres the Stone Dowser looks for a clearing with rocks left |
+| `[Gear.WhiteHiltStoneDowser] RefreshSeconds` | 30 | Seconds between each search |
+| `[Gear.WhiteHiltStoneDowser] PingRange` | 40 | Metres within which it pings toward the nearest rock |
+| `[Gear.WhiteHiltStoneDowser] ShowPin` | true | Mark the clearing on the map; off: only direction and distance |
+| `[Gear.WhiteHiltStoneDowser] Items` | StoneRock | Items whose pickables it counts and pings toward |
+| `[Gear.WhiteHiltStoneDowser] Locations` | BigRockClearing | Locations it leads to |

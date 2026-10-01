@@ -311,6 +311,7 @@
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
+    <Compile Include="Patches\Navigation\StoneDowsingPatches.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Backpack\BackpackGui.cs" />
     <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
+    <Compile Include="Items\Accessories\StoneDowser.cs" />
     <Compile Include="Backpack\BackpackInput.cs" />
     <Compile Include="Backpack\HandSlots.cs" />
     <Compile Include="Companions\CompanionRest.cs" />
@@ -463,6 +465,10 @@
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
     <Compile Include="Navigation\NavigationSettings.cs" />
+    <Compile Include="Navigation\Dowsing\StoneDowsingEffect.cs" />
+    <Compile Include="Navigation\Dowsing\StoneDowsingService.cs" />
+    <Compile Include="Navigation\Dowsing\StoneDowsingSettings.cs" />
+    <Compile Include="Navigation\Dowsing\StoneDowsingTargets.cs" />
     <Compile Include="Navigation\Areas\MapArea.cs" />
     <Compile Include="Navigation\Areas\MapAreaOverlay.cs" />
     <Compile Include="Navigation\Areas\MapAreaService.cs" />
