@@ -39,6 +39,9 @@ public class ShipRoute : MonoBehaviour
     private static readonly int pathKey = "whitehilt_route_path".GetStableHashCode();
     private static readonly int pointKey = "whitehilt_route_point".GetStableHashCode();
     private static readonly int sailingKey = "whitehilt_route_sailing".GetStableHashCode();
+    private static readonly int captainKey = "whitehilt_route_captain".GetStableHashCode();
+    private static readonly int underwayKey = "whitehilt_route_underway".GetStableHashCode();
+    private static readonly int orderedKey = "whitehilt_route_ordered".GetStableHashCode();
     private static readonly List<ShipRoute> instances = new();
 
     private readonly List<Vector3> markers = new();
@@ -68,6 +71,9 @@ public class ShipRoute : MonoBehaviour
 
     /// <summary>True while the ship sails the route on its own.</summary>
     public bool Sailing => nview != null && nview.IsValid() && nview.GetZDO().GetBool(sailingKey);
+
+    /// <summary>True while the ship sails the route at the slowest speed, rowing.</summary>
+    public bool Rowing => ship != null && ship.m_speed == Ship.Speed.Slow && Sailing;
 
     /// <summary>
     /// The route of the ship the player is aboard, if it has a Navigator's Table.
@@ -256,6 +262,25 @@ public class ShipRoute : MonoBehaviour
             return;
         }
 
+        if (!zdo.GetBool(underwayKey))
+        {
+            if (!CaptainSeated(zdo.GetLong(captainKey)))
+            {
+                double waited = (ZNet.instance.GetTime() - new System.DateTime(zdo.GetLong(orderedKey))).TotalSeconds;
+                if (waited > ShipSettings.RouteSitSeconds.Value)
+                {
+                    StopSailing(zdo, "$whitehilt_route_sit_timeout");
+                    return;
+                }
+
+                ship.m_speed = Ship.Speed.Stop;
+                return;
+            }
+
+            zdo.Set(underwayKey, true);
+            nview.InvokeRPC(ZNetView.Everybody, MessageRpc, "$whitehilt_route_started");
+        }
+
         int point = zdo.GetInt(pointKey);
         while (point < path.Count && Utils.DistanceXZ(here, path[point]) < (point == path.Count - 1 ? MarkerReached : PointReached))
         {
@@ -289,7 +314,41 @@ public class ShipRoute : MonoBehaviour
         float left = Remaining(point);
         bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), heading)) > SlowTurnDegrees;
         UpdateReef();
-        ship.m_speed = left < SlowNearEnd || turning || avoidOffset != 0f || reefed ? Ship.Speed.Half : Ship.Speed.Full;
+        ship.m_speed = AnyoneStanding() ? Ship.Speed.Slow
+            : left < SlowNearEnd || turning || avoidOffset != 0f || reefed ? Ship.Speed.Half
+            : Ship.Speed.Full;
+    }
+
+    private static bool Seated(Player player)
+    {
+        return player.IsSitting() || player.InBed() || player.IsAttached();
+    }
+
+    // The captain is the player who chose "Take me there"; their character's ZDO was made by their peer.
+    private bool CaptainSeated(long captain)
+    {
+        foreach (Player player in ship.m_players)
+        {
+            if (player != null && player.GetZDOID().UserID == captain)
+            {
+                return Seated(player);
+            }
+        }
+
+        return false;
+    }
+
+    private bool AnyoneStanding()
+    {
+        foreach (Player player in ship.m_players)
+        {
+            if (player != null && !player.IsDead() && !Seated(player))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void UpdateReef()
@@ -404,10 +463,13 @@ public class ShipRoute : MonoBehaviour
         Write(zdo, points, pathKey);
         Write(zdo, snapped, markersKey);
         zdo.Set(pointKey, 0);
+        zdo.Set(captainKey, sender);
+        zdo.Set(orderedKey, ZNet.instance.GetTime().Ticks);
+        zdo.Set(underwayKey, false);
         zdo.Set(sailingKey, true);
         assist?.StopHolding();
         upgrades?.WeighAnchor();
-        nview.InvokeRPC(ZNetView.Everybody, MessageRpc, "$whitehilt_route_started");
+        nview.InvokeRPC(sender, MessageRpc, "$whitehilt_route_sit");
     }
 
     private void RPC_Stop(long sender)

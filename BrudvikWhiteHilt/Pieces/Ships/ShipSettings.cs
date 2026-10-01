@@ -103,6 +103,9 @@ public static class ShipSettings
     /// <summary>Speed in knots above which a ship sailing its route reefs to half sail; 0 never reefs.</summary>
     public static ConfigEntry<float> RouteMaxSpeed { get; private set; }
 
+    /// <summary>Seconds the player who chose "Take me there" has to sit down before the route is called off.</summary>
+    public static ConfigEntry<float> RouteSitSeconds { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -172,6 +175,9 @@ public static class ShipSettings
         RouteMaxSpeed = WhiteHiltConfig.BindAdminOnly(Section, "RouteMaxSpeed", 45f,
             "Speed in knots above which a ship sailing its route on its own takes the sail down to half, until it is well below again. 0 never reefs.",
             new AcceptableValueRange<float>(0f, 200f));
+        RouteSitSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RouteSitSeconds", 30f,
+            "Seconds the player who chose \"Take me there\" has to sit down before the ship sets off. After that the route is called off and must be started again.",
+            new AcceptableValueRange<float>(5f, 600f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
@@ -193,6 +199,8 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_route_plotting", "Plotting a course...");
         Translations.AddEnglish("whitehilt_route_none", "No sea route found to the markers");
         Translations.AddEnglish("whitehilt_route_started", "The ship sails the route");
+        Translations.AddEnglish("whitehilt_route_sit", "Sit down within {0} seconds, and the ship sets off");
+        Translations.AddEnglish("whitehilt_route_sit_timeout", "Nobody sat down in time: choose \"Take me there\" again");
         Translations.AddEnglish("whitehilt_route_arrived", "The ship has arrived");
         Translations.AddEnglish("whitehilt_route_stopped", "The ship stops sailing the route");
         Translations.AddEnglish("whitehilt_route_taken", "You take the helm: the ship stops sailing the route");

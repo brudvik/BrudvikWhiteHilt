@@ -6,6 +6,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Changed
 - "Take me there" takes the sail down to half when the ship goes faster than 45 knots, and sets it full again once it is well below. Change it under `Ships` → `RouteMaxSpeed` (0 never reefs)
+- "Take me there" waits until the player who chose it sits down (on a bench, the deck or in a bed) before the ship sets off. If they have not sat down within 30 seconds (`Ships` → `RouteSitSeconds`), the route is called off and has to be started again
+- While anyone aboard stands, the ship sailing its route rows at the slowest speed, also when the captain stands up again
 
 ### Fixed
 - "Take me there" with several markers sailed straight for the last one when the way there was open water. It now sails past every marker in turn

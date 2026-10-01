@@ -2,6 +2,7 @@ using BrudvikWhiteHilt.Companions;
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.Farming;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
+using BrudvikWhiteHilt.Pieces.Ships;
 using BrudvikWhiteHilt.Ranching;
 
 namespace BrudvikWhiteHilt.Helpers;
@@ -38,6 +39,7 @@ public static class DynamicTexts
             Translations.Number(NavigationSettings.RavenSightRadius.Value)
         });
         Translations.AddDynamic("whitehilt_skill_exploration_description", () => new object[] { NavigationSettings.SharedMapRevealLevel.Value });
+        Translations.AddDynamic("whitehilt_route_sit", () => new object[] { Translations.Number(ShipSettings.RouteSitSeconds.Value) });
 
         Translations.AddDynamic("whitehilt_mapextension_inactive", () => new object[] { Translations.Number(PortalSettings.MapTableExtensionRange) });
         Translations.AddDynamic("piece_whitehilt_valkyriestone_description", () => new object[]

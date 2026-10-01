@@ -310,6 +310,7 @@
     <Compile Include="Patches\Navigation\SharedMapRevealPatches.cs" />
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
+    <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
