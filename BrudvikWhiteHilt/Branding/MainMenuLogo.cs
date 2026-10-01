@@ -6,13 +6,14 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Branding;
 
 /// <summary>
-/// The White Hilt logo with the mod version in the bottom right corner of the main menu.
+/// The White Hilt logo with the mod version in the top right corner of the main menu.
 /// </summary>
 public static class MainMenuLogo
 {
     private const string ObjectName = "WhiteHiltMenuLogo";
     private const float Size = 140f;
     private const float LabelHeight = 24f;
+    private const float LabelExtraWidth = 120f;
     private const float Margin = 24f;
 
     private static GameObject current;
@@ -39,8 +40,9 @@ public static class MainMenuLogo
         current = root.gameObject;
         ApplySetting();
         root.SetParent(startup.m_mainMenu.transform, false);
-        root.anchorMin = root.anchorMax = root.pivot = new Vector2(1f, 0f);
-        root.anchoredPosition = new Vector2(-Margin, Margin);
+        // The bottom right holds the vanilla version label, merch store button and modded notice.
+        root.anchorMin = root.anchorMax = root.pivot = new Vector2(1f, 1f);
+        root.anchoredPosition = new Vector2(-Margin, -Margin);
         root.sizeDelta = new Vector2(Size, Size + LabelHeight);
 
         RectTransform logo = new GameObject("Logo", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
@@ -63,8 +65,10 @@ public static class MainMenuLogo
             labelRect.anchorMax = new Vector2(1f, 0f);
             labelRect.pivot = new Vector2(0.5f, 0f);
             labelRect.anchoredPosition = Vector2.zero;
-            labelRect.sizeDelta = new Vector2(0f, LabelHeight);
+            labelRect.sizeDelta = new Vector2(LabelExtraWidth, LabelHeight);
             label.alignment = TextAlignmentOptions.Center;
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.overflowMode = TextOverflowModes.Overflow;
             label.raycastTarget = false;
             label.text = "White Hilt v" + global::BrudvikWhiteHilt.BrudvikWhiteHilt.PluginVersion;
         }

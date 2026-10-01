@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.29.2 - 2026-10-01
+
+### Fixed
+- The main menu logo covered the Merch Store button and its version text ran into the game's version label. It now sits in the top right corner, with the version on one line
+
 ## v0.29.1 - 2026-10-01
 
 ### Fixed
