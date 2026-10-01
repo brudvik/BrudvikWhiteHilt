@@ -181,7 +181,7 @@ public static class MonsterRegistry
             {
                 Drop(ScaleName, 2, 4, 100f),
                 Drop("Entrails", 1, 3, 100f),
-                Drop(LindormTrophyName, 1, 1, 15f)
+                Drop(LindormTrophyName, 1, 1, MonsterSettings.LindormTrophyChance.Value)
             }
         });
         GameObject prefab = creature.Prefab;
@@ -245,7 +245,7 @@ public static class MonsterRegistry
             {
                 Drop(SilkName, 1, 2, 100f),
                 Drop(GlandName, 1, 1, 50f),
-                Drop(SpiderTrophyName, 1, 1, 10f)
+                Drop(SpiderTrophyName, 1, 1, MonsterSettings.SpiderTrophyChance.Value)
             }
         });
         GameObject prefab = creature.Prefab;
@@ -310,11 +310,11 @@ public static class MonsterRegistry
         area.m_prefabs = new List<SpawnArea.SpawnData> { new() { m_prefab = spider, m_weight = 1f, m_minLevel = 1, m_maxLevel = 2 } };
         area.m_maxNear = MonsterSettings.NestMaxNear.Value;
         area.m_maxTotal = MonsterSettings.NestMaxNear.Value * 3;
-        area.m_spawnIntervalSec = 20f;
+        area.m_spawnIntervalSec = MonsterSettings.NestSpawnSeconds.Value;
         area.m_triggerDistance = 45f;
         area.m_nearRadius = 20f;
         area.m_spawnRadius = 3.5f;
-        area.m_levelupChance = 10f;
+        area.m_levelupChance = MonsterSettings.NestLevelUpChance.Value;
 
         HoverText hover = nest.GetComponent<HoverText>();
         if (hover != null)

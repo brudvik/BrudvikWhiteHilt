@@ -55,7 +55,7 @@ public static class JunkFilter
         }
 
         player.m_customData[Key] = string.Join(",", names);
-        player.Message(MessageHud.MessageType.Center, Localization.instance.Localize(junk ? "$msg_whitehilt_junk_on" : "$msg_whitehilt_junk_off", Localization.instance.Localize(sharedName)));
+        player.Message(MessageHud.MessageType.Center, Perks.Text(junk ? "$msg_whitehilt_junk_on" : "$msg_whitehilt_junk_off", Localization.instance.Localize(sharedName)));
     }
 
     /// <summary>

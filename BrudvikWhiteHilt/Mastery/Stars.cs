@@ -113,20 +113,21 @@ public static class Stars
     }
 
     /// <summary>
-    /// The most stars a skill level allows: one from 25, two from 50, three from 100.
+    /// The most stars a skill level allows: one, two or three as the milestones are reached.
     /// </summary>
     /// <param name="level">Skill level.</param>
     /// <param name="first">Milestone that gives the first star.</param>
+    /// <param name="second">Milestone that gives the second star.</param>
     /// <param name="last">Milestone that gives the third star.</param>
     /// <returns>Most stars.</returns>
-    public static int MaxAt(float level, Perk first, Perk last)
+    public static int MaxAt(float level, Perk first, Perk second, Perk last)
     {
         if (!MasterySettings.Stars.Value || !first.ReachedAt(level))
         {
             return 0;
         }
 
-        return last.ReachedAt(level) ? 3 : level >= 50f ? 2 : 1;
+        return last.ReachedAt(level) ? 3 : second.ReachedAt(level) ? 2 : 1;
     }
 
     /// <summary>
@@ -140,7 +141,10 @@ public static class Stars
     public static int Roll(float level, int maxStars, float chanceScale = 1f, float bonus = 0f)
     {
         float factor = Perks.Factor(level);
-        float[] chances = { 0.6f * factor * chanceScale, 0.35f, 0.25f };
+        float[] chances =
+        {
+            MasterySettings.FirstStarChance.Value * factor * chanceScale, MasterySettings.SecondStarChance.Value, MasterySettings.ThirdStarChance.Value
+        };
         int stars = 0;
         while (stars < maxStars && Random.value < chances[stars] + bonus)
         {
@@ -319,7 +323,7 @@ public static class Stars
         string text = $"\n$whitehilt_stars: {Text(stars)}";
         if (IsEdible(item.m_shared))
         {
-            text += "\n" + Localization.instance.Localize("$whitehilt_stars_food", Mathf.RoundToInt(FoodBonus(stars) * 100f).ToString());
+            text += "\n" + Perks.Text("$whitehilt_stars_food", Mathf.RoundToInt(FoodBonus(stars) * 100f).ToString());
         }
         else if (IsSeed(item.m_shared.m_name))
         {

@@ -90,10 +90,10 @@ public static class PickingPatches
             bonus++;
         }
 
-        int max = Stars.MaxAt(level, Perks.KeenEye, Perks.ForagersBounty);
+        int max = Stars.MaxAt(level, Perks.KeenEye, Perks.SeasonSense, Perks.ForagersBounty);
         if (max > 0)
         {
-            float scale = Perks.SeasonSense.ReachedAt(level) && WildPicks.IsBestTime(__instance) ? 2f : 1f;
+            float scale = Perks.SeasonSense.ReachedAt(level) && WildPicks.IsBestTime(__instance) ? MasterySettings.BestTimeStarMultiplier.Value : 1f;
             Stars.DropStars = _ => Stars.Roll(level, max, scale);
         }
     }

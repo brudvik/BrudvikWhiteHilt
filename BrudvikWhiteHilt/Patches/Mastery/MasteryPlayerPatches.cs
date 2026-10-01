@@ -11,9 +11,7 @@ namespace BrudvikWhiteHilt.Patches.Mastery;
 [HarmonyPatch]
 public static class MasteryPlayerPatches
 {
-    private const float ShieldWallRange = 4f;
     private const float ShieldWallPulse = 0.5f;
-    private const float IronGuardFactor = 1.25f;
     private const float PerfectBlockWindow = 0.25f;
 
     private static Humanoid blocker;
@@ -93,7 +91,7 @@ public static class MasteryPlayerPatches
         blocker = null;
         if (__state && __instance is Player player && player == Player.m_localPlayer && player.HaveStamina() && Perks.Riposte.Has(player))
         {
-            player.GetSEMan().AddStatusEffect(MasteryEffects.RiposteHash, resetTime: true);
+            MasteryEffects.Start(player, MasteryEffects.RiposteHash, MasterySettings.RiposteSeconds.Value);
         }
     }
 
@@ -107,7 +105,7 @@ public static class MasteryPlayerPatches
     {
         if (blocker is Player player && Perks.IronGuard.Has(player))
         {
-            __result *= IronGuardFactor;
+            __result *= 1f + MasterySettings.IronGuardBonus.Value;
         }
     }
 
@@ -139,7 +137,7 @@ public static class MasteryPlayerPatches
         }
 
         hit.ApplyModifier(Mathf.Max(0f, health - 1f) / damage);
-        player.GetSEMan().AddStatusEffect(MasteryEffects.LastStandHash, resetTime: true);
+        MasteryEffects.Start(player, MasteryEffects.LastStandHash, MasterySettings.LastStandCooldownMinutes.Value * 60f);
         player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_laststand");
         return true;
     }
@@ -195,7 +193,7 @@ public static class MasteryPlayerPatches
         nextShieldWall = Time.time + ShieldWallPulse;
         foreach (Player other in Player.GetAllPlayers())
         {
-            if (other != null && !other.IsDead() && Vector3.Distance(other.transform.position, player.transform.position) <= ShieldWallRange)
+            if (other != null && !other.IsDead() && Vector3.Distance(other.transform.position, player.transform.position) <= MasterySettings.ShieldWallRange.Value)
             {
                 other.GetSEMan().AddStatusEffect(MasteryEffects.ShieldWallHash, resetTime: true);
             }

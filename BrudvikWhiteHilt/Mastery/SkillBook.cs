@@ -26,7 +26,7 @@ public static class SkillBook
         Translations.AddEnglish("whitehilt_book_milestones", "Milestones");
         Translations.AddEnglish("whitehilt_book_star_chance", "Chance of a star: {0}%, up to {1}");
         Translations.AddEnglish("whitehilt_book_foraging", "One more from a wild pick: {0}%");
-        Translations.AddEnglish("whitehilt_book_cooking", "Cooking stations within 10 m work {0}% faster");
+        Translations.AddEnglish("whitehilt_book_cooking", "Cooking stations within {1} m work {0}% faster");
         Translations.AddEnglish("whitehilt_book_woodcutting", "Extra wood from a log: {0}%. Bird's nest in a felled tree: {1}%");
         Translations.AddEnglish("whitehilt_book_pickaxes", "Extra ore: {0}%. Finds in broken rock: {1}%");
         Translations.AddEnglish("whitehilt_book_blocking", "+{0} health, {1}% less damage, blocking costs {2}% less stamina");
@@ -81,7 +81,7 @@ public static class SkillBook
             foreach (Perk perk in perks)
             {
                 string color = level >= perk.Level ? Reached : Locked;
-                text.Append($"\n<color={color}>{perk.Level} {Localize(Translations.Token(perk.Key))}</color>: {Localize(Translations.Token(perk.Key + "_description"))}");
+                text.Append($"\n<color={color}>{perk.Level} {Localize(Translations.Token(perk.Key))}</color>: {perk.LocalizedDescription()}");
             }
         }
 
@@ -93,16 +93,16 @@ public static class SkillBook
         if (type == ForagingSkill.Type && MasterySettings.Foraging.Value)
         {
             yield return Format("$whitehilt_book_foraging", Percent(Perks.ForagingExtraYield(level)));
-            yield return StarChance(level, Perks.KeenEye, Perks.ForagersBounty);
+            yield return StarChance(level, Perks.KeenEye, Perks.SeasonSense, Perks.ForagersBounty);
         }
         else if (type == Skills.SkillType.Cooking && MasterySettings.Cooking.Value)
         {
-            yield return Format("$whitehilt_book_cooking", Percent(Perks.KitchenSpeed(level) - 1f));
-            yield return StarChance(level, Perks.FineCooking, Perks.MasterChef);
+            yield return Format("$whitehilt_book_cooking", Percent(Perks.KitchenSpeed(level) - 1f), MasterySettings.CookRange.Value.ToString("0.#"));
+            yield return StarChance(level, Perks.FineCooking, Perks.WatchfulCook, Perks.MasterChef);
         }
         else if (type == Skills.SkillType.Farming && MasterySettings.Farming.Value)
         {
-            yield return StarChance(level, Perks.StarredCrops, Perks.MasterFarmer);
+            yield return StarChance(level, Perks.StarredCrops, Perks.GreenThumb, Perks.MasterFarmer);
         }
         else if (type == Skills.SkillType.WoodCutting && MasterySettings.Woodcutting.Value)
         {
@@ -137,20 +137,20 @@ public static class SkillBook
         }
     }
 
-    private static string StarChance(float level, Perk first, Perk last)
+    private static string StarChance(float level, Perk first, Perk second, Perk last)
     {
-        int max = Stars.MaxAt(level, first, last);
-        return max == 0 ? null : Format("$whitehilt_book_star_chance", Percent(0.6f * Perks.Factor(level)), Stars.Text(max));
+        int max = Stars.MaxAt(level, first, second, last);
+        return max == 0 ? null : Format("$whitehilt_book_star_chance", Percent(MasterySettings.FirstStarChance.Value * Perks.Factor(level)), Stars.Text(max));
     }
 
     private static string Percent(float share)
     {
-        return Mathf.RoundToInt(share * 100f).ToString();
+        return Perks.Percent(share);
     }
 
     private static string Format(string token, params string[] words)
     {
-        return Localization.instance.Localize(token, words);
+        return Perks.Text(token, words);
     }
 
     private static string Localize(string text)

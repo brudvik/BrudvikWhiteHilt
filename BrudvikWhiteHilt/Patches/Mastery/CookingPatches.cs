@@ -25,7 +25,7 @@ public static class CookingPatches
         }
 
         float level = SkillLevels.Get(SkillLevels.FindPlayer(sender), Skills.SkillType.Cooking);
-        if (Stars.MaxAt(level, Perks.FineCooking, Perks.MasterChef) > 0)
+        if (Stars.MaxAt(level, Perks.FineCooking, Perks.WatchfulCook, Perks.MasterChef) > 0)
         {
             Stars.DropStars = _ => CookingStars.Roll(level);
         }

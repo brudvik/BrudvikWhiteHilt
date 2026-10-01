@@ -11,7 +11,7 @@ namespace BrudvikWhiteHilt.Mastery;
 public static class WildPicks
 {
     /// <summary>How far, in metres, sweep picking reaches.</summary>
-    public const float SweepRange = 4f;
+    public static float SweepRange => MasterySettings.SweepRange.Value;
 
     // Herbs that are not eaten but still count as wild picks.
     private static readonly HashSet<string> herbs = new() { "Thistle", "Dandelion", "Fiddleheadfern", "SmokePuff", "Flax", "Barley" };

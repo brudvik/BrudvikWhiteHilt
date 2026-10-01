@@ -319,8 +319,8 @@ public static class MapAreaOverlay
         string title = string.IsNullOrEmpty(area.Name) ? kind : area.Name;
         string detail = area.Kind switch
         {
-            MapAreaKind.Field => Localization.instance.Localize("$whitehilt_area_plants", area.Count.ToString()),
-            MapAreaKind.Pasture => Localization.instance.Localize("$whitehilt_area_animals", area.Count.ToString()),
+            MapAreaKind.Field => string.Format(Localization.instance.Localize("$whitehilt_area_plants"), area.Count),
+            MapAreaKind.Pasture => string.Format(Localization.instance.Localize("$whitehilt_area_animals"), area.Count),
             _ => string.IsNullOrEmpty(area.Name) ? area.Builder : string.IsNullOrEmpty(area.Builder) ? kind : $"{kind} · {area.Builder}",
         };
         return string.IsNullOrEmpty(detail) ? $"<b>{title}</b>" : $"<b>{title}</b>\n<size=11>{detail}</size>";

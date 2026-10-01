@@ -20,8 +20,6 @@ public static class Gathering
     /// <summary>Marks a hit from a falling tree, so it does not knock down more trees in turn.</summary>
     public const short DominoMarker = -77;
 
-    private const float OldGrowthChance = 0.05f;
-    private const float RichChance = 0.1f;
     private const float ReplantDistance = 3f;
     private const string ReplantRpc = "WhiteHilt_Replant";
 
@@ -150,7 +148,7 @@ public static class Gathering
         int state = zdo.GetInt(RichKey);
         if (state == 0 && Perks.RichVeins.ReachedAt(context.Level))
         {
-            state = Random.value < RichChance ? 2 : 1;
+            state = Random.value < MasterySettings.RichVeinChance.Value ? 2 : 1;
             zdo.Set(RichKey, state);
             if (state == 2)
             {
@@ -168,7 +166,7 @@ public static class Gathering
     /// <param name="hit">The hit.</param>
     public static void PrepareTree(Context context, HitData hit)
     {
-        context.OldGrowth = Perks.OldGrowth.ReachedAt(context.Level) && Random.value < OldGrowthChance;
+        context.OldGrowth = Perks.OldGrowth.ReachedAt(context.Level) && Random.value < MasterySettings.OldGrowthChance.Value;
         context.Domino = Perks.DominoFelling.ReachedAt(context.Level) && hit.m_itemLevel != DominoMarker;
         Vector3 forward = context.Attacker.transform.forward;
         forward.y = 0f;

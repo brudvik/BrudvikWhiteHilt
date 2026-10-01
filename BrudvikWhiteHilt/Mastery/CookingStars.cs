@@ -8,7 +8,7 @@ namespace BrudvikWhiteHilt.Mastery;
 public static class CookingStars
 {
     /// <summary>How near, in metres, a cook must be to speed up a station or keep its food from burning.</summary>
-    public const float CookRange = 10f;
+    public static float CookRange => MasterySettings.CookRange.Value;
 
     /// <summary>
     /// Rolls the stars a cook adds to a dish.
@@ -17,7 +17,7 @@ public static class CookingStars
     /// <returns>Stars.</returns>
     public static int Roll(float level)
     {
-        int max = Stars.MaxAt(level, Perks.FineCooking, Perks.MasterChef);
+        int max = Stars.MaxAt(level, Perks.FineCooking, Perks.WatchfulCook, Perks.MasterChef);
         if (max == 0)
         {
             return 0;

@@ -69,6 +69,9 @@ public static class KrakenSettings
     /// <summary>Size of the Kraken.</summary>
     public static ConfigEntry<float> Scale { get; private set; }
 
+    /// <summary>Multiplier on the Kraken's loot, trophy excepted.</summary>
+    public static ConfigEntry<float> LootMultiplier { get; private set; }
+
     /// <summary>Whether octopuses live in the ocean.</summary>
     public static ConfigEntry<bool> OctopusEnabled { get; private set; }
 
@@ -108,6 +111,9 @@ public static class KrakenSettings
             new AcceptableValueRange<float>(1f, 60f));
         Scale = WhiteHiltConfig.BindAdminOnly(Section, "Scale", 1.5f, "Size of the Kraken (1 = about 10 m long). Applies to new Krakens after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
+        LootMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "LootMultiplier", 1f,
+            "Multiplier on the meat, ink and chitin the Kraken drops (4-6, 3-5 and 6-10 at 1). The trophy stays one. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 10f));
 
         OctopusEnabled = WhiteHiltConfig.BindAdminOnly(OctopusSection, "Enabled", true, "Octopuses swim in the ocean and can be caught with a fishing rod.");
         OctopusMaxSpawned = WhiteHiltConfig.BindAdminOnly(OctopusSection, "MaxSpawned", 2, "Octopuses near a player at most.", new AcceptableValueRange<int>(0, 10));

@@ -14,10 +14,8 @@ public static class Angling
     public const string LegendaryKey = "whitehilt_legendary";
 
     private const string LogPrefix = "whitehilt_catch_";
-    private const float StrainPerSecond = 0.35f;
     private const float EasePerSecond = 0.5f;
     private const float WarnAt = 0.5f;
-    private const float DoubleCatchChance = 0.2f;
     private const float PendingSeconds = 5f;
     private const int LegendaryLevel = 5;
 
@@ -65,11 +63,12 @@ public static class Angling
         if (fish != null && owner is Player player && owner.IsBlocking() && fish.IsEscaping())
         {
             float level = player.GetSkillLevel(Skills.SkillType.Fishing);
-            float rate = StrainPerSecond * (1f - 0.4f * Perks.Factor(level)) * (Perks.SteadyHands.ReachedAt(level) ? 0.5f : 1f);
+            float rate = MasterySettings.LineStrain.Value * (1f - 0.4f * Perks.Factor(level))
+                * (Perks.SteadyHands.ReachedAt(level) ? 1f - MasterySettings.SteadyHandsReduction.Value : 1f);
             strain += rate * dt;
             if (strain >= WarnAt)
             {
-                fishingFloat.Message(Localization.instance.Localize("$msg_whitehilt_fishing_strain", Mathf.RoundToInt(strain * 100f).ToString()), prioritized: true);
+                fishingFloat.Message(Perks.Text("$msg_whitehilt_fishing_strain", Mathf.RoundToInt(strain * 100f).ToString()), prioritized: true);
             }
         }
         else
@@ -165,7 +164,7 @@ public static class Angling
             Snag(player);
         }
 
-        if (prefab != null && Perks.DoubleCatch.ReachedAt(level) && Random.value < DoubleCatchChance && player.GetInventory().AddItem(prefab, 1))
+        if (prefab != null && Perks.DoubleCatch.ReachedAt(level) && Random.value < MasterySettings.DoubleCatchChance.Value && player.GetInventory().AddItem(prefab, 1))
         {
             player.Message(MessageHud.MessageType.TopLeft, "$msg_whitehilt_fishing_double");
         }
@@ -183,10 +182,10 @@ public static class Angling
             string[] parts = entry.Value.Split(';');
             GameObject prefab = ObjectDB.instance?.GetItemPrefab(entry.Key.Substring(LogPrefix.Length));
             string name = prefab != null && prefab.GetComponent<ItemDrop>() is ItemDrop drop ? drop.m_itemData.m_shared.m_name : entry.Key.Substring(LogPrefix.Length);
-            string line = Localization.instance.Localize("$whitehilt_catch_log_entry", Localization.instance.Localize(name), Part(parts, 0), Part(parts, 1));
+            string line = Perks.Text("$whitehilt_catch_log_entry", Localization.instance.Localize(name), Part(parts, 0), Part(parts, 1));
             if (Part(parts, 2) != "0")
             {
-                line += ", " + Localization.instance.Localize("$whitehilt_catch_log_legendary", Part(parts, 2));
+                line += ", " + Perks.Text("$whitehilt_catch_log_legendary", Part(parts, 2));
             }
 
             yield return line;

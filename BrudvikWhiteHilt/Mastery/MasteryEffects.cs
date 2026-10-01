@@ -23,7 +23,7 @@ public static class MasteryEffects
     public const string LastStandName = "SE_WhiteHiltLastStand";
 
     /// <summary>Seconds of the Last Stand during which nothing hurts.</summary>
-    public const float LastStandGrace = 3f;
+    public static float LastStandGrace => MasterySettings.LastStandGraceSeconds.Value;
 
     private static bool registered;
 
@@ -45,9 +45,9 @@ public static class MasteryEffects
     public static void RegisterTranslations()
     {
         Translations.AddEnglish("whitehilt_se_riposte", "Riposte");
-        Translations.AddEnglish("whitehilt_se_riposte_tooltip", "Your next hit does 50% more damage.");
+        Translations.AddEnglish("whitehilt_se_riposte_tooltip", "Your next hit does {0}% more damage.");
         Translations.AddEnglish("whitehilt_se_shieldwall", "Shield Wall");
-        Translations.AddEnglish("whitehilt_se_shieldwall_tooltip", "20% less damage behind a raised tower shield.");
+        Translations.AddEnglish("whitehilt_se_shieldwall_tooltip", "{0}% less damage behind a raised tower shield.");
         Translations.AddEnglish("whitehilt_se_laststand", "Last Stand");
         Translations.AddEnglish("whitehilt_se_laststand_tooltip", "You held on. Ready again when this ends.");
         Translations.AddEnglish("msg_whitehilt_laststand", "Last Stand!");
@@ -66,9 +66,9 @@ public static class MasteryEffects
 
         registered = true;
         Add(Create<GuardEffect>(GuardName, string.Empty, string.Empty, null, 0f));
-        Add(Create<RiposteEffect>(RiposteName, "whitehilt_se_riposte", "whitehilt_se_riposte_tooltip", IconOf("ShieldBanded"), 3f));
+        Add(Create<RiposteEffect>(RiposteName, "whitehilt_se_riposte", "whitehilt_se_riposte_tooltip", IconOf("ShieldBanded"), MasterySettings.RiposteSeconds.Value));
         Add(Create<ShieldWallEffect>(ShieldWallName, "whitehilt_se_shieldwall", "whitehilt_se_shieldwall_tooltip", IconOf("ShieldIronTower"), 1.5f));
-        Add(Create<SE_Stats>(LastStandName, "whitehilt_se_laststand", "whitehilt_se_laststand_tooltip", IconOf("TrophyEikthyr"), 600f));
+        Add(Create<SE_Stats>(LastStandName, "whitehilt_se_laststand", "whitehilt_se_laststand_tooltip", IconOf("TrophyEikthyr"), MasterySettings.LastStandCooldownMinutes.Value * 60f));
     }
 
     /// <summary>
@@ -80,6 +80,21 @@ public static class MasteryEffects
     {
         StatusEffect effect = player.GetSEMan().GetStatusEffect(LastStandHash);
         return effect != null && effect.m_time < LastStandGrace;
+    }
+
+    /// <summary>
+    /// Adds an effect with the configured duration, which may have changed since the effect was registered.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="hash">Hash of the effect.</param>
+    /// <param name="seconds">Duration.</param>
+    public static void Start(Player player, int hash, float seconds)
+    {
+        StatusEffect effect = player.GetSEMan().AddStatusEffect(hash, resetTime: true);
+        if (effect != null)
+        {
+            effect.m_ttl = seconds;
+        }
     }
 
     private static T Create<T>(string name, string nameKey, string tooltipKey, Sprite icon, float ttl) where T : StatusEffect
@@ -109,8 +124,6 @@ public static class MasteryEffects
     /// </summary>
     public class GuardEffect : StatusEffect
     {
-        private const float CleanStrikeChance = 0.2f;
-
         /// <summary>
         /// Blocking costs less stamina with skill.
         /// </summary>
@@ -150,9 +163,9 @@ public static class MasteryEffects
                 return;
             }
 
-            if (Perks.CleanStrike.Has(player) && Random.value < CleanStrikeChance && hitData.m_damage.m_pickaxe > 0f)
+            if (Perks.CleanStrike.Has(player) && Random.value < MasterySettings.CleanStrikeChance.Value && hitData.m_damage.m_pickaxe > 0f)
             {
-                hitData.m_damage.m_pickaxe *= 2f;
+                hitData.m_damage.m_pickaxe *= MasterySettings.CleanStrikeMultiplier.Value;
                 DamageText.instance.ShowText(DamageText.TextType.Bonus, player.transform.position + Vector3.up * 2f,
                     Localization.instance.Localize("$msg_whitehilt_cleanstrike"), player: true);
             }
@@ -171,8 +184,16 @@ public static class MasteryEffects
     /// </summary>
     public class RiposteEffect : SE_Stats
     {
-        private const float DamageBonus = 1.5f;
         private bool used;
+
+        /// <summary>
+        /// The tooltip with the configured bonus.
+        /// </summary>
+        /// <returns>The tooltip.</returns>
+        public override string GetTooltipString()
+        {
+            return Perks.Text(m_tooltip, Perks.Percent(MasterySettings.RiposteBonus.Value));
+        }
 
         /// <summary>
         /// Strengthens the first melee hit and ends the effect.
@@ -188,7 +209,7 @@ public static class MasteryEffects
             }
 
             used = true;
-            hitData.m_damage.Modify(DamageBonus);
+            hitData.m_damage.Modify(1f + MasterySettings.RiposteBonus.Value);
             m_time = m_ttl + 1f;
         }
 
@@ -204,7 +225,14 @@ public static class MasteryEffects
     /// </summary>
     public class ShieldWallEffect : SE_Stats
     {
-        private const float DamageFactor = 0.8f;
+        /// <summary>
+        /// The tooltip with the configured reduction.
+        /// </summary>
+        /// <returns>The tooltip.</returns>
+        public override string GetTooltipString()
+        {
+            return Perks.Text(m_tooltip, Perks.Percent(MasterySettings.ShieldWallReduction.Value));
+        }
 
         /// <summary>
         /// Takes less damage.
@@ -214,7 +242,7 @@ public static class MasteryEffects
         public override void OnDamaged(HitData hit, Character attacker)
         {
             base.OnDamaged(hit, attacker);
-            hit.ApplyModifier(DamageFactor);
+            hit.ApplyModifier(1f - MasterySettings.ShieldWallReduction.Value);
         }
     }
 }

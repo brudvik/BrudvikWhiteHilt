@@ -43,6 +43,12 @@ public static class MonsterSettings
     /// <summary>Size of the Lindorm.</summary>
     public static ConfigEntry<float> LindormScale { get; private set; }
 
+    /// <summary>Seconds without prey before the Lindorm burrows away.</summary>
+    public static ConfigEntry<float> LindormGiveUpSeconds { get; private set; }
+
+    /// <summary>Chance, in percent, that the Lindorm drops its trophy.</summary>
+    public static ConfigEntry<float> LindormTrophyChance { get; private set; }
+
     /// <summary>Whether giant spiders and their nests exist.</summary>
     public static ConfigEntry<bool> SpiderEnabled { get; private set; }
 
@@ -61,6 +67,9 @@ public static class MonsterSettings
     /// <summary>Size of a giant spider.</summary>
     public static ConfigEntry<float> SpiderScale { get; private set; }
 
+    /// <summary>Chance, in percent, that a giant spider drops its trophy.</summary>
+    public static ConfigEntry<float> SpiderTrophyChance { get; private set; }
+
     /// <summary>Chance, from 0 to 1, of a nest in a newly generated Black Forest zone.</summary>
     public static ConfigEntry<float> NestChancePerZone { get; private set; }
 
@@ -69,6 +78,12 @@ public static class MonsterSettings
 
     /// <summary>Spiders near a nest at most.</summary>
     public static ConfigEntry<int> NestMaxNear { get; private set; }
+
+    /// <summary>Seconds between two spawns of a nest.</summary>
+    public static ConfigEntry<float> NestSpawnSeconds { get; private set; }
+
+    /// <summary>Chance, in percent, that a spider from a nest gets a star.</summary>
+    public static ConfigEntry<float> NestLevelUpChance { get; private set; }
 
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
@@ -88,6 +103,10 @@ public static class MonsterSettings
         LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 55f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
         LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.3f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
+        LindormGiveUpSeconds = WhiteHiltConfig.BindAdminOnly(LindormSection, "GiveUpSeconds", 25f, "Seconds without prey in sight before the Lindorm burrows away.",
+            new AcceptableValueRange<float>(5f, 600f));
+        LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 15f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 100f));
 
         SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in newly generated Black Forest land. Off: no new nests.");
         SpiderHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Health", 120f, "Health of a giant spider.", new AcceptableValueRange<float>(10f, 5000f));
@@ -97,10 +116,16 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0f, 30f));
         SpiderScale = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Scale", 1f, "Size of a giant spider (1 = about 1.6 m across). Applies after a restart.",
             new AcceptableValueRange<float>(0.3f, 3f));
+        SpiderTrophyChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "TrophyChance", 10f, "Chance, in percent, that a giant spider drops its trophy. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 100f));
         NestChancePerZone = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestChancePerZone", 0.15f,
             "Chance of a nest in each newly generated Black Forest zone (64 x 64 m). Existing land keeps what it has.", new AcceptableValueRange<float>(0f, 1f));
         NestHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestHealth", 300f, "Health of a nest.", new AcceptableValueRange<float>(10f, 10000f));
         NestMaxNear = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestMaxNear", 3, "Spiders a nest keeps around it at most.", new AcceptableValueRange<int>(1, 10));
+        NestSpawnSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestSpawnSeconds", 20f, "Seconds between two spiders from a nest. Applies after a restart.",
+            new AcceptableValueRange<float>(5f, 600f));
+        NestLevelUpChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestLevelUpChance", 10f,
+            "Chance, in percent, that a spider from a nest gets a star. Applies after a restart.", new AcceptableValueRange<float>(0f, 100f));
     }
 
     /// <summary>

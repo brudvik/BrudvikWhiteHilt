@@ -215,10 +215,10 @@ public static class KrakenRegistry
             Faction = Character.Faction.SeaMonsters,
             DropConfigs = new[]
             {
-                Drop(MeatName, 4, 6),
-                Drop(InkName, 3, 5),
-                Drop(TrophyName, 1, 1),
-                Drop("Chitin", 6, 10)
+                Drop(MeatName, 4, 6, KrakenSettings.LootMultiplier.Value),
+                Drop(InkName, 3, 5, KrakenSettings.LootMultiplier.Value),
+                Drop(TrophyName, 1, 1, 1f),
+                Drop("Chitin", 6, 10, KrakenSettings.LootMultiplier.Value)
             }
         });
         GameObject prefab = creature.Prefab;
@@ -313,9 +313,13 @@ public static class KrakenRegistry
         return weapon;
     }
 
-    private static DropConfig Drop(string item, int min, int max)
+    private static DropConfig Drop(string item, int min, int max, float multiplier)
     {
-        return new DropConfig { Item = item, MinAmount = min, MaxAmount = max, Chance = 100f, LevelMultiplier = false };
+        return new DropConfig
+        {
+            Item = item, MinAmount = Mathf.RoundToInt(min * multiplier), MaxAmount = Mathf.RoundToInt(max * multiplier),
+            Chance = multiplier > 0f ? 100f : 0f, LevelMultiplier = false
+        };
     }
 
     private static HitData.DamageModifiers SeaModifiers()

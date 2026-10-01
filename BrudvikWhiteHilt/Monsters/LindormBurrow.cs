@@ -16,7 +16,6 @@ public class LindormBurrow : MonoBehaviour
     private const string RetreatKey = "whitehilt_lindorm_retreat";
     private const float RiseSeconds = 2.2f;
     private const float SinkSeconds = 2.5f;
-    private const float LostPreySeconds = 25f;
     private const float AnnounceRange = 40f;
     private static readonly string[] burstEffects = { "vfx_RockDestroyed_large", "sfx_rock_destroyed" };
 
@@ -101,7 +100,7 @@ public class LindormBurrow : MonoBehaviour
         }
 
         bool dawn = MonsterSettings.LindormNightOnly.Value && !EnvMan.IsNight();
-        if (Time.time - lastPrey > (dawn ? 5f : LostPreySeconds))
+        if (Time.time - lastPrey > (dawn ? 5f : MonsterSettings.LindormGiveUpSeconds.Value))
         {
             Retreat();
         }

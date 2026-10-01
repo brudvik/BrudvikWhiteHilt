@@ -20,10 +20,7 @@ public static class Crops
     /// <summary>ZDO key on a giant crop.</summary>
     public const string GiantKey = "whitehilt_giant";
 
-    private const float GiantChance = 0.05f;
     private const float GiantScale = 1.6f;
-    private const float GreenThumbGrowTime = 0.75f;
-    private const float SeedStarBonus = 0.15f;
 
     private static readonly List<ZNetView> pending = new();
     private static int pendingFrame;
@@ -96,7 +93,7 @@ public static class Crops
         ZDO zdo = nview.GetZDO();
         zdo.Set(SeedStarsKey, seedStars);
         zdo.Set(FarmerKey, farmer);
-        if (Perks.GiantCrops.ReachedAt(farmer) && Random.value < GiantChance)
+        if (Perks.GiantCrops.ReachedAt(farmer) && Random.value < MasterySettings.GiantCropChance.Value)
         {
             zdo.Set(GiantKey, true);
             nview.SetLocalScale(grown.transform.localScale * GiantScale);
@@ -114,7 +111,7 @@ public static class Crops
         float factor = 1f;
         if (zdo != null && Perks.GreenThumb.ReachedAt(zdo.GetInt(FarmerKey)))
         {
-            factor *= GreenThumbGrowTime;
+            factor *= 1f - MasterySettings.GreenThumbBonus.Value;
         }
 
         return factor * CompostBinComponent.GrowTimeFactor(plant.transform.position);
@@ -131,13 +128,14 @@ public static class Crops
         ZDO zdo = pickable.m_nview.GetZDO();
         float level = SkillLevels.Get(picker, Skills.SkillType.Farming);
         int seedStars = zdo.GetInt(SeedStarsKey);
-        int max = Stars.MaxAt(level, Perks.StarredCrops, Perks.MasterFarmer);
+        int max = Stars.MaxAt(level, Perks.StarredCrops, Perks.GreenThumb, Perks.MasterFarmer);
         if (max > 0)
         {
-            Stars.DropStars = _ => Stars.Roll(level, max, 1f, seedStars * SeedStarBonus);
+            float bonus = seedStars * MasterySettings.SeedStarBonus.Value;
+            Stars.DropStars = _ => Stars.Roll(level, max, 1f, bonus);
         }
 
-        return zdo.GetBool(GiantKey) ? pickable.m_amount * 2 : 0;
+        return zdo.GetBool(GiantKey) ? pickable.m_amount * (MasterySettings.GiantCropYield.Value - 1) : 0;
     }
 
     /// <summary>

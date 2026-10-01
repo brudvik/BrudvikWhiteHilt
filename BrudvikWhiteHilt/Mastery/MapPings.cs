@@ -57,8 +57,6 @@ public static class TemporaryPins
 /// </summary>
 public static class OreEcho
 {
-    private const float Cooldown = 30f;
-    private const float Range = 40f;
     private const float PinSeconds = 60f;
 
     private static float nextPing;
@@ -82,8 +80,8 @@ public static class OreEcho
             return;
         }
 
-        nextPing = Time.time + Cooldown;
-        float range = Perks.Prospector.Has(player) ? Range * 2f : Range;
+        nextPing = Time.time + MasterySettings.OreEchoCooldown.Value;
+        float range = Perks.Prospector.Has(player) ? MasterySettings.ProspectorRange.Value : MasterySettings.OreEchoRange.Value;
         Vector3 origin = player.transform.position;
         int found = 0;
         foreach ((Vector3 position, string ore) in Deposits(origin, range))
@@ -94,7 +92,7 @@ public static class OreEcho
 
         if (found > 0)
         {
-            player.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_whitehilt_oreecho", found.ToString()));
+            player.Message(MessageHud.MessageType.TopLeft, Perks.Text("$msg_whitehilt_oreecho", found.ToString()));
         }
     }
 
@@ -153,8 +151,6 @@ public static class OreEcho
 /// </summary>
 public static class Lookout
 {
-    private const float Cooldown = 300f;
-    private const float BaseRadius = 200f;
     private const float PinSeconds = 60f;
 
     private static readonly string[] seaMonsters = { "Serpent", Kraken.KrakenRegistry.BodyName, "BonemawSerpent" };
@@ -184,12 +180,12 @@ public static class Lookout
         if (Time.time < nextUse)
         {
             player.Message(MessageHud.MessageType.TopLeft,
-                Localization.instance.Localize("$msg_whitehilt_lookout_rest", Mathf.CeilToInt(nextUse - Time.time).ToString()));
+                Perks.Text("$msg_whitehilt_lookout_rest", Mathf.CeilToInt(nextUse - Time.time).ToString()));
             return;
         }
 
-        nextUse = Time.time + Cooldown;
-        float radius = BaseRadius * (1f + Perks.Factor(SkillLevels.Get(player, Perks.Lookout.Skill)));
+        nextUse = Time.time + MasterySettings.LookoutCooldownMinutes.Value * 60f;
+        float radius = MasterySettings.LookoutRadius.Value * (1f + Perks.Factor(SkillLevels.Get(player, Perks.Lookout.Skill)));
         Vector3 origin = player.transform.position;
         Minimap.instance?.Explore(origin, radius);
         player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_lookout");

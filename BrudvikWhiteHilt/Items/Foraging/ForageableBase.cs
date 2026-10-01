@@ -21,7 +21,14 @@ public abstract class ForageableBase
     private readonly ConfigEntry<float> spawnPerZone;
     private readonly ConfigEntry<float> extraDropChance;
     private readonly ConfigEntry<float> creatureDropChance;
+    private readonly ConfigEntry<float> respawnMinutes;
+    private readonly ConfigEntry<int> pickAmount;
+    private readonly ConfigEntry<int> groupSizeMin;
+    private readonly ConfigEntry<int> groupSizeMax;
     private ZoneSystem.ZoneVegetation vegetation;
+    private Pickable pickable;
+    private float vanillaRespawnMinutes;
+    private int vanillaAmount;
 
     /// <summary>
     /// Prefab name of the ingredient item.
@@ -103,6 +110,16 @@ public abstract class ForageableBase
         spawnPerZone = WhiteHiltConfig.BindAdminOnly(section, "SpawnPerZone", Vegetation.Max,
             "Maximum number of groups per zone (64 x 64 m). Values below 1 are a chance to place one group.",
             new AcceptableValueRange<float>(0f, 20f));
+        groupSizeMin = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMin", Vegetation.GroupSizeMin,
+            "Fewest plants in a group, in zones generated from now on.", new AcceptableValueRange<int>(1, 20));
+        groupSizeMax = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMax", Vegetation.GroupSizeMax,
+            "Most plants in a group, in zones generated from now on.", new AcceptableValueRange<int>(1, 20));
+        respawnMinutes = WhiteHiltConfig.BindAdminOnly(section, "RegrowMinutes", 0f,
+            $"In-game minutes before a picked {FullName} grows back. 0 = the same as the vanilla {CopyPickableFrom}. Applies to plants loaded after the change.",
+            new AcceptableValueRange<float>(0f, 10000f));
+        pickAmount = WhiteHiltConfig.BindAdminOnly(section, "PickAmount", 0,
+            $"How many {FullName} one plant gives. 0 = the same as the vanilla {CopyPickableFrom}. Applies to plants loaded after the change.",
+            new AcceptableValueRange<int>(0, 20));
 
         if (ExtraDropFrom != null)
         {
@@ -146,6 +163,10 @@ public abstract class ForageableBase
             pickable.m_itemPrefab = item.ItemPrefab;
             pickable.m_overrideName = string.Empty;
             pickable.m_extraDrops = new DropTable();
+            this.pickable = pickable;
+            vanillaRespawnMinutes = pickable.m_respawnTimeMinutes;
+            vanillaAmount = pickable.m_amount;
+            ApplyPickableConfig();
             TryApplyVisual(pickable.m_hideWhenPicked != null ? pickable.m_hideWhenPicked : pickablePrefab);
 
             CustomVegetation customVegetation = new(pickablePrefab, false, Vegetation);
@@ -173,6 +194,7 @@ public abstract class ForageableBase
     public void ApplyConfig()
     {
         ApplyVegetationConfig();
+        ApplyPickableConfig();
         if (ZNetScene.instance != null)
         {
             AddCreatureDrop();
@@ -239,6 +261,20 @@ public abstract class ForageableBase
 
         vegetation.m_enable = spawn.Value;
         vegetation.m_max = spawnPerZone.Value;
+        vegetation.m_groupSizeMin = groupSizeMin.Value;
+        vegetation.m_groupSizeMax = Mathf.Max(groupSizeMin.Value, groupSizeMax.Value);
+    }
+
+    // Edits the prefab, so plants already loaded keep their values until they load again.
+    private void ApplyPickableConfig()
+    {
+        if (pickable == null)
+        {
+            return;
+        }
+
+        pickable.m_respawnTimeMinutes = respawnMinutes.Value > 0f ? respawnMinutes.Value : vanillaRespawnMinutes;
+        pickable.m_amount = pickAmount.Value > 0 ? pickAmount.Value : vanillaAmount;
     }
 
     private void TryApplyVisual(GameObject visualRoot)
