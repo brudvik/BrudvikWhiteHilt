@@ -180,6 +180,19 @@ public static class WhiteHiltConfig
     }
 
     /// <summary>
+    /// Whether the config file already holds a value for an entry, bound or not. Call before binding the entry to
+    /// tell a first start from a later one.
+    /// </summary>
+    /// <param name="section">Config section.</param>
+    /// <param name="key">Config key.</param>
+    /// <returns>True if the file has the entry.</returns>
+    public static bool IsStored(string section, string key)
+    {
+        ConfigDefinition definition = new(section, key);
+        return configFile.ContainsKey(definition) || Orphans()?.ContainsKey(definition) == true;
+    }
+
+    /// <summary>
     /// Names a config section in the settings window, e.g. a food's section after the food.
     /// </summary>
     /// <param name="section">Config section.</param>
@@ -216,7 +229,7 @@ public static class WhiteHiltConfig
     /// </summary>
     public static void ApplyMigrations()
     {
-        var orphans = AccessTools.Property(typeof(ConfigFile), "OrphanedEntries")?.GetValue(configFile) as Dictionary<ConfigDefinition, string>;
+        var orphans = Orphans();
         if (orphans == null)
         {
             Jotunn.Logger.LogWarning("Config migrations skipped: orphaned entries not found.");
@@ -254,6 +267,12 @@ public static class WhiteHiltConfig
         {
             configFile.Save();
         }
+    }
+
+    // Values in the file that no Bind has claimed yet; BepInEx keeps them private.
+    private static Dictionary<ConfigDefinition, string> Orphans()
+    {
+        return AccessTools.Property(typeof(ConfigFile), "OrphanedEntries")?.GetValue(configFile) as Dictionary<ConfigDefinition, string>;
     }
 
     private static ConfigDescription AdminOnly(string description)

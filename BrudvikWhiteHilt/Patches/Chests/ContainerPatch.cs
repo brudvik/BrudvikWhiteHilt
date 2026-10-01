@@ -1,0 +1,115 @@
+﻿#nullable enable annotations
+
+using BrudvikWhiteHilt.Chests.Events;
+using HarmonyLib;
+using System;
+
+namespace BrudvikWhiteHilt.Patches.Chests
+{
+
+    /// <summary>
+    /// This class contains patches for the Container class to hook into its methods.
+    /// It raises events when certain methods of the Container class are called.
+    /// </summary>
+    public class ContainerPatch 
+    {
+        /// <summary>
+        /// Event triggered when the CheckForChanges method of a Container instance is called.
+        /// </summary>
+        public static event EventHandler<ContainerCheckForChangesPatchEvent>? ContainerCheckForChangesPatched;
+
+        /// <summary>
+        /// Event triggered when the DropAllItems method of a Container instance is called.
+        /// </summary>
+        public static event EventHandler<ContainerDropAllItemsPatchEvent>? ContainerDropAllItemsPatched;
+
+        /// <summary>
+        /// Event triggered after a container has built its hover text.
+        /// </summary>
+        public static event EventHandler<ContainerHoverTextPatchEvent>? ContainerHoverTextPatched;
+
+        /// <summary>
+        /// Event triggered after the contents of a container have changed, except while it is loading.
+        /// </summary>
+        public static event EventHandler<ContainerChangedPatchEvent>? ContainerChangedPatched;
+
+        /// <summary>
+        /// Harmony patch for Container.OnContainerChanged.
+        /// </summary>
+        [HarmonyPatch(typeof(Container), "OnContainerChanged")]
+        public static class ContainerOnContainerChangedPatch
+        {
+            static void Postfix(Container __instance)
+            {
+                if (__instance == null || __instance.m_loading) return;
+
+                ContainerChangedPatched?.Invoke(null, new ContainerChangedPatchEvent { Container = __instance });
+            }
+        }
+
+        /// <summary>
+        /// Harmony patch for Container.GetHoverText that lets handlers extend the hover text.
+        /// </summary>
+        [HarmonyPatch(typeof(Container), "GetHoverText")]
+        public static class ContainerGetHoverTextPatch
+        {
+            static void Postfix(Container __instance, ref string __result)
+            {
+                if (__instance == null || ContainerHoverTextPatched == null) return;
+
+                var args = new ContainerHoverTextPatchEvent { Container = __instance, Text = __result };
+                ContainerHoverTextPatched.Invoke(null, args);
+                __result = args.Text;
+            }
+        }
+
+        /// <summary>
+        /// Harmony patch for the CheckForChanges method of the Container class.
+        /// This patch triggers the ContainerCheckForChangesPatched event after the original CheckForChanges method is executed.
+        /// </summary>
+        [HarmonyPatch(typeof(Container), "CheckForChanges")]
+        public static class ContainerCheckForChangesPatch
+        {
+            /// <summary>
+            /// Postfix method that is called after the original CheckForChanges method of the Container class.
+            /// </summary>
+            /// <param name="__instance">The instance of the Container class.</param>
+            static void Postfix(Container __instance)
+            {
+                if (__instance != null)
+                {
+                    ContainerCheckForChangesPatched?.Invoke(null, new ContainerCheckForChangesPatchEvent()
+                    {
+                        Container = __instance
+                    });
+                }
+            }
+        }
+
+        /// <summary>
+        /// This Harmony patch targets the 'DropAllItems' method of the 'Container' class.
+        /// The 'new Type[] { }' specifies that this patch is for the parameterless 'DropAllItems' method.
+        /// </summary>
+        [HarmonyPatch(typeof(Container), "DropAllItems")]
+        [HarmonyPatch(new Type[] { })]
+        public static class ContainerDropAllItemsPatch
+        {
+            // The Prefix method is executed before the original 'DropAllItems' method.
+            static void Prefix(Container __instance)
+            {
+                // Check if the instance of the Container class is not null.
+                if (__instance != null)
+                {
+                    // Trigger the 'ContainerDropAllItemsPatched' event.
+                    // This event can be used to perform additional actions or logging before the original method is executed.
+                    ContainerDropAllItemsPatched?.Invoke(null, new ContainerDropAllItemsPatchEvent()
+                    {
+                        Container = __instance // Pass the instance of the Container class to the event.
+                    });
+                }
+            }
+        }
+
+    }
+
+}

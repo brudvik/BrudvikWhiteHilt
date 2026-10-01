@@ -30,6 +30,8 @@ namespace BrudvikWhiteHilt;
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
 [BepInDependency(Patches.Portals.PortalStationsRunePatch.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
+// Loads the old chest mod first, so ChestModule can see it and leave its chests alone.
+[BepInDependency(Chests.ChestModule.OldModGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
 [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
 internal class BrudvikWhiteHilt : BaseUnityPlugin
@@ -39,11 +41,12 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.28.0";
+    public const string PluginVersion = "0.29.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
     private readonly List<ForageableBase> forageables = new();
+    private Chests.ChestModule chests;
     private bool refreshPending;
 
     /// <summary>
@@ -101,6 +104,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
+        chests = Chests.ChestModule.Start();
+        Chests.ChestCensus.RegisterCommand();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
@@ -133,6 +138,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void Update()
     {
         Settings.ConfigButton.EnsureCreated();
+        chests?.Update();
         if (refreshPending)
         {
             refreshPending = false;

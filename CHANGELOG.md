@@ -2,6 +2,18 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.29.0 - 2026-10-01
+
+### Added
+- The restocking chests of BrudvikStackedChest are now part of White Hilt: 14 chests in the Hammer's Chests category with Full, Linear and Discovered modes, Learn all, the gathering panel and `bsc_progress`. See [Restocking chests](docs/chests.md)
+- Chests placed with BrudvikStackedChest keep their contents: same prefab names, size, saved data and server progress folder. On the first start the old config file is taken over (above all `Mode`) into the new `[Chests]` section
+- While BrudvikStackedChest is still installed, White Hilt leaves the chests to it
+- Chest census: at every world start the server counts every chest's contents from the saved world, writes it to `BepInEx/config/BrudvikStackedChest/census/` and logs anything that decreased since the last count. Also `whitehilt_chest_census`
+- Chest settings in the settings window, in English and Norwegian
+
+### Fixed
+- Chests no longer swallow, refill, merge or delete items with skill stars or their own data (such as a dog's remains); such items now always count as stored by the player
+
 ## v0.28.0 - 2026-10-01
 
 ### Changed

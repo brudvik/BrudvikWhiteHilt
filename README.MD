@@ -4,7 +4,7 @@
 
 ## Overview
 
-BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. Combines good with my mod: [BrudvikStackedChest](https://github.com/brudvik/BrudvikStackedChest).
+BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. The restocking chests of my former mod BrudvikStackedChest are now included.
 
 All items are named after **Dyrnwyn** - a legendary white-hilted sword from Welsh mythology that would blaze with fire when drawn by a worthy man.
 
@@ -64,6 +64,10 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
 Surt's Brazier for fires without fuel, crafting and building from nearby chests, and the Waste Well.
+
+### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
+
+Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest).
 
 ### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 
@@ -142,6 +146,7 @@ An in-game settings window (cog in the inventory) for every setting, synced to a
 Please notice that it won't be possible to compile this `mod` out of the box. Make sure you read up on [Valheim Mod Development](https://github.com/Valheim-Modding/JotunnModStub).
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
+The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) on Graphicriver under the same terms; without them the chests use the vanilla chest icon.
 
 The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
 
