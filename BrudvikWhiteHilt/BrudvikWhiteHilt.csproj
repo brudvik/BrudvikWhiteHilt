@@ -262,6 +262,9 @@
     <Compile Include="Building\BuildToolSettings.cs" />
     <Compile Include="Building\BuildUndo.cs" />
     <Compile Include="Building\RepairTools.cs" />
+    <Compile Include="Building\Doors\AutoDoor.cs" />
+    <Compile Include="Building\Doors\AutoDoorSettings.cs" />
+    <Compile Include="Patches\Building\AutoDoorPatches.cs" />
     <Compile Include="Building\Groups\Blueprint.cs" />
     <Compile Include="Building\Groups\BlueprintPanel.cs" />
     <Compile Include="Building\Groups\BuildSelection.cs" />

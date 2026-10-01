@@ -63,7 +63,7 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, and the Waste Well.
+Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 

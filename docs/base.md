@@ -58,3 +58,34 @@ The crafting panel and the build menu show what you have, not only what a recipe
 | **Waste Well** | A stone well for rubbish. Open it (E) and throw things in: 5 seconds after it is closed they are gone, so opening it again before then gets them back. Shift + Use makes the well collect items that have lain on the ground within 8 m for 30 seconds or more; it never takes hatching eggs or items placed as decorations. Chest crafting never takes from it | Workbench | Stone ×20, Wood ×6 |
 
 The server sets it in the `WasteWell` section: `DisposeDelaySeconds` (5), `CollectRadius` (8), `MinItemAgeSeconds` (30) and `KeepItems`, prefab names never collected from the ground.
+
+---
+
+## 🚪 SELF-CLOSING DOORS
+
+Doors, gates and windows built by players close on their own a few seconds after the last one went through. Nothing closes while a player (or a tamed animal) is within 3 m of the opening, so no door shuts in anyone's face. Doors with a key, doors that cannot be closed and doors in dungeons and villages are left alone.
+
+- **Hold open**: Shift + E opens a door and holds it open until someone closes it with E; Shift + E on an open door holds it or lets it close on its own again. The hover text shows when a door is held open.
+- **Windows** close when rain or a storm begins and when night falls. They can be opened again while it lasts, and a window held open stays open.
+- **Raids**: when enemies on the hunt come within 20 m, doors, gates and windows close at once, also those held open.
+
+Whether a door is a gate or a window is told by its prefab name (`GateNames`, `WindowNames`), so doors from other mods work too.
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | Main switch |
+| `CloseDoors` / `DoorDelaySeconds` | true / 5 | Doors |
+| `CloseGates` / `GateDelaySeconds` | true / 10 | Gates and grates |
+| `CloseWindows` / `WindowDelaySeconds` | false / 30 | Windows on a timer (rain, night and raids still close them) |
+| `ClearRadius` | 3 | Metres from the opening that keep it open while a player is there |
+| `TamesBlockClosing` | true | Tamed animals in the opening keep it open too |
+| `OnlyPlayerBuilt` | true | Leave doors in dungeons and villages alone |
+| `AllowHoldOpen` | true | Shift + E holds a door open |
+| `ExcludedPieces` | | Prefab names that never close on their own, comma separated |
+| `GateNames` | gate,grate,skanseport | Name parts that make a door a gate |
+| `WindowNames` | window | Name parts that make a door a window |
+| `WindowsCloseInRain` / `WindowsCloseAtNight` | true / true | Windows close when rain or night begins |
+| `RaidClose` / `RaidRadius` | true / 20 | Everything closes when enemies come this near |
+| `RaidIgnoresHoldOpen` | true | Enemies also close doors held open |
+
+All settings are in the server's `Doors` section.

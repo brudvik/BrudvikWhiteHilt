@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.40.0 - 2026-10-01
+
+### Added
+- **Self-closing doors**: doors, gates and windows built by players close on their own a few seconds after the last one went through (doors 5 s, gates 10 s, windows off by default), never while a player or tamed animal is within 3 m. Shift + E holds a door open. Windows close when rain or night begins, and everything closes when enemies on the hunt come within 20 m. Key doors, dungeon doors and doors that cannot be closed are left alone. All numbers in the new server section `Doors`. See [Around the base](docs/base.md)
+
 ## v0.39.0 - 2026-10-01
 
 ### Added
