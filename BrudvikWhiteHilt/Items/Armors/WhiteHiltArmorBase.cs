@@ -51,6 +51,16 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     protected virtual string StatsFrom => null;
 
     /// <summary>
+    /// The crafting station of the armor item.
+    /// </summary>
+    protected virtual string CraftingStation => CraftingStations.Forge;
+
+    /// <summary>
+    /// The station level needed to craft the armor item.
+    /// </summary>
+    protected virtual int MinStationLevel => 3;
+
+    /// <summary>
     /// The requirements for crafting the armor item.
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
@@ -103,8 +113,8 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             {
                 Name = Translations.Token(Translations.ItemKey(BaseName)),
                 Description = Translations.Token($"{Translations.ItemKey(BaseName)}_description"),
-                CraftingStation = CraftingStations.Forge,
-                MinStationLevel = 3,
+                CraftingStation = CraftingStation,
+                MinStationLevel = MinStationLevel,
                 Requirements = Requirements
             };
 
@@ -119,6 +129,11 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             baseMovementModifier = item.ItemData.m_movementModifier;
             added = item;
             ApplyConfig();
+            if (!VisualHelper.IsHeadless)
+            {
+                ApplyVisual(item);
+            }
+
             instance.AddItem(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -144,6 +159,14 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
         added.ItemData.m_armorPerLevel = baseArmorPerLevel + armorPerLevelBonus.Value;
         added.ItemData.m_movementModifier = baseMovementModifier + movementBonus.Value;
         added.ApplyConfig();
+    }
+
+    /// <summary>
+    /// Changes the look of the cloned item before it is added. Not called on a dedicated server.
+    /// </summary>
+    /// <param name="item">The cloned item.</param>
+    protected virtual void ApplyVisual(IndestructibleItem item)
+    {
     }
 
     private static void CopyStats(ItemDrop.ItemData.SharedData target, string sourceName)

@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.38.0 - 2026-10-01
+
+### Added
+- **Black White Hilt uniforms** with gold trim, the White Hilt badge on the left breast and the logo on the back of a gold-edged cape: Uniform Tunic and Trousers, Officer's Jerkin and Breeches, and the Uniform Cape. They are indestructible and have the same armor as the White Hilt Chestplate, Greaves and Cape. Made at the Workbench (level 2) from Deer Hide, Leather Scraps, Coal and Coins (Troll Hide for the cape). The officer's pieces copy the Deep North medium armor, which vanilla cannot craft yet, so a game update may change their look. See [White Hilt gear](docs/equipment.md#black-uniforms)
+
+### Fixed
+- The logo on the White Hilt Banner Cape sat about 5 cm to one side, and its edge could show on the cape's tail at the hips. It is now centred on the back and a little smaller (0.46 m), like on the new Uniform Cape
+
 ## v0.37.0 - 2026-10-01
 
 ### Added

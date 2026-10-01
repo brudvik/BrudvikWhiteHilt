@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Armors.WhiteHiltUniform;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -20,10 +21,6 @@ public class WhiteHiltBannerCape : IWhiteHiltCustomItem
     private const string CopyFrom = "CapeTrollHide";
     private const int TextureSize = 512;
 
-    // The worn cape's back panel is mesh u 0.012-0.40, v 0.01-0.80 (collar above), 1.88 m per u and 1.77 m per v,
-    // seen unmirrored from behind with v up. The logo is 0.48 m across on the upper back.
-    private static readonly Vector2 logoCentre = new(0.20f, 0.58f);
-    private static readonly Vector2 logoRadius = new(0.24f / 1.88f, 0.24f / 1.77f);
     private static readonly Color cream = new(0.94f, 0.91f, 0.84f);
 
     private readonly ItemManager instance;
@@ -157,7 +154,7 @@ public class WhiteHiltBannerCape : IWhiteHiltCustomItem
             }
         }
 
-        WhiteHiltLogo.Paint(pixels, TextureSize, TextureSize, logoCentre, logoRadius);
+        WhiteHiltLogo.Paint(pixels, TextureSize, TextureSize, UniformLook.CapeLogoCentre, UniformLook.CapeLogoRadius);
         Texture2D texture = VisualHelper.CreateTexture("whitehilt_bannercape", TextureSize, TextureSize, pixels, hide);
         Material material = VisualHelper.CreateTexturedMaterial(source, texture, "whitehilt_bannercape");
         material.mainTextureScale = Vector2.one;

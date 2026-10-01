@@ -45,6 +45,20 @@ All armor pieces are indestructible and weightless, a little better than iron: +
 
 The **White Hilt Banner Cape** is not part of the indestructible set: a white troll hide cape with the White Hilt logo on the back and the troll hide cape's stats, without the troll set bonus. Workbench (Level 2): Troll Hide ×4, Leather Scraps ×4, Bone Fragments ×2.
 
+### Black uniforms
+
+Two black uniforms with gold trim, the White Hilt badge on the left breast and the logo on the cape. They are indestructible and weightless, with the same armor as the White Hilt Chestplate, Greaves and Cape (the cape also gives the White Hilt Cape's feather fall). The tunic and the officer's jerkin are both chest pieces, so wear one of them with its own trousers or breeches. The officer's pieces copy the Deep North medium armor, which vanilla Valheim does not let you craft yet, so a game update may change how they look.
+
+<img src="images/white_hilt_uniform.png" alt="White Hilt Uniform" title="White Hilt Uniform" height="140"> <img src="images/white_hilt_uniform_back.png" alt="White Hilt Uniform, back" title="White Hilt Uniform, back" height="140"> <img src="images/white_hilt_officer.png" alt="White Hilt Officer's uniform" title="White Hilt Officer's uniform" height="140"> <img src="images/white_hilt_officer_back.png" alt="White Hilt Officer's uniform, back" title="White Hilt Officer's uniform, back" height="140">
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **White Hilt Uniform Tunic** | Black tunic with gold collar, cuffs and hem, and the White Hilt badge | Workbench (Level 2) | Deer Hide ×6, Leather Scraps ×4, Coal ×4, Coins ×20 |
+| **White Hilt Uniform Trousers** | Black trousers and boots | Workbench (Level 2) | Deer Hide ×4, Leather Scraps ×4, Coal ×2 |
+| **White Hilt Officer's Jerkin** | Black jerkin with gold knotwork and the White Hilt badge | Workbench (Level 2) | Deer Hide ×6, Leather Scraps ×4, Coal ×4, Coins ×20 |
+| **White Hilt Officer's Breeches** | Black breeches with gold trim | Workbench (Level 2) | Deer Hide ×4, Leather Scraps ×4, Coal ×2 |
+| **White Hilt Uniform Cape** | Black cape with a gold edge and the White Hilt on the back | Workbench (Level 2) | Troll Hide ×4, Coal ×4, Coins ×30 |
+
 ---
 
 ## 💍 ACCESSORIES

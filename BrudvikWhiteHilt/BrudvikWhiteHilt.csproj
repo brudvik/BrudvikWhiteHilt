@@ -338,6 +338,13 @@
     <Compile Include="Pieces\Banners\WhiteHiltBannerBase.cs" />
     <Compile Include="Pieces\Banners\WhiteHiltBanners.cs" />
     <Compile Include="Items\Armors\WhiteHiltBannerCape\WhiteHiltBannerCape.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\UniformBadge.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\UniformLook.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltOfficerBreeches.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltOfficerJerkin.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformCape.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformTrousers.cs" />
+    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformTunic.cs" />
     <Compile Include="Planting\PlantableDefinition.cs" />
     <Compile Include="Planting\Plantables.cs" />
     <Compile Include="Planting\PlantingSettings.cs" />
@@ -644,6 +651,7 @@
     <EmbeddedResource Include="Assets\strg_*.png" />
     <EmbeddedResource Include="Assets\WeatherAsh.png" />
     <EmbeddedResource Include="Assets\Logo\WhiteHiltLogo.png" />
+    <EmbeddedResource Include="Assets\Uniform\CapeTrim.png" />
     <EmbeddedResource Include="Assets\WeatherCloud.png" />
     <EmbeddedResource Include="Assets\WeatherFog.png" />
     <EmbeddedResource Include="Assets\WeatherMoon.png" />
