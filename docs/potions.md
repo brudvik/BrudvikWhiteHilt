@@ -44,3 +44,29 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 |--------|--------|------------------------|
 | **Gift of Hugin** | Permanently sets ALL skills to level 100. Named after Odin's raven of "thought". | Neck Tail ×20, Cloudberry ×20, Blueberries ×20 |
 | **Gift of Munin** | Permanently teaches ALL materials, revealing every recipe made from materials. Named after Odin's raven of "memory". | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
+
+## Config
+
+One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), admin only and synced from the server. Each has `DurationMinutes` (20 unless noted) and the keys below. Multipliers on stamina use: 0 = no stamina, 1 = vanilla.
+
+| Potion | Keys (defaults) |
+|---|---|
+| Baldur | `StealthModifier` -0.99, `NoiseModifier` -0.99, `Stealth` 0.01, `SneakStaminaMultiplier` 0 |
+| Brokkr | `SkillBonus` 25, `MaxSkillLevel` 100, `HomeItemStaminaMultiplier` 0 |
+| Fenrir | `AttackSpeed` 1.5, `LifeSteal` 0.15, `SpeedModifier` 0.25, `AttackStaminaMultiplier` 0.5 |
+| Freya | `BonusStamina` 400, `StaminaUse` -0.9 (negative restores stamina), `StaminaRegenBonus` 40 |
+| Freyr | `HealthRegenMultiplier` 2, `StaminaRegenMultiplier` 2, `CarryWeight` 150, `HomeItemStaminaMultiplier` 0, `HealPerSecond` 1, `StaminaPerSecond` 5 |
+| Hel | `DurationMinutes` 30, `TriggerHealthFraction` 0.1 |
+| Hugin | `SkillLevel` 100 (no duration) |
+| Idunn | `DurationMinutes` 40, `HealthRegenMultiplier` 5, `StaminaRegenMultiplier` 5, `EitrRegenMultiplier` 5, `HealPerSecond` 1 |
+| Loki | `BonusEitr` 500, `EitrRegenBonus` 80 |
+| Mimir | `InitialRevealRadius` 200, `RevealRadius` 150, `RevealIntervalSeconds` 5, `CreatureRange` 100, `CreatureRefreshSeconds` 1 |
+| Njord | `SwimSpeedModifier` 1, `SwimStaminaMultiplier` 0, `MinSwimStamina` 20, `SwimStaminaRefill` 50 |
+| Odin | `MaxHealth` 500, `FallDamageMultiplier` 0.5, `HealthRegenBonus` 20, `HealPerFrame` 20 |
+| Ratatoskr | `SpeedModifier` 0.75, `RunStaminaDrainModifier` -0.8, `JumpModifier` 0.5, `SneakStaminaMultiplier` 0 |
+| Skadi, Surt | `DurationMinutes` only |
+| Sleipnir | `SpeedModifier` 0.5, `JumpModifier` 1.5, `FallDamageMultiplier` 0 |
+| Thor | `HomeItemStaminaMultiplier` 0.1, `AttackStaminaMultiplier` 0.5, `ChopDamageMultiplier` 2, `PickaxeDamageMultiplier` 2 |
+| Tyr | `CarryWeight` 100, `BlockStaminaMultiplier` 0, `DodgeStaminaMultiplier` 0.25, `PushForceMultiplier` 0.1 (knockback taken) |
+
+Changes apply on the next drink. The foraging meads are set in [Foraging & food](foraging.md).

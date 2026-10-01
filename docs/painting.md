@@ -18,3 +18,4 @@ Paint or stain any building piece in the colour you choose. The colour is saved 
 - **Dyes**: food and animal products up to the Swamp (berries, mushrooms, dandelion, thistle, carrot, turnip, blood, bones, feathers, hides, guck, ooze, coal, resin and a few dishes). Their colours are measured from their icons, and the bench picks the mix of up to three that comes closest, from your inventory and nearby chests, and shows how close it is. The pot gets exactly the colour you chose.
 - **Paint** bleaches the texture first, so light colours and white work; **Stain** tints over the wood, so the grain shows but it can only darken.
 - The mouse wheel sets the brush radius (0 = only the aimed piece, up to `MaxRadius`, 8 m); the pieces in reach show the colour before you click. Paint and stain respect wards.
+- `Painting` → `PotUses` (20, server-synced) sets how many pieces a Paint Pot covers.

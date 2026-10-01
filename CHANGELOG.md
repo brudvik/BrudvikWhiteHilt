@@ -2,6 +2,26 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.26.0 - 2026-10-01
+
+### Added
+- Everything can be configured, and the defaults are the values the mod used before, so nothing changes until you edit the config
+- `[Content]`: switch any White Hilt item or piece off. It can no longer be crafted or built; copies players already have are kept
+- `[Recipes]`: replace the recipe of any White Hilt item or piece, e.g. `Iron:10:5, FineWood:4`. Empty keeps the built-in recipe
+- Gear: the White Hilt bonuses of weapons, armour, tools, ammunition, runes, belt pouch, Home Stone, Navigator's Table, Pathfinder's Amulet and the indestructible armour and weight (`Gear.*`), and every mead's duration and effect (`Meads.*`)
+- Gift potions: duration and every effect strength per potion (`Potions.GiftOf*`)
+- Ranching: switches for husbandry bonuses, favourite foods, trough production and grooming, plus all its numbers, the favourite food list and what each animal produces (`Ranching`)
+- Dog: `Enabled` (the Bog Witch stops selling puppies), litters, bond, tricks, digging, healing, guard and sniff numbers
+- Ships: switches for course holding, pushing, the fishing net, tent shelter, the ship portal, sea routes and the route autopilot, and the fishing net, auto anchor and Mast Wisp numbers
+- Navigation: switches for the bigger explore radius and the shared map reveal, and their levels, bonuses and the Raven Sight radius (`Navigation`)
+- Skills: the level of every milestone and the strength of its effect (`Skills.<Skill>`), and the star chances
+- Defences health, Chain Bench output, compost, rune post and Valkyrie Stone rules, paint pot uses, build tool reaches, regrow time, pick amount and group size per forageable, Kraken loot, Lindorm and Giant Spider extras
+- Branding: `MainMenuLogo` switch; Backpack: `ShieldFollowsWeapon` and `CoinsToCoinSlots` switches
+
+### Fixed
+- Descriptions and tooltips that name a configurable number (trough, tether post, dog bowl, compost bin, Navigator's Table, Pathfinder's Amulet, Exploration skill, Portal Astrolabe and Harbour Anchor, Valkyrie Stone, dog bandage and trick lessons, Gift of Thor, Crowberry Wine, Roseroot Mead, Sweet Gale Ale) now show the configured value, in English and Norwegian
+- Texts with a number in them (skill book, ore echo, lookout, catch log, junk filter, map area counts, compost bin) showed a raw `{0}` instead of the number
+
 ## v0.25.1 - 2026-10-01
 
 ### Fixed

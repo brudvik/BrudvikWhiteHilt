@@ -79,3 +79,24 @@ All tools are indestructible with reduced stamina usage (stamina modifier -1).
 | **White Hilt Pickaxe** | The Indestructible Pickaxe of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
 | **White Hilt Hoe** | The Indestructible Hoe of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
 | **White Hilt Cultivator** | The Indestructible Cultivator of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
+
+---
+
+## Config
+
+All admin only, synced from the server.
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[Gear.Indestructible] ArmorBonus` | 999 | Armor added to every indestructible White Hilt item |
+| `[Gear.Indestructible] Weight` | 0 | Weight of every indestructible White Hilt item |
+| `[Gear.Weapons] DamageMultiplierBonus` | 0.5 | Added to the primary attack's damage multiplier of every weapon and shield |
+| `[Gear.Weapons] BonusDamage` | 10 | Added to the plain, fire and pierce damage |
+| `[Gear.Weapons] BonusDamagePerLevel` | 10 | Added per quality level to the plain, fire, pierce and slash damage |
+| `[Gear.Armor] ArmorPerLevelBonus` | 10 | Added to the armor per quality level |
+| `[Gear.Armor] MovementBonus` | 0.05 | Added to the movement speed of each armor piece (0.05 = 5% faster) |
+| `[Gear.Tools] HomeItemsStaminaReduction` | 1.0 | Taken off the stamina use for building, farming and cultivating (1 = no stamina) |
+| `[Gear.Ammunition] PierceMultiplier` | 2 | Multiplies the pierce damage of arrows and bolts |
+| `[Gear.Ammunition] BonusFireDamage` | 30 | Fire damage added to arrows and bolts |
+| `[Gear.Ammunition] BonusSpiritDamage` | 20 | Spirit damage added to arrows and bolts |
+| `[Gear.WhiteHiltBeltPouch] Weight` | 1 | Weight of the Belt Pouch |

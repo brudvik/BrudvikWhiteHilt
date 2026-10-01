@@ -45,3 +45,32 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Cranberry Mead** | Poison resistance, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Cranberries ×10, Lingonberries ×3 |
 | **Sweet Gale Ale** | +75 carry weight, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Honey ×10, Sweet Gale ×10, Blueberries ×5 |
 | **Crowberry Wine** | Health regenerates 50% faster, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Crowberries ×10, Roseroot ×2 |
+
+## Config
+
+Admin only, synced from the server. The spawn, drop and Stone Pot food settings are listed in [Progression](progression.md).
+
+Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group, in zones generated from now on |
+| `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
+| `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |
+
+| Forageable | Group size |
+|---|---|
+| Chanterelle, Porcini, Cranberries, Crowberries | 1–3 |
+| Lingonberries | 1–2 |
+| Roseroot, Sweet Gale | 2–4 |
+| Wild Garlic | 3–6 |
+
+Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10), plus:
+
+| Mead | Setting | Default |
+|---|---|---|
+| Crowberry Wine | `HealthRegenMultiplier` | 1.5 |
+| Roseroot Mead | `StaminaRegenMultiplier` | 1.5 |
+| Sweet Gale Ale | `CarryWeight` | 75 |
+
+Mead changes apply on the next drink.

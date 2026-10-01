@@ -65,3 +65,21 @@ The map shows where people have built. The server looks through the whole world 
 | `MinAnimals` (server) | 2 | Fewest tamed animals for a pasture |
 | `ShowBuildings` / `ShowFields` / `ShowPastures` / `ShowWards` | true | What you draw on your own map |
 | `ShowLabels` | true | Names on the large map when zoomed in |
+
+## Config
+
+All admin only, synced from the server.
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[Navigation] ExploreRadiusBonus` | true | The Navigator's Table and the Pathfinder's Amulet widen the uncovered circle |
+| `[Navigation] TableBonus` | 2 | Extra radius with the table at Exploration 100, as a share of the vanilla 100 m (2 = 300 m) |
+| `[Navigation] AmuletBonus` | 1 | Extra radius with the amulet at Exploration 100 (1 = 200 m) |
+| `[Navigation] BonusAtLevelZero` | 0.2 | Share of the extra radius already given at Exploration 0 |
+| `[Navigation] SkillPerSquareMetre` | 0.0005 | Exploration experience per square metre of new map |
+| `[Navigation] SharedMapReveal` | true | Shared map is drawn like your own from `SharedMapRevealLevel` |
+| `[Navigation] SharedMapRevealLevel` | 50 | Exploration level for that |
+| `[Navigation] RavenSightRadius` | 500 | Metres that Raven Sight uncovers |
+| `[Gear.WhiteHiltChartTable] Weight` | 10 | Weight of the Navigator's Table item |
+| `[Gear.WhiteHiltPathfinder] MaxAdrenaline` | 50 | Adrenaline needed for Raven Sight |
+| `[Gear.WhiteHiltPathfinder] AdrenalinePerSquareMetre` | 0.0001 | Adrenaline per square metre of new map |

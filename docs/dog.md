@@ -60,6 +60,23 @@ Buy a puppy from the Bog Witch, carry it home in your pack and let it out. It gr
 | **Dog Bandage** (×2) | Heals half the dog's health and clears poison | Workbench | Leather Scraps ×2, Resin ×1, Dandelion ×1 |
 | **Dog Coat** | Keeps the dog from freezing | Workbench (level 2) | Deer Hide ×2, Leather Scraps ×4, Troll Hide ×1 |
 
-**Settings** (`[Dog]`, admin-only and synced): `Price` (1000), `GrowDays` (10), `StarveDays` (15), `RunAwayDays` (3), `LifeDays` (160, 0 = never dies of old age), `HealthPerBondLevel` (0.1), `DamagePerBondLevel` (0.05) and `CuddleMinutes` (10). `OwnerWarnings` is your own.
+**Settings** (`[Dog]`, admin-only and synced): `Enabled` (true; off: the Bog Witch stops selling puppies, dogs you have stay), `Price` (1000), `GrowDays` (10), `StarveDays` (15), `RunAwayDays` (3), `LifeDays` (160, 0 = never dies of old age), `HealthPerBondLevel` (0.1), `DamagePerBondLevel` (0.05) and `CuddleMinutes` (10). `OwnerWarnings` is your own.
+
+| Setting | Default | What it does |
+|---|---|---|
+| `BondXpPerLevelSquared` | 250 | Bond experience for a level is the level squared times this |
+| `FetchXp` | 10 | Bond experience for fetching a stick |
+| `TrickXp` | 2 | Bond experience for a trick it knows |
+| `LessonsToLearn` | 3 | Lessons (one Dog Treat each) to learn a trick |
+| `Litters` | true | Two dogs of different players may have a puppy |
+| `LitterChance` | 0.25 | Chance per night of a puppy |
+| `LitterCooldownDays` | 20 | Game days between a dog's litters |
+| `LitterMinBond` | 3 | Bond level both dogs need |
+| `DigChance` | 0.5 | Chance the dog digs something up at home |
+| `SwampPoisonChance` | 0.3 | Chance of poison per care tick in swamp water; 0 = never |
+| `BandageHeal` | 0.5 | Share of its health a bandage heals |
+| `RestHealPerTick` | 0.01 | Share of its health healed per care tick while resting at home |
+| `GuardRadius` | 30 | Metres around home within which it barks at enemies; 0 = never |
+| `SniffRange` | 25 | Metres within which it sniffs out forage and pins it on the map; 0 = off |
 
 **Console command:** `whitehilt_rest lie|sleep|sit|off` lays the nearest dog down (needs `devcommands`), to check the resting pose.

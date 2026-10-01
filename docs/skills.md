@@ -125,3 +125,21 @@ The skill already speeds up taming and breeding ([Animal husbandry](husbandry.md
 ### ⚙️ Config
 
 Section `Skills` (server-synced): `DeathLossMultiplier`, `Stars`, `StarFoodBonus`, and a switch for each group: `Foraging`, `Cooking`, `Woodcutting`, `Mining`, `Blocking`, `Farming`, `Fishing`, `Husbandry`, `Lookout`. The Lookout key is in `Skills.Keys` (each player sets it).
+
+Star chances, in `Skills`: `FirstStarChance` (0.6), `SecondStarChance` (0.35, once the first is rolled), `ThirdStarChance` (0.25, once the second is rolled).
+
+Each skill has its own section `Skills.<Skill>` (server-synced). It holds the level of every milestone, as `<Milestone>Level`, and the numbers behind it. A `Base` + `Skill` pair means base + skill × level / 100. Changes apply at once.
+
+| Section | Milestone levels | Numbers (defaults) |
+|---|---|---|
+| `Skills.Foraging` | `KeenEyeLevel` 25, `SeasonSenseLevel` 50, `SweepPickingLevel` 75, `ForagersBountyLevel` 100 | `ExtraYieldChance` 0.5, `BestTimeStarMultiplier` 2, `SweepRange` 4 |
+| `Skills.Cooking` | `FineCookingLevel` 25, `WatchfulCookLevel` 50, `ChefsTouchLevel` 75, `MasterChefLevel` 100 | `KitchenSpeedBonus` 0.5, `CookRange` 10 |
+| `Skills.Woodcutting` | `AimedFallLevel` 25, `ReplantingLevel` 50, `DominoFellingLevel` 75, `OldGrowthLevel` 100 | `CleanSplitChance` 0.5, `BirdNestBaseChance` 0.02, `BirdNestSkillChance` 0.06, `OldGrowthChance` 0.05 |
+| `Skills.Mining` | `CleanStrikeLevel` 25, `OreEchoLevel` 50, `RichVeinsLevel` 75, `ProspectorLevel` 100 | `ExtraOreChance` 0.3, `FindBaseChance` 0.015, `FindSkillChance` 0.035, `ProspectorFindMultiplier` 2, `CleanStrikeChance` 0.2, `CleanStrikeMultiplier` 2, `RichVeinChance` 0.1, `OreEchoRange` 40, `ProspectorRange` 80, `OreEchoCooldown` 30 |
+| `Skills.Blocking` | `RiposteLevel` 25, `ShieldWallLevel` 50, `LastStandLevel` 75, `IronGuardLevel` 100 | `ExtraHealth` 20, `DamageReduction` 0.1, `BlockStaminaSaving` 0.3, `RiposteBonus` 0.5, `RiposteSeconds` 3, `ShieldWallReduction` 0.2, `ShieldWallRange` 4, `LastStandCooldownMinutes` 10, `LastStandGraceSeconds` 3, `IronGuardBonus` 0.25 |
+| `Skills.Farming` | `StarredCropsLevel` 25, `GreenThumbLevel` 50, `GiantCropsLevel` 75, `MasterFarmerLevel` 100 | `GreenThumbBonus` 0.25, `GiantCropChance` 0.05, `GiantCropYield` 3, `SeedStarBonus` 0.15 |
+| `Skills.Fishing` | `SnagsLevel` 25, `SteadyHandsLevel` 50, `LegendaryFishLevel` 75, `DoubleCatchLevel` 100 | `LineStrain` 0.35, `SteadyHandsReduction` 0.5, `SnagBaseChance` 0.05, `SnagSkillChance` 0.15, `LegendaryBaseChance` 0.01, `LegendarySkillChance` 0.03, `DoubleCatchChance` 0.2 |
+| `Skills.Husbandry` | `TwinsLevel` 50, `StrongYoungLevel` 75 | `TwinChance` 0.25, `StrongYoungChance` 0.3 |
+| `Skills.Exploration` | `LookoutLevel` 25 | `LookoutCooldownMinutes` 5, `LookoutRadius` 200 |
+
+The Compost Bin, section `Farming.Compost` (server-synced): `WastePerCompost` (5) pieces of waste make one compost, and a bin uses `CompostPerDay` (1) compost a day while it feeds the soil (0 = never used up).

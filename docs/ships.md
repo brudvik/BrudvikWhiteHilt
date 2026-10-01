@@ -46,3 +46,31 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 | Item | Use | Crafting Station | Requirements |
 |------|-----|------------------|--------------|
 | **Harbour Anchor** | Shows every ship on the map | Hammer (Workbench) | Iron ×2, Chain ×2, Fine Wood ×4 |
+
+## Config
+
+Section `[Ships]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `HoldCourse` | true | Ships can hold their course with nobody at the helm |
+| `PushShip` | true | A still ship can be pushed off the shore |
+| `PushSpeed` | 2.5 | Speed in m/s one push gives |
+| `PushMaxShipSpeed` | 1.5 | A ship can only be pushed below this speed, in m/s |
+| `FishingNet` | true | The fishing net catches fish; off keeps the upgrade but catches nothing |
+| `FishingNetMinSpeed` | 2 | Speed in m/s the ship needs to catch |
+| `FishingNetSkillSpeedUp` | 0.5 | Share the time between catches is cut at Fishing 100 |
+| `FishingNetDoubleChance` | 0.5 | Chance of two fish at Fishing 100 |
+| `FishingNetSkillRaise` | 0.5 | Fishing experience per catch |
+| `FishingNetSeaweedChance` | 0.1 | Chance of seaweed per catch |
+| `FishingNetPearlChance` | 0.03 | Chance of an amber pearl per catch on the ocean |
+| `AutoAnchorSeconds` | 2 | Seconds an empty, still ship waits before the anchor drops |
+| `AutoAnchorMaxSpeed` | 2 | Below this speed, in m/s, the ship counts as still |
+| `TentShelter` | true | The Ship Tent gives shelter and keeps the rain off |
+| `MastWispReach` | 15 | Metres from the mast within which the Mast Wisp thins fog |
+| `ShipPortal` | true | The deck portal can be used and is listed; off hides the rune circle |
+| `ShipRoutes` | true | Route markers can be set at the Navigator's Table; saved markers stay when off |
+| `RouteAutopilot` | true | "Take me there" can sail the route |
+| `RouteMaxMarkers` | 5 | Most markers on a route |
+
+`[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

@@ -61,3 +61,17 @@ The **Home Stone** takes you to your home portal from anywhere. It then rests fo
 | **Home Stone** | Takes you to your home portal, then rests; used again within 2 minutes, it takes you back | Rune Forge | Stone ×4, Iron ×2, Surtling Core ×1, Greydwarf Eye ×5 |
 
 The server sends the portal list every 10–20 seconds, so a new or renamed portal shows up in the list after a short while.
+
+## Config
+
+All admin only, synced from the server.
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[Portals] RunePostRange` | 8 | Metres a rune post may stand from the portal you travel from; 0 turns rune posts off |
+| `[Portals] MapTableExtensionRange` | 5 | Metres a Portal Astrolabe or Harbour Anchor may stand from a map table |
+| `[Portals] ValkyrieStoneCost` | 1 | Surtling Cores per Valkyrie Stone trip; 0 = free |
+| `[Portals] ValkyrieStoneOncePerDeath` | true | Each death point can be travelled to once; off: as often as you like |
+| `[Gear.Runes] Weight` | 1 | Weight of each rune |
+| `[Gear.Runes] MaxStackSize` | 10 | Runes of a kind per inventory slot |
+| `[Gear.WhiteHiltHomeStone] Weight` | 0.5 | Weight of the Home Stone |

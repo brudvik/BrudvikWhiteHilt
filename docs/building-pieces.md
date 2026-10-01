@@ -4,7 +4,7 @@
 
 ## 🏳️ WHITE HILT LOGO & BANNERS
 
-The White Hilt logo shows in the bottom right corner of the main menu with the mod version. When you enter a world, teleport or respawn, the loading screen is black with the logo in the middle and the tips below it; sleeping keeps the vanilla screen. `Branding` → `LoadingScreenLogo` switches the loading screen back to vanilla.
+The White Hilt logo shows in the bottom right corner of the main menu with the mod version. When you enter a world, teleport or respawn, the loading screen is black with the logo in the middle and the tips below it; sleeping keeps the vanilla screen. `Branding` → `LoadingScreenLogo` switches the loading screen back to vanilla, and `MainMenuLogo` (your own setting, on) hides the main menu logo when off.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|

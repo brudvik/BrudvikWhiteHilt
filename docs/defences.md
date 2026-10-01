@@ -21,3 +21,11 @@ A palisade fort for the early game, built from Valheim's own stakes, logs and pl
 | **Cheval de Frise** | A log with crossed sharpened stakes that hurts creatures running into it | Hammer (Workbench) | Core Wood ×4, Wood ×4 |
 
 In the towers, use the ladder to climb to the next floor up, or hold the alternate key (Shift) to climb down.
+
+## Config
+
+Section `[Defenses]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `HealthMultiplier` | 1 | Multiplier on the health of the rampart, gatehouse, watchtowers and cheval de frise. Placed pieces keep their damage; a repair brings them to the new full health |

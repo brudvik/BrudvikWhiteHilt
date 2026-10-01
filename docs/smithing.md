@@ -15,3 +15,5 @@
 The Chain Bench also counts as a forge extension, so the forge can reach level 8.
 
 The Repair Anvil is free to use by default. The server sets it in the `RepairAnvil` section: `CostPerItem` (e.g. `Resin:1,Iron:1` per repaired item; empty is free), `WholeInventory` (repair everything carried, off) and `RaiseCraftingSkill` (on).
+
+The chains are set in the `ChainBench` section (server-synced): `NeedsBench` (on; off: any forge makes chains), `ChainsPerCraft` (1), `IronPerCraft` (2) and `CoalPerCraft` (1, 0 = none).

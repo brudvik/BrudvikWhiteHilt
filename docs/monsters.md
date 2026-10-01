@@ -64,6 +64,8 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `CooldownMinutes` | 30 | Real minutes before it can come for the same player again |
 | `Health` / `Damage` | 700 / 55 | Health, and pierce damage of its bite |
 | `Scale` | 1.3 | Size (1 = about 4 m long; after a restart) |
+| `GiveUpSeconds` | 25 | Seconds without prey in sight before it burrows away |
+| `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
 
 Section `[Giant Spider]`:
 
@@ -77,6 +79,9 @@ Section `[Giant Spider]`:
 | `NestChancePerZone` | 0.15 | Chance of a nest in each new Black Forest zone |
 | `NestHealth` | 300 | Health of a nest |
 | `NestMaxNear` | 3 | Spiders a nest keeps around it |
+| `TrophyChance` | 10 | Percent chance of a spider's trophy (after a restart) |
+| `NestSpawnSeconds` | 20 | Seconds between two spiders from a nest (after a restart) |
+| `NestLevelUpChance` | 10 | Percent chance a spider from a nest gets a star (after a restart) |
 
 ## Console commands
 

@@ -68,6 +68,7 @@ Section `[Kraken]` (admin only, synced from the server):
 | `HoldShip` | true | The Kraken holds the ship fast |
 | `RetreatMinutes` | 5 | Minutes before it gives up |
 | `Scale` | 1.5 | Size of the Kraken (after a restart) |
+| `LootMultiplier` | 1 | Multiplier on the meat, ink and chitin it drops; the trophy stays one (after a restart) |
 
 Section `[Octopus]`: `Enabled`, `MaxSpawned` (2) and `SpawnChance` (20%).
 

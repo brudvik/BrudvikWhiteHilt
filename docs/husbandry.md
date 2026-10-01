@@ -20,3 +20,33 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 | **Feeding Trough** | Holds 8 stacks of food for animals nearby | Hammer (near Workbench) | Wood ×8, Stone ×4 |
 | **Tether Post** | A weathered post with a chain that keeps tame animals around it | Hammer (near Workbench) | Wood ×4, Leather Scraps ×2 |
 | **Grooming Comb** | Grooms a tame animal once a day | Workbench | Bone Fragments ×3, Deer Hide ×1 |
+
+## Config
+
+Section `[Ranching]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `HusbandryEffects` | true | The skill's bonuses to nearby animals; off: the skill still gains experience |
+| `FavoriteFoods` | true | Favourite foods tame faster, last longer and are eaten first |
+| `AnimalProduction` | true | Groomed, fed animals put products in a trough |
+| `GroomingBonus` | true | Groomed animals breed faster and drop more |
+| `TamingTimeReduction` | 0.4 | Share of the taming time taken off at skill 100 |
+| `FedDurationBonus` | 0.5 | How much longer food lasts at skill 100 |
+| `PregnancyReduction` | 0.3 | Share of the pregnancy taken off at skill 100 |
+| `ExtraHerdSize` | 2 | More animals a herd may hold at skill 100 |
+| `HusbandryRange` | 30 | Metres within which players get experience and lend their skill |
+| `TamingTickExperience` | 0.2 | Experience per taming tick (every 3 s) |
+| `TamedExperience` | 50 | Experience when an animal becomes tame |
+| `FeedingExperience` | 3 | Experience when an animal eats |
+| `BirthExperience` | 15 | Experience when an animal is born or an egg is laid |
+| `GroomExperience` | 10 | Experience for grooming |
+| `ProduceExperience` | 5 | Experience when an animal puts something in a trough |
+| `FavoriteTamingSpeed` | 1.5 | How much faster a favourite food tames |
+| `FavoriteFedDuration` | 2 | How much longer a favourite food keeps an animal fed |
+| `FavoriteFoodsList` | `Boar:WhiteHiltChanterelle\|WhiteHiltPorcini, Wolf:Sausages, Lox:WhiteHiltCrowberries, Hen:WhiteHiltLingonberries, Asksvin:MushroomSmokePuff` | `Creature:Item\|Item`, comma separated (prefab names). Applies on the next world load |
+| `Products` | `Boar:LeatherScraps:1, Wolf:WolfHairBundle:1, Lox:LoxPelt:3` | `Creature:Item:Days`, comma separated |
+| `ContentBreedingFactor` | 0.5 | Multiplier on a groomed animal's pregnancy time and missed breeding checks |
+| `ContentDropBonus` | 1 | Extra of each drop (not the trophy) from a groomed animal |
+| `TetherRange` | 10 | Metres a tether post reaches |
+| `TroughRange` | 15 | Metres within which animals use a feeding trough |
