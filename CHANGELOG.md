@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.34.1 - 2026-10-01
+
+### Fixed
+- The map areas (bases, outposts, fields, pastures and wards) were drawn over portal and ship pins and the player marker. They are now drawn under them, and their colours are softer
+
 ## v0.34.0 - 2026-10-01
 
 ### Added

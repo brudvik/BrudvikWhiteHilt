@@ -23,15 +23,15 @@ public static class MapAreaOverlay
     private const int RingTexture = 128;
     private const int Dashes = 24;
 
-    private static readonly Color fieldFill = new(0.45f, 0.75f, 0.3f, 0.3f);
-    private static readonly Color fieldBorder = new(0.3f, 0.6f, 0.2f, 0.9f);
-    private static readonly Color pastureFill = new(0.8f, 0.6f, 0.35f, 0.3f);
-    private static readonly Color pastureBorder = new(0.6f, 0.42f, 0.2f, 0.9f);
-    private static readonly Color baseBorder = new(1f, 0.82f, 0.35f, 0.95f);
-    private static readonly Color outpostBorder = new(0.55f, 0.8f, 1f, 0.95f);
-    private static readonly Color buildingBorder = new(0.9f, 0.9f, 0.9f, 0.9f);
-    private static readonly Color wardOn = new(0.5f, 1f, 0.6f, 0.85f);
-    private static readonly Color wardOff = new(0.7f, 0.7f, 0.7f, 0.6f);
+    private static readonly Color fieldFill = new(0.45f, 0.7f, 0.35f, 0.16f);
+    private static readonly Color fieldBorder = new(0.35f, 0.55f, 0.25f, 0.55f);
+    private static readonly Color pastureFill = new(0.75f, 0.6f, 0.4f, 0.16f);
+    private static readonly Color pastureBorder = new(0.6f, 0.45f, 0.25f, 0.55f);
+    private static readonly Color baseBorder = new(0.95f, 0.82f, 0.45f, 0.6f);
+    private static readonly Color outpostBorder = new(0.6f, 0.78f, 0.95f, 0.6f);
+    private static readonly Color buildingBorder = new(0.85f, 0.85f, 0.85f, 0.5f);
+    private static readonly Color wardOn = new(0.55f, 0.9f, 0.6f, 0.55f);
+    private static readonly Color wardOff = new(0.7f, 0.7f, 0.7f, 0.4f);
 
     private static readonly List<Visual> visuals = new();
 
@@ -97,6 +97,17 @@ public static class MapAreaOverlay
         {
             dirty = false;
             Rebuild(map);
+        }
+
+        // Below the pins and markers, so portals, ships and players stay on top.
+        if (largeRoot.GetSiblingIndex() != 0)
+        {
+            largeRoot.SetAsFirstSibling();
+        }
+
+        if (smallRoot.GetSiblingIndex() != 0)
+        {
+            smallRoot.SetAsFirstSibling();
         }
 
         bool large = map.m_mode == Minimap.MapMode.Large;
@@ -304,12 +315,12 @@ public static class MapAreaOverlay
     {
         if (creator == 0L)
         {
-            return new Color(0.6f, 0.6f, 0.6f, 0.3f);
+            return new Color(0.6f, 0.6f, 0.6f, 0.16f);
         }
 
         float hue = (uint)(creator ^ (creator >> 32)) % 360u / 360f;
-        Color colour = Color.HSVToRGB(hue, 0.6f, 0.9f);
-        colour.a = 0.3f;
+        Color colour = Color.HSVToRGB(hue, 0.45f, 0.85f);
+        colour.a = 0.16f;
         return colour;
     }
 
