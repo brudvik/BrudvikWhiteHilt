@@ -25,15 +25,15 @@ public class GiftOfFreyrEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_healthRegenMultiplier = 2f;
-        m_staminaRegenMultiplier = 2f;
-        m_addMaxCarryWeight = 150f; // Carry more resources
+        m_ttl = PotionSettings.Freyr.DurationMinutes.Value * 60f;
+        m_healthRegenMultiplier = PotionSettings.Freyr.HealthRegenMultiplier.Value;
+        m_staminaRegenMultiplier = PotionSettings.Freyr.StaminaRegenMultiplier.Value;
+        m_addMaxCarryWeight = PotionSettings.Freyr.CarryWeight.Value;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class GiftOfFreyrEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Freyr.HomeItemStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -66,8 +66,8 @@ public class GiftOfFreyrEffect : SE_Stats
         if (m_character != null)
         {
             // Passive comfort bonus effect
-            m_character.Heal(1f * dt, showText: false);
-            m_character.AddStamina(5f * dt);
+            m_character.Heal(PotionSettings.Freyr.HealPerSecond.Value * dt, showText: false);
+            m_character.AddStamina(PotionSettings.Freyr.StaminaPerSecond.Value * dt);
         }
     }
 }

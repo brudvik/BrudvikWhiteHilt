@@ -25,13 +25,13 @@ public class GiftOfTyrEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_addMaxCarryWeight = 100f; // Stand your ground with heavy loads
+        m_ttl = PotionSettings.Tyr.DurationMinutes.Value * 60f;
+        m_addMaxCarryWeight = PotionSettings.Tyr.CarryWeight.Value;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class GiftOfTyrEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyBlockStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Tyr.BlockStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class GiftOfTyrEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyDodgeStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse *= 0.25f;
+        staminaUse *= PotionSettings.Tyr.DodgeStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -72,6 +72,6 @@ public class GiftOfTyrEffect : SE_Stats
         base.OnDamaged(hit, attacker);
         
         // Reduce pushback force
-        hit.m_pushForce *= 0.1f;
+        hit.m_pushForce *= PotionSettings.Tyr.PushForceMultiplier.Value;
     }
 }

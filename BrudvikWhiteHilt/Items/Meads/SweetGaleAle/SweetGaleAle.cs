@@ -1,3 +1,5 @@
+using BepInEx.Configuration;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -9,11 +11,17 @@ namespace BrudvikWhiteHilt.Items.Meads.SweetGaleAle;
 /// </summary>
 public class SweetGaleAle : WhiteHiltMeadBase
 {
+    private readonly ConfigEntry<float> carryWeight;
+
     /// <summary>
     /// Constructor for the SweetGaleAle class.
     /// </summary>
     /// <param name="instance">The item manager.</param>
-    public SweetGaleAle(ItemManager instance) : base(instance) { }
+    public SweetGaleAle(ItemManager instance) : base(instance)
+    {
+        carryWeight = WhiteHiltConfig.BindAdminOnly(ConfigSection, "CarryWeight", 75f,
+            "Carry weight added while the ale is active.", new AcceptableValueRange<float>(0f, 500f));
+    }
 
     /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltSweetGaleAle";
@@ -50,6 +58,6 @@ public class SweetGaleAle : WhiteHiltMeadBase
     /// <inheritdoc/>
     protected override void ConfigureEffect(SE_Stats effect)
     {
-        effect.m_addMaxCarryWeight = 75f;
+        effect.m_addMaxCarryWeight = carryWeight.Value;
     }
 }

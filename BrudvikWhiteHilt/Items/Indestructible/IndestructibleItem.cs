@@ -1,4 +1,6 @@
-﻿using BrudvikWhiteHilt.Helpers;
+﻿using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using System;
@@ -8,10 +10,17 @@ namespace BrudvikWhiteHilt.Items.Indestructible;
 /// <summary>
 /// This class defines an indestructible item.
 /// </summary>
-public class IndestructibleItem : CustomItem
+public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
 {
+    private const string Section = "Gear.Indestructible";
+    private const float DefaultArmorBonus = 999f;
+    private const float DefaultWeight = 0f;
+
+    private static ConfigEntry<float> armorBonus;
+    private static ConfigEntry<float> weight;
 
     private ItemDrop.ItemData.SharedData _ItemData = null;
+    private float baseArmor;
 
     /// <summary>
     /// Gets or sets the shared data for the item.
@@ -34,12 +43,12 @@ public class IndestructibleItem : CustomItem
         {
             ItemData = ItemDrop.m_itemData.m_shared;
 
-            ItemData.m_armor += 999;
+            baseArmor = ItemData.m_armor;
+            ApplyConfig();
             ItemData.m_durabilityDrain = 0;
             ItemData.m_maxDurability = 999;
             ItemData.m_useDurability = false;
             ItemData.m_useDurabilityDrain = 0;
-            ItemData.m_weight = 0;
 
             var wearNTear = ItemDrop.GetComponent<WearNTear>();
             WearNTearHelper.MakeIndestructible(wearNTear);
@@ -51,4 +60,33 @@ public class IndestructibleItem : CustomItem
         }
     }
 
+    /// <summary>
+    /// Binds the config shared by all indestructible items, once. Call from the plugin's Awake.
+    /// </summary>
+    public static void BindConfig()
+    {
+        if (armorBonus != null)
+        {
+            return;
+        }
+
+        armorBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorBonus", DefaultArmorBonus,
+            "Armor added to every indestructible White Hilt item.", new AcceptableValueRange<float>(0f, 1000f));
+        weight = WhiteHiltConfig.BindAdminOnly(Section, "Weight", DefaultWeight,
+            "Weight of every indestructible White Hilt item.", new AcceptableValueRange<float>(0f, 50f));
+    }
+
+    /// <summary>
+    /// Applies the configured armor bonus and weight.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (ItemData == null)
+        {
+            return;
+        }
+
+        ItemData.m_armor = baseArmor + (armorBonus?.Value ?? DefaultArmorBonus);
+        ItemData.m_weight = weight?.Value ?? DefaultWeight;
+    }
 }

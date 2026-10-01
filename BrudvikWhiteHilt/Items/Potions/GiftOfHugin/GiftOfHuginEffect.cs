@@ -54,11 +54,12 @@ public class GiftOfHuginEffect : SE_Stats
         base.Setup(character);
         player = character as Player;
 
+        float level = PotionSettings.Hugin.SkillLevel.Value;
         player.m_skills.GetSkillList().ForEach(skill =>
         {
             try
             {
-                skill.m_level = 100;
+                skill.m_level = level;
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Helpers;
+﻿using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Indestructible;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -12,8 +13,19 @@ namespace BrudvikWhiteHilt.Items.Weapons;
 /// <summary>
 /// Base class for White Hilt weapons.
 /// </summary>
-public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
+    private const string Section = "Gear.Weapons";
+
+    private static ConfigEntry<float> damageMultiplierBonus;
+    private static ConfigEntry<float> bonusDamage;
+    private static ConfigEntry<float> bonusDamagePerLevel;
+
+    private IndestructibleItem added;
+    private float baseDamageMultiplier;
+    private HitData.DamageTypes baseDamages;
+    private HitData.DamageTypes baseDamagesPerLevel;
+
     /// <summary>
     /// The base name of the weapon.
     /// </summary>
@@ -77,6 +89,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
     protected WhiteHiltWeaponBase(ItemManager instance)
     {
         this.instance = instance;
+        BindConfig();
+        IndestructibleItem.BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
@@ -98,15 +112,11 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
 
             IndestructibleItem item = new(BaseName, CopyFrom, itemConfig);
 
-            // Set the item damage and other properties.
-            item.ItemData.m_attack.m_damageMultiplier += 0.5f;
-            item.ItemData.m_damagesPerLevel.m_damage += 10;
-            item.ItemData.m_damagesPerLevel.m_fire += 10;
-            item.ItemData.m_damagesPerLevel.m_pierce += 10;
-            item.ItemData.m_damagesPerLevel.m_slash += 10;
-            item.ItemData.m_damages.m_damage += 10;
-            item.ItemData.m_damages.m_fire += 10;
-            item.ItemData.m_damages.m_pierce += 10;
+            baseDamageMultiplier = item.ItemData.m_attack.m_damageMultiplier;
+            baseDamages = item.ItemData.m_damages.Clone();
+            baseDamagesPerLevel = item.ItemData.m_damagesPerLevel.Clone();
+            added = item;
+            ApplyConfig();
 
             TryApplyModel(item);
 
@@ -122,11 +132,55 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem
     }
 
     /// <summary>
+    /// Applies the configured damage bonuses on top of the cloned vanilla values.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (added == null)
+        {
+            return;
+        }
+
+        ItemDrop.ItemData.SharedData shared = added.ItemData;
+        shared.m_attack.m_damageMultiplier = baseDamageMultiplier + damageMultiplierBonus.Value;
+
+        HitData.DamageTypes damages = baseDamages.Clone();
+        damages.m_damage += bonusDamage.Value;
+        damages.m_fire += bonusDamage.Value;
+        damages.m_pierce += bonusDamage.Value;
+        shared.m_damages = damages;
+
+        HitData.DamageTypes perLevel = baseDamagesPerLevel.Clone();
+        perLevel.m_damage += bonusDamagePerLevel.Value;
+        perLevel.m_fire += bonusDamagePerLevel.Value;
+        perLevel.m_pierce += bonusDamagePerLevel.Value;
+        perLevel.m_slash += bonusDamagePerLevel.Value;
+        shared.m_damagesPerLevel = perLevel;
+
+        added.ApplyConfig();
+    }
+
+    /// <summary>
     /// Called after the model from <see cref="ModelName"/> is in place, to add behaviour to it.
     /// </summary>
     /// <param name="model">The object that shows the model, under the item's attach child.</param>
     protected virtual void OnModelApplied(GameObject model)
     {
+    }
+
+    private static void BindConfig()
+    {
+        if (damageMultiplierBonus != null)
+        {
+            return;
+        }
+
+        damageMultiplierBonus = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplierBonus", 0.5f,
+            "Added to the primary attack's damage multiplier of every White Hilt weapon and shield.", new AcceptableValueRange<float>(0f, 5f));
+        bonusDamage = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamage", 10f,
+            "Added to the plain, fire and pierce damage.", new AcceptableValueRange<float>(0f, 500f));
+        bonusDamagePerLevel = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamagePerLevel", 10f,
+            "Added per quality level to the plain, fire, pierce and slash damage.", new AcceptableValueRange<float>(0f, 500f));
     }
 
     private void TryApplyModel(IndestructibleItem item)

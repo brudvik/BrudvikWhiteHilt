@@ -25,12 +25,12 @@ public class GiftOfSurtEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Surt.DurationMinutes.Value * 60f;
         
         // Set damage modifiers for fire and frost immunity
         m_mods = new System.Collections.Generic.List<HitData.DamageModPair>

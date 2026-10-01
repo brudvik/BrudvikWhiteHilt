@@ -25,15 +25,15 @@ public class GiftOfIdunnEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 2400 seconds (40 minutes) - extra long!
+    /// Enables the effect - configurable duration, 40 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 2400f; // 40 minutes - this potion lasts longer!
-        m_healthRegenMultiplier = 5f;   // 5x health regen
-        m_staminaRegenMultiplier = 5f;  // 5x stamina regen
-        m_eitrRegenMultiplier = 5f;     // 5x eitr regen
+        m_ttl = PotionSettings.Idunn.DurationMinutes.Value * 60f;
+        m_healthRegenMultiplier = PotionSettings.Idunn.HealthRegenMultiplier.Value;
+        m_staminaRegenMultiplier = PotionSettings.Idunn.StaminaRegenMultiplier.Value;
+        m_eitrRegenMultiplier = PotionSettings.Idunn.EitrRegenMultiplier.Value;
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class GiftOfIdunnEffect : SE_Stats
         if (m_character != null)
         {
             // Small continuous heal
-            m_character.Heal(1f * dt, showText: false);
+            m_character.Heal(PotionSettings.Idunn.HealPerSecond.Value * dt, showText: false);
         }
     }
 }

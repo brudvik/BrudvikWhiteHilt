@@ -12,12 +12,12 @@ public class GiftOfFenrirEffect : SE_Stats
     /// <summary>
     /// Animation speed multiplier while attacking.
     /// </summary>
-    public const float AttackSpeed = 1.5f;
+    public static float AttackSpeed => PotionSettings.Fenrir.AttackSpeed.Value;
 
     /// <summary>
     /// Share of damage dealt that is returned as health.
     /// </summary>
-    public const float LifeSteal = 0.15f;
+    public static float LifeSteal => PotionSettings.Fenrir.LifeSteal.Value;
 
     /// <summary>
     /// Initializes the effect with the given name.
@@ -35,13 +35,13 @@ public class GiftOfFenrirEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_speedModifier = 0.25f; // Faster movement
+        m_ttl = PotionSettings.Fenrir.DurationMinutes.Value * 60f;
+        m_speedModifier = PotionSettings.Fenrir.SpeedModifier.Value;
     }
 
     /// <summary>
@@ -60,6 +60,6 @@ public class GiftOfFenrirEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyAttackStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse *= 0.5f; // 50% reduction
+        staminaUse *= PotionSettings.Fenrir.AttackStaminaMultiplier.Value;
     }
 }

@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Navigation;
@@ -19,7 +20,7 @@ namespace BrudvikWhiteHilt.Items.Navigation;
 /// uncovers, and uncovering new land fills its adrenaline; at full adrenaline the ravens reveal 500 m around
 /// (<see cref="RavenSightEffect"/>). One gem lights up on it per twenty levels of Exploration.
 /// </summary>
-public class PathfinderAmulet : IWhiteHiltCustomItem
+public class PathfinderAmulet : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Prefab name of the amulet.
@@ -37,12 +38,11 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
     private const string GroundName = "WhiteHiltAmuletModel";
     private const float GroundScale = 2f;
 
-    private const float MaxAdrenaline = 50f;
-
-    // About 2.5 minutes of sailing along new coast fill it.
-    private const float AdrenalinePerSquareMetre = 0.0001f;
+    private static ConfigEntry<float> maxAdrenaline;
+    private static ConfigEntry<float> adrenalinePerSquareMetre;
 
     private readonly ItemManager instance;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -69,6 +69,12 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
     public PathfinderAmulet(ItemManager instance)
     {
         this.instance = instance;
+        string section = $"Gear.{PrefabName}";
+        maxAdrenaline = WhiteHiltConfig.BindAdminOnly(section, "MaxAdrenaline", 50f,
+            "Adrenaline needed before the ravens reveal the land.", new AcceptableValueRange<float>(1f, 1000f));
+        // The default fills it in about 2.5 minutes of sailing along new coast.
+        adrenalinePerSquareMetre = WhiteHiltConfig.BindAdminOnly(section, "AdrenalinePerSquareMetre", 0.0001f,
+            "Adrenaline gained per square metre of newly uncovered map.", new AcceptableValueRange<float>(0f, 0.01f));
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(PrefabName), FullName, Description);
         Translations.AddEnglish(EffectKey, "Pathfinder");
         Translations.AddEnglish($"{EffectKey}_tooltip", "The map uncovers further around you. New land fills your adrenaline.");
@@ -105,7 +111,7 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
     {
         if (IsWornAsTrinket(player))
         {
-            player.AddAdrenaline(squareMetres * AdrenalinePerSquareMetre);
+            player.AddAdrenaline(squareMetres * adrenalinePerSquareMetre.Value);
         }
     }
 
@@ -136,9 +142,10 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
             equipEffect.m_tooltip = Translations.Token($"{EffectKey}_tooltip");
             RavenSightEffect ravenSight = RavenSightEffect.Create();
 
-            shared.m_maxAdrenaline = MaxAdrenaline;
             shared.m_equipStatusEffect = equipEffect;
             shared.m_fullAdrenalineSE = ravenSight;
+            this.shared = shared;
+            ApplyConfig();
 
             Sprite icon = TryApplyVisual(amulet);
             equipEffect.m_icon = icon ?? shared.m_icons.FirstOrDefault();
@@ -153,6 +160,17 @@ public class PathfinderAmulet : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Applies the configured adrenaline maximum.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared != null)
+        {
+            shared.m_maxAdrenaline = maxAdrenaline.Value;
         }
     }
 

@@ -24,12 +24,12 @@ public class GiftOfLokiEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Loki.DurationMinutes.Value * 60f;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class GiftOfLokiEffect : SE_Stats
         base.Setup(character);
 
         // Boost the current Eitr.
-        character.AddEitr(500f);
+        character.AddEitr(PotionSettings.Loki.BonusEitr.Value);
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class GiftOfLokiEffect : SE_Stats
     /// <param name="staminaRegen"></param>
     public override void ModifyEitrRegen(ref float staminaRegen)
     {
-        staminaRegen += 80f;
+        staminaRegen += PotionSettings.Loki.EitrRegenBonus.Value;
     }
 
 }

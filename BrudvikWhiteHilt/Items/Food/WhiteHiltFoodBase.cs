@@ -13,7 +13,7 @@ namespace BrudvikWhiteHilt.Items.Food;
 /// <summary>
 /// Base class for foods cooked in the <see cref="StonePot"/>.
 /// </summary>
-public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     private readonly ItemManager instance;
     private readonly ConfigEntry<float> health;

@@ -10,8 +10,10 @@ namespace BrudvikWhiteHilt.Items.Accessories;
 /// <summary>
 /// This class defines the base for all White Hilt accessory items.
 /// </summary>
-public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
+    private IndestructibleItem added;
+
     /// <summary>
     /// The base name of the accessory item.
     /// </summary>
@@ -66,6 +68,7 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
     protected WhiteHiltAccessoryBase(ItemManager instance)
     {
         this.instance = instance;
+        IndestructibleItem.BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
@@ -93,6 +96,7 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
 
             IndestructibleItem item = new(BaseName, CopyFrom, config);
             ConfigureStats(item);
+            added = item;
             instance.AddItem(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -102,5 +106,13 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    /// <summary>
+    /// Applies the shared indestructible item config.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        added?.ApplyConfig();
     }
 }

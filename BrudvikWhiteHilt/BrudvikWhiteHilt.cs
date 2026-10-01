@@ -243,9 +243,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Planting.Plantables.Apply();
         forageables.ForEach(forageable => forageable.ApplyConfig());
         Monsters.MonsterRegistry.ApplyConfig();
-        foreach (WhiteHiltFoodBase food in customItems.OfType<WhiteHiltFoodBase>())
+        foreach (IWhiteHiltConfigurable configurable in customItems.OfType<IWhiteHiltConfigurable>())
         {
-            food.ApplyConfig();
+            configurable.ApplyConfig();
         }
     }
 

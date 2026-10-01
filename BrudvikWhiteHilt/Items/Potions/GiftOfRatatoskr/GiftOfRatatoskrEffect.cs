@@ -26,15 +26,15 @@ public class GiftOfRatatoskrEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_speedModifier = 0.75f;
-        m_runStaminaDrainModifier = -0.8f;
-        m_jumpModifier = new Vector3(0, 0.5f, 0);
+        m_ttl = PotionSettings.Ratatoskr.DurationMinutes.Value * 60f;
+        m_speedModifier = PotionSettings.Ratatoskr.SpeedModifier.Value;
+        m_runStaminaDrainModifier = PotionSettings.Ratatoskr.RunStaminaDrainModifier.Value;
+        m_jumpModifier = new Vector3(0, PotionSettings.Ratatoskr.JumpModifier.Value, 0);
     }
 
     /// <summary>
@@ -53,6 +53,6 @@ public class GiftOfRatatoskrEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Ratatoskr.SneakStaminaMultiplier.Value;
     }
 }

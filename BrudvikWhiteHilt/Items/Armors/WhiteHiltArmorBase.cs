@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Helpers;
+﻿using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Indestructible;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -10,8 +11,17 @@ namespace BrudvikWhiteHilt.Items.Armors;
 /// <summary>
 /// This class defines the base for all White Hilt armor items.
 /// </summary>
-public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
+    private const string Section = "Gear.Armor";
+
+    private static ConfigEntry<float> armorPerLevelBonus;
+    private static ConfigEntry<float> movementBonus;
+
+    private IndestructibleItem added;
+    private float baseArmorPerLevel;
+    private float baseMovementModifier;
+
     /// <summary>
     /// The base name of the armor item.
     /// </summary>
@@ -69,6 +79,8 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem
     protected WhiteHiltArmorBase(ItemManager instance)
     {
         this.instance = instance;
+        BindConfig();
+        IndestructibleItem.BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
@@ -89,8 +101,10 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem
             };
 
             IndestructibleItem item = new(BaseName, CopyFrom, weaponConfig);
-            item.ItemData.m_armorPerLevel += 10;
-            item.ItemData.m_movementModifier += 0.05f;
+            baseArmorPerLevel = item.ItemData.m_armorPerLevel;
+            baseMovementModifier = item.ItemData.m_movementModifier;
+            added = item;
+            ApplyConfig();
             instance.AddItem(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -100,5 +114,33 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    /// <summary>
+    /// Applies the configured armor and movement bonuses on top of the cloned vanilla values.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (added == null)
+        {
+            return;
+        }
+
+        added.ItemData.m_armorPerLevel = baseArmorPerLevel + armorPerLevelBonus.Value;
+        added.ItemData.m_movementModifier = baseMovementModifier + movementBonus.Value;
+        added.ApplyConfig();
+    }
+
+    private static void BindConfig()
+    {
+        if (armorPerLevelBonus != null)
+        {
+            return;
+        }
+
+        armorPerLevelBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorPerLevelBonus", 10f,
+            "Added to the armor gained per quality level of every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 200f));
+        movementBonus = WhiteHiltConfig.BindAdminOnly(Section, "MovementBonus", 0.05f,
+            "Added to the movement speed modifier of every White Hilt armor piece (0.05 = 5% faster).", new AcceptableValueRange<float>(-0.5f, 0.5f));
     }
 }

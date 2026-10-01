@@ -1,3 +1,5 @@
+using BepInEx.Configuration;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -9,11 +11,17 @@ namespace BrudvikWhiteHilt.Items.Meads.RoserootMead;
 /// </summary>
 public class RoserootMead : WhiteHiltMeadBase
 {
+    private readonly ConfigEntry<float> staminaRegenMultiplier;
+
     /// <summary>
     /// Constructor for the RoserootMead class.
     /// </summary>
     /// <param name="instance">The item manager.</param>
-    public RoserootMead(ItemManager instance) : base(instance) { }
+    public RoserootMead(ItemManager instance) : base(instance)
+    {
+        staminaRegenMultiplier = WhiteHiltConfig.BindAdminOnly(ConfigSection, "StaminaRegenMultiplier", 1.5f,
+            "Stamina regeneration multiplier while the mead is active.", new AcceptableValueRange<float>(1f, 5f));
+    }
 
     /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltRoserootMead";
@@ -50,6 +58,6 @@ public class RoserootMead : WhiteHiltMeadBase
     /// <inheritdoc/>
     protected override void ConfigureEffect(SE_Stats effect)
     {
-        effect.m_staminaRegenMultiplier = 1.5f;
+        effect.m_staminaRegenMultiplier = staminaRegenMultiplier.Value;
     }
 }

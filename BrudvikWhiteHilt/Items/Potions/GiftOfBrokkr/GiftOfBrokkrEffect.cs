@@ -25,12 +25,12 @@ public class GiftOfBrokkrEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Brokkr.DurationMinutes.Value * 60f;
     }
 
     /// <summary>
@@ -52,8 +52,9 @@ public class GiftOfBrokkrEffect : SE_Stats
         base.ModifySkillLevel(skill, ref level);
         
         // Boost all skills while active (simulates master craftsman)
-        level += 25f;
-        if (level > 100f) level = 100f;
+        level += PotionSettings.Brokkr.SkillBonus.Value;
+        float maxLevel = PotionSettings.Brokkr.MaxSkillLevel.Value;
+        if (level > maxLevel) level = maxLevel;
     }
 
     /// <summary>
@@ -63,6 +64,6 @@ public class GiftOfBrokkrEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Brokkr.HomeItemStaminaMultiplier.Value;
     }
 }

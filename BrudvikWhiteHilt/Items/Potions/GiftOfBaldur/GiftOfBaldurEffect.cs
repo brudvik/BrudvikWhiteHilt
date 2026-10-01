@@ -25,14 +25,14 @@ public class GiftOfBaldurEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_stealthModifier = -0.99f; // Nearly impossible to detect
-        m_noiseModifier = -0.99f;   // Nearly silent
+        m_ttl = PotionSettings.Baldur.DurationMinutes.Value * 60f;
+        m_stealthModifier = PotionSettings.Baldur.StealthModifier.Value;
+        m_noiseModifier = PotionSettings.Baldur.NoiseModifier.Value;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class GiftOfBaldurEffect : SE_Stats
     /// <param name="stealth"></param>
     public override void ModifyStealth(float baseStealth, ref float stealth)
     {
-        stealth = 0.01f; // Extremely stealthy
+        stealth = PotionSettings.Baldur.Stealth.Value;
     }
 
     /// <summary>
@@ -60,6 +60,6 @@ public class GiftOfBaldurEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Baldur.SneakStaminaMultiplier.Value;
     }
 }

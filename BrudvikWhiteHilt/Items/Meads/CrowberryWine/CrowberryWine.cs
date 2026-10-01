@@ -1,3 +1,5 @@
+using BepInEx.Configuration;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -9,11 +11,17 @@ namespace BrudvikWhiteHilt.Items.Meads.CrowberryWine;
 /// </summary>
 public class CrowberryWine : WhiteHiltMeadBase
 {
+    private readonly ConfigEntry<float> healthRegenMultiplier;
+
     /// <summary>
     /// Constructor for the CrowberryWine class.
     /// </summary>
     /// <param name="instance">The item manager.</param>
-    public CrowberryWine(ItemManager instance) : base(instance) { }
+    public CrowberryWine(ItemManager instance) : base(instance)
+    {
+        healthRegenMultiplier = WhiteHiltConfig.BindAdminOnly(ConfigSection, "HealthRegenMultiplier", 1.5f,
+            "Health regeneration multiplier while the wine is active.", new AcceptableValueRange<float>(1f, 5f));
+    }
 
     /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltCrowberryWine";
@@ -50,6 +58,6 @@ public class CrowberryWine : WhiteHiltMeadBase
     /// <inheritdoc/>
     protected override void ConfigureEffect(SE_Stats effect)
     {
-        effect.m_healthRegenMultiplier = 1.5f;
+        effect.m_healthRegenMultiplier = healthRegenMultiplier.Value;
     }
 }

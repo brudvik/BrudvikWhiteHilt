@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -12,16 +13,20 @@ namespace BrudvikWhiteHilt.Items.ShipUpgrades;
 /// <summary>
 /// Base class for the White Hilt Ship upgrades. Used on the ship's mast, an upgrade switches on a part of the ship.
 /// </summary>
-public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Number of upgrades.
     /// </summary>
     public const int Count = 9;
 
+    private const string Section = "Gear.ShipUpgrades";
+
     private static readonly WhiteHiltShipUpgradeBase[] all = new WhiteHiltShipUpgradeBase[Count];
+    private static ConfigEntry<float> weight;
 
     private readonly ItemManager instance;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <summary>
     /// Bit of the upgrade in the ship's upgrade mask, from 0 to <see cref="Count"/> - 1.
@@ -88,6 +93,8 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem
     {
         this.instance = instance;
         all[Index] = this;
+        weight ??= WhiteHiltConfig.BindAdminOnly(Section, "Weight", 5f, "Weight of each White Hilt Ship upgrade item.",
+            new AcceptableValueRange<float>(0f, 50f));
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
     }
 
@@ -127,18 +134,19 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem
             });
 
             // A plain material, so a cloned lantern can not be equipped as a light.
-            ItemDrop.ItemData.SharedData shared = upgrade.ItemDrop.m_itemData.m_shared;
-            shared.m_itemType = ItemDrop.ItemData.ItemType.Material;
-            shared.m_maxStackSize = 1;
-            shared.m_weight = 5f;
-            shared.m_value = 0;
-            shared.m_teleportable = true;
-            shared.m_equipStatusEffect = null;
+            ItemDrop.ItemData.SharedData upgradeShared = upgrade.ItemDrop.m_itemData.m_shared;
+            upgradeShared.m_itemType = ItemDrop.ItemData.ItemType.Material;
+            upgradeShared.m_maxStackSize = 1;
+            upgradeShared.m_value = 0;
+            upgradeShared.m_teleportable = true;
+            upgradeShared.m_equipStatusEffect = null;
+            shared = upgradeShared;
+            ApplyConfig();
 
             Sprite icon = VisualHelper.RenderIcon(upgrade.ItemPrefab);
             if (icon != null)
             {
-                shared.m_icons = new[] { icon };
+                upgradeShared.m_icons = new[] { icon };
             }
 
             instance.AddItem(upgrade);
@@ -148,6 +156,17 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Applies the configured weight.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared != null)
+        {
+            shared.m_weight = weight.Value;
         }
     }
 }

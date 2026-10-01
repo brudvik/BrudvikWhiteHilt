@@ -26,12 +26,12 @@ public class GiftOfFreyaEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Freya.DurationMinutes.Value * 60f;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class GiftOfFreyaEffect : SE_Stats
     public override void Setup(Character character)
     {
         base.Setup(character);
-        character.AddStamina(character.GetMaxStamina() + 400f);
+        character.AddStamina(character.GetMaxStamina() + PotionSettings.Freya.BonusStamina.Value);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="dir"></param>
     public override void ModifyRunStaminaDrain(float baseDrain, ref float drain, Vector3 dir)
     {
-        drain = -0.9f;
+        drain = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyJumpStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyAttackStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyBlockStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyDodgeStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySwimStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = -0.9f;
+        staminaUse = PotionSettings.Freya.StaminaUse.Value;
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaRegen"></param>
     public override void ModifyStaminaRegen(ref float staminaRegen)
     {
-        staminaRegen += 40f;
+        staminaRegen += PotionSettings.Freya.StaminaRegenBonus.Value;
     }
 
 }

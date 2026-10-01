@@ -30,12 +30,12 @@ public class GiftOfHelEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - lasts until death or 30 minutes.
+    /// Enables the effect - lasts until death or the configured duration, 30 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1800f; // 30 minutes or until triggered
+        m_ttl = PotionSettings.Hel.DurationMinutes.Value * 60f; // or until triggered
         m_resurrectionUsed = false;
     }
 
@@ -58,8 +58,8 @@ public class GiftOfHelEffect : SE_Stats
         
         if (m_character != null && !m_resurrectionUsed)
         {
-            // If health drops below 10%, trigger resurrection
-            if (m_character.GetHealth() < m_character.GetMaxHealth() * 0.1f)
+            // If health drops below the configured share, trigger resurrection
+            if (m_character.GetHealth() < m_character.GetMaxHealth() * PotionSettings.Hel.TriggerHealthFraction.Value)
             {
                 TriggerResurrection();
             }

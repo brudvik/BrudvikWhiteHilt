@@ -25,13 +25,13 @@ public class GiftOfNjordEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_swimSpeedModifier = 1.0f;
+        m_ttl = PotionSettings.Njord.DurationMinutes.Value * 60f;
+        m_swimSpeedModifier = PotionSettings.Njord.SwimSpeedModifier.Value;
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class GiftOfNjordEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySwimStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = 0f;
+        staminaUse *= PotionSettings.Njord.SwimStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -64,9 +64,9 @@ public class GiftOfNjordEffect : SE_Stats
         // Keep stamina above minimum while swimming to prevent drowning
         if (m_character != null && m_character.IsSwimming() && m_character is Player player)
         {
-            if (player.GetStamina() < 20f)
+            if (player.GetStamina() < PotionSettings.Njord.MinSwimStamina.Value)
             {
-                player.AddStamina(50f);
+                player.AddStamina(PotionSettings.Njord.SwimStaminaRefill.Value);
             }
         }
     }

@@ -25,14 +25,14 @@ public class GiftOfSleipnirEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
-        m_speedModifier = 0.5f;
-        m_jumpModifier = new UnityEngine.Vector3(0, 1.5f, 0);
+        m_ttl = PotionSettings.Sleipnir.DurationMinutes.Value * 60f;
+        m_speedModifier = PotionSettings.Sleipnir.SpeedModifier.Value;
+        m_jumpModifier = new UnityEngine.Vector3(0, PotionSettings.Sleipnir.JumpModifier.Value, 0);
     }
 
     /// <summary>
@@ -51,6 +51,6 @@ public class GiftOfSleipnirEffect : SE_Stats
     /// <param name="damage"></param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
-        damage = 0f;
+        damage *= PotionSettings.Sleipnir.FallDamageMultiplier.Value;
     }
 }

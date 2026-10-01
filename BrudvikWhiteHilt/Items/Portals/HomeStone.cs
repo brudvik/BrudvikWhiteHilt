@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Smithing.RuneForge;
@@ -18,7 +19,7 @@ namespace BrudvikWhiteHilt.Items.Portals;
 /// Within a short while after going home, it takes its bearer back to where they were, even while it rests.
 /// The ordinary portal rules apply: no ore or metal.
 /// </summary>
-public class HomeStone : IWhiteHiltCustomItem
+public class HomeStone : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Prefab name of the stone.
@@ -35,6 +36,8 @@ public class HomeStone : IWhiteHiltCustomItem
     private static HomeStoneRest restEffect;
 
     private readonly ItemManager instance;
+    private readonly ConfigEntry<float> weight;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -61,6 +64,7 @@ public class HomeStone : IWhiteHiltCustomItem
     public HomeStone(ItemManager instance)
     {
         this.instance = instance;
+        weight = WhiteHiltConfig.BindAdminOnly($"Gear.{PrefabName}", "Weight", 0.5f, "Weight of the Home Stone.", new AcceptableValueRange<float>(0f, 50f));
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(PrefabName), FullName, Description);
         Translations.AddEnglish(EffectKey, "Home Stone resting");
         Translations.AddEnglish($"{EffectKey}_tooltip", "The Home Stone can take you home again when this ends.");
@@ -179,9 +183,10 @@ public class HomeStone : IWhiteHiltCustomItem
             ItemDrop.ItemData.SharedData shared = stone.ItemDrop.m_itemData.m_shared;
             shared.m_itemType = ItemDrop.ItemData.ItemType.Material;
             shared.m_maxStackSize = 1;
-            shared.m_weight = 0.5f;
             shared.m_value = 0;
             shared.m_teleportable = true;
+            this.shared = shared;
+            ApplyConfig();
 
             TryApplyVisual(stone);
             restEffect = ScriptableObject.CreateInstance<HomeStoneRest>();
@@ -198,6 +203,17 @@ public class HomeStone : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Applies the configured weight.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared != null)
+        {
+            shared.m_weight = weight.Value;
         }
     }
 

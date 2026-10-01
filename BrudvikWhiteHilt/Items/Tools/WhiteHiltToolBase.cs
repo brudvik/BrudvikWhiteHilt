@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Helpers;
+﻿using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Indestructible;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -10,8 +11,15 @@ namespace BrudvikWhiteHilt.Items.Tools;
 /// <summary>
 /// Base class for White Hilt tools.
 /// </summary>
-public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
+    private const string Section = "Gear.Tools";
+
+    private static ConfigEntry<float> staminaReduction;
+
+    private IndestructibleItem added;
+    private float baseStaminaModifier;
+
     /// <summary>
     /// The base name of the tool.
     /// </summary>
@@ -71,6 +79,8 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem
     protected WhiteHiltToolBase(ItemManager instance)
     {
         this.instance = instance;
+        BindConfig();
+        IndestructibleItem.BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
@@ -90,9 +100,9 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem
             };
 
             IndestructibleItem item = new(BaseName, CopyFrom, itemConfig);
-
-            // Set the item to use light stamina.
-            item.ItemData.m_homeItemsStaminaModifier -= 1.0f;
+            baseStaminaModifier = item.ItemData.m_homeItemsStaminaModifier;
+            added = item;
+            ApplyConfig();
 
             instance.AddItem(item);
 
@@ -103,5 +113,31 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    /// <summary>
+    /// Applies the configured stamina reduction on top of the cloned vanilla value.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (added == null)
+        {
+            return;
+        }
+
+        added.ItemData.m_homeItemsStaminaModifier = baseStaminaModifier - staminaReduction.Value;
+        added.ApplyConfig();
+    }
+
+    private static void BindConfig()
+    {
+        if (staminaReduction != null)
+        {
+            return;
+        }
+
+        staminaReduction = WhiteHiltConfig.BindAdminOnly(Section, "HomeItemsStaminaReduction", 1f,
+            "Taken off the stamina modifier for building, farming and cultivating with a White Hilt tool (1 = 100% less).",
+            new AcceptableValueRange<float>(0f, 1f));
     }
 }

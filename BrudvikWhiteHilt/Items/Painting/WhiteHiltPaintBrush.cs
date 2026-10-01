@@ -16,7 +16,7 @@ namespace BrudvikWhiteHilt.Items.Painting;
 /// The White Hilt Paint Brush: an everlasting build tool, like the White Hilt Hammer, whose build menu paints, stains,
 /// cleans and picks colours on building pieces.
 /// </summary>
-public class WhiteHiltPaintBrush : IWhiteHiltCustomItem
+public class WhiteHiltPaintBrush : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>Prefab name of the brush.</summary>
     public const string PrefabName = "WhiteHiltPaintBrush";
@@ -28,6 +28,7 @@ public class WhiteHiltPaintBrush : IWhiteHiltCustomItem
     private const string Description = "An everlasting brush. Load it by using a paint pot, then paint or stain building pieces; the mouse wheel sets how wide it reaches.";
 
     private readonly ItemManager instance;
+    private IndestructibleItem added;
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -54,8 +55,17 @@ public class WhiteHiltPaintBrush : IWhiteHiltCustomItem
     public WhiteHiltPaintBrush(ItemManager instance)
     {
         this.instance = instance;
+        IndestructibleItem.BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(PrefabName), FullName, Description);
         PaintBrush.RegisterTranslations();
+    }
+
+    /// <summary>
+    /// Applies the shared indestructible item config to the brush.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        added?.ApplyConfig();
     }
 
     /// <summary>
@@ -84,6 +94,7 @@ public class WhiteHiltPaintBrush : IWhiteHiltCustomItem
             brush.ItemData.m_homeItemsStaminaModifier -= 1.0f;
             TryApplyVisual(brush);
             instance.AddItem(brush);
+            added = brush;
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }
         catch (Exception ex)

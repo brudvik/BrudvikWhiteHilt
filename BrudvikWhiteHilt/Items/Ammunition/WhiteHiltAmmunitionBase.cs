@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -10,8 +11,17 @@ namespace BrudvikWhiteHilt.Items.Ammunition;
 /// <summary>
 /// This class defines the base for all White Hilt ammunition items.
 /// </summary>
-public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
+    private const string Section = "Gear.Ammunition";
+
+    private static ConfigEntry<float> pierceMultiplier;
+    private static ConfigEntry<float> bonusFire;
+    private static ConfigEntry<float> bonusSpirit;
+
+    private ItemDrop.ItemData.SharedData shared;
+    private HitData.DamageTypes baseDamages;
+
     /// <summary>
     /// The base name of the ammunition item.
     /// </summary>
@@ -71,6 +81,7 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem
     protected WhiteHiltAmmunitionBase(ItemManager instance)
     {
         this.instance = instance;
+        BindConfig();
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BaseName), FullName, Description);
     }
 
@@ -92,13 +103,11 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem
             };
 
             CustomItem item = new(BaseName, CopyFrom, config);
-            
-            // Configure enhanced damage
-            var itemData = item.ItemDrop.m_itemData.m_shared;
-            itemData.m_damages.m_pierce *= 2f;
-            itemData.m_damages.m_fire += 30f;
-            itemData.m_damages.m_spirit += 20f;
-            
+            ItemDrop.ItemData.SharedData itemData = item.ItemDrop.m_itemData.m_shared;
+            baseDamages = itemData.m_damages.Clone();
+            shared = itemData;
+            ApplyConfig();
+
             instance.AddItem(item);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -108,5 +117,37 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    /// <summary>
+    /// Applies the configured damage on top of the cloned vanilla values.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared == null)
+        {
+            return;
+        }
+
+        HitData.DamageTypes damages = baseDamages.Clone();
+        damages.m_pierce *= pierceMultiplier.Value;
+        damages.m_fire += bonusFire.Value;
+        damages.m_spirit += bonusSpirit.Value;
+        shared.m_damages = damages;
+    }
+
+    private static void BindConfig()
+    {
+        if (pierceMultiplier != null)
+        {
+            return;
+        }
+
+        pierceMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "PierceMultiplier", 2f,
+            "Multiplies the pierce damage of White Hilt arrows and bolts.", new AcceptableValueRange<float>(0f, 10f));
+        bonusFire = WhiteHiltConfig.BindAdminOnly(Section, "BonusFireDamage", 30f,
+            "Fire damage added to White Hilt arrows and bolts.", new AcceptableValueRange<float>(0f, 500f));
+        bonusSpirit = WhiteHiltConfig.BindAdminOnly(Section, "BonusSpiritDamage", 20f,
+            "Spirit damage added to White Hilt arrows and bolts.", new AcceptableValueRange<float>(0f, 500f));
     }
 }

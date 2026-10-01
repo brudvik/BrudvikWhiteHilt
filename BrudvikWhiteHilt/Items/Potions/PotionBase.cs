@@ -67,6 +67,7 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     /// <param name="instance"></param>
     protected PotionBase(ItemManager instance)
     {
+        PotionSettings.Initialize();
         this.instance = instance;
         Translations.AddEnglishNameAndDescription(MeadKey, FullName, Description);
         Translations.AddEnglish(MeadBaseKey, $"Mead Base: {FullName}");

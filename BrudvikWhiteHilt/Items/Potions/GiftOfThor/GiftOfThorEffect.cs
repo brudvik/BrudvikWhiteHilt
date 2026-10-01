@@ -25,12 +25,12 @@ public class GiftOfThorEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Thor.DurationMinutes.Value * 60f;
         
         // Add lightning resistance as a bonus
         m_mods = new System.Collections.Generic.List<HitData.DamageModPair>
@@ -56,7 +56,7 @@ public class GiftOfThorEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse *= 0.1f; // 90% reduction in tool stamina usage
+        staminaUse *= PotionSettings.Thor.HomeItemStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class GiftOfThorEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyAttackStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse *= 0.5f; // 50% reduction
+        staminaUse *= PotionSettings.Thor.AttackStaminaMultiplier.Value;
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class GiftOfThorEffect : SE_Stats
     public override void ModifyAttack(Skills.SkillType skill, ref HitData hitData)
     {
         base.ModifyAttack(skill, ref hitData);
-        hitData.m_damage.m_chop *= 2f;
-        hitData.m_damage.m_pickaxe *= 2f;
+        hitData.m_damage.m_chop *= PotionSettings.Thor.ChopDamageMultiplier.Value;
+        hitData.m_damage.m_pickaxe *= PotionSettings.Thor.PickaxeDamageMultiplier.Value;
     }
 }

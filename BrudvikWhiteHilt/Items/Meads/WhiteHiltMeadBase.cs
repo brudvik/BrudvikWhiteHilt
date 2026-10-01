@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -12,9 +13,11 @@ namespace BrudvikWhiteHilt.Items.Meads;
 /// Base class for meads brewed from White Hilt forageables. The mead base is cooked in the Cauldron and fermented into
 /// six meads, like the vanilla meads. The model is a tinted vanilla mead, so no bought icons are needed.
 /// </summary>
-public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     private readonly ItemManager instance;
+    private readonly ConfigEntry<float> durationMinutes;
+    private SE_Stats effect;
 
     /// <summary>
     /// Prefab name of the mead. The mead base is named <c>{BaseName}Base</c>.
@@ -81,6 +84,11 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem
     /// <inheritdoc/>
     public string GatedPrefabName => MeadBaseName;
 
+    /// <summary>
+    /// Config section of the mead, e.g. <c>Meads.CrowberryWine</c>.
+    /// </summary>
+    protected string ConfigSection => $"Meads.{FullName.Replace(" ", string.Empty)}";
+
     private string MeadBaseName => $"{BaseName}Base";
 
     private string NameKey => Translations.ItemKey(BaseName);
@@ -96,6 +104,8 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem
     protected WhiteHiltMeadBase(ItemManager instance)
     {
         this.instance = instance;
+        durationMinutes = WhiteHiltConfig.BindAdminOnly(ConfigSection, "DurationMinutes", DurationSeconds / 60f, "How long the effect lasts.",
+            new AcceptableValueRange<float>(1f, 120f));
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
         Translations.AddEnglish(MeadBaseKey, $"Mead Base: {FullName}");
         Translations.AddEnglish(TooltipKey, EffectTooltip);
@@ -126,9 +136,11 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem
             ItemDrop.ItemData.SharedData shared = mead.ItemDrop.m_itemData.m_shared;
             ApplyLook(mead);
 
-            CustomStatusEffect effect = new(CreateEffect(shared), fixReference: false);
-            instance.AddStatusEffect(effect);
-            shared.m_consumeStatusEffect = effect.StatusEffect;
+            CustomStatusEffect customEffect = new(CreateEffect(shared), fixReference: false);
+            instance.AddStatusEffect(customEffect);
+            shared.m_consumeStatusEffect = customEffect.StatusEffect;
+            effect = (SE_Stats)customEffect.StatusEffect;
+            ApplyConfig();
             instance.AddItem(mead);
 
             instance.AddItemConversion(new CustomItemConversion(new FermenterConversionConfig
@@ -149,7 +161,22 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem
     }
 
     /// <summary>
-    /// Sets what the effect does. The effect starts empty, apart from its duration.
+    /// Applies the configured duration and effect values. Drinks already active keep their values until they end.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (effect == null)
+        {
+            return;
+        }
+
+        effect.m_ttl = durationMinutes.Value * 60f;
+        ConfigureEffect(effect);
+    }
+
+    /// <summary>
+    /// Sets what the effect does. The effect starts empty, apart from its duration. Called again when the config changes,
+    /// so it must set values rather than add to them.
     /// </summary>
     /// <param name="effect">The mead's status effect.</param>
     protected abstract void ConfigureEffect(SE_Stats effect);

@@ -11,7 +11,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Minimum max health while the effect is active.
     /// </summary>
-    public const float MaxHealth = 500f;
+    public static float MaxHealth => PotionSettings.Odin.MaxHealth.Value;
 
     /// <summary>
     /// Initializes the effect with the given name.
@@ -29,12 +29,12 @@ public class GiftOfOdinEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Odin.DurationMinutes.Value * 60f;
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="damage"></param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
-        damage *= 0.5f;
+        damage *= PotionSettings.Odin.FallDamageMultiplier.Value;
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="regenMultiplier"></param>
     public override void ModifyHealthRegen(ref float regenMultiplier)
     {
-        regenMultiplier += 20f;
+        regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value;
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class GiftOfOdinEffect : SE_Stats
     {
         base.UpdateStatusEffect(dt);
         // Per frame on purpose: Gift of Odin is god mode.
-        m_character.Heal(20f, showText: false);
+        m_character.Heal(PotionSettings.Odin.HealPerFrame.Value, showText: false);
     }
 
 }

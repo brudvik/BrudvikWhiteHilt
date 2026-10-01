@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
@@ -13,7 +14,7 @@ namespace BrudvikWhiteHilt.Items.Accessories;
 /// A leather pouch for the belt. Using it once gives the character one more inventory row for good; it is used up.
 /// The row is a vanilla row (the "invrows" key), so it stays even without the mod.
 /// </summary>
-public class BeltPouch : IWhiteHiltCustomItem
+public class BeltPouch : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Prefab name of the item.
@@ -27,6 +28,8 @@ public class BeltPouch : IWhiteHiltCustomItem
     private static readonly Color LeatherTint = new(0.55f, 0.42f, 0.3f);
 
     private readonly ItemManager instance;
+    private readonly ConfigEntry<float> weight;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -53,6 +56,7 @@ public class BeltPouch : IWhiteHiltCustomItem
     public BeltPouch(ItemManager instance)
     {
         this.instance = instance;
+        weight = WhiteHiltConfig.BindAdminOnly($"Gear.{PrefabName}", "Weight", 1f, "Weight of the Belt Pouch.", new AcceptableValueRange<float>(0f, 50f));
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(PrefabName), FullName, Description);
         Translations.AddEnglish("msg_whitehilt_beltpouch_used", "Your belt pouch gives you one more row");
         Translations.AddEnglish("msg_whitehilt_beltpouch_already", "You already carry a belt pouch");
@@ -123,9 +127,10 @@ public class BeltPouch : IWhiteHiltCustomItem
             ItemDrop.ItemData.SharedData shared = pouch.ItemDrop.m_itemData.m_shared;
             shared.m_itemType = ItemDrop.ItemData.ItemType.Material;
             shared.m_maxStackSize = 1;
-            shared.m_weight = 1f;
             shared.m_value = 0;
             shared.m_teleportable = true;
+            this.shared = shared;
+            ApplyConfig();
 
             TryApplyVisual(pouch);
             instance.AddItem(pouch);
@@ -135,6 +140,17 @@ public class BeltPouch : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Applies the configured weight.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared != null)
+        {
+            shared.m_weight = weight.Value;
         }
     }
 

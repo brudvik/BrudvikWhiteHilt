@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Smithing.RuneForge;
 using BrudvikWhiteHilt.Progression;
@@ -14,7 +15,7 @@ namespace BrudvikWhiteHilt.Items.Runes;
 /// Base class for the iron runes smithed at the <see cref="RuneForge"/>. Hung on a rune post next to a portal,
 /// each rune lets that portal carry one tier of metal. All runes on one post let it carry everything.
 /// </summary>
-public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
+public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Number of runes, and of hooks on the rune post.
@@ -27,10 +28,14 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
     public const int FullMask = (1 << Count) - 1;
 
     private const float RingSize = 0.2f;
+    private const string Section = "Gear.Runes";
 
     private static readonly WhiteHiltRuneBase[] all = new WhiteHiltRuneBase[Count];
+    private static ConfigEntry<float> weight;
+    private static ConfigEntry<int> maxStackSize;
 
     private readonly ItemManager instance;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <summary>
     /// Position of the rune on the post, from 0 to <see cref="Count"/> - 1. Also its bit in the post's mask.
@@ -122,6 +127,7 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
     {
         this.instance = instance;
         all[Index] = this;
+        BindConfig();
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
     }
 
@@ -174,11 +180,11 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
                 }
             });
 
-            ItemDrop.ItemData.SharedData shared = rune.ItemDrop.m_itemData.m_shared;
-            shared.m_maxStackSize = 10;
-            shared.m_weight = 1f;
-            shared.m_value = 0;
-            shared.m_teleportable = true;
+            ItemDrop.ItemData.SharedData runeShared = rune.ItemDrop.m_itemData.m_shared;
+            runeShared.m_value = 0;
+            runeShared.m_teleportable = true;
+            shared = runeShared;
+            ApplyConfig();
 
             TryApplyVisual(rune);
             instance.AddItem(rune);
@@ -190,6 +196,32 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
         }
+    }
+
+    /// <summary>
+    /// Applies the configured weight and stack size.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared == null)
+        {
+            return;
+        }
+
+        shared.m_weight = weight.Value;
+        shared.m_maxStackSize = maxStackSize.Value;
+    }
+
+    private static void BindConfig()
+    {
+        if (weight != null)
+        {
+            return;
+        }
+
+        weight = WhiteHiltConfig.BindAdminOnly(Section, "Weight", 1f, "Weight of each rune.", new AcceptableValueRange<float>(0f, 50f));
+        maxStackSize = WhiteHiltConfig.BindAdminOnly(Section, "MaxStackSize", 10, "How many runes of a kind stack in one slot.",
+            new AcceptableValueRange<int>(1, 100));
     }
 
     private void TryApplyVisual(CustomItem rune)

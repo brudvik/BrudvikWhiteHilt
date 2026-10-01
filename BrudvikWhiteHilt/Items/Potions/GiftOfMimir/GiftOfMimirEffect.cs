@@ -11,9 +11,9 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMimir;
 /// </summary>
 public class GiftOfMimirEffect : SE_Stats
 {
-    private const float MapRevealInterval = 5f;
-    private const float CreatureRevealInterval = 1f;
-    private const float CreatureRange = 100f;
+    private static float MapRevealInterval => PotionSettings.Mimir.RevealIntervalSeconds.Value;
+    private static float CreatureRevealInterval => PotionSettings.Mimir.CreatureRefreshSeconds.Value;
+    private static float CreatureRange => PotionSettings.Mimir.CreatureRange.Value;
 
     private readonly List<Minimap.PinData> creaturePins = new();
     private readonly List<Character> nearbyCharacters = new();
@@ -36,12 +36,12 @@ public class GiftOfMimirEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - duration is 1200 seconds (20 minutes).
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {
         m_activationAnimation = "emote_challenge";
-        m_ttl = 1200f;
+        m_ttl = PotionSettings.Mimir.DurationMinutes.Value * 60f;
         m_revealTimer = 0f;
         m_creatureTimer = 0f;
     }
@@ -65,7 +65,7 @@ public class GiftOfMimirEffect : SE_Stats
 
         if (Minimap.instance != null && character != null)
         {
-            Minimap.instance.Explore(character.transform.position, 200f);
+            Minimap.instance.Explore(character.transform.position, PotionSettings.Mimir.InitialRevealRadius.Value);
         }
 
         RevealNearbyCreatures();
@@ -83,7 +83,7 @@ public class GiftOfMimirEffect : SE_Stats
         if (m_revealTimer >= MapRevealInterval && m_character != null && Minimap.instance != null)
         {
             m_revealTimer = 0f;
-            Minimap.instance.Explore(m_character.transform.position, 150f);
+            Minimap.instance.Explore(m_character.transform.position, PotionSettings.Mimir.RevealRadius.Value);
         }
 
         m_creatureTimer += dt;

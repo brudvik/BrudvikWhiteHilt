@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Navigation;
 using BrudvikWhiteHilt.Progression;
@@ -13,7 +14,7 @@ namespace BrudvikWhiteHilt.Items.Navigation;
 /// The Navigator's Table: a small table with a sea chart and a sextant, set up on a ship's deck by using it on the helm.
 /// Aboard, it widens the circle of map the crew uncovers, more so the higher their Exploration skill.
 /// </summary>
-public class NavigatorTable : IWhiteHiltCustomItem
+public class NavigatorTable : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     /// <summary>
     /// Prefab name of the item.
@@ -25,6 +26,8 @@ public class NavigatorTable : IWhiteHiltCustomItem
     private const float Size = 0.45f;
 
     private readonly ItemManager instance;
+    private readonly ConfigEntry<float> weight;
+    private ItemDrop.ItemData.SharedData shared;
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -51,6 +54,7 @@ public class NavigatorTable : IWhiteHiltCustomItem
     public NavigatorTable(ItemManager instance)
     {
         this.instance = instance;
+        weight = WhiteHiltConfig.BindAdminOnly($"Gear.{PrefabName}", "Weight", 10f, "Weight of the Navigator's Table item.", new AcceptableValueRange<float>(0f, 100f));
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(PrefabName), FullName, Description);
         Translations.AddEnglish("whitehilt_charttable_take", "Take the Navigator's Table");
         Translations.AddEnglish("whitehilt_charttable_sight", "Sight");
@@ -91,9 +95,10 @@ public class NavigatorTable : IWhiteHiltCustomItem
             ItemDrop.ItemData.SharedData shared = table.ItemDrop.m_itemData.m_shared;
             shared.m_itemType = ItemDrop.ItemData.ItemType.Material;
             shared.m_maxStackSize = 1;
-            shared.m_weight = 10f;
             shared.m_value = 0;
             shared.m_teleportable = true;
+            this.shared = shared;
+            ApplyConfig();
 
             TryApplyVisual(table);
             instance.AddItem(table);
@@ -106,6 +111,17 @@ public class NavigatorTable : IWhiteHiltCustomItem
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Applies the configured weight.
+    /// </summary>
+    public void ApplyConfig()
+    {
+        if (shared != null)
+        {
+            shared.m_weight = weight.Value;
         }
     }
 
