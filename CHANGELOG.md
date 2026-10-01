@@ -2,6 +2,22 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.24.0 - 2026-10-01
+
+### Added
+- Skill milestones at levels 25, 50, 75 and 100 for Foraging, Cooking, Woodcutting, Pickaxes, Blocking, Farming, Fishing, Animal Husbandry and Exploration, plus bonuses that grow with every level. The tooltip of each skill in the skills dialog shows what it gives at your level and its milestones
+- Foraging, a new skill that rises with wild picks: extra yield, stars, best picking times and sweep picking
+- Stars on food, wild picks, crops and seeds: starred food gives more and lasts longer, starred ingredients give starred dishes, starred seeds give better crops. Items with different stars do not stack
+- Cooking: faster cooking stations near a skilled cook, food that does not burn near a watchful cook, and a junk filter (Shift + E on an item on the ground)
+- Woodcutting: aimed falls, replanting, domino felling, old growth, clean splits and bird's nests
+- Pickaxes: clean strikes, an ore echo on the map, rich veins, extra ore and finds
+- Blocking: more health, less damage, cheaper blocking, Riposte, Shield Wall, Last Stand and Iron Guard
+- Farming: green thumb, giant crops, and the Compost Bin (a slatted wooden bin, model by Pants85), which turns waste into compost that makes crops nearby grow faster
+- Fishing: a fight on the line, snags, legendary fish, double catches and a catch log
+- Animal Husbandry: twins and stronger young
+- Exploration: the Lookout (O) opens up the map around you and shows sea monsters and ships
+- `DeathLossMultiplier` scales the skill loss on death
+
 ## v0.23.0 - 2026-10-01
 
 ### Added

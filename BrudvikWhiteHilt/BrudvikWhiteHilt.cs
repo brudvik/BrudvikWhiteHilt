@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.23.0";
+    public const string PluginVersion = "0.24.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -56,6 +56,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
         HusbandrySkill.Register();
+        Mastery.MasterySettings.Initialize();
+        Mastery.ForagingSkill.Register();
+        RegisterMasteryTranslations();
         FavoriteFoods.RegisterTranslations();
         AnimalCare.RegisterTranslations();
         NearbyContainers.Initialize();
@@ -170,6 +173,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             customPieces.ForEach(customPiece => customPiece.Add());
             ExplorationSkill.SetIconFromMapTable();
             HusbandrySkill.SetIconFromBoarTrophy();
+            Mastery.ForagingSkill.SetIconFromMushroom();
+            Mastery.MasteryEffects.Register();
 
             Jotunn.Logger.LogInfo("All custom items have been added!");
         }
@@ -207,6 +212,24 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void AddForageableCreatureDrops()
     {
         forageables.ForEach(forageable => forageable.AddCreatureDrop());
+    }
+
+    /// <summary>
+    /// Registers the English text of the skill milestones.
+    /// </summary>
+    private static void RegisterMasteryTranslations()
+    {
+        Mastery.Perks.RegisterTranslations();
+        Mastery.Stars.RegisterTranslations();
+        Mastery.MasteryEffects.RegisterTranslations();
+        Mastery.OreEcho.RegisterTranslations();
+        Mastery.Lookout.RegisterTranslations();
+        Mastery.Gathering.RegisterTranslations();
+        Mastery.WildPicks.RegisterTranslations();
+        Mastery.Crops.RegisterTranslations();
+        Mastery.Angling.RegisterTranslations();
+        Mastery.JunkFilter.RegisterTranslations();
+        Mastery.SkillBook.RegisterTranslations();
     }
 
     /// <summary>

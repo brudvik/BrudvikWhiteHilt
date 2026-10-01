@@ -103,6 +103,10 @@ Plant berry bushes, mushrooms, flowers, debris and saplings with the cultivator.
 
 The Feeding Trough, favourite foods, the Animal Husbandry skill, the Tether Post, the Grooming Comb and produce.
 
+### 📖 [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
+
+Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blocking, husbandry and exploration, a new Foraging skill, food and crops with stars, the Compost Bin and configurable skill loss on death.
+
 ### 🐕 [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog House" height="120">
@@ -171,6 +175,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Surt's Brazier model: ["Primitive Brazier (Free)"](https://sketchfab.com/3d-models/primitive-brazier-free-3b155a4948b042ffb69f1d8a4aead250) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Home Stone model: ["Rune in stone"](https://sketchfab.com/3d-models/rune-in-stone-1608283699bd414195319a41445d8055) by [Mardukblake](https://sketchfab.com/Mardukblake), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Feeding Trough model: ["Wooden Trough With Stone Stand. Lowpoly"](https://sketchfab.com/3d-models/wooden-trough-with-stone-stand-lowpoly-673baf17c3bb43e8affd610eaf31cc8a) by [Hakan Unlu](https://sketchfab.com/hakan3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Compost Bin model: ["Compost Bin SM SG"](https://sketchfab.com/3d-models/compost-bin-sm-sg-daaa0514f23a4ca18e955ea576671ef0) by [Pants85](https://sketchfab.com/Pants85), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
 - Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
 - Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.

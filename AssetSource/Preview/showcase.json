@@ -50,6 +50,7 @@
     { "image": "smoke_oven", "models": ["smokeoven"] },
 
     { "image": "feeding_trough", "models": ["trough"] },
+    { "image": "compost_bin", "models": ["compostbin"] },
     { "image": "tether_post", "models": ["tetherpost"] },
     { "image": "grooming_comb", "models": ["comb"] },
 
