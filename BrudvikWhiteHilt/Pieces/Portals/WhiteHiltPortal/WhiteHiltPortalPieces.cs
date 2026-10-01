@@ -6,6 +6,7 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -295,8 +296,20 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
     };
 
     private const float Diameter = 4f;
-    private const float Lift = 0.03f;
+    private const float Lift = 0.01f;
+
+    // The stone base; make_portal_base.py builds the model with the same sizes.
+    private const float BaseRadius = 2.4f;
+    private const float BaseBevel = 0.18f;
+    private const float BaseHeight = 0.12f;
+    private const float BaseSkirt = 0.3f;
+    private const float BaseGlossiness = 0.7f;
+    private const int ColliderSides = 24;
+
     private static readonly Color runeGlow = new(0.45f, 0.8f, 1f);
+
+    // Middle of the rune ring at a diameter of 4 m: the rune stone at its front moves the model's own centre off it.
+    private static readonly Vector3 ringCentre = new(0f, 0f, -0.16f);
 
     /// <summary>
     /// Constructor for the WhiteHiltGroundPortal class.
@@ -328,7 +341,45 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
     /// <inheritdoc/>
     protected override void AddColliders(Transform root)
     {
-        AddBox(root, new Vector3(0f, 0.05f, 0f), new Vector3(Diameter * 0.9f, 0.1f, Diameter * 0.9f));
+        // Flat top, a slope down the rim and on into the ground, so players walk straight onto the stone.
+        (float radius, float height)[] rings = { (BaseRadius - BaseBevel, BaseHeight), (BaseRadius, 0f), (BaseRadius, -BaseSkirt) };
+        List<Vector3> vertices = new();
+        foreach ((float radius, float height) in rings)
+        {
+            for (int i = 0; i < ColliderSides; i++)
+            {
+                float angle = i * 2f * Mathf.PI / ColliderSides;
+                vertices.Add(ringCentre + new Vector3(Mathf.Cos(angle) * radius, height, Mathf.Sin(angle) * radius));
+            }
+        }
+
+        List<int> triangles = new();
+        for (int ring = 0; ring < rings.Length - 1; ring++)
+        {
+            for (int i = 0; i < ColliderSides; i++)
+            {
+                int a = ring * ColliderSides + i;
+                int b = ring * ColliderSides + (i + 1) % ColliderSides;
+                triangles.AddRange(new[] { a, b, a + ColliderSides, b, b + ColliderSides, a + ColliderSides });
+            }
+        }
+
+        int bottom = (rings.Length - 1) * ColliderSides;
+        for (int i = 1; i < ColliderSides - 1; i++)
+        {
+            triangles.AddRange(new[] { 0, i + 1, i, bottom, bottom + i, bottom + i + 1 });
+        }
+
+        Mesh mesh = new() { name = "portalbase_collider" };
+        mesh.SetVertices(vertices);
+        mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateBounds();
+
+        GameObject collider = new("collider") { layer = LayerMask.NameToLayer("piece") };
+        collider.transform.SetParent(root, false);
+        MeshCollider meshCollider = collider.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
+        meshCollider.convex = true;
     }
 
     /// <inheritdoc/>
@@ -339,7 +390,24 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
             UnityEngine.Object.DestroyImmediate(swirl);
         }
 
-        AddRuneCircle(prefab.transform, template, Diameter, Lift);
+        // The converted model is 1 high from the bottom of its skirt, which reaches into the ground.
+        GameObject stone = VisualHelper.CreateModel(prefab.transform, ForagingAssets.LoadMesh("portalbase"), ForagingAssets.LoadTexture("portalbase_albedo"), template,
+            ringCentre + Vector3.down * BaseSkirt, Quaternion.identity, BaseHeight + BaseSkirt);
+        Material material = stone.GetComponent<MeshRenderer>().sharedMaterial;
+        if (material.HasProperty("_EmissionMap"))
+        {
+            material.EnableKeyword("_EMISSION");
+            material.SetTexture("_EmissionMap", ForagingAssets.LoadTexture("portalbase_emission"));
+            material.SetColor("_EmissionColor", PortalBaseGlow.GlowColor * PortalBaseGlow.FarStrength);
+        }
+
+        if (material.HasProperty("_Glossiness"))
+        {
+            material.SetFloat("_Glossiness", BaseGlossiness);
+        }
+
+        prefab.AddComponent<PortalBaseGlow>();
+        AddRuneCircle(prefab.transform, template, Diameter, BaseHeight + Lift);
     }
 
     /// <summary>

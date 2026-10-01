@@ -37,7 +37,7 @@
     { "image": "rune_post", "models": ["runerack"] },
     { "image": "rune", "models": ["runering"] },
     { "image": "portal_astrolabe", "models": ["portalastrolabe"] },
-    { "image": "rune_circle", "models": ["portalground"], "view": { "yaw": 150, "pitch": 45 } },
+    { "image": "rune_circle", "compose": "runecircle.preview.json", "view": { "yaw": 150, "pitch": 60 } },
     { "image": "home_stone", "models": ["homestone"] },
     { "image": "surts_brazier", "models": ["eternalfire"] },
     { "image": "waste_well", "models": ["wastewell"] },

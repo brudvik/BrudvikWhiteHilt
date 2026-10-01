@@ -119,6 +119,7 @@ def describe_material(pointer_owner, pointer, depth):
     print(f"{indent}  keywords={material.get('m_ValidKeywords') or material.get('m_ShaderKeywords')}")
     print(f"{indent}  textures={textures}")
     print(f"{indent}  colours={colours}")
+    print(f"{indent}  floats={ {name: round(value, 3) for name, value in properties['m_Floats']} }")
 
 
 def walk(transform, depth, materials, values=False):

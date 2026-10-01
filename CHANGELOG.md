@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.33.0 - 2026-10-01
+
+### Changed
+- The **White Hilt Rune Circle** lies on a round slab of dark, glassy stone that frames it and lifts it a little off the ground. The rounded rim slopes down to the ground, so you walk straight onto it, and glows a faint blue that grows a little stronger as you come near. Rune circles already built get the stone too
+
 ## v0.32.1 - 2026-10-01
 
 ### Changed

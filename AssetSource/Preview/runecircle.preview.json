@@ -1,0 +1,5 @@
+{
+  "name": "runecircle",
+  "base": { "mesh": "portalbase", "height": 0.42 },
+  "props": [ { "mesh": "portalground", "base": [0, 1.0238, 0.381], "height": 0.088 } ]
+}

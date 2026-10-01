@@ -294,6 +294,7 @@
     <Compile Include="Pieces\EternalFire\SurtsBrazier.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalDestination.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\IWhiteHiltPortal.cs" />
+    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalBaseGlow.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalSettings.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravel.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravelPanel.cs" />
