@@ -323,6 +323,7 @@
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
     <Compile Include="Patches\Ships\ShipAnchorPatch.cs" />
     <Compile Include="Patches\Ships\ShipAssistPatches.cs" />
+    <Compile Include="Patches\Ships\ShipCameraZoomPatch.cs" />
     <Compile Include="Patches\Ships\ShipChestPatches.cs" />
     <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
     <Compile Include="Patches\Potions\PotionPatches.cs" />

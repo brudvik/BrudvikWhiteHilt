@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.36.0 - 2026-10-01
+
+### Added
+- **Ship camera zoom**: at the helm the camera zooms 2 m further out than before, and everyone aboard a ship, standing on deck or sitting, can now zoom out just as far as the one at the helm. Settings `Ships` → `CameraExtraZoom` and `CameraZoomAllAboard`. See [Ships](docs/ships.md)
+
 ## v0.35.0 - 2026-10-01
 
 ### Added

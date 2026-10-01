@@ -37,6 +37,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 **Sailing help** (every ship, also vanilla ones):
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
 - **Speed and heading**: while steering, the speed in knots, the heading in degrees and compass point, where the wind comes from and the held course are shown under the wind indicator (`ShowSpeedAndHeading`).
+- **Camera zoom**: at the helm the camera zooms 2 m further out than in vanilla (`CameraExtraZoom`), and everyone aboard, standing on deck or sitting, can zoom out just as far (`CameraZoomAllAboard`).
 - **Push the ship**: standing on shore or in the water next to a ship that lies still, look at it and press **E** (hold to keep pushing). It is pushed away from you, off a beach or a rock.
 
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
@@ -78,5 +79,7 @@ Section `[Ships]` (admin only, synced from the server):
 | `RouteExploreCoastCells` | 1 | How close to land explorer mode keeps, in 32 m steps from shallow water; 1 is closest |
 | `RouteExploreOpenWaterCost` | 3 | How many times longer open water counts in explorer mode; higher follows more of every bay, 1 is the fastest route |
 | `RouteExploreNearLand` | 120 | Within this many metres of land, explorer mode never uses full sail |
+| `CameraExtraZoom` | 2 | Metres the camera can zoom further out at the helm than in vanilla; 0 keeps the vanilla limit |
+| `CameraZoomAllAboard` | true | Everyone aboard can zoom out as far as the one at the helm |
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

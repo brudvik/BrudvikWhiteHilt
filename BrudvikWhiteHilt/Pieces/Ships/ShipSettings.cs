@@ -118,6 +118,12 @@ public static class ShipSettings
     /// <summary>Within this distance of land, in metres, explorer mode never sails with full sail.</summary>
     public static ConfigEntry<float> RouteExploreNearLand { get; private set; }
 
+    /// <summary>Metres the camera can zoom further out than vanilla's limit at the helm.</summary>
+    public static ConfigEntry<float> CameraExtraZoom { get; private set; }
+
+    /// <summary>Whether everyone aboard a ship can zoom out as far as the helmsman.</summary>
+    public static ConfigEntry<bool> CameraZoomAllAboard { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -202,6 +208,11 @@ public static class ShipSettings
         RouteExploreNearLand = WhiteHiltConfig.BindAdminOnly(Section, "RouteExploreNearLand", 120f,
             "Within this distance of land, in metres, explorer mode never sails with full sail, only half sail or rowing.",
             new AcceptableValueRange<float>(20f, 500f));
+        CameraExtraZoom = WhiteHiltConfig.BindAdminOnly(Section, "CameraExtraZoom", 2f,
+            "Metres the camera can zoom further out at the helm than the vanilla limit. 0 keeps the vanilla limit.",
+            new AcceptableValueRange<float>(0f, 10f));
+        CameraZoomAllAboard = WhiteHiltConfig.BindAdminOnly(Section, "CameraZoomAllAboard", true,
+            "Everyone aboard a ship, also those standing on deck or sitting, can zoom out as far as the one at the helm.");
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
