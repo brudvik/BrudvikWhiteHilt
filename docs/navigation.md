@@ -32,9 +32,9 @@ The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest c
 
 ## 🖼️ Player portraits on the map
 
-Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure.
+Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure. You are shown with your own portrait, with your direction arrow at the bottom of it. The portraits are drawn on top of everything else on the map, so other players are never hidden; yours lies under theirs.
 
-- Your portrait is taken in the main menu when the character is shown: bare head (no helmet), hair and beard, in neutral light. A new one is only taken when the look changes (body, hair, beard or colours).
+- Your portrait is taken in the main menu when the character is shown: bare head (no helmet), hair and beard, in neutral light, with the head centred. A new one is only taken when the look changes (body, hair, beard or colours).
 - When you join, the others get the portrait once (about 10 KB). They keep it on disk, so the next time only a short fingerprint is sent. Nothing extra is needed on the server.
 - A player without a portrait gets the first letter of the name on a coloured disc.
 - Names are always shown on the large map; on the minimap only if you turn it on.

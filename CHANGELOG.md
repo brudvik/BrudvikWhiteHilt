@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.32.1 - 2026-10-01
+
+### Changed
+- Player portraits on the map are drawn on top of everything else (area outlines and names, markers, other pins), so other players can always be seen
+- You are shown with your own portrait too, with your direction arrow at the bottom of it instead of the plain arrow
+
+### Fixed
+- Portraits were framed too high, showing mostly the top of the head. The head is now found in the picture and centred, with a little of the shoulders below. Every portrait is taken again the next time the character is shown in the main menu
+- The helmet was still in the portrait, because it was only removed at the end of the frame the picture was taken in
+
 ## v0.32.0 - 2026-10-01
 
 ### Added

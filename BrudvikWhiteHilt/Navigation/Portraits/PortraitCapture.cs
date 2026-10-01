@@ -17,13 +17,19 @@ namespace BrudvikWhiteHilt.Navigation.Portraits;
 public static class PortraitCapture
 {
     // Raise when the framing or lighting changes, so every portrait is taken again.
-    private const int Version = 1;
+    private const int Version = 2;
     private const int Supersample = 2;
     private const int SettleFrames = 4;
     private const float CloneDepth = 300f;
     private const float Distance = 1.05f;
-    private const float FieldOfView = 24f;
-    private const float FaceHeight = 0.09f;
+
+    // Metres of the character the portrait covers; the render covers Margin times more so the head can be found.
+    private const float ViewHeight = 0.46f;
+    private const float Margin = 1.5f;
+
+    // Share of the portrait above the top of the head, and how far down the head is measured to centre it sideways.
+    private const float HeadRoom = 0.1f;
+    private const float HeadDepth = 0.2f;
 
     private static Coroutine running;
     private static GameObject clone;
@@ -75,9 +81,27 @@ public static class PortraitCapture
             yield return null;
         }
 
+        long playerId = profile.GetPlayerID();
+        string look = Look(visual);
+        if (PortraitStore.TryLoadOwn(playerId, out string savedLook, out _, out _) && savedLook == look)
+        {
+            running = null;
+            Stop(startup);
+            yield break;
+        }
+
+        Strip(visual);
+
+        // The removed helmet and weapons are destroyed at the end of the frame, so they would still be in the picture.
+        yield return null;
+        yield return null;
+
         try
         {
-            TakeIfChanged(profile.GetPlayerID(), visual);
+            byte[] raw = Render(visual);
+            string hash = PortraitStore.Hash(raw);
+            PortraitStore.SaveOwn(playerId, look, hash, PortraitStore.Compress(raw));
+            Jotunn.Logger.LogInfo($"Portrait: took a new portrait ({hash.Substring(0, 8)}).");
         }
         catch (Exception ex)
         {
@@ -116,25 +140,14 @@ public static class PortraitCapture
         return clone.GetComponent<VisEquipment>();
     }
 
-    private static void TakeIfChanged(long playerId, VisEquipment visual)
+    private static void Strip(VisEquipment visual)
     {
-        string look = Look(visual);
-        if (PortraitStore.TryLoadOwn(playerId, out string savedLook, out _, out _) && savedLook == look)
-        {
-            return;
-        }
-
         visual.m_helmetItem = 0;
         visual.m_leftItem = 0;
         visual.m_rightItem = 0;
         visual.m_leftBackItem = 0;
         visual.m_rightBackItem = 0;
         visual.UpdateVisuals();
-
-        byte[] raw = Render(visual);
-        string hash = PortraitStore.Hash(raw);
-        PortraitStore.SaveOwn(playerId, look, hash, PortraitStore.Compress(raw));
-        Jotunn.Logger.LogInfo($"Portrait: took a new portrait ({hash.Substring(0, 8)}).");
     }
 
     private static string Look(VisEquipment visual)
@@ -158,9 +171,9 @@ public static class PortraitCapture
             child.gameObject.layer = layer;
         }
 
-        Transform head = FindHead(visual);
-        Vector3 face = head.position + root.up * FaceHeight;
-        int big = PortraitStore.Size * Supersample;
+        Vector3 head = FindHead(visual).position;
+        int window = PortraitStore.Size * Supersample;
+        int big = Mathf.RoundToInt(window * Margin);
 
         RenderTexture target = RenderTexture.GetTemporary(big, big, 24, RenderTextureFormat.ARGB32);
         GameObject rig = new("WhiteHiltPortraitRig");
@@ -176,14 +189,14 @@ public static class PortraitCapture
             camera.enabled = false;
             camera.cullingMask = 1 << layer;
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.fieldOfView = FieldOfView;
+            camera.fieldOfView = 2f * Mathf.Atan(ViewHeight * Margin / 2f / Distance) * Mathf.Rad2Deg;
             camera.nearClipPlane = 0.05f;
             camera.farClipPlane = 10f;
             camera.allowHDR = false;
             camera.allowMSAA = false;
             camera.targetTexture = target;
-            camera.transform.position = face + root.forward * Distance;
-            camera.transform.LookAt(face, root.up);
+            camera.transform.position = head + root.forward * Distance;
+            camera.transform.LookAt(head, root.up);
 
             // The menu's own lights (campfire, moon) would tint the portrait; they are off only for these two renders.
             foreach (Light light in Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
@@ -206,7 +219,9 @@ public static class PortraitCapture
             Color32[] onBlack = Shoot(camera, target, readback, Color.black);
             Color32[] onWhite = Shoot(camera, target, readback, Color.white);
             Object.Destroy(readback);
-            return Combine(onBlack, onWhite, big);
+            float[] coverage = Coverage(onBlack, onWhite);
+            Vector2Int offset = FrameHead(coverage, big, window);
+            return Combine(onBlack, coverage, big, offset);
         }
         finally
         {
@@ -277,7 +292,63 @@ public static class PortraitCapture
     }
 
     // Shader alpha is not reliable, so coverage is measured as how much the white background shows through.
-    private static byte[] Combine(Color32[] onBlack, Color32[] onWhite, int big)
+    private static float[] Coverage(Color32[] onBlack, Color32[] onWhite)
+    {
+        float[] coverage = new float[onBlack.Length];
+        for (int i = 0; i < coverage.Length; i++)
+        {
+            Color32 black = onBlack[i];
+            Color32 white = onWhite[i];
+            float through = (white.r - black.r + white.g - black.g + white.b - black.b) / (3f * 255f);
+            coverage[i] = Mathf.Clamp01(1f - through);
+        }
+
+        return coverage;
+    }
+
+    // Places the crop window so the top of the head sits just under the top edge and the head is centred sideways.
+    // Rows run bottom to top, as read back from the render.
+    private static Vector2Int FrameHead(float[] coverage, int big, int window)
+    {
+        int centred = (big - window) / 2;
+        int top = -1;
+        for (int y = big - 1; y >= 0 && top < 0; y--)
+        {
+            int solid = 0;
+            for (int x = 0; x < big; x++)
+            {
+                if (coverage[y * big + x] > 0.5f && ++solid >= 2)
+                {
+                    top = y;
+                    break;
+                }
+            }
+        }
+
+        if (top < 0)
+        {
+            return new Vector2Int(centred, centred);
+        }
+
+        int depth = Mathf.RoundToInt(HeadDepth / (ViewHeight * Margin) * big);
+        float sum = 0f, weight = 0f;
+        for (int y = Mathf.Max(0, top - depth); y <= top; y++)
+        {
+            for (int x = 0; x < big; x++)
+            {
+                float a = coverage[y * big + x];
+                sum += a * x;
+                weight += a;
+            }
+        }
+
+        float centre = weight > 0f ? sum / weight : big / 2f;
+        int offsetX = Mathf.Clamp(Mathf.RoundToInt(centre - window / 2f), 0, big - window);
+        int offsetY = Mathf.Clamp(top + 1 + Mathf.RoundToInt(HeadRoom * window) - window, 0, big - window);
+        return new Vector2Int(offsetX, offsetY);
+    }
+
+    private static byte[] Combine(Color32[] onBlack, float[] coverage, int big, Vector2Int offset)
     {
         int size = PortraitStore.Size;
         byte[] raw = new byte[PortraitStore.RawLength];
@@ -290,11 +361,9 @@ public static class PortraitCapture
                 {
                     for (int sx = 0; sx < Supersample; sx++)
                     {
-                        int i = (y * Supersample + sy) * big + x * Supersample + sx;
+                        int i = (offset.y + y * Supersample + sy) * big + offset.x + x * Supersample + sx;
                         Color32 black = onBlack[i];
-                        Color32 white = onWhite[i];
-                        float through = (white.r - black.r + white.g - black.g + white.b - black.b) / (3f * 255f);
-                        a += Mathf.Clamp01(1f - through);
+                        a += coverage[i];
                         r += black.r;
                         g += black.g;
                         b += black.b;
@@ -303,12 +372,11 @@ public static class PortraitCapture
 
                 int samples = Supersample * Supersample;
                 int o = (y * size + x) * 4;
-                float coverage = a / samples;
                 float scale = a > 0.001f ? 1f / a : 0f;
                 raw[o] = (byte)Mathf.Clamp(r * scale, 0f, 255f);
                 raw[o + 1] = (byte)Mathf.Clamp(g * scale, 0f, 255f);
                 raw[o + 2] = (byte)Mathf.Clamp(b * scale, 0f, 255f);
-                raw[o + 3] = (byte)Mathf.RoundToInt(coverage * 255f);
+                raw[o + 3] = (byte)Mathf.RoundToInt(a / samples * 255f);
             }
         }
 

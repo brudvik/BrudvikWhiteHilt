@@ -48,13 +48,13 @@ public static class PortraitPatches
     }
 
     /// <summary>
-    /// Puts the portraits on the player pins.
+    /// Keeps the portraits on the player pins and your own marker, on top of everything else on the map.
     /// </summary>
     /// <param name="__instance">The map.</param>
-    [HarmonyPatch(typeof(Minimap), nameof(Minimap.UpdatePins))]
+    [HarmonyPatch(typeof(Minimap), nameof(Minimap.Update))]
     [HarmonyPostfix]
-    public static void UpdatePinsPostfix(Minimap __instance)
+    public static void UpdatePostfix(Minimap __instance)
     {
-        PortraitPins.Decorate(__instance);
+        PortraitPins.Update(__instance);
     }
 }

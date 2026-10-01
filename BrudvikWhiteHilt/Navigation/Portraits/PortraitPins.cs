@@ -6,24 +6,31 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Navigation.Portraits;
 
 /// <summary>
-/// Draws other players on the map as a portrait on a see-through black disc, with the name under it in soft shadow.
-/// A player whose portrait is not known gets the first letter of the name on a coloured disc instead. The vanilla pin
-/// is kept underneath, only its icon and name are hidden.
+/// Draws players on the map as a portrait on a see-through black disc, with the name under it in soft shadow. A player
+/// whose portrait is not known gets the first letter of the name on a coloured disc instead. The portraits live in their
+/// own layer on top of everything else on the map, following the vanilla player pins, whose icon and name are hidden.
+/// You get one too, with your direction arrow at the bottom of it in place of the vanilla marker.
 /// </summary>
 public static class PortraitPins
 {
-    private const string ViewName = "WhiteHiltPortrait";
+    private const string LayerName = "WhiteHiltPortraits";
     private const float LargeSize = 46f;
     private const float SmallSize = 30f;
     private const int LargeFont = 15;
     private const int SmallFont = 12;
+    private const float ArrowShare = 0.55f;
     private const float TestOffset = 20f;
 
     private static readonly Color backdrop = new(0f, 0f, 0f, 0.55f);
     private static readonly Dictionary<Minimap.PinData, long> owners = new();
+    private static readonly Dictionary<Minimap.PinData, PortraitView> views = new();
+    private static readonly List<Minimap.PinData> gone = new();
 
     private static Sprite disc;
     private static Minimap.PinData testPin;
+    private static RectTransform largeLayer;
+    private static RectTransform smallLayer;
+    private static PortraitView ownView;
 
     /// <summary>
     /// Asks the map to redraw its pins, e.g. when a portrait has arrived.
@@ -56,36 +63,64 @@ public static class PortraitPins
     }
 
     /// <summary>
-    /// Puts a portrait on every visible player pin. Called after the map places its pins; vanilla destroys and makes
-    /// pin objects again when the map changes mode or a pin leaves the view, so this runs every time.
+    /// Moves the portraits onto the player pins and your own marker. Called after the map's own update, so pins that
+    /// vanilla made again this frame are already in place.
     /// </summary>
     /// <param name="map">The map.</param>
-    public static void Decorate(Minimap map)
+    public static void Update(Minimap map)
     {
+        if (map.m_mapImageLarge == null || map.m_mapImageSmall == null)
+        {
+            return;
+        }
+
+        if (largeLayer == null || smallLayer == null)
+        {
+            largeLayer = CreateLayer(map.m_mapImageLarge.rectTransform);
+            smallLayer = CreateLayer(map.m_mapImageSmall.rectTransform);
+        }
+
         bool large = map.m_mode == Minimap.MapMode.Large;
+        bool shown = large || map.m_mode == Minimap.MapMode.Small;
+        bool enabled = PortraitSettings.Enabled.Value;
+        RectTransform layer = large ? largeLayer : smallLayer;
+        if (layer.GetSiblingIndex() != layer.parent.childCount - 1)
+        {
+            layer.SetAsLastSibling();
+        }
+
+        float size = large ? LargeSize : SmallSize;
+        int font = large ? LargeFont : SmallFont;
         bool showName = large || PortraitSettings.ShowNamesOnMinimap.Value;
+        UpdateOwn(map, layer, large, shown && enabled, size, font);
+        RemoveGone();
         foreach (KeyValuePair<Minimap.PinData, long> owner in owners)
         {
             Minimap.PinData pin = owner.Key;
-            if (pin.m_uiElement == null)
+            views.TryGetValue(pin, out PortraitView view);
+            if (!enabled || !shown || pin.m_uiElement == null)
             {
-                continue;
-            }
-
-            Transform existing = pin.m_uiElement.Find(ViewName);
-            if (!PortraitSettings.Enabled.Value)
-            {
-                if (existing != null)
+                if (view != null)
                 {
-                    Object.Destroy(existing.gameObject);
+                    view.gameObject.SetActive(false);
+                }
+
+                if (!enabled && pin.m_iconElement != null)
+                {
                     pin.m_iconElement.enabled = true;
                 }
 
                 continue;
             }
 
-            PortraitView view = existing != null ? existing.GetComponent<PortraitView>() : Create(pin.m_uiElement);
-            view.Show(PortraitNetwork.Get(owner.Value), pin.m_name, large ? LargeSize : SmallSize, large ? LargeFont : SmallFont, showName);
+            if (view == null)
+            {
+                view = Create(layer);
+                views[pin] = view;
+            }
+
+            Place(view, layer, pin.m_uiElement.position);
+            view.Show(PortraitNetwork.Get(owner.Value), pin.m_name, size, font, showName, null);
             pin.m_iconElement.enabled = false;
             if (pin.m_NamePinData != null && pin.m_NamePinData.PinNameGameObject != null)
             {
@@ -123,11 +158,102 @@ public static class PortraitPins
             : "Portrait test pin added, but you have no portrait yet: it is taken in the main menu when the character is shown.";
     }
 
-    private static PortraitView Create(RectTransform pin)
+    // Your portrait sits under the others, so it never hides another player.
+    private static void UpdateOwn(Minimap map, RectTransform layer, bool large, bool show, float size, int font)
     {
-        GameObject root = new(ViewName, typeof(RectTransform));
+        SetMarkerVisible(map.m_largeMarker, !show);
+        SetMarkerVisible(map.m_smallMarker, !show);
+        RectTransform marker = large ? map.m_largeMarker : map.m_smallMarker;
+        Player player = Player.m_localPlayer;
+        if (!show || marker == null || !marker.gameObject.activeInHierarchy || player == null)
+        {
+            if (ownView != null)
+            {
+                ownView.gameObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        if (ownView == null)
+        {
+            ownView = Create(layer);
+            Image arrow = AddImage<Image>((RectTransform)ownView.transform, "Arrow");
+            arrow.sprite = marker.GetComponent<Image>()?.sprite;
+            arrow.preserveAspect = true;
+            RectTransform rect = arrow.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            ownView.Arrow = arrow;
+        }
+
+        Place(ownView, layer, marker.position);
+        ownView.transform.SetAsFirstSibling();
+        ownView.Show(PortraitNetwork.Get(ZDOMan.GetSessionID()), player.GetPlayerName(), size, font, false, marker.rotation);
+    }
+
+    private static void SetMarkerVisible(RectTransform marker, bool visible)
+    {
+        Image image = marker != null ? marker.GetComponent<Image>() : null;
+        if (image != null && image.enabled != visible)
+        {
+            image.enabled = visible;
+        }
+    }
+
+    private static void RemoveGone()
+    {
+        gone.Clear();
+        foreach (KeyValuePair<Minimap.PinData, PortraitView> view in views)
+        {
+            if (view.Value == null || !owners.ContainsKey(view.Key))
+            {
+                gone.Add(view.Key);
+            }
+        }
+
+        foreach (Minimap.PinData pin in gone)
+        {
+            if (views[pin] != null)
+            {
+                Object.Destroy(views[pin].gameObject);
+            }
+
+            views.Remove(pin);
+        }
+    }
+
+    private static void Place(PortraitView view, RectTransform layer, Vector3 position)
+    {
+        if (view.transform.parent != layer)
+        {
+            view.transform.SetParent(layer, false);
+        }
+
+        view.gameObject.SetActive(true);
+        view.transform.position = position;
+    }
+
+    private static RectTransform CreateLayer(RectTransform map)
+    {
+        Transform old = map.Find(LayerName);
+        if (old != null)
+        {
+            Object.Destroy(old.gameObject);
+        }
+
+        GameObject root = new(LayerName, typeof(RectTransform));
         RectTransform rect = (RectTransform)root.transform;
-        rect.SetParent(pin, false);
+        rect.SetParent(map, false);
+        Stretch(rect);
+        return rect;
+    }
+
+    private static PortraitView Create(RectTransform layer)
+    {
+        GameObject root = new("Portrait", typeof(RectTransform));
+        RectTransform rect = (RectTransform)root.transform;
+        rect.SetParent(layer, false);
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
 
         PortraitView view = root.AddComponent<PortraitView>();
@@ -223,8 +349,9 @@ public static class PortraitPins
         public RawImage Picture;
         public Text Letter;
         public Text Name;
+        public Image Arrow;
 
-        public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName)
+        public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName, Quaternion? heading)
         {
             ((RectTransform)transform).sizeDelta = new Vector2(size, size);
             Picture.texture = portrait;
@@ -240,6 +367,11 @@ public static class PortraitPins
             Name.gameObject.SetActive(showName && !string.IsNullOrEmpty(name));
             Name.text = name;
             Name.fontSize = fontSize;
+            if (Arrow != null && heading.HasValue)
+            {
+                Arrow.rectTransform.sizeDelta = new Vector2(size * ArrowShare, size * ArrowShare);
+                Arrow.rectTransform.rotation = heading.Value;
+            }
         }
 
         // Each name keeps its own muted colour, so players without a portrait can still be told apart.
