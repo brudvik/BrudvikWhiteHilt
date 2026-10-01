@@ -4,6 +4,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## v0.31.0 - 2026-10-01
 
+### Added
+- **Explorer mode** at the Navigator's Table, next to "Take me there": the ship sails past the markers as close to land as it safely can, following the coast instead of the fastest way. Near land it never sails with full sail, only half sail, or rowing while anyone stands, so you can stand and shoot at monsters along the way. Settings under `Ships`: `RouteExploreLevel`, `RouteExploreCoastCells`, `RouteExploreOpenWaterCost`, `RouteExploreNearLand`
+
 ### Changed
 - "Take me there" takes the sail down to half when the ship goes faster than 45 knots, and sets it full again once it is well below. Change it under `Ships` → `RouteMaxSpeed` (0 never reefs)
 - "Take me there" waits until the player who chose it sits down (on a bench, the deck or in a bed) before the ship sets off. If they have not sat down within 30 seconds (`Ships` → `RouteSitSeconds`), the route is called off and has to be started again

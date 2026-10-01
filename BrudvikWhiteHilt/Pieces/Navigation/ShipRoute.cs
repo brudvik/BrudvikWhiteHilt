@@ -42,6 +42,7 @@ public class ShipRoute : MonoBehaviour
     private static readonly int captainKey = "whitehilt_route_captain".GetStableHashCode();
     private static readonly int underwayKey = "whitehilt_route_underway".GetStableHashCode();
     private static readonly int orderedKey = "whitehilt_route_ordered".GetStableHashCode();
+    private static readonly int exploreKey = "whitehilt_route_explore".GetStableHashCode();
     private static readonly List<ShipRoute> instances = new();
 
     private readonly List<Vector3> markers = new();
@@ -55,6 +56,7 @@ public class ShipRoute : MonoBehaviour
     private float nextCheck;
     private float avoidOffset;
     private bool reefed;
+    private bool nearLand;
 
     /// <summary>The ship the route belongs to.</summary>
     public Ship Ship => ship;
@@ -74,6 +76,9 @@ public class ShipRoute : MonoBehaviour
 
     /// <summary>True while the ship sails the route at the slowest speed, rowing.</summary>
     public bool Rowing => ship != null && ship.m_speed == Ship.Speed.Slow && Sailing;
+
+    /// <summary>True while the ship sails the route in explorer mode, along the coast.</summary>
+    public bool Exploring => Sailing && nview.GetZDO().GetBool(exploreKey);
 
     /// <summary>
     /// The route of the ship the player is aboard, if it has a Navigator's Table.
@@ -127,9 +132,10 @@ public class ShipRoute : MonoBehaviour
     /// </summary>
     /// <param name="route">The turning points from the ship to the last marker.</param>
     /// <param name="snappedMarkers">The markers, moved into deep water.</param>
-    public void Sail(IList<Vector3> route, IList<Vector3> snappedMarkers)
+    /// <param name="explore">True for explorer mode: along the coast, never full sail near land.</param>
+    public void Sail(IList<Vector3> route, IList<Vector3> snappedMarkers, bool explore)
     {
-        nview.InvokeRPC(SailRpc, Pack(route), Pack(snappedMarkers));
+        nview.InvokeRPC(SailRpc, Pack(route), Pack(snappedMarkers), explore);
     }
 
     /// <summary>
@@ -187,7 +193,7 @@ public class ShipRoute : MonoBehaviour
         }
 
         nview.Register<ZPackage>(MarkersRpc, RPC_Markers);
-        nview.Register<ZPackage, ZPackage>(SailRpc, RPC_Sail);
+        nview.Register<ZPackage, ZPackage, bool>(SailRpc, RPC_Sail);
         nview.Register(StopRpc, RPC_Stop);
         nview.Register<string>(MessageRpc, RPC_Message);
         instances.Add(this);
@@ -278,7 +284,7 @@ public class ShipRoute : MonoBehaviour
             }
 
             zdo.Set(underwayKey, true);
-            nview.InvokeRPC(ZNetView.Everybody, MessageRpc, "$whitehilt_route_started");
+            nview.InvokeRPC(ZNetView.Everybody, MessageRpc, zdo.GetBool(exploreKey) ? "$whitehilt_route_explore_started" : "$whitehilt_route_started");
         }
 
         int point = zdo.GetInt(pointKey);
@@ -298,9 +304,11 @@ public class ShipRoute : MonoBehaviour
 
         Vector3 next = path[point];
         float course = Bearing(here, next);
+        bool explore = zdo.GetBool(exploreKey);
         if (Time.time >= nextCheck)
         {
             nextCheck = Time.time + CheckInterval;
+            nearLand = explore && NearLand(here, ShipSettings.RouteExploreNearLand.Value);
             if (!FindWayAround(course, Utils.DistanceXZ(here, next) + PointReached))
             {
                 StopSailing(zdo, "$whitehilt_route_shallow");
@@ -315,8 +323,28 @@ public class ShipRoute : MonoBehaviour
         bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), heading)) > SlowTurnDegrees;
         UpdateReef();
         ship.m_speed = AnyoneStanding() ? Ship.Speed.Slow
-            : left < SlowNearEnd || turning || avoidOffset != 0f || reefed ? Ship.Speed.Half
+            : left < SlowNearEnd || turning || avoidOffset != 0f || reefed || (explore && nearLand) ? Ship.Speed.Half
             : Ship.Speed.Full;
+    }
+
+    // Ground above the sea surface within reach, sampled in a ring and a half ring around the ship.
+    private static bool NearLand(Vector3 here, float reach)
+    {
+        float water = ZoneSystem.instance.m_waterLevel;
+        for (int i = 0; i < 16; i++)
+        {
+            Vector3 direction = Quaternion.Euler(0f, i * 22.5f, 0f) * Vector3.forward;
+            foreach (float part in new[] { 0.5f, 1f })
+            {
+                Vector3 sample = here + direction * (reach * part);
+                if (WorldGenerator.instance.GetHeight(sample.x, sample.z) > water)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static bool Seated(Player player)
@@ -443,7 +471,7 @@ public class ShipRoute : MonoBehaviour
         }
     }
 
-    private void RPC_Sail(long sender, ZPackage route, ZPackage snappedMarkers)
+    private void RPC_Sail(long sender, ZPackage route, ZPackage snappedMarkers, bool explore)
     {
         if (!nview.IsOwner() || !ShipSettings.ShipRoutes.Value || !ShipSettings.RouteAutopilot.Value)
         {
@@ -466,6 +494,7 @@ public class ShipRoute : MonoBehaviour
         zdo.Set(captainKey, sender);
         zdo.Set(orderedKey, ZNet.instance.GetTime().Ticks);
         zdo.Set(underwayKey, false);
+        zdo.Set(exploreKey, explore);
         zdo.Set(sailingKey, true);
         assist?.StopHolding();
         upgrades?.WeighAnchor();

@@ -15,7 +15,7 @@ namespace BrudvikWhiteHilt.Pieces.Navigation;
 /// </summary>
 public static class ShipRoutePlanner
 {
-    private const float PanelWidth = 640f;
+    private const float PanelWidth = 800f;
     private const float PanelHeight = 110f;
 
     // A right-click removes a marker within this share of the map's visible width.
@@ -27,11 +27,14 @@ public static class ShipRoutePlanner
     private static ShipRoute pinned;
     private static string pinnedSignature;
     private static bool plotting;
+    private static bool plottingExplore;
     private static ShipRoute plottingRoute;
     private static GameObject panel;
     private static Text hint;
     private static Button sailButton;
     private static Text sailLabel;
+    private static Button exploreButton;
+    private static Text exploreLabel;
 
     /// <summary>True while markers are being set on the map.</summary>
     public static bool Planning => editing != null;
@@ -192,21 +195,41 @@ public static class ShipRoutePlanner
         int count = editing.Markers.Count;
         hint.text = string.Format(Localization.instance.Localize("$whitehilt_route_hint"), count, ShipRoute.MaxMarkers);
         int needed = ShipSettings.RouteSailLevel.Value;
-        bool skilled = ExplorationSkill.GetLevel(player) >= needed;
-        string label = plotting ? "$whitehilt_route_plotting"
+        int level = Mathf.FloorToInt(ExplorationSkill.GetLevel(player));
+        bool skilled = level >= needed;
+        string label = plotting && !plottingExplore ? "$whitehilt_route_plotting"
             : editing.Sailing ? "$whitehilt_route_stop"
             : skilled ? "$whitehilt_route_sail"
             : string.Format(Localization.instance.Localize("$whitehilt_route_need_sail"), needed);
         sailLabel.text = Localization.instance.Localize(label);
         sailButton.interactable = !plotting && (editing.Sailing || (skilled && count > 0));
+
+        int exploreNeeded = ShipSettings.RouteExploreLevel.Value;
+        bool explorer = level >= exploreNeeded;
+        string exploreText = plotting && plottingExplore ? "$whitehilt_route_plotting"
+            : explorer ? "$whitehilt_route_explore"
+            : string.Format(Localization.instance.Localize("$whitehilt_route_need_sail"), exploreNeeded);
+        exploreLabel.text = Localization.instance.Localize(exploreText);
+        exploreButton.interactable = !plotting && !editing.Sailing && explorer && count > 0;
         bool autopilot = ShipSettings.RouteAutopilot.Value;
         if (sailButton.gameObject.activeSelf != autopilot)
         {
             sailButton.gameObject.SetActive(autopilot);
+            exploreButton.gameObject.SetActive(autopilot);
         }
     }
 
     private static void OnSail()
+    {
+        Plot(false);
+    }
+
+    private static void OnExplore()
+    {
+        Plot(true);
+    }
+
+    private static void Plot(bool explore)
     {
         ShipRoute route = editing;
         if (route == null || plotting || !ShipSettings.RouteAutopilot.Value)
@@ -220,15 +243,24 @@ public static class ShipRoutePlanner
             return;
         }
 
+        int needed = explore ? ShipSettings.RouteExploreLevel.Value : ShipSettings.RouteSailLevel.Value;
         List<Vector3> markers = route.Markers.ToList();
-        if (markers.Count == 0 || ExplorationSkill.GetLevel(Player.m_localPlayer) < ShipSettings.RouteSailLevel.Value)
+        if (markers.Count == 0 || ExplorationSkill.GetLevel(Player.m_localPlayer) < needed)
         {
             return;
         }
 
+        SeaRouteFinder.CoastOptions coast = explore
+            ? new SeaRouteFinder.CoastOptions
+            {
+                Cells = ShipSettings.RouteExploreCoastCells.Value,
+                OpenWaterCost = ShipSettings.RouteExploreOpenWaterCost.Value
+            }
+            : null;
         plotting = true;
+        plottingExplore = explore;
         plottingRoute = route;
-        route.StartCoroutine(SeaRouteFinder.Find(route.transform.position, markers, (path, snapped) =>
+        route.StartCoroutine(SeaRouteFinder.Find(route.transform.position, markers, coast, (path, snapped) =>
         {
             plotting = false;
             if (route == null)
@@ -242,7 +274,7 @@ public static class ShipRoutePlanner
                 return;
             }
 
-            route.Sail(path, snapped);
+            route.Sail(path, snapped, explore);
             Close();
         }));
     }
@@ -270,10 +302,11 @@ public static class ShipRoutePlanner
             GUIManager.Instance.ValheimOrange, true, Color.black, PanelWidth - 40f, 30f, false).GetComponent<Text>();
         hint.alignment = TextAnchor.MiddleCenter;
 
-        sailButton = CreateButton(rect, new Vector2(-150f, 32f), 260f, OnSail, out sailLabel);
-        CreateButton(rect, new Vector2(60f, 32f), 130f, OnClear, out Text clearLabel);
+        sailButton = CreateButton(rect, new Vector2(-265f, 32f), 230f, OnSail, out sailLabel);
+        exploreButton = CreateButton(rect, new Vector2(-25f, 32f), 230f, OnExplore, out exploreLabel);
+        CreateButton(rect, new Vector2(165f, 32f), 130f, OnClear, out Text clearLabel);
         clearLabel.text = Localization.instance.Localize("$whitehilt_route_clear");
-        CreateButton(rect, new Vector2(210f, 32f), 130f, Close, out Text closeLabel);
+        CreateButton(rect, new Vector2(305f, 32f), 130f, Close, out Text closeLabel);
         closeLabel.text = Localization.instance.Localize("$whitehilt_route_close");
         panel.SetActive(false);
     }

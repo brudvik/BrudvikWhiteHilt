@@ -74,5 +74,9 @@ Section `[Ships]` (admin only, synced from the server):
 | `RouteMaxMarkers` | 5 | Most markers on a route |
 | `RouteMaxSpeed` | 45 | Above this speed in knots, "Take me there" takes the sail down to half until the ship is well below it; 0 never |
 | `RouteSitSeconds` | 30 | Seconds the player who chose "Take me there" has to sit down before the route is called off |
+| `RouteExploreLevel` | 50 | Exploration level needed for explorer mode |
+| `RouteExploreCoastCells` | 1 | How close to land explorer mode keeps, in 32 m steps from shallow water; 1 is closest |
+| `RouteExploreOpenWaterCost` | 3 | How many times longer open water counts in explorer mode; higher follows more of every bay, 1 is the fastest route |
+| `RouteExploreNearLand` | 120 | Within this many metres of land, explorer mode never uses full sail |
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

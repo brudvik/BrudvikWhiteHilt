@@ -106,6 +106,18 @@ public static class ShipSettings
     /// <summary>Seconds the player who chose "Take me there" has to sit down before the route is called off.</summary>
     public static ConfigEntry<float> RouteSitSeconds { get; private set; }
 
+    /// <summary>Exploration level needed for explorer mode, which sails the route along the coast.</summary>
+    public static ConfigEntry<int> RouteExploreLevel { get; private set; }
+
+    /// <summary>How close to land explorer mode keeps, in 32 m steps from the nearest shallow water.</summary>
+    public static ConfigEntry<int> RouteExploreCoastCells { get; private set; }
+
+    /// <summary>How many times longer open water counts than the same stretch along the coast in explorer mode.</summary>
+    public static ConfigEntry<float> RouteExploreOpenWaterCost { get; private set; }
+
+    /// <summary>Within this distance of land, in metres, explorer mode never sails with full sail.</summary>
+    public static ConfigEntry<float> RouteExploreNearLand { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -178,6 +190,18 @@ public static class ShipSettings
         RouteSitSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RouteSitSeconds", 30f,
             "Seconds the player who chose \"Take me there\" has to sit down before the ship sets off. After that the route is called off and must be started again.",
             new AcceptableValueRange<float>(5f, 600f));
+        RouteExploreLevel = WhiteHiltConfig.BindAdminOnly(Section, "RouteExploreLevel", 50,
+            "Exploration level needed for explorer mode: the ship sails the route on its own, as close to land as it safely can.",
+            new AcceptableValueRange<int>(0, 100));
+        RouteExploreCoastCells = WhiteHiltConfig.BindAdminOnly(Section, "RouteExploreCoastCells", 1,
+            "How close to land explorer mode keeps, in steps of 32 m out from the nearest shallow water. 1 is as close as the ship safely gets.",
+            new AcceptableValueRange<int>(1, 5));
+        RouteExploreOpenWaterCost = WhiteHiltConfig.BindAdminOnly(Section, "RouteExploreOpenWaterCost", 3f,
+            "How hard explorer mode avoids open water: a stretch away from the coast counts as this many times as long. Higher follows more of every bay; 1 is the fastest route.",
+            new AcceptableValueRange<float>(1f, 10f));
+        RouteExploreNearLand = WhiteHiltConfig.BindAdminOnly(Section, "RouteExploreNearLand", 120f,
+            "Within this distance of land, in metres, explorer mode never sails with full sail, only half sail or rowing.",
+            new AcceptableValueRange<float>(20f, 500f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
@@ -193,6 +217,8 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_route_hint", "Left-click: add a marker ({0}/{1})    Right-click: remove one");
         Translations.AddEnglish("whitehilt_route_full", "The route has all its markers");
         Translations.AddEnglish("whitehilt_route_sail", "Take me there");
+        Translations.AddEnglish("whitehilt_route_explore", "Explorer mode");
+        Translations.AddEnglish("whitehilt_route_explore_started", "The ship explores along the coast");
         Translations.AddEnglish("whitehilt_route_stop", "Stop sailing");
         Translations.AddEnglish("whitehilt_route_clear", "Clear");
         Translations.AddEnglish("whitehilt_route_close", "Close");
