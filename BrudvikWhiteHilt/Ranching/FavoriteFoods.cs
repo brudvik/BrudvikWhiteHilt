@@ -1,12 +1,9 @@
 using BrudvikWhiteHilt.Helpers;
 using Jotunn.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Chanterelle = BrudvikWhiteHilt.Items.Foraging.Chanterelle.Chanterelle;
-using Crowberries = BrudvikWhiteHilt.Items.Foraging.Crowberries.Crowberries;
-using Lingonberries = BrudvikWhiteHilt.Items.Foraging.Lingonberries.Lingonberries;
-using Porcini = BrudvikWhiteHilt.Items.Foraging.Porcini.Porcini;
 
 namespace BrudvikWhiteHilt.Ranching;
 
@@ -19,21 +16,12 @@ public static class FavoriteFoods
     /// <summary>
     /// How much faster an animal fed its favourite food tames.
     /// </summary>
-    public const float TamingSpeed = 1.5f;
+    public static float TamingSpeed => RanchingSettings.FavoriteTamingSpeed.Value;
 
     /// <summary>
     /// How much longer an animal fed its favourite food stays fed.
     /// </summary>
-    public const float FedDuration = 2f;
-
-    private static readonly Dictionary<string, string[]> favoritesByCreature = new()
-    {
-        ["Boar"] = new[] { Chanterelle.PrefabName, Porcini.PrefabName },
-        ["Wolf"] = new[] { "Sausages" },
-        ["Lox"] = new[] { Crowberries.PrefabName },
-        ["Hen"] = new[] { Lingonberries.PrefabName },
-        ["Asksvin"] = new[] { "MushroomSmokePuff" }
-    };
+    public static float FedDuration => RanchingSettings.FavoriteFedDuration.Value;
 
     // Shared item names ($item_...) per creature prefab, filled when the prefabs are registered.
     private static readonly Dictionary<string, HashSet<string>> sharedNamesByCreature = new();
@@ -51,7 +39,8 @@ public static class FavoriteFoods
     /// </summary>
     public static void AddToDiets()
     {
-        foreach (KeyValuePair<string, string[]> entry in favoritesByCreature)
+        sharedNamesByCreature.Clear();
+        foreach (KeyValuePair<string, string[]> entry in ParseFavorites(RanchingSettings.FavoriteFoodsList.Value))
         {
             MonsterAI ai = PrefabManager.Instance.GetPrefab(entry.Key)?.GetComponent<MonsterAI>();
             if (ai == null)
@@ -67,6 +56,7 @@ public static class FavoriteFoods
                 ItemDrop item = PrefabManager.Instance.GetPrefab(itemName)?.GetComponent<ItemDrop>();
                 if (item == null)
                 {
+                    Jotunn.Logger.LogWarning($"Favourite foods: item {itemName} not found");
                     continue;
                 }
 
@@ -105,6 +95,29 @@ public static class FavoriteFoods
     private static bool TryGetSharedNames(GameObject creature, out HashSet<string> names)
     {
         names = null;
-        return creature != null && sharedNamesByCreature.TryGetValue(Utils.GetPrefabName(creature), out names);
+        return RanchingSettings.FavoriteFoodsEnabled.Value && creature != null
+            && sharedNamesByCreature.TryGetValue(Utils.GetPrefabName(creature), out names);
+    }
+
+    // "Boar:Chanterelle|Porcini, Wolf:Sausages"; malformed parts are skipped with a warning.
+    private static Dictionary<string, string[]> ParseFavorites(string text)
+    {
+        Dictionary<string, string[]> result = new();
+        foreach (string part in (text ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            string[] fields = part.Split(':');
+            string[] items = fields.Length == 2
+                ? fields[1].Split('|').Select(item => item.Trim()).Where(item => item.Length > 0).ToArray()
+                : Array.Empty<string>();
+            if (fields.Length != 2 || fields[0].Trim().Length == 0 || items.Length == 0)
+            {
+                Jotunn.Logger.LogWarning($"Favourite foods: skipping \"{part.Trim()}\", expected Creature:Item|Item");
+                continue;
+            }
+
+            result[fields[0].Trim()] = items;
+        }
+
+        return result;
     }
 }

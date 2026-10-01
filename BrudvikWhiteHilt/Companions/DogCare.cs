@@ -28,14 +28,14 @@ public sealed class DogCare : MonoBehaviour
     private const float LimpHealth = 0.35f;
     private const float LimpRunFactor = 0.6f;
     private const float LimpWalkFactor = 0.8f;
-    private const float RestHealPerTick = 0.01f;
-    private const float PoisonChance = 0.3f;
+    private static float RestHealPerTick => DogSettings.RestHealPerTick.Value;
+    private static float PoisonChance => DogSettings.SwampPoisonChance.Value;
     private const float PoisonDays = 0.1f;
     private const float PoisonPerTick = 0.015f;
     private const float PoisonFloor = 0.1f;
     private const float ColdPerTick = 0.01f;
     private const float ColdFloor = 0.2f;
-    private const float BandageHeal = 0.5f;
+    private static float BandageHeal => DogSettings.BandageHeal.Value;
     private const float ShakeDelay = 0.8f;
     private const float YawnChance = 0.06f;
     private const float ScratchChance = 0.04f;

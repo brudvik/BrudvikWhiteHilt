@@ -18,8 +18,8 @@ public static class TamingPatches
     private const string FedFavoriteKey = "whitehilt_fed_favorite";
     private const string FedDurationKey = "whitehilt_fed_duration";
 
-    // A groomed animal halves both the pregnancy and vanilla's chance to skip a breeding check.
-    internal const float ContentBreedingFactor = 0.5f;
+    // A groomed animal multiplies both the pregnancy and vanilla's chance to skip a breeding check by this; 1 when the bonus is off.
+    internal static float ContentBreedingFactor => RanchingSettings.GroomingBonus.Value ? RanchingSettings.ContentBreedingFactor.Value : 1f;
     private const int MaxYoungLevel = 5;
 
     // The young born during the current Procreate call, caught as vanilla sets its level.

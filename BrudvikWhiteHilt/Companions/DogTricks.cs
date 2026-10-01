@@ -12,12 +12,12 @@ public sealed class DogTricks : MonoBehaviour
     /// <summary>
     /// Lessons before a trick is learnt.
     /// </summary>
-    public const int LessonsToLearn = 3;
+    public static int LessonsToLearn => DogSettings.LessonsToLearn.Value;
 
     private const string TrickRpc = "WhiteHilt_DogTrick";
     private const float EmoteRange = 10f;
     private const float HoldSeconds = 20f;
-    private const float TrickXp = 2f;
+    private static float TrickXp => DogSettings.TrickXp.Value;
     private const float HintSeconds = 600f;
 
     private static readonly int learnedKey = "whitehilt_dog_tricks".GetStableHashCode();

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Ranching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ public class FeedingTroughComponent : MonoBehaviour
     /// <summary>
     /// How far away, in metres, an animal notices a trough.
     /// </summary>
-    public const float Range = 15f;
+    public static float Range => RanchingSettings.TroughRange.Value;
 
     private const string EatRpc = "WhiteHilt_TroughEat";
     private const string AddRpc = "WhiteHilt_TroughAdd";

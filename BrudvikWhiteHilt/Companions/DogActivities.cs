@@ -31,12 +31,12 @@ public sealed class DogActivities : MonoBehaviour
     private const float HomeRange = 25f;
     private const float FetchSeconds = 30f;
     private const float StickWaitSeconds = 3f;
-    private const float FetchXp = 10f;
+    private static float FetchXp => DogSettings.FetchXp.Value;
     private const float DrinkEveryDays = 0.25f;
     private const float DrinkChance = 0.3f;
     private const float DrinkSeconds = 3.5f;
     private const float LapSeconds = 1.2f;
-    private const float DigChance = 0.5f;
+    private static float DigChance => DogSettings.DigChance.Value;
     private const float DigRadius = 6f;
     private const float DigSeconds = 4f;
     private const float DigNoticeRange = 50f;

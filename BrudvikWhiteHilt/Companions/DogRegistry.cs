@@ -281,7 +281,8 @@ public static class DogRegistry
         PrefabManager.OnVanillaPrefabsAvailable += AddItems;
         PrefabManager.OnPrefabsRegistered += AddToTrader;
         PrefabManager.OnPrefabsRegistered += AddDogFoodToDiet;
-        DogSettings.Price.SettingChanged += (_, _) => AddToTrader();
+        DogSettings.Price.SettingChanged += (_, _) => UpdateTraders();
+        DogSettings.Enabled.SettingChanged += (_, _) => UpdateTraders();
     }
 
     /// <summary>
@@ -1084,6 +1085,24 @@ public static class DogRegistry
             return;
         }
 
+        UpdateTrader(trader);
+    }
+
+    // Bog Witches already in the world hold their own copy of the list, so they are updated too.
+    private static void UpdateTraders()
+    {
+        AddToTrader();
+        foreach (Trader trader in UnityEngine.Object.FindObjectsByType<Trader>(FindObjectsSortMode.None))
+        {
+            if (Utils.GetPrefabName(trader.gameObject) == TraderPrefabName)
+            {
+                UpdateTrader(trader);
+            }
+        }
+    }
+
+    private static void UpdateTrader(Trader trader)
+    {
         foreach (CoatColor color in colors)
         {
             ItemDrop puppy = PrefabManager.Instance.GetPrefab(color.PrefabName)?.GetComponent<ItemDrop>();
@@ -1093,6 +1112,16 @@ public static class DogRegistry
             }
 
             Trader.TradeItem entry = trader.m_items.Find(candidate => candidate.m_prefab == puppy);
+            if (!DogSettings.Enabled.Value)
+            {
+                if (entry != null)
+                {
+                    trader.m_items.Remove(entry);
+                }
+
+                continue;
+            }
+
             if (entry == null)
             {
                 entry = new Trader.TradeItem { m_prefab = puppy, m_stack = 1, m_buyKey = BuyKey };

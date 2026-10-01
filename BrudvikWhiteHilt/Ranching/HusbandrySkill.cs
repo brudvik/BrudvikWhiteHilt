@@ -14,40 +14,34 @@ namespace BrudvikWhiteHilt.Ranching;
 public static class HusbandrySkill
 {
     /// <summary>
-    /// Experience for every taming tick (every 3 seconds). A full taming gives about 120.
+    /// Experience for every taming tick (every 3 seconds). A full taming gives about 120 at the default.
     /// </summary>
-    public const float TamingTickExperience = 0.2f;
+    public static float TamingTickExperience => RanchingSettings.TamingTickExperience.Value;
 
     /// <summary>
     /// Experience when an animal becomes tame.
     /// </summary>
-    public const float TamedExperience = 50f;
+    public static float TamedExperience => RanchingSettings.TamedExperience.Value;
 
     /// <summary>
     /// Experience when an animal eats.
     /// </summary>
-    public const float FeedingExperience = 3f;
+    public static float FeedingExperience => RanchingSettings.FeedingExperience.Value;
 
     /// <summary>
     /// Experience when an animal is born or an egg is laid.
     /// </summary>
-    public const float BirthExperience = 15f;
+    public static float BirthExperience => RanchingSettings.BirthExperience.Value;
 
     /// <summary>
     /// How far away, in metres, players get experience and lend their skill to an animal.
     /// </summary>
-    public const float Range = 30f;
+    public static float Range => RanchingSettings.HusbandryRange.Value;
 
     private const string LevelZdoKey = "whitehilt_husbandry_level";
     private const string ExperienceRpc = "WhiteHilt_HusbandryXp";
     private const string Identifier = "com.jotunn.BrudvikWhiteHilt.husbandry";
     private const string NameKey = "whitehilt_skill_husbandry";
-
-    // At level 100: taming takes 40 % less time, food lasts 50 % longer, pregnancy is 30 % shorter and a herd may be 2 larger.
-    private const float TamingTimeReduction = 0.4f;
-    private const float FedDurationBonus = 0.5f;
-    private const float PregnancyReduction = 0.3f;
-    private const int ExtraHerdSize = 2;
 
     private static readonly List<Player> nearbyPlayers = new();
     private static SkillConfig config;
@@ -139,6 +133,11 @@ public static class HusbandrySkill
     /// <returns>The skill factor.</returns>
     public static float GetFactorNear(Vector3 position)
     {
+        if (!RanchingSettings.HusbandryEffects.Value)
+        {
+            return 0f;
+        }
+
         nearbyPlayers.Clear();
         Player.GetPlayersInRange(position, Range, nearbyPlayers);
         return nearbyPlayers.Count == 0 ? 0f : nearbyPlayers.Max(GetFactor);
@@ -151,7 +150,7 @@ public static class HusbandrySkill
     /// <returns>The speed multiplier.</returns>
     public static float TamingSpeed(float factor)
     {
-        return 1f / (1f - TamingTimeReduction * factor);
+        return 1f / (1f - RanchingSettings.TamingTimeReduction.Value * factor);
     }
 
     /// <summary>
@@ -161,7 +160,7 @@ public static class HusbandrySkill
     /// <returns>The duration multiplier.</returns>
     public static float FedDuration(float factor)
     {
-        return 1f + FedDurationBonus * factor;
+        return 1f + RanchingSettings.FedDurationBonus.Value * factor;
     }
 
     /// <summary>
@@ -171,7 +170,7 @@ public static class HusbandrySkill
     /// <returns>The duration multiplier.</returns>
     public static float PregnancyDuration(float factor)
     {
-        return 1f - PregnancyReduction * factor;
+        return 1f - RanchingSettings.PregnancyReduction.Value * factor;
     }
 
     /// <summary>
@@ -181,7 +180,7 @@ public static class HusbandrySkill
     /// <returns>Extra animals.</returns>
     public static int ExtraHerd(float factor)
     {
-        return Mathf.FloorToInt(ExtraHerdSize * factor);
+        return Mathf.FloorToInt(RanchingSettings.ExtraHerdSize.Value * factor);
     }
 
     private static float GetFactor(Player player)

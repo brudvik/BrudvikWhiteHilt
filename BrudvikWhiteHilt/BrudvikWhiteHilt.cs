@@ -52,6 +52,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void Awake()
     {
         WhiteHiltConfig.Initialize(Config);
+        RanchingSettings.Initialize();
         Translations.LoadEmbedded();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();

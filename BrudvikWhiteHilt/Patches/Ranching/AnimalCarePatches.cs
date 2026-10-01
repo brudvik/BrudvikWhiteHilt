@@ -101,7 +101,7 @@ public static class AnimalCarePatches
     }
 
     /// <summary>
-    /// A content animal gives one more of each drop, except its trophy, when slaughtered.
+    /// A content animal gives more of each drop, except its trophy, when slaughtered.
     /// </summary>
     /// <param name="__instance">The animal's drops.</param>
     /// <param name="__result">The drops.</param>
@@ -109,8 +109,9 @@ public static class AnimalCarePatches
     [HarmonyPostfix]
     private static void ContentBonus(CharacterDrop __instance, List<KeyValuePair<GameObject, int>> __result)
     {
+        int bonus = RanchingSettings.GroomingBonus.Value ? RanchingSettings.ContentDropBonus.Value : 0;
         Tameable tameable = __instance.GetComponent<Tameable>();
-        if (__result == null || tameable == null || !tameable.IsTamed() || !AnimalCare.IsContent(tameable))
+        if (bonus <= 0 || __result == null || tameable == null || !tameable.IsTamed() || !AnimalCare.IsContent(tameable))
         {
             return;
         }
@@ -119,7 +120,7 @@ public static class AnimalCarePatches
         {
             if (__result[i].Key != null && __result[i].Value > 0 && !__result[i].Key.name.StartsWith("Trophy"))
             {
-                __result[i] = new KeyValuePair<GameObject, int>(__result[i].Key, __result[i].Value + 1);
+                __result[i] = new KeyValuePair<GameObject, int>(__result[i].Key, __result[i].Value + bonus);
             }
         }
     }

@@ -35,7 +35,7 @@ public sealed class DogCompanion : MonoBehaviour
     private const float HungryWarningDays = 3f;
     private const float TickSeconds = 5f;
     private const float GiveUpWalkingSeconds = 45f;
-    private const float GuardRadius = 30f;
+    private static float GuardRadius => DogSettings.GuardRadius.Value;
     private const float GuardCooldown = 60f;
     private const float GuardNoticeRange = 150f;
     private const float FollowRestoreRange = 60f;
@@ -61,13 +61,13 @@ public sealed class DogCompanion : MonoBehaviour
 
     // Two grown, fed, happy dogs with a strong bond, together at night, may have a puppy; at most one litter in so many days.
     private const float LitterRange = 8f;
-    private const int LitterMinBond = 3;
+    private static int LitterMinBond => DogSettings.LitterMinBond.Value;
     private const float LitterMinMood = 0.6f;
-    private const float LitterChance = 0.25f;
-    private const int LitterCooldownDays = 20;
+    private static float LitterChance => DogSettings.LitterChance.Value;
+    private static int LitterCooldownDays => DogSettings.LitterCooldownDays.Value;
     private const float LonelyMood = 0.25f;
     private const float HappySeconds = 8f;
-    private const float XpPerLevelSquared = 250f;
+    private static float XpPerLevelSquared => DogSettings.BondXpPerLevelSquared.Value;
     private const string SoundRpc = "WhiteHilt_DogSound";
     private const string HappyRpc = "WhiteHilt_DogHappy";
     private const string XpRpc = "WhiteHilt_DogXp";
@@ -1034,7 +1034,7 @@ public sealed class DogCompanion : MonoBehaviour
     private void TryLitter(Vector3 home, bool fed)
     {
         int today = EnvMan.instance.GetDay();
-        if (!EnvMan.IsNight() || !fed || !CanHaveLitter || Zdo.GetInt(litterTryKey, -1) == today
+        if (!DogSettings.Litters.Value || !EnvMan.IsNight() || !fed || !CanHaveLitter || Zdo.GetInt(litterTryKey, -1) == today
             || today - Zdo.GetInt(litterDayKey, -LitterCooldownDays) < LitterCooldownDays)
         {
             return;

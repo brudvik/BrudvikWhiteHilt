@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Pieces.Ranching.FeedingTrough;
 using Jotunn.Managers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Ranching;
@@ -16,17 +17,17 @@ public static class AnimalCare
     /// <summary>
     /// How far away, in metres, a tether post reaches.
     /// </summary>
-    public const float TetherRange = 10f;
+    public static float TetherRange => RanchingSettings.TetherRange.Value;
 
     /// <summary>
     /// Experience for grooming an animal.
     /// </summary>
-    public const float GroomExperience = 10f;
+    public static float GroomExperience => RanchingSettings.GroomExperience.Value;
 
     /// <summary>
     /// Experience when an animal puts something in a trough.
     /// </summary>
-    public const float ProduceExperience = 5f;
+    public static float ProduceExperience => RanchingSettings.ProduceExperience.Value;
 
     private const string GroomRpc = "WhiteHilt_Groom";
     private const string TetherRpc = "WhiteHilt_Tether";
@@ -37,13 +38,9 @@ public static class AnimalCare
     // Used before EnvMan exists; Valheim's day is 30 minutes.
     private const double DefaultDaySeconds = 1800d;
 
-    // What a groomed, fed tame animal puts in a nearby trough, and how many days apart.
-    private static readonly Dictionary<string, (string Item, float Days)> products = new()
-    {
-        ["Boar"] = ("LeatherScraps", 1f),
-        ["Wolf"] = ("WolfHairBundle", 1f),
-        ["Lox"] = ("LoxPelt", 3f)
-    };
+    // What a groomed, fed tame animal puts in a nearby trough, and how many days apart; parsed from the config, cached by its text.
+    private static Dictionary<string, (string Item, float Days)> products = new();
+    private static string productsText;
 
     private static double DaySeconds => EnvMan.instance != null && EnvMan.instance.m_dayLengthSec > 0 ? EnvMan.instance.m_dayLengthSec : DefaultDaySeconds;
 
@@ -121,8 +118,8 @@ public static class AnimalCare
     public static void UpdateProduction(Tameable tameable)
     {
         ZNetView nview = tameable.m_nview;
-        if (nview == null || !nview.IsValid() || !nview.IsOwner() || !tameable.IsTamed()
-            || !products.TryGetValue(Utils.GetPrefabName(tameable.gameObject), out (string Item, float Days) product))
+        if (!RanchingSettings.AnimalProduction.Value || nview == null || !nview.IsValid() || !nview.IsOwner() || !tameable.IsTamed()
+            || !GetProducts().TryGetValue(Utils.GetPrefabName(tameable.gameObject), out (string Item, float Days) product))
         {
             return;
         }
@@ -192,6 +189,34 @@ public static class AnimalCare
     private static ZDO GetZdo(Tameable tameable)
     {
         return tameable != null && tameable.m_nview != null ? tameable.m_nview.GetZDO() : null;
+    }
+
+    // "Boar:LeatherScraps:1, Lox:LoxPelt:3"; malformed parts are skipped with a warning.
+    private static Dictionary<string, (string Item, float Days)> GetProducts()
+    {
+        string text = RanchingSettings.Products.Value ?? string.Empty;
+        if (text == productsText)
+        {
+            return products;
+        }
+
+        Dictionary<string, (string Item, float Days)> parsed = new();
+        foreach (string part in text.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            string[] fields = part.Split(':');
+            if (fields.Length != 3 || fields[0].Trim().Length == 0 || fields[1].Trim().Length == 0
+                || !float.TryParse(fields[2].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float days) || days <= 0f)
+            {
+                Jotunn.Logger.LogWarning($"Animal products: skipping \"{part.Trim()}\", expected Creature:Item:Days");
+                continue;
+            }
+
+            parsed[fields[0].Trim()] = (fields[1].Trim(), days);
+        }
+
+        products = parsed;
+        productsText = text;
+        return products;
     }
 
     private static double SecondsSince(ZDO zdo, string key)

@@ -14,7 +14,7 @@ public static class DogOwnerTools
 {
     private const float PinSeconds = 2f;
     private const float SniffSeconds = 20f;
-    private const float SniffRange = 25f;
+    private static float SniffRange => DogSettings.SniffRange.Value;
     private const float SniffFollowRange = 20f;
     private const float FoundPinSeconds = 60f;
     private const float FetchRange = 25f;
