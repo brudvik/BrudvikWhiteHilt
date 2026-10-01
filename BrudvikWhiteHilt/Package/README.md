@@ -45,7 +45,7 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Stone Dowser that leads to rock clearings, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
@@ -63,11 +63,11 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, crafting and building from nearby chests, and the Waste Well.
+Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest).
+Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest). Carts and ship holds keep unlimited items full too.
 
 ### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 
@@ -110,6 +110,12 @@ Plant berry bushes, mushrooms, flowers, debris and saplings with the cultivator.
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/feeding_trough.png" alt="Feeding Trough" height="120">
 
 The Feeding Trough, favourite foods, the Animal Husbandry skill, the Tether Post, the Grooming Comb and produce.
+
+### 🎣 [Fishing nets](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/fishing.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/net_winch.png" alt="Net Winch" height="120">
+
+A Net Winch with a fish barrel on the shore and Shore Nets set out in the water, which fill the barrel with fish, with bait and mending.
 
 ### 📖 [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
 
@@ -185,6 +191,8 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Home Stone model: ["Rune in stone"](https://sketchfab.com/3d-models/rune-in-stone-1608283699bd414195319a41445d8055) by [Mardukblake](https://sketchfab.com/Mardukblake), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Feeding Trough model: ["Wooden Trough With Stone Stand. Lowpoly"](https://sketchfab.com/3d-models/wooden-trough-with-stone-stand-lowpoly-673baf17c3bb43e8affd610eaf31cc8a) by [Hakan Unlu](https://sketchfab.com/hakan3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Compost Bin model: ["Compost Bin SM SG"](https://sketchfab.com/3d-models/compost-bin-sm-sg-daaa0514f23a4ca18e955ea576671ef0) by [Pants85](https://sketchfab.com/Pants85), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
+- Net Winch winch: ["Sail ship winch"](https://sketchfab.com/3d-models/sail-ship-winch-77ce957ad88a4ce9a888a25ea429480c) by [Max Wittig](https://sketchfab.com/WittigMax), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Net Winch barrel: ["Photobash Fish Barrel"](https://sketchfab.com/3d-models/photobash-fish-barrel-0260f702429144aea3d85cb7664e295d) by [Lakin](https://sketchfab.com/lakinrt), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
 - Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
 - Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.

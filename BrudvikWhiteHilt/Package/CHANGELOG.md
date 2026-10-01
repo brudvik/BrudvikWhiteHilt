@@ -2,6 +2,89 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.40.0 - 2026-10-01
+
+### Added
+- **Self-closing doors**: doors, gates and windows built by players close on their own a few seconds after the last one went through (doors 5 s, gates 10 s, windows off by default), never while a player or tamed animal is within 3 m. Shift + E holds a door open. Windows close when rain or night begins, and everything closes when enemies on the hunt come within 20 m. Key doors, dungeon doors and doors that cannot be closed are left alone. All numbers in the new server section `Doors`. See [Around the base](docs/base.md)
+
+## v0.39.0 - 2026-10-01
+
+### Added
+- **Camera sweep when a ship sets off on its route**: with "Take me there" or explorer mode, the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once. Each player's own settings `Ships` → `RouteCameraSweep*`. See [Ships](docs/ships.md)
+
+## v0.38.0 - 2026-10-01
+
+### Added
+- **Black White Hilt uniforms** with gold trim, the White Hilt badge on the left breast and the logo on the back of a gold-edged cape: Uniform Tunic and Trousers, Officer's Jerkin and Breeches, and the Uniform Cape. They are indestructible and have the same armor as the White Hilt Chestplate, Greaves and Cape. Made at the Workbench (level 2) from Deer Hide, Leather Scraps, Coal and Coins (Troll Hide for the cape). The officer's pieces copy the Deep North medium armor, which vanilla cannot craft yet, so a game update may change their look. See [White Hilt gear](docs/equipment.md#black-uniforms)
+
+### Fixed
+- The logo on the White Hilt Banner Cape sat about 5 cm to one side, and its edge could show on the cape's tail at the hips. It is now centred on the back and a little smaller (0.46 m), like on the new Uniform Cape
+
+## v0.37.0 - 2026-10-01
+
+### Added
+- **Fishing nets**: build a Net Winch with a fish barrel on the shore and set out Shore Nets (10 m) on the water within 25 m of it. Each net catches a fish every 6 minutes where the water is deep enough, also for up to 2 hours while nobody is near, and the fish end up in the barrel. Bait in the barrel makes the nets catch faster, the nets must be mended with Leather Scraps now and then (Shift + E on the winch), and whoever opens the barrel gets Fishing experience. All numbers in the new `Fishing.Net` section. See [Fishing nets](docs/fishing.md)
+
+## v0.36.0 - 2026-10-01
+
+### Added
+- **Ship camera zoom**: at the helm the camera zooms 2 m further out than before, and everyone aboard a ship, standing on deck or sitting, can now zoom out just as far as the one at the helm. Settings `Ships` → `CameraExtraZoom` and `CameraZoomAllAboard`. See [Ships](docs/ships.md)
+
+## v0.35.0 - 2026-10-01
+
+### Added
+- **What you have** in the crafting panel and the build menu: a small box on each requirement's icon shows how many you have in your inventory and the chests around you, or a gold ∞ when a restocking chest nearby keeps the item unlimited. In Linear chest mode, a thin gold bar shows how close the item is to becoming unlimited, and the tooltip says how many more are missing. See [Crafting panel](docs/base.md#-crafting-panel)
+- **Craft several at once**: arrows next to the Craft button (or the mouse wheel over the number) choose how many to make, e.g. 4 axes. Settings in the `CraftingPanel` section, `MaxCraftAmount` (20) set by the server
+
+### Fixed
+- In the build menu, the small chest icon could stay on the crafting station slot after looking at another piece
+
+## v0.34.1 - 2026-10-01
+
+### Fixed
+- The map areas (bases, outposts, fields, pastures and wards) were drawn over portal and ship pins and the player marker. They are now drawn under them, and their colours are softer
+
+## v0.34.0 - 2026-10-01
+
+### Added
+- **Unlimited cargo**: carts and ship holds, including the White Hilt Ship's sea chest, keep the stacks of unlimited items full, like the Everlasting Chest. Bring Wood in the ship when Wood is unlimited, and it never runs out while you build from the hold. Cargo never unlocks items or adds items you did not bring. Setting `Chests` → `UnlimitedCargo`. See [Restocking chests](docs/chests.md#carts-and-ships)
+
+### Fixed
+- Removing a chest dropped its unlimited stacks again (e.g. a full stack of Wood from the Wood Chest). Taking the unlimited stacks out made the chest refill them at once, and the refills were dropped. A chest that is being removed is no longer refilled
+
+## v0.33.0 - 2026-10-01
+
+### Changed
+- The **White Hilt Rune Circle** lies on a round slab of dark, glassy stone that frames it and lifts it a little off the ground. The rounded rim slopes down to the ground, so you walk straight onto it, and glows a faint blue that grows a little stronger as you come near. Rune circles already built get the stone too
+
+## v0.32.1 - 2026-10-01
+
+### Changed
+- Player portraits on the map are drawn on top of everything else (area outlines and names, markers, other pins), so other players can always be seen
+- You are shown with your own portrait too, with your direction arrow at the bottom of it instead of the plain arrow
+
+### Fixed
+- Portraits were framed too high, showing mostly the top of the head. The head is now found in the picture and centred, with a little of the shoulders below. Every portrait is taken again the next time the character is shown in the main menu
+- The helmet was still in the portrait, because it was only removed at the end of the frame the picture was taken in
+
+## v0.32.0 - 2026-10-01
+
+### Added
+- **Stone Dowser**, cut at the stonecutter (Stone ×20, Iron ×2, Greydwarf Eye ×5) and worn in an accessory slot. It leads to the nearest clearing that still has rocks for the Mysterious Rock: a pin on the map with the number of rocks left, and the direction and distance when it changes. Near a rock it pings like the Wishbone, at a lower pitch. Settings under `Gear.WhiteHiltStoneDowser`. See [Navigation](docs/navigation.md)
+
+## v0.31.0 - 2026-10-01
+
+### Added
+- **Explorer mode** at the Navigator's Table, next to "Take me there": the ship sails past the markers as close to land as it safely can, following the coast instead of the fastest way. Near land it never sails with full sail, only half sail, or rowing while anyone stands, so you can stand and shoot at monsters along the way. Settings under `Ships`: `RouteExploreLevel`, `RouteExploreCoastCells`, `RouteExploreOpenWaterCost`, `RouteExploreNearLand`
+
+### Changed
+- "Take me there" takes the sail down to half when the ship goes faster than 45 knots, and sets it full again once it is well below. Change it under `Ships` → `RouteMaxSpeed` (0 never reefs)
+- "Take me there" waits until the player who chose it sits down (on a bench, the deck or in a bed) before the ship sets off. If they have not sat down within 30 seconds (`Ships` → `RouteSitSeconds`), the route is called off and has to be started again
+- While anyone aboard stands, the ship sailing its route rows at the slowest speed, also when the captain stands up again
+
+### Fixed
+- "Take me there" with several markers sailed straight for the last one when the way there was open water. It now sails past every marker in turn
+
 ## v0.30.0 - 2026-10-01
 
 ### Added
