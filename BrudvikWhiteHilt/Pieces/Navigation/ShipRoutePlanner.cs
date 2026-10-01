@@ -54,7 +54,7 @@ public static class ShipRoutePlanner
     /// <returns>True if the map opened.</returns>
     public static bool Open(Player player, ShipRoute route)
     {
-        if (route == null || Minimap.instance == null || Game.m_noMap)
+        if (route == null || Minimap.instance == null || Game.m_noMap || !ShipSettings.ShipRoutes.Value)
         {
             return false;
         }
@@ -199,12 +199,17 @@ public static class ShipRoutePlanner
             : string.Format(Localization.instance.Localize("$whitehilt_route_need_sail"), needed);
         sailLabel.text = Localization.instance.Localize(label);
         sailButton.interactable = !plotting && (editing.Sailing || (skilled && count > 0));
+        bool autopilot = ShipSettings.RouteAutopilot.Value;
+        if (sailButton.gameObject.activeSelf != autopilot)
+        {
+            sailButton.gameObject.SetActive(autopilot);
+        }
     }
 
     private static void OnSail()
     {
         ShipRoute route = editing;
-        if (route == null || plotting)
+        if (route == null || plotting || !ShipSettings.RouteAutopilot.Value)
         {
             return;
         }

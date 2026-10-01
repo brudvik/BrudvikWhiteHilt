@@ -13,7 +13,8 @@ public static class ShipTentCoverPatch
     [HarmonyPostfix]
     private static void Postfix(Player __instance)
     {
-        if (__instance == Player.m_localPlayer && WhiteHiltShipUpgrades.IsUnderTent(__instance.GetCenterPoint()))
+        if (__instance == Player.m_localPlayer && Pieces.Ships.ShipSettings.TentShelter.Value
+            && WhiteHiltShipUpgrades.IsUnderTent(__instance.GetCenterPoint()))
         {
             __instance.m_coverPercentage = 1f;
             __instance.m_underRoof = true;

@@ -15,7 +15,7 @@ public class RavenSightEffect : StatusEffect
     /// <summary>
     /// Radius in metres uncovered by the burst.
     /// </summary>
-    public const float RevealRadius = 500f;
+    public static float RevealRadius => NavigationSettings.RavenSightRadius.Value;
 
     private const string EffectKey = "se_whitehiltravensight";
     private const float Duration = 10f;
@@ -32,7 +32,8 @@ public class RavenSightEffect : StatusEffect
     public static void RegisterEnglish()
     {
         Translations.AddEnglish(EffectKey, "Raven Sight");
-        Translations.AddEnglish($"{EffectKey}_tooltip", "Odin's ravens show you the land for 500 m around.");
+        int radius = Mathf.RoundToInt(NavigationSettings.RavenSightRadius?.Value ?? 500f);
+        Translations.AddEnglish($"{EffectKey}_tooltip", $"Odin's ravens show you the land for {radius} m around.");
         Translations.AddEnglish("msg_whitehilt_ravensight", "The ravens show you the land around you");
     }
 

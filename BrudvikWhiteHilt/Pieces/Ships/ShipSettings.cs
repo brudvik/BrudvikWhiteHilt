@@ -43,6 +43,63 @@ public static class ShipSettings
     /// <summary>Whether the wind always blows from behind a White Hilt Ship with people aboard.</summary>
     public static ConfigEntry<bool> AlwaysTailwind { get; private set; }
 
+    /// <summary>Whether a ship can hold its course while nobody is at the helm.</summary>
+    public static ConfigEntry<bool> HoldCourse { get; private set; }
+
+    /// <summary>Whether a still ship can be pushed from the shore.</summary>
+    public static ConfigEntry<bool> PushShip { get; private set; }
+
+    /// <summary>Speed in m/s a push gives the ship.</summary>
+    public static ConfigEntry<float> PushSpeed { get; private set; }
+
+    /// <summary>The ship can only be pushed while slower than this, in m/s.</summary>
+    public static ConfigEntry<float> PushMaxShipSpeed { get; private set; }
+
+    /// <summary>Whether the fishing net catches fish.</summary>
+    public static ConfigEntry<bool> FishingNet { get; private set; }
+
+    /// <summary>Speed in m/s the ship needs for the fishing net to catch.</summary>
+    public static ConfigEntry<float> FishingNetMinSpeed { get; private set; }
+
+    /// <summary>Share the catch time is shortened by at Fishing 100.</summary>
+    public static ConfigEntry<float> FishingNetSkillSpeedUp { get; private set; }
+
+    /// <summary>Chance of two fish in one catch at Fishing 100.</summary>
+    public static ConfigEntry<float> FishingNetDoubleChance { get; private set; }
+
+    /// <summary>Fishing experience for the sailor per catch.</summary>
+    public static ConfigEntry<float> FishingNetSkillRaise { get; private set; }
+
+    /// <summary>Chance per catch of seaweed as bycatch.</summary>
+    public static ConfigEntry<float> FishingNetSeaweedChance { get; private set; }
+
+    /// <summary>Chance per catch on the ocean of an amber pearl as bycatch.</summary>
+    public static ConfigEntry<float> FishingNetPearlChance { get; private set; }
+
+    /// <summary>Seconds an empty, still ship waits before the drift anchor drops on its own.</summary>
+    public static ConfigEntry<float> AutoAnchorSeconds { get; private set; }
+
+    /// <summary>The ship counts as still for the auto anchor below this speed, in m/s.</summary>
+    public static ConfigEntry<float> AutoAnchorMaxSpeed { get; private set; }
+
+    /// <summary>Whether the White Hilt Ship's tent gives shelter.</summary>
+    public static ConfigEntry<bool> TentShelter { get; private set; }
+
+    /// <summary>Distance in metres from the mast within which the Mast Wisp thins the fog.</summary>
+    public static ConfigEntry<float> MastWispReach { get; private set; }
+
+    /// <summary>Whether the White Hilt Ship's deck portal can be used and is listed for travel.</summary>
+    public static ConfigEntry<bool> AllowShipPortal { get; private set; }
+
+    /// <summary>Whether route markers can be set at the Navigator's Table.</summary>
+    public static ConfigEntry<bool> ShipRoutes { get; private set; }
+
+    /// <summary>Whether a ship can sail its route on its own ("Take me there").</summary>
+    public static ConfigEntry<bool> RouteAutopilot { get; private set; }
+
+    /// <summary>Most markers on a ship's route.</summary>
+    public static ConfigEntry<int> RouteMaxMarkers { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -70,6 +127,45 @@ public static class ShipSettings
             "How hard the wind drives the White Hilt Ship's sail. The vanilla code default is 0.1.", new AcceptableValueRange<float>(0.05f, 1f));
         AlwaysTailwind = WhiteHiltConfig.BindAdminOnly(Section, "AlwaysTailwind", true,
             "The wind always blows from behind the White Hilt Ship, as with Moder's power.");
+        HoldCourse = WhiteHiltConfig.BindAdminOnly(Section, "HoldCourse", true,
+            "Ships can hold their course while nobody is at the helm (key in Ships.Keys). Off also stops a course being held.");
+        PushShip = WhiteHiltConfig.BindAdminOnly(Section, "PushShip", true,
+            "A ship lying still can be pushed off from the shore with Use.");
+        PushSpeed = WhiteHiltConfig.BindAdminOnly(Section, "PushSpeed", 2.5f,
+            "Speed in m/s one push gives the ship.", new AcceptableValueRange<float>(0.5f, 10f));
+        PushMaxShipSpeed = WhiteHiltConfig.BindAdminOnly(Section, "PushMaxShipSpeed", 1.5f,
+            "A ship can only be pushed while it moves slower than this, in m/s.", new AcceptableValueRange<float>(0.1f, 10f));
+        FishingNet = WhiteHiltConfig.BindAdminOnly(Section, "FishingNet", true,
+            "The White Hilt Ship's fishing net catches fish while sailing. Off keeps the upgrade on the ship, it just catches nothing.");
+        FishingNetMinSpeed = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetMinSpeed", 2f,
+            "Speed in m/s the ship needs for the fishing net to catch.", new AcceptableValueRange<float>(0f, 20f));
+        FishingNetSkillSpeedUp = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetSkillSpeedUp", 0.5f,
+            "Share the time between catches is shortened by at Fishing 100 (0.5 = half the time).", new AcceptableValueRange<float>(0f, 0.9f));
+        FishingNetDoubleChance = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetDoubleChance", 0.5f,
+            "Chance of two fish in one catch at Fishing 100; less at lower levels.", new AcceptableValueRange<float>(0f, 1f));
+        FishingNetSkillRaise = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetSkillRaise", 0.5f,
+            "Fishing experience the sailor gets for each catch.", new AcceptableValueRange<float>(0f, 10f));
+        FishingNetSeaweedChance = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetSeaweedChance", 0.1f,
+            "Chance per catch of seaweed as bycatch (needs FishingNetBycatch).", new AcceptableValueRange<float>(0f, 1f));
+        FishingNetPearlChance = WhiteHiltConfig.BindAdminOnly(Section, "FishingNetPearlChance", 0.03f,
+            "Chance per catch on the ocean of an amber pearl as bycatch (needs FishingNetBycatch).", new AcceptableValueRange<float>(0f, 1f));
+        AutoAnchorSeconds = WhiteHiltConfig.BindAdminOnly(Section, "AutoAnchorSeconds", 2f,
+            "Seconds an empty, still White Hilt Ship waits before the drift anchor drops on its own (needs AutoAnchor).", new AcceptableValueRange<float>(0f, 600f));
+        AutoAnchorMaxSpeed = WhiteHiltConfig.BindAdminOnly(Section, "AutoAnchorMaxSpeed", 2f,
+            "The ship counts as still for the auto anchor below this speed, in m/s.", new AcceptableValueRange<float>(0.1f, 20f));
+        TentShelter = WhiteHiltConfig.BindAdminOnly(Section, "TentShelter", true,
+            "The White Hilt Ship's tent gives shelter and keeps the rain off those under it.");
+        MastWispReach = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReach", 15f,
+            "Distance in metres from the mast within which the Mast Wisp thins the ordinary fog. The Mistlands mist clearing is the wisp's own and does not change.",
+            new AcceptableValueRange<float>(0f, 100f));
+        AllowShipPortal = WhiteHiltConfig.BindAdminOnly(Section, "ShipPortal", true,
+            "The White Hilt Ship's deck portal can be used and is listed for travel. Off hides the rune circle; the upgrade, its name and privacy stay on the ship.");
+        ShipRoutes = WhiteHiltConfig.BindAdminOnly(Section, "ShipRoutes", true,
+            "Route markers can be set on the map at a ship's Navigator's Table. Off hides the markers and stops a ship sailing its route; saved markers stay.");
+        RouteAutopilot = WhiteHiltConfig.BindAdminOnly(Section, "RouteAutopilot", true,
+            "\"Take me there\": a ship can sail its route on its own. Off stops a ship that sails a route.");
+        RouteMaxMarkers = WhiteHiltConfig.BindAdminOnly(Section, "RouteMaxMarkers", 5,
+            "Most markers on a ship's route.", new AcceptableValueRange<int>(1, 20));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

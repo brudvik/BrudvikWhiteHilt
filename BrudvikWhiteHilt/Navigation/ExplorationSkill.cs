@@ -18,15 +18,13 @@ public static class ExplorationSkill
     /// </summary>
     public const string LevelZdoKey = "whitehilt_exploration_level";
 
-    // Skill experience per square metre of newly uncovered map. About 40 km² of new map take a player to level 100.
-    private const float SkillPerSquareMetre = 0.0005f;
+    private static float SkillPerSquareMetre => NavigationSettings.SkillPerSquareMetre.Value;
 
-    // Extra radius, as a share of the vanilla 100 m, at level 100: the table reaches 300 m and the amulet 200 m.
-    private const float TableBonus = 2f;
-    private const float AmuletBonus = 1f;
+    private static float TableBonus => NavigationSettings.TableBonus.Value;
 
-    // Share of the extra radius already there at level 0, so new gear is worth something before the skill rises.
-    private const float BonusAtLevelZero = 0.2f;
+    private static float AmuletBonus => NavigationSettings.AmuletBonus.Value;
+
+    private static float BonusAtLevelZero => NavigationSettings.BonusAtLevelZero.Value;
 
     private const string Identifier = "com.jotunn.BrudvikWhiteHilt.exploration";
     private const string NameKey = "whitehilt_skill_exploration";
@@ -43,7 +41,8 @@ public static class ExplorationSkill
     /// </summary>
     public static void Register()
     {
-        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", "Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal, and from level 50 shows map shared by others like your own.");
+        int revealLevel = NavigationSettings.SharedMapRevealLevel?.Value ?? 50;
+        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", $"Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal, and from level {revealLevel} shows map shared by others like your own.");
         config = new SkillConfig
         {
             Identifier = Identifier,
@@ -96,6 +95,11 @@ public static class ExplorationSkill
     /// <returns>The radius in metres.</returns>
     public static float GetExploreRadius(Player player, float baseRadius)
     {
+        if (!NavigationSettings.ExploreRadiusBonus.Value)
+        {
+            return baseRadius;
+        }
+
         float bonus = 0f;
         if (ShipChartTable.IsAboardWithTable(player))
         {

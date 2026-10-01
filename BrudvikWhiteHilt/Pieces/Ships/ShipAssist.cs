@@ -17,10 +17,10 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private const float CheckInterval = 0.5f;
 
     // A push gives the ship this speed away from the pusher, and a little lift off the ground.
-    private const float PushSpeed = 2.5f;
+    private static float PushSpeed => ShipSettings.PushSpeed.Value;
     private const float PushLift = 0.6f;
     private const float PushInterval = 0.5f;
-    private const float MaxPushableSpeed = 1.5f;
+    private static float MaxPushableSpeed => ShipSettings.PushMaxShipSpeed.Value;
 
     // Degrees off course that give full rudder, and how much the turn rate damps it.
     private const float FullRudderDegrees = 25f;
@@ -75,7 +75,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     /// <param name="player">The local player.</param>
     public static void Tick(Player player)
     {
-        if (BackpackInput.Typing() || !BackpackInput.Pressed(ShipSettings.KeyHoldCourse))
+        if (!ShipSettings.HoldCourse.Value || BackpackInput.Typing() || !BackpackInput.Pressed(ShipSettings.KeyHoldCourse))
         {
             return;
         }
@@ -148,7 +148,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private bool CanPush(Player player)
     {
-        return player != null && ship != null && nview != null && nview.IsValid() && !ship.IsPlayerInBoat(player)
+        return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !ship.IsPlayerInBoat(player)
             && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);
     }
 
@@ -185,7 +185,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
-        if (ship.m_players.Count == 0)
+        if (ship.m_players.Count == 0 || !ShipSettings.HoldCourse.Value)
         {
             nview.GetZDO().Set(AutopilotKey, false);
             return;
@@ -327,7 +327,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private void RPC_Autopilot(long sender, bool on, float course)
     {
-        if (!nview.IsOwner())
+        if (!nview.IsOwner() || (on && !ShipSettings.HoldCourse.Value))
         {
             return;
         }
@@ -339,7 +339,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private void RPC_Push(long sender, Vector3 direction)
     {
-        if (!nview.IsOwner() || body == null)
+        if (!nview.IsOwner() || body == null || !ShipSettings.PushShip.Value)
         {
             return;
         }

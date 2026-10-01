@@ -407,6 +407,7 @@
     <Compile Include="Pieces\Navigation\ShipRoutePlanner.cs" />
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
+    <Compile Include="Navigation\NavigationSettings.cs" />
     <Compile Include="Navigation\Areas\MapArea.cs" />
     <Compile Include="Navigation\Areas\MapAreaOverlay.cs" />
     <Compile Include="Navigation\Areas\MapAreaService.cs" />

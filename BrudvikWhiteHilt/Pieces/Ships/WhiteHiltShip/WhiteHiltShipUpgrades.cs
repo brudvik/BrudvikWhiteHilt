@@ -60,19 +60,19 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private const string TakeRpc = "WhiteHiltShipTakeUpgrade";
     private static readonly int AnchorZdoKey = "whitehilt_ship_anchored".GetStableHashCode();
     private const string AnchorRpc = "WhiteHiltShipToggleAnchor";
-    private const float MinFishingSpeed = 2f;
+    private static float MinFishingSpeed => ShipSettings.FishingNetMinSpeed.Value;
 
-    // At Fishing 100 the net catches twice as often, and half the catches are two fish.
-    private const float SkillSpeedUp = 0.5f;
-    private const float SkillDoubleChance = 0.5f;
-    private const float SkillRaise = 0.5f;
-    private const float SeaweedChance = 0.1f;
-    private const float PearlChance = 0.03f;
+    // At Fishing 100 the net catches twice as often, and half the catches are two fish (defaults).
+    private static float SkillSpeedUp => ShipSettings.FishingNetSkillSpeedUp.Value;
+    private static float SkillDoubleChance => ShipSettings.FishingNetDoubleChance.Value;
+    private static float SkillRaise => ShipSettings.FishingNetSkillRaise.Value;
+    private static float SeaweedChance => ShipSettings.FishingNetSeaweedChance.Value;
+    private static float PearlChance => ShipSettings.FishingNetPearlChance.Value;
     private const float AnchorDrop = 2f;
 
     // The ship must lie empty and nearly still this long before the anchor drops on its own.
-    private const float AutoAnchorSeconds = 2f;
-    private const float AutoAnchorMaxSpeed = 2f;
+    private static float AutoAnchorSeconds => ShipSettings.AutoAnchorSeconds.Value;
+    private static float AutoAnchorMaxSpeed => ShipSettings.AutoAnchorMaxSpeed.Value;
 
     private const RigidbodyConstraints AnchoredConstraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY;
@@ -391,7 +391,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
         if (portal != null)
         {
-            portal.SetInstalled(Has(ShipPortalUpgrade.Bit));
+            portal.SetInstalled(Has(ShipPortalUpgrade.Bit) && ShipSettings.AllowShipPortal.Value);
         }
 
         if (ship != null)
@@ -547,7 +547,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
     private void UpdateFishingNet(float deltaTime)
     {
-        if (!nview.IsOwner() || ship == null || !Has(ShipFishingNet.Bit) || IsAnchored || Mathf.Abs(ship.GetSpeed()) < MinFishingSpeed)
+        if (!ShipSettings.FishingNet.Value || !nview.IsOwner() || ship == null || !Has(ShipFishingNet.Bit) || IsAnchored
+            || Mathf.Abs(ship.GetSpeed()) < MinFishingSpeed)
         {
             return;
         }

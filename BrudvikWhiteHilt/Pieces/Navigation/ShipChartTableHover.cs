@@ -15,8 +15,9 @@ public class ShipChartTableHover : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public string GetHoverText()
     {
+        string open = Ships.ShipSettings.ShipRoutes.Value ? "\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_route_open" : string.Empty;
         return table != null
-            ? Localization.instance.Localize(GetHoverName() + "\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_route_open" + table.GetHoverText())
+            ? Localization.instance.Localize(GetHoverName() + open + table.GetHoverText())
             : string.Empty;
     }
 

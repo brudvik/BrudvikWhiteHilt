@@ -13,7 +13,7 @@ public static class SharedMapReveal
     /// <summary>
     /// Exploration level from which shared map is drawn as the player's own.
     /// </summary>
-    public const int RevealLevel = 50;
+    public static int RevealLevel => NavigationSettings.SharedMapRevealLevel.Value;
 
     private const float CheckInterval = 1f;
 
@@ -36,7 +36,8 @@ public static class SharedMapReveal
         }
 
         nextCheck = Time.time + CheckInterval;
-        bool wanted = minimap.m_showSharedMapData && ExplorationSkill.GetLevel(Player.m_localPlayer) >= RevealLevel;
+        bool wanted = NavigationSettings.RevealSharedMap.Value && minimap.m_showSharedMapData
+            && ExplorationSkill.GetLevel(Player.m_localPlayer) >= RevealLevel;
         if (wanted != Revealed)
         {
             Revealed = wanted;

@@ -13,7 +13,7 @@ namespace BrudvikWhiteHilt.Pieces.Navigation;
 public class ShipRoute : MonoBehaviour
 {
     /// <summary>Most markers on a route.</summary>
-    public const int MaxMarkers = 5;
+    public static int MaxMarkers => ShipSettings.RouteMaxMarkers.Value;
 
     private const string MarkersRpc = "WhiteHiltRouteMarkers";
     private const string SailRpc = "WhiteHiltRouteSail";
@@ -71,7 +71,7 @@ public class ShipRoute : MonoBehaviour
     /// <returns>The route, or null.</returns>
     public static ShipRoute Aboard(Player player)
     {
-        if (player == null)
+        if (player == null || !ShipSettings.ShipRoutes.Value)
         {
             return null;
         }
@@ -227,7 +227,7 @@ public class ShipRoute : MonoBehaviour
 
         ZDO zdo = nview.GetZDO();
         Vector3 here = transform.position;
-        if (markers.Count > 0 && Utils.DistanceXZ(here, markers[0]) < MarkerReached)
+        if (ShipSettings.ShipRoutes.Value && markers.Count > 0 && Utils.DistanceXZ(here, markers[0]) < MarkerReached)
         {
             markers.RemoveAt(0);
             Write(zdo, markers, markersKey);
@@ -238,7 +238,8 @@ public class ShipRoute : MonoBehaviour
             return;
         }
 
-        if (ship.m_players.Count == 0 || ship.HaveControllingPlayer() || table == null || !table.Installed)
+        if (ship.m_players.Count == 0 || ship.HaveControllingPlayer() || table == null || !table.Installed
+            || !ShipSettings.ShipRoutes.Value || !ShipSettings.RouteAutopilot.Value)
         {
             StopSailing(zdo, ship.HaveControllingPlayer() ? "$whitehilt_route_taken" : null);
             return;
@@ -364,7 +365,7 @@ public class ShipRoute : MonoBehaviour
 
     private void RPC_Sail(long sender, ZPackage route, ZPackage snappedMarkers)
     {
-        if (!nview.IsOwner())
+        if (!nview.IsOwner() || !ShipSettings.ShipRoutes.Value || !ShipSettings.RouteAutopilot.Value)
         {
             return;
         }

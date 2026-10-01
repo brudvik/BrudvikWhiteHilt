@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Pieces.Ships;
 public static class ShipFog
 {
     // The vanilla wisplight's force field reaches 15 m; the wisp sits on a 15 m ship, so its reach counts from the mast.
-    private const float Reach = 15f;
+    private static float Reach => ShipSettings.MastWispReach.Value;
     private const float FadeSeconds = 2f;
 
     private static float factor = 1f;
