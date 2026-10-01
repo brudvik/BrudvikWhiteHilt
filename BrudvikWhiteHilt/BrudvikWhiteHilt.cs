@@ -39,11 +39,12 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.26.0";
+    public const string PluginVersion = "0.27.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
     private readonly List<ForageableBase> forageables = new();
+    private bool refreshPending;
 
     /// <summary>
     /// Awake method is called when the script instance is being loaded.
@@ -56,6 +57,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         NavigationSettings.Initialize();
         Translations.LoadEmbedded();
         DynamicTexts.Register();
+        Settings.ConfigWindow.RegisterTranslations();
+        Settings.ConfigText.RegisterCommand();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
         HusbandrySkill.Register();
@@ -102,8 +105,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
 
-        Config.SettingChanged += (_, _) => RefreshConfig();
-        SynchronizationManager.OnConfigurationSynchronized += (_, _) => RefreshConfig();
+        // Saving many settings at once fires one event per setting; refresh once, on the next frame.
+        Config.SettingChanged += (_, _) => refreshPending = true;
+        SynchronizationManager.OnConfigurationSynchronized += (_, _) => refreshPending = true;
 
         // Items must exist before the main menu's ObjectDB copy, or the character preview drops White Hilt gear.
         PrefabManager.OnVanillaPrefabsAvailable += AddClonedItems;
@@ -120,6 +124,19 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         harmony.PatchAll();
 
         Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} has loaded!");
+    }
+
+    /// <summary>
+    /// Applies pending config changes and creates the settings button once the game's GUI exists.
+    /// </summary>
+    private void Update()
+    {
+        Settings.ConfigButton.EnsureCreated();
+        if (refreshPending)
+        {
+            refreshPending = false;
+            RefreshConfig();
+        }
     }
 
     /// <summary>

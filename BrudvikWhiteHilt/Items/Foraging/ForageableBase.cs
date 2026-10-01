@@ -103,6 +103,7 @@ public abstract class ForageableBase
     protected ForageableBase()
     {
         string section = $"Foraging.{FullName.Replace(" ", string.Empty)}";
+        WhiteHiltConfig.SetSectionLabel(section, Translations.Token(NameKey));
         AcceptableValueRange<float> chance = new(0f, 1f);
 
         spawn = WhiteHiltConfig.BindAdminOnly(section, "Spawn", true,

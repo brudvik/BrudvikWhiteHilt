@@ -17,7 +17,14 @@ public static class WhiteHiltConfig
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
     private static readonly Dictionary<string, ConfigEntry<bool>> enabledEntries = new();
     private static readonly Dictionary<string, ConfigEntry<string>> recipeOverrides = new();
+    private static readonly Dictionary<string, string> sectionLabels = new();
+    private static readonly Dictionary<(string Section, string Key), string> keyLabels = new();
     private static ConfigFile configFile;
+
+    /// <summary>
+    /// The plugin's config file.
+    /// </summary>
+    public static ConfigFile File => configFile;
 
     /// <summary>
     /// Selected progression mode.
@@ -59,6 +66,11 @@ public static class WhiteHiltConfig
     /// <param name="entry">The item or piece.</param>
     public static void BindEntry(IWhiteHiltProgressionEntry entry)
     {
+        foreach (string section in new[] { ContentSection, RecipesSection, TiersSection })
+        {
+            keyLabels[(section, entry.Id)] = entry.NameToken;
+        }
+
         enabledEntries[entry.Id] = configFile.Bind(
             ContentSection,
             entry.Id,
@@ -138,6 +150,37 @@ public static class WhiteHiltConfig
     public static ConfigEntry<T> BindLocal<T>(string section, string key, T defaultValue, string description)
     {
         return configFile.Bind(section, key, defaultValue, description);
+    }
+
+    /// <summary>
+    /// Names a config section in the settings window, e.g. a food's section after the food.
+    /// </summary>
+    /// <param name="section">Config section.</param>
+    /// <param name="token">Localization token of its name.</param>
+    public static void SetSectionLabel(string section, string token)
+    {
+        sectionLabels[section] = token;
+    }
+
+    /// <summary>
+    /// Gets the token set with <see cref="SetSectionLabel"/>.
+    /// </summary>
+    /// <param name="section">Config section.</param>
+    /// <returns>The token, or null.</returns>
+    public static string GetSectionLabel(string section)
+    {
+        return sectionLabels.TryGetValue(section, out string token) ? token : null;
+    }
+
+    /// <summary>
+    /// Gets the name token of an entry whose key is an item or piece, as in [Content].
+    /// </summary>
+    /// <param name="section">Config section.</param>
+    /// <param name="key">Config key.</param>
+    /// <returns>The token, or null.</returns>
+    public static string GetKeyLabel(string section, string key)
+    {
+        return keyLabels.TryGetValue((section, key), out string token) ? token : null;
     }
 
     private static ConfigDescription AdminOnly(string description)

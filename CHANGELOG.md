@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.27.0 - 2026-10-01
+
+### Added
+- In-game settings window: open the inventory and click the cog in the bottom left corner. Every White Hilt setting, grouped by feature, searchable, in English and Norwegian
+- Two tabs: your own settings, and the server and world rules. Admins (and everyone in a local game) can change the rules; other players see the server's values read-only
+- Changes are saved with the Save button; server settings are then sent to the server, which saves them and passes them on to everyone online at once. Settings that need a restart are marked
+- Console command `whitehilt_config_missing` lists settings without a translation
+
+### Changed
+- Many config changes at once are applied together, once per frame
+
 ## v0.26.0 - 2026-10-01
 
 ### Added

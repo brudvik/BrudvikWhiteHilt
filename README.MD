@@ -133,9 +133,9 @@ Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your s
 
 A great worm that breaks out of the forest floor at night, and poisonous giant spiders around nests in the Black Forest.
 
-### ⚙️ [Progression (config)](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
+### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
-Full or linear mode that unlocks White Hilt gear biome by biome, plus the foraging and food settings.
+An in-game settings window (cog in the inventory) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
 
 ## Compilation
 

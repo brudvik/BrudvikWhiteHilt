@@ -2,6 +2,16 @@
 
 [← Back to the README](../README.MD)
 
+## 🛠️ SETTINGS WINDOW
+
+Open the inventory (Tab) and click the cog in the bottom left corner. The window shows every White Hilt setting, in English or Norwegian, grouped by feature, with a search field.
+
+- **My settings**: your own choices, such as keys, labels, the clock and sound. Always editable.
+- **Server and world**: the rules. Editable in a local game and by server admins (`adminlist.txt`). Other players see the values the server uses, read-only.
+- Changes are collected until you press **Save**; **Close** or Esc throws them away. Changed settings are marked in orange, ↺ puts a setting back to its default, and hovering a setting shows what it does and its default.
+- When an admin saves server settings, they are sent to the server, which saves them in its own config file and passes them on to everyone online at once. Most take effect right away; settings marked *needs restart* apply after a restart.
+- The console command `whitehilt_config_missing` lists settings without a translation in the current language.
+
 ## ⚙️ PROGRESSION (CONFIG)
 
 Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server. Every value in the mod's config defaults to the mod's built-in behaviour.

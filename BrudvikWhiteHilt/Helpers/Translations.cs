@@ -107,8 +107,20 @@ public static class Translations
     /// <returns>The translation, or the key when there is none.</returns>
     public static string Word(string token)
     {
+        return TryWord(token, out string value) ? value : token?.TrimStart('$');
+    }
+
+    /// <summary>
+    /// Looks up a translation in the current language without <c>Localize</c>.
+    /// </summary>
+    /// <param name="token">Key, with or without the leading <c>$</c>.</param>
+    /// <param name="value">The translation.</param>
+    /// <returns>True if the key has a translation.</returns>
+    public static bool TryWord(string token, out string value)
+    {
+        value = null;
         string key = token != null && token.StartsWith("$") ? token.Substring(1) : token;
-        return key != null && Localization.instance != null && Localization.instance.m_translations.TryGetValue(key, out string value) ? value : key;
+        return key != null && Localization.instance != null && Localization.instance.m_translations.TryGetValue(key, out value);
     }
 
     /// <summary>

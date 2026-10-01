@@ -109,6 +109,7 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected WhiteHiltMeadBase(ItemManager instance)
     {
         this.instance = instance;
+        WhiteHiltConfig.SetSectionLabel(ConfigSection, Translations.Token(NameKey));
         durationMinutes = WhiteHiltConfig.BindAdminOnly(ConfigSection, "DurationMinutes", DurationSeconds / 60f, "How long the effect lasts.",
             new AcceptableValueRange<float>(1f, 120f));
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);

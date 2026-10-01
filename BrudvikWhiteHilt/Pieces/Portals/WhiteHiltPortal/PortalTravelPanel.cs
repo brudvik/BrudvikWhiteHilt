@@ -179,7 +179,7 @@ public class PortalTravelPanel : MonoBehaviour
     }
 
     // Jotunn sizes the parts of a scroll view once, at the size it is made with; stretch them with the view instead.
-    private static void StretchScrollView(RectTransform root)
+    internal static void StretchScrollView(RectTransform root)
     {
         foreach (RectTransform part in root.GetComponentsInChildren<RectTransform>(true))
         {

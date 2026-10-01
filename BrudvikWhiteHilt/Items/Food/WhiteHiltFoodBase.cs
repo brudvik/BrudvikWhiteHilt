@@ -117,6 +117,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         this.instance = instance;
 
         string section = $"Food.{FullName.Replace(" ", string.Empty)}";
+        WhiteHiltConfig.SetSectionLabel(section, Translations.Token(NameKey));
         health = WhiteHiltConfig.BindAdminOnly(section, "Health", Health, "Maximum health gained.", new AcceptableValueRange<float>(0f, 200f));
         stamina = WhiteHiltConfig.BindAdminOnly(section, "Stamina", Stamina, "Maximum stamina gained.", new AcceptableValueRange<float>(0f, 200f));
         durationMinutes = WhiteHiltConfig.BindAdminOnly(section, "DurationMinutes", DurationSeconds / 60f, "How long the food lasts.",
