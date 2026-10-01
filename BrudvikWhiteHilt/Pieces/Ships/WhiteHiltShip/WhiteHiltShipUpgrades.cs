@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Navigation;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Pieces.Navigation;
@@ -78,21 +79,6 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY;
 
     private static readonly List<WhiteHiltShipUpgrades> instances = new();
-
-    // Fish1 perch, Fish2 pike, Fish3 tuna, Fish5 trollfish, Fish6 giant herring, Fish7 grouper, Fish8 coral cod,
-    // Fish9 anglerfish, Fish10 northern salmon, Fish11 magmafish, Fish12 pufferfish.
-    private static readonly Dictionary<Heightmap.Biome, (string Prefab, float Weight)[]> fishByBiome = new()
-    {
-        [Heightmap.Biome.Meadows] = new[] { ("Fish1", 0.7f), ("Fish2", 0.3f) },
-        [Heightmap.Biome.BlackForest] = new[] { ("Fish2", 0.6f), ("Fish1", 0.25f), ("Fish5", 0.15f) },
-        [Heightmap.Biome.Swamp] = new[] { ("Fish6", 0.7f), ("Fish1", 0.3f) },
-        [Heightmap.Biome.Mountain] = new[] { ("Fish1", 1f) },
-        [Heightmap.Biome.Plains] = new[] { ("Fish7", 0.7f), ("Fish1", 0.3f) },
-        [Heightmap.Biome.Ocean] = new[] { ("Fish3", 0.5f), ("Fish8", 0.35f), ("Fish12", 0.15f) },
-        [Heightmap.Biome.Mistlands] = new[] { ("Fish9", 0.6f), ("Fish12", 0.4f) },
-        [Heightmap.Biome.DeepNorth] = new[] { ("Fish10", 1f) },
-        [Heightmap.Biome.AshLands] = new[] { ("Fish11", 1f) }
-    };
 
     private ZNetView nview;
     private Container container;
@@ -575,7 +561,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     {
         Inventory inventory = container?.GetInventory();
         Heightmap.Biome biome = WorldGenerator.instance.GetBiome(transform.position);
-        GameObject fish = ZNetScene.instance.GetPrefab(PickFish(biome));
+        GameObject fish = ZNetScene.instance.GetPrefab(FishTable.Pick(biome));
         if (inventory == null || fish == null)
         {
             return;
@@ -620,26 +606,6 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
 
         return true;
-    }
-
-    private static string PickFish(Heightmap.Biome biome)
-    {
-        if (!fishByBiome.TryGetValue(biome, out (string Prefab, float Weight)[] fish))
-        {
-            fish = fishByBiome[Heightmap.Biome.Ocean];
-        }
-
-        float roll = Random.value * fish.Sum(entry => entry.Weight);
-        foreach ((string prefab, float weight) in fish)
-        {
-            roll -= weight;
-            if (roll <= 0f)
-            {
-                return prefab;
-            }
-        }
-
-        return fish[fish.Length - 1].Prefab;
     }
 
     private void DropAll()

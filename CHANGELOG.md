@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.37.0 - 2026-10-01
+
+### Added
+- **Fishing nets**: build a Net Winch with a fish barrel on the shore and set out Shore Nets (10 m) on the water within 25 m of it. Each net catches a fish every 6 minutes where the water is deep enough, also for up to 2 hours while nobody is near, and the fish end up in the barrel. Bait in the barrel makes the nets catch faster, the nets must be mended with Leather Scraps now and then (Shift + E on the winch), and whoever opens the barrel gets Fishing experience. All numbers in the new `Fishing.Net` section. See [Fishing nets](docs/fishing.md)
+
 ## v0.36.0 - 2026-10-01
 
 ### Added

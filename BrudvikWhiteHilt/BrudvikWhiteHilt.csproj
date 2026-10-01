@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
+    <Compile Include="Helpers\FishTable.cs" />
     <Compile Include="Helpers\ForagingAssets.cs" />
     <Compile Include="Helpers\CreatureVisual.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
@@ -517,6 +518,12 @@
     <Compile Include="Patches\Mastery\StarPatches.cs" />
     <Compile Include="Pieces\Farming\CompostBin.cs" />
     <Compile Include="Pieces\Farming\CompostBinComponent.cs" />
+    <Compile Include="Pieces\Fishing\FishingNet.cs" />
+    <Compile Include="Pieces\Fishing\FishingNetComponent.cs" />
+    <Compile Include="Pieces\Fishing\FishingNetSettings.cs" />
+    <Compile Include="Pieces\Fishing\NetWinch.cs" />
+    <Compile Include="Pieces\Fishing\NetWinchComponent.cs" />
+    <Compile Include="Patches\Fishing\FishingNetPatches.cs" />
     <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
     <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTrough.cs" />
     <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTroughComponent.cs" />

@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Companions;
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.Farming;
+using BrudvikWhiteHilt.Pieces.Fishing;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Ships;
 using BrudvikWhiteHilt.Ranching;
@@ -30,6 +31,16 @@ public static class DynamicTexts
             Translations.Number(CompostSettings.Range.Value),
             Translations.Percent(1f - CompostSettings.GrowTime.Value),
             CompostSettings.CompostPerDay.Value
+        });
+        Translations.AddDynamic("piece_whitehilt_netwinch_description", () => new object[]
+        {
+            FishingNetSettings.MaxNets.Value,
+            Translations.Number(FishingNetSettings.Range.Value)
+        });
+        Translations.AddDynamic("piece_whitehilt_fishingnet_description", () => new object[]
+        {
+            Translations.Number(FishingNetSettings.Range.Value),
+            Translations.Number(FishingNetSettings.MinDepth.Value)
         });
 
         Translations.AddDynamic("item_whitehiltcharttable_description", () => new object[] { Translations.Number(ExploreRadius(NavigationSettings.TableBonus.Value)) });

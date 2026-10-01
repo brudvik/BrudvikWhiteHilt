@@ -1,0 +1,10 @@
+{
+  "name": "fishnet",
+  "base": { "mesh": "fishnet", "height": 2.65 },
+  "props": [],
+  "views": [
+    { "label": "front", "yaw": 180, "pitch": 10 },
+    { "label": "angle", "yaw": 140, "pitch": 30 },
+    { "label": "close", "yaw": 160, "pitch": 15, "focus": [3.5, 2.4, 0], "radius": 1.2 }
+  ]
+}

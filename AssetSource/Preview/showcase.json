@@ -51,6 +51,8 @@
 
     { "image": "feeding_trough", "models": ["trough"] },
     { "image": "compost_bin", "models": ["compostbin"] },
+    { "image": "net_winch", "compose": "fishwinch.preview.json", "view": { "yaw": 140, "pitch": 25 } },
+    { "image": "shore_net", "compose": "fishnet.preview.json", "view": { "yaw": 150, "pitch": 20 } },
     { "image": "tether_post", "models": ["tetherpost"] },
     { "image": "grooming_comb", "models": ["comb"] },
 

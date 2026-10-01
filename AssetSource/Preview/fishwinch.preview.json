@@ -1,0 +1,12 @@
+{
+  "name": "fishwinch",
+  "base": { "mesh": "fishbarrel", "height": 0.8 },
+  "props": [
+    { "mesh": "fishwinch", "base": [1.375, 0.0, 0.0], "height": 1.375, "yaw": 90 }
+  ],
+  "views": [
+    { "label": "front", "yaw": 90, "pitch": 15 },
+    { "label": "angle", "yaw": 140, "pitch": 35 },
+    { "label": "side", "yaw": 0, "pitch": 15 }
+  ]
+}
