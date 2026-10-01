@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.29.1 - 2026-10-01
+
+### Fixed
+- The chest census on a dedicated server counted 0 chests: it ran before the server had loaded the world. It now runs right after the world is loaded, and an empty count is never used as the baseline for the next comparison
+
 ## v0.29.0 - 2026-10-01
 
 ### Added

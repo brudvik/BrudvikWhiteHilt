@@ -61,7 +61,11 @@ namespace BrudvikWhiteHilt.Chests
                 var prefix = $"{world}_{ZNet.World.m_uid}_";
                 Directory.CreateDirectory(folder);
 
-                var previousPath = Directory.GetFiles(folder, prefix + "*.tsv").OrderBy(path => path, StringComparer.Ordinal).LastOrDefault();
+                // An empty count is no baseline: 0.29.0 counted before the world was loaded.
+                var previous = Directory.GetFiles(folder, prefix + "*.tsv")
+                    .OrderByDescending(path => path, StringComparer.Ordinal)
+                    .Select(path => (Path: path, Chests: Read(path)))
+                    .FirstOrDefault(census => census.Chests.Count > 0);
                 var path = Path.Combine(folder, prefix + DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture) + ".tsv");
                 File.WriteAllLines(path, Write(current));
 
@@ -73,7 +77,7 @@ namespace BrudvikWhiteHilt.Chests
                     Report(context, $"Chest census: could not read the contents of {chest.Prefab} {chest.Id}", true);
                 }
 
-                if (previousPath != null) Compare(context, Read(previousPath), current, Path.GetFileName(previousPath));
+                if (previous.Path != null) Compare(context, previous.Chests, current, Path.GetFileName(previous.Path));
             }
             catch (Exception ex)
             {
