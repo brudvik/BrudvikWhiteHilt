@@ -91,6 +91,16 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         }
 
         /// <summary>
+        /// Checks whether a stack in a cart or ship hold is kept full. Cargo only refills items that stack.
+        /// </summary>
+        /// <param name="item">The stack in the cargo.</param>
+        /// <returns>True if the stack is kept full.</returns>
+        public bool IsCargoSupplied(ItemDrop.ItemData item)
+        {
+            return IsStackable(item.m_shared) && IsSupplied(Mode, ChestCategory.None, item);
+        }
+
+        /// <summary>
         /// Checks whether a stack is an ordinary copy of its item, like the chest adds itself. Stacks with skill stars
         /// (a quality above 1) or their own data, such as a dog's name, always belong to the player who stored them.
         /// </summary>

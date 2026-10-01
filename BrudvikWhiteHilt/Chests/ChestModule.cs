@@ -9,6 +9,7 @@ using BrudvikWhiteHilt.Chests.Extensions;
 using BrudvikWhiteHilt.Chests.Helpers;
 using BrudvikWhiteHilt.Chests.Models;
 using BrudvikWhiteHilt.Patches.Chests;
+using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using BrudvikWhiteHilt.Chests.Piece;
 using BrudvikWhiteHilt.Chests.Utils;
 using BrudvikWhiteHilt.Progression;
@@ -37,6 +38,10 @@ namespace BrudvikWhiteHilt.Chests
         // Root namespace of the embedded icons.
         private const string ResourceRoot = "BrudvikWhiteHilt";
 
+        // Remembers the mode cargo was last restocked in; the White Hilt Ship's chest shares the hold's ZDO.
+        private const string CargoModeKey = "whitehilt_cargo_mode";
+        private const string ShipChestModeKey = "whitehilt_cargo_mode_chest";
+
         /// <summary>
         /// List to store custom pieces (chests) added by the plugin.
         /// </summary>
@@ -62,6 +67,9 @@ namespace BrudvikWhiteHilt.Chests
 
         // Inventories do not know their container; the inventory patches need to recognize our chests.
         private readonly ConditionalWeakTable<Inventory, Container> chestInventories = new();
+
+        // Whether a container belongs to a ship or cart; it never changes, and the UI asks every frame.
+        private readonly ConditionalWeakTable<Container, StrongBox<bool>> vehicleContainers = new();
 
         /// <summary>
         /// Starts the chests, unless the former stand-alone mod is loaded. Call from the plugin's Awake.
@@ -89,7 +97,7 @@ namespace BrudvikWhiteHilt.Chests
             itemCatalog = new ItemCatalog(settings);
             worldProgress = new WorldProgress(LegacyName);
             chestSupply = new ChestSupply(settings, itemCatalog, worldProgress);
-            progressUi = new ChestProgressUi(chestSupply, FindPiece);
+            progressUi = new ChestProgressUi(chestSupply, FindPiece, IsCargo);
             hoverPanel = new ChestHoverPanel(chestSupply, FindPiece, () => settings.ShowHoverPanel.Value);
             biomeCatalog = new BiomeCatalog(settings);
             learnUi = new ChestLearnUi(FindPiece, () => settings.LearnAll.Value, () => settings.LearnTrophies.Value);
@@ -159,7 +167,11 @@ namespace BrudvikWhiteHilt.Chests
         private void HandleContainerDropAllItemsPatched(object sender, ContainerDropAllItemsPatchEvent e)
         {
             var piece = FindPiece(e?.Container);
-            if (piece == null) return;
+            if (piece == null)
+            {
+                if (IsCargo(e?.Container)) e!.Container.RemoveSuppliedItems(ChestCategory.None, chestSupply);
+                return;
+            }
 
             e!.Container.RemoveSuppliedItems(piece.CustomPieceConfig.ItemCategory, chestSupply);
 
@@ -217,7 +229,11 @@ namespace BrudvikWhiteHilt.Chests
         private void HandleContainerCheckForChanges(object sender, ContainerCheckForChangesPatchEvent e)
         {
             var piece = FindPiece(e?.Container);
-            if (piece == null) return;
+            if (piece == null)
+            {
+                RestockCargo(e?.Container);
+                return;
+            }
 
             RegisterChest(e!.Container);
             ChestEffects.UpdateGlow(e.Container, piece.Color, piece.CustomPieceConfig.ItemCategory, chestSupply);
@@ -233,11 +249,35 @@ namespace BrudvikWhiteHilt.Chests
         private void HandleContainerChanged(object sender, ContainerChangedPatchEvent e)
         {
             var piece = FindPiece(e?.Container);
-            if (piece == null) return;
+            if (piece == null)
+            {
+                RestockCargo(e?.Container);
+                return;
+            }
 
             RegisterChest(e!.Container);
             e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value);
             UpdateIndicator(e.Container, piece);
+        }
+
+        /// <summary>
+        /// Keeps the stacks of unlimited items in a cart or ship hold full, so cargo brought along works like an
+        /// Everlasting Chest wherever the cart or ship goes.
+        /// </summary>
+        private void RestockCargo(Container? container)
+        {
+            if (!IsCargo(container)) return;
+
+            RegisterChest(container!);
+            container!.RestockCargo(chestSupply, container.GetComponent<ShipChest>() != null ? ShipChestModeKey : CargoModeKey);
+        }
+
+        private bool IsCargo(Container? container)
+        {
+            if (container == null || !settings.UnlimitedCargo.Value) return false;
+
+            return vehicleContainers.GetValue(container, held => new StrongBox<bool>(
+                held.GetComponentInParent<Ship>() != null || held.GetComponentInParent<Vagon>() != null)).Value;
         }
 
         private void UpdateIndicator(Container container, CustomPieceExtended piece)
@@ -285,7 +325,7 @@ namespace BrudvikWhiteHilt.Chests
             if (!chestInventories.TryGetValue(inventory, out container) || container == null) return false;
 
             var piece = FindPiece(container);
-            if (piece == null) return false;
+            if (piece == null) return IsCargo(container);
 
             category = piece.CustomPieceConfig.ItemCategory;
             return true;

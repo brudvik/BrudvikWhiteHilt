@@ -67,7 +67,7 @@ Surt's Brazier for fires without fuel, crafting and building from nearby chests,
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest).
+Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest). Carts and ship holds keep unlimited items full too.
 
 ### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 

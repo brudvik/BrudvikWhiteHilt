@@ -67,6 +67,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
         public ConfigEntry<bool> LearnTrophies { get; }
 
         /// <summary>
+        /// When enabled, carts and ship holds keep the stacks of unlimited items full.
+        /// </summary>
+        public ConfigEntry<bool> UnlimitedCargo { get; }
+
+        /// <summary>
         /// When enabled, the front of a chest shows whether it is empty and how full it is.
         /// </summary>
         public ConfigEntry<bool> ShowIndicators { get; }
@@ -110,6 +115,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
 
             LearnTrophies = Remember("General", WhiteHiltConfig.BindAdminOnly(Section, "LearnTrophies", true,
                 "Let the Learn all button learn trophies as well, which adds them to the player's trophy list."));
+
+            UnlimitedCargo = WhiteHiltConfig.BindAdminOnly(Section, "UnlimitedCargo", true,
+                "Carts and ship holds keep the stacks of unlimited items full, like the Everlasting Chest: bring some of an " +
+                "item that is unlimited and it never runs out while you build or craft from the cargo. Cargo never unlocks " +
+                "items and never adds items you did not bring.");
 
             ShowIndicators = Remember("Display", WhiteHiltConfig.BindLocal(Section, "ShowIndicators", true,
                 "Grey out the icon on the front of empty chests and show bars under it: how many slots are used, and " +

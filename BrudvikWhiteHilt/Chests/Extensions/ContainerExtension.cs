@@ -41,14 +41,46 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             try
             {
                 var mode = supply.Mode;
-                var changed = RemoveAfterModeChange(container, inventory, category, supply, mode);
+                var changed = RemoveAfterModeChange(container, inventory, category, supply, mode, ModeKey, ChestMode.Full);
                 if (mode == ChestMode.Linear) UnlockFullStacks(container, inventory, category, supply);
 
-                changed |= MergeStacks(inventory, category, supply, mode, out var refilled);
+                changed |= MergeStacks(inventory, category, supply, mode, true, out var refilled);
                 if (refilled) ChestEffects.PlayRefill(container);
 
                 changed |= AddMissing(inventory, category, supply);
                 if (sort) changed |= Arrange(inventory, category, supply, mode);
+
+                if (changed) container.Save();
+            }
+            finally
+            {
+                restocking = false;
+            }
+        }
+
+        /// <summary>
+        /// Keeps the stacks of unlimited items in a cart or ship hold full, like the Everlasting Chest, but never
+        /// unlocks items, adds items the players did not bring, sorts or grows the cargo.
+        /// </summary>
+        /// <param name="container">The cart or ship hold.</param>
+        /// <param name="supply">Decides which items are unlimited.</param>
+        /// <param name="modeKey">ZDO key that remembers the mode the cargo was last restocked in.</param>
+        public static void RestockCargo(this Container container, ChestSupply supply, string modeKey)
+        {
+            if (restocking || !IsOwnedByMe(container) || !supply.IsReady) return;
+
+            var inventory = container.GetInventory();
+            if (inventory == null) return;
+
+            restocking = true;
+            try
+            {
+                var mode = supply.Mode;
+
+                // Cargo from before this feature was never restocked, so it has no mode to clean up after.
+                var changed = RemoveAfterModeChange(container, inventory, ChestCategory.None, supply, mode, modeKey, mode);
+                changed |= MergeStacks(inventory, ChestCategory.None, supply, mode, false, out var refilled);
+                if (refilled) ChestEffects.PlayRefill(container);
 
                 if (changed) container.Save();
             }
@@ -94,15 +126,18 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             }
         }
 
-        private static bool RemoveAfterModeChange(Container container, Inventory inventory, ChestCategory category, ChestSupply supply, ChestMode mode)
+        private static bool RemoveAfterModeChange(Container container, Inventory inventory, ChestCategory category, ChestSupply supply,
+            ChestMode mode, string modeKey, ChestMode unknownMode)
         {
             var zdo = container.m_nview.GetZDO();
+            var stored = zdo.GetInt(modeKey, -1);
+            if (stored == (int)mode) return false;
 
             // Chests from before the modes existed were filled in Full mode.
-            var previous = (ChestMode)zdo.GetInt(ModeKey, (int)ChestMode.Full);
+            var previous = stored < 0 ? unknownMode : (ChestMode)stored;
+            zdo.Set(modeKey, (int)mode);
             if (previous == mode) return false;
 
-            zdo.Set(ModeKey, (int)mode);
             return RemoveWhere(inventory, item => supply.IsStock(previous, category, item) && !supply.IsSupplied(mode, category, item));
         }
 
@@ -139,7 +174,8 @@ namespace BrudvikWhiteHilt.Chests.Extensions
         /// Keeps the wanted number of full stacks of every unlimited item and removes the rest, and combines partial
         /// stacks of the other items.
         /// </summary>
-        private static bool MergeStacks(Inventory inventory, ChestCategory category, ChestSupply supply, ChestMode mode, out bool refilled)
+        private static bool MergeStacks(Inventory inventory, ChestCategory category, ChestSupply supply, ChestMode mode, bool mergePartial,
+            out bool refilled)
         {
             refilled = false;
             var changed = false;
@@ -171,7 +207,7 @@ namespace BrudvikWhiteHilt.Chests.Extensions
                 }
 
                 // Vanilla stacking ignores custom data, but merging would lose one stack's data.
-                if (item.m_customData != null && item.m_customData.Count > 0) continue;
+                if (!mergePartial || (item.m_customData != null && item.m_customData.Count > 0)) continue;
 
                 // The game combines stacks with the same name, quality and world level.
                 var key = $"{item.m_shared.m_name}|{item.m_quality}|{item.m_worldLevel}";

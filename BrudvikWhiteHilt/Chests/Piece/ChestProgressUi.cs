@@ -23,6 +23,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
         private readonly ChestSupply supply;
         private readonly Func<Container?, CustomPieceExtended?> findPiece;
+        private readonly Func<Container?, bool> isCargo;
 
         private int totalsFrame = -1;
         private Inventory? totalsInventory;
@@ -35,10 +36,12 @@ namespace BrudvikWhiteHilt.Chests.Piece
         /// </summary>
         /// <param name="supply">Decides which items are unlimited.</param>
         /// <param name="findPiece">Finds the chest definition for a container, or null if it is not one of ours.</param>
-        public ChestProgressUi(ChestSupply supply, Func<Container?, CustomPieceExtended?> findPiece)
+        /// <param name="isCargo">Checks whether a container is a cart or ship hold that keeps unlimited items full.</param>
+        public ChestProgressUi(ChestSupply supply, Func<Container?, CustomPieceExtended?> findPiece, Func<Container?, bool> isCargo)
         {
             this.supply = supply;
             this.findPiece = findPiece;
+            this.isCargo = isCargo;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
         /// </summary>
         public void HandleGridUpdated(object sender, InventoryGridUpdatedPatchEvent e)
         {
-            if (!TryGetOpenChest(e.Grid, out var category)) return;
+            if (!TryGetOpenChest(e.Grid, out var category, out var cargo)) return;
 
             var mode = supply.Mode;
             var inventory = e.Grid.m_inventory;
@@ -56,14 +59,14 @@ namespace BrudvikWhiteHilt.Chests.Piece
                 var element = e.Grid.GetElement(item.m_gridPos.x, item.m_gridPos.y, e.Grid.m_width);
                 if (element == null) continue;
 
-                if (supply.IsSupplied(mode, category, item))
+                if (cargo ? supply.IsCargoSupplied(item) : supply.IsSupplied(mode, category, item))
                 {
                     element.m_amount.gameObject.SetActive(true);
                     element.m_amount.text = GetUnlimitedText(element.m_amount);
                     continue;
                 }
 
-                if (mode != ChestMode.Linear || item.m_dropPrefab == null ||
+                if (cargo || mode != ChestMode.Linear || item.m_dropPrefab == null ||
                     !supply.CanUnlock(category, item.m_dropPrefab.name, item.m_shared)) continue;
 
                 stored.TryGetValue(item.m_dropPrefab.name, out var amount);
@@ -78,7 +81,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
         /// </summary>
         public void HandleItemTooltip(object sender, ItemTooltipPatchEvent e)
         {
-            if (!TryGetOpenChest(e.Grid, out var category)) return;
+            if (!TryGetOpenChest(e.Grid, out var category, out var cargo)) return;
+            if (cargo && !supply.IsCargoSupplied(e.Item)) return;
 
             var amount = 0;
             if (e.Item.m_dropPrefab != null) GetTotals(e.Grid.m_inventory).TryGetValue(e.Item.m_dropPrefab.name, out amount);
@@ -145,14 +149,19 @@ namespace BrudvikWhiteHilt.Chests.Piece
             return total == 0 ? null : Texts.Get("bsc_unlimited_count", $"<color={Gold}>{supplied}/{total}</color>");
         }
 
-        private bool TryGetOpenChest(InventoryGrid grid, out ChestCategory category)
+        private bool TryGetOpenChest(InventoryGrid grid, out ChestCategory category, out bool cargo)
         {
             category = ChestCategory.None;
+            cargo = false;
             var gui = InventoryGui.instance;
             if (gui == null || grid != gui.m_containerGrid) return false;
 
             var piece = findPiece(gui.m_currentContainer);
-            if (piece == null) return false;
+            if (piece == null)
+            {
+                cargo = isCargo(gui.m_currentContainer);
+                return cargo;
+            }
 
             category = piece.CustomPieceConfig.ItemCategory;
             return true;

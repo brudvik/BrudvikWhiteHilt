@@ -54,6 +54,16 @@ Items that cannot be obtained in normal play (creature attacks, test items, unus
 
 > **Warning**: in Full mode, ordinary stackable items stored in the Everlasting Chest are lost when the chest is removed.
 
+### Carts and ships
+
+Carts and ship holds keep unlimited items full like the Everlasting Chest, so what you bring along never runs out. Put Wood in the Longship when Wood is unlimited, and the stack stays full while you build from the hold at an outpost with [nearby chests](base.md). This covers every cart and ship, including the White Hilt Ship's sea chest (`UnlimitedCargo`).
+
+- Any amount of an unlimited item is filled up to a full stack. Extra stacks of it are removed, which frees the slots.
+- Only items that stack are refilled. Which items are unlimited follows `Mode`, as in the Everlasting Chest. In Full mode, that is every ordinary stackable item.
+- Cargo never unlocks items in Linear mode and never adds items you did not bring. It is not sorted and does not grow.
+- Putting in more of an unlimited item, **Take all** and destroying the cart or ship work as in the chests: the item is swallowed, the unlimited stacks stay behind, and they are deleted instead of dropped.
+- Items with skill stars or their own data are never refilled or deleted.
+
 ### Chest modes
 
 `Mode` decides how generous the chests are:
@@ -103,6 +113,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 | Chests | SortContents | Keep the contents sorted from the top left (default on) |
 | Chests | LearnAll | Show the Learn all button (default on) |
 | Chests | LearnTrophies | Let Learn all learn trophies too (default on) |
+| Chests | UnlimitedCargo | Carts and ship holds keep unlimited items full (default on) |
 | Chests | ShowIndicators | Icon and bars on the front of chests (default on, per player) |
 | Chests | ShowHoverPanel | Contents as icons when looking at a chest (default on, per player) |
 | Chests | DumpItemLists | Write every chest's item list to the log (per player) |

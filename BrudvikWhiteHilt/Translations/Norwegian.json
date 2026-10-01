@@ -1255,6 +1255,8 @@
   "whitehilt_cfg_chests_learnall_desc": "Vis en «Lær alt»-knapp på kister med ting spilleren ikke har lært ennå. Å lære en ting låser opp oppskriftene og byggedelene som trenger den, som om spilleren hadde plukket den opp.",
   "whitehilt_cfg_chests_learntrophies": "Lær trofeer",
   "whitehilt_cfg_chests_learntrophies_desc": "La «Lær alt»-knappen lære trofeer også, som legger dem til i spillerens troféliste.",
+  "whitehilt_cfg_chests_unlimitedcargo": "Ubegrenset last",
+  "whitehilt_cfg_chests_unlimitedcargo_desc": "Kjerrer og skipslaster holder stablene av ubegrensede ting fulle, som evighetskisten: ta med litt av en ting som er ubegrenset, så tar den aldri slutt mens du bygger eller lager ting fra lasten. Lasten låser aldri opp ting og legger aldri til ting du ikke har tatt med.",
   "whitehilt_cfg_chests_showindicators": "Vis indikatorer",
   "whitehilt_cfg_chests_showindicators_desc": "Gjør ikonet foran på tomme kister grått og vis stolper under det: hvor mange plasser som er brukt, og i Lineær og Oppdaget hvor mange av kistens ting som er ubegrenset.",
   "whitehilt_cfg_chests_showhoverpanel": "Vis innholdet",
