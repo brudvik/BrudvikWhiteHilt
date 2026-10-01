@@ -45,6 +45,9 @@ public static class BuildCreatures
         public string idle;
         public string move;
         public float move_speed = 1f;
+        public string run;
+        public float run_speed = 2f;
+        public string stagger;
         public AttackSpec[] attacks = new AttackSpec[0];
         public bool always_animate;
     }
@@ -207,6 +210,10 @@ public static class BuildCreatures
             tree.useAutomaticThresholds = false;
             tree.AddChild(idle, 0f);
             tree.AddChild(Clip(clips, spec.controller.move, name), spec.controller.move_speed);
+            if (!string.IsNullOrEmpty(spec.controller.run))
+            {
+                tree.AddChild(Clip(clips, spec.controller.run, name), spec.controller.run_speed);
+            }
         }
         else
         {
@@ -215,7 +222,24 @@ public static class BuildCreatures
         }
 
         machine.defaultState = movement;
-        HashSet<string> used = new() { spec.controller.idle, spec.controller.move };
+        HashSet<string> used = new() { spec.controller.idle, spec.controller.move, spec.controller.run };
+        if (!string.IsNullOrEmpty(spec.controller.stagger))
+        {
+            // Character.Stagger sets this trigger when the stagger bar fills.
+            AnimatorState stagger = machine.AddState("stagger");
+            stagger.motion = Clip(clips, spec.controller.stagger, name);
+            AnimatorStateTransition into = machine.AddAnyStateTransition(stagger);
+            into.AddCondition(AnimatorConditionMode.If, 0f, "stagger");
+            into.hasExitTime = false;
+            into.duration = 0.1f;
+            into.canTransitionToSelf = false;
+            AnimatorStateTransition back = stagger.AddTransition(movement);
+            back.hasExitTime = true;
+            back.exitTime = 0.9f;
+            back.duration = 0.2f;
+            used.Add(spec.controller.stagger);
+        }
+
         foreach (AttackSpec attack in attacks)
         {
             AnimatorState state = machine.AddState(attack.trigger);

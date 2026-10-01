@@ -1,0 +1,128 @@
+using BepInEx.Configuration;
+using BrudvikWhiteHilt.Progression;
+using System;
+using System.Linq;
+
+namespace BrudvikWhiteHilt.Monsters;
+
+/// <summary>
+/// Config of the Lindorm and the giant spider. Admin only, synced from the server.
+/// </summary>
+public static class MonsterSettings
+{
+    private const string LindormSection = "Lindorm";
+    private const string SpiderSection = "Giant Spider";
+
+    private static string parsedBiomes;
+    private static Heightmap.Biome biomes;
+
+    /// <summary>Whether the Lindorm can break out of the ground.</summary>
+    public static ConfigEntry<bool> LindormEnabled { get; private set; }
+
+    /// <summary>Global key that must be set before the Lindorm comes; empty for none.</summary>
+    public static ConfigEntry<string> LindormRequiredKey { get; private set; }
+
+    /// <summary>Biomes, by name, where the Lindorm lurks.</summary>
+    public static ConfigEntry<string> LindormBiomes { get; private set; }
+
+    /// <summary>Whether it only comes at night.</summary>
+    public static ConfigEntry<bool> LindormNightOnly { get; private set; }
+
+    /// <summary>Chance per minute, in percent, while the conditions hold.</summary>
+    public static ConfigEntry<float> LindormChancePerMinute { get; private set; }
+
+    /// <summary>Minutes before the Lindorm can come for the same player again.</summary>
+    public static ConfigEntry<float> LindormCooldownMinutes { get; private set; }
+
+    /// <summary>Health of the Lindorm.</summary>
+    public static ConfigEntry<float> LindormHealth { get; private set; }
+
+    /// <summary>Pierce damage of its bite.</summary>
+    public static ConfigEntry<float> LindormDamage { get; private set; }
+
+    /// <summary>Size of the Lindorm.</summary>
+    public static ConfigEntry<float> LindormScale { get; private set; }
+
+    /// <summary>Whether giant spiders and their nests exist.</summary>
+    public static ConfigEntry<bool> SpiderEnabled { get; private set; }
+
+    /// <summary>Health of a giant spider.</summary>
+    public static ConfigEntry<float> SpiderHealth { get; private set; }
+
+    /// <summary>Pierce damage of its bite.</summary>
+    public static ConfigEntry<float> SpiderDamage { get; private set; }
+
+    /// <summary>Poison damage of its bite.</summary>
+    public static ConfigEntry<float> SpiderPoison { get; private set; }
+
+    /// <summary>Seconds a bite slows its victim.</summary>
+    public static ConfigEntry<float> SpiderWebSeconds { get; private set; }
+
+    /// <summary>Size of a giant spider.</summary>
+    public static ConfigEntry<float> SpiderScale { get; private set; }
+
+    /// <summary>Chance, from 0 to 1, of a nest in a newly generated Black Forest zone.</summary>
+    public static ConfigEntry<float> NestChancePerZone { get; private set; }
+
+    /// <summary>Health of a nest.</summary>
+    public static ConfigEntry<float> NestHealth { get; private set; }
+
+    /// <summary>Spiders near a nest at most.</summary>
+    public static ConfigEntry<int> NestMaxNear { get; private set; }
+
+    /// <summary>
+    /// Binds the config entries. Call from the plugin's Awake.
+    /// </summary>
+    public static void Initialize()
+    {
+        LindormEnabled = WhiteHiltConfig.BindAdminOnly(LindormSection, "Enabled", true, "The Lindorm can break out of the ground near players in the forest and the swamp at night.");
+        LindormRequiredKey = WhiteHiltConfig.BindAdminOnly(LindormSection, "RequiredKey", "defeated_eikthyr",
+            "Global key needed before the Lindorm comes (defeated_eikthyr = Eikthyr is slain). Empty: from the start.");
+        LindormBiomes = WhiteHiltConfig.BindAdminOnly(LindormSection, "Biomes", "BlackForest, Swamp", "Biomes, comma separated, where the Lindorm lurks.");
+        LindormNightOnly = WhiteHiltConfig.BindAdminOnly(LindormSection, "NightOnly", true, "The Lindorm only comes at night.");
+        LindormChancePerMinute = WhiteHiltConfig.BindAdminOnly(LindormSection, "ChancePerMinute", 3f, "Chance per minute, in percent, while every condition holds.",
+            new AcceptableValueRange<float>(0f, 100f));
+        LindormCooldownMinutes = WhiteHiltConfig.BindAdminOnly(LindormSection, "CooldownMinutes", 30f, "Real minutes before the Lindorm can come for the same player again.",
+            new AcceptableValueRange<float>(0f, 1440f));
+        LindormHealth = WhiteHiltConfig.BindAdminOnly(LindormSection, "Health", 700f, "Health of the Lindorm.", new AcceptableValueRange<float>(50f, 20000f));
+        LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 55f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
+        LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.3f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
+            new AcceptableValueRange<float>(0.5f, 3f));
+
+        SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in newly generated Black Forest land. Off: no new nests.");
+        SpiderHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Health", 120f, "Health of a giant spider.", new AcceptableValueRange<float>(10f, 5000f));
+        SpiderDamage = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Damage", 18f, "Pierce damage of a giant spider's bite.", new AcceptableValueRange<float>(0f, 500f));
+        SpiderPoison = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Poison", 15f, "Poison damage of a giant spider's bite, dealt over time.", new AcceptableValueRange<float>(0f, 500f));
+        SpiderWebSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "WebSeconds", 3f, "Seconds a bite slows its victim with web. 0 = no slow.",
+            new AcceptableValueRange<float>(0f, 30f));
+        SpiderScale = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Scale", 1f, "Size of a giant spider (1 = about 1.6 m across). Applies after a restart.",
+            new AcceptableValueRange<float>(0.3f, 3f));
+        NestChancePerZone = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestChancePerZone", 0.15f,
+            "Chance of a nest in each newly generated Black Forest zone (64 x 64 m). Existing land keeps what it has.", new AcceptableValueRange<float>(0f, 1f));
+        NestHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestHealth", 300f, "Health of a nest.", new AcceptableValueRange<float>(10f, 10000f));
+        NestMaxNear = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestMaxNear", 3, "Spiders a nest keeps around it at most.", new AcceptableValueRange<int>(1, 10));
+    }
+
+    /// <summary>
+    /// Whether the Lindorm lurks in a biome.
+    /// </summary>
+    /// <param name="biome">The biome.</param>
+    /// <returns>True if it does.</returns>
+    public static bool IsLindormBiome(Heightmap.Biome biome)
+    {
+        if (parsedBiomes != LindormBiomes.Value)
+        {
+            parsedBiomes = LindormBiomes.Value;
+            biomes = Heightmap.Biome.None;
+            foreach (string part in (parsedBiomes ?? string.Empty).Split(',').Select(part => part.Trim()).Where(part => part.Length > 0))
+            {
+                if (Enum.TryParse(part, true, out Heightmap.Biome parsed))
+                {
+                    biomes |= parsed;
+                }
+            }
+        }
+
+        return biome != Heightmap.Biome.None && (biomes & biome) != 0;
+    }
+}

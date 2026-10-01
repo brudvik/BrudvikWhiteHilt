@@ -1,0 +1,22 @@
+{
+  "source": "Worm Monster by CR!STALLL, CC BY 4.0, https://sketchfab.com/3d-models/5563066315694125b741901681d387c5",
+  "clips": [
+    { "name": "idle", "take": "Idle", "loop": true },
+    { "name": "walk", "take": "WALK", "loop": true },
+    { "name": "run", "take": "RUN", "loop": true },
+    { "name": "attack", "take": "ATTACK", "loop": false },
+    { "name": "hit", "take": "WOUND_1", "loop": false },
+    { "name": "die", "take": "DEATH", "loop": false }
+  ],
+  "front_bone": "Teeth_Up_L_026",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 2.5,
+    "run": "run",
+    "run_speed": 6,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "lindorm_bite", "clip": "attack", "hit": 0.5 } ],
+    "always_animate": true
+  }
+}

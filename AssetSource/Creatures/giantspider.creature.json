@@ -1,0 +1,62 @@
+{
+  "source": "Wolf Spider (Rigged) - (Rabidosa rabida) by Dreaming In Alternation 27, CC BY 4.0, https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe",
+  "generate": [
+    {
+      "name": "idle",
+      "base": { "take": "Wolf Spider Armature|Spider walking", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 24, "rot": { "Root_010": [-3, 0, 0], "Back_037": [4, 0, 0], "PedopalpSegmentA.L": [0, 0, -15], "PedopalpSegmentA.R": [0, 0, 15] } },
+        { "frame": 48 }
+      ]
+    },
+    {
+      "name": "bite",
+      "base": { "take": "Wolf Spider Armature|Spider walking", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 8, "rot": { "Root_010": [-22, 0, 0], "LegSegmentA.L.001": [0, 0, -65], "LegSegmentA.R.001": [0, 0, 65], "LegSegmentA.L.002": [0, 0, -35], "LegSegmentA.R.002": [0, 0, 35], "Fang.": [40, 0, 0] } },
+        { "frame": 13, "rot": { "Root_010": [12, 0, 0], "LegSegmentA.L.001": [0, -30, -10], "LegSegmentA.R.001": [0, 30, 10], "Fang.": [-15, 0, 0] } },
+        { "frame": 22 }
+      ]
+    },
+    {
+      "name": "hit",
+      "base": { "take": "Wolf Spider Armature|Spider walking", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 3, "rot": { "Root_010": [8, 0, 0], "LegSegmentB.": [-15, 0, 0] } },
+        { "frame": 10 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "Wolf Spider Armature|Spider walking", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 6, "rot": { "Root_010": [-15, 90, 0], "LegSegmentA.L": [0, 0, -20], "LegSegmentA.R": [0, 0, 20], "LegSegmentB.": [-30, 0, 0] } },
+        { "frame": 14, "rot": { "Root_010": [0, 180, 0], "LegSegmentA.L": [0, 0, -40], "LegSegmentA.R": [0, 0, 40], "LegSegmentB.": [-60, 0, 0], "LegSegmentD.": [-40, 0, 0] } },
+        { "frame": 24, "rot": { "Root_010": [0, 180, 0], "LegSegmentA.L": [0, 0, -45], "LegSegmentA.R": [0, 0, 45], "LegSegmentB.": [-70, 0, 0], "LegSegmentD.": [-50, 0, 0] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "idle", "loop": true },
+    { "name": "walk", "take": "Wolf Spider Armature|Spider walking fast", "loop": true },
+    { "name": "run", "take": "Wolf Spider Armature|Spider running", "loop": true },
+    { "name": "bite", "take": "bite", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "Fang.L_038",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 2.5,
+    "run": "run",
+    "run_speed": 7,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "spider_bite", "clip": "bite", "hit": 0.59 } ],
+    "always_animate": true
+  }
+}

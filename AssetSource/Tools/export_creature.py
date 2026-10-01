@@ -9,6 +9,9 @@ in submesh order, with their textures, colour and emission). The json spec (see 
   pose     {"take", "frame"}: the pose in which "eyes" positions are given (world space, Blender z up)
   eyes     glowing spheres skinned to one bone: {"bone", "radius", "positions": [[x,y,z], ...], "colour", "emission"}
   clips    [{"name", "take", "loop"}]: actions to keep, renamed; every other action is dropped
+  generate [{"name", "base": {"take", "frame"}, "keys": [{"frame", "rot": {bone prefix: [x, y, z] degrees}}]}]: new actions
+           for clips the model lacks, keyed at each key frame as the base pose plus local rotations of every bone whose
+           name starts with a prefix; list them in clips with take = name to keep them
   texture_size  largest texture side (default 1024)
 """
 import json
@@ -45,6 +48,8 @@ def main():
         meshes.append(add_eyes(armature, body, spec["eyes"]))
 
     join(body, meshes)
+    for clip in spec.get("generate", []):
+        generate_clip(armature, clip)
     keep_clips(spec.get("clips", []))
     materials = export_materials(body, name, out, spec.get("texture_size", 1024))
     with open(os.path.join(out, f"{name}.materials.json"), "w", encoding="utf-8") as handle:
@@ -115,6 +120,35 @@ def join(body, meshes):
     if len(meshes) > 1:
         bpy.ops.object.join()
     bpy.ops.object.material_slot_remove_unused()
+
+
+def generate_clip(armature, clip):
+    """Keys a new action: the base pose with extra local rotations per key frame, smoothed by Blender's curves."""
+    base_action = bpy.data.actions[clip["base"]["take"]]
+    set_pose(armature, {"take": base_action.name, "frame": clip["base"].get("frame", 0)})
+    bones = armature.pose.bones
+    base = {bone.name: (bone.location.copy(), bone.rotation_quaternion.copy(), bone.scale.copy()) for bone in bones}
+
+    action = bpy.data.actions.new(clip["name"])
+    armature.animation_data.action = action
+    for key in clip["keys"]:
+        offsets = {}
+        for prefix, degrees in key.get("rot", {}).items():
+            matched = [name for name in base if name.startswith(prefix)]
+            if not matched:
+                raise SystemExit(f"{clip['name']}: no bone starts with '{prefix}'")
+            for name in matched:
+                offsets[name] = mathutils.Euler([math.radians(angle) for angle in degrees]).to_quaternion()
+        for bone in bones:
+            location, rotation, scale = base[bone.name]
+            bone.rotation_mode = "QUATERNION"
+            bone.location = location
+            bone.rotation_quaternion = rotation @ offsets[bone.name] if bone.name in offsets else rotation
+            bone.scale = scale
+            for path in ("location", "rotation_quaternion", "scale"):
+                bone.keyframe_insert(path, frame=key["frame"])
+    action.use_fake_user = True
+    armature.animation_data.action = None
 
 
 def keep_clips(clips):

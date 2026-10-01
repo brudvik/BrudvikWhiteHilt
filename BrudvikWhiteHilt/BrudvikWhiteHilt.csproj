@@ -328,7 +328,14 @@
     <Compile Include="Kraken\KrakenSpawner.cs" />
     <Compile Include="Kraken\KrakenTentacle.cs" />
     <Compile Include="Kraken\OctopusSwim.cs" />
+    <Compile Include="Monsters\LindormBurrow.cs" />
+    <Compile Include="Monsters\LindormService.cs" />
+    <Compile Include="Monsters\MonsterCommands.cs" />
+    <Compile Include="Monsters\MonsterCorpse.cs" />
+    <Compile Include="Monsters\MonsterRegistry.cs" />
+    <Compile Include="Monsters\MonsterSettings.cs" />
     <Compile Include="Patches\Kraken\KrakenPatches.cs" />
+    <Compile Include="Patches\Monsters\MonsterPatches.cs" />
     <Compile Include="Sound\IndoorAudioFilter.cs" />
     <Compile Include="Sound\IndoorSound.cs" />
     <Compile Include="Sound\IndoorSoundSettings.cs" />

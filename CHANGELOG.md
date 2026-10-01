@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.21.0 - 2026-10-01
+
+### Added
+- Lindorm: a great worm that breaks out of the ground near players on foot in the Black Forest and the Swamp at night, once Eikthyr is slain; it burrows back down when it loses you or at dawn, and drops Lindorm Scale, Entrails and sometimes the Lindorm Trophy. `whitehilt_lindorm` shows the conditions and `whitehilt_lindorm summon` calls it (admins)
+- Giant spiders: poisonous spiders whose bite webs you (slowed for a few seconds), spawned by spider nests in newly generated Black Forest land; they drop Spider Silk, Poison Gland and sometimes the Giant Spider Trophy, and a destroyed nest drops Spider Silk
+- Asset pipeline: `export_creature.py` can key new animations for a model that lacks them (`generate` in the creature.json), and creature controllers can blend walk and run and play a stagger clip
+
 ## v0.20.0 - 2026-10-01
 
 ### Added

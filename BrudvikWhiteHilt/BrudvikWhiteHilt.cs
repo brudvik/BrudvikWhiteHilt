@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.20.0";
+    public const string PluginVersion = "0.21.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -82,6 +82,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Kraken.KrakenSettings.Initialize();
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();
+        Monsters.MonsterSettings.Initialize();
+        Monsters.MonsterCommands.Register();
+        Monsters.MonsterRegistry.Initialize();
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
@@ -213,6 +216,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Backpack.BackpackLayout.Refresh();
         Planting.Plantables.Apply();
         forageables.ForEach(forageable => forageable.ApplyConfig());
+        Monsters.MonsterRegistry.ApplyConfig();
         foreach (WhiteHiltFoodBase food in customItems.OfType<WhiteHiltFoodBase>())
         {
             food.ApplyConfig();
