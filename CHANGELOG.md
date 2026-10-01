@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.30.0 - 2026-10-01
+
+### Added
+- **F7** opens and closes the White Hilt settings window anywhere, not only from the inventory. Change it in the window under `Settings.Keys` → `OpenSettings`
+
+### Changed
+- The settings cog is replaced by a small White Hilt panel in the bottom left corner of the inventory, right of the health and food bars: a short explanation, the shortcut and a **Settings** button like the Craft button. The cog was easy to miss and floated in the middle of the screen
+- The settings window shows the description of a setting in a dark box that fills the space down to the buttons
+
 ## v0.29.2 - 2026-10-01
 
 ### Fixed

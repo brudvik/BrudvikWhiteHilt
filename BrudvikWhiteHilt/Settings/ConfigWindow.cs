@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Progression;
@@ -42,6 +43,7 @@ public class ConfigWindow : MonoBehaviour
     };
 
     private static ConfigWindow instance;
+    private static ConfigEntry<KeyboardShortcut> keyOpen;
 
     private readonly Dictionary<ConfigEntryBase, object> pending = new();
     private readonly Dictionary<ConfigEntryBase, Text> labels = new();
@@ -52,6 +54,7 @@ public class ConfigWindow : MonoBehaviour
     private string family;
     private bool inputBlocked;
     private ConfigEntryBase capturing;
+    private int captureEndFrame = -1;
     private Text captureLabel;
 
     private Text tabLocalLabel;
@@ -68,6 +71,11 @@ public class ConfigWindow : MonoBehaviour
     /// True while the window is open.
     /// </summary>
     public static bool IsOpen => instance != null && instance.gameObject.activeSelf;
+
+    /// <summary>
+    /// The key that opens the window, as text, or empty when none is bound.
+    /// </summary>
+    public static string OpenKeyText => keyOpen == null || keyOpen.Value.MainKey == KeyCode.None ? string.Empty : keyOpen.Value.ToString();
 
     private static bool CanEditServer => SynchronizationManager.Instance.PlayerIsAdmin;
 
@@ -95,6 +103,45 @@ public class ConfigWindow : MonoBehaviour
         Translations.AddEnglish("whitehilt_settings_default", "Default: {0}");
         Translations.AddEnglish("whitehilt_settings_reset", "Back to the default value");
         Translations.AddEnglish("whitehilt_settings_open", "White Hilt settings");
+        Translations.AddEnglish("whitehilt_settings_panel_title", "White Hilt");
+        Translations.AddEnglish("whitehilt_settings_panel_text", "All White Hilt settings: your own and the server's.");
+        Translations.AddEnglish("whitehilt_settings_panel_text_key", "All White Hilt settings: your own and the server's. Shortcut: {0}");
+        Translations.AddEnglish("whitehilt_settings_button", "Settings");
+    }
+
+    /// <summary>
+    /// Binds the key that opens the window. Call from the plugin's Awake, after the config is initialized.
+    /// </summary>
+    public static void BindKey()
+    {
+        keyOpen = WhiteHiltConfig.BindLocal("Settings.Keys", "OpenSettings", new KeyboardShortcut(KeyCode.F7), "Opens or closes the White Hilt settings window.");
+    }
+
+    /// <summary>
+    /// Opens or closes the window when its key is pressed. Call every frame.
+    /// </summary>
+    public static void CheckKey()
+    {
+        if (keyOpen == null || !BackpackInput.Pressed(keyOpen))
+        {
+            return;
+        }
+
+        if (IsOpen)
+        {
+            // The same press may just have been captured as a new key binding in the window.
+            if (instance.capturing == null && instance.captureEndFrame != Time.frameCount)
+            {
+                instance.Close();
+            }
+
+            return;
+        }
+
+        if (!BackpackInput.Typing())
+        {
+            Toggle();
+        }
     }
 
     /// <summary>
@@ -153,14 +200,25 @@ public class ConfigWindow : MonoBehaviour
         groupContent = CreateScroll(panel, new Vector2(20f, 160f), new Vector2(20f + GroupWidth, -115f), anchorRight: 0f);
         rowContent = CreateScroll(panel, new Vector2(40f + GroupWidth, 160f), new Vector2(-20f, -115f), anchorRight: 1f);
 
+        // Same dark backing as the lists, filling the space down to the buttons.
+        RectTransform descriptionFrame = new GameObject("DescriptionFrame", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
+        descriptionFrame.SetParent(panel, false);
+        descriptionFrame.anchorMin = new Vector2(0f, 0f);
+        descriptionFrame.anchorMax = new Vector2(1f, 0f);
+        descriptionFrame.offsetMin = new Vector2(20f, 68f);
+        descriptionFrame.offsetMax = new Vector2(-20f, 152f);
+        Image frameImage = descriptionFrame.GetComponent<Image>();
+        frameImage.color = new Color(0f, 0f, 0f, 0.35f);
+        frameImage.raycastTarget = false;
+
         description = GUIManager.Instance.CreateText(string.Empty, panel, bottomLeft, bottomLeft, Vector2.zero, GUIManager.Instance.AveriaSerif, 16,
             labelColor, true, Color.black, Width - 40f, 80f, false).GetComponent<Text>();
         description.alignment = TextAnchor.UpperLeft;
         RectTransform descriptionRect = description.rectTransform;
         descriptionRect.anchorMin = new Vector2(0f, 0f);
         descriptionRect.anchorMax = new Vector2(1f, 0f);
-        descriptionRect.offsetMin = new Vector2(24f, 70f);
-        descriptionRect.offsetMax = new Vector2(-24f, 152f);
+        descriptionRect.offsetMin = new Vector2(32f, 74f);
+        descriptionRect.offsetMax = new Vector2(-32f, 146f);
 
         status = GUIManager.Instance.CreateText(string.Empty, panel, bottomLeft, bottomLeft, new Vector2(24f + 330f, 40f), GUIManager.Instance.AveriaSerif, 16,
             changedColor, true, Color.black, 660f, 36f, false).GetComponent<Text>();
@@ -669,6 +727,7 @@ public class ConfigWindow : MonoBehaviour
 
             ConfigEntryBase entry = capturing;
             capturing = null;
+            captureEndFrame = Time.frameCount;
             if (code == KeyCode.Escape)
             {
                 captureLabel.text = KeyText(CurrentValue(entry));

@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.29.2";
+    public const string PluginVersion = "0.30.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -61,6 +61,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Translations.LoadEmbedded();
         DynamicTexts.Register();
         Settings.ConfigWindow.RegisterTranslations();
+        Settings.ConfigWindow.BindKey();
         Settings.ConfigText.RegisterCommand();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
@@ -138,6 +139,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     private void Update()
     {
         Settings.ConfigButton.EnsureCreated();
+        Settings.ConfigWindow.CheckKey();
         chests?.Update();
         if (refreshPending)
         {

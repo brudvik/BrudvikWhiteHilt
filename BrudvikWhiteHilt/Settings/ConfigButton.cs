@@ -1,122 +1,159 @@
 using Jotunn.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BrudvikWhiteHilt.Settings;
 
 /// <summary>
-/// The cog button in the bottom left corner while the inventory is open; it opens the settings window.
+/// A small panel in the bottom left corner while the inventory is open, right of the health and food bars, with a
+/// short explanation and a button that opens the settings window.
 /// </summary>
 public class ConfigButton : MonoBehaviour
 {
-    private const float Size = 52f;
-    private const int IconPixels = 128;
-    private const int Teeth = 8;
+    private const float PanelWidth = 290f;
+    private const float PanelHeight = 150f;
+    private const float Left = 150f;
+    private const float Bottom = 16f;
+    private const float Padding = 14f;
+    private const float ButtonHeight = 46f;
 
     private static ConfigButton instance;
-    private static Sprite icon;
 
-    private GameObject button;
+    private GameObject panel;
+    private Text title;
+    private Text text;
+    private TMP_Text buttonTmp;
+    private Text buttonText;
 
     /// <summary>
-    /// Creates the button once the game's GUI exists. Cheap to call every frame.
+    /// Creates the panel once the game's GUI exists. Cheap to call every frame.
     /// </summary>
     public static void EnsureCreated()
     {
-        if (instance != null || GUIManager.CustomGUIFront == null || InventoryGui.instance == null)
+        if (instance != null || InventoryGui.instance == null)
         {
             return;
         }
 
-        GameObject root = new("WhiteHiltSettingsButton", typeof(RectTransform));
-        root.transform.SetParent(GUIManager.CustomGUIFront.transform, false);
+        Canvas canvas = InventoryGui.instance.GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            return;
+        }
+
+        // Full screen on the game's GUI canvas, so the corner and the scaling match the HUD.
+        GameObject root = new("WhiteHiltSettingsPanel", typeof(RectTransform));
+        RectTransform rect = (RectTransform)root.transform;
+        rect.SetParent(canvas.rootCanvas.transform, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = rect.offsetMax = Vector2.zero;
         instance = root.AddComponent<ConfigButton>();
         instance.Build();
     }
 
     private void Build()
     {
-        button = new GameObject("Cog", typeof(RectTransform));
-        button.transform.SetParent(transform, false);
-        RectTransform rect = (RectTransform)button.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.zero;
-        rect.pivot = Vector2.zero;
-        rect.sizeDelta = new Vector2(Size, Size);
-        rect.anchoredPosition = new Vector2(24f, 24f);
+        Vector2 corner = Vector2.zero;
+        panel = GUIManager.Instance.CreateWoodpanel(transform, corner, corner, Vector2.zero, PanelWidth, PanelHeight, false);
+        panel.name = "Panel";
+        RectTransform panelRect = (RectTransform)panel.transform;
+        panelRect.pivot = corner;
+        panelRect.anchoredPosition = new Vector2(Left, Bottom);
 
-        Image image = button.AddComponent<Image>();
-        image.sprite = GetIcon();
-        image.color = new Color(0.95f, 0.88f, 0.7f);
-        Outline outline = button.AddComponent<Outline>();
-        outline.effectColor = new Color(0f, 0f, 0f, 0.8f);
-        outline.effectDistance = new Vector2(1.5f, -1.5f);
+        Vector2 top = new(0.5f, 1f);
+        title = GUIManager.Instance.CreateText(string.Empty, panelRect, top, top, new Vector2(0f, -Padding - 12f), GUIManager.Instance.AveriaSerifBold, 20,
+            GUIManager.Instance.ValheimOrange, true, Color.black, PanelWidth - Padding * 2f, 24f, false).GetComponent<Text>();
+        title.alignment = TextAnchor.MiddleCenter;
 
-        Button click = button.AddComponent<Button>();
-        click.targetGraphic = image;
-        ColorBlock colors = click.colors;
-        colors.highlightedColor = new Color(1f, 0.75f, 0.3f);
-        colors.pressedColor = new Color(0.8f, 0.6f, 0.25f);
-        click.colors = colors;
-        click.onClick.AddListener(ConfigWindow.Toggle);
-        button.SetActive(false);
+        text = GUIManager.Instance.CreateText(string.Empty, panelRect, top, top, new Vector2(0f, -Padding - 24f - 22f), GUIManager.Instance.AveriaSerif, 14,
+            new Color(0.9f, 0.88f, 0.8f), true, Color.black, PanelWidth - Padding * 2f, 40f, false).GetComponent<Text>();
+        text.alignment = TextAnchor.MiddleCenter;
+
+        CreateButton(panelRect);
+        panel.SetActive(false);
+    }
+
+    // A copy of the vanilla Craft button, so it looks and sounds the same.
+    private void CreateButton(RectTransform parent)
+    {
+        Button source = InventoryGui.instance.m_craftButton;
+        GameObject copy = source != null
+            ? Instantiate(source.gameObject, parent, false)
+            : GUIManager.Instance.CreateButton(string.Empty, parent, Vector2.zero, Vector2.zero, Vector2.zero, 200f, ButtonHeight);
+        copy.name = "SettingsButton";
+        copy.SetActive(true);
+
+        // The copy must not answer the gamepad's craft key.
+        foreach (UIGamePad pad in copy.GetComponentsInChildren<UIGamePad>(true))
+        {
+            if (pad.m_hint != null)
+            {
+                Destroy(pad.m_hint);
+            }
+
+            Destroy(pad);
+        }
+
+        // The craft tooltip lists recipe requirements, and a Localize component would reset the label to "Craft".
+        foreach (MonoBehaviour behaviour in copy.GetComponentsInChildren<MonoBehaviour>(true))
+        {
+            if (behaviour is UITooltip || behaviour.GetType().Name == "Localize")
+            {
+                Destroy(behaviour);
+            }
+        }
+
+        RectTransform rect = (RectTransform)copy.transform;
+        rect.anchorMin = new Vector2(0f, 0f);
+        rect.anchorMax = new Vector2(1f, 0f);
+        rect.pivot = new Vector2(0.5f, 0f);
+        rect.offsetMin = new Vector2(Padding, Padding);
+        rect.offsetMax = new Vector2(-Padding, Padding + ButtonHeight);
+
+        Button button = copy.GetComponent<Button>();
+        button.onClick = new Button.ButtonClickedEvent();
+        button.onClick.AddListener(ConfigWindow.Toggle);
+        button.interactable = true;
+
+        buttonTmp = copy.GetComponentInChildren<TMP_Text>(true);
+        buttonText = buttonTmp == null ? copy.GetComponentInChildren<Text>(true) : null;
     }
 
     private void Update()
     {
         bool show = InventoryGui.IsVisible() && !ConfigWindow.IsOpen;
-        if (button.activeSelf != show)
+        if (panel.activeSelf == show)
         {
-            button.SetActive(show);
+            return;
         }
+
+        if (show)
+        {
+            Refresh();
+        }
+
+        panel.SetActive(show);
     }
 
-    // A cog drawn in code, 4x supersampled, so no texture has to ship with the mod.
-    private static Sprite GetIcon()
+    // Texts follow the language and the chosen key, so they are set each time the panel appears.
+    private void Refresh()
     {
-        if (icon != null)
+        title.text = Localization.instance.Localize("$whitehilt_settings_panel_title");
+        string key = ConfigWindow.OpenKeyText;
+        text.text = string.IsNullOrEmpty(key)
+            ? Localization.instance.Localize("$whitehilt_settings_panel_text")
+            : string.Format(Localization.instance.Localize("$whitehilt_settings_panel_text_key"), key);
+
+        string label = Localization.instance.Localize("$whitehilt_settings_button");
+        if (buttonTmp != null)
         {
-            return icon;
+            buttonTmp.text = label;
         }
-
-        Texture2D texture = new(IconPixels, IconPixels, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
-        Color32[] pixels = new Color32[IconPixels * IconPixels];
-        for (int y = 0; y < IconPixels; y++)
+        else if (buttonText != null)
         {
-            for (int x = 0; x < IconPixels; x++)
-            {
-                int covered = 0;
-                for (int sy = 0; sy < 4; sy++)
-                {
-                    for (int sx = 0; sx < 4; sx++)
-                    {
-                        float u = (x + (sx + 0.5f) / 4f) / IconPixels * 2f - 1f;
-                        float v = (y + (sy + 0.5f) / 4f) / IconPixels * 2f - 1f;
-                        covered += InCog(u, v) ? 1 : 0;
-                    }
-                }
-
-                pixels[y * IconPixels + x] = new Color32(255, 255, 255, (byte)(covered * 255 / 16));
-            }
+            buttonText.text = label;
         }
-
-        texture.SetPixels32(pixels);
-        texture.Apply();
-        icon = Sprite.Create(texture, new Rect(0f, 0f, IconPixels, IconPixels), new Vector2(0.5f, 0.5f));
-        return icon;
-    }
-
-    private static bool InCog(float u, float v)
-    {
-        float radius = Mathf.Sqrt(u * u + v * v);
-        if (radius < 0.3f || radius > 0.95f)
-        {
-            return false;
-        }
-
-        // Position within one tooth period, 0 at a tooth's middle; teeth take 40% of the rim.
-        float angle = Mathf.Atan2(v, u) / (2f * Mathf.PI) * Teeth;
-        float phase = Mathf.Abs(angle - Mathf.Round(angle));
-        return radius <= 0.72f || phase < 0.2f;
     }
 }
