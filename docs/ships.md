@@ -72,5 +72,6 @@ Section `[Ships]` (admin only, synced from the server):
 | `ShipRoutes` | true | Route markers can be set at the Navigator's Table; saved markers stay when off |
 | `RouteAutopilot` | true | "Take me there" can sail the route |
 | `RouteMaxMarkers` | 5 | Most markers on a route |
+| `RouteMaxSpeed` | 45 | Above this speed in knots, "Take me there" takes the sail down to half until the ship is well below it; 0 never |
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

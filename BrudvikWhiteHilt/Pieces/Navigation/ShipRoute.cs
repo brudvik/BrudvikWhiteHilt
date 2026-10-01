@@ -26,6 +26,10 @@ public class ShipRoute : MonoBehaviour
     private const float SlowNearEnd = 150f;
     private const float SlowTurnDegrees = 50f;
     private const float CheckInterval = 0.25f;
+    private const float KnotsPerMetrePerSecond = 1.94384f;
+
+    // Over the speed limit the sail is reefed to half, and set full again below this share of the limit.
+    private const float UnreefBelow = 0.85f;
 
     // Headings tried around an obstacle, each way from the course.
     private const float AvoidStep = 15f;
@@ -47,6 +51,7 @@ public class ShipRoute : MonoBehaviour
     private uint readRevision = uint.MaxValue;
     private float nextCheck;
     private float avoidOffset;
+    private bool reefed;
 
     /// <summary>The ship the route belongs to.</summary>
     public Ship Ship => ship;
@@ -283,7 +288,22 @@ public class ShipRoute : MonoBehaviour
 
         float left = Remaining(point);
         bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), heading)) > SlowTurnDegrees;
-        ship.m_speed = left < SlowNearEnd || turning || avoidOffset != 0f ? Ship.Speed.Half : Ship.Speed.Full;
+        UpdateReef();
+        ship.m_speed = left < SlowNearEnd || turning || avoidOffset != 0f || reefed ? Ship.Speed.Half : Ship.Speed.Full;
+    }
+
+    private void UpdateReef()
+    {
+        float limit = ShipSettings.RouteMaxSpeed.Value;
+        float knots = Mathf.Abs(ship.GetSpeed()) * KnotsPerMetrePerSecond;
+        if (limit > 0f && knots > limit)
+        {
+            reefed = true;
+        }
+        else if (limit <= 0f || knots < limit * UnreefBelow)
+        {
+            reefed = false;
+        }
     }
 
     // Keeps the course when it is clear, else the nearest clear heading, trying the side already taken first.
@@ -340,6 +360,7 @@ public class ShipRoute : MonoBehaviour
         zdo.Set(sailingKey, false);
         ship.m_speed = Ship.Speed.Stop;
         avoidOffset = 0f;
+        reefed = false;
         if (!string.IsNullOrEmpty(message))
         {
             nview.InvokeRPC(ZNetView.Everybody, MessageRpc, message);

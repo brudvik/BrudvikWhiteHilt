@@ -100,6 +100,9 @@ public static class ShipSettings
     /// <summary>Most markers on a ship's route.</summary>
     public static ConfigEntry<int> RouteMaxMarkers { get; private set; }
 
+    /// <summary>Speed in knots above which a ship sailing its route reefs to half sail; 0 never reefs.</summary>
+    public static ConfigEntry<float> RouteMaxSpeed { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -166,6 +169,9 @@ public static class ShipSettings
             "\"Take me there\": a ship can sail its route on its own. Off stops a ship that sails a route.");
         RouteMaxMarkers = WhiteHiltConfig.BindAdminOnly(Section, "RouteMaxMarkers", 5,
             "Most markers on a ship's route.", new AcceptableValueRange<int>(1, 20));
+        RouteMaxSpeed = WhiteHiltConfig.BindAdminOnly(Section, "RouteMaxSpeed", 45f,
+            "Speed in knots above which a ship sailing its route on its own takes the sail down to half, until it is well below again. 0 never reefs.",
+            new AcceptableValueRange<float>(0f, 200f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

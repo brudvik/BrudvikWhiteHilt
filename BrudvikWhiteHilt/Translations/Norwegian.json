@@ -2343,6 +2343,8 @@
   "whitehilt_cfg_ships_routeautopilot_desc": "«Ta meg hit»: et skip kan seile ruta si på egen hånd. Av stopper et skip som seiler en rute.",
   "whitehilt_cfg_ships_routemaxmarkers": "Flest rutemerker",
   "whitehilt_cfg_ships_routemaxmarkers_desc": "Flest merker på ruta til et skip.",
+  "whitehilt_cfg_ships_routemaxspeed": "Fartsgrense på ruta",
+  "whitehilt_cfg_ships_routemaxspeed_desc": "Fart i knop der et skip som seiler ruta si på egen hånd tar ned til halvt seil, til farten er godt under igjen. 0 slår det av.",
   "whitehilt_cfg_ships_lanternbrightness": "Lyktens lysstyrke",
   "whitehilt_cfg_ships_lanternbrightness_desc": "Hvor mange ganger sterkere skipslykta lyser enn den vanlige lampen. Krever omstart.",
   "whitehilt_cfg_ships_lanternrange": "Lyktens rekkevidde",

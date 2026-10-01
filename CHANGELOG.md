@@ -4,6 +4,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## v0.31.0 - 2026-10-01
 
+### Changed
+- "Take me there" takes the sail down to half when the ship goes faster than 45 knots, and sets it full again once it is well below. Change it under `Ships` → `RouteMaxSpeed` (0 never reefs)
+
 ### Fixed
 - "Take me there" with several markers sailed straight for the last one when the way there was open water. It now sails past every marker in turn
 
