@@ -1,8 +1,10 @@
 # BrudvikWhiteHilt
 
+![Brudvik White Hilt](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/BrudvikWhiteHilt/Package/icon.png)
+
 ## Overview
 
-BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. Combines good with my mod: [BrudvikStackedChest](https://github.com/brudvik/BrudvikStackedChest).
+BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. The restocking chests of my former mod BrudvikStackedChest are now included.
 
 All items are named after **Dyrnwyn** - a legendary white-hilted sword from Welsh mythology that would blaze with fire when drawn by a worthy man.
 
@@ -15,349 +17,144 @@ All items are named after **Dyrnwyn** - a legendary white-hilted sword from Wels
 
 ## Features
 
----
+Every feature has its own page under [docs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs) with all items, recipes and settings.
 
-### ⚔️ WEAPONS
+### ⚔️ [White Hilt gear](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)
 
-All weapons are indestructible with enhanced stats: damage multiplier +0.5, damage per level +10, bonus fire/pierce/slash damage.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt Sword" height="120">
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **White Hilt Sword** | The Indestructible Sword of Dyrnwyn | Forge (Level 2) | Bronze ×20, Surtling Core ×5, Bronze Sword ×1 |
-| **White Hilt Bow** | The Indestructible Bow of Dyrnwyn | Forge (Level 2) | Iron ×20, Feathers ×20, Finewood Bow ×1 |
-| **White Hilt Battleaxe** | The Indestructible Battleaxe of Dyrnwyn | Forge (Level 2) | Iron ×30, Ancient Bark ×10, Bronze Axe ×1 |
-| **White Hilt Spear** | The Indestructible Spear of Dyrnwyn | Forge (Level 2) | Iron ×20, Ancient Bark ×10, Bronze Spear ×1 |
-| **White Hilt Mace** | The Indestructible Mace of Dyrnwyn | Forge (Level 2) | Iron ×20, Withered Bone ×5, Bronze Mace ×1 |
-| **White Hilt Atgeir** | The Indestructible Atgeir of Dyrnwyn | Forge (Level 2) | Iron ×25, Ancient Bark ×10, Bronze Atgeir ×1 |
-| **White Hilt Knife** | The Indestructible Knife of Dyrnwyn | Forge (Level 2) | Iron ×10, Leather Scraps ×5, Flint Knife ×1 |
-| **White Hilt Sledge** | The Indestructible Sledge of Dyrnwyn | Forge (Level 2) | Iron ×30, Ymir Remains ×10, Stagbreaker ×1 |
-| **White Hilt Crossbow** | The Indestructible Crossbow of Dyrnwyn | Forge (Level 2) | Iron ×20, Root ×10, Finewood Bow ×1 |
-| **White Hilt Staff of Fire** | The Indestructible Staff of Fire of Dyrnwyn | Forge (Level 2) | Surtling Core ×10, Ancient Bark ×10, Guck ×5 |
-| **White Hilt Staff of Ice** | The Indestructible Staff of Ice of Dyrnwyn | Forge (Level 2) | Iron ×10, Ancient Bark ×10, Guck ×5 |
-| **White Hilt Staff of Lightning** | The Indestructible Staff of Lightning of Dyrnwyn | Forge (Level 2) | Thunderstone ×5, Ancient Bark ×10, Guck ×5 |
-| **White Hilt Tower Shield** | The Indestructible Tower Shield of Dyrnwyn | Forge (Level 2) | Iron ×30, Chain ×10, Banded Shield ×1 |
-| **White Hilt Buckler** | The Indestructible Buckler of Dyrnwyn | Forge (Level 2) | Iron ×15, Chain ×5, Bronze Buckler ×1 |
+Indestructible weapons, shields, armour, tools and ammunition with their own models, the Megingjord upgrade and the Belt Pouch.
 
----
+### 🧪 [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 
-### 🛡️ ARMOR
+Nineteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
 
-All armor pieces are indestructible with: armor per level +10, movement modifier +0.05.
+### ⛵ [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **White Hilt Cape** | The Indestructible Cape of Dyrnwyn | Forge (Level 3) | Feathers ×30, Wraith Trophy ×3, Troll Hide Cape ×1 |
-| **White Hilt Helmet** | The Indestructible Helmet of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Helmet ×1 |
-| **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Chestplate ×1 |
-| **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Greaves ×1 |
-| **White Hilt Shield** | The Indestructible Shield of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Buckler ×1 |
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/harbour_anchor.png" alt="Harbour Anchor" height="120">
 
----
+The indestructible White Hilt Ship with nine deck upgrades, sailing help for every ship, and the Harbour Anchor that shows all ships on the map.
 
-### 💍 ACCESSORIES
+### 🏰 [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **White Hilt Megingjord** | Belt of Dyrnwyn - +700 carry weight | Forge (Level 2) | Iron ×10, Ymir Remains ×10, Megingjord ×1 |
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="A palisade fort" height="120">
 
----
+A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway.
 
-### 🏹 AMMUNITION
+### 🧭 [Navigation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/navigation.md)
 
-High-damage ammunition crafted in large quantities (200 per craft). Enhanced with fire and spirit damage.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **White Hilt Arrows** | Indestructible Arrows of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×5, Wood ×10 |
-| **White Hilt Bolts** | Indestructible Bolts of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×3, Wood ×5 |
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
 
----
+### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
-### 🔧 TOOLS
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Repair Anvil" height="120">
 
-All tools are indestructible with reduced stamina usage (stamina modifier -1).
+The Chain Bench for making chains at the forge, and the Repair Anvil that repairs all your gear at once.
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **White Hilt Hammer** | The Indestructible Hammer of Dyrnwyn | Workbench | Wood ×5, Stone ×1, Resin ×1 |
-| **White Hilt Axe** | The Indestructible Axe of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
-| **White Hilt Pickaxe** | The Indestructible Pickaxe of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
-| **White Hilt Hoe** | The Indestructible Hoe of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
-| **White Hilt Cultivator** | The Indestructible Cultivator of Dyrnwyn | Workbench | Wood ×10, Stone ×5, Resin ×5 |
+### 🌀 [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
 
----
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_portal.png" alt="White Hilt Portal" height="120">
 
-### 🧪 POTIONS
+Runes that let portals carry metal, a portal network with a travel map and the Home Stone, the Valkyrie Stone and the Portal Astrolabe.
 
-All potions are crafted in the **Cauldron** as Mead Base, then fermented in the **Fermenter** to produce the final mead.
+### 🔥 [Around the base](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)
 
-#### Timed Effects (20 minutes duration)
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-| Potion | Effect | Mead Base Requirements |
-|--------|--------|------------------------|
-| **Gift of Freya** | Grants immense stamina - running, jumping, attacking, blocking, dodging, swimming, sneaking and building restore a little stamina instead of draining it, stamina refilled on drink, +40 stamina regeneration. | Honey ×20, Raspberries ×20, Blueberries ×20 |
-| **Gift of Loki** | Grants endless Eitr - fills your Eitr and greatly boosts Eitr regeneration (requires Eitr from food). | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
-| **Gift of Odin** | God mode - 500 max HP, full heal on drink, heals 20 HP every frame, 21x health regeneration, 50% less fall damage. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
-| **Gift of Sleipnir** | Grants the speed of Odin's horse - +50% movement speed, no fall damage, higher jumps. | Honey ×10, Thistle ×10, Lox Meat ×5 |
-| **Gift of Ratatoskr** | Grants squirrel agility - +75% movement speed, -80% run stamina drain, higher jumps, no sneak stamina. | Resin ×5, Blueberries ×5, Mushroom ×5 |
-| **Gift of Njord** | Grants the blessing of the sea god - +100% swim speed, no swim stamina, cannot drown. | Raw Anglerfish ×10, Chitin ×5, Bloodbag ×5 |
-| **Gift of Surt** | Grants fire giant power - immune to fire and frost damage. | Surtling Core ×5, Coal ×20, Flametal ×2 |
-| **Gift of Skadi** | Grants winter goddess blessing - immune to frost, removes freezing/cold effects. | Wood ×5, Stone ×5, Mushroom ×5 |
-| **Gift of Baldur** | Grants near-invisibility - enemies can barely detect you, -99% noise, no sneak stamina. | Wood ×5, Stone ×5, Resin ×5 |
-| **Gift of Thor** | Grants thunder god strength - double chopping and mining damage, -50% attack stamina, -90% building/farming stamina, lightning immune. | Thunderstone ×3, Iron ×10, Honey ×10 |
-| **Gift of Brokkr** | Grants dwarf-smith skill - +25 to all skills (max 100), no stamina for building. | Wood ×5, Raspberries ×5, Blueberries ×5 |
-| **Gift of Tyr** | Grants war god steadfastness - no block stamina, -75% dodge stamina, 90% less knockback, +100 carry weight. | Wood ×5, Raspberries ×5, Resin ×5 |
-| **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, -50% attack stamina, +25% movement speed, heals 15% of damage dealt. | Wood ×5, Mushroom ×5, Dandelion ×5 |
-| **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
-| **Gift of Mimir** | Grants ancient wisdom - reveals the map in a 200m radius on drink, then 150m around you every 5 seconds, and marks creatures within 100m on the minimap. | Yggdrasil Wood ×10, Sap ×10, Eitr ×2 |
+Surt's Brazier for fires without fuel, crafting and building from nearby chests, and the Waste Well.
 
-#### Extended Duration (40 minutes)
+### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-| Potion | Effect | Mead Base Requirements |
-|--------|--------|------------------------|
-| **Gift of Idunn** | Grants eternal youth - 5x health/stamina/eitr regeneration, +1 HP/s. | Resin ×5, Raspberries ×5, Dandelion ×5 |
+Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest).
 
-#### Special Effects (30 minutes or until triggered)
+### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 
-| Potion | Effect | Mead Base Requirements |
-|--------|--------|------------------------|
-| **Gift of Hel** | Grants death protection - when a hit would be fatal or health drops below 10%, heals to full instead (one-time use). | Stone ×5, Blueberries ×5, Dandelion ×5 |
+Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven, beehive, fire, egg and breeding animal, with labels, an overview and messages.
 
-#### Instant/Permanent Effects
+### 🎒 [Backpack](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/backpack.md)
 
-| Potion | Effect | Mead Base Requirements |
-|--------|--------|------------------------|
-| **Gift of Hugin** | Permanently sets ALL skills to level 100. Named after Odin's raven of "thought". | Neck Tail ×20, Cloudberry ×20, Blueberries ×20 |
-| **Gift of Munin** | Permanently teaches ALL materials, revealing every recipe made from materials. Named after Odin's raven of "memory". | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
+An extra row, two hotbars, and slots for equipment, food, potions, accessories, shield, ammo and coins.
 
----
+### 🕰️ [Clock, sound & floating items](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
 
-### ⛵ SHIPS
+A clock with the weather on the HUD, muffled weather indoors, and dropped items that float.
 
-The ship is indestructible, immune to all damage types, Ashlands-ready, and has permanent tailwind enabled.
+### 🪵 [Beams, poles & banners](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md)
 
-| Item | Description | Requirements (Hammer) |
-|------|-------------|----------------------|
-| **White Hilt Ship** | The Indestructible Ship of Dyrnwyn | Fine Wood ×20, Iron Nails ×100, Bronze Nails ×100, Deer Hide ×15, Leather Scraps ×15 |
+Longer and angled beams and poles, White Hilt banners, and the logo in the main menu and loading screen.
 
-**Ship Features:**
-- Immune to fire, blunt, slash, pierce, chop, pickaxe, spirit, frost, lightning, and poison damage
-- Ashlands damage immune and resistant
-- Always has tailwind (full sail speed regardless of wind direction)
-- Comfort bonus: +5
+### 🎨 [Painting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/painting.md)
 
----
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Paint Bench" height="120">
 
-### ⚒️ SMITHING
+The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes.
 
-| Item | Description | Crafting Station | Requirements |
-|------|-------------|------------------|--------------|
-| **Chain Bench** | Forge extension with a smith's vise. While it stands next to the forge, the forge can make Chains | Hammer (next to the Forge) | Wood ×10, Iron ×4, Stone ×4 |
-| **Chain** (vanilla item) | Made at the forge, only with a Chain Bench attached | Forge + Chain Bench | Iron ×2, Coal ×1 |
+### 🏗️ [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
-The Chain Bench also counts as a forge extension, so the forge can reach level 8.
+A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator.
 
----
+### 🍄 [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)
 
-### 🌀 PORTAL RUNES
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
 
-Metal cannot go through portals. With runes it can, one metal tier at a time:
+Eight wild ingredients from the Meadows to the Mountains, the Stone Pot with its extensions, dishes and meads.
 
-1. Build a **Rune Forge** next to a forge and smith runes from iron.
-2. Raise a **Rune Post** within 8 m of the portal you travel **from**.
-3. Hang runes on the post (use the rune on it, like an item stand). Each rune lets that portal carry its metals. Several posts near one portal count together.
-4. With **all six runes on the same post**, the post glows and the portal carries **everything**, including dragon eggs, Hildir's chests and the Deep North boss drop.
+### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
 
-Looking at the portal shows which runes it has. Use the post to take the last rune back; a destroyed post drops its runes. Works for every portal that builds on the vanilla portal, also portals from other mods.
+Plant berry bushes, mushrooms, flowers, debris and saplings with the cultivator.
 
-| Item | Lets through | Crafting Station | Requirements |
-|------|--------------|------------------|--------------|
-| **Rune Forge** | Crafting station for the runes | Hammer (next to a Forge) | Fine Wood ×6, Iron ×6, Stone ×10 |
-| **Rune Post** | Holds up to six runes | Hammer (Workbench) | Wood ×6, Fine Wood ×4, Iron ×2 |
-| **Bronze Rune** | Copper, tin, bronze (ores and scrap) | Rune Forge | Iron ×2 |
-| **Iron Rune** | Iron (ore and scrap) | Rune Forge | Iron ×4 |
-| **Silver Rune** | Silver (ore) | Rune Forge | Iron ×6 |
-| **Black Metal Rune** | Black metal (scrap) | Rune Forge | Iron ×8 |
-| **Flametal Rune** | Flametal (ore, also the legacy kind) | Rune Forge | Iron ×10 |
-| **Gold Rune** | Gold (ore) | Rune Forge | Iron ×12 |
+### 🐗 [Animal husbandry](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/husbandry.md)
 
----
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/feeding_trough.png" alt="Feeding Trough" height="120">
 
-### 🍄 FORAGING & FOOD
+The Feeding Trough, favourite foods, the Animal Husbandry skill, the Tether Post, the Grooming Comb and produce.
 
-New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2). All recipes are available from the start; you only need the ingredients.
+### 📖 [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
 
-The plants spawn in zones that have not been generated yet. In areas you have already explored:
-- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
-- a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
-- a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
-- a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp
-- **Wolves** have a 20% chance to drop 1–2 Crowberries
+Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blocking, husbandry and exploration, a new Foraging skill, food and crops with stars, the Compost Bin and configurable skill loss on death.
 
-| Item | Description | Found / Crafted | Requirements |
-|------|-------------|-----------------|--------------|
-| **Chanterelle** | Golden funnel-shaped mushroom | Meadows forest edges, or extra drop from Mushroom | – |
-| **Wild Garlic** | Broad leaves with white flowers | Meadows forest shade, or extra drop from Dandelion | – |
-| **Porcini** | Brown-capped mushroom | Inside the Black Forest, or extra drop from Mushroom there | – |
-| **Lingonberries** | Tart red berries | Black Forest bushes, or extra drop from Blueberry bush | – |
-| **Cranberries** | Sour dark red berries | Swamp tussocks, or extra drop from Mushroom there | – |
-| **Sweet Gale** | Bitter bog shrub | Swamp, or extra drop from Thistle there | – |
-| **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
-| **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
-| **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
-| **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
-| **Chanterelle Stew** | Meadows: 30 health, 22 stamina, 25 min | Stone Pot | Chanterelle ×3, Wild Garlic ×1, Raw Meat ×1 |
-| **Wild Garlic Soup** | Meadows: 18 health, 32 stamina, 25 min | Stone Pot | Wild Garlic ×2, Chanterelle ×1, Raspberries ×2 |
-| **Porcini Stew** | Black Forest: 40 health, 26 stamina, 30 min | Stone Pot | Porcini ×3, Chanterelle ×1, Deer Meat ×1 |
-| **Lingonberry Soup** | Black Forest: 24 health, 42 stamina, 30 min | Stone Pot | Lingonberries ×3, Wild Garlic ×1, Honey ×1 |
-| **Sweet Gale Sausages** | Swamp: 48 health, 26 stamina, 32 min | Stone Pot | Sweet Gale ×2, Wild Garlic ×1, Entrails ×3 |
-| **Cranberry Soup** | Swamp: 26 health, 48 stamina, 32 min | Stone Pot | Cranberries ×3, Lingonberries ×1, Turnip ×1 |
-| **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot level 2 | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
-| **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot level 2 | Roseroot ×3, Lingonberries ×1, Onion ×1 |
-| **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |
-| **Roseroot Mead** | Stamina regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Roseroot ×5, Crowberries ×5 |
+### 🐕 [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
 
----
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog House" height="120">
 
-### ⚙️ PROGRESSION (CONFIG)
+Buy a puppy from the Bog Witch and raise it into a companion that follows, fights, learns tricks, grows old and has litters.
 
-Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server.
+### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 
-| Setting | Values | Description |
-|---------|--------|-------------|
-| `[General] Mode` | `Full` (default), `Linear` | Full: every recipe is available as before. Linear: White Hilt gear unlocks biome by biome. |
-| `[General] ShowUnlockMessages` | `true`/`false` | Show a message listing the newly available items when a tier unlocks. |
-| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
-| `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in zones generated from now on. Existing zones are not changed. |
-| `[Foraging.<Name>] SpawnPerZone` | 0–20 | Maximum groups per zone (64 × 64 m). Values below 1 are a chance to place one group. |
-| `[Foraging.<Name>] ExtraDropChance` | 0–1 | Chance that picking the matching vanilla plant also gives the ingredient. 0 turns it off. |
-| `[Foraging.Crowberries] CreatureDropChance` | 0–1 | Chance that a Wolf drops 1–2 Crowberries. |
-| `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish. Changes also apply to food already in inventories. |
+A world that grows harder as you progress: up to 5 stars, black beasts in the dark hour and the rare blood moon.
 
-Foraging and food settings take effect without a restart.
+### 🐙 [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
-In **Linear** mode, a tier unlocks the first time you obtain its key material. Recipes in that tier also cost some of that material, unless they already require it.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken" height="120">
 
-| Tier | Unlocked by | Extra cost | Default items |
-|------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead |
-| Black Forest | Bronze | Bronze ×5 | Sword · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
-| Swamp | Iron | Iron ×5 | Ship, Chain Bench, Rune Forge, Rune Post, all runes, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts · Fenrir, Skadi, Njord |
-| Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
-| Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
-| Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
-| Ashlands | Flametal | Flametal ×3 | Surt |
+Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your ship with its tentacles.
 
-Recipes are hidden, never removed, so switching mode never deletes items you already own.
+### 🕷️ [Lindorm & giant spiders](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Giant Spider" height="120">
+
+A great worm that breaks out of the forest floor at night, and poisonous giant spiders around nests in the Black Forest.
+
+### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
+
+An in-game settings window (cog in the inventory) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
 
 ## Compilation
 
 Please notice that it won't be possible to compile this `mod` out of the box. Make sure you read up on [Valheim Mod Development](https://github.com/Valheim-Modding/JotunnModStub).
 There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
 the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
+The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) on Graphicriver under the same terms; without them the chests use the vanilla chest icon.
 
-The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run.
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
+
+The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
 ## Changelog
 
-### v0.6.0 - 2026-09-28
-
-#### Added
-- Portal runes: a Rune Forge (built next to a forge), six iron runes (bronze, iron, silver, black metal, flametal, gold) and a Rune Post. Runes on a post near the portal you travel from let it carry their metals; all six on one post let it carry everything
-
-### v0.5.0 - 2026-09-28
-
-#### Added
-- Chain Bench: a forge extension with a smith's vise and hanging chains. While it stands next to the forge, the forge makes Chains from Iron ×2 and Coal ×1
-
-### v0.4.0 - 2026-09-28
-
-#### Added
-- Cranberries and Sweet Gale in the Swamp. In existing worlds, red Mushrooms in the Swamp sometimes give Cranberries and Thistles there sometimes give Sweet Gale
-- Sweet Gale Sausages and Cranberry Soup, Swamp dishes between the Black Forest and Mountain food
-- Herb Tray: a Stone Pot extension with a mortar and herbs that raises the pot to level 2
-- Lingonberry Mead (frost resistance) and Roseroot Mead (faster stamina regeneration), brewed in the Cauldron and fermented like vanilla meads
-
-#### Changed
-- The Stone Pot has its own model: a lidded stone pot hanging from the tripod, instead of a shrunken vanilla cauldron
-- Mountain Stew and Roseroot Broth now need Stone Pot level 2, so a Herb Tray next to the pot
-
-### v0.3.0 - 2026-09-27
-
-#### Added
-- Porcini and Lingonberries in the Black Forest, Crowberries and Roseroot in the Mountains
-- Porcini Stew, Lingonberry Soup, Mountain Stew and Roseroot Broth, cooked in the Stone Pot
-- Wolves sometimes drop Crowberries, and Blueberry bushes sometimes give Lingonberries
-- Config for every forageable (spawning, spawn density, extra-drop chance) and every Stone Pot dish (health, stamina, duration, regen), admin-only and synced from the server
-- Norwegian translations for the whole mod: items, the Stone Pot, the ship, potions and their messages, and the tier unlock messages
-
-#### Changed
-- Extra drops from vanilla plants now depend on the biome: a Mushroom gives a Chanterelle in the Meadows and a Porcini in the Black Forest
-- If a custom model fails to load, the item keeps the vanilla look instead of disappearing
-
-#### Fixed
-- White Hilt items are now registered at the main menu instead of on the first world load, so equipped White Hilt gear no longer disappears from the character preview
-
-### v0.2.0 - 2026-09-27
-
-#### Added
-- Chanterelle and Wild Garlic, pickable in the Meadows forests, and as a 30% extra drop from vanilla Mushroom and Dandelion
-- Stone Pot: a cooking station built from Stone, Flint and Wood
-- Chanterelle Stew (30 health, 22 stamina) and Wild Garlic Soup (18 health, 32 stamina), cooked in the Stone Pot
-
-### v0.1.0 - 2026-09-26
-
-#### Added
-- Config file with `Full` and `Linear` progression modes, synced from the server (admin-only)
-- Linear mode: White Hilt gear unlocks biome by biome when you first obtain Bronze, Iron, Silver, Black Metal, Eitr or Flametal, and recipes cost some of that material
-- Per-item tier overrides, including `Never` to disable a recipe
-- Unlock message when a new tier opens, listing the White Hilt items that became available
-- Gift of Fenrir: faster attacks and real life steal (replaces the constant regeneration)
-- Gift of Thor: double chopping and mining damage
-- Gift of Mimir: marks nearby creatures on the minimap
-- Gift of Odin: the 500 max HP now actually holds while the effect is active
-
-#### Fixed
-- Gift of Surt now requires the obtainable Ashlands Flametal instead of the legacy Ancient Flametal
-- Potion requirements in the README now match the actual recipes
-- Gift of Odin increased fall damage instead of reducing it; it now halves fall damage
-- Gift of Skadi never removed Freezing/Cold (wrong status effect hash)
-- Gift of Munin showed one popup per material; materials are now learned silently
-- Healing potions no longer spam floating heal numbers every frame
-- Potion tooltips and README effects now describe what the potions actually do
-
-### v0.0.5 - 2026-09-26
-
-#### Changed
-- Compiled against Valheim 1.0.x (Unity 6000.0) and Jotunn 2.30.2 (was 2.27.1)
-- Thunderstore manifest now depends on Jotunn 2.30.2 and BepInExPack 5.4.2350
-
-#### Fixed
-- Removed a stale Unity 2022 editor reference from the project file
-
-### v0.0.4 - 2026-01-03
-
-#### Changed
-- **BREAKING**: All weapon crafting requirements now use Swamp-tier materials or earlier (Iron, Ancient Bark, Guck, etc.)
-- **BREAKING**: Armor (Chestplate, Greaves, Shield) now use Swamp-tier materials and CopyFrom references
-- **BREAKING**: Ammunition (Arrows, Bolts) now use Swamp-tier materials and CopyFrom references
-- Removed dependencies on Plains/Mistlands/Ashlands materials (Black Metal, Linen Thread, Eitr, Yggdrasil Wood, Flametal, etc.)
-- Staves now craftable at Forge instead of Galdr Table
-- Updated CopyFrom references to use Swamp-tier base items
-- Fixed Battleaxe CopyFrom to use correct prefab name (Battleaxe instead of BattleaxeIron)
-- Enabled all weapons and armor pieces
-
-#### Fixed
-- Game balance: All weapons are now obtainable before reaching Mountains biome
-
-### v0.0.3
-
-- Added 14 new potions: Gift of Sleipnir, Ratatoskr, Njord, Surt, Skadi, Baldur, Thor, Idunn, Brokkr, Tyr, Fenrir, Freyr, Hel, and Mimir.
-- Added 12 new weapons: Battleaxe, Spear, Mace, Atgeir, Knife, Sledge, Crossbow, Staff of Fire, Staff of Ice, Staff of Lightning, Tower Shield, and Buckler.
-- Added 2 new armor pieces: Chestplate and Greaves.
-- Added Megingjord accessory with +450 carry weight.
-- Added ammunition: White Hilt Arrows and Bolts (200 per craft, enhanced damage).
-- Fixed EpicLoot compatibility issue with potions (changed base class to SE_Stats).
+See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md).
 
 ## Credits
 
@@ -370,18 +167,57 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 - Rune Forge model: ["Medieval Workbench"](https://sketchfab.com/3d-models/medieval-workbench-b9e0b742add340f28f3194d1dc022d26) by [Catsnap0006](https://sketchfab.com/Catsnap0006), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Rune model: ["Rune Ring"](https://sketchfab.com/3d-models/rune-ring-266ccf4f356c45a89fe7e8d344590446) by [Christopher Turner](https://sketchfab.com/TUR17002508), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and recoloured per metal for Valheim.
 - Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
-
-- Refactored WearNTear configuration to shared helper class.
-- Added pickaxe damage immunity to indestructible items.
-- Various code quality improvements.
-
-### v0.0.2
-
-- Added potions Gift of Hugin and Munin.
-
-### v0.0.1
-
-- Initial release.
+- Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
+- Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
+- Waste Well model: ["Stone Well"](https://sketchfab.com/3d-models/stone-well-1498f53c9df54a289439f09ca89fc7d5) by [Andrew Jepson](https://sketchfab.com/ajepson), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture (tiling baked in), converted to OBJ, rescaled and made double-sided for Valheim.
+- Repair Anvil model: ["Asset02 Medieval Anvil"](https://sketchfab.com/3d-models/asset02-medieval-anvil-f6123f83e46345ccac727e35d91392ee) by [Margot D.](https://sketchfab.com/Winterll), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Harbour Anchor model: ["Medieval Anchor (Free)"](https://sketchfab.com/3d-models/medieval-anchor-free-5896ac54d63e4b84bd32e0b232619dfd) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- Smoke Oven model: ["Furnace"](https://sketchfab.com/3d-models/furnace-64f344213c084424ba438875e62bd452) by [Tronin Dmitry](https://sketchfab.com/kosmotron), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- Cartographer's Desk model: ["Medieval Writing Desk"](https://sketchfab.com/3d-models/medieval-writing-desk-0982348984ad4126a90ace26be1d7300) by [Dmitriy Korotkov](https://sketchfab.com/ArtDmitriyK), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Sextant model: ["Sextant"](https://sketchfab.com/3d-models/sextant-78852ce5d4264f33897b462e31069ddd) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Map scroll model: ["Old / Ancient Scroll"](https://sketchfab.com/3d-models/old-ancient-scroll-73e9333251c7490786f99e67beb41d6e) by [Kigha](https://sketchfab.com/Kigha), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Sea chart model: ["Pirate Map"](https://sketchfab.com/3d-models/pirate-map-ba468f31212e4d79b69dd09a509c0fd3) by [3000volt](https://sketchfab.com/3000volt), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Pathfinder's Amulet pendant: ["viking ornaments amulets 5"](https://sketchfab.com/3d-models/viking-ornaments-amulets-5-81611cb361aa40daa733049acaa545c4) by [leoxx300](https://sketchfab.com/leoxx300), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). One pendant cut out of the set, converted to OBJ, rescaled and made double-sided for Valheim.
+- White Hilt Portal model: ["Simple Stone portal"](https://sketchfab.com/3d-models/simple-stone-portal-e005e778460047d4a297a5c628b2cc8f) by [Lucia Criscuolo](https://sketchfab.com/Neruth), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- White Hilt Rune Circle model: ["Runic circle - remake of Frozen Throne"](https://sketchfab.com/3d-models/runic-circle-remake-of-frozen-throne-e28a908060eb4ab08fed2bea1aab92e5) by [Dawid](https://sketchfab.com/Dawid.Gerula), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Surt's Brazier model: ["Primitive Brazier (Free)"](https://sketchfab.com/3d-models/primitive-brazier-free-3b155a4948b042ffb69f1d8a4aead250) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Home Stone model: ["Rune in stone"](https://sketchfab.com/3d-models/rune-in-stone-1608283699bd414195319a41445d8055) by [Mardukblake](https://sketchfab.com/Mardukblake), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Feeding Trough model: ["Wooden Trough With Stone Stand. Lowpoly"](https://sketchfab.com/3d-models/wooden-trough-with-stone-stand-lowpoly-673baf17c3bb43e8affd610eaf31cc8a) by [Hakan Unlu](https://sketchfab.com/hakan3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Compost Bin model: ["Compost Bin SM SG"](https://sketchfab.com/3d-models/compost-bin-sm-sg-daaa0514f23a4ca18e955ea576671ef0) by [Pants85](https://sketchfab.com/Pants85), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
+- Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
+- Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Bed model: ["Wicker_Basket"](https://sketchfab.com/3d-models/wicker-basket-c8e8dc18b73946daaa4d51f81783ceab) by [National Heritage Administration](https://sketchfab.com/NHA_Asset), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Lid cut away, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Bowl model: ["Bark_bowl_package"](https://sketchfab.com/3d-models/bark-bowl-package-81641c44d91f40de85bbe36c5a346223) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). The low bowl taken out of the set, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Dog Whistle model: ["Wajia Flute"](https://sketchfab.com/3d-models/wajia-flute-e6d1c436d3bc41f99f49b5dc2c821b2f) by [3D Vault](https://sketchfab.com/3DVault), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Leather Dog Collar model: ["Leather Collar"](https://sketchfab.com/3d-models/leather-collar-de6857a0957b4047bff8c031877a255e) by [AnyRPG](https://sketchfab.com/anyrpg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Iron Dog Collar model: ["Spiked collar"](https://sketchfab.com/3d-models/spiked-collar-15d2eb02ee8d43f0b40f807d2d0f33a0) by [strakacher21](https://sketchfab.com/strakacher21), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and coloured as iron for Valheim.
+- Dog bark: ["Barking 1.wav"](https://freesound.org/people/Mrthenoronha/sounds/420450/) by [Mrthenoronha](https://freesound.org/people/Mrthenoronha/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Dog whine: ["Dog Whine 5.wav"](https://freesound.org/people/esperri/sounds/118970/) by [esperri](https://freesound.org/people/esperri/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Happy dog bark: ["Dog bark2.wav"](https://freesound.org/people/MisterTood/sounds/9032/) by [MisterTood](https://freesound.org/people/MisterTood/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
+- White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.
+- White Hilt Buckler model: ["Worn Round Shield"](https://sketchfab.com/3d-models/worn-round-shield-d848db788bc041ddab8a51c7836979d2) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the boards painted white for Valheim.
+- White Hilt Battleaxe model: ["Nordic Axe - Cloudcleaver"](https://sketchfab.com/3d-models/nordic-axe-cloudcleaver-10f5b39b05d54d4597a7d00996da3af8) by [Peter Nox](https://sketchfab.com/Peter.Nox), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). One of the two axes taken out of the file, textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Mace model: ["Brass Viking Mace"](https://sketchfab.com/3d-models/brass-viking-mace-a0c1ee6b023f4cfdacba70d40960bfba) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Sledge model: ["Viking Warhammer"](https://sketchfab.com/3d-models/viking-warhammer-717b9fe5bb494fd48242db2d44c8d06c) by [Peter Nox](https://sketchfab.com/Peter.Nox), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Spear model: ["Winterbite – Spear of the Frozen North"](https://sketchfab.com/3d-models/winterbite-spear-of-the-frozen-north-97e562017446407ea4e26ba30db69805) by [Peter Nox](https://sketchfab.com/Peter.Nox), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Staff model: the dark scepter from ["Weapon Set"](https://sketchfab.com/3d-models/weapon-set-480128be3ab744d4ba15de7c7b55e3bd) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Taken out of the set, textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Atgeir model: the polearm from ["Weapon Set"](https://sketchfab.com/3d-models/weapon-set-480128be3ab744d4ba15de7c7b55e3bd) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Taken out of the set, textures downscaled, converted to OBJ, rescaled, made double-sided and the shaft painted white for Valheim.
+- White Hilt Knife model: ["Seax Sword"](https://sketchfab.com/3d-models/seax-sword-06c33a65b47e409b84c607b1e79c63a1) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the grip painted white for Valheim.
+- White Hilt Crossbow model: ["LowPoly Crossbow Asset"](https://sketchfab.com/3d-models/lowpoly-crossbow-asset-bf49c17143ba418fa9abcf2724ae8e0b) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided, the stock painted white and a drawn string added for Valheim.
+- White Hilt Tower Shield model: ["Medieval Kite Shield"](https://sketchfab.com/3d-models/medieval-kite-shield-ef454e3700a7462eb27af245e685529a) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the boards painted white for Valheim.
+- White Hilt Paint Brush model: ["Paint Brush"](https://sketchfab.com/3d-models/paint-brush-5e68e46fe7c146e298e81a31f6454ac8) by [KOH4RU](https://sketchfab.com/KOH4RU), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, texture downscaled, converted to OBJ, rescaled, made double-sided and the handle painted white for Valheim.
+- Paint Bench table: ["Medieval Table (Free)"](https://sketchfab.com/3d-models/medieval-table-free-6d4f897c019f4a55aeda23cda6e6fb57) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Texture downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Bench palette: ["Color palette"](https://sketchfab.com/3d-models/color-palette-82e2019ab9754e208dadc9f0a23e7161) by [Alberto](https://sketchfab.com/onzoalberto), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, the paint blobs and board coloured, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Pot and Paint Bench bucket: ["Stylized Low Poly Wooden Bucket | Game Ready"](https://sketchfab.com/3d-models/stylized-low-poly-wooden-bucket-game-ready-b55447c9da0e462b95dbf9dfbe97f061) by [Null__](https://sketchfab.com/Nullqw), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the water coloured as paint, converted to OBJ, rescaled and made double-sided for Valheim.
+- Paint Bench brushes: ["Brush in a cup"](https://sketchfab.com/3d-models/brush-in-a-cup-3518d3fbb5634c3eac5d210ed1c4b558) by [Spiketus](https://sketchfab.com/Spiketus), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, the saucer removed, converted to OBJ, rescaled and made double-sided for Valheim.
+- Kraken model: ["Lurker - Rigged and Animated"](https://sketchfab.com/3d-models/28b3e1a216904de7ad212368fb9d8f59) by [Greeble3d](https://sketchfab.com/Greeble3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Two parts with broken skinning removed, glowing eyes added, merged into one mesh, converted to FBX with four of its animations and rescaled for Valheim.
+- Octopus model: ["Octopus"](https://sketchfab.com/3d-models/f9c0186d5ac54bcfada2b6113de40ede) by [rkuhlf](https://sketchfab.com/rkuhlf), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with its animations and rescaled for Valheim.
+- Lindorm model: ["Worm Monster"](https://sketchfab.com/3d-models/5563066315694125b741901681d387c5) by [CR!STALLL](https://sketchfab.com/CR1STALLL), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with six of its animations and rescaled for Valheim.
+- Giant Spider model: ["Wolf Spider (Rigged) - (Rabidosa rabida)"](https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe) by [Dreaming In Alternation 27](https://sketchfab.com/DreamingInAlternation27), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, idle, bite, hit and death animations added, and rescaled for Valheim.
 
 ## Known issues
 
