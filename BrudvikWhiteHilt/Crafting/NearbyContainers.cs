@@ -44,6 +44,7 @@ public static class NearbyContainers
     private static readonly HashSet<Container> all = new();
     private static readonly List<(Container Container, float SqrDistance)> nearby = new();
     private static readonly Dictionary<(string Name, int Quality, bool Building), int> countCache = new();
+    private static readonly Dictionary<(string Name, bool Building), bool> unlimitedCache = new();
 
     private static ConfigEntry<bool> enabled;
     private static ConfigEntry<float> range;
@@ -76,6 +77,11 @@ public static class NearbyContainers
     /// True if the chests should show when something is taken from them.
     /// </summary>
     public static bool ShowTakenChests => showTakenChests == null || showTakenChests.Value;
+
+    /// <summary>
+    /// Tells which items the restocking chests keep without limit, or null while the chest module is off.
+    /// </summary>
+    public static IUnlimitedItems Unlimited { get; set; }
 
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
@@ -175,12 +181,7 @@ public static class NearbyContainers
             return 0;
         }
 
-        if (Time.time - countTime > CountLifetime)
-        {
-            countTime = Time.time;
-            countCache.Clear();
-        }
-
+        ExpireCounts();
         bool building = use == Use.Building;
         if (countCache.TryGetValue((name, quality, building), out int cached))
         {
@@ -195,6 +196,32 @@ public static class NearbyContainers
 
         countCache[(name, quality, building)] = count;
         return count;
+    }
+
+    /// <summary>
+    /// Checks whether a chest around the local player keeps an item without limit, so it never runs out here.
+    /// </summary>
+    /// <param name="use">What the items are wanted for; building has its own range.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <returns>True if a chest in range refills the item.</returns>
+    public static bool IsUnlimitedNearby(Use use, string name)
+    {
+        if (Unlimited == null || IsExcludedItem(name))
+        {
+            return false;
+        }
+
+        ExpireCounts();
+        bool building = use == Use.Building;
+        if (unlimitedCache.TryGetValue((name, building), out bool cached))
+        {
+            return cached;
+        }
+
+        bool unlimited = GetNearby(use).Any(container => container.GetInventory().GetAllItems()
+            .Any(item => item.m_shared.m_name == name && Unlimited.IsUnlimitedIn(container, item)));
+        unlimitedCache[(name, building)] = unlimited;
+        return unlimited;
     }
 
     /// <summary>
@@ -244,6 +271,7 @@ public static class NearbyContainers
         }
 
         countCache.Clear();
+        unlimitedCache.Clear();
         return taken;
     }
 
@@ -280,6 +308,17 @@ public static class NearbyContainers
     {
         listTime = float.NegativeInfinity;
         countCache.Clear();
+        unlimitedCache.Clear();
+    }
+
+    private static void ExpireCounts()
+    {
+        if (Time.time - countTime > CountLifetime)
+        {
+            countTime = Time.time;
+            countCache.Clear();
+            unlimitedCache.Clear();
+        }
     }
 
     // The containers within the larger of both ranges, nearest first, refreshed at most twice a second or when the player moves.

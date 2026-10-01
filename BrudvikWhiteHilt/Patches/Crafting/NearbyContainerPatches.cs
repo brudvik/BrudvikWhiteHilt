@@ -123,26 +123,72 @@ public static class NearbyContainerPatches
         NearbyContainers.Use? __state)
     {
         counting = __state;
-        bool fromChests = false;
-        if (__result && req.m_resItem != null && player == Player.m_localPlayer && NearbyContainers.IsActive(CurrentUse()))
+        if (!__result || req.m_resItem == null || player != Player.m_localPlayer)
         {
-            string name = req.m_resItem.m_itemData.m_shared.m_name;
-            int need = req.GetAmount(quality) * craftMultiplier;
-            int own = player.GetInventory().CountItems(name);
-            if (own < need)
+            ShowChestIcon(elementRoot, false);
+            RequirementOverlay.Hide(elementRoot);
+            return;
+        }
+
+        NearbyContainers.Use use = CurrentUse();
+        bool chestsActive = NearbyContainers.IsActive(use);
+        bool overlay = RequirementOverlay.IsOn(use);
+        string name = req.m_resItem.m_itemData.m_shared.m_name;
+        int need = req.GetAmount(quality) * craftMultiplier;
+        int own = player.GetInventory().CountItems(name);
+        int inChests = chestsActive && (overlay || own < need) ? NearbyContainers.Count(use, name) : 0;
+        bool fromChests = own < need && own + inChests >= need;
+        if (fromChests)
+        {
+            elementRoot.Find("res_amount").GetComponent<TMP_Text>().color = fromChestsColor;
+        }
+
+        if (overlay)
+        {
+            RequirementOverlay.Show(elementRoot, req.m_resItem, own, inChests, need, use, chestsActive);
+        }
+        else
+        {
+            RequirementOverlay.Hide(elementRoot);
+            if (fromChests)
             {
-                int inChests = NearbyContainers.Count(CurrentUse(), name);
-                if (own + inChests >= need)
-                {
-                    fromChests = true;
-                    elementRoot.Find("res_amount").GetComponent<TMP_Text>().color = fromChestsColor;
-                    UITooltip tooltip = elementRoot.GetComponent<UITooltip>();
-                    tooltip.m_text += Localization.instance.Localize($"\n{own} $whitehilt_chests_inventory + {inChests} $whitehilt_chests_chests");
-                }
+                elementRoot.GetComponent<UITooltip>().m_text += Localization.instance.Localize($"\n{own} $whitehilt_chests_inventory + {inChests} $whitehilt_chests_chests");
             }
         }
 
         ShowChestIcon(elementRoot, fromChests);
+    }
+
+    /// <summary>
+    /// Hides the chest icon and the overlay of a requirement slot vanilla empties.
+    /// </summary>
+    /// <param name="elementRoot">The requirement element.</param>
+    [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.HideRequirement))]
+    [HarmonyPostfix]
+    public static void HideRequirementExtras(Transform elementRoot)
+    {
+        ShowChestIcon(elementRoot, false);
+        RequirementOverlay.Hide(elementRoot);
+    }
+
+    /// <summary>
+    /// Hides the chest icon and the overlay on the build menu slot that shows the crafting station, which vanilla
+    /// fills without <see cref="InventoryGui.SetupRequirement"/>.
+    /// </summary>
+    /// <param name="__instance">The HUD.</param>
+    /// <param name="piece">The selected piece.</param>
+    [HarmonyPatch(typeof(Hud), nameof(Hud.SetupPieceInfo))]
+    [HarmonyPostfix]
+    public static void HideStationSlotExtras(Hud __instance, Piece piece)
+    {
+        if (piece == null || piece.m_craftingStation == null || piece.m_resources.Length >= __instance.m_requirementItems.Length)
+        {
+            return;
+        }
+
+        Transform station = __instance.m_requirementItems[piece.m_resources.Length].transform;
+        ShowChestIcon(station, false);
+        RequirementOverlay.Hide(station);
     }
 
     /// <summary>

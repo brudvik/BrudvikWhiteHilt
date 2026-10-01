@@ -249,6 +249,7 @@
     <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
     <Compile Include="Items\Weapons\StaffFlame.cs" />
     <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
+    <Compile Include="Patches\Crafting\CraftAmountPatches.cs" />
     <Compile Include="Patches\Crafting\NearbyContainerPatches.cs" />
     <Compile Include="Patches\Crafting\NearbyContainerStationPatches.cs" />
     <Compile Include="Building\BuildCamera.cs" />
@@ -287,6 +288,10 @@
     <Compile Include="Building\Media\MediaSettings.cs" />
     <Compile Include="Patches\Building\BuildToolPatches.cs" />
     <Compile Include="Crafting\ContainerPulse.cs" />
+    <Compile Include="Crafting\CraftAmountSelector.cs" />
+    <Compile Include="Crafting\CraftingPanelSettings.cs" />
+    <Compile Include="Crafting\IUnlimitedItems.cs" />
+    <Compile Include="Crafting\RequirementOverlay.cs" />
     <Compile Include="Crafting\NearbyContainers.cs" />
     <Compile Include="Helpers\FireEffects.cs" />
     <Compile Include="Patches\EternalFire\EternalFirePatches.cs" />

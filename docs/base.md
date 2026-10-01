@@ -29,6 +29,26 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ---
 
+## 🧾 CRAFTING PANEL
+
+The crafting panel and the build menu show what you have, not only what a recipe costs.
+
+- **What you have**: a small dark box on the left of each requirement's icon shows how many you have, in your inventory and in the chests you may use around you (white when it is enough, red when it is not). Large amounts are shortened, e.g. `1.2k`.
+- **∞**: shown in gold when a restocking chest, cart or ship hold within reach keeps the item unlimited, so it never runs out here.
+- **On the way to unlimited**: in Linear chest mode, a thin gold bar along the bottom of the icon fills up as the best chest in the world gets closer to unlocking the item.
+- **Tooltip**: shows the split (*You have 14: 6 in your inventory + 8 in chests*) and either *Unlimited from a chest nearby*, *Unlimited in the Wood Chest, but none is nearby*, or *Unlimited after 12 more (38/50 in the best chest)*.
+- **Craft several at once**: arrows on the left of the Craft button choose how many to make, e.g. 4 axes. The mouse wheel over the number works too. The requirements show the cost for all of them, and the button reads *Craft x 4*. It starts at 1 for every recipe and is not used for upgrades. With 1 chosen, Shift + Craft still makes five like in vanilla.
+
+| Setting (`CraftingPanel`) | Default | Description |
+|---|---|---|
+| `ShowAvailable` | on | The box with what you have (each player) |
+| `ShowInBuildMenu` | on | The same in the build menu (each player) |
+| `ShowUnlockProgress` | on | The gold bar towards unlimited (each player) |
+| `AmountSelector` | on | The arrows next to the Craft button (each player) |
+| `MaxCraftAmount` | 20 | The most that can be crafted at once (server) |
+
+---
+
 ## 🗑️ WASTE WELL
 
 <img src="images/waste_well.png" alt="Waste Well" title="Waste Well" height="140">

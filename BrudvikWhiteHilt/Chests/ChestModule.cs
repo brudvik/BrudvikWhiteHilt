@@ -25,7 +25,7 @@ namespace BrudvikWhiteHilt.Chests
     /// The chests of the former BrudvikStackedChest mod: chests that restock their items automatically. The prefab
     /// names, the ZDO key and the world progress folder are the old mod's, so chests placed with it keep their contents.
     /// </summary>
-    internal class ChestModule
+    internal class ChestModule : global::BrudvikWhiteHilt.Crafting.IUnlimitedItems
     {
         /// <summary>
         /// GUID of the former stand-alone mod. While it is loaded it keeps its own chests and this module stays off.
@@ -133,6 +133,7 @@ namespace BrudvikWhiteHilt.Chests
             InventoryGuiPatch.InventoryShownPatched += gatheringPanel.HandleInventoryShown;
             InventoryGuiPatch.InventoryHiddenPatched += gatheringPanel.HandleClose;
             InventoryGuiPatch.InventoryPanelOpenedPatched += gatheringPanel.HandleClose;
+            global::BrudvikWhiteHilt.Crafting.NearbyContainers.Unlimited = this;
 
             Jotunn.Logger.LogInfo("White Hilt chests have loaded!");
         }
@@ -144,6 +145,40 @@ namespace BrudvikWhiteHilt.Chests
         {
             hoverPanel?.Update();
             gatheringPanel?.Update();
+        }
+
+        /// <inheritdoc/>
+        public bool IsUnlimitedIn(Container container, ItemDrop.ItemData item)
+        {
+            if (!chestSupply.IsReady || IsDestroyed(container)) return false;
+
+            var piece = FindPiece(container);
+            if (piece != null) return chestSupply.IsSupplied(chestSupply.Mode, piece.CustomPieceConfig.ItemCategory, item);
+
+            return IsCargo(container) && chestSupply.IsCargoSupplied(item);
+        }
+
+        /// <inheritdoc/>
+        public string? GetUnlimitedChest(string prefabName, ItemDrop.ItemData.SharedData shared)
+        {
+            if (!chestSupply.IsReady || !chestSupply.IsUnlimited(prefabName, shared)) return null;
+
+            return GetChestName(itemCatalog.GetCategory(prefabName));
+        }
+
+        /// <inheritdoc/>
+        public bool TryGetUnlockProgress(string prefabName, ItemDrop.ItemData.SharedData shared, out int stored, out int required)
+        {
+            stored = 0;
+            required = 0;
+            if (chestSupply.Mode != ChestMode.Linear || !chestSupply.IsReady) return false;
+
+            var category = itemCatalog.GetCategory(prefabName);
+            if (category == ChestCategory.None || !chestSupply.CanUnlock(category, prefabName, shared)) return false;
+
+            required = chestSupply.GetUnlockAmount(shared);
+            stored = Math.Min(worldProgress.GetBestStored(prefabName), required);
+            return required > 0;
         }
 
         private void HandleSettingsChanged()

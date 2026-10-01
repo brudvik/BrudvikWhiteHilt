@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.35.0 - 2026-10-01
+
+### Added
+- **What you have** in the crafting panel and the build menu: a small box on each requirement's icon shows how many you have in your inventory and the chests around you, or a gold ∞ when a restocking chest nearby keeps the item unlimited. In Linear chest mode, a thin gold bar shows how close the item is to becoming unlimited, and the tooltip says how many more are missing. See [Crafting panel](docs/base.md#-crafting-panel)
+- **Craft several at once**: arrows next to the Craft button (or the mouse wheel over the number) choose how many to make, e.g. 4 axes. Settings in the `CraftingPanel` section, `MaxCraftAmount` (20) set by the server
+
+### Fixed
+- In the build menu, the small chest icon could stay on the crafting station slot after looking at another piece
+
 ## v0.34.1 - 2026-10-01
 
 ### Fixed
