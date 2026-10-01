@@ -1,6 +1,9 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Painting;
 using BrudvikWhiteHilt.Progression;
+using Jotunn.Managers;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Painting;
 
@@ -11,8 +14,10 @@ public static class PaintSettings
 {
     private const string Section = "Painting";
 
+    private static ConfigEntry<int> potUses;
+
     /// <summary>How many pieces one paint pot covers.</summary>
-    public const int PotUses = 20;
+    public static int PotUses => potUses != null ? potUses.Value : 20;
 
     /// <summary>Largest brush radius, in metres.</summary>
     public static ConfigEntry<float> MaxRadius { get; private set; }
@@ -30,6 +35,9 @@ public static class PaintSettings
     {
         MaxRadius = WhiteHiltConfig.BindAdminOnly(Section, "MaxRadius", 8f, "Largest radius of the paint brush, in metres.",
             new AcceptableValueRange<float>(0f, 30f));
+        potUses = WhiteHiltConfig.BindAdminOnly(Section, "PotUses", 20,
+            "How many pieces one paint pot covers. Pots mixed before a change keep what they have left.", new AcceptableValueRange<int>(1, 500));
+        potUses.SettingChanged += (_, _) => ApplyPotUses();
         Radius = WhiteHiltConfig.BindLocal(Section, "Radius", 0f, "Paint brush radius in metres; 0 paints only the piece you aim at. The mouse wheel changes it.");
         Favourites = WhiteHiltConfig.BindLocal(Section, "Favourites", "F2EEDC,2B2B2B,8E2B22,2F4F7F,3F6B35,C9A227,6B4A2E,7A4E8C",
             "Your saved colours at the Paint Bench, as hex.");
@@ -61,5 +69,19 @@ public static class PaintSettings
         Translations.AddEnglish("whitehilt_brush_hud_empty", "Brush not loaded: use a paint pot   radius {0}");
         Translations.AddEnglish("whitehilt_brush_single", "one piece");
         Translations.AddEnglish("whitehilt_paint_tooltip", "Colour");
+    }
+
+    // Pots already mixed share the prefab's shared data, so their new size shows at once.
+    private static void ApplyPotUses()
+    {
+        GameObject prefab = PrefabManager.Instance.GetPrefab(WhiteHiltPaintPot.PrefabName);
+        ItemDrop itemDrop = prefab != null ? prefab.GetComponent<ItemDrop>() : null;
+        if (itemDrop == null)
+        {
+            return;
+        }
+
+        itemDrop.m_itemData.m_shared.m_maxDurability = PotUses;
+        itemDrop.m_itemData.m_durability = PotUses;
     }
 }

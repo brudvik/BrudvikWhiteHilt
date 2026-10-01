@@ -17,7 +17,6 @@ public static class RoadBuilder
     private const float SampleStep = 1f;
     private const int ChunkSamples = 8;
     private const int SmoothWindow = 6;
-    private const float BuildReach = 40f;
     private const float TickInterval = 0.5f;
     private const float PinSpacing = 20f;
     private const float RoadSkirt = 1.5f;
@@ -28,6 +27,8 @@ public static class RoadBuilder
     private static readonly List<Minimap.PinData> pins = new();
 
     private static Road road;
+
+    private static float BuildReach => TerrainSettings.RoadBuildReach.Value;
     private static string loadedWorld;
     private static float nextTick;
 

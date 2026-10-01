@@ -21,8 +21,14 @@ public static class CompostSettings
     /// <summary>Prefab names that turn into compost, comma separated.</summary>
     public static ConfigEntry<string> Items { get; private set; }
 
-    /// <summary>Minutes for five pieces of waste to turn into one compost.</summary>
+    /// <summary>Minutes for the waste to turn into one compost.</summary>
     public static ConfigEntry<float> Minutes { get; private set; }
+
+    /// <summary>Pieces of waste that make one compost.</summary>
+    public static ConfigEntry<int> WastePerCompost { get; private set; }
+
+    /// <summary>Compost a bin uses up each day.</summary>
+    public static ConfigEntry<int> CompostPerDay { get; private set; }
 
     /// <summary>How far, in metres, a bin with compost speeds up crops.</summary>
     public static ConfigEntry<float> Range { get; private set; }
@@ -45,7 +51,11 @@ public static class CompostSettings
             "Entrails,BoneFragments,Raspberry,Blueberries,Cloudberry,Mushroom,MushroomYellow,Dandelion,Thistle,Carrot,Turnip,Onion,Guck,Fiddleheadfern",
             "Prefab names of the waste that turns into compost, comma separated.");
         Minutes = WhiteHiltConfig.BindAdminOnly(Section, "Minutes", 2f,
-            "Minutes for five pieces of waste in a Compost Bin to turn into one compost.", new AcceptableValueRange<float>(0.1f, 60f));
+            "Minutes for the waste in a Compost Bin to turn into one compost.", new AcceptableValueRange<float>(0.1f, 60f));
+        WastePerCompost = WhiteHiltConfig.BindAdminOnly(Section, "WastePerCompost", 5,
+            "Pieces of waste that make one compost.", new AcceptableValueRange<int>(1, 50));
+        CompostPerDay = WhiteHiltConfig.BindAdminOnly(Section, "CompostPerDay", 1,
+            "Compost a Compost Bin uses up each day while it feeds the soil. 0: compost is never used up.", new AcceptableValueRange<int>(0, 10));
         Range = WhiteHiltConfig.BindAdminOnly(Section, "Range", 12f,
             "How far, in metres, a Compost Bin with compost in it speeds up crops.", new AcceptableValueRange<float>(2f, 40f));
         GrowTime = WhiteHiltConfig.BindAdminOnly(Section, "GrowTime", 0.7f,
@@ -75,7 +85,6 @@ public static class CompostSettings
 /// </summary>
 public class CompostBinComponent : MonoBehaviour
 {
-    private const int WastePerCompost = 5;
     private const float TickSeconds = 5f;
     private const string NextKey = "whitehilt_compost_next";
     private const string DayKey = "whitehilt_compost_day";
@@ -84,6 +93,8 @@ public class CompostBinComponent : MonoBehaviour
 
     private Container container;
     private ZNetView nview;
+
+    private static int WastePerCompost => CompostSettings.WastePerCompost.Value;
 
     /// <summary>
     /// Share of the vanilla growing time at a position: lower near a bin with compost.
@@ -116,8 +127,8 @@ public class CompostBinComponent : MonoBehaviour
     public string StatusText()
     {
         string state = HasCompost()
-            ? Localization.instance.Localize("$whitehilt_compost_fertile", CompostSettings.Range.Value.ToString("0"))
-            : Localization.instance.Localize("$whitehilt_compost_waiting", WastePerCompost.ToString());
+            ? string.Format(Localization.instance.Localize("$whitehilt_compost_fertile"), CompostSettings.Range.Value.ToString("0"))
+            : string.Format(Localization.instance.Localize("$whitehilt_compost_waiting"), WastePerCompost);
         return $"\n<color=#a0a0a0>{state}</color>";
     }
 
@@ -214,7 +225,12 @@ public class CompostBinComponent : MonoBehaviour
         ItemDrop.ItemData compost = inventory.GetAllItems().FirstOrDefault(item => item.m_dropPrefab != null && item.m_dropPrefab.name == CompostBin.CompostName);
         if (day > last && compost != null)
         {
-            inventory.RemoveItem(compost, 1);
+            for (int used = 0; used < CompostSettings.CompostPerDay.Value && compost != null; used++)
+            {
+                inventory.RemoveItem(compost, 1);
+                compost = inventory.GetAllItems().FirstOrDefault(item => item.m_dropPrefab != null && item.m_dropPrefab.name == CompostBin.CompostName);
+            }
+
             zdo.Set(DayKey, day);
         }
         else if (day > last)

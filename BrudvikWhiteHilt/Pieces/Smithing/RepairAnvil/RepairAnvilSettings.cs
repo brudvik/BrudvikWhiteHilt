@@ -12,6 +12,7 @@ namespace BrudvikWhiteHilt.Pieces.Smithing.RepairAnvil;
 public static class RepairAnvilSettings
 {
     private const string Section = "RepairAnvil";
+    private const string ChainSection = "ChainBench";
 
     private static string costText;
     private static List<(string Prefab, int Amount)> cost = new();
@@ -25,6 +26,18 @@ public static class RepairAnvilSettings
     /// <summary>Whether repairing raises the Crafting skill, as at a workbench.</summary>
     public static ConfigEntry<bool> RaiseCraftingSkill { get; private set; }
 
+    /// <summary>Whether the forge needs a Chain Bench next to it to make chains.</summary>
+    public static ConfigEntry<bool> ChainNeedsBench { get; private set; }
+
+    /// <summary>Chains made by one forge recipe.</summary>
+    public static ConfigEntry<int> ChainAmount { get; private set; }
+
+    /// <summary>Iron the chain recipe costs.</summary>
+    public static ConfigEntry<int> ChainIron { get; private set; }
+
+    /// <summary>Coal the chain recipe costs.</summary>
+    public static ConfigEntry<int> ChainCoal { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -36,6 +49,14 @@ public static class RepairAnvilSettings
             "Repair everything in the inventory, not only what you wear and the shield in its slot.");
         RaiseCraftingSkill = WhiteHiltConfig.BindAdminOnly(Section, "RaiseCraftingSkill", true,
             "Repairing raises the Crafting skill, as it does at a workbench.");
+
+        // The Chain Bench is the other smithing extension; its numbers live here too.
+        ChainNeedsBench = WhiteHiltConfig.BindAdminOnly(ChainSection, "NeedsBench", true,
+            "The forge only makes chains with a Chain Bench next to it. Off: any forge makes them.");
+        ChainAmount = WhiteHiltConfig.BindAdminOnly(ChainSection, "ChainsPerCraft", 1, "Chains made by one craft at the forge.",
+            new AcceptableValueRange<int>(1, 10));
+        ChainIron = WhiteHiltConfig.BindAdminOnly(ChainSection, "IronPerCraft", 2, "Iron one chain craft costs.", new AcceptableValueRange<int>(1, 50));
+        ChainCoal = WhiteHiltConfig.BindAdminOnly(ChainSection, "CoalPerCraft", 1, "Coal one chain craft costs. 0: none.", new AcceptableValueRange<int>(0, 50));
 
         Translations.AddEnglish("whitehilt_anvil_repair", "Repair everything you wear");
         Translations.AddEnglish("whitehilt_anvil_repair_all", "Repair everything you carry");

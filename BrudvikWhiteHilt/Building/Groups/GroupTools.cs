@@ -13,7 +13,6 @@ namespace BrudvikWhiteHilt.Building.Groups;
 public static class GroupTools
 {
     private const float CheckInterval = 0.25f;
-    private const float PasteReachWithoutCamera = 30f;
     private const float FollowGroundBelowHeight = 1.6f;
 
     private static readonly List<GroupPlacer.Item> items = new();
@@ -658,7 +657,7 @@ public static class GroupTools
         }
 
         Transform view = GameCamera.instance.transform;
-        float reach = BuildCamera.Active ? BuildToolSettings.MaxPlaceDistance.Value : PasteReachWithoutCamera;
+        float reach = BuildCamera.Active ? BuildToolSettings.MaxPlaceDistance.Value : GroupSettings.PasteReach.Value;
         return Physics.Raycast(view.position, view.forward, out hit, reach, mask);
     }
 

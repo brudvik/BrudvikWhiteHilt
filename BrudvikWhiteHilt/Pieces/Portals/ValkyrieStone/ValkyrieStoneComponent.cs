@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using System.Globalization;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public string GetHoverText()
     {
-        string text = $"{GetHoverName()}\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_valkyrie_travel ($whitehilt_valkyrie_cost)";
+        string text = $"{GetHoverName()}\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_valkyrie_travel{CostText()}";
         if (!TryGetUnusedDeath(Player.m_localPlayer, out _, out string reason))
         {
             text += $"\n{reason}";
@@ -56,7 +57,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
             return true;
         }
 
-        if (player.GetInventory().CountItems(FuelName()) < 1)
+        if (player.GetInventory().CountItems(FuelName()) < PortalSettings.ValkyrieCost)
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_nocore");
             return true;
@@ -89,7 +90,8 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         }
 
         string fuel = FuelName();
-        if (player.GetInventory().CountItems(fuel) < 1)
+        int cost = PortalSettings.ValkyrieCost;
+        if (player.GetInventory().CountItems(fuel) < cost)
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_nocore");
             return;
@@ -100,7 +102,11 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
-        player.GetInventory().RemoveItem(fuel, 1);
+        if (cost > 0)
+        {
+            player.GetInventory().RemoveItem(fuel, cost);
+        }
+
         player.m_customData[UsedDeathKey] = DeathKey(deathPoint);
         player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_travel");
     }
@@ -116,7 +122,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         }
 
         deathPoint = profile.GetDeathPoint();
-        if (player.m_customData.TryGetValue(UsedDeathKey, out string used) && used == DeathKey(deathPoint))
+        if (PortalSettings.ValkyrieOncePerDeath && player.m_customData.TryGetValue(UsedDeathKey, out string used) && used == DeathKey(deathPoint))
         {
             reason = "$whitehilt_valkyrie_used";
             return false;
@@ -131,6 +137,18 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
     {
         CultureInfo invariant = CultureInfo.InvariantCulture;
         return $"{ZNet.instance.GetWorldUID()}:{point.x.ToString("R", invariant)},{point.y.ToString("R", invariant)},{point.z.ToString("R", invariant)}";
+    }
+
+    // One core keeps the translated text; other amounts are spelled out from the item name.
+    private static string CostText()
+    {
+        int cost = PortalSettings.ValkyrieCost;
+        return cost switch
+        {
+            <= 0 => string.Empty,
+            1 => " ($whitehilt_valkyrie_cost)",
+            _ => $" ({cost} {FuelName()})"
+        };
     }
 
     private static string FuelName()

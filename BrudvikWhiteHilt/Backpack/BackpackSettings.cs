@@ -31,6 +31,12 @@ public static class BackpackSettings
     /// <summary>Whether staffs on the hotbar show how many casts the current eitr allows.</summary>
     public static ConfigEntry<bool> ShowHotbarCasts { get; private set; }
 
+    /// <summary>Whether the shield in its slot is taken up and put away with a one-handed weapon.</summary>
+    public static ConfigEntry<bool> ShieldFollowsWeapon { get; private set; }
+
+    /// <summary>Whether new coins go into an empty coin slot before the grid.</summary>
+    public static ConfigEntry<bool> CoinsToCoinSlots { get; private set; }
+
     /// <summary>Switches between the travel bar and the build bar.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyHotbar { get; private set; }
 
@@ -74,6 +80,10 @@ public static class BackpackSettings
         LowAmmoWarning = WhiteHiltConfig.BindLocal(Section, "LowAmmoWarning", 20, "The ammo count turns red at or below this many. 0 turns the warning off.");
         ShowHotbarCasts = WhiteHiltConfig.BindLocal(Section, "ShowHotbarCasts", true,
             "Under a staff on the hotbar, show how many casts your current eitr allows.");
+        ShieldFollowsWeapon = WhiteHiltConfig.BindLocal(Section, "ShieldFollowsWeapon", true,
+            "Take up the shield in the shield slot when you take a one-handed weapon, and put it away with the weapon.");
+        CoinsToCoinSlots = WhiteHiltConfig.BindLocal(Section, "CoinsToCoinSlots", true,
+            "New coins go into an empty coin slot before the inventory grid. Off: they go to the grid like other items.");
         PanelOffsetX = WhiteHiltConfig.BindLocal(Section, "PanelOffsetX", 12f, "How far right of the inventory the equipment panel sits, in pixels.");
         PanelOffsetY = WhiteHiltConfig.BindLocal(Section, "PanelOffsetY", 0f, "How far up from the top of the inventory the equipment panel sits, in pixels (negative is down).");
         KeyHotbar = WhiteHiltConfig.BindLocal(KeySection, "SwitchHotbar", new KeyboardShortcut(KeyCode.Alpha9),

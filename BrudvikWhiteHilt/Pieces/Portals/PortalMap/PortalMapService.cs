@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Pieces.EternalFire;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
+using BrudvikWhiteHilt.Pieces.Ships;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ public class PortalMapService : MonoBehaviour
     /// <summary>
     /// How close a map table extension must stand to a map table to switch its markers on.
     /// </summary>
-    public const float ActivationRange = 5f;
+    public static float ActivationRange => PortalSettings.MapTableExtensionRange;
 
     private const string RpcName = "WhiteHiltPortalMap";
     private const string TravelRpcName = "WhiteHiltPortalList";
@@ -137,7 +138,7 @@ public class PortalMapService : MonoBehaviour
         foreach ((ZDOID id, PortalDestination destination) in travelShips.ToList())
         {
             ZDO zdo = ZDOMan.instance.GetZDO(id);
-            if (zdo == null || !WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
+            if (zdo == null || !ShipSettings.AllowShipPortal.Value || !WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
             {
                 travelShips.Remove((id, destination));
                 travel.Remove(destination);
@@ -258,7 +259,7 @@ public class PortalMapService : MonoBehaviour
         }
         else if (shipPrefabs.Contains(prefab))
         {
-            if (shipPortalPrefabs.Contains(prefab) && WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
+            if (shipPortalPrefabs.Contains(prefab) && ShipSettings.AllowShipPortal.Value && WhiteHiltShipUpgrades.Has(zdo, ShipPortalUpgrade.Bit))
             {
                 CollectShipPortal(zdo);
             }
@@ -341,7 +342,7 @@ public class PortalMapService : MonoBehaviour
         {
             foreach ((Vector3 position, int mask) in runePosts)
             {
-                if (Vector3.Distance(position, portal.Position) <= RunePortalRules.Range)
+                if (RunePortalRules.Range > 0f && Vector3.Distance(position, portal.Position) <= RunePortalRules.Range)
                 {
                     portal.RuneMask |= mask;
                     portal.Everything |= mask == WhiteHiltRuneBase.FullMask;

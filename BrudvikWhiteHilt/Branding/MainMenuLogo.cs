@@ -15,18 +15,29 @@ public static class MainMenuLogo
     private const float LabelHeight = 24f;
     private const float Margin = 24f;
 
+    private static GameObject current;
+    private static bool subscribed;
+
     /// <summary>
-    /// Adds the logo to the main menu once.
+    /// Adds the logo to the main menu once, hidden while the setting is off.
     /// </summary>
     /// <param name="startup">The main menu.</param>
     public static void Create(FejdStartup startup)
     {
+        if (!subscribed)
+        {
+            subscribed = true;
+            BrandingSettings.MainMenuLogo.SettingChanged += (_, _) => ApplySetting();
+        }
+
         if (VisualHelper.IsHeadless || startup.m_mainMenu == null || startup.m_mainMenu.transform.Find(ObjectName) != null)
         {
             return;
         }
 
         RectTransform root = new GameObject(ObjectName, typeof(RectTransform)).GetComponent<RectTransform>();
+        current = root.gameObject;
+        ApplySetting();
         root.SetParent(startup.m_mainMenu.transform, false);
         root.anchorMin = root.anchorMax = root.pivot = new Vector2(1f, 0f);
         root.anchoredPosition = new Vector2(-Margin, Margin);
@@ -56,6 +67,14 @@ public static class MainMenuLogo
             label.alignment = TextAlignmentOptions.Center;
             label.raycastTarget = false;
             label.text = "White Hilt v" + global::BrudvikWhiteHilt.BrudvikWhiteHilt.PluginVersion;
+        }
+    }
+
+    private static void ApplySetting()
+    {
+        if (current != null)
+        {
+            current.SetActive(BrandingSettings.MainMenuLogo.Value);
         }
     }
 }

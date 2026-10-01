@@ -19,6 +19,8 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
 {
     private const string SnapTag = "snappoint";
 
+    private static readonly List<(GameObject Prefab, DefensePieceBase Piece)> added = new();
+
     private readonly PieceManager instance;
 
     /// <summary>
@@ -133,12 +135,37 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
             }
 
             instance.AddPiece(piece);
+            added.Add((prefab, this));
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }
         catch (Exception ex)
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    /// <summary>
+    /// Sets the health of every added piece again, on its prefab and on the pieces standing in the loaded world.
+    /// </summary>
+    public static void ApplyHealth()
+    {
+        foreach ((GameObject prefab, DefensePieceBase piece) in added)
+        {
+            WearNTear template = prefab != null ? prefab.GetComponent<WearNTear>() : null;
+            if (template == null)
+            {
+                continue;
+            }
+
+            template.m_health = piece.Health;
+            foreach (WearNTear placed in WearNTear.GetAllInstances())
+            {
+                if (placed != null && global::Utils.GetPrefabName(placed.gameObject) == prefab.name)
+                {
+                    placed.m_health = template.m_health;
+                }
+            }
         }
     }
 

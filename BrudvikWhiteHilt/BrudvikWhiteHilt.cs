@@ -83,6 +83,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Drops.FloatingItems.Initialize();
         Pieces.Waste.WasteWellSettings.Initialize();
         Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
+        Pieces.Defenses.DefenseSettings.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Portals.RuneRack;
@@ -9,9 +10,9 @@ namespace BrudvikWhiteHilt.Pieces.Portals.RuneRack;
 public static class RunePortalRules
 {
     /// <summary>
-    /// How close a rune post must stand to the portal you travel from.
+    /// How close a rune post must stand to the portal you travel from; 0 when the rune posts are off.
     /// </summary>
-    public const float Range = 8f;
+    public static float Range => PortalSettings.RunePostRange;
 
     /// <summary>
     /// Collects the runes on every post near a portal.
@@ -23,9 +24,15 @@ public static class RunePortalRules
     {
         int mask = 0;
         everything = false;
+        float range = Range;
+        if (range <= 0f)
+        {
+            return mask;
+        }
+
         foreach (RuneRackComponent rack in RuneRackComponent.Instances)
         {
-            if (rack == null || Vector3.Distance(rack.transform.position, portalPosition) > Range)
+            if (rack == null || Vector3.Distance(rack.transform.position, portalPosition) > range)
             {
                 continue;
             }

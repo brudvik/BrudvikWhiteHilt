@@ -15,7 +15,6 @@ public static class FarmTools
     private const float CheckInterval = 0.25f;
     private const float SpacingStep = 0.1f;
     private const float SpaceMargin = 0.05f;
-    private const int MaxRowsOrColumns = 30;
 
     private static readonly AreaPicker area = new();
     private static readonly List<GroupPlacer.Item> items = new();
@@ -33,6 +32,8 @@ public static class FarmTools
     private static Quaternion lastGridRotation;
     private static int spaceMask;
     private static HashSet<string> crops;
+
+    private static int MaxRowsOrColumns => TerrainSettings.MaxGridRows.Value;
 
     /// <summary>
     /// The cultivator tool modes.
@@ -202,6 +203,8 @@ public static class FarmTools
         if (Pressed(BuildToolSettings.KeyNudgeBack)) rows = Mathf.Max(1, rows - 1);
         if (Pressed(BuildToolSettings.KeyNudgeRight)) columns = Mathf.Min(MaxRowsOrColumns, columns + 1);
         if (Pressed(BuildToolSettings.KeyNudgeLeft)) columns = Mathf.Max(1, columns - 1);
+        rows = Mathf.Min(MaxRowsOrColumns, rows);
+        columns = Mathf.Min(MaxRowsOrColumns, columns);
         if (Pressed(BuildToolSettings.KeyNudgeUp)) spacing = step + SpacingStep;
         if (Pressed(BuildToolSettings.KeyNudgeDown)) spacing = Mathf.Max(minimum, step - SpacingStep);
         step = Mathf.Max(minimum, spacing ?? minimum);

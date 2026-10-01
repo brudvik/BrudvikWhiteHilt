@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Patches.Crafting;
+using BrudvikWhiteHilt.Pieces.Smithing.RepairAnvil;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -27,6 +28,8 @@ public class ChainBench : IWhiteHiltCustomPiece
 
     private const string FullName = "Chain Bench";
     private const string Description = "A stump with a smith's vise for bending and closing chain links. Place it next to the forge to make chains from iron.";
+
+    private static Recipe chainRecipe;
 
     private readonly PieceManager instance;
 
@@ -83,19 +86,24 @@ public class ChainBench : IWhiteHiltCustomPiece
             TryApplyVisual(piece);
             instance.AddPiece(piece);
 
-            ItemManager.Instance.AddRecipe(new CustomRecipe(new RecipeConfig
+            CustomRecipe recipe = new(new RecipeConfig
             {
                 Name = ChainRecipeName,
                 Item = "Chain",
-                Amount = 1,
+                Amount = RepairAnvilSettings.ChainAmount.Value,
                 CraftingStation = CraftingStations.Forge,
                 Requirements = new RequirementConfig[]
                 {
-                    new() { Item = "Iron", Amount = 2 },
-                    new() { Item = "Coal", Amount = 1 }
+                    new() { Item = "Iron", Amount = RepairAnvilSettings.ChainIron.Value },
+                    new() { Item = "Coal", Amount = RepairAnvilSettings.ChainCoal.Value }
                 }
-            }));
-            ChainBenchRecipePatch.Register(ChainRecipeName, PrefabName);
+            });
+            ItemManager.Instance.AddRecipe(recipe);
+            chainRecipe = recipe.Recipe;
+            RepairAnvilSettings.ChainAmount.SettingChanged += (_, _) => ApplyChainRecipe();
+            RepairAnvilSettings.ChainIron.SettingChanged += (_, _) => ApplyChainRecipe();
+            RepairAnvilSettings.ChainCoal.SettingChanged += (_, _) => ApplyChainRecipe();
+            ChainBenchRecipePatch.Register(ChainRecipeName, PrefabName, () => RepairAnvilSettings.ChainNeedsBench.Value);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }
@@ -103,6 +111,22 @@ public class ChainBench : IWhiteHiltCustomPiece
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    // The recipe object stays registered with the game, so changing it in place reaches the forge without a restart.
+    private static void ApplyChainRecipe()
+    {
+        if (chainRecipe == null)
+        {
+            return;
+        }
+
+        chainRecipe.m_amount = RepairAnvilSettings.ChainAmount.Value;
+        if (chainRecipe.m_resources != null && chainRecipe.m_resources.Length >= 2)
+        {
+            chainRecipe.m_resources[0].m_amount = RepairAnvilSettings.ChainIron.Value;
+            chainRecipe.m_resources[1].m_amount = RepairAnvilSettings.ChainCoal.Value;
         }
     }
 

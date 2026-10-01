@@ -46,7 +46,7 @@ public static class BackpackInventoryPatches
     [HarmonyPrefix]
     public static void AddItem(Inventory __instance, ItemDrop.ItemData item)
     {
-        coinsIncoming = BackpackLayout.IsLocalInventory(__instance) && HandSlots.IsCoins(item);
+        coinsIncoming = BackpackLayout.IsLocalInventory(__instance) && HandSlots.IsCoins(item) && BackpackSettings.CoinsToCoinSlots.Value;
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ public static class BackpackInventoryPatches
         }
 
         int empty = BackpackLayout.EmptyGridSlots(__instance, BackpackLayout.VisibleRows(Player.m_localPlayer));
-        if (HandSlots.IsCoins(item))
+        if (HandSlots.IsCoins(item) && BackpackSettings.CoinsToCoinSlots.Value)
         {
             empty += HandSlots.EmptyCoinSlots(__instance);
         }

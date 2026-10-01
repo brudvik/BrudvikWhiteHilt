@@ -16,6 +16,10 @@ public static class PortalSettings
     private static ConfigEntry<float> homeCooldownMinutes;
     private static ConfigEntry<float> homeReturnMinutes;
     private static ConfigEntry<bool> sortByDistance;
+    private static ConfigEntry<float> runePostRange;
+    private static ConfigEntry<float> mapTableExtensionRange;
+    private static ConfigEntry<int> valkyrieCost;
+    private static ConfigEntry<bool> valkyrieOncePerDeath;
 
     /// <summary>
     /// True if the portals let everything through, runes or not.
@@ -36,6 +40,26 @@ public static class PortalSettings
     /// Minutes after going home in which the Home Stone takes the player back to where they came from; 0 turns it off.
     /// </summary>
     public static float HomeReturnMinutes => homeReturnMinutes != null ? homeReturnMinutes.Value : 2f;
+
+    /// <summary>
+    /// How close a rune post must stand to a portal, in metres; 0 turns the rune posts off.
+    /// </summary>
+    public static float RunePostRange => runePostRange != null ? runePostRange.Value : 8f;
+
+    /// <summary>
+    /// How close a Portal Astrolabe or Harbour Anchor must stand to a map table, in metres.
+    /// </summary>
+    public static float MapTableExtensionRange => mapTableExtensionRange != null ? mapTableExtensionRange.Value : 5f;
+
+    /// <summary>
+    /// Surtling Cores a trip with the Valkyrie Stone costs.
+    /// </summary>
+    public static int ValkyrieCost => valkyrieCost != null ? valkyrieCost.Value : 1;
+
+    /// <summary>
+    /// True if the Valkyrie Stone takes a player to each death point only once.
+    /// </summary>
+    public static bool ValkyrieOncePerDeath => valkyrieOncePerDeath == null || valkyrieOncePerDeath.Value;
 
     /// <summary>
     /// True if the travel list is sorted by distance instead of by name. Each player's own choice.
@@ -65,6 +89,17 @@ public static class PortalSettings
         homeReturnMinutes = WhiteHiltConfig.BindAdminOnly(Section, "HomeReturnMinutes", 2f,
             "Minutes after going home in which the Home Stone takes you back to where you were, even while it rests. 0 turns this off.",
             new AcceptableValueRange<float>(0f, 60f));
+        runePostRange = WhiteHiltConfig.BindAdminOnly(Section, "RunePostRange", 8f,
+            "How close, in metres, a rune post must stand to the portal you travel from for its runes to count. 0 turns the rune posts off.",
+            new AcceptableValueRange<float>(0f, 30f));
+        mapTableExtensionRange = WhiteHiltConfig.BindAdminOnly(Section, "MapTableExtensionRange", 5f,
+            "How close, in metres, a Portal Astrolabe or Harbour Anchor must stand to a map table to show its markers.",
+            new AcceptableValueRange<float>(1f, 30f));
+        valkyrieCost = WhiteHiltConfig.BindAdminOnly(Section, "ValkyrieStoneCost", 1,
+            "Surtling Cores a trip to your last death point with the Valkyrie Stone costs. 0 makes it free.",
+            new AcceptableValueRange<int>(0, 20));
+        valkyrieOncePerDeath = WhiteHiltConfig.BindAdminOnly(Section, "ValkyrieStoneOncePerDeath", true,
+            "The Valkyrie Stone takes you to each death point only once. Off: as often as you like.");
         sortByDistance = WhiteHiltConfig.BindLocal(Section, "SortByDistance", false, "Sort the portal list by distance instead of by name.");
 
         Translations.AddEnglish("whitehilt_portal_travel", "Travel");

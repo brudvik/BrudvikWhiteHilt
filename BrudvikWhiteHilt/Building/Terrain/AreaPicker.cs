@@ -8,8 +8,6 @@ namespace BrudvikWhiteHilt.Building.Terrain;
 /// </summary>
 public sealed class AreaPicker
 {
-    private const float TerrainReach = 60f;
-
     private static int terrainMask;
 
     private bool fixedSize;
@@ -38,7 +36,7 @@ public sealed class AreaPicker
         }
 
         Transform view = GameCamera.instance.transform;
-        float reach = BuildCamera.Active ? BuildToolSettings.MaxPlaceDistance.Value : TerrainReach;
+        float reach = BuildCamera.Active ? BuildToolSettings.MaxPlaceDistance.Value : TerrainSettings.AreaReach.Value;
         if (!Physics.Raycast(view.position, view.forward, out RaycastHit hit, reach, terrainMask))
         {
             return false;

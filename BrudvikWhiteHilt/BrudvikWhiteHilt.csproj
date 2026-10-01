@@ -424,6 +424,7 @@
     <Compile Include="Ranching\FavoriteFoods.cs" />
     <Compile Include="Ranching\HusbandrySkill.cs" />
     <Compile Include="Ranching\RanchingSettings.cs" />
+    <Compile Include="Pieces\Defenses\DefenseSettings.cs" />
     <Compile Include="Mastery\Angling.cs" />
     <Compile Include="Mastery\CookingStars.cs" />
     <Compile Include="Mastery\Crops.cs" />

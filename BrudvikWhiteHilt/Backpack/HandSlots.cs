@@ -132,7 +132,7 @@ public static class HandSlots
             return;
         }
 
-        if (GoesWithShield(item) && player.m_leftItem == null)
+        if (GoesWithShield(item) && player.m_leftItem == null && BackpackSettings.ShieldFollowsWeapon.Value)
         {
             ItemDrop.ItemData shield = player.m_inventory.GetItemAt(ShieldSlot.x, ShieldSlot.y);
             if (IsShield(shield))
@@ -154,7 +154,7 @@ public static class HandSlots
     /// <param name="item">The item just unequipped.</param>
     public static void OnUnequipped(Player player, ItemDrop.ItemData item)
     {
-        if (player == Player.m_localPlayer && GoesWithShield(item))
+        if (player == Player.m_localPlayer && GoesWithShield(item) && BackpackSettings.ShieldFollowsWeapon.Value)
         {
             checkShield = true;
         }

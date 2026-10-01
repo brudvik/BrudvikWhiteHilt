@@ -15,7 +15,6 @@ public static class HoeTools
     private const float HeightStep = 0.25f;
     private const float RampSkirt = 2f;
     private const float MinBrush = 1f;
-    private const float MaxBrush = 8f;
 
     private static readonly float[] Grades = { 0f, 10f, 15f, 20f, 25f };
     private static readonly float[] Widths = { 3f, 4f, 5f, 6f, 8f };
@@ -28,6 +27,9 @@ public static class HoeTools
     private static TerrainShapes.Plan plan;
     private static float nextPlan;
     private static float wheelAmount;
+    private static float brushRadius;
+
+    private static float MaxBrush => TerrainSettings.MaxBrushRadius.Value;
 
     /// <summary>
     /// The hoe tool modes.
@@ -90,7 +92,11 @@ public static class HoeTools
     public static bool EvenRoad { get; private set; }
 
     /// <summary>Radius of the big brush in metres, or 0 for the hoe's own size.</summary>
-    public static float BrushRadius { get; private set; }
+    public static float BrushRadius
+    {
+        get => Mathf.Min(brushRadius, MaxBrush);
+        private set => brushRadius = value;
+    }
 
     /// <summary>The height reference, or null.</summary>
     public static float? Reference { get; private set; }

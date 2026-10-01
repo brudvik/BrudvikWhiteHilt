@@ -36,7 +36,7 @@ public class PalisadeRampart : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 1600f;
+    protected override float Health => DefenseSettings.Scale(1600f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
@@ -71,7 +71,7 @@ public class PalisadeCorner : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 1200f;
+    protected override float Health => DefenseSettings.Scale(1200f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
@@ -106,7 +106,7 @@ public class PalisadeCorner45 : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 1200f;
+    protected override float Health => DefenseSettings.Scale(1200f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
@@ -139,7 +139,7 @@ public class RampartStairs : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 600f;
+    protected override float Health => DefenseSettings.Scale(600f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Start;
@@ -176,7 +176,7 @@ public class PalisadeGatehouse : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 4000f;
+    protected override float Health => DefenseSettings.Scale(4000f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
@@ -259,7 +259,7 @@ public class WatchtowerSmall : WatchtowerBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 2000f;
+    protected override float Health => DefenseSettings.Scale(2000f);
 }
 
 /// <summary>
@@ -292,7 +292,7 @@ public class WatchtowerMedium : WatchtowerBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 3000f;
+    protected override float Health => DefenseSettings.Scale(3000f);
 }
 
 /// <summary>
@@ -325,7 +325,7 @@ public class WatchtowerLarge : WatchtowerBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 4500f;
+    protected override float Health => DefenseSettings.Scale(4500f);
 }
 
 /// <summary>
@@ -356,7 +356,7 @@ public class ChevalDeFrise : DefensePieceBase
     };
 
     /// <inheritdoc/>
-    protected override float Health => 500f;
+    protected override float Health => DefenseSettings.Scale(500f);
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;

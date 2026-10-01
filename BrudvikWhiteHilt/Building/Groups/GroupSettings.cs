@@ -18,6 +18,9 @@ public static class GroupSettings
     /// <summary>Most pieces in one paste, line or area; 0 means no limit.</summary>
     public static ConfigEntry<int> MaxPieces { get; private set; }
 
+    /// <summary>How far away pieces may be pasted without the build camera, in metres.</summary>
+    public static ConfigEntry<float> PasteReach { get; private set; }
+
     /// <summary>Selection mode on and off.</summary>
     public static ConfigEntry<KeyboardShortcut> KeySelect { get; private set; }
 
@@ -54,6 +57,8 @@ public static class GroupSettings
         Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true, "Allow selecting, copying, moving and tearing down groups of pieces, blueprints, and the line and area tool.");
         MaxPieces = WhiteHiltConfig.BindAdminOnly(Section, "MaxPieces", 0, "Most pieces in one paste, blueprint, line or area. 0 means no limit.",
             new AcceptableValueRange<int>(0, 100000));
+        PasteReach = WhiteHiltConfig.BindAdminOnly(Section, "PasteReach", 30f,
+            "How far away, in metres, copied pieces, lines and areas can be placed without the build camera.", new AcceptableValueRange<float>(5f, 100f));
 
         KeySelect = BindKey("Select", KeyCode.A, "Selection mode on and off.");
         KeyClear = BindKey("ClearSelection", KeyCode.D, "Clear the selection.");

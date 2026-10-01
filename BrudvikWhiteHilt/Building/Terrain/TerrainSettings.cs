@@ -40,6 +40,18 @@ public static class TerrainSettings
     /// <summary>Whether growth markers show over plants while holding the cultivator.</summary>
     public static ConfigEntry<bool> ShowGrowth { get; private set; }
 
+    /// <summary>How far away an area may be picked without the build camera, in metres.</summary>
+    public static ConfigEntry<float> AreaReach { get; private set; }
+
+    /// <summary>Largest radius of the hoe's big brush, in metres.</summary>
+    public static ConfigEntry<float> MaxBrushRadius { get; private set; }
+
+    /// <summary>How close a planned road must be for the next stretch to be built, in metres.</summary>
+    public static ConfigEntry<float> RoadBuildReach { get; private set; }
+
+    /// <summary>Most rows, and most columns, in one planting grid.</summary>
+    public static ConfigEntry<int> MaxGridRows { get; private set; }
+
     /// <summary>Road width in metres when a road is planned.</summary>
     public static ConfigEntry<float> RoadWidth { get; private set; }
 
@@ -99,6 +111,14 @@ public static class TerrainSettings
             new AcceptableValueRange<float>(16f, 40000f));
         UndoSeconds = WhiteHiltConfig.BindAdminOnly(Section, "UndoSeconds", 60f, "How long terrain changes may be undone, in seconds. 0 turns it off.",
             new AcceptableValueRange<float>(0f, 600f));
+        AreaReach = WhiteHiltConfig.BindAdminOnly(Section, "AreaReach", 60f,
+            "How far away, in metres, an area can be picked with the hoe or cultivator tools without the build camera.", new AcceptableValueRange<float>(5f, 200f));
+        MaxBrushRadius = WhiteHiltConfig.BindAdminOnly(Section, "MaxBrushRadius", 8f,
+            "Largest radius of the hoe's big brush, in metres.", new AcceptableValueRange<float>(1f, 20f));
+        RoadBuildReach = WhiteHiltConfig.BindAdminOnly(Section, "RoadBuildReach", 40f,
+            "A planned road is built stretch by stretch while you are within this many metres of it.", new AcceptableValueRange<float>(10f, 200f));
+        MaxGridRows = WhiteHiltConfig.BindAdminOnly(Section, "MaxGridRows", 30,
+            "Most rows, and most columns, in one cultivator planting grid.", new AcceptableValueRange<int>(1, 100));
         ShowGrowth = WhiteHiltConfig.BindLocal(Section, "ShowGrowth", true, "Show growth markers over plants while holding the White Hilt cultivator.");
         RoadWidth = WhiteHiltConfig.BindLocal(Section, "RoadWidth", 4f, "Width of new roads in metres.");
         UndoSteps = WhiteHiltConfig.BindLocal(Section, "UndoSteps", 10, "How many terrain jobs are remembered for undo.");
