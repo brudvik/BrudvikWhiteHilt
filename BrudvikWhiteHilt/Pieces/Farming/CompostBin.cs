@@ -21,7 +21,7 @@ public class CompostBin : IWhiteHiltCustomPiece
     public const string CompostName = "WhiteHiltCompost";
 
     private const string FullName = "Compost Bin";
-    private const string Description = "Put kitchen and field waste in it; every few minutes five pieces turn into compost. Crops within 12 metres of a bin with compost grow 30% faster, and the bin uses one compost a day.";
+    private const string Description = "Put kitchen and field waste in it; every few minutes {0} pieces turn into compost. Crops within {1} metres of a bin with compost grow {2}% faster, and the bin uses {3} compost a day.";
     private const string CompostKey = "item_whitehiltcompost";
 
     // Height in metres; the model (compostbin.glb, CC BY Pants85) is 1.1 wide and 1.06 deep for a height of 1.

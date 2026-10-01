@@ -215,7 +215,7 @@ public static class DogRegistry
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(TreatPrefabName), "Dog Treat",
             "A chewy bit of dried meat. Make an emote near your dog with treats in your pack to teach it a trick, or use one on the dog to cheer it up.");
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(BandagePrefabName), "Dog Bandage",
-            "Use it on a hurt or poisoned dog: half its health back, and the poison is gone.");
+            "Use it on a hurt or poisoned dog: {0}% of its health back, and the poison is gone.");
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(CoatPrefabName), "Dog Coat",
             "A lined leather coat for the dog. Use it on the dog; it keeps it from freezing in the mountains and in frost.");
         Translations.AddEnglish("whitehilt_dog_mood_happy", "Mood: happy");
@@ -236,7 +236,7 @@ public static class DogRegistry
         Translations.AddEnglish("whitehilt_dog_trick_paw", "give paw");
         Translations.AddEnglish("whitehilt_dog_trick_roll", "roll over");
         Translations.AddEnglish("whitehilt_dog_trick_unknown", "$1 does not know how to $2 yet. Teach it with a Dog Treat in your pack.");
-        Translations.AddEnglish("whitehilt_dog_trick_lesson", "$1 is learning to $2 ($3/3).");
+        Translations.AddEnglish("whitehilt_dog_trick_lesson", "$1 is learning to $2 ($3/$4).");
         Translations.AddEnglish("whitehilt_dog_trick_learned", "$1 has learned to $2!");
         Translations.AddEnglish("whitehilt_dog_litter", "$1 have had a puppy! It lies by the dog house.");
         Translations.AddEnglish("whitehilt_dog_legacy", "$1 left a puppy behind in the dog house.");

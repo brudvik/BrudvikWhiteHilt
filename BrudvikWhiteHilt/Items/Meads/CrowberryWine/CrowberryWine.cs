@@ -33,7 +33,10 @@ public class CrowberryWine : WhiteHiltMeadBase
     protected override string Description => "A near-black wine of mountain crowberries and a little roseroot. Wounds close faster with it in your blood.";
 
     /// <inheritdoc/>
-    protected override string EffectTooltip => "Health regenerates 50% faster";
+    protected override string EffectTooltip => "Health regenerates {0}% faster";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Helpers.Translations.Percent(healthRegenMultiplier.Value - 1f) };
 
     /// <inheritdoc/>
     protected override string CopyMeadFrom => "MeadHealthMinor";

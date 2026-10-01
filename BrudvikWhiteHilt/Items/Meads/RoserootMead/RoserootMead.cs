@@ -33,7 +33,10 @@ public class RoserootMead : WhiteHiltMeadBase
     protected override string Description => "A golden mead brewed with roseroot and crowberries. Your breath comes back faster on the long climbs.";
 
     /// <inheritdoc/>
-    protected override string EffectTooltip => "Stamina regenerates 50% faster";
+    protected override string EffectTooltip => "Stamina regenerates {0}% faster";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Helpers.Translations.Percent(staminaRegenMultiplier.Value - 1f) };
 
     /// <inheritdoc/>
     protected override string CopyMeadFrom => "MeadStaminaMedium";

@@ -35,7 +35,7 @@ public class DogBowl : DogPieceBase
     protected override string FullName => "Dog Bowl";
 
     /// <inheritdoc/>
-    protected override string Description => "A bark bowl. Put food in it, and a hungry dog within 15 metres comes and eats.";
+    protected override string Description => "A bark bowl. Put food in it, and a hungry dog within {0} metres comes and eats.";
 
     /// <inheritdoc/>
     protected override string BasePrefab => "piece_chest_wood";

@@ -1,6 +1,9 @@
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Helpers;
 
@@ -10,6 +13,7 @@ namespace BrudvikWhiteHilt.Helpers;
 public static class Translations
 {
     private static readonly string[] embeddedLanguages = { "Norwegian" };
+    private static readonly Dictionary<string, Func<object[]>> dynamicTexts = new();
 
     /// <summary>
     /// Turns a translation key into the token Valheim looks up, e.g. <c>item_x</c> into <c>$item_x</c>.
@@ -51,6 +55,80 @@ public static class Translations
     public static void AddEnglish(string key, string text)
     {
         LocalizationManager.Instance.GetLocalization().AddTranslation("English", key, text);
+    }
+
+    /// <summary>
+    /// Fills <c>{0}</c>, <c>{1}</c>... in the text of <paramref name="key"/> every time it is shown, in every language,
+    /// so numbers in the text follow the config.
+    /// </summary>
+    /// <param name="key">Translation key without the leading <c>$</c>.</param>
+    /// <param name="values">The values, or null to leave the text as it is. Must not call Localize.</param>
+    public static void AddDynamic(string key, Func<object[]> values)
+    {
+        dynamicTexts[key] = values;
+    }
+
+    /// <summary>
+    /// Fills the placeholders of a text registered with <see cref="AddDynamic"/>; other texts are returned unchanged.
+    /// </summary>
+    /// <param name="key">Translation key without the leading <c>$</c>.</param>
+    /// <param name="text">The translated text.</param>
+    /// <returns>The text with its values.</returns>
+    public static string FillDynamic(string key, string text)
+    {
+        if (text == null || !dynamicTexts.TryGetValue(key, out Func<object[]> values))
+        {
+            return text;
+        }
+
+        try
+        {
+            object[] args = values();
+            return args == null ? text : string.Format(CultureInfo.CurrentCulture, text, args);
+        }
+        catch (Exception ex) when (ex is FormatException || ex is NullReferenceException)
+        {
+            return text;
+        }
+    }
+
+    /// <summary>
+    /// Drops the game's cache of translated texts, so dynamic texts show changed config values.
+    /// </summary>
+    public static void RefreshDynamic()
+    {
+        Localization.instance?.m_cache.EvictAll();
+    }
+
+    /// <summary>
+    /// Looks up a translation without <c>Localize</c>, which must not run while the game is translating another text.
+    /// </summary>
+    /// <param name="token">Key, with or without the leading <c>$</c>.</param>
+    /// <returns>The translation, or the key when there is none.</returns>
+    public static string Word(string token)
+    {
+        string key = token != null && token.StartsWith("$") ? token.Substring(1) : token;
+        return key != null && Localization.instance != null && Localization.instance.m_translations.TryGetValue(key, out string value) ? value : key;
+    }
+
+    /// <summary>
+    /// Formats a number for a text, with at most two decimals.
+    /// </summary>
+    /// <param name="value">The number.</param>
+    /// <returns>The text.</returns>
+    public static string Number(float value)
+    {
+        return value.ToString("0.##", CultureInfo.CurrentCulture);
+    }
+
+    /// <summary>
+    /// Formats a share as a whole percentage, e.g. 0.5 as 50.
+    /// </summary>
+    /// <param name="share">The share.</param>
+    /// <returns>The text.</returns>
+    public static string Percent(float share)
+    {
+        return Mathf.RoundToInt(share * 100f).ToString(CultureInfo.CurrentCulture);
     }
 
     /// <summary>

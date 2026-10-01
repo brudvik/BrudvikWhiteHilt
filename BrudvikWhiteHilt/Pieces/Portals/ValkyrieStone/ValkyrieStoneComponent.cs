@@ -139,7 +139,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         return $"{ZNet.instance.GetWorldUID()}:{point.x.ToString("R", invariant)},{point.y.ToString("R", invariant)},{point.z.ToString("R", invariant)}";
     }
 
-    // One core keeps the translated text; other amounts are spelled out from the item name.
+    // One core keeps the original text; more use the plural text, filled in by DynamicTexts.
     private static string CostText()
     {
         int cost = PortalSettings.ValkyrieCost;
@@ -147,7 +147,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         {
             <= 0 => string.Empty,
             1 => " ($whitehilt_valkyrie_cost)",
-            _ => $" ({cost} {FuelName()})"
+            _ => " ($whitehilt_valkyrie_cost_many)"
         };
     }
 

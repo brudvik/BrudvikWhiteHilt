@@ -41,8 +41,7 @@ public static class ExplorationSkill
     /// </summary>
     public static void Register()
     {
-        int revealLevel = NavigationSettings.SharedMapRevealLevel?.Value ?? 50;
-        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", $"Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal, and from level {revealLevel} shows map shared by others like your own.");
+        Translations.AddEnglishNameAndDescription(NameKey, "Exploration", "Uncovering the map. Widens what the Navigator's Table and the Pathfinder's Amulet reveal, and from level {0} shows map shared by others like your own.");
         config = new SkillConfig
         {
             Identifier = Identifier,

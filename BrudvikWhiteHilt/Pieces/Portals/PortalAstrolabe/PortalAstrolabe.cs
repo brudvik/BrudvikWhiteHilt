@@ -59,7 +59,7 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
         this.instance = instance;
         Translations.AddEnglishNameAndDescription(PrefabName, FullName, Description);
         Translations.AddEnglish("whitehilt_astrolabe_active", "Every portal shows on the map");
-        Translations.AddEnglish("whitehilt_mapextension_inactive", "Place it within 5 m of a map table");
+        Translations.AddEnglish("whitehilt_mapextension_inactive", "Place it within {0} m of a map table");
         Translations.AddEnglish("whitehilt_portalmap_unnamed", "Unnamed portal");
         Translations.AddEnglish("whitehilt_portalmap_private", "private");
         Translations.AddEnglish("whitehilt_portalmap_guild", "guild");

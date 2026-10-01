@@ -21,7 +21,7 @@ public class FeedingTrough : IWhiteHiltCustomPiece
     public const string PrefabName = "piece_whitehilt_feedingtrough";
 
     private const string FullName = "Feeding Trough";
-    private const string Description = "A hollowed log on stones. Fill it with food, and hungry animals within 15 metres come and eat from it.";
+    private const string Description = "A hollowed log on stones. Fill it with food, and hungry animals within {0} metres come and eat from it.";
 
     // Size in metres. The model is 6.35 long and 2.36 wide for a height of 1, lying along x.
     private const float Length = 2f;

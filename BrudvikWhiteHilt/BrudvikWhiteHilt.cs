@@ -55,6 +55,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         RanchingSettings.Initialize();
         NavigationSettings.Initialize();
         Translations.LoadEmbedded();
+        DynamicTexts.Register();
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
         HusbandrySkill.Register();
@@ -241,6 +242,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     private void RefreshConfig()
     {
+        Translations.RefreshDynamic();
         ProgressionManager.Refresh();
         Backpack.BackpackLayout.Refresh();
         Planting.Plantables.Apply();

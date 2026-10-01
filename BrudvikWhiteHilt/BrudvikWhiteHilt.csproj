@@ -74,6 +74,8 @@
     <Compile Include="Helpers\SpriteLoader.cs" />
     <Compile Include="Helpers\StatusEffectHelper.cs" />
     <Compile Include="Helpers\Translations.cs" />
+    <Compile Include="Helpers\DynamicTexts.cs" />
+    <Compile Include="Patches\Texts\DynamicTextPatch.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Helpers\WearNTearHelper.cs" />
     <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />

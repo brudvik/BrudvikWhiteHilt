@@ -450,6 +450,11 @@ public static class PotionSettings
         Thor.AttackStaminaMultiplier = Bind(thor, "AttackStaminaMultiplier", 0.5f, 0f, 1f, "Multiplier on attack stamina usage.");
         Thor.ChopDamageMultiplier = Bind(thor, "ChopDamageMultiplier", 2f, 1f, 10f, "Multiplier on chop damage.");
         Thor.PickaxeDamageMultiplier = Bind(thor, "PickaxeDamageMultiplier", 2f, 1f, 10f, "Multiplier on pickaxe damage.");
+        Helpers.Translations.AddDynamic("se_giftofthor_tooltip", () => new object[]
+        {
+            Helpers.Translations.Number(Thor.ChopDamageMultiplier.Value),
+            Helpers.Translations.Number(Thor.PickaxeDamageMultiplier.Value)
+        });
 
         const string tyr = "GiftOfTyr";
         Tyr.DurationMinutes = BindDuration(tyr, 20f);

@@ -28,7 +28,7 @@ public class PathfinderAmulet : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     public const string PrefabName = "WhiteHiltPathfinder";
 
     private const string FullName = "Pathfinder's Amulet";
-    private const string Description = "A valknut pendant on a leather cord, set with a gem for every twenty levels of Exploration. Worn as a trinket, the map uncovers further around you, up to 200 m. Uncovering new land fills its adrenaline; when it is full, Odin's ravens show you the land for 500 m around.";
+    private const string Description = "A valknut pendant on a leather cord, set with a gem for every twenty levels of Exploration. Worn as a trinket, the map uncovers further around you, up to {0} m. Uncovering new land fills its adrenaline; when it is full, Odin's ravens show you the land for {1} m around.";
     private const string CopyFrom = "TrinketBronzeHealth";
     private const string EffectKey = "se_whitehiltpathfinder";
     private const string AmuletLayout = "stifinner";

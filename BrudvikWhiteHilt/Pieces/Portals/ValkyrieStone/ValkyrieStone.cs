@@ -19,7 +19,7 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
     public const string PrefabName = "piece_whitehilt_valkyriestone";
 
     private const string FullName = "Valkyrie Stone";
-    private const string Description = "A carved runestone that calls a valkyrie. For one Surtling Core she carries you to where you last fell, once for each death.";
+    private const string Description = "A carved runestone that calls a valkyrie. For {0} she carries you to where you last fell{1}.";
 
     // Size in metres. The model is 0.74 wide and 0.44 deep for a height of 1, with the carved side facing +z.
     private const float StoneHeight = 1.8f;
@@ -58,7 +58,7 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
         Translations.AddEnglishNameAndDescription(PrefabName, FullName, Description);
         Translations.AddEnglish("whitehilt_valkyrie_travel", "Travel to where you fell");
         Translations.AddEnglish("whitehilt_valkyrie_cost", "1 Surtling Core");
-        Translations.AddEnglish("whitehilt_valkyrie_confirm", "Let the valkyrie carry you to where you last fell?\nIt costs one Surtling Core.");
+        Translations.AddEnglish("whitehilt_valkyrie_confirm", "Let the valkyrie carry you to where you last fell?\nIt costs {0}.");
         Translations.AddEnglish("whitehilt_valkyrie_none", "You have not fallen in this world");
         Translations.AddEnglish("whitehilt_valkyrie_used", "The valkyrie has already carried you to your last fall");
         Translations.AddEnglish("msg_whitehilt_valkyrie_nocore", "The valkyrie asks for a Surtling Core");

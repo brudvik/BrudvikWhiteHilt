@@ -33,7 +33,10 @@ public class SweetGaleAle : WhiteHiltMeadBase
     protected override string Description => "A strong, bitter ale brewed with sweet gale, the way it was done before hops. Carriers swear by it.";
 
     /// <inheritdoc/>
-    protected override string EffectTooltip => "Carry weight increased by 75";
+    protected override string EffectTooltip => "Carry weight increased by {0}";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Helpers.Translations.Number(carryWeight.Value) };
 
     /// <inheritdoc/>
     protected override string CopyMeadFrom => "MeadStrength";

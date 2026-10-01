@@ -19,7 +19,7 @@ public class TetherPost : IWhiteHiltCustomPiece
     public const string PrefabName = "piece_whitehilt_tetherpost";
 
     private const string FullName = "Tether Post";
-    private const string Description = "A post to tie animals to. Use it to keep the tame animals within 10 metres wandering around it; use it again with the alternative key to set them free.";
+    private const string Description = "A post to tie animals to. Use it to keep the tame animals within {0} metres wandering around it; use it again with the alternative key to set them free.";
 
     // Layout in mesh units of the post (1 high), measured from the converted model with x negated for Unity:
     // the trunk stands at (0.042, -0.046) and leans towards +z; at 0.75 up its front is at z 0.072.

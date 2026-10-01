@@ -40,6 +40,11 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected abstract string EffectTooltip { get; }
 
     /// <summary>
+    /// Values for <c>{0}</c>, <c>{1}</c>... in <see cref="EffectTooltip"/>, read each time the tooltip is shown; null for none.
+    /// </summary>
+    protected virtual object[] TooltipValues => null;
+
+    /// <summary>
     /// Vanilla mead to clone the model and drinking effects from.
     /// </summary>
     protected abstract string CopyMeadFrom { get; }
@@ -109,6 +114,7 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
         Translations.AddEnglish(MeadBaseKey, $"Mead Base: {FullName}");
         Translations.AddEnglish(TooltipKey, EffectTooltip);
+        Translations.AddDynamic(TooltipKey, () => TooltipValues);
     }
 
     /// <summary>

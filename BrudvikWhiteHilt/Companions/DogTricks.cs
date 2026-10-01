@@ -113,7 +113,7 @@ public sealed class DogTricks : MonoBehaviour
         tricks.Do(trick, lesson: true);
         string message = lessons >= LessonsToLearn
             ? Localization.instance.Localize(Translations.Token("whitehilt_dog_trick_learned"), dog.DogName, trickName)
-            : Localization.instance.Localize(Translations.Token("whitehilt_dog_trick_lesson"), dog.DogName, trickName, lessons.ToString());
+            : Localization.instance.Localize(Translations.Token("whitehilt_dog_trick_lesson"), dog.DogName, trickName, lessons.ToString(), LessonsToLearn.ToString());
         player.Message(MessageHud.MessageType.Center, message);
     }
 
