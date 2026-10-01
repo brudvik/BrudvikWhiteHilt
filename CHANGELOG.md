@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.25.1 - 2026-10-01
+
+### Fixed
+- Dogs no longer breed. Two players' dogs near each other could breed even faster than wolves
+
 ## v0.25.0 - 2026-10-01
 
 ### Added

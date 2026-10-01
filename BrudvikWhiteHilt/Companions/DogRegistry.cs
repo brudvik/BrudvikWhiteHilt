@@ -756,7 +756,8 @@ public static class DogRegistry
             Procreation procreation = prefab.GetComponent<Procreation>();
             if (procreation != null)
             {
-                procreation.m_pregnancyChance = 0f;
+                // Vanilla's m_pregnancyChance is the chance to skip a breeding check: 1 always skips.
+                procreation.m_pregnancyChance = 1f;
             }
 
             prefab.AddComponent<RestPose>();
