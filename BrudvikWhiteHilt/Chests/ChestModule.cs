@@ -71,6 +71,9 @@ namespace BrudvikWhiteHilt.Chests
         // Whether a container belongs to a ship or cart; it never changes, and the UI asks every frame.
         private readonly ConditionalWeakTable<Container, StrongBox<bool>> vehicleContainers = new();
 
+        // Containers dropping their items: refilling them now would drop the refills, and Take all must empty them.
+        private readonly ConditionalWeakTable<Container, object> destroyedContainers = new();
+
         /// <summary>
         /// Starts the chests, unless the former stand-alone mod is loaded. Call from the plugin's Awake.
         /// </summary>
@@ -166,14 +169,17 @@ namespace BrudvikWhiteHilt.Chests
         /// </summary>
         private void HandleContainerDropAllItemsPatched(object sender, ContainerDropAllItemsPatchEvent e)
         {
-            var piece = FindPiece(e?.Container);
+            if (e?.Container == null) return;
+
+            destroyedContainers.GetValue(e.Container, _ => new object());
+            var piece = FindPiece(e.Container);
             if (piece == null)
             {
-                if (IsCargo(e?.Container)) e!.Container.RemoveSuppliedItems(ChestCategory.None, chestSupply);
+                if (IsCargo(e.Container)) e.Container.RemoveSuppliedItems(ChestCategory.None, chestSupply);
                 return;
             }
 
-            e!.Container.RemoveSuppliedItems(piece.CustomPieceConfig.ItemCategory, chestSupply);
+            e.Container.RemoveSuppliedItems(piece.CustomPieceConfig.ItemCategory, chestSupply);
 
             var chestId = e.Container.GetChestId();
             if (chestId != null && e.Container.IsOwnedByMe()) worldProgress.ReportStock(chestId, new Dictionary<string, int>());
@@ -228,6 +234,8 @@ namespace BrudvikWhiteHilt.Chests
         /// </summary>
         private void HandleContainerCheckForChanges(object sender, ContainerCheckForChangesPatchEvent e)
         {
+            if (IsDestroyed(e?.Container)) return;
+
             var piece = FindPiece(e?.Container);
             if (piece == null)
             {
@@ -248,6 +256,8 @@ namespace BrudvikWhiteHilt.Chests
         /// </summary>
         private void HandleContainerChanged(object sender, ContainerChangedPatchEvent e)
         {
+            if (IsDestroyed(e?.Container)) return;
+
             var piece = FindPiece(e?.Container);
             if (piece == null)
             {
@@ -270,6 +280,11 @@ namespace BrudvikWhiteHilt.Chests
 
             RegisterChest(container!);
             container!.RestockCargo(chestSupply, container.GetComponent<ShipChest>() != null ? ShipChestModeKey : CargoModeKey);
+        }
+
+        private bool IsDestroyed(Container? container)
+        {
+            return container != null && destroyedContainers.TryGetValue(container, out _);
         }
 
         private bool IsCargo(Container? container)
@@ -322,7 +337,7 @@ namespace BrudvikWhiteHilt.Chests
         private bool TryGetChest(Inventory inventory, out Container container, out ChestCategory category)
         {
             category = ChestCategory.None;
-            if (!chestInventories.TryGetValue(inventory, out container) || container == null) return false;
+            if (!chestInventories.TryGetValue(inventory, out container) || container == null || IsDestroyed(container)) return false;
 
             var piece = FindPiece(container);
             if (piece == null) return IsCargo(container);

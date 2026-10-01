@@ -110,6 +110,21 @@ namespace BrudvikWhiteHilt.Patches.Chests
             }
         }
 
+        /// <summary>
+        /// Harmony patch for DropAllItems(GameObject), which ships and carts use to put their cargo in floating crates.
+        /// </summary>
+        [HarmonyPatch(typeof(Container), "DropAllItems")]
+        [HarmonyPatch(new[] { typeof(UnityEngine.GameObject) })]
+        public static class ContainerDropAllItemsIntoLootPatch
+        {
+            static void Prefix(Container __instance)
+            {
+                if (__instance == null) return;
+
+                ContainerDropAllItemsPatched?.Invoke(null, new ContainerDropAllItemsPatchEvent() { Container = __instance });
+            }
+        }
+
     }
 
 }

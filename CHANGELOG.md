@@ -7,6 +7,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ### Added
 - **Unlimited cargo**: carts and ship holds, including the White Hilt Ship's sea chest, keep the stacks of unlimited items full, like the Everlasting Chest. Bring Wood in the ship when Wood is unlimited, and it never runs out while you build from the hold. Cargo never unlocks items or adds items you did not bring. Setting `Chests` → `UnlimitedCargo`. See [Restocking chests](docs/chests.md#carts-and-ships)
 
+### Fixed
+- Removing a chest dropped its unlimited stacks again (e.g. a full stack of Wood from the Wood Chest). Taking the unlimited stacks out made the chest refill them at once, and the refills were dropped. A chest that is being removed is no longer refilled
+
 ## v0.33.0 - 2026-10-01
 
 ### Changed
