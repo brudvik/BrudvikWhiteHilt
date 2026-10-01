@@ -2,6 +2,18 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.28.0 - 2026-10-01
+
+### Changed
+- White Hilt gear and Gift of Odin no longer make you practically immortal; they now give a small boost. Gift of Freya and the White Hilt Ship are unchanged
+- Armor: no more +999 armor on every White Hilt item (the Megingjord counted too). Each armor piece gets +4 armor and +1 extra per quality level (was +10). Still indestructible, weightless and 5% faster per piece
+- White Hilt Helmet keeps the Flametal look but has the Iron Helmet's stats
+- Weapons: +10% damage (was +50%), and +2 per quality level only on the damage types the weapon already deals (was +10 on plain, fire, pierce and slash). No more free +10 plain/fire/pierce damage. Still indestructible
+- White Hilt Sword has the Iron Sword's stats instead of Dyrnwyn's, but keeps Dyrnwyn's flaming hits and trail and deals +5 fire damage, setting the target briefly alight
+- Gift of Odin: full heal on drink, +50 max HP, +2 HP/s, 2x health regeneration and half fall damage for 10 minutes (was 500 max HP, 20 HP every frame and 21x regeneration for 20 minutes)
+- Gift of Idunn: 1.25x health and 1.5x stamina/eitr regeneration for 20 minutes (was 5x and +1 HP/s for 40 minutes)
+- Config: the changed settings are reset once to their new defaults; `[Gear.Indestructible] ArmorBonus`, `[Gear.Weapons] BonusDamage` and Gift of Odin's `MaxHealth` and `HealPerFrame` are removed from the file. New: `[Gear.Armor] ArmorBonus`, `[Gear.Weapons] SwordFireDamage`, Gift of Odin `BonusMaxHealth` and `HealPerSecond`
+
 ## v0.27.0 - 2026-10-01
 
 ### Added

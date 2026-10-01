@@ -15,10 +15,12 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
 {
     private const string Section = "Gear.Armor";
 
+    private static ConfigEntry<float> armorBonus;
     private static ConfigEntry<float> armorPerLevelBonus;
     private static ConfigEntry<float> movementBonus;
 
     private IndestructibleItem added;
+    private float baseArmor;
     private float baseArmorPerLevel;
     private float baseMovementModifier;
 
@@ -41,6 +43,12 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     /// The name of the item to copy from.
     /// </summary>
     protected abstract string CopyFrom { get; }
+
+    /// <summary>
+    /// Vanilla item whose armor, resistances and set bonus replace those of <see cref="CopyFrom"/>, or null to keep them.
+    /// Lets a piece keep a later biome's look with stats from its own tier.
+    /// </summary>
+    protected virtual string StatsFrom => null;
 
     /// <summary>
     /// The requirements for crafting the armor item.
@@ -101,6 +109,12 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             };
 
             IndestructibleItem item = new(BaseName, CopyFrom, weaponConfig);
+            if (StatsFrom != null)
+            {
+                CopyStats(item.ItemData, StatsFrom);
+            }
+
+            baseArmor = item.ItemData.m_armor;
             baseArmorPerLevel = item.ItemData.m_armorPerLevel;
             baseMovementModifier = item.ItemData.m_movementModifier;
             added = item;
@@ -126,9 +140,41 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             return;
         }
 
+        added.ItemData.m_armor = baseArmor + armorBonus.Value;
         added.ItemData.m_armorPerLevel = baseArmorPerLevel + armorPerLevelBonus.Value;
         added.ItemData.m_movementModifier = baseMovementModifier + movementBonus.Value;
         added.ApplyConfig();
+    }
+
+    private static void CopyStats(ItemDrop.ItemData.SharedData target, string sourceName)
+    {
+        ItemDrop source = PrefabManager.Cache.GetPrefab<ItemDrop>(sourceName);
+        if (source == null)
+        {
+            Jotunn.Logger.LogWarning($"Stats source {sourceName} not found; keeping the cloned stats.");
+            return;
+        }
+
+        ItemDrop.ItemData.SharedData stats = source.m_itemData.m_shared;
+        target.m_armor = stats.m_armor;
+        target.m_armorPerLevel = stats.m_armorPerLevel;
+        target.m_maxQuality = stats.m_maxQuality;
+        target.m_damageModifiers = new(stats.m_damageModifiers);
+        target.m_setName = stats.m_setName;
+        target.m_setSize = stats.m_setSize;
+        target.m_setStatusEffect = stats.m_setStatusEffect;
+        target.m_equipStatusEffect = stats.m_equipStatusEffect;
+        target.m_movementModifier = stats.m_movementModifier;
+        target.m_eitrRegenModifier = stats.m_eitrRegenModifier;
+        target.m_heatResistanceModifier = stats.m_heatResistanceModifier;
+        target.m_homeItemsStaminaModifier = stats.m_homeItemsStaminaModifier;
+        target.m_jumpStaminaModifier = stats.m_jumpStaminaModifier;
+        target.m_attackStaminaModifier = stats.m_attackStaminaModifier;
+        target.m_blockStaminaModifier = stats.m_blockStaminaModifier;
+        target.m_dodgeStaminaModifier = stats.m_dodgeStaminaModifier;
+        target.m_swimStaminaModifier = stats.m_swimStaminaModifier;
+        target.m_sneakStaminaModifier = stats.m_sneakStaminaModifier;
+        target.m_runStaminaModifier = stats.m_runStaminaModifier;
     }
 
     private static void BindConfig()
@@ -138,7 +184,9 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             return;
         }
 
-        armorPerLevelBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorPerLevelBonus", 10f,
+        armorBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorBonus", 4f,
+            "Armor added to every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 100f));
+        armorPerLevelBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorPerLevelBonus", 1f,
             "Added to the armor gained per quality level of every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 200f));
         movementBonus = WhiteHiltConfig.BindAdminOnly(Section, "MovementBonus", 0.05f,
             "Added to the movement speed modifier of every White Hilt armor piece (0.05 = 5% faster).", new AcceptableValueRange<float>(-0.5f, 0.5f));

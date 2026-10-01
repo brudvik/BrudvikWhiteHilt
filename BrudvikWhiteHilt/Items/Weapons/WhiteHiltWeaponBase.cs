@@ -18,7 +18,6 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     private const string Section = "Gear.Weapons";
 
     private static ConfigEntry<float> damageMultiplierBonus;
-    private static ConfigEntry<float> bonusDamage;
     private static ConfigEntry<float> bonusDamagePerLevel;
 
     private IndestructibleItem added;
@@ -45,6 +44,17 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     /// The name of the item to copy from.
     /// </summary>
     protected abstract string CopyFrom { get; }
+
+    /// <summary>
+    /// Vanilla item whose damage, blocking and attack costs replace those of <see cref="CopyFrom"/>, or null to keep them.
+    /// Lets a weapon keep a later biome's look and effects with stats from its own tier.
+    /// </summary>
+    protected virtual string StatsFrom => null;
+
+    /// <summary>
+    /// Fire damage added on top of the weapon's own damage.
+    /// </summary>
+    protected virtual float BonusFireDamage => 0f;
 
     /// <summary>
     /// The requirements for crafting the weapon.
@@ -111,6 +121,10 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             };
 
             IndestructibleItem item = new(BaseName, CopyFrom, itemConfig);
+            if (StatsFrom != null)
+            {
+                CopyStats(item.ItemData, StatsFrom);
+            }
 
             baseDamageMultiplier = item.ItemData.m_attack.m_damageMultiplier;
             baseDamages = item.ItemData.m_damages.Clone();
@@ -145,16 +159,21 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         shared.m_attack.m_damageMultiplier = baseDamageMultiplier + damageMultiplierBonus.Value;
 
         HitData.DamageTypes damages = baseDamages.Clone();
-        damages.m_damage += bonusDamage.Value;
-        damages.m_fire += bonusDamage.Value;
-        damages.m_pierce += bonusDamage.Value;
+        damages.m_fire += BonusFireDamage;
         shared.m_damages = damages;
 
+        // Only the types the weapon already deals grow with its level, so a sword gets no pierce.
+        float perLevelBonus = bonusDamagePerLevel.Value;
         HitData.DamageTypes perLevel = baseDamagesPerLevel.Clone();
-        perLevel.m_damage += bonusDamagePerLevel.Value;
-        perLevel.m_fire += bonusDamagePerLevel.Value;
-        perLevel.m_pierce += bonusDamagePerLevel.Value;
-        perLevel.m_slash += bonusDamagePerLevel.Value;
+        perLevel.m_damage += baseDamages.m_damage > 0f ? perLevelBonus : 0f;
+        perLevel.m_blunt += baseDamages.m_blunt > 0f ? perLevelBonus : 0f;
+        perLevel.m_slash += baseDamages.m_slash > 0f ? perLevelBonus : 0f;
+        perLevel.m_pierce += baseDamages.m_pierce > 0f ? perLevelBonus : 0f;
+        perLevel.m_fire += baseDamages.m_fire > 0f ? perLevelBonus : 0f;
+        perLevel.m_frost += baseDamages.m_frost > 0f ? perLevelBonus : 0f;
+        perLevel.m_lightning += baseDamages.m_lightning > 0f ? perLevelBonus : 0f;
+        perLevel.m_poison += baseDamages.m_poison > 0f ? perLevelBonus : 0f;
+        perLevel.m_spirit += baseDamages.m_spirit > 0f ? perLevelBonus : 0f;
         shared.m_damagesPerLevel = perLevel;
 
         added.ApplyConfig();
@@ -168,6 +187,46 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     {
     }
 
+    private static void CopyStats(ItemDrop.ItemData.SharedData target, string sourceName)
+    {
+        ItemDrop source = PrefabManager.Cache.GetPrefab<ItemDrop>(sourceName);
+        if (source == null)
+        {
+            Jotunn.Logger.LogWarning($"Stats source {sourceName} not found; keeping the cloned stats.");
+            return;
+        }
+
+        ItemDrop.ItemData.SharedData stats = source.m_itemData.m_shared;
+        target.m_damages = stats.m_damages.Clone();
+        target.m_damagesPerLevel = stats.m_damagesPerLevel.Clone();
+        target.m_maxQuality = stats.m_maxQuality;
+        target.m_toolTier = stats.m_toolTier;
+        target.m_attackForce = stats.m_attackForce;
+        target.m_backstabBonus = stats.m_backstabBonus;
+        target.m_blockPower = stats.m_blockPower;
+        target.m_blockPowerPerLevel = stats.m_blockPowerPerLevel;
+        target.m_deflectionForce = stats.m_deflectionForce;
+        target.m_deflectionForcePerLevel = stats.m_deflectionForcePerLevel;
+        target.m_timedBlockBonus = stats.m_timedBlockBonus;
+        target.m_movementModifier = stats.m_movementModifier;
+        target.m_attackStatusEffect = stats.m_attackStatusEffect;
+        target.m_attackStatusEffectChance = stats.m_attackStatusEffectChance;
+        CopyAttackStats(target.m_attack, stats.m_attack);
+        CopyAttackStats(target.m_secondaryAttack, stats.m_secondaryAttack);
+    }
+
+    private static void CopyAttackStats(Attack target, Attack source)
+    {
+        if (target == null || source == null)
+        {
+            return;
+        }
+
+        target.m_attackStamina = source.m_attackStamina;
+        target.m_attackEitr = source.m_attackEitr;
+        target.m_damageMultiplier = source.m_damageMultiplier;
+    }
+
     private static void BindConfig()
     {
         if (damageMultiplierBonus != null)
@@ -175,12 +234,10 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             return;
         }
 
-        damageMultiplierBonus = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplierBonus", 0.5f,
-            "Added to the primary attack's damage multiplier of every White Hilt weapon and shield.", new AcceptableValueRange<float>(0f, 5f));
-        bonusDamage = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamage", 10f,
-            "Added to the plain, fire and pierce damage.", new AcceptableValueRange<float>(0f, 500f));
-        bonusDamagePerLevel = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamagePerLevel", 10f,
-            "Added per quality level to the plain, fire, pierce and slash damage.", new AcceptableValueRange<float>(0f, 500f));
+        damageMultiplierBonus = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplierBonus", 0.1f,
+            "Added to the primary attack's damage multiplier of every White Hilt weapon and shield (0.1 = 10% more damage).", new AcceptableValueRange<float>(0f, 5f));
+        bonusDamagePerLevel = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamagePerLevel", 2f,
+            "Added per quality level to each damage type the weapon already deals.", new AcceptableValueRange<float>(0f, 500f));
     }
 
     private void TryApplyModel(IndestructibleItem item)

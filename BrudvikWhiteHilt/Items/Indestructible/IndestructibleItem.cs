@@ -13,14 +13,11 @@ namespace BrudvikWhiteHilt.Items.Indestructible;
 public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
 {
     private const string Section = "Gear.Indestructible";
-    private const float DefaultArmorBonus = 999f;
     private const float DefaultWeight = 0f;
 
-    private static ConfigEntry<float> armorBonus;
     private static ConfigEntry<float> weight;
 
     private ItemDrop.ItemData.SharedData _ItemData = null;
-    private float baseArmor;
 
     /// <summary>
     /// Gets or sets the shared data for the item.
@@ -43,7 +40,6 @@ public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
         {
             ItemData = ItemDrop.m_itemData.m_shared;
 
-            baseArmor = ItemData.m_armor;
             ApplyConfig();
             ItemData.m_durabilityDrain = 0;
             ItemData.m_maxDurability = 999;
@@ -65,19 +61,17 @@ public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
     /// </summary>
     public static void BindConfig()
     {
-        if (armorBonus != null)
+        if (weight != null)
         {
             return;
         }
 
-        armorBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorBonus", DefaultArmorBonus,
-            "Armor added to every indestructible White Hilt item.", new AcceptableValueRange<float>(0f, 1000f));
         weight = WhiteHiltConfig.BindAdminOnly(Section, "Weight", DefaultWeight,
             "Weight of every indestructible White Hilt item.", new AcceptableValueRange<float>(0f, 50f));
     }
 
     /// <summary>
-    /// Applies the configured armor bonus and weight.
+    /// Applies the configured weight.
     /// </summary>
     public void ApplyConfig()
     {
@@ -86,7 +80,6 @@ public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
             return;
         }
 
-        ItemData.m_armor = baseArmor + (armorBonus?.Value ?? DefaultArmorBonus);
         ItemData.m_weight = weight?.Value ?? DefaultWeight;
     }
 }

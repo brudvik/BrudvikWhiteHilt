@@ -25,7 +25,7 @@ public class GiftOfIdunnEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - configurable duration, 40 minutes by default.
+    /// Enables the effect - configurable duration, 20 minutes by default.
     /// </summary>
     public void OnEnable()
     {

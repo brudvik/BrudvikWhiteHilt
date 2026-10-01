@@ -25,7 +25,7 @@ public class GiftOfOdin : PotionBase
     /// <summary>
     /// The description of the potion.
     /// </summary>
-    protected override string Description => "Grants you undwindling health";
+    protected override string Description => "Strengthens your health and mends your wounds";
 
     /// <summary>
     /// The path to the icon of the potion.

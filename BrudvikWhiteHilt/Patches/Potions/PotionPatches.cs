@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Patches.Potions;
 
 /// <summary>
-/// Keeps Gift of Odin's max health, which the game otherwise recalculates from food every second.
+/// Adds Gift of Odin's max health, which the game otherwise recalculates from food every second.
 /// </summary>
 [HarmonyPatch(typeof(Player), nameof(Player.GetTotalFoodValue))]
 public static class OdinMaxHealthPatch
@@ -16,7 +16,7 @@ public static class OdinMaxHealthPatch
     {
         if (StatusEffectHelper.Has<GiftOfOdinEffect>(__instance))
         {
-            hp = Mathf.Max(hp, GiftOfOdinEffect.MaxHealth);
+            hp += GiftOfOdinEffect.BonusMaxHealth;
         }
     }
 }

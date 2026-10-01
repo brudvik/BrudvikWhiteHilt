@@ -9,9 +9,9 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
 public class GiftOfOdinEffect : SE_Stats
 {
     /// <summary>
-    /// Minimum max health while the effect is active.
+    /// Max health added while the effect is active.
     /// </summary>
-    public static float MaxHealth => PotionSettings.Odin.MaxHealth.Value;
+    public static float BonusMaxHealth => PotionSettings.Odin.BonusMaxHealth.Value;
 
     /// <summary>
     /// Initializes the effect with the given name.
@@ -29,7 +29,7 @@ public class GiftOfOdinEffect : SE_Stats
     }
 
     /// <summary>
-    /// Enables the effect - configurable duration, 20 minutes by default.
+    /// Enables the effect - configurable duration, 10 minutes by default.
     /// </summary>
     public void OnEnable()
     {
@@ -54,13 +54,8 @@ public class GiftOfOdinEffect : SE_Stats
     {
         base.Setup(character);
 
-        // Boost the maximum health.
-        if (character.GetMaxHealth() < MaxHealth)
-        {
-            character.SetMaxHealth(MaxHealth);
-        }
-
-        // Boost the current health.
+        // The food update adds the bonus from now on; raise it at once so the heal below fills it.
+        character.SetMaxHealth(character.GetMaxHealth() + BonusMaxHealth);
         character.Heal(character.GetMaxHealth());
     }
 
@@ -90,8 +85,7 @@ public class GiftOfOdinEffect : SE_Stats
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);
-        // Per frame on purpose: Gift of Odin is god mode.
-        m_character.Heal(PotionSettings.Odin.HealPerFrame.Value, showText: false);
+        m_character.Heal(PotionSettings.Odin.HealPerSecond.Value * dt, showText: false);
     }
 
 }

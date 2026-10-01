@@ -30,6 +30,9 @@ public class WhiteHiltHelmet : WhiteHiltArmorBase
     /// </summary>
     protected override string CopyFrom => "HelmetFlametal";
 
+    /// <inheritdoc/>
+    protected override string StatsFrom => "HelmetIron";
+
     /// <summary>
     /// The requirements for crafting the White Hilt Helmet.
     /// </summary>

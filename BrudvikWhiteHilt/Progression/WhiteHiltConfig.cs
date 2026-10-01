@@ -1,5 +1,7 @@
 using BepInEx.Configuration;
+using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BrudvikWhiteHilt.Progression;
 
@@ -13,6 +15,31 @@ public static class WhiteHiltConfig
     private const string TiersSection = "Tiers";
     private const string ContentSection = "Content";
     private const string RecipesSection = "Recipes";
+    private const string MigrationsKey = "AppliedMigrations";
+    private const string BalanceMigration = "balance-0.28";
+
+    // Settings whose default changed in the 0.28 balance pass; old files still hold the old value.
+    private static readonly (string Section, string Key)[] BalanceResets =
+    {
+        ("Gear.Armor", "ArmorPerLevelBonus"),
+        ("Gear.Weapons", "DamageMultiplierBonus"),
+        ("Gear.Weapons", "BonusDamagePerLevel"),
+        ("Potions.GiftOfOdin", "DurationMinutes"),
+        ("Potions.GiftOfOdin", "HealthRegenBonus"),
+        ("Potions.GiftOfIdunn", "DurationMinutes"),
+        ("Potions.GiftOfIdunn", "HealthRegenMultiplier"),
+        ("Potions.GiftOfIdunn", "StaminaRegenMultiplier"),
+        ("Potions.GiftOfIdunn", "EitrRegenMultiplier"),
+        ("Potions.GiftOfIdunn", "HealPerSecond"),
+    };
+
+    private static readonly (string Section, string Key)[] RetiredEntries =
+    {
+        ("Gear.Indestructible", "ArmorBonus"),
+        ("Gear.Weapons", "BonusDamage"),
+        ("Potions.GiftOfOdin", "MaxHealth"),
+        ("Potions.GiftOfOdin", "HealPerFrame"),
+    };
 
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
     private static readonly Dictionary<string, ConfigEntry<bool>> enabledEntries = new();
@@ -181,6 +208,52 @@ public static class WhiteHiltConfig
     public static string GetKeyLabel(string section, string key)
     {
         return keyLabels.TryGetValue((section, key), out string token) ? token : null;
+    }
+
+    /// <summary>
+    /// Removes retired settings from the config file and, once per file, resets settings whose default changed.
+    /// Must run after every setting is bound.
+    /// </summary>
+    public static void ApplyMigrations()
+    {
+        var orphans = AccessTools.Property(typeof(ConfigFile), "OrphanedEntries")?.GetValue(configFile) as Dictionary<ConfigDefinition, string>;
+        if (orphans == null)
+        {
+            Jotunn.Logger.LogWarning("Config migrations skipped: orphaned entries not found.");
+            return;
+        }
+
+        bool changed = false;
+        foreach ((string section, string key) in RetiredEntries)
+        {
+            changed |= orphans.Remove(new ConfigDefinition(section, key));
+        }
+
+        ConfigDefinition marker = new(GeneralSection, MigrationsKey);
+        orphans.TryGetValue(marker, out string applied);
+        List<string> done = (applied ?? string.Empty).Split(',').Select(id => id.Trim()).Where(id => id.Length > 0).ToList();
+        if (!done.Contains(BalanceMigration))
+        {
+            foreach ((string section, string key) in BalanceResets)
+            {
+                ConfigDefinition definition = new(section, key);
+                if (configFile.ContainsKey(definition))
+                {
+                    ConfigEntryBase entry = configFile[definition];
+                    entry.BoxedValue = entry.DefaultValue;
+                }
+            }
+
+            done.Add(BalanceMigration);
+            orphans[marker] = string.Join(",", done);
+            changed = true;
+            Jotunn.Logger.LogInfo($"Config migration {BalanceMigration} applied.");
+        }
+
+        if (changed)
+        {
+            configFile.Save();
+        }
     }
 
     private static ConfigDescription AdminOnly(string description)

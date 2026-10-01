@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.27.0";
+    public const string PluginVersion = "0.28.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -104,6 +104,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
+        WhiteHiltConfig.ApplyMigrations();
 
         // Saving many settings at once fires one event per setting; refresh once, on the next frame.
         Config.SettingChanged += (_, _) => refreshPending = true;

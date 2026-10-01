@@ -227,8 +227,8 @@ public static class PotionSettings
         /// <summary>Duration in minutes.</summary>
         public static ConfigEntry<float> DurationMinutes { get; internal set; }
 
-        /// <summary>Minimum max health.</summary>
-        public static ConfigEntry<float> MaxHealth { get; internal set; }
+        /// <summary>Max health added.</summary>
+        public static ConfigEntry<float> BonusMaxHealth { get; internal set; }
 
         /// <summary>Multiplier on fall damage.</summary>
         public static ConfigEntry<float> FallDamageMultiplier { get; internal set; }
@@ -236,8 +236,8 @@ public static class PotionSettings
         /// <summary>Health regeneration multiplier added.</summary>
         public static ConfigEntry<float> HealthRegenBonus { get; internal set; }
 
-        /// <summary>Health healed every frame.</summary>
-        public static ConfigEntry<float> HealPerFrame { get; internal set; }
+        /// <summary>Health healed per second.</summary>
+        public static ConfigEntry<float> HealPerSecond { get; internal set; }
     }
 
     /// <summary>
@@ -394,11 +394,11 @@ public static class PotionSettings
         Hugin.SkillLevel = Bind(hugin, "SkillLevel", 100f, 0f, 100f, "Level every skill is set to when drunk.");
 
         const string idunn = "GiftOfIdunn";
-        Idunn.DurationMinutes = BindDuration(idunn, 40f);
-        Idunn.HealthRegenMultiplier = Bind(idunn, "HealthRegenMultiplier", 5f, 0f, 20f, "Health regeneration multiplier.");
-        Idunn.StaminaRegenMultiplier = Bind(idunn, "StaminaRegenMultiplier", 5f, 0f, 20f, "Stamina regeneration multiplier.");
-        Idunn.EitrRegenMultiplier = Bind(idunn, "EitrRegenMultiplier", 5f, 0f, 20f, "Eitr regeneration multiplier.");
-        Idunn.HealPerSecond = Bind(idunn, "HealPerSecond", 1f, 0f, 100f, "Health healed per second.");
+        Idunn.DurationMinutes = BindDuration(idunn, 20f);
+        Idunn.HealthRegenMultiplier = Bind(idunn, "HealthRegenMultiplier", 1.25f, 0f, 20f, "Health regeneration multiplier.");
+        Idunn.StaminaRegenMultiplier = Bind(idunn, "StaminaRegenMultiplier", 1.5f, 0f, 20f, "Stamina regeneration multiplier.");
+        Idunn.EitrRegenMultiplier = Bind(idunn, "EitrRegenMultiplier", 1.5f, 0f, 20f, "Eitr regeneration multiplier.");
+        Idunn.HealPerSecond = Bind(idunn, "HealPerSecond", 0f, 0f, 100f, "Health healed per second.");
 
         const string loki = "GiftOfLoki";
         Loki.DurationMinutes = BindDuration(loki, 20f);
@@ -421,11 +421,11 @@ public static class PotionSettings
         Njord.SwimStaminaRefill = Bind(njord, "SwimStaminaRefill", 50f, 0f, 500f, "Stamina added by a top-up.");
 
         const string odin = "GiftOfOdin";
-        Odin.DurationMinutes = BindDuration(odin, 20f);
-        Odin.MaxHealth = Bind(odin, "MaxHealth", 500f, 1f, 5000f, "Minimum max health while active.");
+        Odin.DurationMinutes = BindDuration(odin, 10f);
+        Odin.BonusMaxHealth = Bind(odin, "BonusMaxHealth", 50f, 0f, 1000f, "Max health added while active.");
         Odin.FallDamageMultiplier = Bind(odin, "FallDamageMultiplier", 0.5f, 0f, 1f, "Multiplier on fall damage.");
-        Odin.HealthRegenBonus = Bind(odin, "HealthRegenBonus", 20f, 0f, 200f, "Health regeneration multiplier added.");
-        Odin.HealPerFrame = Bind(odin, "HealPerFrame", 20f, 0f, 1000f, "Health healed every frame.");
+        Odin.HealthRegenBonus = Bind(odin, "HealthRegenBonus", 1f, 0f, 200f, "Health regeneration multiplier added; 1 doubles it.");
+        Odin.HealPerSecond = Bind(odin, "HealPerSecond", 2f, 0f, 100f, "Health healed per second.");
 
         const string ratatoskr = "GiftOfRatatoskr";
         Ratatoskr.DurationMinutes = BindDuration(ratatoskr, 20f);

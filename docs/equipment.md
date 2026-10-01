@@ -4,7 +4,9 @@
 
 ## ⚔️ WEAPONS
 
-All weapons are indestructible with enhanced stats: damage multiplier +0.5, damage per level +10, bonus fire/pierce/slash damage.
+All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals.
+
+The White Hilt Sword looks and burns like Dyrnwyn - every hit flares up in flames and sets the target briefly alight (+5 fire damage) - but has the Iron Sword's strength.
 
 The White Hilt weapons and shields have their own models with white hilts, grips, shafts and painted boards. The three staffs share a dark scepter with a white grip wrap and burn with a red (fire), blue (ice) or green (lightning) flame while held. The bow's limbs bend and its string follows the drawing hand. The White Hilt Crossbow is a real crossbow: it shoots bolts (e.g. White Hilt Bolts), reloads, and shows its string drawn back with a bolt on the stock when loaded.
 
@@ -31,7 +33,7 @@ The White Hilt weapons and shields have their own models with white hilts, grips
 
 ## 🛡️ ARMOR
 
-All armor pieces are indestructible with: armor per level +10, movement modifier +0.05.
+All armor pieces are indestructible and weightless, a little better than iron: +4 armor per piece, +1 extra armor per quality level, and 5% faster movement per piece (which cancels the iron armor's slowdown). The White Hilt Helmet has the Flametal helmet's look with the Iron Helmet's stats.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -88,12 +90,12 @@ All admin only, synced from the server.
 
 | Setting | Default | What it does |
 |---|---|---|
-| `[Gear.Indestructible] ArmorBonus` | 999 | Armor added to every indestructible White Hilt item |
 | `[Gear.Indestructible] Weight` | 0 | Weight of every indestructible White Hilt item |
-| `[Gear.Weapons] DamageMultiplierBonus` | 0.5 | Added to the primary attack's damage multiplier of every weapon and shield |
-| `[Gear.Weapons] BonusDamage` | 10 | Added to the plain, fire and pierce damage |
-| `[Gear.Weapons] BonusDamagePerLevel` | 10 | Added per quality level to the plain, fire, pierce and slash damage |
-| `[Gear.Armor] ArmorPerLevelBonus` | 10 | Added to the armor per quality level |
+| `[Gear.Weapons] DamageMultiplierBonus` | 0.1 | Added to the primary attack's damage multiplier of every weapon and shield (0.1 = 10% more damage) |
+| `[Gear.Weapons] BonusDamagePerLevel` | 2 | Added per quality level to each damage type the weapon already deals |
+| `[Gear.Weapons] SwordFireDamage` | 5 | Fire damage of the White Hilt Sword |
+| `[Gear.Armor] ArmorBonus` | 4 | Armor added to each armor piece |
+| `[Gear.Armor] ArmorPerLevelBonus` | 1 | Added to the armor per quality level |
 | `[Gear.Armor] MovementBonus` | 0.05 | Added to the movement speed of each armor piece (0.05 = 5% faster) |
 | `[Gear.Tools] HomeItemsStaminaReduction` | 1.0 | Taken off the stamina use for building, farming and cultivating (1 = no stamina) |
 | `[Gear.Ammunition] PierceMultiplier` | 2 | Multiplies the pierce damage of arrows and bolts |

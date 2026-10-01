@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Progression;
+﻿using BepInEx.Configuration;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -9,11 +10,17 @@ namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltSword;
 /// </summary>
 public class WhiteHiltSword : WhiteHiltWeaponBase
 {
+    private static ConfigEntry<float> fireDamage;
+
     /// <summary>
     /// Constructor for the WhiteHiltSword class.
     /// </summary>
     /// <param name="instance"></param>
-    public WhiteHiltSword(ItemManager instance) : base(instance) { }
+    public WhiteHiltSword(ItemManager instance) : base(instance)
+    {
+        fireDamage ??= WhiteHiltConfig.BindAdminOnly("Gear.Weapons", "SwordFireDamage", 5f,
+            "Fire damage of the White Hilt Sword; sets the target briefly alight.", new AcceptableValueRange<float>(0f, 100f));
+    }
 
     /// <summary>
     /// The base name of the sword.
@@ -34,6 +41,14 @@ public class WhiteHiltSword : WhiteHiltWeaponBase
     /// The name of the item to copy from.
     /// </summary>
     protected override string CopyFrom => "SwordDyrnwyn";
+
+    /// <summary>
+    /// Dyrnwyn's flaming hits and trail stay; its Ashlands damage does not.
+    /// </summary>
+    protected override string StatsFrom => "SwordIron";
+
+    /// <inheritdoc/>
+    protected override float BonusFireDamage => fireDamage?.Value ?? 0f;
 
     /// <summary>
     /// Decorated Viking King Sword by Asylum Nox, with a white hilt.

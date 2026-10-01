@@ -12,7 +12,6 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 |--------|--------|------------------------|
 | **Gift of Freya** | Grants immense stamina - running, jumping, attacking, blocking, dodging, swimming, sneaking and building restore a little stamina instead of draining it, stamina refilled on drink, +40 stamina regeneration. | Honey ×20, Raspberries ×20, Blueberries ×20 |
 | **Gift of Loki** | Grants endless Eitr - fills your Eitr and greatly boosts Eitr regeneration (requires Eitr from food). | Neck Tail ×20, Raspberries ×20, Eitr ×1 |
-| **Gift of Odin** | God mode - 500 max HP, full heal on drink, heals 20 HP every frame, 21x health regeneration, 50% less fall damage. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
 | **Gift of Sleipnir** | Grants the speed of Odin's horse - +50% movement speed, no fall damage, higher jumps. | Honey ×10, Thistle ×10, Lox Meat ×5 |
 | **Gift of Ratatoskr** | Grants squirrel agility - +75% movement speed, -80% run stamina drain, higher jumps, no sneak stamina. | Resin ×5, Blueberries ×5, Mushroom ×5 |
 | **Gift of Njord** | Grants the blessing of the sea god - +100% swim speed, no swim stamina, cannot drown. | Raw Anglerfish ×10, Chitin ×5, Bloodbag ×5 |
@@ -25,12 +24,13 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 | **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, -50% attack stamina, +25% movement speed, heals 15% of damage dealt. | Wood ×5, Mushroom ×5, Dandelion ×5 |
 | **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
 | **Gift of Mimir** | Grants ancient wisdom - reveals the map in a 200m radius on drink, then 150m around you every 5 seconds, and marks creatures within 100m on the minimap. | Yggdrasil Wood ×10, Sap ×10, Eitr ×2 |
+| **Gift of Idunn** | Grants youthful vigour - 1.25x health and 1.5x stamina/eitr regeneration. | Resin ×5, Raspberries ×5, Dandelion ×5 |
 
-### Extended Duration (40 minutes)
+### Short Duration (10 minutes)
 
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
-| **Gift of Idunn** | Grants eternal youth - 5x health/stamina/eitr regeneration, +1 HP/s. | Resin ×5, Raspberries ×5, Dandelion ×5 |
+| **Gift of Odin** | The Allfather's vigour - full heal on drink, +50 max HP, +2 HP/s, 2x health regeneration, 50% less fall damage. The strongest health potion, but you can still die. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
 
 ### Special Effects (30 minutes or until triggered)
 
@@ -58,11 +58,11 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Freyr | `HealthRegenMultiplier` 2, `StaminaRegenMultiplier` 2, `CarryWeight` 150, `HomeItemStaminaMultiplier` 0, `HealPerSecond` 1, `StaminaPerSecond` 5 |
 | Hel | `DurationMinutes` 30, `TriggerHealthFraction` 0.1 |
 | Hugin | `SkillLevel` 100 (no duration) |
-| Idunn | `DurationMinutes` 40, `HealthRegenMultiplier` 5, `StaminaRegenMultiplier` 5, `EitrRegenMultiplier` 5, `HealPerSecond` 1 |
+| Idunn | `HealthRegenMultiplier` 1.25, `StaminaRegenMultiplier` 1.5, `EitrRegenMultiplier` 1.5, `HealPerSecond` 0 |
 | Loki | `BonusEitr` 500, `EitrRegenBonus` 80 |
 | Mimir | `InitialRevealRadius` 200, `RevealRadius` 150, `RevealIntervalSeconds` 5, `CreatureRange` 100, `CreatureRefreshSeconds` 1 |
 | Njord | `SwimSpeedModifier` 1, `SwimStaminaMultiplier` 0, `MinSwimStamina` 20, `SwimStaminaRefill` 50 |
-| Odin | `MaxHealth` 500, `FallDamageMultiplier` 0.5, `HealthRegenBonus` 20, `HealPerFrame` 20 |
+| Odin | `DurationMinutes` 10, `BonusMaxHealth` 50, `FallDamageMultiplier` 0.5, `HealthRegenBonus` 1 (1 doubles it), `HealPerSecond` 2 |
 | Ratatoskr | `SpeedModifier` 0.75, `RunStaminaDrainModifier` -0.8, `JumpModifier` 0.5, `SneakStaminaMultiplier` 0 |
 | Skadi, Surt | `DurationMinutes` only |
 | Sleipnir | `SpeedModifier` 0.5, `JumpModifier` 1.5, `FallDamageMultiplier` 0 |
