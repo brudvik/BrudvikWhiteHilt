@@ -42,6 +42,7 @@
     { "image": "surts_brazier", "models": ["eternalfire"] },
     { "image": "waste_well", "models": ["wastewell"] },
     { "image": "harbour_anchor", "models": ["shipanchor"] },
+    { "image": "munins_perch", "compose": "muninperch.preview.json", "view": { "yaw": 20, "pitch": 12, "zoom": 0.8 } },
 
     { "image": "chanterelle", "models": ["chanterelle"] },
     { "image": "porcini", "models": ["porcini"] },

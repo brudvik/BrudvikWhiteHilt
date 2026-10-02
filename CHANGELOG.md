@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.41.0 - 2026-10-02
+
+### Added
+- **Munin's Perch**, a new map table extension: a carved post with a raven on top (Workbench: Fine Wood ×8, Iron ×2, Feathers ×6). While it stands within 5 m of a map table, the caves, settlements, wild berries and plants, resources and landmarks uncovered on that table's map can be shown on everyone's map, each with its in-game icon. Nothing shows until you pick it in the new **Munin's memory** panel at the left of the large map, where every kind that has been found is listed by group. Plants and deposits are counted per 64 m square. The markers need Exploration 20 on the large map and 50 on the minimap. Silver veins are hidden by default, and treasure is never shown. All numbers in the new section `Map.Discoveries`. See [Navigation](docs/navigation.md#-munins-perch-discoveries-on-the-map)
+
 ## v0.40.0 - 2026-10-01
 
 ### Added

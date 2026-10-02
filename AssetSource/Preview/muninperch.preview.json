@@ -1,0 +1,13 @@
+{
+  "name": "muninperch",
+  "base": { "mesh": "muninpost", "height": 2.2 },
+  "props": [
+    { "mesh": "muninraven", "base": [0.0, 0.985, 0.0], "height": 0.2, "yaw": 60 }
+  ],
+  "views": [
+    { "label": "front", "yaw": 90, "pitch": 10, "zoom": 0.8 },
+    { "label": "face", "yaw": 0, "pitch": 10, "zoom": 0.8 },
+    { "label": "angle", "yaw": 140, "pitch": 25 }
+  ]
+}
+

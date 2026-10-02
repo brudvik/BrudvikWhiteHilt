@@ -78,6 +78,50 @@ The map shows where people have built. The server looks through the whole world 
 | `ShowBuildings` / `ShowFields` / `ShowPastures` / `ShowWards` | true | What you draw on your own map |
 | `ShowLabels` | true | Names on the large map when zoomed in |
 
+## 🪶 Munin's Perch: discoveries on the map
+
+Munin, Odin's raven of memory, remembers everything found on a map table's map. Place **Munin's Perch** within 5 m of a map table, as you would the Portal Astrolabe and the Harbour Anchor. Everyone's map can then show what has been found: caves, settlements, wild plants, resources and landmarks, each with its in-game icon (blueberries as blueberries, a burial chamber as a skeleton trophy).
+
+<img src="images/munins_perch.png" alt="Munin's Perch" title="Munin's Perch" height="140">
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Munin's Perch** | A carved post with a raven on top. While it stands within 5 m of a map table, what is uncovered on that table's map can be shown on everyone's map | Hammer (Workbench) | Fine Wood ×8, Iron ×2, Feathers ×6 |
+
+- **What counts as found**: only what is uncovered on the map of the map table the perch stands at. Players add to it the vanilla way, by recording their map on the table. With several tables that each have a perch, all of their maps count.
+- **Nothing shows at first.** A panel at the left of the large map, **Munin's memory**, lists every kind that has been found, by group. Click the header to open it, click an icon to show or hide that kind, and click a group's name to show or hide the whole group. Hovering over an icon shows its name and how many have been found. Your choice is saved with the character.
+- **Exploration**: the large map shows the markers from Exploration 20, the minimap from Exploration 50. Below that, the panel only says what level you need.
+- Plants and deposits of one kind within 64 m are counted as one marker with their number. Markers that would overlap on screen merge too, so zoom in to tell them apart. Hover over a marker to see its name, its number and, for plants, how many are ready to pick.
+- Crops near player-built pieces are left out, since they are planted, not wild. Anything a player has placed is left out too.
+- Silver veins are hidden by default, since the Wishbone is the way to find them. Treasure, loose stones and flint are never shown.
+
+| Group | What it shows |
+|-------|---------------|
+| **Caves and crypts** | Burial chambers, troll caves, sunken crypts, frost caves, infested mines, Morgen's lairs, charred fortresses, Hildir's lost chests |
+| **Settlements** | Draugr villages, fuling camps, greydwarf camps, abandoned houses, ruined towers, dvergr outposts |
+| **Berries and plants** | Every wild pickable that is food, grows back or gives seeds: berries, mushrooms, thistle, dandelion, wild seeds, flax, barley and the White Hilt forageables |
+| **Resources** | Copper, tin, obsidian, flametal and other deposits, guck sacks, tar pits, giant remains (black marble, soft tissue), leviathans (chitin) |
+| **Landmarks** | Runestones, boss altars, dragon eggs, Haldor, Hildir and the Bog Witch |
+
+| Setting (section `Map.Discoveries`) | Default | Description |
+|-------------------------------------|---------|-------------|
+| `AllowDiscoveries` (server) | true | Find discoveries at all |
+| `OnlyMapTableMap` (server) | true | Only what is uncovered on the perch's map table counts; off: everything near where players have been |
+| `ScanInterval` (server) | 60 | Seconds between two searches of the world |
+| `ClusterSize` (server) | 64 | Metres of the squares in which plants and deposits of one kind count as one marker |
+| `LargeMapLevel` (server) | 20 | Exploration level for markers on the large map |
+| `MinimapLevel` (server) | 50 | Exploration level for markers on the minimap |
+| `AllowSilver` (server) | false | Show silver veins |
+| `AllowDungeons` / `AllowSettlements` / `AllowPlants` / `AllowResources` / `AllowLandmarks` (server) | true | Which groups may show |
+| `ResourceItems` (server) | CopperOre, TinOre, SilverOre, Obsidian, IronScrap, FlametalOreNew, FlametalOre, Chitin, BlackMarble, SoftTissue, Guck, Tar | Items whose deposits and pickables show as resources |
+| `IgnoredItems` (server) | Flint, Stone, Wood, StoneRock, Coins, Amber, AmberPearl, Ruby, SilverNecklace, BoneFragments | Items whose pickables never show |
+| `PlantItems` (server) | Flax, Barley, Thistle, Dandelion, Fiddleheadfern | Items whose pickables show as plants although they are no food and do not grow back |
+| `ShowOnMinimap` | true | Show your picked discoveries on the minimap too |
+| `LargeIconSize` / `SmallIconSize` | 26 / 16 | Marker size in pixels on the large map and the minimap |
+| `MaxMarkers` | 400 | Most markers drawn at once |
+
+The range to the map table is the portal setting `[Portals] MapTableExtensionRange`, shared with the Portal Astrolabe and the Harbour Anchor.
+
 ## Config
 
 All admin only, synced from the server.
