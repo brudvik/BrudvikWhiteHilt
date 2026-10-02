@@ -24,10 +24,12 @@ The chains are set in the `ChainBench` section (server-synced): `NeedsBench` (on
 
 Dyrnwyn blazes only for the worthy. Fell a black beast of the dark hour ([Difficulty](difficulty.md)), bind its trophy to your White Hilt weapon, and the weapon strikes harder; then etch a rune into it for fire, frost, poison, lightning, a web or the grip of the deep. Both are done at extensions of the **Rune Forge** ([Portals & travel](portals.md)), and both stay with the item: in chests, on the ground and after upgrades.
 
+<img src="images/binding_stone.png" alt="Binding Stone" title="Binding Stone" height="140"> <img src="images/rune_etching_table.png" alt="Rune Etching Table" title="Rune Etching Table" height="140">
+
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
-| **Binding Stone** | A runestone with blood-red runes. Hold a White Hilt weapon (staffs too), or with no weapon in hand a White Hilt shield, and use a black beast trophy from the hotbar on the stone | Hammer (next to the Rune Forge) | Stone ×20, Chain ×2, Surtling Core ×1 |
-| **Rune Etching Table** | The Galdr table's rune table. Hold a trophy-bound White Hilt weapon and use a rune from the hotbar on the table; the hover text lists every rune with what it costs | Hammer (next to the Rune Forge) | Fine Wood ×10, Iron ×4, Resin ×6 |
+| **Binding Stone** | A runestone bound with an iron band, with a serpent band of glowing blood-red runes and a Surtling Core in a valknut. Hold a White Hilt weapon (staffs too), or with no weapon in hand a White Hilt shield, and use a black beast trophy from the hotbar on the stone | Hammer (next to the Rune Forge) | Stone ×20, Chain ×2, Surtling Core ×1 |
+| **Rune Etching Table** | A carver's table with a half-carved rune slab, chisel, mallet and a bowl of red ochre. Hold a trophy-bound White Hilt weapon and use a rune from the hotbar on the table; the hover text lists every rune with what it costs | Hammer (next to the Rune Forge) | Fine Wood ×10, Iron ×4, Resin ×6 |
 
 ### Binding a trophy
 

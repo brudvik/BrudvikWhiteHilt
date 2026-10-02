@@ -35,6 +35,8 @@
     { "image": "chain_bench", "models": ["chainvise"] },
     { "image": "repair_anvil", "models": ["repairanvil"] },
     { "image": "rune_forge", "models": ["runebench"] },
+    { "image": "binding_stone", "models": ["bindingstone"], "view": { "yaw": 160, "pitch": 15 } },
+    { "image": "rune_etching_table", "models": ["runeetchingtable"], "view": { "yaw": 150, "pitch": 35 } },
     { "image": "rune_post", "models": ["runerack"] },
     { "image": "rune", "models": ["runering"] },
     { "image": "portal_astrolabe", "models": ["portalastrolabe"] },

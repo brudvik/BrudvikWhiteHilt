@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Pieces.Portals.ValkyrieStone;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -20,7 +21,15 @@ public class BindingStone
 
     private const string FullName = "Binding Stone";
     private const string Description = "A runestone where the trophy of a black beast is bound to a White Hilt weapon or shield, which then strikes or blocks harder. Place it next to the Rune Forge.";
-    private const float Size = 1.1f;
+
+    // bindingstone.glb in metres: 1.46 high from the bottom of its footing stone, which reaches 0.04 below the ground.
+    // The carved side with the Surtling Core faces +z.
+    private const float ModelHeight = 1.46f;
+    private const float Sink = 0.04f;
+    private const float GlowStrength = 1.6f;
+
+    private static readonly Vector3 colliderSize = new(1f, 1.42f, 0.46f);
+    private static readonly Color lightColor = new(1f, 0.25f, 0.1f);
 
     /// <summary>
     /// Constructor for the BindingStone class. Registers the English text.
@@ -55,10 +64,12 @@ public class BindingStone
                 }
             };
 
-            // The forge cooler is about as big as the stone, so its collider fits well enough.
+            // The forge cooler is a forge extension with no other parts; it gets stone behaviour and our look below.
             CustomPiece piece = new(PrefabName, "forge_ext5", pieceConfig);
             piece.PiecePrefab.GetComponent<StationExtension>().m_craftingStation = runeForge;
             piece.PiecePrefab.AddComponent<BindingStoneComponent>();
+            ValkyrieStone.MakeStone(piece);
+            ReplaceCollider(piece.PiecePrefab);
             TryApplyVisual(piece);
             instance.AddPiece(piece);
 
@@ -71,6 +82,23 @@ public class BindingStone
         }
     }
 
+    // The cooler's mesh collider has the shape of the cooling bath; one box round the stone replaces it, on the server too.
+    private static void ReplaceCollider(GameObject prefab)
+    {
+        int layer = prefab.layer;
+        foreach (MeshCollider meshCollider in prefab.GetComponentsInChildren<MeshCollider>(true))
+        {
+            layer = meshCollider.gameObject.layer;
+            UnityEngine.Object.DestroyImmediate(meshCollider);
+        }
+
+        GameObject holder = new("collider") { layer = layer };
+        holder.transform.SetParent(prefab.transform, false);
+        BoxCollider box = holder.AddComponent<BoxCollider>();
+        box.center = new Vector3(0f, colliderSize.y / 2f, 0f);
+        box.size = colliderSize;
+    }
+
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)
@@ -80,10 +108,29 @@ public class BindingStone
 
         try
         {
-            Transform cooler = piece.PiecePrefab.transform.Find("new") ?? throw new InvalidOperationException("the cooler new was not found");
-            VisualHelper.ReplaceMesh(cooler.gameObject, ForagingAssets.LoadMesh("homestone"), ForagingAssets.LoadTexture("homestone_albedo"), size: Size);
+            GameObject prefab = piece.PiecePrefab;
+            VisualHelper.HideRenderers(prefab);
+            // The cooler's material is metallic with its own metal map, so the table top's plain piece material is used instead.
+            Renderer template = PrefabManager.Instance.GetPrefab("piece_table")?.transform.Find("new/high")?.GetComponent<MeshRenderer>()
+                ?? throw new InvalidOperationException("the table's renderer new/high was not found");
 
-            Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
+            Mesh mesh = ForagingAssets.LoadMesh("bindingstone");
+            float scale = ModelHeight / mesh.bounds.size.y;
+            Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale + Vector3.down * Sink;
+            GameObject stone = VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("bindingstone_albedo"), template, pivot, Quaternion.identity, scale);
+
+            Material material = stone.GetComponent<MeshRenderer>().sharedMaterial;
+            if (material.HasProperty("_EmissionMap"))
+            {
+                // The emission map already holds the red of the runes and the orange of the core.
+                material.EnableKeyword("_EMISSION");
+                material.SetTexture("_EmissionMap", ForagingAssets.LoadTexture("bindingstone_emission"));
+                material.SetColor("_EmissionColor", Color.white * GlowStrength);
+            }
+
+            AddLight(prefab.transform);
+
+            Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {
                 piece.Piece.m_icon = icon;
@@ -93,5 +140,19 @@ public class BindingStone
         {
             Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
+    }
+
+    private static void AddLight(Transform root)
+    {
+        GameObject glow = new("BindingGlow");
+        glow.transform.SetParent(root, false);
+        glow.transform.localPosition = new Vector3(0f, 0.85f, 0.5f);
+
+        Light light = glow.AddComponent<Light>();
+        light.type = LightType.Point;
+        light.color = lightColor;
+        light.range = 2.5f;
+        light.intensity = 0.6f;
+        light.shadows = LightShadows.None;
     }
 }

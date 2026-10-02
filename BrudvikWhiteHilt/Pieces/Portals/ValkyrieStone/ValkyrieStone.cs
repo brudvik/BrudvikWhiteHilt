@@ -105,7 +105,11 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
         }
     }
 
-    private static void MakeStone(CustomPiece piece)
+    /// <summary>
+    /// Makes a cloned piece behave like stone: stone health, hit and break effects, no fragments of the vanilla piece.
+    /// </summary>
+    /// <param name="piece">The cloned piece.</param>
+    internal static void MakeStone(CustomPiece piece)
     {
         GameObject pillar = PrefabManager.Instance.GetPrefab("stone_pillar");
         piece.Piece.m_comfort = 0;

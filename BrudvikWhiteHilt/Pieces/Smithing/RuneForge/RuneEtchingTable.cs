@@ -3,12 +3,13 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Smithing.RuneForge;
 
 /// <summary>
-/// A <see cref="RuneForge"/> extension: the game's rune table, where a rune is etched into a trophy-bound White Hilt
-/// weapon to give it fire, frost, poison, lightning, a web or the grip of the deep.
+/// A <see cref="RuneForge"/> extension: a carver's table where a rune is etched into a trophy-bound White Hilt weapon to
+/// give it fire, frost, poison, lightning, a web or the grip of the deep.
 /// </summary>
 public class RuneEtchingTable
 {
@@ -19,6 +20,11 @@ public class RuneEtchingTable
 
     private const string FullName = "Rune Etching Table";
     private const string Description = "A table for etching a rune into a White Hilt weapon that has a black trophy bound to it. Each rune, with its materials, gives the weapon its own power. Place it next to the Rune Forge.";
+
+    // runeetchingtable.glb in metres: the table top is at 0.82, the mallet lying on it reaches 0.904.
+    private const float ModelHeight = 0.904f;
+
+    private static readonly Vector3 colliderSize = new(1.15f, 0.86f, 0.62f);
 
     /// <summary>
     /// Constructor for the RuneEtchingTable class. Registers the English text.
@@ -52,10 +58,21 @@ public class RuneEtchingTable
                 }
             };
 
-            // The Galdr table's rune table keeps its own look; only its station changes.
             CustomPiece piece = new(PrefabName, "piece_magetable_ext", pieceConfig);
-            piece.PiecePrefab.GetComponent<StationExtension>().m_craftingStation = runeForge;
-            piece.PiecePrefab.AddComponent<RuneEtchingTableComponent>();
+            GameObject prefab = piece.PiecePrefab;
+            prefab.GetComponent<StationExtension>().m_craftingStation = runeForge;
+            prefab.AddComponent<RuneEtchingTableComponent>();
+
+            // Without this the table would break into the pieces of the Galdr rune table.
+            WearNTear wearNTear = prefab.GetComponent<WearNTear>();
+            if (wearNTear != null)
+            {
+                wearNTear.m_fragmentRoots = Array.Empty<GameObject>();
+                wearNTear.m_autoCreateFragments = false;
+            }
+
+            FitColliders(prefab.transform);
+            TryApplyVisual(piece);
             instance.AddPiece(piece);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -64,6 +81,55 @@ public class RuneEtchingTable
         {
             Jotunn.Logger.LogError($"{FullName} failed to load!");
             Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    // One box round the table, on the server as well, so it blocks and can be hit like it looks.
+    private static void FitColliders(Transform root)
+    {
+        foreach (BoxCollider collider in root.GetComponentsInChildren<BoxCollider>(true))
+        {
+            if (collider.transform.parent != root)
+            {
+                continue;
+            }
+
+            collider.transform.localPosition = Vector3.zero;
+            collider.transform.localRotation = Quaternion.identity;
+            collider.transform.localScale = Vector3.one;
+            collider.center = new Vector3(0f, colliderSize.y / 2f, 0f);
+            collider.size = colliderSize;
+        }
+    }
+
+    private static void TryApplyVisual(CustomPiece piece)
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        try
+        {
+            GameObject prefab = piece.PiecePrefab;
+            VisualHelper.HideRenderers(prefab);
+            Renderer template = PrefabManager.Instance.GetPrefab("piece_table")?.transform.Find("new/high")?.GetComponent<MeshRenderer>()
+                ?? throw new InvalidOperationException("the table's renderer new/high was not found");
+
+            Mesh mesh = ForagingAssets.LoadMesh("runeetchingtable");
+            float scale = ModelHeight / mesh.bounds.size.y;
+            Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
+            VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("runeetchingtable_albedo"), template, pivot, Quaternion.identity, scale);
+
+            Sprite icon = VisualHelper.RenderIcon(prefab);
+            if (icon != null)
+            {
+                piece.Piece.m_icon = icon;
+            }
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
     }
 }

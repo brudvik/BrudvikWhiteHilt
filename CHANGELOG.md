@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.54.0 - 2026-10-02
+
+### Changed
+- **Binding Stone** has its own model: a broad runestone on a footing stone, bound with an iron band and a ring, with a serpent band of blood-red runes along its edge and a valknut round a Surtling Core. The runes and the core glow. It is solid stone to hit, and its collider fits the stone instead of the forge cooler it was copied from
+- **Rune Etching Table** has its own model: a carver's table with a stone slab half covered in runes, a chisel, a mallet, rune rings and a bowl of red ochre, instead of the Galdr table's rune table
+
 ## v0.53.0 - 2026-10-02
 
 ### Added
