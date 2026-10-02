@@ -37,6 +37,9 @@ public class WhiteHiltUniformCape : WhiteHiltArmorBase
     protected override string StatsFrom => "CapeFeather";
 
     /// <inheritdoc/>
+    protected override bool CopyEquipEffect => false;
+
+    /// <inheritdoc/>
     protected override string CraftingStation => CraftingStations.Workbench;
 
     /// <inheritdoc/>

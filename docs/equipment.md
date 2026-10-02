@@ -47,7 +47,7 @@ The **White Hilt Banner Cape** is not part of the indestructible set: a white tr
 
 ### Black uniforms
 
-Two black uniforms with gold trim, the White Hilt badge on the left breast and the logo on the cape. They are indestructible and weightless, with the same armor as the White Hilt Chestplate, Greaves and Cape (the cape also gives the White Hilt Cape's feather fall). The tunic and the officer's jerkin are both chest pieces, so wear one of them with its own trousers or breeches. The officer's pieces copy the Deep North medium armor, which vanilla Valheim does not let you craft yet, so a game update may change how they look.
+Two black uniforms with gold trim, the White Hilt badge on the left breast and the logo on the cape. They are indestructible and weightless, with the same armor as the White Hilt Chestplate, Greaves and Cape (the cape does not give the White Hilt Cape's feather fall). The tunic and the officer's jerkin are both chest pieces, so wear one of them with its own trousers or breeches. The officer's pieces copy the Deep North medium armor, which vanilla Valheim does not let you craft yet, so a game update may change how they look.
 
 <img src="images/white_hilt_uniform.png" alt="White Hilt Uniform" title="White Hilt Uniform" height="140"> <img src="images/white_hilt_uniform_back.png" alt="White Hilt Uniform, back" title="White Hilt Uniform, back" height="140"> <img src="images/white_hilt_officer.png" alt="White Hilt Officer's uniform" title="White Hilt Officer's uniform" height="140"> <img src="images/white_hilt_officer_back.png" alt="White Hilt Officer's uniform, back" title="White Hilt Officer's uniform, back" height="140">
 

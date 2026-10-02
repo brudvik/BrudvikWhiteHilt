@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.47.1 - 2026-10-02
+
+### Fixed
+- The White Hilt Uniform Cape no longer gives feather fall; it keeps the White Hilt Cape's armor
+
 ## v0.47.0 - 2026-10-02
 
 ### Added

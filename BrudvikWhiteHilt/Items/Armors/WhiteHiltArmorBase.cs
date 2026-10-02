@@ -51,6 +51,11 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     protected virtual string StatsFrom => null;
 
     /// <summary>
+    /// Whether the effect worn with <see cref="StatsFrom"/> (e.g. the feather cape's feather fall) is copied along.
+    /// </summary>
+    protected virtual bool CopyEquipEffect => true;
+
+    /// <summary>
     /// The crafting station of the armor item.
     /// </summary>
     protected virtual string CraftingStation => CraftingStations.Forge;
@@ -122,6 +127,10 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             if (StatsFrom != null)
             {
                 CopyStats(item.ItemData, StatsFrom);
+                if (!CopyEquipEffect)
+                {
+                    item.ItemData.m_equipStatusEffect = null;
+                }
             }
 
             baseArmor = item.ItemData.m_armor;
