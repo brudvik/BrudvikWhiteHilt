@@ -33,7 +33,7 @@ Nineteen meads named after the Norse gods, from endless stamina to permanent ski
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/harbour_anchor.png" alt="Harbour Anchor" height="120">
 
-The indestructible White Hilt Ship with nine deck upgrades, sailing help for every ship, and the Harbour Anchor that shows all ships on the map.
+The indestructible White Hilt Ship with nine deck upgrades, sailing help for every ship (sounding line, man overboard and lifeline), the Mooring Post, and the Harbour Anchor that shows all ships on the map.
 
 ### 🏰 [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 
@@ -45,7 +45,7 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Stone Dowser that leads to rock clearings, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
@@ -179,6 +179,8 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Repair Anvil model: ["Asset02 Medieval Anvil"](https://sketchfab.com/3d-models/asset02-medieval-anvil-f6123f83e46345ccac727e35d91392ee) by [Margot D.](https://sketchfab.com/Winterll), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Portal Astrolabe model: ["Armillary Amethyst"](https://sketchfab.com/3d-models/armillary-amethyst-8d95bfd75bbe4f8491d3e8407e33a06a) by [keishamikaele](https://sketchfab.com/keishamikaele), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Harbour Anchor model: ["Medieval Anchor (Free)"](https://sketchfab.com/3d-models/medieval-anchor-free-5896ac54d63e4b84bd32e0b232619dfd) by [wolfgar74](https://sketchfab.com/wolfgar74), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
+- Munin's Perch post: ["nordic totem"](https://sketchfab.com/3d-models/nordic-totem-5ea68a916d0d42e494c67307510294c6) by [nofaced3d](https://sketchfab.com/nofaced3d), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Texture reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
+- Munin's Perch raven: ["Ghost Raven"](https://sketchfab.com/3d-models/ghost-raven-0a5014dc066548f7b746ccfdbb4f2d9a) by [Alex Sanches](https://sketchfab.com/ASanches), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Branch cut away, textures reduced to 1024 px, eyes recoloured gold, converted to OBJ, rescaled and made double-sided for Valheim.
 - Smoke Oven model: ["Furnace"](https://sketchfab.com/3d-models/furnace-64f344213c084424ba438875e62bd452) by [Tronin Dmitry](https://sketchfab.com/kosmotron), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
 - Cartographer's Desk model: ["Medieval Writing Desk"](https://sketchfab.com/3d-models/medieval-writing-desk-0982348984ad4126a90ace26be1d7300) by [Dmitriy Korotkov](https://sketchfab.com/ArtDmitriyK), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Sextant model: ["Sextant"](https://sketchfab.com/3d-models/sextant-78852ce5d4264f33897b462e31069ddd) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
@@ -205,6 +207,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Dog whine: ["Dog Whine 5.wav"](https://freesound.org/people/esperri/sounds/118970/) by [esperri](https://freesound.org/people/esperri/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Happy dog bark: ["Dog bark2.wav"](https://freesound.org/people/MisterTood/sounds/9032/) by [MisterTood](https://freesound.org/people/MisterTood/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
 - White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
 - White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.
 - White Hilt Buckler model: ["Worn Round Shield"](https://sketchfab.com/3d-models/worn-round-shield-d848db788bc041ddab8a51c7836979d2) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the boards painted white for Valheim.

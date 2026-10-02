@@ -2,6 +2,57 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.48.0 - 2026-10-02
+
+### Added
+- **White Hilt armor grows with the world**: the armor and the uniforms upgrade past quality 4, one level per biome after the Swamp: quality 5 with Silver (Mountain), 6 with Black Metal (Plains), 7 with Carapace (Mistlands) and 8 with Flametal (Ashlands). A helmet, chest or leg piece goes 26 / 30 / 36 / 42, a cape gains 2 per level, always a little below the best vanilla armor of that biome. From quality 5 the station level of quality 4 is enough. New settings `[Gear.Armor] Upgrade*`, `*Armor` and `CapeArmorPerBiome`. See [White Hilt gear](docs/equipment.md#upgrades-through-the-biomes)
+
+### Changed
+- White Hilt armor was too strong for the Swamp (a full set at quality 4 had 92 armor, more than the Mountain wolf set). A piece now has 18 armor at quality 1 and 24 at quality 4 (was 27), and a full set 80 at quality 4: good enough for the Mountains. `ArmorPerLevelBonus` is now 0 (reset once in existing config files)
+- Upgrading White Hilt armor now costs Iron ×5 per level up to quality 4 (it was free); the recipe's own materials are only paid when crafting
+- `MovementBonus` only takes away the iron armor's slowdown: the helmet and capes no longer make you 5% faster each
+- The White Hilt Cape needs a Deathsquito Trophy instead of 3 Wraith Trophies, and unlocks with the Plains tier in linear mode
+
+## v0.47.1 - 2026-10-02
+
+### Fixed
+- The White Hilt Uniform Cape no longer gives feather fall; it keeps the White Hilt Cape's armor
+
+## v0.47.0 - 2026-10-02
+
+### Added
+- **Exploration overview** on the large map from Exploration 25: the share and area of each biome you have uncovered (shared map too from Exploration 50), the whole world, and what Munin's Perch has found. New section `Map.Overview`. See [Navigation](docs/navigation.md#-exploration-overview)
+
+## v0.46.0 - 2026-10-02
+
+### Added
+- **Mooring Post** (Hammer, Workbench: Fine Wood ×4, Iron ×1, Leather Scraps ×4): a thick post with a coil of rope. Use it to moor the nearest ship within 20 m; a rope runs to the ship, which lies still where it is (rocking on the waves) and cannot sail until it is cast off at the post. Works on every ship, one ship per post, and holds after logging out. New setting `Ships` → `MooringRange`. See [Ships](docs/ships.md)
+
+## v0.45.0 - 2026-10-02
+
+### Added
+- **Weather forecast** on the large map within 10 m of a map table or the Cartographer's Desk, and aboard a ship with a Navigator's Table: the weather and wind now and in the coming periods of about 11 minutes, worked out the way the game draws them. 1 period ahead at Exploration 0, up to 4 at 100. **Storm warning** with the ship's bell aboard a ship with a Navigator's Table, 3 minutes before thunder or a snowstorm. New section `Navigation.Forecast`. See [Navigation](docs/navigation.md#️-weather-forecast)
+
+## v0.44.0 - 2026-10-02
+
+### Added
+- **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard is told, with the ship's bell, a pin on the map and an arrow on the minimap toward you; you get a pin and an arrow toward the ship. A ship sailing its route or holding its course stops. From the deck within 25 m, **E** throws a **lifeline** that pulls the one in the water back aboard. New settings `Ships` → `ManOverboard`, `Overboard*`, `Lifeline*`. See [Ships](docs/ships.md)
+
+## v0.43.0 - 2026-10-02
+
+### Added
+- **Sounding line and shoal warning** on every ship: the read-out under the wind indicator shows the depth of the water under the ship, rocks under water included. While you steer, or ride a ship that sails its route, the water ahead is sounded (5 seconds of sailing, 15 to 60 m past the bow); shallower than 3.5 m or rocks in the way turns the depth red, shows a warning and rings the new **ship's bell**. Quiet below 2 m/s and at most once every 8 seconds. Each player's own settings `Ships` → `ShowDepth`, `ShoalWarning`, `ShoalBell`, `Shoal*`. See [Ships](docs/ships.md)
+
+## v0.42.0 - 2026-10-02
+
+### Added
+- **Pathfinder's Ruby Amulet**: from Exploration 50 (new milestone **Ruby Pathfinder**), the Cartographer's Desk sets a large ruby in the middle of the Pathfinder's Amulet (Pathfinder's Amulet ×1, Ruby ×3, Iron ×2). It does all the Pathfinder does, and while you wear it, Shift + click on the large map sets a target, on one of your pins if you click one. An arrow at the top of the screen points the way with the name and distance, a red ring marks the target on both maps, and an arrow on the minimap's edge points to it while it is beyond the minimap. Keep moving away from it and the ruby tells you that you are going the wrong way; reach it and the target is removed. The target is your own, saved per character and world. One already made keeps working if Exploration drops below 50. New sections `Gear.WhiteHiltPathfinderRuby` (rules from the server, arrow settings your own) and `[Skills.Exploration] RubyPathfinderLevel`. See [Navigation](docs/navigation.md#-pathfinders-ruby-amulet-a-target-on-the-map)
+
+## v0.41.0 - 2026-10-02
+
+### Added
+- **Munin's Perch**, a new map table extension: a carved post with a raven on top (Workbench: Fine Wood ×8, Iron ×2, Feathers ×6). While it stands within 5 m of a map table, the caves, settlements, wild berries and plants, resources and landmarks uncovered on that table's map can be shown on everyone's map, each with its in-game icon. Nothing shows until you pick it in the new **Munin's memory** panel at the left of the large map, where every kind that has been found is listed by group. Plants and deposits are counted per 64 m square. The markers need Exploration 20 on the large map and 50 on the minimap. Silver veins are hidden by default, and treasure is never shown. All numbers in the new section `Map.Discoveries`. See [Navigation](docs/navigation.md#-munins-perch-discoveries-on-the-map)
+
 ## v0.40.0 - 2026-10-01
 
 ### Added
