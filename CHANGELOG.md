@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.54.2 - 2026-10-02
+
+### Fixed
+- **Portals**: a player who travels through a portal no longer stays behind as a frozen copy for players near the portal, repeating their attacks and emotes. This is a bug in the game itself: the server only told the others that the player had left when the old spot was already outside their area. The mod must be on the server for the fix to work
+
 ## v0.54.1 - 2026-10-02
 
 ### Fixed

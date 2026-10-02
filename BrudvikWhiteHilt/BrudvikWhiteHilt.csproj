@@ -342,6 +342,7 @@
     <Compile Include="Treasure\TreasureSiteFinder.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
+    <Compile Include="Patches\Portals\PortalGhostPatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />
     <Compile Include="Patches\Ships\ShipAnchorPatch.cs" />
     <Compile Include="Patches\Ships\ShipAssistPatches.cs" />
