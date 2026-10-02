@@ -607,6 +607,7 @@
     <Compile Include="Pieces\Portals\ValkyrieStone\ValkyrieStoneComponent.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
+    <Compile Include="Progression\IFullModeOnly.cs" />
     <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />
     <Compile Include="Progression\ProgressionManager.cs" />
     <Compile Include="Progression\ProgressionMode.cs" />

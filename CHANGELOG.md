@@ -12,6 +12,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Munin's memory** and **Uncovered** sit side by side under the bottom-left corner of the large map, lined up with its left edge, and open upwards over the map. Uncovered no longer covers the vanilla buttons at the bottom right
 - The **Swamp Key** can be kept in the four extra accessory slots; it still opens crypt doors from there
 - Crafting, building and fuelling never take items from the accessory slots, so a key or amulet kept there is not used up by a recipe (e.g. the Trophy Altar's Swamp Key)
+- In linear mode the **Gifts of Hugin, Munin and Brokkr** are no longer available: there you learn skills and find recipes yourself. A `[Tiers]` setting can still give them a tier
 
 ## v0.50.0 - 2026-10-02
 

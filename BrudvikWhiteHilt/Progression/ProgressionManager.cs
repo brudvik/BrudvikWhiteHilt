@@ -152,6 +152,7 @@ public static class ProgressionManager
             TierOverride.Plains => ProgressionTier.Plains,
             TierOverride.Mistlands => ProgressionTier.Mistlands,
             TierOverride.Ashlands => ProgressionTier.Ashlands,
+            _ when entry is IFullModeOnly => null,
             _ => entry.DefaultTier
         };
     }

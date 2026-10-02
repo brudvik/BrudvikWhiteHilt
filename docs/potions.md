@@ -41,6 +41,8 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 
 ### Instant/Permanent Effects
 
+Hugin and Munin, like Gift of Brokkr, can only be brewed in full progression; in linear mode you learn and find things yourself (see [Settings & progression](progression.md)).
+
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
 | **Gift of Hugin** | Permanently sets ALL skills to level 100. Named after Odin's raven of "thought". | Neck Tail ×20, Cloudberry ×20, Blueberries ×20 |

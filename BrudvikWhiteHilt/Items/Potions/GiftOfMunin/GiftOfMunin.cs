@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin
 {
-    public class GiftOfMunin : PotionBase
+    public class GiftOfMunin : PotionBase, IFullModeOnly
     {
         public GiftOfMunin(ItemManager instance) : base(instance) { }
 

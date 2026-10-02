@@ -9,7 +9,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfBrokkr;
 /// This class defines the Gift of Brokkr potion.
 /// Grants crafting bonuses.
 /// </summary>
-public class GiftOfBrokkr : PotionBase
+public class GiftOfBrokkr : PotionBase, IFullModeOnly
 {
     public GiftOfBrokkr(ItemManager instance) : base(instance) { }
 

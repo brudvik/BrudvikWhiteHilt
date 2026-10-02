@@ -147,7 +147,7 @@ public static class WhiteHiltConfig
             TiersSection,
             entry.Id,
             TierOverride.Default,
-            AdminOnly($"{entry.DisplayName}. Default tier: {entry.DefaultTier}.\n" +
+            AdminOnly($"{entry.DisplayName}. " + (entry is IFullModeOnly ? "Default: not available in linear mode.\n" : $"Default tier: {entry.DefaultTier}.\n") +
                       "Tiers only apply in linear mode. Never disables the recipe in both modes, existing copies are kept."));
     }
 

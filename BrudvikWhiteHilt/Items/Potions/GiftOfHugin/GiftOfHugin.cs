@@ -8,7 +8,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfHugin;
 /// <summary>
 /// This class defines the Gift of Hugin potion.
 /// </summary>
-public class GiftOfHugin : PotionBase
+public class GiftOfHugin : PotionBase, IFullModeOnly
 {
     public GiftOfHugin(ItemManager instance) : base(instance) {}
 
