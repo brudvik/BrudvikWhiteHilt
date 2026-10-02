@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Navigation.Portraits;
 /// Draws players on the map as a portrait on a see-through black disc, with the name under it in soft shadow. A player
 /// whose portrait is not known gets the first letter of the name on a coloured disc instead. The portraits live in their
 /// own layer on top of everything else on the map, following the vanilla player pins, whose icon and name are hidden.
-/// You get one too, with your direction arrow at the bottom of it in place of the vanilla marker.
+/// You get one too in place of the vanilla marker. A ring with a point circles the portrait and shows the heading:
+/// where your camera looks, and where a nearby player faces.
 /// </summary>
 public static class PortraitPins
 {
@@ -18,15 +19,28 @@ public static class PortraitPins
     private const float SmallSize = 30f;
     private const int LargeFont = 15;
     private const int SmallFont = 12;
-    private const float ArrowShare = 0.55f;
     private const float TestOffset = 20f;
 
+    // The heading picture covers this many portrait widths; the disc's radius is RingTexture / 2 / HeadingScale.
+    private const float HeadingScale = 1.75f;
+    private const int RingTexture = 256;
+    private const float RingInner = 0.93f;
+    private const float RingOuter = 1.1f;
+    private const float TipReach = 1.66f;
+    private const float TipHalfAngle = 32f;
+    private const float RingOutline = 7f;
+
     private static readonly Color backdrop = new(0f, 0f, 0f, 0.55f);
+    private static readonly Color ownRing = new(1f, 0.82f, 0.32f, 1f);
+    private static readonly Color otherRing = new(0.95f, 0.95f, 0.92f, 1f);
     private static readonly Dictionary<Minimap.PinData, long> owners = new();
+    private static readonly Dictionary<Minimap.PinData, ZDOID> characters = new();
     private static readonly Dictionary<Minimap.PinData, PortraitView> views = new();
     private static readonly List<Minimap.PinData> gone = new();
 
     private static Sprite disc;
+    private static Sprite ring;
+    private static Sprite ringWithTip;
     private static Minimap.PinData testPin;
     private static RectTransform largeLayer;
     private static RectTransform smallLayer;
@@ -50,15 +64,21 @@ public static class PortraitPins
     public static void MapPlayers(Minimap map)
     {
         owners.Clear();
+        characters.Clear();
         int count = Mathf.Min(map.m_playerPins.Count, map.m_tempPlayerInfo.Count);
         for (int i = 0; i < count; i++)
         {
             owners[map.m_playerPins[i]] = map.m_tempPlayerInfo[i].m_characterID.UserID;
+            characters[map.m_playerPins[i]] = map.m_tempPlayerInfo[i].m_characterID;
         }
 
         if (testPin != null)
         {
             owners[testPin] = ZDOMan.GetSessionID();
+            if (Player.m_localPlayer != null)
+            {
+                characters[testPin] = Player.m_localPlayer.GetZDOID();
+            }
         }
     }
 
@@ -120,7 +140,7 @@ public static class PortraitPins
             }
 
             Place(view, layer, pin.m_uiElement.position);
-            view.Show(PortraitNetwork.Get(owner.Value), pin.m_name, size, font, showName, null);
+            view.Show(PortraitNetwork.Get(owner.Value), pin.m_name, size, font, showName, HeadingOf(pin), otherRing);
             pin.m_iconElement.enabled = false;
             if (pin.m_NamePinData != null && pin.m_NamePinData.PinNameGameObject != null)
             {
@@ -178,18 +198,24 @@ public static class PortraitPins
         if (ownView == null)
         {
             ownView = Create(layer);
-            Image arrow = AddImage<Image>((RectTransform)ownView.transform, "Arrow");
-            arrow.sprite = marker.GetComponent<Image>()?.sprite;
-            arrow.preserveAspect = true;
-            RectTransform rect = arrow.rectTransform;
-            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            ownView.Arrow = arrow;
         }
 
         Place(ownView, layer, marker.position);
         ownView.transform.SetAsFirstSibling();
-        ownView.Show(PortraitNetwork.Get(ZDOMan.GetSessionID()), player.GetPlayerName(), size, font, false, marker.rotation);
+        Quaternion? heading = PortraitSettings.HeadingMarker.Value ? marker.rotation : null;
+        ownView.Show(PortraitNetwork.Get(ZDOMan.GetSessionID()), player.GetPlayerName(), size, font, false, heading, ownRing);
+    }
+
+    // Only players whose character is loaded nearby have a known facing; the others get the ring alone.
+    private static Quaternion? HeadingOf(Minimap.PinData pin)
+    {
+        if (!PortraitSettings.HeadingMarker.Value || ZNetScene.instance == null || !characters.TryGetValue(pin, out ZDOID id) || id.IsNone())
+        {
+            return null;
+        }
+
+        GameObject character = ZNetScene.instance.FindInstance(id);
+        return character != null ? Quaternion.Euler(0f, 0f, -character.transform.eulerAngles.y) : null;
     }
 
     private static void SetMarkerVisible(RectTransform marker, bool visible)
@@ -264,12 +290,16 @@ public static class PortraitPins
         view.Letter = AddText(rect, "Letter", TextAnchor.MiddleCenter);
         Stretch(view.Letter.rectTransform);
 
+        view.Heading = AddImage<Image>(rect, "Heading");
+        RectTransform heading = view.Heading.rectTransform;
+        heading.anchorMin = heading.anchorMax = new Vector2(0.5f, 0.5f);
+        heading.anchoredPosition = Vector2.zero;
+
         view.Name = AddText(rect, "Name", TextAnchor.UpperCenter);
         RectTransform name = view.Name.rectTransform;
         name.anchorMin = name.anchorMax = new Vector2(0.5f, 0f);
         name.pivot = new Vector2(0.5f, 1f);
         name.sizeDelta = new Vector2(200f, 24f);
-        name.anchoredPosition = new Vector2(0f, -2f);
         AddShadow(view.Name, new Vector2(1f, -1f), 0.6f);
         AddShadow(view.Name, new Vector2(2f, -2f), 0.25f);
         return view;
@@ -340,6 +370,83 @@ public static class PortraitPins
         return disc;
     }
 
+    private static Sprite Ring(bool tip)
+    {
+        Sprite cached = tip ? ringWithTip : ring;
+        if (cached != null)
+        {
+            return cached;
+        }
+
+        // White ring (tinted by the Image) with a soft dark outline, drawn from a signed distance; the point faces up.
+        const int size = RingTexture;
+        float centre = (size - 1) / 2f;
+        float radius = size / 2f / HeadingScale;
+        float inner = RingInner * radius;
+        float outer = RingOuter * radius;
+        float half = TipHalfAngle * Mathf.Deg2Rad;
+        float baseRadius = (inner + outer) / 2f;
+        Vector2 apex = new(0f, TipReach * radius);
+        Vector2 left = new(-Mathf.Sin(half) * baseRadius, Mathf.Cos(half) * baseRadius);
+        Vector2 right = new(Mathf.Sin(half) * baseRadius, Mathf.Cos(half) * baseRadius);
+
+        Texture2D texture = new(size, size, TextureFormat.RGBA32, true) { name = tip ? "WhiteHiltHeadingTip" : "WhiteHiltHeadingRing", wrapMode = TextureWrapMode.Clamp };
+        Color32[] pixels = new Color32[size * size];
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                Vector2 point = new(x - centre, y - centre);
+                float distance = point.magnitude;
+                float shape = Mathf.Abs(distance - (inner + outer) / 2f) - (outer - inner) / 2f;
+                if (tip)
+                {
+                    shape = Mathf.Min(shape, Mathf.Max(Triangle(point, apex, left, right), inner - distance));
+                }
+
+                float fill = Mathf.Clamp01(0.5f - shape);
+                float edge = Mathf.Clamp01(0.5f - (shape - RingOutline)) * 0.65f;
+                float alpha = fill + edge * (1f - fill);
+                byte grey = (byte)(alpha > 0f ? fill / alpha * 255f : 0f);
+                pixels[y * size + x] = new Color32(grey, grey, grey, (byte)(alpha * 255f));
+            }
+        }
+
+        texture.SetPixels32(pixels);
+        texture.Apply(true, true);
+        Sprite sprite = Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.5f));
+        if (tip)
+        {
+            ringWithTip = sprite;
+        }
+        else
+        {
+            ring = sprite;
+        }
+
+        return sprite;
+    }
+
+    // Signed distance to a triangle: negative inside.
+    private static float Triangle(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
+    {
+        float distance = Mathf.Min(Segment(point, a, b), Mathf.Min(Segment(point, b, c), Segment(point, c, a)));
+        bool inside = Side(point, a, b) == Side(point, b, c) && Side(point, b, c) == Side(point, c, a);
+        return inside ? -distance : distance;
+    }
+
+    private static float Segment(Vector2 point, Vector2 a, Vector2 b)
+    {
+        Vector2 ab = b - a;
+        float t = Mathf.Clamp01(Vector2.Dot(point - a, ab) / ab.sqrMagnitude);
+        return Vector2.Distance(point, a + ab * t);
+    }
+
+    private static bool Side(Vector2 point, Vector2 a, Vector2 b)
+    {
+        return (b.x - a.x) * (point.y - a.y) - (b.y - a.y) * (point.x - a.x) >= 0f;
+    }
+
     /// <summary>
     /// The parts of one portrait pin.
     /// </summary>
@@ -349,9 +456,9 @@ public static class PortraitPins
         public RawImage Picture;
         public Text Letter;
         public Text Name;
-        public Image Arrow;
+        public Image Heading;
 
-        public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName, Quaternion? heading)
+        public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName, Quaternion? heading, Color ringColour)
         {
             ((RectTransform)transform).sizeDelta = new Vector2(size, size);
             Picture.texture = portrait;
@@ -367,10 +474,16 @@ public static class PortraitPins
             Name.gameObject.SetActive(showName && !string.IsNullOrEmpty(name));
             Name.text = name;
             Name.fontSize = fontSize;
-            if (Arrow != null && heading.HasValue)
+            Name.rectTransform.anchoredPosition = new Vector2(0f, -(RingOuter - 1f) * size / 2f - 2f);
+
+            bool ringShown = PortraitSettings.HeadingMarker.Value;
+            Heading.gameObject.SetActive(ringShown);
+            if (ringShown)
             {
-                Arrow.rectTransform.sizeDelta = new Vector2(size * ArrowShare, size * ArrowShare);
-                Arrow.rectTransform.rotation = heading.Value;
+                Heading.sprite = Ring(heading.HasValue);
+                Heading.color = ringColour;
+                Heading.rectTransform.sizeDelta = new Vector2(size * HeadingScale, size * HeadingScale);
+                Heading.rectTransform.rotation = heading ?? Quaternion.identity;
             }
         }
 

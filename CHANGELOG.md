@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.51.0 - 2026-10-02
+
+### Added
+- **Compass on the map**: a brass compass in the bottom-right corner of the minimap and the top-left corner of the large map. The letters stay put (the map is north up) and the needle points where you look, with the bearing in degrees under it. The letters follow the game's language (N, Ø, S, V in Norwegian). New section `[Map.Compass]`. See [Navigation](docs/navigation.md#-compass-on-the-map)
+
+### Changed
+- **Heading ring on map portraits**: the small arrow at the bottom of your portrait is replaced by a ring around it with a point that slides round the edge as you turn. Nearby players get a white ring pointing where they face; further away the ring has no point. New setting `[Map] HeadingMarker`
+- **Munin's memory** and **Uncovered** sit side by side under the bottom-left corner of the large map, lined up with its left edge, and open upwards over the map. Uncovered no longer covers the vanilla buttons at the bottom right
+
 ## v0.50.0 - 2026-10-02
 
 ### Added

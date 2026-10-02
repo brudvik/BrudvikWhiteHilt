@@ -70,7 +70,7 @@ The game draws the weather for each period of about 11 minutes from the weathers
 
 ## 📊 Exploration overview
 
-From Exploration 25, the large map has an **Uncovered** panel at the bottom right. Click its header to open it:
+From Exploration 25, the large map has an **Uncovered** panel under its bottom-left corner (right of **Munin's memory** when that shows). Click its header to open it upwards over the map:
 
 - every biome with a bar for the share you have uncovered and the area in km², and the whole world below;
 - from Exploration 50, map shared with you through a map table counts too, as it is drawn as your own;
@@ -92,7 +92,9 @@ The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest c
 
 ## 🖼️ Player portraits on the map
 
-Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure. You are shown with your own portrait, with your direction arrow at the bottom of it. The portraits are drawn on top of everything else on the map, so other players are never hidden; yours lies under theirs.
+Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure. You are shown with your own portrait. The portraits are drawn on top of everything else on the map, so other players are never hidden; yours lies under theirs.
+
+A ring around each portrait shows the heading: a point sticks out of the ring and slides round the edge as you turn. Yours is gold and points where you look, like the vanilla arrow. Other players' rings are white, and point where they face while they are near enough for their Viking to be loaded; further away the ring has no point.
 
 - Your portrait is taken in the main menu when the character is shown: bare head (no helmet), hair and beard, in neutral light, with the head centred. A new one is only taken when the look changes (body, hair, beard or colours).
 - When you join, the others get the portrait once (about 10 KB). They keep it on disk, so the next time only a short fingerprint is sent. Nothing extra is needed on the server.
@@ -104,11 +106,24 @@ Other players are shown on the map as a portrait of their Viking on a see-throug
 |-------------------------|---------|-------------|
 | `PlayerPortraits` | true | Show portraits, and take and share your own |
 | `ShowNamesOnMinimap` | false | Show names under the portraits on the minimap too |
+| `HeadingMarker` | true | Ring with a point around the portraits showing the heading |
 
 | Console command | Description |
 |-----------------|-------------|
 | `whitehilt_portrait` | Shows which players' portraits are known |
 | `whitehilt_portrait test` | Adds or removes a pin with your own portrait 20 m east of you |
+
+## 🧭 Compass on the map
+
+A brass compass sits in the bottom-right corner of the minimap and the top-left corner of the large map. The map is always north up, so the letters stay put and the red end of the needle points where you look, with the bearing in degrees under it (0 is north, 90 east). The letters follow the game's language: N, Ø, S, V in Norwegian, N, E, S, W otherwise.
+
+| Setting (section `Map.Compass`) | Default | Description |
+|-----------------|---------|-------------|
+| `Minimap` | true | Compass on the minimap |
+| `LargeMap` | true | Compass on the large map |
+| `Degrees` | true | Bearing in degrees under the compass |
+| `MinimapSize` | 56 | Width on the minimap, in pixels (32 to 120) |
+| `LargeMapSize` | 110 | Width on the large map, in pixels (48 to 220) |
 
 ## 🏰 Built areas, fields, pastures and wards
 
@@ -149,7 +164,7 @@ Munin, Odin's raven of memory, remembers everything found on a map table's map. 
 | **Munin's Perch** | A carved post with a raven on top. While it stands within 5 m of a map table, what is uncovered on that table's map can be shown on everyone's map | Hammer (Workbench) | Fine Wood ×8, Iron ×2, Feathers ×6 |
 
 - **What counts as found**: only what is uncovered on the map of the map table the perch stands at. Players add to it the vanilla way, by recording their map on the table. With several tables that each have a perch, all of their maps count.
-- **Nothing shows at first.** A panel at the left of the large map, **Munin's memory**, lists every kind that has been found, by group. Click the header to open it, click an icon to show or hide that kind, and click a group's name to show or hide the whole group. Hovering over an icon shows its name and how many have been found. Your choice is saved with the character.
+- **Nothing shows at first.** A panel under the bottom-left corner of the large map, **Munin's memory**, lists every kind that has been found, by group. Click the header to open it upwards over the map, click an icon to show or hide that kind, and click a group's name to show or hide the whole group. Hovering over an icon shows its name and how many have been found. Your choice is saved with the character.
 - **Exploration**: the large map shows the markers from Exploration 20, the minimap from Exploration 50. Below that, the panel only says what level you need.
 - Plants and deposits of one kind within 64 m are counted as one marker with their number. Markers that would overlap on screen merge too, so zoom in to tell them apart. Hover over a marker to see its name, its number and, for plants, how many are ready to pick.
 - Crops near player-built pieces are left out, since they are planted, not wild. Anything a player has placed is left out too.

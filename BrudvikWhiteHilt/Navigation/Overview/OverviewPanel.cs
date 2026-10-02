@@ -8,14 +8,13 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Navigation.Overview;
 
 /// <summary>
-/// The exploration overview at the bottom right of the large map: a header that opens a list of the biomes, each with
-/// a bar for the share uncovered and the area, the whole world below, and what Munin's Perch has found. Below the
-/// Exploration level from the settings it only says what level is needed.
+/// The exploration overview under the large map, at its left edge or right of Munin's memory: a header that opens a
+/// list of the biomes upwards over the map, each with a bar for the share uncovered and the area, the whole world below,
+/// and what Munin's Perch has found. Below the Exploration level from the settings it only says what level is needed.
 /// </summary>
 public static class OverviewPanel
 {
-    private const float Right = 30f;
-    private const float Bottom = 140f;
+    private const float Spacing = 8f;
     private const float Padding = 14f;
     private const float Gap = 8f;
     private const float NameWidth = 120f;
@@ -27,6 +26,7 @@ public static class OverviewPanel
     private const float RowHeight = 22f;
     private const float FootHeight = 40f;
     private const float RefreshInterval = 2f;
+    private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
     private static readonly Color barBack = new(0f, 0f, 0f, 0.5f);
     private static readonly Dictionary<Heightmap.Biome, Color> biomeColours = new()
@@ -46,6 +46,7 @@ public static class OverviewPanel
 
     private static GameObject panel;
     private static RectTransform content;
+    private static RectTransform headerButton;
     private static Text header;
     private static Text foot;
     private static Row worldRow;
@@ -81,6 +82,9 @@ public static class OverviewPanel
             panel.SetActive(true);
         }
 
+        RectTransform discoveries = DiscoveryPanel.Shown;
+        LargeMapFrame.PlaceBelow(map, (RectTransform)panel.transform, discoveries != null ? discoveries.sizeDelta.x + Spacing : 0f, CollapsedHeight);
+
         bool locked = ExplorationSkill.GetLevel(player) < OverviewSettings.Level.Value;
         if (!locked && expanded)
         {
@@ -98,7 +102,8 @@ public static class OverviewPanel
     {
         string title = Localization.instance.Localize("$whitehilt_overview_title");
         header.text = locked ? title : $"{title}  {(expanded ? "-" : "+")}";
-        float y = Padding + HeaderHeight;
+        // Laid out top-down with the header last, so it stays at the bottom while the list opens upwards.
+        float y = Padding;
         bool counted = false;
         int[] explored = null;
         int[] all = null;
@@ -148,6 +153,13 @@ public static class OverviewPanel
             y += Gap / 2f + FootHeight;
         }
 
+        if (y > Padding)
+        {
+            y += Gap / 2f;
+        }
+
+        Place(headerButton, Padding, y, Width - Padding * 2f, HeaderHeight);
+        y += HeaderHeight;
         ((RectTransform)panel.transform).sizeDelta = new Vector2(Width, y + Padding);
     }
 
@@ -173,12 +185,9 @@ public static class OverviewPanel
 
     private static void Create()
     {
-        Vector2 bottomRight = new(1f, 0f);
-        panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, bottomRight, bottomRight, Vector2.zero, Width, 100f, false);
+        Vector2 bottomLeft = Vector2.zero;
+        panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, bottomLeft, bottomLeft, Vector2.zero, Width, 100f, false);
         panel.name = "WhiteHiltOverview";
-        RectTransform rect = (RectTransform)panel.transform;
-        rect.pivot = bottomRight;
-        rect.anchoredPosition = new Vector2(-Right, Bottom);
         content = new GameObject("Content", typeof(RectTransform)).GetComponent<RectTransform>();
         content.SetParent(panel.transform, false);
         content.anchorMin = Vector2.zero;
@@ -187,7 +196,8 @@ public static class OverviewPanel
         content.offsetMax = Vector2.zero;
 
         GameObject button = new("Header", typeof(RectTransform), typeof(Image), typeof(Button));
-        Place((RectTransform)button.transform, Padding, Padding, Width - Padding * 2f, HeaderHeight);
+        headerButton = (RectTransform)button.transform;
+        Place(headerButton, Padding, Padding, Width - Padding * 2f, HeaderHeight);
         button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
         Button component = button.GetComponent<Button>();
         component.transition = Selectable.Transition.None;

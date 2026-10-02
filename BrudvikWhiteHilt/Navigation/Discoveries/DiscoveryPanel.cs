@@ -8,13 +8,13 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Navigation.Discoveries;
 
 /// <summary>
-/// The panel at the left of the large map where the player picks which discoveries to show. It lists only kinds that
-/// have been found, by group, as icons that are grey while switched off. It shows while Munin's Perch shares
-/// discoveries; below the Exploration level it only says what level is needed.
+/// The panel under the bottom-left corner of the large map where the player picks which discoveries to show. Its header
+/// stays under the map and the list opens upwards over it. It lists only kinds that have been found, by group, as icons
+/// that are grey while switched off. It shows while Munin's Perch shares discoveries; below the Exploration level it
+/// only says what level is needed.
 /// </summary>
 public static class DiscoveryPanel
 {
-    private const float Left = 30f;
     private const float Padding = 16f;
     private const int Columns = 6;
     private const float IconSize = 34f;
@@ -23,6 +23,7 @@ public static class DiscoveryPanel
     private const float GroupHeight = 24f;
     private const float FooterHeight = 42f;
     private const float Width = Padding * 2f + Columns * IconSize + (Columns - 1) * Gap;
+    private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
     private static readonly Color offBack = new(0.2f, 0.2f, 0.2f, 0.85f);
     private static readonly Color offIcon = new(0.45f, 0.45f, 0.45f, 0.7f);
@@ -37,6 +38,11 @@ public static class DiscoveryPanel
     private static bool builtLocked;
     private static int builtData = -1;
     private static int paintedFilter = -1;
+
+    /// <summary>
+    /// The panel while it shows on the large map, else null; the overview lines up to its right.
+    /// </summary>
+    public static RectTransform Shown => panel != null && panel.activeSelf ? (RectTransform)panel.transform : null;
 
     /// <summary>
     /// Shows or hides the panel with the large map and keeps it up to date. Called after the map's own update.
@@ -72,6 +78,7 @@ public static class DiscoveryPanel
             panel.SetActive(true);
         }
 
+        LargeMapFrame.PlaceBelow(map, (RectTransform)panel.transform, 0f, CollapsedHeight);
         if (paintedFilter != DiscoveryFilter.Version)
         {
             Paint();
@@ -80,9 +87,8 @@ public static class DiscoveryPanel
 
     private static void Create()
     {
-        Vector2 leftMiddle = new(0f, 0.5f);
-        panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, leftMiddle, leftMiddle, new Vector2(Left + Width / 2f, 0f),
-            Width, 100f, false);
+        Vector2 bottomLeft = Vector2.zero;
+        panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, bottomLeft, bottomLeft, Vector2.zero, Width, 100f, false);
         panel.name = "WhiteHiltDiscoveries";
         content = new GameObject("Content", typeof(RectTransform)).GetComponent<RectTransform>();
         content.SetParent(panel.transform, false);
@@ -105,13 +111,10 @@ public static class DiscoveryPanel
             Object.Destroy(child.gameObject);
         }
 
+        // Laid out top-down with the header last, so it stays at the bottom while the list opens upwards.
         float y = Padding;
         string title = Localization.instance.Localize("$whitehilt_disc_title");
         string header = locked ? title : $"{title}  {(expanded ? "-" : "+")}";
-        GameObject headerButton = CreateButton(Padding, y, Width - Padding * 2f, HeaderHeight, () => expanded = !expanded);
-        CreateLabel(headerButton.transform, header, 18, GUIManager.Instance.ValheimOrange, TextAnchor.MiddleCenter);
-        headerButton.GetComponent<Button>().interactable = !locked;
-        y += HeaderHeight;
 
         footerDefault = locked
             ? string.Format(Localization.instance.Localize("$whitehilt_disc_locked"), DiscoverySettings.LargeMapLevel.Value)
@@ -120,25 +123,28 @@ public static class DiscoveryPanel
         {
             foreach (IGrouping<DiscoveryGroup, DiscoveryKind> group in DiscoveryOverlay.Kinds.GroupBy(kind => kind.Group).OrderBy(group => group.Key))
             {
-                y = AddGroup(group.Key, group.OrderBy(kind => DiscoveryCatalog.GetLabel(kind.Key)).ToList(), y + Gap);
+                y = AddGroup(group.Key, group.OrderBy(kind => DiscoveryCatalog.GetLabel(kind.Key)).ToList(), y) + Gap;
             }
         }
 
         if (!string.IsNullOrEmpty(footerDefault))
         {
             GameObject footerObject = new("Footer", typeof(RectTransform));
-            Place((RectTransform)footerObject.transform, Padding, y + Gap, Width - Padding * 2f, FooterHeight);
+            Place((RectTransform)footerObject.transform, Padding, y, Width - Padding * 2f, FooterHeight);
             footer = CreateLabel(footerObject.transform, footerDefault, 14, Color.white, TextAnchor.MiddleCenter);
-            y += Gap + FooterHeight;
+            y += FooterHeight + Gap;
         }
         else
         {
             footer = null;
         }
 
-        RectTransform rect = (RectTransform)panel.transform;
-        rect.sizeDelta = new Vector2(Width, y + Padding);
-        rect.anchoredPosition = new Vector2(Left + Width / 2f, 0f);
+        GameObject headerButton = CreateButton(Padding, y, Width - Padding * 2f, HeaderHeight, () => expanded = !expanded);
+        CreateLabel(headerButton.transform, header, 18, GUIManager.Instance.ValheimOrange, TextAnchor.MiddleCenter);
+        headerButton.GetComponent<Button>().interactable = !locked;
+        y += HeaderHeight;
+
+        ((RectTransform)panel.transform).sizeDelta = new Vector2(Width, y + Padding);
     }
 
     private static float AddGroup(DiscoveryGroup group, List<DiscoveryKind> kinds, float y)

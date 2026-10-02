@@ -19,6 +19,9 @@ public static class PortraitSettings
     /// <summary>Whether names are shown under the portraits on the minimap too, not only on the large map.</summary>
     public static ConfigEntry<bool> ShowNamesOnMinimap { get; private set; }
 
+    /// <summary>Whether a ring with a point around the portraits shows which way each player is heading.</summary>
+    public static ConfigEntry<bool> HeadingMarker { get; private set; }
+
     /// <summary>
     /// Binds the config entries and registers the console command. Call from the plugin's Awake.
     /// </summary>
@@ -28,6 +31,8 @@ public static class PortraitSettings
             "Show other players on the map as a portrait of their Viking with the name under it. Your own portrait is taken in the main menu, once per look, and sent to the others when you join.");
         ShowNamesOnMinimap = WhiteHiltConfig.BindLocal(Section, "ShowNamesOnMinimap", false,
             "Show the names under the portraits on the minimap too. On the large map they are always shown.");
+        HeadingMarker = WhiteHiltConfig.BindLocal(Section, "HeadingMarker", true,
+            "A ring around the portraits with a point that circles the edge: yours points where you look, a nearby player's where they face.");
         Enabled.SettingChanged += (_, _) => PortraitPins.Refresh();
         ShowNamesOnMinimap.SettingChanged += (_, _) => PortraitPins.Refresh();
 
