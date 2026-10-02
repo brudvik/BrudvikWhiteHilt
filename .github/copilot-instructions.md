@@ -86,6 +86,8 @@ Each item class must implement:
 
 **Exception – gear biome upgrades and the White Hilt Cape**: White Hilt armor (uniforms included), weapons and shields upgrade past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor]`, `[Gear.Weapons]` and `[Gear.Shields] Upgrade*`, see `Items/GearUpgrades.cs`; shields also take a Lindorm Scale per level, staffs stay at quality 4). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape. The crafting recipes themselves still follow the Swamp rule.
 
+**Exception – roofs and their materials**: each roof covering (`Pieces/Roofs/`) may use the materials of its own biome up to and including the **Plains**: the slate roof takes Slate (Mountains), the straw thatch Straw (Plains), the Soapstone Hearth Soapstone (Mountains). The materials gate them naturally, so the roofs are not tied to progression tiers; they are switched and priced per covering in `[Roofs.<Covering>]`. Other pieces still follow the Swamp rule.
+
 ### CopyFrom Item References
 
 Use Swamp-tier or earlier base items:

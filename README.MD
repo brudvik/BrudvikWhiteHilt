@@ -85,6 +85,12 @@ A clock with the weather on the HUD, muffled weather indoors, and dropped items 
 
 Longer and angled beams and poles, White Hilt banners, and the logo in the main menu and loading screen.
 
+### 🏠 [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/roof_turf.png" alt="Turf roof" height="120">
+
+Viking roofs of turf, reed, straw, tarred shingles and slate in every shape and pitch, with smoke holes, dragon gables, roseroot on the turf and the materials to make them.
+
 ### 🎨 [Painting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/painting.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Paint Bench" height="120">
@@ -216,6 +222,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Map compass: ["Seadogs Compass"](https://polyhaven.com/a/seadogs_compass) by Benny Weimer, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Dial and needle rendered from above, printed letters painted out and the needle's north end painted red.
 - Treasure chest model: ["Treasure Chest"](https://polyhaven.com/a/treasure_chest) by Rico Cilliers, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Reduced to 5000 faces, converted to OBJ, rescaled and made double-sided for Valheim.
+- Roof textures: ["Leafy Grass"](https://polyhaven.com/a/leafy_grass), ["Roof Slates 02"](https://polyhaven.com/a/roof_slates_02), ["Thatch Roof Angled"](https://polyhaven.com/a/thatch_roof_angled), ["Reed Roof 04"](https://polyhaven.com/a/reed_roof_04), ["Dark Wooden Planks"](https://polyhaven.com/a/dark_wooden_planks) and ["Brown Mud Leaves 01"](https://polyhaven.com/a/brown_mud_leaves_01) from [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Regraded, the ridge band cut off the reed roof, and the shingles, scale shingles and turf edge drawn from the planks, mud and grass.
 - Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
 - White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
 - White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.

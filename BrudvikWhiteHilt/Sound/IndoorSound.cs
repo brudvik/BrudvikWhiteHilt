@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Pieces.Roofs;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using System.Collections.Generic;
 using UnityEngine;
@@ -118,6 +119,10 @@ public static class IndoorSound
         float target = player.m_underRoof
             ? Mathf.Lerp(OpenRoof, 1f, Mathf.InverseLerp(LeastCover, ShelterCover, player.m_coverPercentage))
             : 0f;
+        if (player.m_underRoof && RoofInfo.IsQuietRoofAbove(player.GetHeadPoint()))
+        {
+            target = Mathf.Min(1f, target + RoofSettings.QuietRoofBonus.Value);
+        }
         if (IndoorSoundSettings.ShipTentCounts.Value && WhiteHiltShipUpgrades.IsUnderTent(player.GetCenterPoint()))
         {
             target = Mathf.Max(target, ShipTent);

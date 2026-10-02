@@ -18,6 +18,9 @@ public static class BuildForagingBundle
     // Models the mod reads on the CPU: merged with Mesh.CombineMeshes (navigation pieces, Pathfinder amulet) or bent (White Hilt Bow).
     private static readonly string[] CombinedModels = { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "whbow" };
 
+    // Tiling roof textures whose one tile covers 2-3 m of roof.
+    private static readonly string[] LargeTiles = { "roof_slate_albedo", "roof_straw_albedo", "roof_turf_albedo" };
+
     /// <summary>
     /// Configures the importers and writes the bundle to the project's AssetBundles folder.
     /// </summary>
@@ -26,7 +29,7 @@ public static class BuildForagingBundle
         AssetDatabase.Refresh();
 
         string[] models = FindAssets("*.obj");
-        string[] textures = new[] { "*_albedo.png", "*_albedo.jpg", "*_emission.png", "*_emission.jpg" }
+        string[] textures = new[] { "*_albedo.png", "*_albedo.jpg", "*_emission.png", "*_emission.jpg", "*_normal.png", "*_normal.jpg" }
             .SelectMany(FindAssets)
             .OrderBy(path => path)
             .ToArray();
@@ -117,13 +120,17 @@ public static class BuildForagingBundle
     private static void ConfigureTexture(string path)
     {
         TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
-        importer.textureType = TextureImporterType.Default;
-        importer.sRGBTexture = true;
+        string name = Path.GetFileNameWithoutExtension(path);
+        bool normal = name.EndsWith("_normal", StringComparison.Ordinal);
+        importer.textureType = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
+        importer.sRGBTexture = !normal;
         importer.mipmapEnabled = true;
+        importer.wrapMode = TextureWrapMode.Repeat;
         // Atlases from convert_glb.py are one tile per part side by side, so give each tile 512 px (at most 4096 in all).
         importer.GetSourceTextureWidthAndHeight(out int width, out int height);
         int tiles = Mathf.Max(1, Mathf.RoundToInt((float)width / height));
-        importer.maxTextureSize = tiles > 1 ? Mathf.Min(4096, Mathf.NextPowerOfTwo(512 * tiles)) : 512;
+        // Roof textures with a large tile (2-3 m) keep 1024 px, so they stay sharp up close.
+        importer.maxTextureSize = LargeTiles.Contains(name) ? 1024 : tiles > 1 ? Mathf.Min(4096, Mathf.NextPowerOfTwo(512 * tiles)) : 512;
         importer.textureCompression = TextureImporterCompression.Compressed;
         importer.isReadable = false;
         importer.SaveAndReimport();

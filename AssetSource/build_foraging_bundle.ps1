@@ -59,6 +59,14 @@ function Convert-Models {
             Copy-Item $sound.FullName (Join-Path $foragingAssets $sound.Name.ToLowerInvariant()) -Force
         }
     }
+
+    # Tiling textures made by Tools/make_roof_textures.py (<name>_albedo / <name>_normal).
+    $textures = Join-Path $PSScriptRoot 'Textures'
+    if (Test-Path $textures) {
+        foreach ($texture in Get-ChildItem $textures -Include *.jpg, *.png -File -Recurse) {
+            Copy-Item $texture.FullName (Join-Path $foragingAssets $texture.Name.ToLowerInvariant()) -Force
+        }
+    }
 }
 
 # Blender turns each rigged glTF into an FBX with its textures; Unity builds the prefab (BuildCreatures.cs).

@@ -167,6 +167,8 @@
     <Compile Include="Items\Foraging\Lingonberries\Lingonberries.cs" />
     <Compile Include="Items\Foraging\Porcini\Porcini.cs" />
     <Compile Include="Items\Foraging\Roseroot\Roseroot.cs" />
+    <Compile Include="Items\Foraging\Reed\Reed.cs" />
+    <Compile Include="Items\Roofing\RoofMaterials.cs" />
     <Compile Include="Items\Foraging\SweetGale\SweetGale.cs" />
     <Compile Include="Items\Foraging\WildGarlic\WildGarlic.cs" />
     <Compile Include="Items\Meads\CranberryMead\CranberryMead.cs" />
@@ -323,6 +325,7 @@
     <Compile Include="Patches\Portals\PortalTravelMapPatch.cs" />
     <Compile Include="Items\Portals\HomeStone.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
+    <Compile Include="Patches\Roofing\RoofDropPatches.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
     <Compile Include="Patches\Navigation\MapAreaPatches.cs" />
@@ -458,6 +461,17 @@
     <Compile Include="Patches\Drops\FloatingItemsPatch.cs" />
     <Compile Include="Pieces\Trophies\TrophyAltar.cs" />
     <Compile Include="Pieces\Trophies\TrophyAltarSettings.cs" />
+    <Compile Include="Pieces\Roofs\RoofCatalog.cs" />
+    <Compile Include="Pieces\Roofs\RoofCoverings.cs" />
+    <Compile Include="Pieces\Roofs\RoofEave.cs" />
+    <Compile Include="Pieces\Roofs\RoofFamily.cs" />
+    <Compile Include="Pieces\Roofs\RoofInfo.cs" />
+    <Compile Include="Pieces\Roofs\RoofMeshBuilder.cs" />
+    <Compile Include="Pieces\Roofs\RoofSettings.cs" />
+    <Compile Include="Pieces\Roofs\SmokeHoleHatch.cs" />
+    <Compile Include="Pieces\Roofs\SoapstoneHearth.cs" />
+    <Compile Include="Pieces\Roofs\TarKiln.cs" />
+    <Compile Include="Pieces\Roofs\TurfGarden.cs" />
     <Compile Include="Pieces\Waste\WasteWell.cs" />
     <Compile Include="Pieces\Waste\WasteWellComponent.cs" />
     <Compile Include="Pieces\Waste\WasteWellSettings.cs" />

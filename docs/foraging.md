@@ -10,7 +10,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
-- a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp
+- a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp, and a 30% chance to give Reed there
 - **Wolves** have a 20% chance to drop 1–2 Crowberries
 
 <img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140">
@@ -23,6 +23,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Lingonberries** | Tart red berries | Black Forest bushes, or extra drop from Blueberry bush | – |
 | **Cranberries** | Sour dark red berries | Swamp tussocks, or extra drop from Mushroom there | – |
 | **Sweet Gale** | Bitter bog shrub | Swamp, or extra drop from Thistle there | – |
+| **Reed** | Tall swamp reed for [reed thatch](roofs.md) | The water's edge in the Swamp, or extra drop from Thistle there | – |
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
@@ -64,6 +65,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | Lingonberries | 1–2 |
 | Roseroot, Sweet Gale | 2–4 |
 | Wild Garlic | 3–6 |
+| Reed | 3–6 |
 
 Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10), plus:
 
