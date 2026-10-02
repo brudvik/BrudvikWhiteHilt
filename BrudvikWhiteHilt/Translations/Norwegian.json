@@ -1099,7 +1099,7 @@
   "piece_whitehilt_woodiron_beam_45_description": "En jernbeslått bjelke i vinkelen til et 45°-tak.",
 
   "piece_whitehilt_trophyaltar": "Troféalter",
-  "piece_whitehilt_trophyaltar_description": "Et lite steinalter med Eikthyr i miniatyr. Ofre et boss-trofé og en sumpnøkkel, og få en full stabel av det troféet.",
+  "piece_whitehilt_trophyaltar_description": "Et lite steinalter med Eikthyr i miniatyr. Ofre et boss-trofé og en sumpnøkkel, eller et annet trofé og et hardt gevir, og få en full stabel av det troféet.",
 
   "piece_whitehilt_paintbench": "Malerbenk",
   "piece_whitehilt_paintbench_description": "Et bord for å blande maling. Shift + Bruk åpner fargehjulet; Bruk lager malekosten.",
@@ -2919,6 +2919,14 @@
   "whitehilt_cfg_trophyaltar_keyspercraft_desc": "Sumpnøkler det koster å kopiere én gang.",
   "whitehilt_cfg_trophyaltar_trophiesmade": "Troféer som lages",
   "whitehilt_cfg_trophyaltar_trophiesmade_desc": "Troféer én kopiering gir. 0: en full stabel.",
+  "whitehilt_cfg_trophyaltar_ordinarytrophies": "Vanlige troféer",
+  "whitehilt_cfg_trophyaltar_ordinarytrophies_desc": "La alteret kopiere spillets vanlige troféer også, med harde gevir fra Eikthyr i stedet for en sumpnøkkel.",
+  "whitehilt_cfg_trophyaltar_antlerspercraft": "Gevir per gang",
+  "whitehilt_cfg_trophyaltar_antlerspercraft_desc": "Harde gevir det koster å kopiere et vanlig trofé én gang.",
+  "whitehilt_cfg_trophyaltar_ordinarytrophiesmade": "Vanlige troféer som lages",
+  "whitehilt_cfg_trophyaltar_ordinarytrophiesmade_desc": "Vanlige troféer én kopiering gir. 0: en full stabel.",
+  "whitehilt_cfg_trophyaltar_excludedtrophies": "Utelatte troféer",
+  "whitehilt_cfg_trophyaltar_excludedtrophies_desc": "Prefab-navn på vanlige troféer alteret aldri kopierer, skilt med komma. Hjortetroféer er utelatt som standard: de kaller frem Eikthyr, som gir gevirene.",
   "whitehilt_cfg_wastewell_disposedelayseconds": "Sekunder før det forsvinner",
   "whitehilt_cfg_wastewell_disposedelayseconds_desc": "Sekunder etter at avfallsbrønnen er lukket, før det som ble kastet i, er borte. Åpne den igjen før det for å ta ting tilbake.",
   "whitehilt_cfg_wastewell_collectradius": "Innsamlingsradius",

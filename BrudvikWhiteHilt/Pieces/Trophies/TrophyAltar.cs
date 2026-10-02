@@ -12,7 +12,8 @@ namespace BrudvikWhiteHilt.Pieces.Trophies;
 
 /// <summary>
 /// The Trophy Altar: a small stone altar with Eikthyr in miniature. A boss trophy and a Swamp Key give a full stack of
-/// that trophy, so every extra copy costs another kill of The Elder.
+/// that trophy, so every extra copy costs another kill of The Elder. Any other trophy of the game does the same with a
+/// Hard Antler from Eikthyr.
 /// </summary>
 public class TrophyAltar : IWhiteHiltCustomPiece
 {
@@ -20,8 +21,10 @@ public class TrophyAltar : IWhiteHiltCustomPiece
     public const string PrefabName = "piece_whitehilt_trophyaltar";
 
     private const string FullName = "Trophy Altar";
-    private const string Description = "A small stone altar with Eikthyr in miniature. Offer a boss trophy and a Swamp Key to get a full stack of that trophy.";
+    private const string Description = "A small stone altar with Eikthyr in miniature. Offer a boss trophy and a Swamp Key, or any other trophy and a Hard Antler, to get a full stack of that trophy.";
     private const string KeyPrefab = "CryptKey";
+    private const string AntlerPrefab = "HardAntler";
+    private const string VanillaTrophyPrefix = "Trophy";
     private const string StatuetteCreature = "Eikthyr";
     private const string StatuetteClip = "Idle";
     private const string StatuetteBody = "Deer";
@@ -34,6 +37,7 @@ public class TrophyAltar : IWhiteHiltCustomPiece
 
     private static readonly string[] looks = { "New", "Worn", "Broken" };
     private static readonly Dictionary<string, Recipe> recipes = new();
+    private static readonly HashSet<string> ordinary = new();
 
     private readonly PieceManager instance;
 
@@ -108,39 +112,74 @@ public class TrophyAltar : IWhiteHiltCustomPiece
         }
     }
 
-    // Every trophy in the default list and the config gets a recipe; the config then switches them on and off.
+    // Every trophy in the default list and the config gets a recipe with the key, every other trophy of the game one with
+    // the antler; the config then switches them on and off.
     private static void AddRecipes()
     {
-        IEnumerable<string> names = TrophyAltarSettings.BossTrophies.Split(',').Concat(TrophyAltarSettings.TrophyNames()).Distinct();
-        foreach (string trophy in names)
+        List<string> bosses = TrophyAltarSettings.BossTrophies.Split(',').Concat(TrophyAltarSettings.TrophyNames()).Distinct().ToList();
+        foreach (string trophy in bosses)
         {
-            if (PrefabManager.Instance.GetPrefab(trophy)?.GetComponent<ItemDrop>() == null)
-            {
-                Jotunn.Logger.LogWarning($"{FullName}: unknown trophy '{trophy}' is left out");
-                continue;
-            }
+            AddRecipe(trophy, KeyPrefab, TrophyAltarSettings.KeysPerCraft.Value);
+        }
 
-            CustomRecipe recipe = new(new RecipeConfig
+        foreach (string trophy in OrdinaryTrophyNames().Where(name => !bosses.Contains(name)))
+        {
+            if (AddRecipe(trophy, AntlerPrefab, TrophyAltarSettings.AntlersPerCraft.Value))
             {
-                Name = $"Recipe_WhiteHiltTrophyAltar_{trophy}",
-                Item = trophy,
-                Amount = MadeAmount(trophy),
-                CraftingStation = PrefabName,
-                Requirements = new RequirementConfig[]
-                {
-                    new() { Item = trophy, Amount = TrophyAltarSettings.TrophiesPerCraft.Value },
-                    new() { Item = KeyPrefab, Amount = TrophyAltarSettings.KeysPerCraft.Value }
-                }
-            });
-            ItemManager.Instance.AddRecipe(recipe);
-            recipes[trophy] = recipe.Recipe;
+                ordinary.Add(trophy);
+            }
         }
 
         TrophyAltarSettings.Trophies.SettingChanged += (_, _) => ApplyRecipes();
         TrophyAltarSettings.TrophiesPerCraft.SettingChanged += (_, _) => ApplyRecipes();
         TrophyAltarSettings.KeysPerCraft.SettingChanged += (_, _) => ApplyRecipes();
         TrophyAltarSettings.TrophiesMade.SettingChanged += (_, _) => ApplyRecipes();
+        TrophyAltarSettings.OrdinaryTrophies.SettingChanged += (_, _) => ApplyRecipes();
+        TrophyAltarSettings.AntlersPerCraft.SettingChanged += (_, _) => ApplyRecipes();
+        TrophyAltarSettings.OrdinaryTrophiesMade.SettingChanged += (_, _) => ApplyRecipes();
+        TrophyAltarSettings.ExcludedTrophies.SettingChanged += (_, _) => ApplyRecipes();
         ApplyRecipes();
+    }
+
+    private static bool AddRecipe(string trophy, string offering, int offeringAmount)
+    {
+        if (PrefabManager.Instance.GetPrefab(trophy)?.GetComponent<ItemDrop>() == null)
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: unknown trophy '{trophy}' is left out");
+            return false;
+        }
+
+        CustomRecipe recipe = new(new RecipeConfig
+        {
+            Name = $"Recipe_WhiteHiltTrophyAltar_{trophy}",
+            Item = trophy,
+            Amount = 1,
+            CraftingStation = PrefabName,
+            Requirements = new RequirementConfig[]
+            {
+                new() { Item = trophy, Amount = TrophyAltarSettings.TrophiesPerCraft.Value },
+                new() { Item = offering, Amount = offeringAmount }
+            }
+        });
+        ItemManager.Instance.AddRecipe(recipe);
+        recipes[trophy] = recipe.Recipe;
+        return true;
+    }
+
+    // The game's own trophies, by their "Trophy" names: White Hilt's own trophies, other mods' items and the beasts' black
+    // trophies are not copied this way.
+    private static IEnumerable<string> OrdinaryTrophyNames()
+    {
+        IEnumerable<GameObject> items = ObjectDB.instance != null && ObjectDB.instance.m_items.Count > 0
+            ? ObjectDB.instance.m_items
+            : PrefabManager.Cache.GetPrefabs(typeof(ItemDrop)).Values.OfType<ItemDrop>().Select(item => item.gameObject);
+        return items
+            .Where(prefab => prefab != null && prefab.name.StartsWith(VanillaTrophyPrefix, StringComparison.Ordinal))
+            .Where(prefab => prefab.GetComponent<ItemDrop>()?.m_itemData.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Trophy)
+            .Where(prefab => ItemManager.Instance.GetItem(prefab.name) == null && !Chests.Helpers.ChestSupply.IsEarnedOnly(prefab.name))
+            .Select(prefab => prefab.name)
+            .Distinct()
+            .ToList();
     }
 
     // The recipe objects stay registered with the game, so changing them in place reaches the altar without a restart.
@@ -152,22 +191,25 @@ public class TrophyAltar : IWhiteHiltCustomPiece
             Jotunn.Logger.LogWarning($"{FullName}: '{missing}' has no recipe until the game is restarted");
         }
 
+        IReadOnlyList<string> excluded = TrophyAltarSettings.ExcludedNames();
         foreach (KeyValuePair<string, Recipe> entry in recipes)
         {
             Recipe recipe = entry.Value;
-            recipe.m_enabled = enabled.Contains(entry.Key);
-            recipe.m_amount = MadeAmount(entry.Key);
+            bool isOrdinary = ordinary.Contains(entry.Key);
+            recipe.m_enabled = isOrdinary
+                ? TrophyAltarSettings.OrdinaryTrophies.Value && !excluded.Contains(entry.Key)
+                : enabled.Contains(entry.Key);
+            recipe.m_amount = MadeAmount(entry.Key, isOrdinary ? TrophyAltarSettings.OrdinaryTrophiesMade.Value : TrophyAltarSettings.TrophiesMade.Value);
             if (recipe.m_resources != null && recipe.m_resources.Length >= 2)
             {
                 recipe.m_resources[0].m_amount = TrophyAltarSettings.TrophiesPerCraft.Value;
-                recipe.m_resources[1].m_amount = TrophyAltarSettings.KeysPerCraft.Value;
+                recipe.m_resources[1].m_amount = isOrdinary ? TrophyAltarSettings.AntlersPerCraft.Value : TrophyAltarSettings.KeysPerCraft.Value;
             }
         }
     }
 
-    private static int MadeAmount(string trophy)
+    private static int MadeAmount(string trophy, int configured)
     {
-        int configured = TrophyAltarSettings.TrophiesMade.Value;
         if (configured > 0)
         {
             return configured;

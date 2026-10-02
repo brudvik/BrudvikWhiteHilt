@@ -65,15 +65,18 @@ The server sets it in the `WasteWell` section: `DisposeDelaySeconds` (5), `Colle
 
 A small stone altar, about 1.2 × 0.6 m, with a miniature Eikthyr standing on it. Open it like a workbench: offer one boss trophy and one **Swamp Key** and get a full stack (20) of that trophy back. The Elder drops one key per kill, so every extra stack costs another fight with him. Keep one key for the crypts.
 
-- It copies the trophies of the seven bosses: Eikthyr, The Elder, Bonemass, Moder, Yagluth, The Queen and Fader. Other trophies, including the White Hilt monsters' trophies, have to be collected in the normal way.
-- A trophy only shows up at the altar once you have picked it up, so it never skips a boss.
+Ordinary trophies work the same way with a **Hard Antler** from Eikthyr instead of the key: one trophy and one antler give a full stack.
+
+- It copies the trophies of the seven bosses: Eikthyr, The Elder, Bonemass, Moder, Yagluth, The Queen and Fader, with a Swamp Key.
+- With a Hard Antler it copies every other trophy of the game itself. Deer trophies are left out by default (`ExcludedTrophies`), since they summon Eikthyr, who drops the antlers. The White Hilt monsters' trophies, the black beast trophies and trophies from other mods have to be collected in the normal way.
+- A trophy only shows up at the altar once you have picked up both the trophy and the key or antler, so it never skips a boss.
 - It needs no roof and no fire. The craft amount arrows on the Craft button make several stacks at once if you have the keys.
 
 <img src="images/trophy_altar.png" alt="Trophy Altar" title="Trophy Altar" height="140">
 
 | **Piece** | Description | Crafting Station | Requirements |
 |---|---|---|---|
-| **Trophy Altar** | Boss trophy + Swamp Key gives a full stack of that trophy | Workbench | Stone ×10, Fine Wood ×4, Iron ×2, Ancient Bark ×2 |
+| **Trophy Altar** | Boss trophy + Swamp Key, or another trophy + Hard Antler, gives a full stack of that trophy | Workbench | Stone ×10, Fine Wood ×4, Iron ×2, Ancient Bark ×2 |
 
 | Setting (`TrophyAltar`) | Default | Description |
 |---|---|---|
@@ -81,6 +84,10 @@ A small stone altar, about 1.2 × 0.6 m, with a miniature Eikthyr standing on it
 | `TrophiesPerCraft` | 1 | Trophies one copy takes |
 | `KeysPerCraft` | 1 | Swamp Keys one copy takes |
 | `TrophiesMade` | 0 | Trophies one copy gives. 0: a full stack |
+| `OrdinaryTrophies` | true | Copy the game's ordinary trophies too, with Hard Antlers |
+| `AntlersPerCraft` | 1 | Hard Antlers one copy of an ordinary trophy takes |
+| `OrdinaryTrophiesMade` | 0 | Ordinary trophies one copy gives. 0: a full stack |
+| `ExcludedTrophies` | TrophyDeer | Ordinary trophies the altar never copies, comma separated |
 
 ---
 

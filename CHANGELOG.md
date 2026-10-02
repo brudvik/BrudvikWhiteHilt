@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.56.0 - 2026-10-02
+
+### Added
+- **Trophy Altar** copies ordinary trophies too: one trophy and one Hard Antler from Eikthyr give a full stack. It covers every trophy of the game itself except the boss trophies, which still take a Swamp Key, and deer trophies, which are left out because they summon Eikthyr. The White Hilt monsters' trophies, the black beast trophies and other mods' trophies are not copied. New settings `OrdinaryTrophies`, `AntlersPerCraft`, `OrdinaryTrophiesMade` and `ExcludedTrophies` in `[TrophyAltar]`. See [Base](docs/base.md)
+
 ## v0.55.0 - 2026-10-02
 
 ### Added
