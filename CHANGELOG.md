@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.42.0 - 2026-10-02
+
+### Added
+- **Pathfinder's Ruby Amulet**: from Exploration 50 (new milestone **Ruby Pathfinder**), the Cartographer's Desk sets a large ruby in the middle of the Pathfinder's Amulet (Pathfinder's Amulet ×1, Ruby ×3, Iron ×2). It does all the Pathfinder does, and while you wear it, Shift + click on the large map sets a target, on one of your pins if you click one. An arrow at the top of the screen points the way with the name and distance, a red ring marks the target on both maps, and an arrow on the minimap's edge points to it while it is beyond the minimap. Keep moving away from it and the ruby tells you that you are going the wrong way; reach it and the target is removed. The target is your own, saved per character and world. One already made keeps working if Exploration drops below 50. New sections `Gear.WhiteHiltPathfinderRuby` (rules from the server, arrow settings your own) and `[Skills.Exploration] RubyPathfinderLevel`. See [Navigation](docs/navigation.md#-pathfinders-ruby-amulet-a-target-on-the-map)
+
 ## v0.41.0 - 2026-10-02
 
 ### Added

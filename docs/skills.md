@@ -117,6 +117,7 @@ The skill already speeds up taming and breeding ([Animal husbandry](husbandry.md
 | Level | Milestone | What it does |
 |-------|-----------|--------------|
 | 25 | Lookout | Press **O**: the map opens up 200 m around you (400 m at level 100), and serpents, the Kraken and other ships within reach show on the map for a minute. Once every 5 minutes |
+| 50 | Ruby Pathfinder | The [Pathfinder's Ruby Amulet](navigation.md#-pathfinders-ruby-amulet-a-target-on-the-map) can be made: Shift + click the large map to set a target, and an arrow leads you there |
 
 ### 💀 Skill loss on death
 
@@ -140,6 +141,6 @@ Each skill has its own section `Skills.<Skill>` (server-synced). It holds the le
 | `Skills.Farming` | `StarredCropsLevel` 25, `GreenThumbLevel` 50, `GiantCropsLevel` 75, `MasterFarmerLevel` 100 | `GreenThumbBonus` 0.25, `GiantCropChance` 0.05, `GiantCropYield` 3, `SeedStarBonus` 0.15 |
 | `Skills.Fishing` | `SnagsLevel` 25, `SteadyHandsLevel` 50, `LegendaryFishLevel` 75, `DoubleCatchLevel` 100 | `LineStrain` 0.35, `SteadyHandsReduction` 0.5, `SnagBaseChance` 0.05, `SnagSkillChance` 0.15, `LegendaryBaseChance` 0.01, `LegendarySkillChance` 0.03, `DoubleCatchChance` 0.2 |
 | `Skills.Husbandry` | `TwinsLevel` 50, `StrongYoungLevel` 75 | `TwinChance` 0.25, `StrongYoungChance` 0.3 |
-| `Skills.Exploration` | `LookoutLevel` 25 | `LookoutCooldownMinutes` 5, `LookoutRadius` 200 |
+| `Skills.Exploration` | `LookoutLevel` 25, `RubyPathfinderLevel` 50 | `LookoutCooldownMinutes` 5, `LookoutRadius` 200 |
 
 The Compost Bin, section `Farming.Compost` (server-synced): `WastePerCompost` (5) pieces of waste make one compost, and a bin uses `CompostPerDay` (1) compost a day while it feeds the soil (0 = never used up).

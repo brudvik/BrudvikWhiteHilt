@@ -173,6 +173,7 @@
     <Compile Include="Items\Navigation\AmuletGems.cs" />
     <Compile Include="Items\Navigation\NavigatorTable.cs" />
     <Compile Include="Items\Navigation\PathfinderAmulet.cs" />
+    <Compile Include="Items\Navigation\RubyPathfinderAmulet.cs" />
     <Compile Include="Items\Runes\BlackMetalRune\BlackMetalRune.cs" />
     <Compile Include="Items\Runes\BronzeRune\BronzeRune.cs" />
     <Compile Include="Items\Runes\FlametalRune\FlametalRune.cs" />
@@ -321,6 +322,7 @@
     <Compile Include="Patches\Navigation\SharedMapRevealPatches.cs" />
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
+    <Compile Include="Patches\Navigation\WaypointPatches.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
     <Compile Include="Patches\Navigation\StoneDowsingPatches.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
@@ -488,6 +490,12 @@
     <Compile Include="Navigation\NavigationSettings.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingEffect.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingService.cs" />
+    <Compile Include="Navigation\MinimapEdgeArrow.cs" />
+    <Compile Include="Navigation\Waypoints\WaypointGuide.cs" />
+    <Compile Include="Navigation\Waypoints\WaypointHud.cs" />
+    <Compile Include="Navigation\Waypoints\WaypointMap.cs" />
+    <Compile Include="Navigation\Waypoints\WaypointSettings.cs" />
+    <Compile Include="Navigation\Waypoints\WaypointTarget.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingSettings.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingTargets.cs" />
     <Compile Include="Navigation\Areas\MapArea.cs" />

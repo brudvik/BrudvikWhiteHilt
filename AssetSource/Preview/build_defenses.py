@@ -465,8 +465,11 @@ def carto_desk():
     return parts, colliders, groups
 
 
-def amulet():
-    """The Pathfinder amulet in the chest bone's space (+z forward, +y up): the valknut disc, a leather cord and five gems."""
+def amulet(ruby=False):
+    """The Pathfinder amulet in the chest bone's space (+z forward, +y up): the valknut disc, a leather cord and five gems.
+
+    With ruby, a large ruby sits in the middle of the valknut (the Pathfinder's Ruby Amulet).
+    """
     size, depth = 0.09, 0.16  # the oval pendant is as wide as it is tall and 0.16 of that thick
     bottom = -0.07
     parts = [part("amulet", (0, bottom, depth), (0, 90, 0), (size, size, size))]
@@ -478,7 +481,9 @@ def amulet():
     for i, gem in enumerate(gems, start=1):
         angle = math.radians(-72 + (i - 1) * 36)
         position = (math.sin(angle) * size * 0.33, centre - math.cos(angle) * size * 0.34, front)
-        parts.append(part(gem, position, (90, 0, 0), (0.045, 0.045, 0.045), group=f"gem_{i}"))
+        parts.append(part(gem, position, (90, 0, 0), (0.045, 0.045, 0.045), group=f"gem_{i}", **gem_tint(gem)))
+    if ruby:
+        parts.append(part("gem_ruby", (0, RUBY_CENTRE * size + bottom, front), (90, 0, 0), (RUBY_SCALE,) * 3, **gem_tint("gem_ruby")))
     groups = [{"name": f"gem_{i}", "pivot": [0, 0, 0]} for i in range(1, 6)]
     return parts, groups
 
@@ -492,10 +497,21 @@ SHIP_MOUNTS = {
 }
 
 
+# The ruby's height on the pendant as a share of its size above the bottom, and its scale.
+RUBY_CENTRE = 0.5
+RUBY_SCALE = 0.075
+
+
+def gem_tint(gem):
+    """The vanilla ruby is untextured red (_Color); in game this tint changes nothing, the preview only shows it red."""
+    return {"tint": [1.0, 0.08, 0.1]} if gem == "gem_ruby" else {}
+
+
 def navigation_pieces():
     table_parts, table_colliders, table_groups = chart_table()
     desk_parts, desk_colliders, desk_groups = carto_desk()
     amulet_parts, amulet_groups = amulet()
+    ruby_parts, ruby_groups = amulet(ruby=True)
     pieces = [
         {"name": "navigatorbord", "parts": table_parts, "colliders": table_colliders, "groups": table_groups,
          "views": views(("front", 180, 20), ("side", 90, 25), ("top", -30, 60))},
@@ -504,6 +520,9 @@ def navigation_pieces():
          "views": views(("front", 180, 20), ("side", 120, 25), ("top", -30, 60))},
         {"name": "stifinner", "parts": amulet_parts, "groups": amulet_groups},
         {"name": "stifinner_visning", "parts": [piece("stifinner", (0, 0.3, 0))],
+         "views": views(("front", 180, 5), ("side", 120, 10), ("angle", -150, 30))},
+        {"name": "stifinner_rubin", "parts": ruby_parts, "groups": ruby_groups},
+        {"name": "stifinner_rubin_visning", "parts": [piece("stifinner_rubin", (0, 0.3, 0))],
          "views": views(("front", 180, 5), ("side", 120, 10), ("angle", -150, 30))},
     ]
     for ship, (position, rotation) in SHIP_MOUNTS.items():

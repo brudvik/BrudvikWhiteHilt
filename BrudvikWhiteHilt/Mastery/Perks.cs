@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Navigation;
 using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Progression;
 using BrudvikWhiteHilt.Ranching;
@@ -235,6 +236,11 @@ public static class Perks
         "Press the Lookout key (O): the map opens up around you, wider with skill, and sea monsters and ships within reach show on it. Once every {0} minutes.",
         () => MasterySettings.Lookout.Value, () => new[] { Number(MasterySettings.LookoutCooldownMinutes.Value) });
 
+    /// <summary>The Pathfinder's Ruby Amulet can be made.</summary>
+    public static readonly Perk RubyPathfinder = new(() => ExplorationSkill.Type, "Exploration", 50, "ruby_pathfinder", "Ruby Pathfinder",
+        "Set a ruby in the Pathfinder's Amulet at the Cartographer's Desk. Wearing it, Shift + click the large map to set a target, and an arrow leads you there.",
+        () => WhiteHiltConfig.IsEnabled(RubyPathfinderAmulet.RubyPrefabName));
+
     private static readonly List<Perk> all = new()
     {
         KeenEye, SeasonSense, SweepPicking, ForagersBounty,
@@ -244,7 +250,7 @@ public static class Perks
         Riposte, ShieldWall, LastStand, IronGuard,
         StarredCrops, GreenThumb, GiantCrops, MasterFarmer,
         Snags, SteadyHands, LegendaryFish, DoubleCatch,
-        Twins, StrongYoung, Lookout
+        Twins, StrongYoung, Lookout, RubyPathfinder
     };
 
     /// <summary>

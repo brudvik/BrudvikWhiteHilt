@@ -6,17 +6,30 @@
 
 A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better. From level 50, map that others have shared with you through a map table is shown just like map you uncovered yourself, without the see-through layer (hiding shared map data brings the layer back). The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used within 5 m of one.
 
-From Exploration 25 the **Lookout** (O) opens up the map around you and shows sea monsters and ships; see [Skills & milestones](skills.md).
+From Exploration 25 the **Lookout** (O) opens up the map around you and shows sea monsters and ships; see [Skills & milestones](skills.md). From Exploration 50 you can set a ruby in the Pathfinder's Amulet, which leads you to a target you set on the map; see [below](#-pathfinders-ruby-amulet-a-target-on-the-map).
 
-<img src="images/cartographers_desk.png" alt="Cartographer's Desk" title="Cartographer's Desk" height="140"> <img src="images/navigators_table.png" alt="Navigator's Table" title="Navigator's Table" height="140"> <img src="images/pathfinders_amulet.png" alt="Pathfinder's Amulet" title="Pathfinder's Amulet" height="140">
+<img src="images/cartographers_desk.png" alt="Cartographer's Desk" title="Cartographer's Desk" height="140"> <img src="images/navigators_table.png" alt="Navigator's Table" title="Navigator's Table" height="140"> <img src="images/pathfinders_amulet.png" alt="Pathfinder's Amulet" title="Pathfinder's Amulet" height="140"> <img src="images/pathfinders_ruby_amulet.png" alt="Pathfinder's Ruby Amulet" title="Pathfinder's Ruby Amulet" height="140">
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), within 5 m of a map table | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
 | **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck; on the White Hilt Ship the mast takes it too, like the ship upgrades (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m). Use on the table opens the map for route markers at Exploration 30 (up to 5, shown to everyone aboard, with an arrow on the minimap toward the next one); at Exploration 50 "Take me there" lets the ship sail the route on its own, past every marker in turn. It sets off once the one who chose it sits down (within 30 seconds by default, or it is called off), rows at the slowest speed while anyone aboard stands, and takes the sail down to half above 45 knots. **Explorer mode** (also Exploration 50) sails past the markers as close to land as it safely can, following the coast, and never with full sail near land | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
 | **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Silver Necklace ×1, Ruby ×1 |
+| **Pathfinder's Ruby Amulet** | The Pathfinder's Amulet with a large ruby in the middle of the valknut. It does all the Pathfinder does, and leads you to a target you set on the map (see below). Known and made from Exploration 50; one you already have keeps working if the skill drops below that | Cartographer's Desk | Pathfinder's Amulet ×1, Ruby ×3, Iron ×2 |
 
 The table and the amulet do not add up; the wider one counts.
+
+## 💎 Pathfinder's Ruby Amulet: a target on the map
+
+While you wear the Pathfinder's Ruby Amulet, as trinket or in one of the backpack's extra accessory slots:
+
+- **Shift + click** the large map to set a target there. Click on one of your pins, and the target takes the pin's place and name. Shift + click the target again to remove it.
+- An **arrow at the top of the screen** points toward the target from where the camera looks, with its name and distance under it.
+- The target is a red ring on the **large map** (with its name) and on the **minimap**. While it lies beyond the minimap, a red arrow on the minimap's edge points to it, with the distance.
+- If you keep moving away from the target, for 4 seconds at 1 m/s or more and more than 135° off its direction, the ruby tells you: *"You are going the wrong way: Home lies to the north-east"*, and the arrow pulses. Not within 50 m of the target, and not more than once every 30 seconds. It goes by the way you actually move, so looking around does not set it off, and it works aboard a ship too.
+- Within 15 m you have reached the target; a message says so and the target is removed.
+
+The target is yours alone. It is saved with your character for each world, so it is still there the next time you play, and it does not follow you into another world. Take the amulet off and the arrows and the marker go away; put it on again and they come back.
 
 ## 🪨 Stone Dowser
 
@@ -139,9 +152,25 @@ All admin only, synced from the server.
 | `[Gear.WhiteHiltChartTable] Weight` | 10 | Weight of the Navigator's Table item |
 | `[Gear.WhiteHiltPathfinder] MaxAdrenaline` | 50 | Adrenaline needed for Raven Sight |
 | `[Gear.WhiteHiltPathfinder] AdrenalinePerSquareMetre` | 0.0001 | Adrenaline per square metre of new map |
+| `[Gear.WhiteHiltPathfinderRuby] ArrivalRadius` | 15 | Metres from the target at which you have reached it |
+| `[Gear.WhiteHiltPathfinderRuby] WrongWayAngle` | 135 | Degrees off the target's direction that count as the wrong way (180 = straight away) |
+| `[Gear.WhiteHiltPathfinderRuby] WrongWaySeconds` | 4 | Seconds of moving the wrong way before the message |
+| `[Gear.WhiteHiltPathfinderRuby] WrongWayMinDistance` | 50 | No wrong-way message within this many metres of the target |
+| `[Gear.WhiteHiltPathfinderRuby] WrongWayMinSpeed` | 1 | Metres per second you must move for it to count |
+| `[Gear.WhiteHiltPathfinderRuby] WrongWayCooldown` | 30 | Seconds before the message can come again |
+| `[Skills.Exploration] RubyPathfinderLevel` | 50 | Exploration level from which the Pathfinder's Ruby Amulet is known and can be made |
 | `[Gear.WhiteHiltStoneDowser] SearchRadius` | 3000 | Metres the Stone Dowser looks for a clearing with rocks left |
 | `[Gear.WhiteHiltStoneDowser] RefreshSeconds` | 30 | Seconds between each search |
 | `[Gear.WhiteHiltStoneDowser] PingRange` | 40 | Metres within which it pings toward the nearest rock |
 | `[Gear.WhiteHiltStoneDowser] ShowPin` | true | Mark the clearing on the map; off: only direction and distance |
 | `[Gear.WhiteHiltStoneDowser] Items` | StoneRock | Items whose pickables it counts and pings toward |
 | `[Gear.WhiteHiltStoneDowser] Locations` | BigRockClearing | Locations it leads to |
+
+Each player sets these for themselves, in the same section `Gear.WhiteHiltPathfinderRuby`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `HudArrow` | true | Show the arrow toward the target at the top of the screen |
+| `HudArrowTop` | 110 | Pixels from the top of the screen to the arrow |
+| `HudArrowSize` | 44 | Size of the arrow in pixels |
+| `ShowDistance` | true | Write the distance under the arrow |

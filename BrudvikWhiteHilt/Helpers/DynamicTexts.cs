@@ -49,6 +49,11 @@ public static class DynamicTexts
             Translations.Number(ExploreRadius(NavigationSettings.AmuletBonus.Value)),
             Translations.Number(NavigationSettings.RavenSightRadius.Value)
         });
+        Translations.AddDynamic("item_whitehiltpathfinderruby_description", () => new object[]
+        {
+            Translations.Number(ExploreRadius(NavigationSettings.AmuletBonus.Value)),
+            Translations.Number(NavigationSettings.RavenSightRadius.Value)
+        });
         Translations.AddDynamic("whitehilt_skill_exploration_description", () => new object[] { NavigationSettings.SharedMapRevealLevel.Value });
         Translations.AddDynamic("whitehilt_route_sit", () => new object[] { Translations.Number(ShipSettings.RouteSitSeconds.Value) });
 

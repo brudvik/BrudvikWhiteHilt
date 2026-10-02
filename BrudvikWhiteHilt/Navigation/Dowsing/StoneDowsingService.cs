@@ -243,7 +243,12 @@ public class StoneDowsingService : MonoBehaviour
         pin = null;
     }
 
-    private static string Direction(Vector3 toward)
+    /// <summary>
+    /// The compass direction of a vector, e.g. "north-east", in the player's language.
+    /// </summary>
+    /// <param name="toward">The direction in world space; y is ignored.</param>
+    /// <returns>One of eight directions.</returns>
+    public static string Direction(Vector3 toward)
     {
         float angle = Mathf.Atan2(toward.x, toward.z) * Mathf.Rad2Deg;
         int index = (Mathf.RoundToInt(angle / 45f) % 8 + 8) % 8;

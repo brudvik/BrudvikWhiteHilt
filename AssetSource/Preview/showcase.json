@@ -16,6 +16,7 @@
     { "image": "cartographers_desk", "piece": "kartmakerbenk", "view": { "yaw": 140, "pitch": 30 } },
     { "image": "navigators_table", "piece": "navigatorbord", "view": { "yaw": 140, "pitch": 30 } },
     { "image": "pathfinders_amulet", "piece": "stifinner_visning" },
+    { "image": "pathfinders_ruby_amulet", "piece": "stifinner_rubin_visning" },
     { "image": "white_hilt_portal", "models": ["portal"] },
 
     { "image": "white_hilt_sword", "models": ["whsword"] },

@@ -45,7 +45,7 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 

@@ -14012,7 +14012,12 @@
       0.045,
       0.045
      ],
-     "group": "gem_1"
+     "group": "gem_1",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
     },
     {
      "mesh": "gem_amber",
@@ -14050,7 +14055,12 @@
       0.045,
       0.045
      ],
-     "group": "gem_3"
+     "group": "gem_3",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
     },
     {
      "mesh": "gem_amber",
@@ -14088,7 +14098,12 @@
       0.045,
       0.045
      ],
-     "group": "gem_5"
+     "group": "gem_5",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
     }
    ],
    "groups": [
@@ -14139,6 +14154,280 @@
    "parts": [
     {
      "piece": "stifinner",
+     "position": [
+      0,
+      0.3,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 5
+    },
+    {
+     "label": "side",
+     "yaw": 120,
+     "pitch": 10
+    },
+    {
+     "label": "angle",
+     "yaw": -150,
+     "pitch": 30
+    }
+   ]
+  },
+  {
+   "name": "stifinner_rubin",
+   "parts": [
+    {
+     "mesh": "amulet",
+     "position": [
+      0,
+      -0.07,
+      0.16
+     ],
+     "rotation": [
+      0,
+      90,
+      0
+     ],
+     "scale": [
+      0.09,
+      0.09,
+      0.09
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.037,
+      0.09,
+      0.105
+     ],
+     "rotation": [
+      47.501,
+      30.964,
+      0
+     ],
+     "scale": [
+      0.027,
+      0.027,
+      0.09
+     ],
+     "tint": [
+      0.35,
+      0.25,
+      0.18
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.037,
+      0.09,
+      0.105
+     ],
+     "rotation": [
+      47.501,
+      -30.964,
+      0
+     ],
+     "scale": [
+      0.027,
+      0.027,
+      0.09
+     ],
+     "tint": [
+      0.35,
+      0.25,
+      0.18
+     ]
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      -0.028,
+      -0.039,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_1",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
+    },
+    {
+     "mesh": "gem_amber",
+     "position": [
+      -0.017,
+      -0.054,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_2"
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      0.0,
+      -0.06,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_3",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
+    },
+    {
+     "mesh": "gem_amber",
+     "position": [
+      0.017,
+      -0.054,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_4"
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      0.028,
+      -0.039,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.045,
+      0.045,
+      0.045
+     ],
+     "group": "gem_5",
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
+    },
+    {
+     "mesh": "gem_ruby",
+     "position": [
+      0,
+      -0.025,
+      0.169
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      0.075,
+      0.075,
+      0.075
+     ],
+     "tint": [
+      1.0,
+      0.08,
+      0.1
+     ]
+    }
+   ],
+   "groups": [
+    {
+     "name": "gem_1",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_2",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_3",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_4",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "gem_5",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "name": "stifinner_rubin_visning",
+   "parts": [
+    {
+     "piece": "stifinner_rubin",
      "position": [
       0,
       0.3,
