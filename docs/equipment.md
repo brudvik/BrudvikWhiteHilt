@@ -4,7 +4,7 @@
 
 ## ⚔️ WEAPONS
 
-All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals.
+All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals. Like the armor, they can be upgraded through the biomes, see [Upgrades through the biomes](#-upgrades-through-the-biomes).
 
 The White Hilt Sword looks and burns like Dyrnwyn - every hit flares up in flames and sets the target briefly alight (+5 fire damage) - but has the Iron Sword's strength.
 
@@ -33,22 +33,9 @@ The White Hilt weapons and shields have their own models with white hilts, grips
 
 ## 🛡️ ARMOR
 
-All armor pieces are indestructible and weightless, a little better than iron: +4 armor per piece, and no slowdown (the iron armor's -5% is taken off; no piece makes you faster). The White Hilt Helmet has the Flametal helmet's look with the Iron Helmet's stats.
+All armor pieces are indestructible and weightless, a little better than iron: +4 armor per piece, and no slowdown (the iron armor's -5% is taken off; no piece makes you faster). The White Hilt Helmet has the Flametal helmet's look with the Iron Helmet's stats. Armor, uniforms included, is upgraded through the biomes like the weapons, see [Upgrades through the biomes](#-upgrades-through-the-biomes).
 
-### Upgrades through the biomes
-
-White Hilt armor, the uniforms included, goes past quality 4: one more level for each biome after the Swamp, paid with that biome's material. A piece stays a little below the best vanilla armor of the biome it is upgraded for, which is the price of being weightless and indestructible. From quality 5 the station level of quality 4 is enough.
-
-| Quality | Biome | Upgrade cost | Helmet, chest, legs | Cape | Best vanilla piece there |
-|---|---|---|---|---|---|
-| 1 | Swamp | the recipe | 18 | 5 | Iron 14 |
-| 2, 3, 4 | Swamp | Iron ×5 each | 20, 22, 24 | 6, 7, 8 | Iron 20 |
-| 5 | Mountain | Silver ×10 | 26 | 10 | Wolf 26 |
-| 6 | Plains | Black Metal ×10 | 30 | 12 | Padded 32 |
-| 7 | Mistlands | Carapace ×10 | 36 | 14 | Carapace 38 |
-| 8 | Ashlands | Flametal ×10 | 42 | 16 | Flametal 44 |
-
-The recipe's own materials are only paid when the piece is crafted. The White Hilt Shield stays at quality 4. The White Hilt Cape gives feather fall, so it needs a Deathsquito trophy from the Plains (and unlocks in the Plains tier in linear mode).
+The White Hilt Cape gives feather fall, so it needs a Deathsquito trophy from the Plains (and unlocks in the Plains tier in linear mode).
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -73,6 +60,34 @@ Two black uniforms with gold trim, the White Hilt badge on the left breast and t
 | **White Hilt Officer's Jerkin** | Black jerkin with gold knotwork and the White Hilt badge | Workbench (Level 2) | Deer Hide ×6, Leather Scraps ×4, Coal ×4, Coins ×20 |
 | **White Hilt Officer's Breeches** | Black breeches with gold trim | Workbench (Level 2) | Deer Hide ×4, Leather Scraps ×4, Coal ×2 |
 | **White Hilt Uniform Cape** | Black cape with a gold edge and the White Hilt on the back | Workbench (Level 2) | Troll Hide ×4, Coal ×4, Coins ×30 |
+
+---
+
+## 📈 UPGRADES THROUGH THE BIOMES
+
+White Hilt weapons, shields and armor (the uniforms included) go past quality 4: one more level for each biome after the Swamp, paid with that biome's material. Every shield upgrade also takes a **Lindorm Scale** (see [Lindorm & giant spiders](monsters.md)). A piece stays a little below the best vanilla gear of the biome it is upgraded for, which is the price of being weightless and indestructible. From quality 5 the station level of quality 4 is enough. The recipe's own materials are only paid when the piece is crafted.
+
+| Quality | Biome | Upgrade cost | Helmet, chest, legs | Cape | Sword (slash) | Shield / Tower Shield (block) |
+|---|---|---|---|---|---|---|
+| 1 | Swamp | the recipe | 18 | 5 | 55 | 42 / 52 |
+| 2, 3, 4 | Swamp | Iron ×5 each | 20, 22, 24 | 6, 7, 8 | 63, 71, 79 | 48, 54, 60 / 58, 64, 70 |
+| 5 | Mountain | Silver ×10 | 26 | 10 | 85 | 68 / 80 |
+| 6 | Plains | Black Metal ×10 | 30 | 12 | 101 | 85 / 101 |
+| 7 | Mistlands | Carapace ×10 | 36 | 14 | 120 | 102 / 122 |
+| 8 | Ashlands | Flametal ×10 | 42 | 16 | 137 | 119 / 143 |
+
+| Biome | Best vanilla armor | Best vanilla sword (quality 4) | Best vanilla shield / tower shield (quality 3) |
+|---|---|---|---|
+| Swamp | Iron 20 | Iron 73 | Banded 54 / Iron Tower 64 |
+| Mountain | Wolf 26 | Silver 93 + 45 spirit | Silver 72 |
+| Plains | Padded 32 | Black Metal 113 | Black Metal 90 / Black Metal Tower 116 |
+| Mistlands | Carapace 38 | Mistwalker 75 + 58 frost | Carapace 108 |
+| Ashlands | Flametal 44 | Nidhogg 153 | Flametal 126 / Flametal Tower 152 |
+
+- **Weapons** gain a share of their base damage at each biome level, on every damage type they deal: 10%, 30%, 35% and 30% (in all 105% at quality 8). The table shows the sword's tooltip; its hits are 10% harder (`DamageMultiplierBonus`). The other weapons follow the same shares, the bow and crossbow included.
+- **Shields** (White Hilt Shield, Tower Shield and Buckler) gain 20%, 40%, 40% and 40% of their base block power.
+- **The three staffs** stay at quality 4: they already have the strength of the Mistlands staffs.
+- **Capes** gain 2 armor at each biome level.
 
 ---
 
@@ -123,6 +138,12 @@ All admin only, synced from the server.
 | `[Gear.Weapons] DamageMultiplierBonus` | 0.1 | Added to the primary attack's damage multiplier of every weapon and shield (0.1 = 10% more damage) |
 | `[Gear.Weapons] BonusDamagePerLevel` | 2 | Added per quality level to each damage type the weapon already deals |
 | `[Gear.Weapons] SwordFireDamage` | 5 | Fire damage of the White Hilt Sword |
+| `[Gear.Weapons] UpgradeSwamp` | Iron:5 | Cost of each weapon upgrade to quality 2, 3 and 4 (`Prefab:Amount`, comma separated) |
+| `[Gear.Weapons] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` | Silver:10 / BlackMetal:10 / Carapace:10 / FlametalNew:10 | Cost of the weapon upgrade to quality 5, 6, 7 and 8. Empty: weapons stop at the level before |
+| `[Gear.Weapons] MountainDamage` / `PlainsDamage` / `MistlandsDamage` / `AshlandsDamage` | 0.1 / 0.3 / 0.35 / 0.3 | Share of the base damage a weapon gains at quality 5, 6, 7 and 8 |
+| `[Gear.Shields] UpgradeSwamp` | Iron:5, WhiteHilt_LindormScale:1 | Cost of each shield upgrade to quality 2, 3 and 4 |
+| `[Gear.Shields] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` | the weapon costs + WhiteHilt_LindormScale:1 | Cost of the shield upgrade to quality 5, 6, 7 and 8. Empty: shields stop at the level before |
+| `[Gear.Shields] MountainBlock` / `PlainsBlock` / `MistlandsBlock` / `AshlandsBlock` | 0.2 / 0.4 / 0.4 / 0.4 | Share of the base block power a shield gains at quality 5, 6, 7 and 8 |
 | `[Gear.Armor] ArmorBonus` | 4 | Armor added to each armor piece |
 | `[Gear.Armor] ArmorPerLevelBonus` | 0 | Added to the armor per quality level up to quality 4 |
 | `[Gear.Armor] MovementBonus` | 0.05 | Taken off the slowdown of each armor piece that has one (0.05 = 5%); never makes a piece faster |

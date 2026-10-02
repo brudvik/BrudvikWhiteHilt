@@ -23,7 +23,7 @@ Every feature has its own page under [docs](https://github.com/brudvik/BrudvikWh
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt Sword" height="120">
 
-Indestructible weapons, shields, armour, tools and ammunition with their own models, the Megingjord upgrade and the Belt Pouch.
+Indestructible weapons, shields, armour, tools and ammunition with their own models that are upgraded biome by biome, the Megingjord upgrade and the Belt Pouch.
 
 ### 🧪 [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 

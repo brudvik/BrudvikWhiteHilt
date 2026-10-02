@@ -136,7 +136,7 @@
     <Compile Include="Items\Ammunition\WhiteHiltAmmunitionBase.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltArrows\WhiteHiltArrows.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltBolts\WhiteHiltBolts.cs" />
-    <Compile Include="Items\Armors\ArmorUpgrades.cs" />
+    <Compile Include="Items\GearUpgrades.cs" />
     <Compile Include="Items\Armors\WhiteHiltArmorBase.cs" />
     <Compile Include="Items\Armors\WhiteHiltCape\WhiteHiltCape.cs" />
     <Compile Include="Items\Armors\WhiteHiltChestplate\WhiteHiltChestplate.cs" />
@@ -461,7 +461,7 @@
     <Compile Include="Patches\Painting\PaintPatches.cs" />
     <Compile Include="Backpack\UtilitySlots.cs" />
     <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
-    <Compile Include="Patches\Armors\ArmorUpgradePatches.cs" />
+    <Compile Include="Patches\Gear\GearUpgradePatches.cs" />
     <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />
     <Compile Include="Patches\Backpack\BackpackInventoryPatches.cs" />
     <Compile Include="Patches\Backpack\BackpackLayoutPatches.cs" />

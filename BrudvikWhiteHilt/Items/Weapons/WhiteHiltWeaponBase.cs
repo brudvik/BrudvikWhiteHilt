@@ -24,6 +24,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     private float baseDamageMultiplier;
     private HitData.DamageTypes baseDamages;
     private HitData.DamageTypes baseDamagesPerLevel;
+    private GearKind? upgradeKind;
 
     /// <summary>
     /// The base name of the weapon.
@@ -130,6 +131,12 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             baseDamages = item.ItemData.m_damages.Clone();
             baseDamagesPerLevel = item.ItemData.m_damagesPerLevel.Clone();
             added = item;
+            upgradeKind = UpgradeKind(item.ItemData);
+            if (upgradeKind.HasValue)
+            {
+                GearUpgrades.Register(BaseName, NameToken, upgradeKind.Value);
+            }
+
             ApplyConfig();
 
             TryApplyModel(item);
@@ -175,6 +182,10 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         perLevel.m_poison += baseDamages.m_poison > 0f ? perLevelBonus : 0f;
         perLevel.m_spirit += baseDamages.m_spirit > 0f ? perLevelBonus : 0f;
         shared.m_damagesPerLevel = perLevel;
+        if (upgradeKind.HasValue)
+        {
+            shared.m_maxQuality = GearUpgrades.MaxQuality(upgradeKind.Value);
+        }
 
         added.ApplyConfig();
     }
@@ -227,6 +238,17 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         target.m_damageMultiplier = source.m_damageMultiplier;
     }
 
+    // The staffs already have the Mistlands staffs' strength, so they stay at quality 4.
+    private static GearKind? UpgradeKind(ItemDrop.ItemData.SharedData shared)
+    {
+        if (shared.m_itemType == ItemDrop.ItemData.ItemType.Shield)
+        {
+            return GearKind.Shield;
+        }
+
+        return shared.m_skillType is Skills.SkillType.ElementalMagic or Skills.SkillType.BloodMagic ? null : GearKind.Weapon;
+    }
+
     private static void BindConfig()
     {
         if (damageMultiplierBonus != null)
@@ -238,6 +260,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             "Added to the primary attack's damage multiplier of every White Hilt weapon and shield (0.1 = 10% more damage).", new AcceptableValueRange<float>(0f, 5f));
         bonusDamagePerLevel = WhiteHiltConfig.BindAdminOnly(Section, "BonusDamagePerLevel", 2f,
             "Added per quality level to each damage type the weapon already deals.", new AcceptableValueRange<float>(0f, 500f));
+        GearUpgrades.BindConfig();
     }
 
     private void TryApplyModel(IndestructibleItem item)

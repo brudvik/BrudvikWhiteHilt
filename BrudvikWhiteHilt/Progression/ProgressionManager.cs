@@ -105,7 +105,7 @@ public static class ProgressionManager
 
             ProgressionTier? tier = ResolveTier(entry, linear);
             recipe.m_enabled = tier.HasValue && tier.Value <= unlockedTier;
-            recipe.m_resources = ArmorUpgrades.Append(recipe.m_item.name,
+            recipe.m_resources = Items.GearUpgrades.Append(recipe.m_item.name,
                 GetRequirements(entry, recipe.m_resources, linear ? tier : null, int.MaxValue));
         }
 

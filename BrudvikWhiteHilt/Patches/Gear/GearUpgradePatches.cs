@@ -1,20 +1,20 @@
-using BrudvikWhiteHilt.Items.Armors;
+using BrudvikWhiteHilt.Items;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace BrudvikWhiteHilt.Patches.Armors;
+namespace BrudvikWhiteHilt.Patches.Gear;
 
 /// <summary>
-/// Lets White Hilt armor be upgraded through the biome levels: their costs per level, their armor and the station
-/// level they need.
+/// Lets White Hilt armor, weapons and shields be upgraded through the biome levels: their costs per level, their
+/// armor, damage and block power, and the station level they need.
 /// </summary>
 [HarmonyPatch]
-public static class ArmorUpgradePatches
+public static class GearUpgradePatches
 {
     /// <summary>
-    /// Gives the requirements of White Hilt armor recipes their cost at the quality crafted or upgraded to.
+    /// Gives the requirements of White Hilt gear recipes their cost at the quality crafted or upgraded to.
     /// </summary>
     /// <param name="__instance">The requirement.</param>
     /// <param name="qualityLevel">The quality.</param>
@@ -24,7 +24,7 @@ public static class ArmorUpgradePatches
     [HarmonyPrefix]
     public static bool GetAmount(Piece.Requirement __instance, int qualityLevel, ref int __result)
     {
-        return !ArmorUpgrades.TryGetAmount(__instance, qualityLevel, out __result);
+        return !GearUpgrades.TryGetAmount(__instance, qualityLevel, out __result);
     }
 
     /// <summary>
@@ -37,11 +37,37 @@ public static class ArmorUpgradePatches
     [HarmonyPostfix]
     public static void GetArmor(ItemDrop.ItemData __instance, int quality, ref float __result)
     {
-        __result += ArmorUpgrades.ArmorCorrection(__instance.m_shared, quality);
+        __result += GearUpgrades.ArmorCorrection(__instance.m_shared, quality);
     }
 
     /// <summary>
-    /// Checks the station level of the biome levels with <see cref="ArmorUpgrades.RequiredStationLevel"/>.
+    /// Gives White Hilt weapons above quality 4 the damage of their biome levels.
+    /// </summary>
+    /// <param name="__instance">The item.</param>
+    /// <param name="quality">The quality.</param>
+    /// <param name="__result">The damage.</param>
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetDamage), new[] { typeof(int), typeof(float) })]
+    [HarmonyPostfix]
+    public static void GetDamage(ItemDrop.ItemData __instance, int quality, ref HitData.DamageTypes __result)
+    {
+        GearUpgrades.CorrectDamage(__instance.m_shared, quality, ref __result);
+    }
+
+    /// <summary>
+    /// Gives White Hilt shields above quality 4 the block power of their biome levels.
+    /// </summary>
+    /// <param name="__instance">The item.</param>
+    /// <param name="quality">The quality.</param>
+    /// <param name="__result">The block power before the Blocking skill.</param>
+    [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetBaseBlockPower), new[] { typeof(int) })]
+    [HarmonyPostfix]
+    public static void GetBaseBlockPower(ItemDrop.ItemData __instance, int quality, ref float __result)
+    {
+        __result += GearUpgrades.BlockCorrection(__instance.m_shared, quality);
+    }
+
+    /// <summary>
+    /// Checks the station level of the biome levels with <see cref="GearUpgrades.RequiredStationLevel"/>.
     /// </summary>
     /// <param name="instructions">The original code.</param>
     /// <returns>The patched code.</returns>
@@ -53,7 +79,7 @@ public static class ArmorUpgradePatches
     }
 
     /// <summary>
-    /// Shows the station level of the biome levels from <see cref="ArmorUpgrades.RequiredStationLevel"/>.
+    /// Shows the station level of the biome levels from <see cref="GearUpgrades.RequiredStationLevel"/>.
     /// </summary>
     /// <param name="instructions">The original code.</param>
     /// <returns>The patched code.</returns>
@@ -68,7 +94,7 @@ public static class ArmorUpgradePatches
     private static IEnumerable<CodeInstruction> ReplaceStationLevel(IEnumerable<CodeInstruction> instructions)
     {
         MethodInfo original = AccessTools.Method(typeof(Recipe), nameof(Recipe.GetRequiredStationLevel));
-        MethodInfo replacement = AccessTools.Method(typeof(ArmorUpgrades), nameof(ArmorUpgrades.RequiredStationLevel));
+        MethodInfo replacement = AccessTools.Method(typeof(GearUpgrades), nameof(GearUpgrades.RequiredStationLevel));
         foreach (CodeInstruction instruction in instructions)
         {
             if (instruction.Calls(original))

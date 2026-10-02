@@ -24,7 +24,7 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     private float baseArmor;
     private float baseArmorPerLevel;
     private float baseMovementModifier;
-    private bool upgradeable;
+    private GearKind? upgradeKind;
 
     /// <summary>
     /// The base name of the armor item.
@@ -140,11 +140,16 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             baseMovementModifier = item.ItemData.m_movementModifier;
             added = item;
             ItemDrop.ItemData.ItemType type = item.ItemData.m_itemType;
-            upgradeable = type is ItemDrop.ItemData.ItemType.Helmet or ItemDrop.ItemData.ItemType.Chest
-                or ItemDrop.ItemData.ItemType.Legs or ItemDrop.ItemData.ItemType.Shoulder;
-            if (upgradeable)
+            upgradeKind = type switch
             {
-                ArmorUpgrades.Register(BaseName, NameToken, type == ItemDrop.ItemData.ItemType.Shoulder);
+                ItemDrop.ItemData.ItemType.Helmet or ItemDrop.ItemData.ItemType.Chest or ItemDrop.ItemData.ItemType.Legs => GearKind.Armor,
+                ItemDrop.ItemData.ItemType.Shoulder => GearKind.Cape,
+                ItemDrop.ItemData.ItemType.Shield => GearKind.Shield,
+                _ => null,
+            };
+            if (upgradeKind.HasValue)
+            {
+                GearUpgrades.Register(BaseName, NameToken, upgradeKind.Value);
             }
 
             ApplyConfig();
@@ -179,9 +184,9 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
         added.ItemData.m_movementModifier = baseMovementModifier < 0f
             ? Mathf.Min(0f, baseMovementModifier + movementBonus.Value)
             : baseMovementModifier;
-        if (upgradeable)
+        if (upgradeKind.HasValue)
         {
-            added.ItemData.m_maxQuality = ArmorUpgrades.MaxQuality;
+            added.ItemData.m_maxQuality = GearUpgrades.MaxQuality(upgradeKind.Value);
         }
 
         added.ApplyConfig();
@@ -239,6 +244,6 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             "Added to the armor gained per quality level of every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 200f));
         movementBonus = WhiteHiltConfig.BindAdminOnly(Section, "MovementBonus", 0.05f,
             "Taken off the movement penalty of every White Hilt armor piece that has one (0.05 = 5%). A piece never gets faster than no armor.", new AcceptableValueRange<float>(-0.5f, 0.5f));
-        ArmorUpgrades.BindConfig();
+        GearUpgrades.BindConfig();
     }
 }
