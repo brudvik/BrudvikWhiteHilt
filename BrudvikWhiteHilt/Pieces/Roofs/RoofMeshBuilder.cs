@@ -275,6 +275,53 @@ public static class RoofMeshBuilder
     }
 
     /// <summary>
+    /// One convex slab per plane of the covering, for convex mesh colliders. Vanilla placement only measures convex
+    /// colliders; with a single concave one it puts the ghost far away.
+    /// </summary>
+    /// <param name="shape">The shape.</param>
+    /// <param name="pitch">The pitch.</param>
+    /// <param name="style">The covering.</param>
+    /// <returns>The slabs.</returns>
+    public static List<Mesh> ColliderSlabs(RoofShape shape, RoofPitch pitch, RoofStyle style)
+    {
+        List<Mesh> slabs = new();
+        foreach (Facet facet in Facets(shape, pitch, style, RoofPart.Main, out _))
+        {
+            List<Vector3> vertices = new();
+            foreach (Vector2 p in facet.Polygon)
+            {
+                vertices.Add(new Vector3(p.x, facet.Height(p), p.y));
+            }
+
+            foreach (Vector2 p in facet.Polygon)
+            {
+                vertices.Add(new Vector3(p.x, facet.Height(p) - style.Thickness, p.y));
+            }
+
+            int n = facet.Polygon.Count;
+            List<int> triangles = new();
+            for (int i = 1; i < n - 1; i++)
+            {
+                triangles.AddRange(new[] { 0, i, i + 1, n, n + i + 1, n + i });
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                int next = (i + 1) % n;
+                triangles.AddRange(new[] { i, n + i, next, next, n + i, n + next });
+            }
+
+            Mesh slab = new() { name = $"roof_{shape}_{Degrees(pitch)}_collider{slabs.Count}".ToLowerInvariant() };
+            slab.SetVertices(vertices);
+            slab.SetTriangles(triangles, 0);
+            slab.RecalculateBounds();
+            slabs.Add(slab);
+        }
+
+        return slabs;
+    }
+
+    /// <summary>
     /// Where the hatch of a smoke hole piece hangs.
     /// </summary>
     /// <param name="pitch">The pitch.</param>

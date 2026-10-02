@@ -146,7 +146,12 @@ public static class RoofCatalog
         visual.transform.SetParent(prefab.transform, false);
         GameObject collider = new("collider") { layer = prefab.layer };
         collider.transform.SetParent(prefab.transform, false);
-        collider.AddComponent<MeshCollider>().sharedMesh = mesh;
+        foreach (Mesh slab in RoofMeshBuilder.ColliderSlabs(shape, pitch, style))
+        {
+            MeshCollider part = collider.AddComponent<MeshCollider>();
+            part.sharedMesh = slab;
+            part.convex = true;
+        }
 
         RoofInfo info = prefab.AddComponent<RoofInfo>();
         info.m_covering = covering;
