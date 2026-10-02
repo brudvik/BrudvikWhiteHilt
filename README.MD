@@ -145,7 +145,7 @@ A great worm that breaks out of the forest floor at night, and poisonous giant s
 
 ### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
-An in-game settings window (cog in the inventory) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
+An in-game settings window (the Settings button in the inventory, or F7) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
 
 ## Compilation
 

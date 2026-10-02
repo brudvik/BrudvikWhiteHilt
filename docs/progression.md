@@ -14,7 +14,7 @@ Open the inventory (Tab) and click **Settings** in the small White Hilt panel in
 
 ## ⚙️ PROGRESSION (CONFIG)
 
-Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`. All settings are admin-only and synced from the server. Every value in the mod's config defaults to the mod's built-in behaviour.
+Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settings window above. The rules below are admin-only and synced from the server; each feature page lists its own settings and says which ones are each player's own. Every value in the mod's config defaults to the mod's built-in behaviour.
 
 | Setting | Values | Description |
 |---------|--------|-------------|
@@ -37,12 +37,14 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb, Dog House, Dog Bed, Dog Bowl, Dog's Grave |
-| Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
-| Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts, Belt Pouch · Fenrir, Skadi, Njord |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb, Dog House, Dog Bed, Dog Bowl, Dog Water Bowl, Dog's Grave, White Hilt banners, Wood beam 4m, Wood pole 4m, Compost Bin, Net Winch, Shore Net, Waste Well |
+| Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier, White Hilt Banner Cape, Paint Bench, Paint Brush, Paint Pot, Repair Anvil · Ratatoskr, Tyr, Brokkr, Freyr, Idunn |
+| Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Valkyrie Stone, Portal Astrolabe, Harbour Anchor, Mooring Post, Munin's Perch, Pathfinder's Ruby Amulet, Stone Dowser, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor and uniforms, Arrows, Bolts, Belt Pouch, the wood iron beams and poles · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
-| Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
+| Plains | Black Metal | Black Metal ×5 | Staff of Lightning, White Hilt Cape · Sleipnir, Hugin, Baldur, Hel |
 | Mistlands | Eitr | Eitr ×3 | Loki, Munin |
 | Ashlands | Flametal | Flametal ×3 | Surt |
+
+The Herb Tray, the Smoke Oven and the dog's gear (whistle, collars, treats and the like) have no tier. The biome upgrades of White Hilt gear are gated by their own materials, see [Upgrades through the biomes](equipment.md#-upgrades-through-the-biomes).
 
 Recipes are hidden, never removed, so switching mode never deletes items you already own.

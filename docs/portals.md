@@ -36,7 +36,7 @@ A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you
 
 ### Portal Astrolabe
 
-A floating armillary around a glowing amethyst. Place it within 5 m of a map table, and every portal in the world shows on everyone's map and minimap with a portal icon and its name. This covers vanilla portals, portals from other mods that build on them, and Portal Stations stations. Point at a portal on the large map to see which runes it has. Public stations show for everyone; private, guild and group stations only for the player who built them, marked as such. The server looks for changes every 10–20 seconds; remove the astrolabe and the portals disappear from the map.
+A floating armillary around a glowing amethyst. Place it near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), and every portal in the world shows on everyone's map and minimap with a portal icon and its name. This covers vanilla portals, portals from other mods that build on them, and Portal Stations stations. Point at a portal on the large map to see which runes it has. Public stations show for everyone; private, guild and group stations only for the player who built them, marked as such. The server looks for changes every 10–20 seconds; remove the astrolabe and the portals disappear from the map.
 
 <img src="images/portal_astrolabe.png" alt="Portal Astrolabe" title="Portal Astrolabe" height="140">
 
@@ -69,7 +69,6 @@ All admin only, synced from the server.
 | Setting | Default | What it does |
 |---|---|---|
 | `[Portals] RunePostRange` | 8 | Metres a rune post may stand from the portal you travel from; 0 turns rune posts off |
-| `[Portals] MapTableExtensionRange` | 5 | Metres a Portal Astrolabe or Harbour Anchor may stand from a map table |
 | `[Portals] ValkyrieStoneCost` | 1 | Surtling Cores per Valkyrie Stone trip; 0 = free |
 | `[Portals] ValkyrieStoneOncePerDeath` | true | Each death point can be travelled to once; off: as often as you like |
 | `[Gear.Runes] Weight` | 1 | Weight of each rune |

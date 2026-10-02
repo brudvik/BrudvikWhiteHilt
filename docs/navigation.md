@@ -4,9 +4,36 @@
 
 ## 🧭 NAVIGATION
 
-A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better. From level 50, map that others have shared with you through a map table is shown just like map you uncovered yourself, without the see-through layer (hiding shared map data brings the layer back). The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used within 5 m of one.
+A new skill, **Exploration**, rises with every patch of map you uncover for the first time. On its own it does nothing; it makes the navigation gear better and opens new things on the way, all listed in the table below. The gear is made at the **Cartographer's Desk**, which works as an extension of the map table and can only be used near one (see [Around the map table](#around-the-map-table)).
 
-From Exploration 25 the **Lookout** (O) opens up the map around you and shows sea monsters and ships; see [Skills & milestones](skills.md). From Exploration 50 you can set a ruby in the Pathfinder's Amulet, which leads you to a target you set on the map; see [below](#-pathfinders-ruby-amulet-a-target-on-the-map).
+### What Exploration gives
+
+| Level | What it gives | Setting |
+|-------|---------------|---------|
+| 0–100 | The Navigator's Table uncovers 140 m to 300 m around the ship, the Pathfinder's Amulet 120 m to 200 m (vanilla 100 m) | `[Navigation] TableBonus`, `AmuletBonus`, `BonusAtLevelZero` |
+| 0–100 | One map scroll on the Cartographer's Desk per 10 levels, one gem in the Pathfinder's Amulet per 20 | – |
+| 0–100 | The weather forecast (below) sees 1 to 4 periods ahead | `[Navigation.Forecast] PeriodsAtLevelZero`, `PeriodsAtLevel100` |
+| 20 | [Munin's Perch](#-munins-perch-discoveries-on-the-map) markers on the large map | `[Map.Discoveries] LargeMapLevel` |
+| 25 | **Lookout** (O): the map opens up 200 m around you (400 m at level 100), and serpents, the Kraken and other ships within reach show on the map for a minute. Once every 5 minutes | `[Skills.Exploration] LookoutLevel` |
+| 25 | The [Uncovered](#-exploration-overview) panel on the large map | `[Map.Overview] Level` |
+| 30 | Route markers at the Navigator's Table | `[Ships] RouteMarkersLevel` |
+| 50 | Map that others have shared with you through a map table is shown like your own, without the see-through layer (hiding shared map data brings the layer back) | `[Navigation] SharedMapRevealLevel` |
+| 50 | "Take me there" and explorer mode at the Navigator's Table | `[Ships] RouteSailLevel`, `RouteExploreLevel` |
+| 50 | The [Pathfinder's Ruby Amulet](#-pathfinders-ruby-amulet-a-target-on-the-map) | `[Skills.Exploration] RubyPathfinderLevel` |
+| 50 | Munin's Perch markers on the minimap | `[Map.Discoveries] MinimapLevel` |
+
+### Around the map table
+
+Four pieces work only while they stand near a map table, within `[Navigation] MapTableRange` (5 m):
+
+| Piece | What it does | Page |
+|-------|--------------|------|
+| **Cartographer's Desk** | Crafting station for the navigation gear | [below](#-navigation) |
+| **Portal Astrolabe** | Every portal shows on everyone's map | [Portals & travel](portals.md#portal-astrolabe) |
+| **Harbour Anchor** | Every ship shows on everyone's map | [Ships](ships.md) |
+| **Munin's Perch** | What is found on the table's map shows on everyone's map | [below](#-munins-perch-discoveries-on-the-map) |
+
+Near a map table you also get the weather forecast (below).
 
 <img src="images/cartographers_desk.png" alt="Cartographer's Desk" title="Cartographer's Desk" height="140"> <img src="images/navigators_table.png" alt="Navigator's Table" title="Navigator's Table" height="140"> <img src="images/pathfinders_amulet.png" alt="Pathfinder's Amulet" title="Pathfinder's Amulet" height="140"> <img src="images/pathfinders_ruby_amulet.png" alt="Pathfinder's Ruby Amulet" title="Pathfinder's Ruby Amulet" height="140">
 

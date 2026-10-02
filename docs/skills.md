@@ -4,7 +4,7 @@
 
 ## 📖 SKILLS & MILESTONES
 
-Gathering, cooking, farming, fishing, blocking, animal husbandry and exploration get **milestones** at levels 25, 50, 75 and 100, and some numbers that grow with every level. There is one new skill, **Foraging**. Open the skills dialog and hover over a skill: its tooltip shows what it gives at your level and all its milestones, the reached ones in green. Potions that raise your skills, such as the Gift of Brokkr, count too.
+Gathering (foraging, woodcutting and mining), cooking, farming, fishing and blocking get **milestones** at levels 25, 50, 75 and 100, animal husbandry at 50 and 75, and some numbers that grow with every level. There is one new skill, **Foraging**. Exploration, the other new skill, is on the [Navigation](navigation.md#what-exploration-gives) page. Open the skills dialog and hover over a skill: its tooltip shows what it gives at your level and all its milestones, the reached ones in green. Potions that raise your skills, such as the Gift of Brokkr, count too.
 
 ### ⭐ Stars
 
@@ -114,10 +114,7 @@ The skill already speeds up taming and breeding ([Animal husbandry](husbandry.md
 
 ### 🧭 Exploration
 
-| Level | Milestone | What it does |
-|-------|-----------|--------------|
-| 25 | Lookout | Press **O**: the map opens up 200 m around you (400 m at level 100), and serpents, the Kraken and other ships within reach show on the map for a minute. Once every 5 minutes |
-| 50 | Ruby Pathfinder | The [Pathfinder's Ruby Amulet](navigation.md#-pathfinders-ruby-amulet-a-target-on-the-map) can be made: Shift + click the large map to set a target, and an arrow leads you there |
+The Lookout (level 25) and the Pathfinder's Ruby Amulet (level 50) are milestones in the skills dialog. Everything the skill gives, from level 0 to 100, is in one table on the [Navigation](navigation.md#what-exploration-gives) page.
 
 ### 💀 Skill loss on death
 

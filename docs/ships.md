@@ -44,7 +44,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 - **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard gets *Man overboard: Kjell!*, the ship's bell, a pin on the map and an arrow on the minimap's edge pointing to you. You get a pin and an arrow toward the ship. A ship that sails its route or holds its course stops; a ship someone steers is left to them. It ends when you are out of the water, die, or after 5 minutes.
 - **Lifeline**: standing on the deck of that ship within 25 m of the one in the water, press **E** (*Throw a lifeline to Kjell* under the crosshair). A moment later they are pulled aboard next to you.
 
-**Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
+**Harbour Anchor:** a standing iron anchor built next to a map table. While one stands near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
 <img src="images/harbour_anchor.png" alt="Harbour Anchor" title="Harbour Anchor" height="140">
 
@@ -85,6 +85,8 @@ Section `[Ships]` (admin only, synced from the server):
 | `ShipRoutes` | true | Route markers can be set at the Navigator's Table; saved markers stay when off |
 | `RouteAutopilot` | true | "Take me there" can sail the route |
 | `RouteMaxMarkers` | 5 | Most markers on a route |
+| `RouteMarkersLevel` | 30 | Exploration level needed to set route markers |
+| `RouteSailLevel` | 50 | Exploration level needed for "Take me there" |
 | `RouteMaxSpeed` | 45 | Above this speed in knots, "Take me there" takes the sail down to half until the ship is well below it; 0 never |
 | `RouteSitSeconds` | 30 | Seconds the player who chose "Take me there" has to sit down before the route is called off |
 | `RouteExploreLevel` | 50 | Exploration level needed for explorer mode |
