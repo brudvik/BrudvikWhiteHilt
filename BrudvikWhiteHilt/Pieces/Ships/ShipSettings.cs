@@ -199,6 +199,9 @@ public static class ShipSettings
     /// <summary>Seconds from throwing the lifeline until the player is aboard.</summary>
     public static ConfigEntry<float> LifelineDelay { get; private set; }
 
+    /// <summary>Metres from a Mooring Post within which a ship can be moored.</summary>
+    public static ConfigEntry<float> MooringRange { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -338,6 +341,8 @@ public static class ShipSettings
             "Metres a lifeline reaches.", new AcceptableValueRange<float>(5f, 100f));
         LifelineDelay = WhiteHiltConfig.BindAdminOnly(Section, "LifelineDelay", 1.5f,
             "Seconds from throwing the lifeline until the one in the water is pulled aboard.", new AcceptableValueRange<float>(0f, 10f));
+        MooringRange = WhiteHiltConfig.BindAdminOnly(Section, "MooringRange", 20f,
+            "Metres from a Mooring Post within which a ship can be moored to it.", new AcceptableValueRange<float>(5f, 60f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");

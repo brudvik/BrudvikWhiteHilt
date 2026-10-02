@@ -18,6 +18,7 @@ public static class ShipAssistPatches
     public static void ShipAwake(Ship __instance)
     {
         ShipAssist.Attach(__instance);
+        ShipMooring.Attach(__instance);
     }
 
     /// <summary>

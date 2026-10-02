@@ -52,6 +52,14 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 |------|-----|------------------|--------------|
 | **Harbour Anchor** | Shows every ship on the map | Hammer (Workbench) | Iron ×2, Chain ×2, Fine Wood ×4 |
 
+**Mooring Post:** a thick post with a coil of rope, for the dock, the shore or shallow water. Use it to moor the nearest ship within 20 m that is not moored yet (`MooringRange`): a rope runs from the post to the ship's nearest end, and the ship lies still where it is, rocking on the waves, also in a storm. It works on every ship: rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods. While it is moored, the helm will not set sail or row; use the post again to cast off. One ship per post. The mooring is kept on the ship, so it holds after you log out, and a ship whose post is torn down is let go.
+
+<img src="images/mooring_post.png" alt="Mooring Post" title="Mooring Post" height="140">
+
+| Item | Use | Crafting Station | Requirements |
+|------|-----|------------------|--------------|
+| **Mooring Post** | Moors the nearest ship | Hammer (Workbench) | Fine Wood ×4, Iron ×1, Leather Scraps ×4 |
+
 ## Config
 
 Section `[Ships]` (admin only, synced from the server):
@@ -92,6 +100,7 @@ Section `[Ships]` (admin only, synced from the server):
 | `Lifeline` | true | A lifeline can be thrown from the deck |
 | `LifelineRange` | 25 | Metres a lifeline reaches |
 | `LifelineDelay` | 1.5 | Seconds until the one in the water is aboard |
+| `MooringRange` | 20 | Metres from a Mooring Post within which a ship can be moored |
 
 Each player's own settings in `[Ships]`:
 

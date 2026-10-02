@@ -4,7 +4,8 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Ships;
 
 /// <summary>
-/// Keeps the sail furled and the oars still while a White Hilt Ship lies at anchor, and tells the helmsman why.
+/// Keeps the sail furled and the oars still while a White Hilt Ship lies at anchor or any ship is moored, and tells the
+/// helmsman why.
 /// </summary>
 [HarmonyPatch]
 public static class ShipAnchorPatch
@@ -28,6 +29,30 @@ public static class ShipAnchorPatch
         if (Player.m_localPlayer != null)
         {
             Player.m_localPlayer.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ship_anchor_down");
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Stops the helmsman from setting sail or rowing while any ship is moored to a Mooring Post.
+    /// </summary>
+    /// <param name="__instance">The ship.</param>
+    /// <returns>False to skip the vanilla speed change.</returns>
+    [HarmonyPatch(typeof(Ship), nameof(Ship.Forward))]
+    [HarmonyPatch(typeof(Ship), nameof(Ship.Backward))]
+    [HarmonyPrefix]
+    private static bool BlockWhileMoored(Ship __instance)
+    {
+        Pieces.Ships.ShipMooring mooring = __instance.GetComponent<Pieces.Ships.ShipMooring>();
+        if (mooring == null || !mooring.IsMoored)
+        {
+            return true;
+        }
+
+        if (Player.m_localPlayer != null)
+        {
+            Player.m_localPlayer.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ship_moored");
         }
 
         return false;

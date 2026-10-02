@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.46.0 - 2026-10-02
+
+### Added
+- **Mooring Post** (Hammer, Workbench: Fine Wood ×4, Iron ×1, Leather Scraps ×4): a thick post with a coil of rope. Use it to moor the nearest ship within 20 m; a rope runs to the ship, which lies still where it is (rocking on the waves) and cannot sail until it is cast off at the post. Works on every ship, one ship per post, and holds after logging out. New setting `Ships` → `MooringRange`. See [Ships](docs/ships.md)
+
 ## v0.45.0 - 2026-10-02
 
 ### Added

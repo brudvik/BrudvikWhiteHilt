@@ -507,6 +507,28 @@ def gem_tint(gem):
     return {"tint": [1.0, 0.08, 0.1]} if gem == "gem_ruby" else {}
 
 
+def mooring_post():
+    """A mooring post: a thick log 1.5 m above the ground with a cross peg near the top and a coil of rope round it.
+
+    The rope to the ship leaves from the top of the coil, MOORING_ROPE_Y up (the mod uses the same height).
+    """
+    parts = [post(0, 0, -0.3, 1.5, 0.16), log((-0.32, 1.25, 0), (0.32, 1.25, 0), 0.05)]
+    turns, segments, radius = 3, 28, 0.19
+    for turn in range(turns):
+        y = MOORING_ROPE_Y - 0.12 + turn * 0.06
+        for i in range(segments):
+            # Each piece reaches a little into the next, so the coil reads as one rope.
+            a0 = 2 * math.pi * (i - 0.25) / segments + turn * 0.3
+            a1 = 2 * math.pi * (i + 1.25) / segments + turn * 0.3
+            parts.append(log((math.sin(a0) * radius, y, math.cos(a0) * radius), (math.sin(a1) * radius, y, math.cos(a1) * radius),
+                             0.028, tint=[0.8, 0.66, 0.45]))
+    colliders = [box((0, 0.6, 0), (0.4, 1.8, 0.4))]
+    return parts, colliders
+
+
+MOORING_ROPE_Y = 1.0
+
+
 def navigation_pieces():
     table_parts, table_colliders, table_groups = chart_table()
     desk_parts, desk_colliders, desk_groups = carto_desk()
@@ -524,6 +546,7 @@ def navigation_pieces():
         {"name": "stifinner_rubin", "parts": ruby_parts, "groups": ruby_groups},
         {"name": "stifinner_rubin_visning", "parts": [piece("stifinner_rubin", (0, 0.3, 0))],
          "views": views(("front", 180, 5), ("side", 120, 10), ("angle", -150, 30))},
+        defence("fortoyningspale", "wood_pole2", *mooring_post(), [], views=views(("front", 180, 15), ("side", 90, 15), ("top", -30, 60))),
     ]
     for ship, (position, rotation) in SHIP_MOUNTS.items():
         focus = [position[0], position[1] + 0.6, position[2]]
