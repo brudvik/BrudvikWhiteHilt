@@ -7,6 +7,7 @@ using BrudvikWhiteHilt.Chests.Utils;
 using BrudvikWhiteHilt.Difficulty.Beasts;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
@@ -47,6 +48,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
     {
         // Guards against modded recipes with extreme amounts filling a chest with one item.
         private const int MaxStacksPerItem = 10;
+        private const char LevelSeparator = '@';
 
         private readonly ChestSettings settings;
         private readonly ItemCatalog catalog;
@@ -88,7 +90,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             if (mode == ChestMode.Full) return true;
             if (item.m_dropPrefab == null) return false;
 
-            return IsSupplied(mode, category, item.m_dropPrefab.name, item.m_shared);
+            return IsSupplied(mode, category, GetLevelKey(item), item.m_shared);
         }
 
         /// <summary>
@@ -103,14 +105,69 @@ namespace BrudvikWhiteHilt.Chests.Helpers
 
         /// <summary>
         /// Checks whether a stack is an ordinary copy of its item, like the chest adds itself. Stacks with skill stars
-        /// (a quality above 1) or their own data, such as a dog's name, always belong to the player who stored them.
+        /// (a quality above 1 on an item without levels) or their own data, such as a dog's name, always belong to the
+        /// player who stored them.
         /// </summary>
         /// <param name="item">The stack.</param>
         /// <returns>True if the stack can be replaced by the chest's own stack.</returns>
         public static bool IsPlain(ItemDrop.ItemData item)
         {
-            return item.m_quality <= 1 && (item.m_customData == null || item.m_customData.Count == 0)
+            return (item.m_quality <= 1 || HasLevels(item.m_shared)) && (item.m_customData == null || item.m_customData.Count == 0)
                 && (item.m_dropPrefab == null || !IsEarnedOnly(item.m_dropPrefab.name));
+        }
+
+        /// <summary>
+        /// Checks whether the quality of a stackable item is a level of its own, like a fish's, so every level is
+        /// unlocked and supplied on its own.
+        /// </summary>
+        /// <param name="shared">The item's shared data.</param>
+        /// <returns>True if the item comes in levels.</returns>
+        public static bool HasLevels(ItemDrop.ItemData.SharedData shared)
+        {
+            return shared.m_maxQuality > 1 && IsStackable(shared);
+        }
+
+        /// <summary>
+        /// Gets the key a level of an item is unlocked and counted under: the prefab name for level 1, so older
+        /// records stay valid, and <c>name@level</c> above it.
+        /// </summary>
+        /// <param name="prefabName">The item prefab name.</param>
+        /// <param name="quality">The item level.</param>
+        /// <returns>The key.</returns>
+        public static string GetLevelKey(string prefabName, int quality)
+        {
+            return quality <= 1 ? prefabName : prefabName + LevelSeparator + quality.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Gets the key a stack is unlocked and counted under. Only items with levels get one per level; stars on
+        /// other items count towards the item itself.
+        /// </summary>
+        /// <param name="item">The stack; it must have a drop prefab.</param>
+        /// <returns>The key.</returns>
+        public static string GetLevelKey(ItemDrop.ItemData item)
+        {
+            var name = item.m_dropPrefab.name;
+            return HasLevels(item.m_shared) ? GetLevelKey(name, item.m_quality) : name;
+        }
+
+        /// <summary>
+        /// Splits a key from <see cref="GetLevelKey(string, int)"/> into the prefab name and the level.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="quality">The item level, 1 for a plain prefab name.</param>
+        /// <returns>The item prefab name.</returns>
+        public static string SplitLevelKey(string key, out int quality)
+        {
+            quality = 1;
+            var at = key.LastIndexOf(LevelSeparator);
+            if (at <= 0 || !int.TryParse(key.Substring(at + 1), NumberStyles.None, CultureInfo.InvariantCulture, out var level) || level <= 1)
+            {
+                return key;
+            }
+
+            quality = level;
+            return key.Substring(0, at);
         }
 
         /// <summary>
@@ -172,22 +229,23 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             if (!IsReady || item.m_dropPrefab == null || !IsStackable(item.m_shared)) return false;
             if (!IsSupplied(Mode, category, item)) return false;
 
-            var name = item.m_dropPrefab.name;
+            var key = GetLevelKey(item);
             var present = false;
             foreach (var stored in inventory.GetAllItems())
             {
                 // Moving a stack within the chest must never delete it.
                 if (stored == item) return false;
-                if (stored.m_dropPrefab != null && stored.m_dropPrefab.name == name && IsPlain(stored)) present = true;
+                if (stored.m_dropPrefab != null && IsPlain(stored) && GetLevelKey(stored) == key) present = true;
             }
             return present;
         }
 
         /// <summary>
-        /// Gets the items a chest of the given category is filled with when they are missing.
+        /// Gets the items a chest of the given category is filled with when they are missing. In Linear mode every
+        /// unlocked level of an item with levels is added too.
         /// </summary>
         /// <param name="category">The chest category.</param>
-        /// <returns>The item prefab names.</returns>
+        /// <returns>The keys from <see cref="GetLevelKey(string, int)"/>.</returns>
         public IEnumerable<string> GetItemsToAdd(ChestCategory category)
         {
             var mode = Mode;
@@ -200,7 +258,15 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 }
 
                 var shared = catalog.GetShared(name);
-                if (shared != null && IsSupplied(mode, category, name, shared)) yield return name;
+                if (shared == null) continue;
+                if (IsSupplied(mode, category, name, shared)) yield return name;
+                if (mode != ChestMode.Linear || !HasLevels(shared)) continue;
+
+                for (var quality = 2; quality <= shared.m_maxQuality; quality++)
+                {
+                    var key = GetLevelKey(name, quality);
+                    if (IsSupplied(mode, category, key, shared)) yield return key;
+                }
             }
         }
 
@@ -230,7 +296,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// </summary>
         /// <param name="category">The chest's category; <see cref="ChestCategory.None"/> accepts any item.</param>
         /// <param name="item">The stack in the chest.</param>
-        /// <param name="stored">The total amount of this item in the chest.</param>
+        /// <param name="stored">The total amount of this item, at this level, in the chest.</param>
         /// <returns>The status text.</returns>
         public string GetStatus(ChestCategory category, ItemDrop.ItemData item, int stored)
         {
@@ -242,6 +308,9 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             if (!BelongsIn(category, name)) return Texts.Get("bsc_status_wrong_chest");
             if (!IsStackable(item.m_shared)) return Texts.Get("bsc_status_not_stackable");
             if (mode == ChestMode.Discovered) return Texts.Get("bsc_status_discover");
+
+            // Unlocked already, but this stack has stars or its own data.
+            if (!CanUnlock(category, GetLevelKey(item), item.m_shared)) return Texts.Get("bsc_status_stored");
 
             var missing = Math.Max(0, GetUnlockAmount(item.m_shared) - stored);
             return Texts.Get("bsc_status_store_more", missing);
@@ -259,43 +328,48 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             var result = new List<UnlockProgress>();
             if (Mode != ChestMode.Linear) return result;
 
-            var totals = inventory.CountByPrefab();
+            var totals = inventory.CountByLevelKey();
             foreach (var item in inventory.GetAllItems())
             {
-                if (item.m_dropPrefab == null || !totals.TryGetValue(item.m_dropPrefab.name, out var stored)) continue;
+                if (item.m_dropPrefab == null) continue;
 
                 // Several stacks of one item share one entry.
-                totals.Remove(item.m_dropPrefab.name);
-                if (!CanUnlock(category, item.m_dropPrefab.name, item.m_shared)) continue;
+                var key = GetLevelKey(item);
+                if (!totals.TryGetValue(key, out var stored)) continue;
 
-                result.Add(new UnlockProgress(Localization.instance.Localize(item.m_shared.m_name), stored, GetUnlockAmount(item.m_shared)));
+                totals.Remove(key);
+                if (!CanUnlock(category, key, item.m_shared)) continue;
+
+                result.Add(new UnlockProgress(GetDisplayName(key), stored, GetUnlockAmount(item.m_shared)));
             }
 
             return result.OrderByDescending(progress => (float)progress.Stored / progress.Required).Take(count).ToList();
         }
 
         /// <summary>
-        /// Gets the localized display name of an item.
+        /// Gets the localized display name of an item, with its level when it is above 1.
         /// </summary>
-        /// <param name="prefabName">The item prefab name.</param>
+        /// <param name="key">The item prefab name, or a key from <see cref="GetLevelKey(string, int)"/>.</param>
         /// <returns>The display name, or the prefab name if the item is unknown.</returns>
-        public string GetDisplayName(string prefabName)
+        public string GetDisplayName(string key)
         {
+            var prefabName = SplitLevelKey(key, out var quality);
             var shared = catalog.GetShared(prefabName) ??
                          ObjectDB.instance?.GetItemPrefab(prefabName)?.GetComponent<ItemDrop>()?.m_itemData.m_shared;
-            return shared == null ? prefabName : Localization.instance.Localize(shared.m_name);
+            var name = shared == null ? prefabName : Localization.instance.Localize(shared.m_name);
+            return quality > 1 ? Texts.Get("bsc_item_level", name, quality) : name;
         }
 
         /// <summary>
         /// Checks whether storing enough of this item in a chest of the given category unlocks it in Linear mode.
         /// </summary>
         /// <param name="category">The chest category; <see cref="ChestCategory.None"/> accepts any item.</param>
-        /// <param name="prefabName">The item prefab name.</param>
+        /// <param name="key">The item prefab name, or a key from <see cref="GetLevelKey(string, int)"/> for a level.</param>
         /// <param name="shared">The item's shared data.</param>
         /// <returns>True if the item can still be unlocked from this chest.</returns>
-        public bool CanUnlock(ChestCategory category, string prefabName, ItemDrop.ItemData.SharedData shared)
+        public bool CanUnlock(ChestCategory category, string key, ItemDrop.ItemData.SharedData shared)
         {
-            return IsStackable(shared) && BelongsIn(category, prefabName) && !progress.IsUnlocked(prefabName);
+            return IsStackable(shared) && BelongsIn(category, SplitLevelKey(key, out _)) && !progress.IsUnlocked(key);
         }
 
         /// <summary>
@@ -309,12 +383,12 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         }
 
         /// <summary>
-        /// Unlocks an item for the whole world.
+        /// Unlocks an item, or one level of it, for the whole world.
         /// </summary>
-        /// <param name="prefabName">The item prefab name.</param>
-        public void Unlock(string prefabName)
+        /// <param name="key">The item prefab name, or a key from <see cref="GetLevelKey(string, int)"/> for a level.</param>
+        public void Unlock(string key)
         {
-            progress.Unlock(prefabName);
+            progress.Unlock(key);
         }
 
         /// <summary>
@@ -334,7 +408,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// </summary>
         /// <param name="category">The chest's category; <see cref="ChestCategory.None"/> accepts any item.</param>
         /// <param name="inventory">The chest's inventory.</param>
-        /// <returns>The stored amount per item prefab name.</returns>
+        /// <returns>The stored amount per key from <see cref="GetLevelKey(ItemDrop.ItemData)"/>.</returns>
         public Dictionary<string, int> GetUnlockableAmounts(ChestCategory category, Inventory inventory)
         {
             var result = new Dictionary<string, int>();
@@ -342,11 +416,11 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             {
                 if (item.m_dropPrefab == null) continue;
 
-                var name = item.m_dropPrefab.name;
-                if (!result.ContainsKey(name) && !CanUnlock(category, name, item.m_shared)) continue;
+                var key = GetLevelKey(item);
+                if (!result.ContainsKey(key) && !CanUnlock(category, key, item.m_shared)) continue;
 
-                result.TryGetValue(name, out var amount);
-                result[name] = amount + item.m_stack;
+                result.TryGetValue(key, out var amount);
+                result[key] = amount + item.m_stack;
             }
             return result;
         }
@@ -358,12 +432,12 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if more than one of the item fits in a slot.</returns>
         public static bool IsStackable(ItemDrop.ItemData.SharedData shared) => shared.m_maxStackSize > 1;
 
-        private bool IsSupplied(ChestMode mode, ChestCategory category, string prefabName, ItemDrop.ItemData.SharedData shared)
+        private bool IsSupplied(ChestMode mode, ChestCategory category, string key, ItemDrop.ItemData.SharedData shared)
         {
             if (mode == ChestMode.Full) return true;
-            if (!IsStackable(shared) || !BelongsIn(category, prefabName)) return false;
+            if (!IsStackable(shared) || !BelongsIn(category, SplitLevelKey(key, out _))) return false;
 
-            return mode == ChestMode.Linear ? progress.IsUnlocked(prefabName) : progress.IsDiscovered(shared.m_name);
+            return mode == ChestMode.Linear ? progress.IsUnlocked(key) : progress.IsDiscovered(shared.m_name);
         }
 
         private bool BelongsIn(ChestCategory category, string prefabName)

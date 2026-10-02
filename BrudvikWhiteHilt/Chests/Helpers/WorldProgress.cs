@@ -60,7 +60,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public bool IsReady => EnsureSession() && hasFullRecord;
 
         /// <summary>
-        /// Raised with the item prefab name when another player in the world unlocks an item.
+        /// Raised with the item prefab name, or <c>name@level</c> for a level above 1, when another player in the world
+        /// unlocks an item.
         /// </summary>
         public event Action<string>? ItemUnlocked;
 
@@ -445,7 +446,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
 
         private static bool IsKnownItem(string name)
         {
-            return IsValidName(name) && (ObjectDB.instance == null || ObjectDB.instance.GetItemPrefab(name) != null);
+            return IsValidName(name) && (ObjectDB.instance == null || ObjectDB.instance.GetItemPrefab(ChestSupply.SplitLevelKey(name, out _)) != null);
         }
 
         private static bool SameAmounts(Dictionary<string, int> left, Dictionary<string, int> right)

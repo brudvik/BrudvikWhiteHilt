@@ -29,6 +29,7 @@
   "bsc_chest_empty_desc": "An empty chest, add items to make them last forever",
 
   "bsc_msg_unlimited": "{0} is now unlimited",
+  "bsc_item_level": "{0} (level {1})",
   "bsc_unlimited_count": "{0} unlimited",
   "bsc_hover_normal": "Stores items like a normal chest",
   "bsc_hover_empty": "Empty",

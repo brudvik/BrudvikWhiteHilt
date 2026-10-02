@@ -29,6 +29,7 @@
   "bsc_chest_empty_desc": "En tom kiste. Legg i ting for å gjøre dem evigvarende",
 
   "bsc_msg_unlimited": "{0} er nå ubegrenset",
+  "bsc_item_level": "{0} (nivå {1})",
   "bsc_unlimited_count": "{0} ubegrenset",
   "bsc_hover_normal": "Lagrer ting som en vanlig kiste",
   "bsc_hover_empty": "Tom",

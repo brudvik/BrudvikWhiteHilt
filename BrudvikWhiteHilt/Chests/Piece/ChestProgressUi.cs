@@ -66,10 +66,12 @@ namespace BrudvikWhiteHilt.Chests.Piece
                     continue;
                 }
 
-                if (cargo || mode != ChestMode.Linear || item.m_dropPrefab == null ||
-                    !supply.CanUnlock(category, item.m_dropPrefab.name, item.m_shared)) continue;
+                if (cargo || mode != ChestMode.Linear || item.m_dropPrefab == null) continue;
 
-                stored.TryGetValue(item.m_dropPrefab.name, out var amount);
+                var key = ChestSupply.GetLevelKey(item);
+                if (!supply.CanUnlock(category, key, item.m_shared)) continue;
+
+                stored.TryGetValue(key, out var amount);
                 element.m_durability.gameObject.SetActive(true);
                 element.m_durability.SetValue(Mathf.Clamp01((float)amount / supply.GetUnlockAmount(item.m_shared)));
                 element.m_durability.SetColor(ProgressBarColor);
@@ -85,7 +87,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (cargo && !supply.IsCargoSupplied(e.Item)) return;
 
             var amount = 0;
-            if (e.Item.m_dropPrefab != null) GetTotals(e.Grid.m_inventory).TryGetValue(e.Item.m_dropPrefab.name, out amount);
+            if (e.Item.m_dropPrefab != null) GetTotals(e.Grid.m_inventory).TryGetValue(ChestSupply.GetLevelKey(e.Item), out amount);
 
             var status = supply.GetStatus(category, e.Item, amount);
             e.Tooltip.Set(e.Tooltip.m_topic, $"{e.Tooltip.m_text}\n\n<color={Gold}>{status}</color>", e.Grid.m_tooltipAnchor, Vector2.zero);
@@ -172,7 +174,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
         {
             if (totalsFrame != Time.frameCount || totalsInventory != inventory)
             {
-                totals = inventory.CountByPrefab();
+                totals = inventory.CountByLevelKey();
                 totalsFrame = Time.frameCount;
                 totalsInventory = inventory;
             }

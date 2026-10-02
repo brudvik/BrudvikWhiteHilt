@@ -191,11 +191,11 @@ namespace BrudvikWhiteHilt.Chests
         /// Tells every player when someone else in the world makes an item unlimited. The player who did it already
         /// got a message in the middle of the screen.
         /// </summary>
-        private void HandleItemUnlockedByOthers(string prefabName)
+        private void HandleItemUnlockedByOthers(string key)
         {
             if (Player.m_localPlayer == null) return;
 
-            Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Texts.Get("bsc_msg_unlimited", chestSupply.GetDisplayName(prefabName)));
+            Player.m_localPlayer.Message(MessageHud.MessageType.TopLeft, Texts.Get("bsc_msg_unlimited", chestSupply.GetDisplayName(key)));
         }
 
         /// <summary>

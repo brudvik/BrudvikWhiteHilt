@@ -78,6 +78,7 @@ In Linear and Discovered:
 
 - Unlocked and discovered items are shared by everyone in the world and saved by the server in `BepInEx/config/BrudvikStackedChest/`.
 - Items that do not stack, like weapons and armor, are never duplicated; those chests work as normal chests.
+- Items that come in levels, like fish, count each level on its own in Linear mode: a full stack of level 2 Perch unlocks level 2 Perch, and from then on every chest of that type also keeps a stack of it. In Full and Discovered mode every level of such an item is unlimited once it is stored.
 - The Everlasting Chest makes any stackable item unlimited once it holds a full stack (Linear) or once it is discovered (Discovered).
 
 Switching to a less generous mode removes the unlimited items the new mode no longer supplies, for example everything that is not unlocked when going from Full to Linear.

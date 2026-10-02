@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.54.1 - 2026-10-02
+
+### Fixed
+- **Chests (Linear)**: fish of level 2 and up can be made unlimited. Each level is unlocked on its own by storing a full stack of it, and the chests then keep a stack of that level too. Before, a fish level above 1 could never be unlocked once level 1 was, and its tooltip kept asking for "0 more". Level 1 progress now only counts level 1 fish. In Full and Discovered mode every level of a fish is unlimited once stored, like other ordinary items
+
 ## v0.54.0 - 2026-10-02
 
 ### Changed

@@ -149,10 +149,10 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             {
                 if (item.m_dropPrefab == null) continue;
 
-                var name = item.m_dropPrefab.name;
-                totals.TryGetValue(name, out var total);
-                totals[name] = total + item.m_stack;
-                shared[name] = item.m_shared;
+                var key = ChestSupply.GetLevelKey(item);
+                totals.TryGetValue(key, out var total);
+                totals[key] = total + item.m_stack;
+                shared[key] = item.m_shared;
             }
 
             foreach (var pair in totals)
@@ -165,7 +165,7 @@ namespace BrudvikWhiteHilt.Chests.Extensions
                 if (Player.m_localPlayer != null)
                 {
                     Player.m_localPlayer.Message(MessageHud.MessageType.Center,
-                        Texts.Get("bsc_msg_unlimited", Texts.Localize(itemShared.m_name)));
+                        Texts.Get("bsc_msg_unlimited", supply.GetDisplayName(pair.Key)));
                 }
             }
         }
@@ -189,15 +189,15 @@ namespace BrudvikWhiteHilt.Chests.Extensions
 
                 if (item.m_dropPrefab != null && supply.IsSupplied(mode, category, item))
                 {
-                    var name = item.m_dropPrefab.name;
-                    kept.TryGetValue(name, out var count);
-                    if (count >= supply.GetStackCount(name, item.m_shared))
+                    var levelKey = ChestSupply.GetLevelKey(item);
+                    kept.TryGetValue(levelKey, out var count);
+                    if (count >= supply.GetStackCount(item.m_dropPrefab.name, item.m_shared))
                     {
                         changed |= inventory.RemoveItem(item);
                         continue;
                     }
 
-                    kept[name] = count + 1;
+                    kept[levelKey] = count + 1;
                     if (item.m_stack < maxStack)
                     {
                         item.m_stack = maxStack;
@@ -239,22 +239,24 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             {
                 if (item.m_dropPrefab == null || !ChestSupply.IsPlain(item)) continue;
 
-                present.TryGetValue(item.m_dropPrefab.name, out var count);
-                present[item.m_dropPrefab.name] = count + 1;
+                var key = ChestSupply.GetLevelKey(item);
+                present.TryGetValue(key, out var count);
+                present[key] = count + 1;
             }
 
             var missing = new List<ItemDrop.ItemData>();
-            foreach (var prefabName in supply.GetItemsToAdd(category))
+            foreach (var key in supply.GetItemsToAdd(category))
             {
+                var prefabName = ChestSupply.SplitLevelKey(key, out var quality);
                 var prefab = ObjectDB.instance.GetItemPrefab(prefabName);
                 var itemDrop = prefab == null ? null : prefab.GetComponent<ItemDrop>();
                 if (itemDrop == null) continue;
 
-                present.TryGetValue(prefabName, out var count);
+                present.TryGetValue(key, out var count);
                 var wanted = supply.GetStackCount(prefabName, itemDrop.m_itemData.m_shared);
                 for (var i = count; i < wanted; i++)
                 {
-                    missing.Add(CreateFullStack(prefab!, itemDrop));
+                    missing.Add(CreateFullStack(prefab!, itemDrop, quality));
                 }
             }
 
@@ -273,11 +275,12 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             return added;
         }
 
-        private static ItemDrop.ItemData CreateFullStack(GameObject prefab, ItemDrop itemDrop)
+        private static ItemDrop.ItemData CreateFullStack(GameObject prefab, ItemDrop itemDrop, int quality)
         {
             var item = itemDrop.m_itemData.Clone();
             item.m_dropPrefab = prefab;
             item.m_stack = item.m_shared.m_maxStackSize;
+            item.m_quality = quality;
             item.m_worldLevel = (byte)Game.m_worldLevel;
             return item;
         }
