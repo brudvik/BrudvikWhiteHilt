@@ -18,7 +18,6 @@ Required icons (32x32 or 64x64 PNG recommended):
 - GiftOfFenrir.png
 - GiftOfFreyr.png
 - GiftOfHel.png
-- GiftOfMimir.png
 
 Note: The original icons were purchased from Graphicriver.net and cannot be redistributed.
 You need to either:

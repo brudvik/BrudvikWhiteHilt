@@ -45,6 +45,15 @@ public static class WhiteHiltConfig
         ("Gear.Weapons", "BonusDamage"),
         ("Potions.GiftOfOdin", "MaxHealth"),
         ("Potions.GiftOfOdin", "HealPerFrame"),
+        ("Potions.GiftOfMimir", "DurationMinutes"),
+        ("Potions.GiftOfMimir", "InitialRevealRadius"),
+        ("Potions.GiftOfMimir", "RevealRadius"),
+        ("Potions.GiftOfMimir", "RevealIntervalSeconds"),
+        ("Potions.GiftOfMimir", "CreatureRange"),
+        ("Potions.GiftOfMimir", "CreatureRefreshSeconds"),
+        (ContentSection, "GiftOfMimir"),
+        (RecipesSection, "GiftOfMimir"),
+        (TiersSection, "GiftOfMimir"),
     };
 
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();

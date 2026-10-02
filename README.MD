@@ -27,7 +27,7 @@ Indestructible weapons, shields, armour, tools and ammunition with their own mod
 
 ### 🧪 [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 
-Nineteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
+Eighteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
 
 ### ⛵ [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)
 

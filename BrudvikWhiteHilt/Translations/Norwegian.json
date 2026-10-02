@@ -630,13 +630,6 @@
   "se_giftofloki_start": "Kraften fra Lokes gave har kommet!",
   "se_giftofloki_stop": "Lokes gave har bleknet!",
 
-  "item_giftofmimirmead": "Mimes gave",
-  "item_giftofmimirmead_description": "Gir deg visdommen til kunnskapens vokter",
-  "item_giftofmimirmeadbase": "Mjødbase: Mimes gave",
-  "se_giftofmimir_start": "Eldgammel visdom fyller sinnet ditt med Mimes gave!",
-  "se_giftofmimir_stop": "Mimes gave har bleknet!",
-  "se_giftofmimir_tooltip": "Avslører kartet rundt deg og markerer skapninger i nærheten",
-
   "item_giftofmuninmead": "Munins gave",
   "item_giftofmuninmead_description": "Gir deg all kunnskap",
   "item_giftofmuninmeadbase": "Mjødbase: Munins gave",

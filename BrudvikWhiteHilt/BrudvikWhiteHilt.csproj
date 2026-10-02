@@ -206,8 +206,6 @@
     <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunnEffect.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLoki.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLokiEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfMimir\GiftOfMimir.cs" />
-    <Compile Include="Items\Potions\GiftOfMimir\GiftOfMimirEffect.cs" />
     <Compile Include="Items\Potions\GiftOfMunin\GiftOfMunin.cs" />
     <Compile Include="Items\Potions\GiftOfMunin\GiftOfMuninEffect.cs" />
     <Compile Include="Items\Potions\GiftOfNjord\GiftOfNjord.cs" />
@@ -652,9 +650,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\GiftOfHel.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfMimir.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\GiftOfNjord.png">

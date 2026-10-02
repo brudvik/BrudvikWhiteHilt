@@ -42,7 +42,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 | Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor, Arrows, Bolts, Belt Pouch · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning · Sleipnir, Hugin, Baldur, Hel |
-| Mistlands | Eitr | Eitr ×3 | Loki, Munin, Mimir |
+| Mistlands | Eitr | Eitr ×3 | Loki, Munin |
 | Ashlands | Flametal | Flametal ×3 | Surt |
 
 Recipes are hidden, never removed, so switching mode never deletes items you already own.

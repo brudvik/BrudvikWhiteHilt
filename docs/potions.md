@@ -23,7 +23,6 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 | **Gift of Tyr** | Grants war god steadfastness - no block stamina, -75% dodge stamina, 90% less knockback, +100 carry weight. | Wood ×5, Raspberries ×5, Resin ×5 |
 | **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, -50% attack stamina, +25% movement speed, heals 15% of damage dealt. | Wood ×5, Mushroom ×5, Dandelion ×5 |
 | **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
-| **Gift of Mimir** | Grants ancient wisdom - reveals the map in a 200m radius on drink, then 150m around you every 5 seconds, and marks creatures within 100m on the minimap. | Yggdrasil Wood ×10, Sap ×10, Eitr ×2 |
 | **Gift of Idunn** | Grants youthful vigour - 1.25x health and 1.5x stamina/eitr regeneration. | Resin ×5, Raspberries ×5, Dandelion ×5 |
 
 ### Short Duration (10 minutes)
@@ -60,7 +59,6 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Hugin | `SkillLevel` 100 (no duration) |
 | Idunn | `HealthRegenMultiplier` 1.25, `StaminaRegenMultiplier` 1.5, `EitrRegenMultiplier` 1.5, `HealPerSecond` 0 |
 | Loki | `BonusEitr` 500, `EitrRegenBonus` 80 |
-| Mimir | `InitialRevealRadius` 200, `RevealRadius` 150, `RevealIntervalSeconds` 5, `CreatureRange` 100, `CreatureRefreshSeconds` 1 |
 | Njord | `SwimSpeedModifier` 1, `SwimStaminaMultiplier` 0, `MinSwimStamina` 20, `SwimStaminaRefill` 50 |
 | Odin | `DurationMinutes` 10, `BonusMaxHealth` 50, `FallDamageMultiplier` 0.5, `HealthRegenBonus` 1 (1 doubles it), `HealPerSecond` 2 |
 | Ratatoskr | `SpeedModifier` 0.75, `RunStaminaDrainModifier` -0.8, `JumpModifier` 0.5, `SneakStaminaMultiplier` 0 |

@@ -175,30 +175,6 @@ public static class PotionSettings
     }
 
     /// <summary>
-    /// Gift of Mimir settings.
-    /// </summary>
-    public static class Mimir
-    {
-        /// <summary>Duration in minutes.</summary>
-        public static ConfigEntry<float> DurationMinutes { get; internal set; }
-
-        /// <summary>Map radius revealed when drunk.</summary>
-        public static ConfigEntry<float> InitialRevealRadius { get; internal set; }
-
-        /// <summary>Map radius revealed on every refresh.</summary>
-        public static ConfigEntry<float> RevealRadius { get; internal set; }
-
-        /// <summary>Seconds between map reveals.</summary>
-        public static ConfigEntry<float> RevealIntervalSeconds { get; internal set; }
-
-        /// <summary>Range in which creatures are marked.</summary>
-        public static ConfigEntry<float> CreatureRange { get; internal set; }
-
-        /// <summary>Seconds between creature marker refreshes.</summary>
-        public static ConfigEntry<float> CreatureRefreshSeconds { get; internal set; }
-    }
-
-    /// <summary>
     /// Gift of Njord settings.
     /// </summary>
     public static class Njord
@@ -404,14 +380,6 @@ public static class PotionSettings
         Loki.DurationMinutes = BindDuration(loki, 20f);
         Loki.BonusEitr = Bind(loki, "BonusEitr", 500f, 0f, 5000f, "Eitr added when drunk.");
         Loki.EitrRegenBonus = Bind(loki, "EitrRegenBonus", 80f, 0f, 1000f, "Eitr regeneration added.");
-
-        const string mimir = "GiftOfMimir";
-        Mimir.DurationMinutes = BindDuration(mimir, 20f);
-        Mimir.InitialRevealRadius = Bind(mimir, "InitialRevealRadius", 200f, 0f, 2000f, "Map radius revealed when drunk.");
-        Mimir.RevealRadius = Bind(mimir, "RevealRadius", 150f, 0f, 2000f, "Map radius revealed on every refresh.");
-        Mimir.RevealIntervalSeconds = Bind(mimir, "RevealIntervalSeconds", 5f, 0.5f, 60f, "Seconds between map reveals.");
-        Mimir.CreatureRange = Bind(mimir, "CreatureRange", 100f, 0f, 500f, "Range in which creatures are marked on the map.");
-        Mimir.CreatureRefreshSeconds = Bind(mimir, "CreatureRefreshSeconds", 1f, 0.25f, 30f, "Seconds between creature marker refreshes.");
 
         const string njord = "GiftOfNjord";
         Njord.DurationMinutes = BindDuration(njord, 20f);
