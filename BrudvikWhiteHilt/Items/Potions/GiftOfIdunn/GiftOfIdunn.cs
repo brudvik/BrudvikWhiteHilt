@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Foraging.Lingonberries;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -38,8 +39,8 @@ public class GiftOfIdunn : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Resin", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "Raspberry", Amount = 5, Recover = false },
+        new RequirementConfig { Item = Lingonberries.PrefabName, Amount = 10, Recover = false },
+        new RequirementConfig { Item = "Honey", Amount = 5, Recover = false },
         new RequirementConfig { Item = "Dandelion", Amount = 5, Recover = false }
     };
 

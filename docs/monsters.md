@@ -38,17 +38,15 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 
 ## Loot
 
-| Item | From | Chance |
-|------|------|--------|
-| **Lindorm Scale** ×2–4 | Lindorm | Always |
-| **Entrails** ×1–3 | Lindorm | Always |
-| **Lindorm Trophy** | Lindorm | 15% |
-| **Spider Silk** ×1–2 | Giant Spider | Always |
-| **Poison Gland** | Giant Spider | 50% |
-| **Giant Spider Trophy** | Giant Spider | 10% |
-| **Spider Silk** ×3–5 | Spider Nest | Always |
-
-The new materials have no recipes yet.
+| Item | From | Chance | Used for |
+|------|------|--------|----------|
+| **Lindorm Scale** ×2–4 | Lindorm | Always | Every upgrade of a White Hilt shield ([White Hilt gear](equipment.md#-upgrades-through-the-biomes)) |
+| **Entrails** ×1–3 | Lindorm | Always | Vanilla recipes |
+| **Lindorm Trophy** | Lindorm | 15% | Your wall |
+| **Spider Silk** ×1–2 | Giant Spider | Always | Gift of Loki ([Potions](potions.md)), mending Shore Nets ([Fishing nets](fishing.md)) |
+| **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)) |
+| **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
+| **Spider Silk** ×3–5 | Spider Nest | Always | As above |
 
 ## Config
 

@@ -10,7 +10,7 @@ Set nets out in the water from the shore, and let them fill a fish barrel while 
 - **The fish**: the same as the ship's net, after the waters the net lies in: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on. Now and then a fish is one size bigger (`BiggerFishChance`), and the nets bring up seaweed and, on the ocean, an amber pearl (`Bycatch`).
 - **While you are away**: the winch counts the time since it last checked, so the nets go on catching for up to 2 hours while nobody is near (`CatchUpHours`). They stop when the barrel is full.
 - **Bait**: put fishing bait, entrails or neck tails in the barrel (`BaitItems`). As long as there is bait, the nets catch 40% faster (`BaitTime`), and each fish uses one bait.
-- **Mending**: after 40 fish the nets are torn and catch nothing until they are mended (`WearCatches`). Use the winch with the alternative key (Shift + E) to mend them with 4 Leather Scraps (`MendItem`, `MendAmount`). You can mend them at any time; the hover text shows how worn they are.
+- **Mending**: after 40 fish the nets are torn and catch nothing until they are mended (`WearCatches`). Use the winch with the alternative key (Shift + E) to mend them with 2 Spider Silk from the [giant spiders](monsters.md), or with 4 Leather Scraps if you have no silk (`MendWith`). You can mend them at any time; the hover text shows how worn they are.
 - **Fishing skill**: whoever opens the barrel gets Fishing experience for each fish caught since it was last opened (`SkillRaise`).
 
 The White Hilt Ship has its own Fishing Net that fills the hold while the ship sails, see [Ships](ships.md).
@@ -40,8 +40,7 @@ Section `[Fishing.Net]` (admin only, synced from the server):
 | `BaitItems` | FishingBait, … , Entrails, NeckTail | Prefab names of the bait, comma separated; empty: no bait |
 | `BaitTime` | 0.6 | Share of the catching time with bait: 0.6 catches 40% faster |
 | `WearCatches` | 40 | Fish caught before the nets are torn; 0: they never tear |
-| `MendItem` | LeatherScraps | Prefab name of the item that mends the nets |
-| `MendAmount` | 4 | How many of it one mending takes; 0: free |
+| `MendWith` | WhiteHilt_SpiderSilk:2, LeatherScraps:4 | What one mending takes: `Prefab:Amount` alternatives, comma separated; the first one you have enough of is used. Empty: free |
 | `Bycatch` | true | The nets now and then bring up seaweed, and on the ocean an amber pearl |
 | `SeaweedChance` | 0.1 | Chance per fish of seaweed |
 | `PearlChance` | 0.03 | Chance per fish on the ocean of an amber pearl |

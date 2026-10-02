@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -51,7 +52,7 @@ public class GiftOfHel : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = MonsterRegistry.GlandName, Amount = 2, Recover = false },
         new RequirementConfig { Item = "Blueberries", Amount = 5, Recover = false },
         new RequirementConfig { Item = "Dandelion", Amount = 5, Recover = false }
     };

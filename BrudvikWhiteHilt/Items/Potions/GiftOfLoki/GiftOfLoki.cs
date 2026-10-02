@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Progression;
+﻿using BrudvikWhiteHilt.Monsters;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -38,7 +39,8 @@ public class GiftOfLoki : PotionBase
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "NeckTail", Amount = 20, Recover = false },
-        new RequirementConfig { Item = "Raspberry", Amount = 20, Recover = false },
+        // Loki made the first fishing net.
+        new RequirementConfig { Item = MonsterRegistry.SilkName, Amount = 5, Recover = false },
         new RequirementConfig { Item = "Eitr", Amount = 1, Recover = false }
     };
 

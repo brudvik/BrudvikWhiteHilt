@@ -53,11 +53,8 @@ public static class FishingNetSettings
     /// <summary>Fish the nets catch before they must be mended. 0: never.</summary>
     public static ConfigEntry<int> WearCatches { get; private set; }
 
-    /// <summary>Prefab name of the item that mends the nets.</summary>
-    public static ConfigEntry<string> MendItem { get; private set; }
-
-    /// <summary>How many of the mending item one mending takes.</summary>
-    public static ConfigEntry<int> MendAmount { get; private set; }
+    /// <summary>What one mending takes: Prefab:Amount alternatives, comma separated, the first the player has enough of is used.</summary>
+    public static ConfigEntry<string> MendWith { get; private set; }
 
     /// <summary>Whether the nets also bring up seaweed, and on the ocean now and then an amber pearl.</summary>
     public static ConfigEntry<bool> Bycatch { get; private set; }
@@ -104,10 +101,8 @@ public static class FishingNetSettings
             "Share of the catching time while there is bait in the barrel: 0.6 catches 40% faster.", new AcceptableValueRange<float>(0.1f, 1f));
         WearCatches = WhiteHiltConfig.BindAdminOnly(Section, "WearCatches", 40,
             "Fish the nets of a winch catch before they are torn and must be mended. 0: they never tear.", new AcceptableValueRange<int>(0, 1000));
-        MendItem = WhiteHiltConfig.BindAdminOnly(Section, "MendItem", "LeatherScraps",
-            "Prefab name of the item that mends the nets.");
-        MendAmount = WhiteHiltConfig.BindAdminOnly(Section, "MendAmount", 4,
-            "How many of the mending item one mending takes. 0: mending is free.", new AcceptableValueRange<int>(0, 50));
+        MendWith = WhiteHiltConfig.BindAdminOnly(Section, "MendWith", "WhiteHilt_SpiderSilk:2, LeatherScraps:4",
+            "What one mending of the nets takes: Prefab:Amount alternatives, comma separated. The first one the player has enough of is used. Empty: mending is free.");
         Bycatch = WhiteHiltConfig.BindAdminOnly(Section, "Bycatch", true,
             "The nets now and then bring up seaweed too, and on the ocean an amber pearl.");
         SeaweedChance = WhiteHiltConfig.BindAdminOnly(Section, "SeaweedChance", 0.1f,
@@ -131,5 +126,30 @@ public static class FishingNetSettings
         }
 
         return baits.Contains(prefabName);
+    }
+
+    /// <summary>
+    /// The mending alternatives from <see cref="MendWith"/> whose items exist, in order.
+    /// </summary>
+    /// <returns>Shared name and amount of each alternative.</returns>
+    public static List<(string SharedName, int Amount)> MendCosts()
+    {
+        List<(string, int)> costs = new();
+        foreach (string part in (MendWith.Value ?? string.Empty).Split(','))
+        {
+            string[] fields = part.Split(':');
+            if (fields.Length != 2 || !int.TryParse(fields[1].Trim(), out int amount) || amount <= 0)
+            {
+                continue;
+            }
+
+            ItemDrop item = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(fields[0].Trim())?.GetComponent<ItemDrop>() : null;
+            if (item != null)
+            {
+                costs.Add((item.m_itemData.m_shared.m_name, amount));
+            }
+        }
+
+        return costs;
     }
 }

@@ -132,8 +132,8 @@ public class NetWinchComponent : MonoBehaviour
         string result = $"\n<color=#a0a0a0>{text}</color>";
         if (Wear > 0)
         {
-            string cost = MendCost(out _, out int amount);
-            string mend = amount > 0 ? string.Format(localization.Localize("$whitehilt_netwinch_mend_cost"), amount, cost) : localization.Localize("$whitehilt_netwinch_mend");
+            List<(string SharedName, int Amount)> costs = FishingNetSettings.MendCosts();
+            string mend = costs.Count > 0 ? string.Format(localization.Localize("$whitehilt_netwinch_mend_cost"), CostText(costs)) : localization.Localize("$whitehilt_netwinch_mend");
             result += "\n" + localization.Localize("[<color=yellow><b>$KEY_AltPlace + $KEY_Use</b></color>] ") + mend;
         }
 
@@ -158,16 +158,18 @@ public class NetWinchComponent : MonoBehaviour
             return true;
         }
 
-        string name = MendCost(out string sharedName, out int amount);
-        if (amount > 0)
+        List<(string SharedName, int Amount)> costs = FishingNetSettings.MendCosts();
+        if (costs.Count > 0)
         {
-            if (sharedName == null || player.GetInventory().CountItems(sharedName) < amount)
+            Inventory inventory = player.GetInventory();
+            int index = costs.FindIndex(cost => inventory.CountItems(cost.SharedName) >= cost.Amount);
+            if (index < 0)
             {
-                player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_netwinch_need"), amount, name));
+                player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_netwinch_need"), CostText(costs)));
                 return true;
             }
 
-            player.GetInventory().RemoveItem(sharedName, amount);
+            inventory.RemoveItem(costs[index].SharedName, costs[index].Amount);
         }
 
         nview.InvokeRPC(MendRpc);
@@ -242,12 +244,10 @@ public class NetWinchComponent : MonoBehaviour
         return bait ? rate / FishingNetSettings.BaitTime.Value : rate;
     }
 
-    private static string MendCost(out string sharedName, out int amount)
+    private static string CostText(List<(string SharedName, int Amount)> costs)
     {
-        amount = FishingNetSettings.MendAmount.Value;
-        GameObject prefab = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(FishingNetSettings.MendItem.Value) : null;
-        sharedName = prefab != null ? prefab.GetComponent<ItemDrop>()?.m_itemData.m_shared.m_name : null;
-        return sharedName != null ? Localization.instance.Localize(sharedName) : FishingNetSettings.MendItem.Value;
+        Localization localization = Localization.instance;
+        return string.Join(localization.Localize("$whitehilt_netwinch_or"), costs.Select(cost => $"{cost.Amount} {localization.Localize(cost.SharedName)}"));
     }
 
     private ItemDrop.ItemData FindBait()

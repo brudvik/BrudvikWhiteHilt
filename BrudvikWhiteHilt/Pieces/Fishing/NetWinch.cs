@@ -69,9 +69,10 @@ public class NetWinch : IWhiteHiltCustomPiece
         Translations.AddEnglish("whitehilt_netwinch_torn", "The nets are torn and catch nothing");
         Translations.AddEnglish("whitehilt_netwinch_wear", "Net wear: {0}/{1} fish");
         Translations.AddEnglish("whitehilt_netwinch_mend", "Mend the nets");
-        Translations.AddEnglish("whitehilt_netwinch_mend_cost", "Mend the nets ({0} {1})");
+        Translations.AddEnglish("whitehilt_netwinch_mend_cost", "Mend the nets ({0})");
+        Translations.AddEnglish("whitehilt_netwinch_or", " or ");
         Translations.AddEnglish("msg_whitehilt_netwinch_whole", "The nets are whole");
-        Translations.AddEnglish("msg_whitehilt_netwinch_need", "You need {0} {1} to mend the nets");
+        Translations.AddEnglish("msg_whitehilt_netwinch_need", "You need {0} to mend the nets");
         Translations.AddEnglish("msg_whitehilt_netwinch_mended", "The nets are mended");
         FishingNetSettings.Initialize();
     }

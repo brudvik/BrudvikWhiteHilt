@@ -1,3 +1,5 @@
+using BrudvikWhiteHilt.Items.Foraging.Crowberries;
+using BrudvikWhiteHilt.Items.Foraging.Roseroot;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -38,8 +40,8 @@ public class GiftOfSkadi : PotionBase
     /// </summary>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
-        new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
-        new RequirementConfig { Item = "Stone", Amount = 5, Recover = false },
+        new RequirementConfig { Item = Crowberries.PrefabName, Amount = 5, Recover = false },
+        new RequirementConfig { Item = Roseroot.PrefabName, Amount = 5, Recover = false },
         new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false }
     };
 

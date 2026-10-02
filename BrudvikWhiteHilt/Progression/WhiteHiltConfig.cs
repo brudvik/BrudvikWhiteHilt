@@ -54,6 +54,8 @@ public static class WhiteHiltConfig
         (ContentSection, "GiftOfMimir"),
         (RecipesSection, "GiftOfMimir"),
         (TiersSection, "GiftOfMimir"),
+        ("Fishing.Net", "MendItem"),
+        ("Fishing.Net", "MendAmount"),
     };
 
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
