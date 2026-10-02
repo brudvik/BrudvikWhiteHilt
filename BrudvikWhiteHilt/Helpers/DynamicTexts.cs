@@ -57,7 +57,9 @@ public static class DynamicTexts
         Translations.AddDynamic("whitehilt_skill_exploration_description", () => new object[] { NavigationSettings.SharedMapRevealLevel.Value });
         Translations.AddDynamic("whitehilt_route_sit", () => new object[] { Translations.Number(ShipSettings.RouteSitSeconds.Value) });
 
-        Translations.AddDynamic("whitehilt_mapextension_inactive", () => new object[] { Translations.Number(PortalSettings.MapTableExtensionRange) });
+        Translations.AddDynamic("whitehilt_mapextension_inactive", () => new object[] { Translations.Number(NavigationSettings.MapTableRange.Value) });
+        Translations.AddDynamic("msg_whitehilt_needmaptable", () => new object[] { Translations.Number(NavigationSettings.MapTableRange.Value) });
+        Translations.AddDynamic("piece_whitehilt_kartmakerbenk_description", () => new object[] { Translations.Number(NavigationSettings.MapTableRange.Value) });
         Translations.AddDynamic("piece_whitehilt_valkyriestone_description", () => new object[]
         {
             ValkyrieCostPhrase(),

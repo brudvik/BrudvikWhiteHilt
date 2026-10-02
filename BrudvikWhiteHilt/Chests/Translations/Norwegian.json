@@ -43,7 +43,7 @@
   "bsc_status_store_more": "Legg inn {0} til for å gjøre den ubegrenset",
   "bsc_status_not_learned": "Du har ikke lært denne tingen ennå",
 
-  "bsc_cmd_help": "Viser hvor mange ting i hver BrudvikStackedChest-kiste som er ubegrenset",
+  "bsc_cmd_help": "Viser hvor mange ting i hver påfyllingskiste som er ubegrenset",
   "bsc_cmd_mode": "Kistemodus: {0}",
   "bsc_cmd_not_ready": "Fremdriften i verdenen er ikke mottatt fra serveren ennå.",
   "bsc_cmd_normal": "lagrer ting som en vanlig kiste",

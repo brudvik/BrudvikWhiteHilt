@@ -32,7 +32,7 @@ namespace BrudvikWhiteHilt.Chests.Commands
         }
 
         /// <inheritdoc/>
-        public override string Name => "bsc_progress";
+        public override string Name => "whitehilt_chest_progress";
 
         /// <inheritdoc/>
         public override string Help => Texts.Get("bsc_cmd_help");

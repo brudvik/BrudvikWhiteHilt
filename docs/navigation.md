@@ -12,7 +12,7 @@ From Exploration 25 the **Lookout** (O) opens up the map around you and shows se
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
-| **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), within 5 m of a map table | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
+| **Cartographer's Desk** | A writing desk with sea charts, a sextant and map scrolls; one scroll per ten levels of your Exploration skill | Hammer (Workbench), near a map table (`MapTableRange`) | Fine Wood ×10, Bronze ×2, Deer Hide ×2, Resin ×4 |
 | **Navigator's Table** | Use it on the helm of a karve, longship, drakkar or White Hilt Ship to set it up on deck; on the White Hilt Ship the mast takes it too, like the ship upgrades (Shift + Use on the helm takes it back). Everyone aboard uncovers the map further: 140 m at level 0, up to 300 m at level 100 (vanilla is 100 m). Use on the table opens the map for route markers at Exploration 30 (up to 5, shown to everyone aboard, with an arrow on the minimap toward the next one); at Exploration 50 "Take me there" lets the ship sail the route on its own, past every marker in turn. It sets off once the one who chose it sits down (within 30 seconds by default, or it is called off), rows at the slowest speed while anyone aboard stands, and takes the sail down to half above 45 knots. **Explorer mode** (also Exploration 50) sails past the markers as close to land as it safely can, following the coast, and never with full sail near land | Cartographer's Desk | Fine Wood ×6, Bronze ×3, Leather Scraps ×4 |
 | **Pathfinder's Amulet** | A valknut pendant worn as a trinket, with one gem per twenty levels of Exploration. Uncovers the map further (120 m, up to 200 m). New land fills its adrenaline; when it is full, **Raven Sight** uncovers 500 m around you | Cartographer's Desk | Bronze ×3, Silver Necklace ×1, Ruby ×1 |
 | **Pathfinder's Ruby Amulet** | The Pathfinder's Amulet with a large ruby in the middle of the valknut. It does all the Pathfinder does, and leads you to a target you set on the map (see below). Known and made from Exploration 50; one you already have keeps working if the skill drops below that | Cartographer's Desk | Pathfinder's Amulet ×1, Ruby ×3, Iron ×2 |
@@ -71,7 +71,7 @@ Other players are shown on the map as a portrait of their Viking on a see-throug
 - When you join, the others get the portrait once (about 10 KB). They keep it on disk, so the next time only a short fingerprint is sent. Nothing extra is needed on the server.
 - A player without a portrait gets the first letter of the name on a coloured disc.
 - Names are always shown on the large map; on the minimap only if you turn it on.
-- Portraits are stored in `BepInEx/config/WhiteHilt/portraits/`. Delete `own_<id>.bin` to have yours taken again.
+- Portraits are stored in `BepInEx/config/BrudvikWhiteHilt/portraits/` (moved there from `BepInEx/config/WhiteHilt/` in 0.49.0). Delete `own_<id>.bin` to have yours taken again.
 
 | Setting (section `Map`) | Default | Description |
 |-------------------------|---------|-------------|
@@ -153,7 +153,7 @@ Munin, Odin's raven of memory, remembers everything found on a map table's map. 
 | `LargeIconSize` / `SmallIconSize` | 26 / 16 | Marker size in pixels on the large map and the minimap |
 | `MaxMarkers` | 400 | Most markers drawn at once |
 
-The range to the map table is the portal setting `[Portals] MapTableExtensionRange`, shared with the Portal Astrolabe and the Harbour Anchor.
+The range to the map table is `[Navigation] MapTableRange`, shared with the Cartographer's Desk, the Portal Astrolabe and the Harbour Anchor.
 
 ## Config
 
@@ -169,6 +169,7 @@ All admin only, synced from the server.
 | `[Navigation] SharedMapReveal` | true | Shared map is drawn like your own from `SharedMapRevealLevel` |
 | `[Navigation] SharedMapRevealLevel` | 50 | Exploration level for that |
 | `[Navigation] RavenSightRadius` | 500 | Metres that Raven Sight uncovers |
+| `[Navigation] MapTableRange` | 5 | Metres the Cartographer's Desk, Portal Astrolabe, Harbour Anchor and Munin's Perch may stand from a map table (was `[Portals] MapTableExtensionRange`) |
 | `[Gear.WhiteHiltChartTable] Weight` | 10 | Weight of the Navigator's Table item |
 | `[Gear.WhiteHiltPathfinder] MaxAdrenaline` | 50 | Adrenaline needed for Raven Sight |
 | `[Gear.WhiteHiltPathfinder] AdrenalinePerSquareMetre` | 0.0001 | Adrenaline per square metre of new map |

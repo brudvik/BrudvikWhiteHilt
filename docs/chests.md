@@ -124,7 +124,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 
 | Command | Description |
 |---------|-------------|
-| `bsc_progress` | Lists how many items of each chest are unlimited |
+| `whitehilt_chest_progress` | Lists how many items of each chest are unlimited (was `bsc_progress`) |
 | `whitehilt_chest_census` | Counts the contents of every chest and compares them with the previous count (server or host) |
 
 ## 🔁 Moving over from BrudvikStackedChest

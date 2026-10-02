@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Items.Runes;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
+using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.EternalFire;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using BrudvikWhiteHilt.Pieces.Portals.RuneRack;
@@ -23,7 +24,7 @@ public class PortalMapService : MonoBehaviour
     /// <summary>
     /// How close a map table extension must stand to a map table to switch its markers on.
     /// </summary>
-    public static float ActivationRange => PortalSettings.MapTableExtensionRange;
+    public static float ActivationRange => NavigationSettings.MapTableRange?.Value ?? 5f;
 
     private const string RpcName = "WhiteHiltPortalMap";
     private const string TravelRpcName = "WhiteHiltPortalList";

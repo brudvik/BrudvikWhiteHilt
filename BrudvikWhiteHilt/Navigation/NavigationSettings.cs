@@ -34,6 +34,9 @@ public static class NavigationSettings
     /// <summary>Radius in metres that the Pathfinder's Amulet's Raven Sight uncovers.</summary>
     public static ConfigEntry<float> RavenSightRadius { get; private set; }
 
+    /// <summary>How close the Cartographer's Desk, Portal Astrolabe, Harbour Anchor and Munin's Perch must stand to a map table, in metres.</summary>
+    public static ConfigEntry<float> MapTableRange { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake, before <see cref="ExplorationSkill.Register"/>.
     /// </summary>
@@ -59,5 +62,8 @@ public static class NavigationSettings
             "Exploration level from which shared map is drawn like your own.", new AcceptableValueRange<int>(0, 100));
         RavenSightRadius = WhiteHiltConfig.BindAdminOnly(Section, "RavenSightRadius", 500f,
             "Radius in metres that the Pathfinder's Amulet's Raven Sight uncovers.", new AcceptableValueRange<float>(0f, 3000f));
+        MapTableRange = WhiteHiltConfig.BindAdminOnly(Section, "MapTableRange", 5f,
+            "How close, in metres, the Cartographer's Desk, a Portal Astrolabe, a Harbour Anchor or Munin's Perch must stand to a map table.",
+            new AcceptableValueRange<float>(1f, 30f));
     }
 }

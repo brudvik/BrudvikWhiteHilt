@@ -4,7 +4,7 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Navigation;
 
 /// <summary>
-/// The Cartographer's Desk is an extension of the map table: it can only be used within 5 m of one.
+/// The Cartographer's Desk is an extension of the map table: it can only be used near one.
 /// </summary>
 [HarmonyPatch(typeof(CraftingStation), nameof(CraftingStation.CheckUsable))]
 public static class CartographerDeskPatch

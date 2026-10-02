@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Pieces.Navigation;
 
 /// <summary>
 /// The Cartographer's Desk: a writing desk with charts and a sextant, the crafting station for the Navigator's Table
-/// and the Pathfinder's Amulet. It works as an extension of the map table and can only be used within 5 m of one.
+/// and the Pathfinder's Amulet. It works as an extension of the map table and can only be used near one.
 /// </summary>
 public class CartographerDesk : DefensePieceBase
 {
@@ -25,7 +25,7 @@ public class CartographerDesk : DefensePieceBase
     /// <param name="instance">The piece manager.</param>
     public CartographerDesk(PieceManager instance) : base(instance)
     {
-        Translations.AddEnglish("msg_whitehilt_needmaptable", "The desk must stand within 5 m of a map table");
+        Translations.AddEnglish("msg_whitehilt_needmaptable", "The desk must stand within {0} m of a map table");
     }
 
     /// <inheritdoc/>
@@ -35,7 +35,7 @@ public class CartographerDesk : DefensePieceBase
     protected override string FullName => "Cartographer's Desk";
 
     /// <inheritdoc/>
-    protected override string Description => "A writing desk with sea charts, a sextant and map scrolls. Place it within 5 m of a map table to make navigation gear.";
+    protected override string Description => "A writing desk with sea charts, a sextant and map scrolls. Place it within {0} m of a map table to make navigation gear.";
 
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]

@@ -24,7 +24,7 @@ In the towers, use the ladder to climb to the next floor up, or hold the alterna
 
 ## Config
 
-Section `[Defenses]` (admin only, synced from the server):
+Section `[Defences]` (admin only, synced from the server; it was `[Defenses]` before 0.49.0, and its value is moved over):
 
 | Setting | Default | What it does |
 |---|---|---|

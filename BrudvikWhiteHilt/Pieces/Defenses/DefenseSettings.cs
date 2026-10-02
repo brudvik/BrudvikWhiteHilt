@@ -4,11 +4,11 @@ using BrudvikWhiteHilt.Progression;
 namespace BrudvikWhiteHilt.Pieces.Defenses;
 
 /// <summary>
-/// Config for the palisade defences, section "Defenses". Server-synced.
+/// Config for the palisade defences, section "Defences". Server-synced.
 /// </summary>
 public static class DefenseSettings
 {
-    private const string Section = "Defenses";
+    private const string Section = "Defences";
 
     private static ConfigEntry<float> healthMultiplier;
 

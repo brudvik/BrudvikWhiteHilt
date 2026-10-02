@@ -43,7 +43,7 @@
   "bsc_status_store_more": "Store {0} more to make it unlimited",
   "bsc_status_not_learned": "You have not learned this item yet",
 
-  "bsc_cmd_help": "Shows how many items of each BrudvikStackedChest chest are unlimited",
+  "bsc_cmd_help": "Shows how many items of each restocking chest are unlimited",
   "bsc_cmd_mode": "Chest mode: {0}",
   "bsc_cmd_not_ready": "The world progress has not been received from the server yet.",
   "bsc_cmd_normal": "stores items like a normal chest",

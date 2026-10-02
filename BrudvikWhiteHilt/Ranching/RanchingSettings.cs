@@ -8,11 +8,11 @@ using Porcini = BrudvikWhiteHilt.Items.Foraging.Porcini.Porcini;
 namespace BrudvikWhiteHilt.Ranching;
 
 /// <summary>
-/// Config for animal husbandry, favourite foods, grooming, production, troughs and tether posts, section "Ranching". All admin-only.
+/// Config for animal husbandry, favourite foods, grooming, production, troughs and tether posts, section "Husbandry". All admin-only.
 /// </summary>
 public static class RanchingSettings
 {
-    private const string Section = "Ranching";
+    private const string Section = "Husbandry";
 
     /// <summary>Whether the Animal Husbandry skill gives its bonuses. Off: it still gains experience.</summary>
     public static ConfigEntry<bool> HusbandryEffects { get; private set; }

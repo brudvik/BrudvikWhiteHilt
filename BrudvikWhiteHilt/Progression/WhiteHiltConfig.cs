@@ -58,6 +58,19 @@ public static class WhiteHiltConfig
         ("Fishing.Net", "MendAmount"),
     };
 
+    // Renamed sections; their values move over before anything is bound.
+    private static readonly (string Old, string New)[] MovedSections =
+    {
+        ("Ranching", "Husbandry"),
+        ("Defenses", "Defences"),
+    };
+
+    // Settings that moved to another section or key; the value moves over before anything is bound.
+    private static readonly (string Section, string Key, string NewSection, string NewKey)[] MovedEntries =
+    {
+        ("Portals", "MapTableExtensionRange", "Navigation", "MapTableRange"),
+    };
+
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
     private static readonly Dictionary<string, ConfigEntry<bool>> enabledEntries = new();
     private static readonly Dictionary<string, ConfigEntry<string>> recipeOverrides = new();
@@ -87,6 +100,7 @@ public static class WhiteHiltConfig
     public static void Initialize(ConfigFile config)
     {
         configFile = config;
+        MoveRenamedEntries();
 
         Mode = config.Bind(
             GeneralSection,
@@ -296,6 +310,34 @@ public static class WhiteHiltConfig
     private static Dictionary<ConfigDefinition, string> Orphans()
     {
         return AccessTools.Property(typeof(ConfigFile), "OrphanedEntries")?.GetValue(configFile) as Dictionary<ConfigDefinition, string>;
+    }
+
+    private static void MoveRenamedEntries()
+    {
+        var orphans = Orphans();
+        if (orphans == null)
+        {
+            return;
+        }
+
+        List<(ConfigDefinition From, ConfigDefinition To)> moves = orphans.Keys
+            .SelectMany(definition => MovedSections
+                .Where(moved => definition.Section == moved.Old)
+                .Select(moved => (definition, new ConfigDefinition(moved.New, definition.Key))))
+            .Concat(MovedEntries.Select(moved => (new ConfigDefinition(moved.Section, moved.Key), new ConfigDefinition(moved.NewSection, moved.NewKey))))
+            .ToList();
+        foreach ((ConfigDefinition from, ConfigDefinition to) in moves)
+        {
+            if (orphans.TryGetValue(from, out string value))
+            {
+                orphans.Remove(from);
+                if (!orphans.ContainsKey(to))
+                {
+                    orphans[to] = value;
+                    Jotunn.Logger.LogInfo($"Config: [{from.Section}] {from.Key} moved to [{to.Section}] {to.Key}.");
+                }
+            }
+        }
     }
 
     private static ConfigDescription AdminOnly(string description)

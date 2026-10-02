@@ -23,7 +23,7 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 
 ## Config
 
-Section `[Ranching]` (admin only, synced from the server):
+Section `[Husbandry]` (admin only, synced from the server; it was `[Ranching]` before 0.49.0, and its values are moved over):
 
 | Setting | Default | What it does |
 |---|---|---|

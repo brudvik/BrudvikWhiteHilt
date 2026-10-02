@@ -17,7 +17,6 @@ public static class PortalSettings
     private static ConfigEntry<float> homeReturnMinutes;
     private static ConfigEntry<bool> sortByDistance;
     private static ConfigEntry<float> runePostRange;
-    private static ConfigEntry<float> mapTableExtensionRange;
     private static ConfigEntry<int> valkyrieCost;
     private static ConfigEntry<bool> valkyrieOncePerDeath;
 
@@ -45,11 +44,6 @@ public static class PortalSettings
     /// How close a rune post must stand to a portal, in metres; 0 turns the rune posts off.
     /// </summary>
     public static float RunePostRange => runePostRange != null ? runePostRange.Value : 8f;
-
-    /// <summary>
-    /// How close a Portal Astrolabe or Harbour Anchor must stand to a map table, in metres.
-    /// </summary>
-    public static float MapTableExtensionRange => mapTableExtensionRange != null ? mapTableExtensionRange.Value : 5f;
 
     /// <summary>
     /// Surtling Cores a trip with the Valkyrie Stone costs.
@@ -92,9 +86,6 @@ public static class PortalSettings
         runePostRange = WhiteHiltConfig.BindAdminOnly(Section, "RunePostRange", 8f,
             "How close, in metres, a rune post must stand to the portal you travel from for its runes to count. 0 turns the rune posts off.",
             new AcceptableValueRange<float>(0f, 30f));
-        mapTableExtensionRange = WhiteHiltConfig.BindAdminOnly(Section, "MapTableExtensionRange", 5f,
-            "How close, in metres, a Portal Astrolabe or Harbour Anchor must stand to a map table to show its markers.",
-            new AcceptableValueRange<float>(1f, 30f));
         valkyrieCost = WhiteHiltConfig.BindAdminOnly(Section, "ValkyrieStoneCost", 1,
             "Surtling Cores a trip to your last death point with the Valkyrie Stone costs. 0 makes it free.",
             new AcceptableValueRange<int>(0, 20));

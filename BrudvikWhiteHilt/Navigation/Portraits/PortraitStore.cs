@@ -30,7 +30,9 @@ public static class PortraitStore
     // The portrait is clipped to this share of the disc, so a thin dark rim shows around it.
     private const float ClipRadius = 0.92f;
 
-    private static string Folder => Path.Combine(Path.Combine(Paths.ConfigPath, "WhiteHilt"), "portraits");
+    private static string folder;
+
+    private static string Folder => folder ??= PrepareFolder();
 
     private static string CacheFolder => Path.Combine(Folder, "cache");
 
@@ -42,6 +44,32 @@ public static class PortraitStore
     public static bool IsHash(string hash)
     {
         return hash != null && hash.Length == 40 && hash.All(c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'));
+    }
+
+    // Before 0.49.0 the portraits lay in config/WhiteHilt; they are moved over once.
+    private static string PrepareFolder()
+    {
+        string target = Path.Combine(Path.Combine(Paths.ConfigPath, "BrudvikWhiteHilt"), "portraits");
+        string legacyParent = Path.Combine(Paths.ConfigPath, "WhiteHilt");
+        string legacy = Path.Combine(legacyParent, "portraits");
+        try
+        {
+            if (Directory.Exists(legacy) && !Directory.Exists(target))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(target));
+                Directory.Move(legacy, target);
+                if (!Directory.EnumerateFileSystemEntries(legacyParent).Any())
+                {
+                    Directory.Delete(legacyParent);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"Portraits: could not move {legacy} to {target}: {ex.Message}");
+        }
+
+        return target;
     }
 
     /// <summary>
