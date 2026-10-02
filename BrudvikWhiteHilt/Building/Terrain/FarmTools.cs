@@ -21,6 +21,8 @@ public static class FarmTools
     private static readonly List<bool> spotOk = new();
     private static readonly List<Vector3> lastGrid = new();
     private static readonly Collider[] hits = new Collider[16];
+    private static readonly Collider[] nearby = new Collider[128];
+    private static readonly Dictionary<string, float> reaches = new();
 
     private static int rows = 4;
     private static int columns = 6;
@@ -31,9 +33,12 @@ public static class FarmTools
     private static Piece lastGridPiece;
     private static Quaternion lastGridRotation;
     private static int spaceMask;
+    private static float? maxGrowRadius;
     private static HashSet<string> crops;
 
     private static int MaxRowsOrColumns => TerrainSettings.MaxGridRows.Value;
+
+    private static int SpaceMask => spaceMask != 0 ? spaceMask : spaceMask = LayerMask.GetMask("Default", "static_solid", "Default_small", "piece", "piece_nonsolid");
 
     /// <summary>
     /// The cultivator tool modes.
@@ -116,6 +121,7 @@ public static class FarmTools
     public static void Exit()
     {
         Mode = ToolMode.None;
+        maxGrowRadius = null;
         area.Clear();
         items.Clear();
         GroupGhost.Hide();
@@ -197,7 +203,8 @@ public static class FarmTools
             return;
         }
 
-        float minimum = plant.m_growRadius + SpaceMargin;
+        // A neighbour's sapling or grown crop must stay outside the grow radius, or the plant beside it stops growing.
+        float minimum = plant.m_growRadius + Reach(plant) + SpaceMargin;
         float step = Mathf.Max(minimum, spacing ?? minimum);
         if (Pressed(BuildToolSettings.KeyNudgeForward)) rows = Mathf.Min(MaxRowsOrColumns, rows + 1);
         if (Pressed(BuildToolSettings.KeyNudgeBack)) rows = Mathf.Max(1, rows - 1);
@@ -447,13 +454,134 @@ public static class FarmTools
             return false;
         }
 
-        if (spaceMask == 0)
+        // As the plant itself checks: anything within its grow radius, other than an unhealthy plant, stops it growing.
+        if (Physics.OverlapSphereNonAlloc(point, plant.m_growRadius, hits, SpaceMask) > 0)
         {
-            spaceMask = LayerMask.GetMask("Default", "static_solid", "Default_small", "piece", "piece_nonsolid");
+            return false;
         }
 
-        // As the plant itself checks: anything within its grow radius, other than an unhealthy plant, stops it growing.
-        return Physics.OverlapSphereNonAlloc(point, plant.m_growRadius, hits, spaceMask) == 0;
+        // The new plant, as a sapling or grown, must not stop the plants around it either, and their crops not it.
+        float reach = Reach(plant);
+        float search = reach + Mathf.Max(plant.m_growRadius, MaxGrowRadius()) + 1f;
+        int count = Physics.OverlapSphereNonAlloc(point, search, nearby, SpaceMask);
+        for (int i = 0; i < count; i++)
+        {
+            Plant other = nearby[i].GetComponent<Plant>();
+            if (other == null)
+            {
+                continue;
+            }
+
+            Vector3 apart = other.transform.position - point;
+            float needed = Mathf.Max(other.m_growRadius + reach, plant.m_growRadius + Reach(other));
+            if (new Vector2(apart.x, apart.z).magnitude < needed)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// How far a plant's colliders reach sideways from its centre, as a sapling or grown at its largest size.
+    /// </summary>
+    private static float Reach(Plant plant)
+    {
+        string name = Utils.GetPrefabName(plant.gameObject);
+        if (reaches.TryGetValue(name, out float reach))
+        {
+            return reach;
+        }
+
+        reach = Reach(plant.gameObject, 1f);
+        foreach (GameObject grown in plant.m_grownPrefabs)
+        {
+            if (grown != null)
+            {
+                reach = Mathf.Max(reach, Reach(grown, Mathf.Max(1f, plant.m_maxScale)));
+            }
+        }
+
+        reaches[name] = reach;
+        return reach;
+    }
+
+    private static float Reach(GameObject root, float scale)
+    {
+        float reach = 0f;
+        Matrix4x4 toRootSpace = root.transform.worldToLocalMatrix;
+        foreach (Collider collider in root.GetComponentsInChildren<Collider>(true))
+        {
+            if (collider.isTrigger || (SpaceMask & (1 << collider.gameObject.layer)) == 0)
+            {
+                continue;
+            }
+
+            Matrix4x4 toRoot = toRootSpace * collider.transform.localToWorldMatrix;
+            reach = Mathf.Max(reach, ColliderReach(collider, toRoot) * scale);
+        }
+
+        return reach;
+    }
+
+    private static float ColliderReach(Collider collider, Matrix4x4 toRoot)
+    {
+        float size = Mathf.Max(toRoot.GetColumn(0).magnitude, toRoot.GetColumn(1).magnitude, toRoot.GetColumn(2).magnitude);
+        switch (collider)
+        {
+            case SphereCollider sphere:
+                return Sideways(toRoot.MultiplyPoint3x4(sphere.center)) + sphere.radius * size;
+            case CapsuleCollider capsule:
+                Vector3 axis = capsule.direction == 0 ? Vector3.right : capsule.direction == 1 ? Vector3.up : Vector3.forward;
+                Vector3 half = axis * Mathf.Max(0f, capsule.height / 2f - capsule.radius);
+                return Mathf.Max(Sideways(toRoot.MultiplyPoint3x4(capsule.center + half)), Sideways(toRoot.MultiplyPoint3x4(capsule.center - half)))
+                    + capsule.radius * size;
+            case BoxCollider box:
+                return BoxReach(box.center, box.size / 2f, toRoot);
+            case MeshCollider mesh when mesh.sharedMesh != null:
+                return BoxReach(mesh.sharedMesh.bounds.center, mesh.sharedMesh.bounds.extents, toRoot);
+            default:
+                return 0f;
+        }
+    }
+
+    private static float BoxReach(Vector3 centre, Vector3 extents, Matrix4x4 toRoot)
+    {
+        float reach = 0f;
+        for (int corner = 0; corner < 8; corner++)
+        {
+            Vector3 sign = new((corner & 1) == 0 ? -1f : 1f, (corner & 2) == 0 ? -1f : 1f, (corner & 4) == 0 ? -1f : 1f);
+            reach = Mathf.Max(reach, Sideways(toRoot.MultiplyPoint3x4(centre + Vector3.Scale(extents, sign))));
+        }
+
+        return reach;
+    }
+
+    private static float Sideways(Vector3 point)
+    {
+        return new Vector2(point.x, point.z).magnitude;
+    }
+
+    private static float MaxGrowRadius()
+    {
+        if (maxGrowRadius.HasValue || ZNetScene.instance == null)
+        {
+            return maxGrowRadius ?? 0f;
+        }
+
+        float largest = 0f;
+        foreach (GameObject prefab in ZNetScene.instance.m_prefabs)
+        {
+            Plant plant = prefab != null ? prefab.GetComponent<Plant>() : null;
+            if (plant != null)
+            {
+                largest = Mathf.Max(largest, plant.m_growRadius);
+            }
+        }
+
+        maxGrowRadius = largest;
+        return largest;
     }
 
     private static string CostText(Player player, Piece piece, int count)

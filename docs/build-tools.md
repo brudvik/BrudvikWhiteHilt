@@ -77,7 +77,7 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 | Reset (hoe) | Ctrl + T | Put an area back to the ground as the world made it |
 | Height reference (hoe) | Ctrl + M | The panel shows the height where you aim and the difference from the reference |
 | Big brush (hoe) | Ctrl + mouse wheel | The hoe's own level, raise, smooth and paths work over 1 to 8 m, costing more for the larger area. A circle shows the size |
-| Grid (cultivator) | Ctrl + G | Plant rows x columns at once (arrows), as far apart as the plant needs to grow (PgUp / PgDn for more). Green places can be planted, red ones cannot (wrong biome, no room, not cultivated). The ground is cultivated first if *Cultivate under* is on |
+| Grid (cultivator) | Ctrl + G | Plant rows x columns at once (arrows), as far apart as the plant needs to grow, counting the size of the grown crop (PgUp / PgDn for more, never less). Green places can be planted, red ones cannot (wrong biome, no room, too close to a plant that would stop growing, not cultivated). The ground is cultivated first if *Cultivate under* is on |
 | Refill (cultivator) | Ctrl + R | Plant the empty places of the last grid again |
 | Cultivate area (cultivator) | Ctrl + F | Cultivate an area |
 | Harvest area (cultivator) | Ctrl + H | Pick every ripe crop in an area |
