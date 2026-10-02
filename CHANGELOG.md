@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.57.1 - 2026-10-02
+
+### Fixed
+- **Rune Post**: a rune ring now shows on the post as soon as it is hung (or disappears when taken), instead of only after you left the area and came back. An error when the post was loaded stopped it from updating its look
+
 ## v0.57.0 - 2026-10-02
 
 ### Added

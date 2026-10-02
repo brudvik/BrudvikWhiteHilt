@@ -157,8 +157,8 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
             wearNTear.m_onDestroyed += DropAllRunes;
         }
 
+        // Visuals wait for the first Update: the child EffectFade throws until its own Awake has run.
         instances.Add(this);
-        UpdateVisuals();
     }
 
     private void OnDestroy()
