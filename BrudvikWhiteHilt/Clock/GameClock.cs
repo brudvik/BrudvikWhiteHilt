@@ -150,45 +150,54 @@ public static class GameClock
         root.anchoredPosition = new Vector2(0f, -ClockSettings.OffsetY.Value - boss);
     }
 
-    private static Sprite WeatherIcon(float hours)
+    /// <summary>
+    /// The kind of weather an environment is, as the name of its icon: Snow, Storm, Ash, Rain, Fog, Moon, Sun or Cloud.
+    /// </summary>
+    /// <param name="env">The environment, or null.</param>
+    /// <param name="night">Whether it is night; clear nights get the moon.</param>
+    /// <returns>The icon name.</returns>
+    public static string WeatherKey(EnvSetup env, bool night)
     {
-        EnvSetup env = EnvMan.instance.GetCurrentEnvironment();
         string name = env?.m_name?.ToLowerInvariant() ?? string.Empty;
-        bool night = hours < 6f || hours >= Nightfall;
-        string key;
         if (name.Contains("snow") || (env != null && env.m_isFreezing))
         {
-            key = "Snow";
-        }
-        else if (name.Contains("thunder") || name.Contains("storm"))
-        {
-            key = "Storm";
-        }
-        else if (name.Contains("ashrain"))
-        {
-            key = "Ash";
-        }
-        else if (name.Contains("rain") || (env != null && env.m_isWet))
-        {
-            key = "Rain";
-        }
-        else if (name.Contains("mist") || name.Contains("fog"))
-        {
-            key = "Fog";
-        }
-        else if (night)
-        {
-            key = "Moon";
-        }
-        else
-        {
-            key = name.Contains("clear") ? "Sun" : "Cloud";
+            return "Snow";
         }
 
-        return LoadIcon(key);
+        if (name.Contains("thunder") || name.Contains("storm"))
+        {
+            return "Storm";
+        }
+
+        if (name.Contains("ashrain"))
+        {
+            return "Ash";
+        }
+
+        if (name.Contains("rain") || (env != null && env.m_isWet))
+        {
+            return "Rain";
+        }
+
+        if (name.Contains("mist") || name.Contains("fog"))
+        {
+            return "Fog";
+        }
+
+        if (night)
+        {
+            return "Moon";
+        }
+
+        return name.Contains("clear") ? "Sun" : "Cloud";
     }
 
-    private static Sprite LoadIcon(string key)
+    /// <summary>
+    /// A weather icon from the embedded assets.
+    /// </summary>
+    /// <param name="key">The icon name from <see cref="WeatherKey"/>.</param>
+    /// <returns>The sprite, or null if it failed to load.</returns>
+    public static Sprite LoadIcon(string key)
     {
         if (!icons.TryGetValue(key, out Sprite sprite))
         {
@@ -205,6 +214,11 @@ public static class GameClock
         }
 
         return sprite;
+    }
+
+    private static Sprite WeatherIcon(float hours)
+    {
+        return LoadIcon(WeatherKey(EnvMan.instance.GetCurrentEnvironment(), hours < 6f || hours >= Nightfall));
     }
 
     private static void SetVisible(bool visible)

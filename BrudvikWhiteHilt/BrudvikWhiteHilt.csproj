@@ -323,6 +323,7 @@
     <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
     <Compile Include="Patches\Navigation\WaypointPatches.cs" />
+    <Compile Include="Patches\Navigation\WeatherPatches.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
     <Compile Include="Patches\Navigation\StoneDowsingPatches.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
@@ -491,6 +492,10 @@
     <Compile Include="Navigation\Dowsing\StoneDowsingEffect.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingService.cs" />
     <Compile Include="Navigation\MinimapEdgeArrow.cs" />
+    <Compile Include="Navigation\Weather\ForecastPanel.cs" />
+    <Compile Include="Navigation\Weather\ForecastSettings.cs" />
+    <Compile Include="Navigation\Weather\StormWarning.cs" />
+    <Compile Include="Navigation\Weather\WeatherForecast.cs" />
     <Compile Include="Navigation\Waypoints\WaypointGuide.cs" />
     <Compile Include="Navigation\Waypoints\WaypointHud.cs" />
     <Compile Include="Navigation\Waypoints\WaypointMap.cs" />

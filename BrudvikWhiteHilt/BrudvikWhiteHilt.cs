@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.44.0";
+    public const string PluginVersion = "0.45.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -59,6 +59,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         RanchingSettings.Initialize();
         NavigationSettings.Initialize();
         Navigation.Waypoints.WaypointSettings.Initialize();
+        Navigation.Weather.ForecastSettings.Initialize();
         Navigation.Dowsing.StoneDowsingSettings.Initialize();
         Translations.LoadEmbedded();
         DynamicTexts.Register();

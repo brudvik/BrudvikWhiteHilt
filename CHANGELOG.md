@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.45.0 - 2026-10-02
+
+### Added
+- **Weather forecast** on the large map within 10 m of a map table or the Cartographer's Desk, and aboard a ship with a Navigator's Table: the weather and wind now and in the coming periods of about 11 minutes, worked out the way the game draws them. 1 period ahead at Exploration 0, up to 4 at 100. **Storm warning** with the ship's bell aboard a ship with a Navigator's Table, 3 minutes before thunder or a snowstorm. New section `Navigation.Forecast`. See [Navigation](docs/navigation.md#️-weather-forecast)
+
 ## v0.44.0 - 2026-10-02
 
 ### Added

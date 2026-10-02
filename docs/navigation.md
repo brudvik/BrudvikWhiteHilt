@@ -31,6 +31,16 @@ While you wear the Pathfinder's Ruby Amulet, as trinket or in one of the backpac
 
 The target is yours alone. It is saved with your character for each world, so it is still there the next time you play, and it does not follow you into another world. Take the amulet off and the arrows and the marker go away; put it on again and they come back.
 
+## 🌦️ Weather forecast
+
+The game draws the weather for each period of about 11 minutes from the weathers of the biome, and the wind from the time, so the coming weather can be worked out ahead. Open the large map within 10 m of a **map table** or the **Cartographer's Desk**, or aboard a ship with a **Navigator's Table**, and a forecast shows at the top right:
+
+- the weather now and in the coming periods, each with its icon, *In 7 min*, the weather, and the wind and where it blows from;
+- 1 period ahead at Exploration 0, up to 4 (about 45 minutes) at Exploration 100;
+- it holds for the biome where you are. Sailing into another biome brings that biome's weather. Weather forced by an event, a boss or a special place cannot be foretold, and the panel says so.
+
+**Storm warning:** aboard a ship with a Navigator's Table, everyone is told *A storm is coming in 3 min!* and the ship's bell rings when the next period where you are brings thunder or a snowstorm.
+
 ## 🪨 Stone Dowser
 
 The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest clearings around a big boulder, 22 in each. The **Stone Dowser** helps you find the next clearing, the way the Wishbone finds silver.
@@ -159,6 +169,11 @@ All admin only, synced from the server.
 | `[Gear.WhiteHiltPathfinderRuby] WrongWayMinSpeed` | 1 | Metres per second you must move for it to count |
 | `[Gear.WhiteHiltPathfinderRuby] WrongWayCooldown` | 30 | Seconds before the message can come again |
 | `[Skills.Exploration] RubyPathfinderLevel` | 50 | Exploration level from which the Pathfinder's Ruby Amulet is known and can be made |
+| `[Navigation.Forecast] Forecast` | true | The forecast shows on the large map |
+| `[Navigation.Forecast] Range` | 10 | Metres from a map table or Cartographer's Desk |
+| `[Navigation.Forecast] PeriodsAtLevelZero` / `PeriodsAtLevel100` | 1 / 4 | Periods ahead foretold at Exploration 0 and 100 |
+| `[Navigation.Forecast] StormWarning` | true | Those aboard a ship with a Navigator's Table are warned of a storm |
+| `[Navigation.Forecast] StormWarningMinutes` | 3 | Minutes before the storm that the warning comes |
 | `[Gear.WhiteHiltStoneDowser] SearchRadius` | 3000 | Metres the Stone Dowser looks for a clearing with rocks left |
 | `[Gear.WhiteHiltStoneDowser] RefreshSeconds` | 30 | Seconds between each search |
 | `[Gear.WhiteHiltStoneDowser] PingRange` | 40 | Metres within which it pings toward the nearest rock |
@@ -174,3 +189,4 @@ Each player sets these for themselves, in the same section `Gear.WhiteHiltPathfi
 | `HudArrowTop` | 110 | Pixels from the top of the screen to the arrow |
 | `HudArrowSize` | 44 | Size of the arrow in pixels |
 | `ShowDistance` | true | Write the distance under the arrow |
+| `[Navigation.Forecast] StormBell` | true | The storm warning rings the ship's bell |
