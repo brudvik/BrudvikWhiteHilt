@@ -14,6 +14,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private const string AutopilotRpc = "WhiteHiltAutopilot";
     private const string ShallowRpc = "WhiteHiltAutopilotShallow";
     private const string PushRpc = "WhiteHiltShipPush";
+    private const string HaltRpc = "WhiteHiltShipHalt";
     private const float CheckInterval = 0.5f;
 
     // A push gives the ship this speed away from the pusher, and a little lift off the ground.
@@ -176,6 +177,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         nview.Register<bool, float>(AutopilotRpc, RPC_Autopilot);
         nview.Register(ShallowRpc, RPC_Shallow);
         nview.Register<Vector3>(PushRpc, RPC_Push);
+        nview.Register(HaltRpc, RPC_Halt);
     }
 
     private void FixedUpdate()
@@ -237,6 +239,17 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         if (nview != null && nview.IsValid() && nview.IsOwner())
         {
             nview.GetZDO().Set(AutopilotKey, false);
+        }
+    }
+
+    /// <summary>
+    /// Stops holding the course and stops the ship, from any client.
+    /// </summary>
+    public void Halt()
+    {
+        if (nview != null && nview.IsValid())
+        {
+            nview.InvokeRPC(HaltRpc);
         }
     }
 
@@ -346,6 +359,17 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
         body.WakeUp();
         body.AddForce(direction.normalized * PushSpeed + Vector3.up * PushLift, ForceMode.VelocityChange);
+    }
+
+    private void RPC_Halt(long sender)
+    {
+        if (!nview.IsOwner() || ship == null)
+        {
+            return;
+        }
+
+        nview.GetZDO().Set(AutopilotKey, false);
+        ship.m_speed = Ship.Speed.Stop;
     }
 
     private void RPC_Shallow(long sender)

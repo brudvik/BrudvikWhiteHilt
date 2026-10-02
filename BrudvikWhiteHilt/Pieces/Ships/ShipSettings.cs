@@ -178,6 +178,27 @@ public static class ShipSettings
     /// <summary>Seconds before the warning can come again.</summary>
     public static ConfigEntry<float> ShoalCooldown { get; private set; }
 
+    /// <summary>Whether a fall from a moving ship is called out to those aboard.</summary>
+    public static ConfigEntry<bool> ManOverboard { get; private set; }
+
+    /// <summary>Speed in m/s the ship must have for a fall to count.</summary>
+    public static ConfigEntry<float> OverboardMinSpeed { get; private set; }
+
+    /// <summary>Whether a ship sailing its route or holding its course stops.</summary>
+    public static ConfigEntry<bool> OverboardStopShip { get; private set; }
+
+    /// <summary>Seconds after which the alert ends by itself.</summary>
+    public static ConfigEntry<float> OverboardTimeout { get; private set; }
+
+    /// <summary>Whether a lifeline can be thrown.</summary>
+    public static ConfigEntry<bool> Lifeline { get; private set; }
+
+    /// <summary>Metres a lifeline reaches.</summary>
+    public static ConfigEntry<float> LifelineRange { get; private set; }
+
+    /// <summary>Seconds from throwing the lifeline until the player is aboard.</summary>
+    public static ConfigEntry<float> LifelineDelay { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -303,6 +324,20 @@ public static class ShipSettings
             "Below this speed, in m/s, there is no warning, so it stays quiet while you lay to.", new AcceptableValueRange<float>(0f, 20f));
         ShoalCooldown = WhiteHiltConfig.BindLocal(Section, "ShoalCooldown", 8f,
             "Seconds before the shoal warning can come again.", new AcceptableValueRange<float>(1f, 120f));
+        ManOverboard = WhiteHiltConfig.BindAdminOnly(Section, "ManOverboard", true,
+            "When someone falls from a moving ship, everyone aboard is told, with the bell, a pin on the map and an arrow on the minimap toward them.");
+        OverboardMinSpeed = WhiteHiltConfig.BindAdminOnly(Section, "OverboardMinSpeed", 2f,
+            "Speed in m/s the ship must have for a fall to count, so stepping off at a dock does not.", new AcceptableValueRange<float>(0f, 20f));
+        OverboardStopShip = WhiteHiltConfig.BindAdminOnly(Section, "OverboardStopShip", true,
+            "A ship that sails its route or holds its course stops when someone falls overboard. A ship someone steers is left to them.");
+        OverboardTimeout = WhiteHiltConfig.BindAdminOnly(Section, "OverboardTimeout", 300f,
+            "Seconds after which the man overboard alert ends by itself.", new AcceptableValueRange<float>(30f, 3600f));
+        Lifeline = WhiteHiltConfig.BindAdminOnly(Section, "Lifeline", true,
+            "Someone on the deck of the ship can throw a lifeline (Use) to the one in the water and pull them back aboard.");
+        LifelineRange = WhiteHiltConfig.BindAdminOnly(Section, "LifelineRange", 25f,
+            "Metres a lifeline reaches.", new AcceptableValueRange<float>(5f, 100f));
+        LifelineDelay = WhiteHiltConfig.BindAdminOnly(Section, "LifelineDelay", 1.5f,
+            "Seconds from throwing the lifeline until the one in the water is pulled aboard.", new AcceptableValueRange<float>(0f, 10f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
@@ -314,6 +349,11 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_shiphud_depth", "Depth {0} m");
         Translations.AddEnglish("whitehilt_shoal_shallow", "Shallow water ahead!");
         Translations.AddEnglish("whitehilt_shoal_blocked", "Rocks or something in the way ahead!");
+        Translations.AddEnglish("whitehilt_overboard_alert", "Man overboard: {0}!");
+        Translations.AddEnglish("whitehilt_overboard_self", "Overboard! Your crew has been told");
+        Translations.AddEnglish("whitehilt_overboard_ship_pin", "Ship");
+        Translations.AddEnglish("whitehilt_overboard_lifeline", "Throw a lifeline to {0}");
+        Translations.AddEnglish("whitehilt_overboard_pulled", "{0} throws you a lifeline");
         Translations.AddEnglish("whitehilt_ship_push", "Push the ship");
         Translations.AddEnglish("whitehilt_route_open", "Route markers");
         Translations.AddEnglish("whitehilt_route_need_markers", "Exploration {0} is needed to set route markers");

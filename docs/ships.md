@@ -41,6 +41,8 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 - **Camera zoom**: at the helm the camera zooms 2 m further out than in vanilla (`CameraExtraZoom`), and everyone aboard, standing on deck or sitting, can zoom out just as far (`CameraZoomAllAboard`).
 - **Camera sweep**: when a ship sets off on its route ("Take me there" or explorer mode, see [Navigation](navigation.md)), the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once.
 - **Push the ship**: standing on shore or in the water next to a ship that lies still, look at it and press **E** (hold to keep pushing). It is pushed away from you, off a beach or a rock.
+- **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard gets *Man overboard: Kjell!*, the ship's bell, a pin on the map and an arrow on the minimap's edge pointing to you. You get a pin and an arrow toward the ship. A ship that sails its route or holds its course stops; a ship someone steers is left to them. It ends when you are out of the water, die, or after 5 minutes.
+- **Lifeline**: standing on the deck of that ship within 25 m of the one in the water, press **E** (*Throw a lifeline to Kjell* under the crosshair). A moment later they are pulled aboard next to you.
 
 **Harbour Anchor:** a standing iron anchor built next to a map table. While one stands within 5 m of a map table, every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
@@ -83,6 +85,13 @@ Section `[Ships]` (admin only, synced from the server):
 | `RouteExploreNearLand` | 120 | Within this many metres of land, explorer mode never uses full sail |
 | `CameraExtraZoom` | 2 | Metres the camera can zoom further out at the helm than in vanilla; 0 keeps the vanilla limit |
 | `CameraZoomAllAboard` | true | Everyone aboard can zoom out as far as the one at the helm |
+| `ManOverboard` | true | A fall from a moving ship is called out to those aboard |
+| `OverboardMinSpeed` | 2 | Speed in m/s the ship must have for a fall to count |
+| `OverboardStopShip` | true | A ship sailing its route or holding its course stops |
+| `OverboardTimeout` | 300 | Seconds after which the alert ends by itself |
+| `Lifeline` | true | A lifeline can be thrown from the deck |
+| `LifelineRange` | 25 | Metres a lifeline reaches |
+| `LifelineDelay` | 1.5 | Seconds until the one in the water is aboard |
 
 Each player's own settings in `[Ships]`:
 

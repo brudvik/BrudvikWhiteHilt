@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.44.0 - 2026-10-02
+
+### Added
+- **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard is told, with the ship's bell, a pin on the map and an arrow on the minimap toward you; you get a pin and an arrow toward the ship. A ship sailing its route or holding its course stops. From the deck within 25 m, **E** throws a **lifeline** that pulls the one in the water back aboard. New settings `Ships` → `ManOverboard`, `Overboard*`, `Lifeline*`. See [Ships](docs/ships.md)
+
 ## v0.43.0 - 2026-10-02
 
 ### Added

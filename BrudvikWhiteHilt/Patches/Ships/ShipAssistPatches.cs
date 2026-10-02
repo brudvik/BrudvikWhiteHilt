@@ -60,6 +60,29 @@ public static class ShipAssistPatches
             ShipAssist.Tick(__instance);
             Pieces.Navigation.ShipRoutePlanner.Tick(__instance);
             Pieces.Ships.WhiteHiltShip.ShipPortalArrival.Tick(__instance);
+            ManOverboard.Tick(__instance);
         }
+    }
+
+    /// <summary>
+    /// Registers the man overboard RPCs for this game session.
+    /// </summary>
+    [HarmonyPatch(typeof(Game), nameof(Game.Start))]
+    [HarmonyPostfix]
+    public static void GameStart()
+    {
+        ManOverboard.RegisterRpcs();
+    }
+
+    /// <summary>
+    /// Shows the lifeline prompt under the crosshair.
+    /// </summary>
+    /// <param name="__instance">The HUD.</param>
+    /// <param name="player">The local player.</param>
+    [HarmonyPatch(typeof(Hud), nameof(Hud.UpdateCrosshair))]
+    [HarmonyPostfix]
+    public static void UpdateCrosshair(Hud __instance, Player player)
+    {
+        ManOverboard.UpdateCrosshair(__instance, player);
     }
 }
