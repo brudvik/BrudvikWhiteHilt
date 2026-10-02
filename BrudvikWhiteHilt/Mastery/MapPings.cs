@@ -172,7 +172,8 @@ public static class Lookout
     /// <param name="player">The local player.</param>
     public static void Update(Player player)
     {
-        if (Backpack.BackpackInput.Typing() || !Backpack.BackpackInput.Pressed(MasterySettings.KeyLookout) || !Perks.Lookout.Has(player))
+        // The build camera uses the same key for its photo view.
+        if (Backpack.BackpackInput.Typing() || Building.BuildCamera.Active || !Backpack.BackpackInput.Pressed(MasterySettings.KeyLookout) || !Perks.Lookout.Has(player))
         {
             return;
         }
