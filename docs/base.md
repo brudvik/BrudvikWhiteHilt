@@ -61,6 +61,29 @@ The server sets it in the `WasteWell` section: `DisposeDelaySeconds` (5), `Colle
 
 ---
 
+## 🏆 TROPHY ALTAR
+
+A small stone altar, about 1.2 × 0.6 m, with a miniature Eikthyr standing on it. Open it like a workbench: offer one boss trophy and one **Swamp Key** and get a full stack (20) of that trophy back. The Elder drops one key per kill, so every extra stack costs another fight with him. Keep one key for the crypts.
+
+- It copies the trophies of the seven bosses: Eikthyr, The Elder, Bonemass, Moder, Yagluth, The Queen and Fader. Other trophies, including the White Hilt monsters' trophies, have to be collected in the normal way.
+- A trophy only shows up at the altar once you have picked it up, so it never skips a boss.
+- It needs no roof and no fire. The craft amount arrows on the Craft button make several stacks at once if you have the keys.
+
+<img src="images/trophy_altar.png" alt="Trophy Altar" title="Trophy Altar" height="140">
+
+| **Piece** | Description | Crafting Station | Requirements |
+|---|---|---|---|
+| **Trophy Altar** | Boss trophy + Swamp Key gives a full stack of that trophy | Workbench | Stone ×10, Fine Wood ×4, Iron ×2, Ancient Bark ×2 |
+
+| Setting (`TrophyAltar`) | Default | Description |
+|---|---|---|
+| `Trophies` | the 7 boss trophies | Trophy prefab names the altar can copy, comma separated. A name added here needs a restart |
+| `TrophiesPerCraft` | 1 | Trophies one copy takes |
+| `KeysPerCraft` | 1 | Swamp Keys one copy takes |
+| `TrophiesMade` | 0 | Trophies one copy gives. 0: a full stack |
+
+---
+
 ## 🚪 SELF-CLOSING DOORS
 
 Doors, gates and windows built by players close on their own a few seconds after the last one went through. Nothing closes while a player (or a tamed animal) is within 3 m of the opening, so no door shuts in anyone's face. Doors with a key, doors that cannot be closed and doors in dungeons and villages are left alone.

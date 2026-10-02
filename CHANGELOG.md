@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.50.0 - 2026-10-02
+
+### Added
+- **Trophy Altar**: a small stone altar with a miniature Eikthyr. One boss trophy and one Swamp Key give a full stack (20) of that trophy, so every extra stack costs another kill of The Elder. It copies the seven vanilla boss trophies, and a trophy only shows up once you have picked it up. Built at the workbench from Stone ×10, Fine Wood ×4, Iron ×2 and Ancient Bark ×2. New section `[TrophyAltar]`. See [Around the base](docs/base.md#-trophy-altar)
+
 ## v0.49.0 - 2026-10-02
 
 ### Added

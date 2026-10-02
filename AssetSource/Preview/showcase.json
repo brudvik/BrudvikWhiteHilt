@@ -42,6 +42,7 @@
     { "image": "home_stone", "models": ["homestone"] },
     { "image": "surts_brazier", "models": ["eternalfire"] },
     { "image": "waste_well", "models": ["wastewell"] },
+    { "image": "trophy_altar", "models": ["trophyaltar"], "view": { "yaw": 150, "pitch": 25 } },
     { "image": "harbour_anchor", "models": ["shipanchor"] },
     { "image": "mooring_post", "piece": "fortoyningspale", "view": { "yaw": 150, "pitch": 15 } },
     { "image": "munins_perch", "compose": "muninperch.preview.json", "view": { "yaw": 20, "pitch": 12, "zoom": 0.8 } },

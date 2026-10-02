@@ -63,7 +63,7 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, and doors, gates and windows that close on their own.
+Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying boss trophies, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
@@ -198,6 +198,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
 - Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Trophy Altar model: ["Stone Altar"](https://sketchfab.com/3d-models/stone-altar-3d4f2edb18e4424cabb41b60aa160cb5) by [TheoClarke](https://sketchfab.com/TheoClarke), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Bed model: ["Wicker_Basket"](https://sketchfab.com/3d-models/wicker-basket-c8e8dc18b73946daaa4d51f81783ceab) by [National Heritage Administration](https://sketchfab.com/NHA_Asset), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Lid cut away, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Bowl model: ["Bark_bowl_package"](https://sketchfab.com/3d-models/bark-bowl-package-81641c44d91f40de85bbe36c5a346223) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). The low bowl taken out of the set, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Whistle model: ["Wajia Flute"](https://sketchfab.com/3d-models/wajia-flute-e6d1c436d3bc41f99f49b5dc2c821b2f) by [3D Vault](https://sketchfab.com/3DVault), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.

@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.49.0";
+    public const string PluginVersion = "0.50.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -99,6 +99,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Drops.FloatingItems.Initialize();
         Pieces.Waste.WasteWellSettings.Initialize();
         Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
+        Pieces.Trophies.TrophyAltarSettings.Initialize();
         Pieces.Defenses.DefenseSettings.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();

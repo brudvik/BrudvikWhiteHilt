@@ -434,6 +434,8 @@
     <Compile Include="Patches\Sound\IndoorSoundPatches.cs" />
     <Compile Include="Drops\FloatingItems.cs" />
     <Compile Include="Patches\Drops\FloatingItemsPatch.cs" />
+    <Compile Include="Pieces\Trophies\TrophyAltar.cs" />
+    <Compile Include="Pieces\Trophies\TrophyAltarSettings.cs" />
     <Compile Include="Pieces\Waste\WasteWell.cs" />
     <Compile Include="Pieces\Waste\WasteWellComponent.cs" />
     <Compile Include="Pieces\Waste\WasteWellSettings.cs" />
