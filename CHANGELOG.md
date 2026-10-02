@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.47.0 - 2026-10-02
+
+### Added
+- **Exploration overview** on the large map from Exploration 25: the share and area of each biome you have uncovered (shared map too from Exploration 50), the whole world, and what Munin's Perch has found. New section `Map.Overview`. See [Navigation](docs/navigation.md#-exploration-overview)
+
 ## v0.46.0 - 2026-10-02
 
 ### Added

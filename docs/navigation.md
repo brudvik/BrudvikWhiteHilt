@@ -41,6 +41,16 @@ The game draws the weather for each period of about 11 minutes from the weathers
 
 **Storm warning:** aboard a ship with a Navigator's Table, everyone is told *A storm is coming in 3 min!* and the ship's bell rings when the next period where you are brings thunder or a snowstorm.
 
+## 📊 Exploration overview
+
+From Exploration 25, the large map has an **Uncovered** panel at the bottom right. Click its header to open it:
+
+- every biome with a bar for the share you have uncovered and the area in km², and the whole world below;
+- from Exploration 50, map shared with you through a map table counts too, as it is drawn as your own;
+- if a Munin's Perch shares discoveries, what has been found, by group.
+
+The first time it opens in a world, the panel measures the map for a few seconds (it shows how far it has come); after that it is up to date at once.
+
 ## 🪨 Stone Dowser
 
 The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest clearings around a big boulder, 22 in each. The **Stone Dowser** helps you find the next clearing, the way the Wishbone finds silver.
@@ -174,6 +184,8 @@ All admin only, synced from the server.
 | `[Navigation.Forecast] PeriodsAtLevelZero` / `PeriodsAtLevel100` | 1 / 4 | Periods ahead foretold at Exploration 0 and 100 |
 | `[Navigation.Forecast] StormWarning` | true | Those aboard a ship with a Navigator's Table are warned of a storm |
 | `[Navigation.Forecast] StormWarningMinutes` | 3 | Minutes before the storm that the warning comes |
+| `[Map.Overview] Overview` | true | The overview of uncovered biomes on the large map |
+| `[Map.Overview] Level` | 25 | Exploration level needed for it |
 | `[Gear.WhiteHiltStoneDowser] SearchRadius` | 3000 | Metres the Stone Dowser looks for a clearing with rocks left |
 | `[Gear.WhiteHiltStoneDowser] RefreshSeconds` | 30 | Seconds between each search |
 | `[Gear.WhiteHiltStoneDowser] PingRange` | 40 | Metres within which it pings toward the nearest rock |
