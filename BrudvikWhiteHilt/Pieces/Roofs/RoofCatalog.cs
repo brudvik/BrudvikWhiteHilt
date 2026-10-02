@@ -501,12 +501,15 @@ public static class RoofCatalog
             return;
         }
 
+        // The unused head has no working material of its own (it shows pink); it shares the hull's texture atlas.
+        Material[] headMaterials = PrefabManager.Instance.GetPrefab("VikingShip")?.transform.Find("ship/visual/hull_new/hull")?.GetComponent<MeshRenderer>()?.sharedMaterials
+            ?? renderer.sharedMaterials;
         foreach ((Vector3 tip, Vector3 outward, Vector3 up) in tips)
         {
             GameObject head = new("dragon_head") { layer = parent.gameObject.layer };
             head.transform.SetParent(parent, false);
             head.AddComponent<MeshFilter>().sharedMesh = filter.sharedMesh;
-            head.AddComponent<MeshRenderer>().sharedMaterials = renderer.sharedMaterials;
+            head.AddComponent<MeshRenderer>().sharedMaterials = headMaterials;
             RoofMeshBuilder.PlaceGableHead(head.transform, filter.sharedMesh.bounds, tip, outward, up);
         }
     }
