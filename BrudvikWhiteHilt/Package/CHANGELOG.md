@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.57.2 - 2026-10-03
+
+### Fixed
+- **Roofs**: the White Hilt roofs show where you aim and are placed there. They were put down twice as far from the middle of the world as where you aimed, so neither the ghost nor the placed roof could be seen
+- **Dragon gable**: the dragon heads are carved wood instead of pink
+- **Cultivator grid**: plants in a grid are now spaced so every one can grow. The spacing counts the size of the sapling and of the grown crop, not only the grow radius, and a place is red when the plant would stop a plant next to it from growing (or the other way round)
+
 ## v0.57.1 - 2026-10-02
 
 ### Fixed
