@@ -1,4 +1,5 @@
-﻿using Jotunn.Configs;
+﻿using BrudvikWhiteHilt.Progression;
+using Jotunn.Configs;
 using Jotunn.Managers;
 
 namespace BrudvikWhiteHilt.Items.Armors.WhiteHiltCape;
@@ -36,9 +37,13 @@ public class WhiteHiltCape : WhiteHiltArmorBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Feathers", Amount = 30, Recover = false },
-        new() { Item = "TrophyWraith", Amount = 3, Recover = false },
+        new() { Item = "TrophyDeathsquito", Amount = 1, Recover = false },
         new() { Item = "CapeTrollHide", Amount = 1, Recover = false }
     };
+
+    // Feather fall comes from the Mistlands feather cape, so the cape waits for the Plains.
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
     /// <summary>
     /// Indicates whether the tool is enabled.

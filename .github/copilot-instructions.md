@@ -84,6 +84,8 @@ Each item class must implement:
 
 **Exception – Stone Pot food and foraging meads**: Recipes cooked in the Stone Pot (`Items/Food/`) and the meads brewed from White Hilt forageables (`Items/Meads/`) may use food ingredients from any biome up to and including the **Mountains** (e.g. Wolf Meat, Onion, and the White Hilt Mountains forageables). The ingredients gate them naturally, so these recipes stay at `ProgressionTier.Start` and must not get tier materials such as Bronze or Silver. Gear, tools, pieces and the Gift potions still follow the Swamp rule.
 
+**Exception – armor biome upgrades and the White Hilt Cape**: White Hilt armor (uniforms included) upgrades past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor] Upgrade*`, see `Items/Armors/ArmorUpgrades.cs`). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape. The crafting recipes themselves still follow the Swamp rule.
+
 ### CopyFrom Item References
 
 Use Swamp-tier or earlier base items:

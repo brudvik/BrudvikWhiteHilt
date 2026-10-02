@@ -16,21 +16,27 @@ public static class WhiteHiltConfig
     private const string ContentSection = "Content";
     private const string RecipesSection = "Recipes";
     private const string MigrationsKey = "AppliedMigrations";
-    private const string BalanceMigration = "balance-0.28";
 
-    // Settings whose default changed in the 0.28 balance pass; old files still hold the old value.
-    private static readonly (string Section, string Key)[] BalanceResets =
+    // Settings whose default changed; old files still hold the old value, so each list is reset once per file.
+    private static readonly (string Id, (string Section, string Key)[] Resets)[] Migrations =
     {
-        ("Gear.Armor", "ArmorPerLevelBonus"),
-        ("Gear.Weapons", "DamageMultiplierBonus"),
-        ("Gear.Weapons", "BonusDamagePerLevel"),
-        ("Potions.GiftOfOdin", "DurationMinutes"),
-        ("Potions.GiftOfOdin", "HealthRegenBonus"),
-        ("Potions.GiftOfIdunn", "DurationMinutes"),
-        ("Potions.GiftOfIdunn", "HealthRegenMultiplier"),
-        ("Potions.GiftOfIdunn", "StaminaRegenMultiplier"),
-        ("Potions.GiftOfIdunn", "EitrRegenMultiplier"),
-        ("Potions.GiftOfIdunn", "HealPerSecond"),
+        ("balance-0.28", new[]
+        {
+            ("Gear.Armor", "ArmorPerLevelBonus"),
+            ("Gear.Weapons", "DamageMultiplierBonus"),
+            ("Gear.Weapons", "BonusDamagePerLevel"),
+            ("Potions.GiftOfOdin", "DurationMinutes"),
+            ("Potions.GiftOfOdin", "HealthRegenBonus"),
+            ("Potions.GiftOfIdunn", "DurationMinutes"),
+            ("Potions.GiftOfIdunn", "HealthRegenMultiplier"),
+            ("Potions.GiftOfIdunn", "StaminaRegenMultiplier"),
+            ("Potions.GiftOfIdunn", "EitrRegenMultiplier"),
+            ("Potions.GiftOfIdunn", "HealPerSecond"),
+        }),
+        ("armor-0.48", new[]
+        {
+            ("Gear.Armor", "ArmorPerLevelBonus"),
+        }),
     };
 
     private static readonly (string Section, string Key)[] RetiredEntries =
@@ -246,9 +252,14 @@ public static class WhiteHiltConfig
         ConfigDefinition marker = new(GeneralSection, MigrationsKey);
         orphans.TryGetValue(marker, out string applied);
         List<string> done = (applied ?? string.Empty).Split(',').Select(id => id.Trim()).Where(id => id.Length > 0).ToList();
-        if (!done.Contains(BalanceMigration))
+        foreach ((string id, (string Section, string Key)[] resets) in Migrations)
         {
-            foreach ((string section, string key) in BalanceResets)
+            if (done.Contains(id))
+            {
+                continue;
+            }
+
+            foreach ((string section, string key) in resets)
             {
                 ConfigDefinition definition = new(section, key);
                 if (configFile.ContainsKey(definition))
@@ -258,10 +269,10 @@ public static class WhiteHiltConfig
                 }
             }
 
-            done.Add(BalanceMigration);
+            done.Add(id);
             orphans[marker] = string.Join(",", done);
             changed = true;
-            Jotunn.Logger.LogInfo($"Config migration {BalanceMigration} applied.");
+            Jotunn.Logger.LogInfo($"Config migration {id} applied.");
         }
 
         if (changed)

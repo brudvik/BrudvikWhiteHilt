@@ -5,6 +5,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Armors;
 
@@ -23,6 +24,7 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     private float baseArmor;
     private float baseArmorPerLevel;
     private float baseMovementModifier;
+    private bool upgradeable;
 
     /// <summary>
     /// The base name of the armor item.
@@ -137,6 +139,14 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
             baseArmorPerLevel = item.ItemData.m_armorPerLevel;
             baseMovementModifier = item.ItemData.m_movementModifier;
             added = item;
+            ItemDrop.ItemData.ItemType type = item.ItemData.m_itemType;
+            upgradeable = type is ItemDrop.ItemData.ItemType.Helmet or ItemDrop.ItemData.ItemType.Chest
+                or ItemDrop.ItemData.ItemType.Legs or ItemDrop.ItemData.ItemType.Shoulder;
+            if (upgradeable)
+            {
+                ArmorUpgrades.Register(BaseName, NameToken, type == ItemDrop.ItemData.ItemType.Shoulder);
+            }
+
             ApplyConfig();
             if (!VisualHelper.IsHeadless)
             {
@@ -166,7 +176,14 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
 
         added.ItemData.m_armor = baseArmor + armorBonus.Value;
         added.ItemData.m_armorPerLevel = baseArmorPerLevel + armorPerLevelBonus.Value;
-        added.ItemData.m_movementModifier = baseMovementModifier + movementBonus.Value;
+        added.ItemData.m_movementModifier = baseMovementModifier < 0f
+            ? Mathf.Min(0f, baseMovementModifier + movementBonus.Value)
+            : baseMovementModifier;
+        if (upgradeable)
+        {
+            added.ItemData.m_maxQuality = ArmorUpgrades.MaxQuality;
+        }
+
         added.ApplyConfig();
     }
 
@@ -218,9 +235,10 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
 
         armorBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorBonus", 4f,
             "Armor added to every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 100f));
-        armorPerLevelBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorPerLevelBonus", 1f,
+        armorPerLevelBonus = WhiteHiltConfig.BindAdminOnly(Section, "ArmorPerLevelBonus", 0f,
             "Added to the armor gained per quality level of every White Hilt armor piece.", new AcceptableValueRange<float>(0f, 200f));
         movementBonus = WhiteHiltConfig.BindAdminOnly(Section, "MovementBonus", 0.05f,
-            "Added to the movement speed modifier of every White Hilt armor piece (0.05 = 5% faster).", new AcceptableValueRange<float>(-0.5f, 0.5f));
+            "Taken off the movement penalty of every White Hilt armor piece that has one (0.05 = 5%). A piece never gets faster than no armor.", new AcceptableValueRange<float>(-0.5f, 0.5f));
+        ArmorUpgrades.BindConfig();
     }
 }

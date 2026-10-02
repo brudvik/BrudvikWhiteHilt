@@ -33,11 +33,26 @@ The White Hilt weapons and shields have their own models with white hilts, grips
 
 ## 🛡️ ARMOR
 
-All armor pieces are indestructible and weightless, a little better than iron: +4 armor per piece, +1 extra armor per quality level, and 5% faster movement per piece (which cancels the iron armor's slowdown). The White Hilt Helmet has the Flametal helmet's look with the Iron Helmet's stats.
+All armor pieces are indestructible and weightless, a little better than iron: +4 armor per piece, and no slowdown (the iron armor's -5% is taken off; no piece makes you faster). The White Hilt Helmet has the Flametal helmet's look with the Iron Helmet's stats.
+
+### Upgrades through the biomes
+
+White Hilt armor, the uniforms included, goes past quality 4: one more level for each biome after the Swamp, paid with that biome's material. A piece stays a little below the best vanilla armor of the biome it is upgraded for, which is the price of being weightless and indestructible. From quality 5 the station level of quality 4 is enough.
+
+| Quality | Biome | Upgrade cost | Helmet, chest, legs | Cape | Best vanilla piece there |
+|---|---|---|---|---|---|
+| 1 | Swamp | the recipe | 18 | 5 | Iron 14 |
+| 2, 3, 4 | Swamp | Iron ×5 each | 20, 22, 24 | 6, 7, 8 | Iron 20 |
+| 5 | Mountain | Silver ×10 | 26 | 10 | Wolf 26 |
+| 6 | Plains | Black Metal ×10 | 30 | 12 | Padded 32 |
+| 7 | Mistlands | Carapace ×10 | 36 | 14 | Carapace 38 |
+| 8 | Ashlands | Flametal ×10 | 42 | 16 | Flametal 44 |
+
+The recipe's own materials are only paid when the piece is crafted. The White Hilt Shield stays at quality 4. The White Hilt Cape gives feather fall, so it needs a Deathsquito trophy from the Plains (and unlocks in the Plains tier in linear mode).
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
-| **White Hilt Cape** | The Indestructible Cape of Dyrnwyn | Forge (Level 3) | Feathers ×30, Wraith Trophy ×3, Troll Hide Cape ×1 |
+| **White Hilt Cape** | The Indestructible Cape of Dyrnwyn | Forge (Level 3) | Feathers ×30, Deathsquito Trophy ×1, Troll Hide Cape ×1 |
 | **White Hilt Helmet** | The Indestructible Helmet of Dyrnwyn | Forge (Level 3) | Iron ×30, Iron Nails ×100, Iron Helmet ×1 |
 | **White Hilt Chestplate** | The Indestructible Chestplate of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Chestplate ×1 |
 | **White Hilt Greaves** | The Indestructible Greaves of Dyrnwyn | Forge (Level 3) | Iron ×20, Deer Hide ×10, Bronze Greaves ×1 |
@@ -47,7 +62,7 @@ The **White Hilt Banner Cape** is not part of the indestructible set: a white tr
 
 ### Black uniforms
 
-Two black uniforms with gold trim, the White Hilt badge on the left breast and the logo on the cape. They are indestructible and weightless, with the same armor as the White Hilt Chestplate, Greaves and Cape (the cape does not give the White Hilt Cape's feather fall). The tunic and the officer's jerkin are both chest pieces, so wear one of them with its own trousers or breeches. The officer's pieces copy the Deep North medium armor, which vanilla Valheim does not let you craft yet, so a game update may change how they look.
+Two black uniforms with gold trim, the White Hilt badge on the left breast and the logo on the cape. They are indestructible and weightless, with the same armor and biome upgrades as the White Hilt Chestplate, Greaves and Cape (the cape does not give the White Hilt Cape's feather fall). The tunic and the officer's jerkin are both chest pieces, so wear one of them with its own trousers or breeches. The officer's pieces copy the Deep North medium armor, which vanilla Valheim does not let you craft yet, so a game update may change how they look.
 
 <img src="images/white_hilt_uniform.png" alt="White Hilt Uniform" title="White Hilt Uniform" height="140"> <img src="images/white_hilt_uniform_back.png" alt="White Hilt Uniform, back" title="White Hilt Uniform, back" height="140"> <img src="images/white_hilt_officer.png" alt="White Hilt Officer's uniform" title="White Hilt Officer's uniform" height="140"> <img src="images/white_hilt_officer_back.png" alt="White Hilt Officer's uniform, back" title="White Hilt Officer's uniform, back" height="140">
 
@@ -109,8 +124,18 @@ All admin only, synced from the server.
 | `[Gear.Weapons] BonusDamagePerLevel` | 2 | Added per quality level to each damage type the weapon already deals |
 | `[Gear.Weapons] SwordFireDamage` | 5 | Fire damage of the White Hilt Sword |
 | `[Gear.Armor] ArmorBonus` | 4 | Armor added to each armor piece |
-| `[Gear.Armor] ArmorPerLevelBonus` | 1 | Added to the armor per quality level |
-| `[Gear.Armor] MovementBonus` | 0.05 | Added to the movement speed of each armor piece (0.05 = 5% faster) |
+| `[Gear.Armor] ArmorPerLevelBonus` | 0 | Added to the armor per quality level up to quality 4 |
+| `[Gear.Armor] MovementBonus` | 0.05 | Taken off the slowdown of each armor piece that has one (0.05 = 5%); never makes a piece faster |
+| `[Gear.Armor] UpgradeSwamp` | Iron:5 | Cost of each upgrade to quality 2, 3 and 4 (`Prefab:Amount`, comma separated) |
+| `[Gear.Armor] UpgradeMountain` | Silver:10 | Cost of the upgrade to quality 5. Empty: armor stops at quality 4 |
+| `[Gear.Armor] UpgradePlains` | BlackMetal:10 | Cost of the upgrade to quality 6. Empty: armor stops at the level before |
+| `[Gear.Armor] UpgradeMistlands` | Carapace:10 | Cost of the upgrade to quality 7. Empty: armor stops at the level before |
+| `[Gear.Armor] UpgradeAshlands` | FlametalNew:10 | Cost of the upgrade to quality 8. Empty: armor stops at the level before |
+| `[Gear.Armor] MountainArmor` | 2 | Armor a helmet, chest or leg piece gains at quality 5 |
+| `[Gear.Armor] PlainsArmor` | 4 | Armor a helmet, chest or leg piece gains at quality 6 |
+| `[Gear.Armor] MistlandsArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 7 |
+| `[Gear.Armor] AshlandsArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 8 |
+| `[Gear.Armor] CapeArmorPerBiome` | 2 | Armor a cape gains at each quality from 5 to 8 |
 | `[Gear.Tools] HomeItemsStaminaReduction` | 1.0 | Taken off the stamina use for building, farming and cultivating (1 = no stamina) |
 | `[Gear.Ammunition] PierceMultiplier` | 2 | Multiplies the pierce damage of arrows and bolts |
 | `[Gear.Ammunition] BonusFireDamage` | 30 | Fire damage added to arrows and bolts |

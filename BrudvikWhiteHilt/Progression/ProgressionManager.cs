@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Armors;
 
 namespace BrudvikWhiteHilt.Progression;
 
@@ -104,7 +105,8 @@ public static class ProgressionManager
 
             ProgressionTier? tier = ResolveTier(entry, linear);
             recipe.m_enabled = tier.HasValue && tier.Value <= unlockedTier;
-            recipe.m_resources = GetRequirements(entry, recipe.m_resources, linear ? tier : null, int.MaxValue);
+            recipe.m_resources = ArmorUpgrades.Append(recipe.m_item.name,
+                GetRequirements(entry, recipe.m_resources, linear ? tier : null, int.MaxValue));
         }
 
         bool piecesChanged = false;

@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.48.0 - 2026-10-02
+
+### Added
+- **White Hilt armor grows with the world**: the armor and the uniforms upgrade past quality 4, one level per biome after the Swamp: quality 5 with Silver (Mountain), 6 with Black Metal (Plains), 7 with Carapace (Mistlands) and 8 with Flametal (Ashlands). A helmet, chest or leg piece goes 26 / 30 / 36 / 42, a cape gains 2 per level, always a little below the best vanilla armor of that biome. From quality 5 the station level of quality 4 is enough. New settings `[Gear.Armor] Upgrade*`, `*Armor` and `CapeArmorPerBiome`. See [White Hilt gear](docs/equipment.md#upgrades-through-the-biomes)
+
+### Changed
+- White Hilt armor was too strong for the Swamp (a full set at quality 4 had 92 armor, more than the Mountain wolf set). A piece now has 18 armor at quality 1 and 24 at quality 4 (was 27), and a full set 80 at quality 4: good enough for the Mountains. `ArmorPerLevelBonus` is now 0 (reset once in existing config files)
+- Upgrading White Hilt armor now costs Iron ×5 per level up to quality 4 (it was free); the recipe's own materials are only paid when crafting
+- `MovementBonus` only takes away the iron armor's slowdown: the helmet and capes no longer make you 5% faster each
+- The White Hilt Cape needs a Deathsquito Trophy instead of 3 Wraith Trophies, and unlocks with the Plains tier in linear mode
+
 ## v0.47.1 - 2026-10-02
 
 ### Fixed
