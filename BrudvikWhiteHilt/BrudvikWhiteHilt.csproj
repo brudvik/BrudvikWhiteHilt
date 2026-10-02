@@ -308,6 +308,12 @@
     <Compile Include="Pieces\Portals\WhiteHiltPortal\IWhiteHiltPortal.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalBaseGlow.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalSettings.cs" />
+    <Compile Include="Pieces\Portals\Effects\PortalFx.cs" />
+    <Compile Include="Pieces\Portals\Effects\PortalFxPlayer.cs" />
+    <Compile Include="Pieces\Portals\Effects\PortalFxScreen.cs" />
+    <Compile Include="Pieces\Portals\Effects\PortalFxSettings.cs" />
+    <Compile Include="Pieces\Portals\Effects\PortalFxWorld.cs" />
+    <Compile Include="Patches\Portals\PortalFxPatches.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravel.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravelPanel.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalComponent.cs" />
@@ -714,6 +720,10 @@
     <EmbeddedResource Include="Assets\Compass\CompassDial.png" />
     <EmbeddedResource Include="Assets\Compass\CompassNeedle.png" />
     <EmbeddedResource Include="Assets\Uniform\CapeTrim.png" />
+    <EmbeddedResource Include="Assets\PortalFx\RuneRing.png" />
+    <EmbeddedResource Include="Assets\PortalFx\Spark.png" />
+    <EmbeddedResource Include="Assets\PortalFx\Depart.wav" />
+    <EmbeddedResource Include="Assets\PortalFx\Arrive.wav" />
     <EmbeddedResource Include="Assets\WeatherCloud.png" />
     <EmbeddedResource Include="Assets\WeatherFog.png" />
     <EmbeddedResource Include="Assets\WeatherMoon.png" />

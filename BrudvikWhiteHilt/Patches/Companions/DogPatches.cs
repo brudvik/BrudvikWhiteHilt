@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Companions;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Companions;
+using BrudvikWhiteHilt.Pieces.Portals.Effects;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,16 +248,20 @@ public static class DogPatches
     /// <summary>
     /// A following dog near the player goes through the portal too.
     /// </summary>
+    /// <param name="__instance">The player.</param>
     /// <param name="pos">Where the player goes.</param>
     /// <param name="rot">The player's rotation there.</param>
     /// <param name="__result">True when the teleport started.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.TeleportTo))]
     [HarmonyPostfix]
-    private static void TakeDogAlong(Vector3 pos, Quaternion rot, bool __result)
+    private static void TakeDogAlong(Player __instance, Vector3 pos, Quaternion rot, bool __result)
     {
         if (__result && travellingDog != null)
         {
-            travellingDog.TeleportTo(pos - rot * Vector3.forward * 2f);
+            Vector3 from = travellingDog.transform.position;
+            Vector3 to = pos - rot * Vector3.forward * 2f;
+            travellingDog.TeleportTo(to);
+            PortalFx.SendDog(from, to, PortalFx.ColourAt(__instance.transform.position));
         }
 
         travellingDog = null;

@@ -57,7 +57,7 @@ The Chain Bench for making chains at the forge, the Repair Anvil that repairs al
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_portal.png" alt="White Hilt Portal" height="120">
 
-Runes that let portals carry metal, a portal network with a travel map and the Home Stone, the Valkyrie Stone and the Portal Astrolabe.
+Runes that let portals carry metal, a portal network with a travel map and the Home Stone, the Valkyrie Stone, the Portal Astrolabe, and travel effects with a rune ring, a flash and a camera swing.
 
 ### 🔥 [Around the base](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)
 

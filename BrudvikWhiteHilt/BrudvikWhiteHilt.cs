@@ -79,6 +79,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         CraftingPanelSettings.Initialize();
         EternalFireRules.Initialize();
         PortalSettings.Initialize();
+        Pieces.Portals.Effects.PortalFxSettings.Initialize();
         BuildToolSettings.Initialize();
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
@@ -221,6 +222,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             Mastery.ForagingSkill.SetIconFromMushroom();
             Mastery.MasteryEffects.Register();
             Pieces.Ships.ShipBell.Create();
+            Pieces.Portals.Effects.PortalFx.CreateSounds();
 
             Jotunn.Logger.LogInfo("All custom items have been added!");
         }

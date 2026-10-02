@@ -62,6 +62,19 @@ The **Home Stone** takes you to your home portal from anywhere. It then rests fo
 
 The server sends the portal list every 10–20 seconds, so a new or renamed portal shows up in the list after a short while.
 
+### Portal effects
+
+Every trip by portal, White Hilt portal, Home Stone or Valkyrie Stone shows effects, seen by everyone nearby:
+
+- **Leaving**: you play an emote (cheer), rise and spin faster and faster while a ring of glowing runes turns on the ground and sparks stream off your body and spiral up. You stretch thin and vanish in a flash of light and sparks, with a rising shimmer and a whoosh.
+- **On your way**: where you will arrive, others see the rune ring pulse and sparks rise while your world loads.
+- **Arriving**: a flash, a burst of sparks and dust, a soft thump and a chime. You appear tall and thin in the light, settle to the ground and turn to a stop.
+- **Your own view**: the camera swings out around you, the view widens as you are pulled in, and the screen flashes white behind a ring of runes before the loading screen. The loading screen waits for the effects and lifts early at the far side, so you see your own arrival.
+- **Colours**: the effects take the colour of the strongest rune on the rune posts at the portal you leave from, and pale blue without runes.
+- **Dog**: a dog travelling along vanishes and appears in a small flash.
+
+The game keeps you in the portal for 2 seconds before it moves you, so the departure fits in that time and the trips take no longer than before. The effects need the mod on every client that should see them; the settings below are each player's own.
+
 ## Config
 
 All admin only, synced from the server.
@@ -74,3 +87,25 @@ All admin only, synced from the server.
 | `[Gear.Runes] Weight` | 1 | Weight of each rune |
 | `[Gear.Runes] MaxStackSize` | 10 | Runes of a kind per inventory slot |
 | `[Gear.WhiteHiltHomeStone] Weight` | 0.5 | Weight of the Home Stone |
+
+Portal effects, each player's own:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[Portals.Effects] Enabled` | true | Show the travel effects, your own and others' |
+| `[Portals.Effects] Camera` | true | Swing the camera out as you leave; turn off if camera moves make you unwell |
+| `[Portals.Effects] Flash` | true | White flash with a ring of runes as you leave |
+| `[Portals.Effects] Sounds` | true | Sounds of leaving and arriving |
+| `[Portals.Effects] Dog` | true | Small effect for a dog travelling along |
+| `[Portals.Effects] RuneColours` | true | Colour the effects after the strongest rune at the portal travelled from |
+| `[Portals.Effects] Colour` | #8CCBFF | Colour without runes |
+| `[Portals.Effects] Emote` | cheer | Emote as you step in, e.g. bow or kneel; empty for none |
+| `[Portals.Effects] FlashAt` | 1.7 | Seconds until you vanish (1–1.95; the game moves you at 2) |
+| `[Portals.Effects] ArriveSeconds` | 1.6 | Seconds the arrival takes |
+| `[Portals.Effects] LiftHeight` | 0.6 | Metres you rise before you vanish |
+| `[Portals.Effects] Spins` | 1.5 | Turns before you vanish |
+| `[Portals.Effects] Glow` | 2 | Glow of runes and sparks; above 1 they shine |
+| `[Portals.Effects] RingSize` | 3 | Width of the rune ring on the ground, in metres |
+| `[Portals.Effects] CameraDistance` | 3 | Metres the camera pulls back |
+| `[Portals.Effects] CameraTurn` | 120 | Degrees the camera swings around you |
+| `[Portals.Effects] FieldOfView` | 25 | Degrees the view widens as you are pulled in |

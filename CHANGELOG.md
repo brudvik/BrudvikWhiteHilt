@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.55.0 - 2026-10-02
+
+### Added
+- **Portal effects**: travelling by portal, Home Stone or Valkyrie Stone now looks like something. You rise, spin and stretch thin while a ring of glowing runes turns under you and sparks stream off your body, then vanish in a flash. At the far side the ring pulses while your world loads, and you appear in a flash of sparks and dust and settle to the ground. Others nearby see all of it. Your own camera swings out, the view widens and the screen flashes white behind a ring of runes; the loading screen waits for the effects. The colour follows the strongest rune at the portal you leave from, a dog travelling along gets a small flash, and leaving and arriving have their own sounds. New section `[Portals.Effects]`, each player's own. See [Portals & travel](docs/portals.md)
+
 ## v0.54.2 - 2026-10-02
 
 ### Fixed
