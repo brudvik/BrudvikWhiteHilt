@@ -121,7 +121,7 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_accessories", "Accessories");
         Translations.AddEnglish("whitehilt_backpack_accessory", "Accessory");
         Translations.AddEnglish("whitehilt_backpack_accessory_hint",
-            "Belts, Wisplight, Wishbone and the like. The last four also take the Home Stone and the Pathfinder's Amulet. All are worn at once, each kind once. Right-click a belt in your inventory to put it on.");
+            "Belts, Wisplight, Wishbone and the like. The last four also take the Home Stone, the Swamp Key and the Pathfinder's Amulet. All are worn at once, each kind once. Right-click a belt in your inventory to put it on.");
         Translations.AddEnglish("whitehilt_backpack_duplicate", "You already wear one of those");
         Translations.AddEnglish("whitehilt_backpack_hands", "Shield, ammo and coins");
         Translations.AddEnglish("whitehilt_backpack_shield", "Shield");

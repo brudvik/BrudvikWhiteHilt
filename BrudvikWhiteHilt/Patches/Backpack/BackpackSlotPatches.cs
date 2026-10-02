@@ -68,6 +68,47 @@ public static class BackpackSlotPatches
     }
 
     /// <summary>
+    /// Leaves what lies in the accessory slots out of item counts, so recipes, building and fuel do not count on it.
+    /// </summary>
+    /// <param name="__instance">The inventory.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="quality">Quality, or -1 for any.</param>
+    /// <param name="matchWorldLevel">Vanilla's world level check.</param>
+    /// <param name="__result">The count.</param>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CountItems))]
+    [HarmonyPostfix]
+    public static void CountItems(Inventory __instance, string name, int quality, bool matchWorldLevel, ref int __result)
+    {
+        if (name != null && __result > 0 && BackpackLayout.IsLocalInventory(__instance))
+        {
+            __result = UnityEngine.Mathf.Max(0, __result - UtilitySlots.CountKept(__instance, name, quality, matchWorldLevel));
+        }
+    }
+
+    /// <summary>
+    /// Never takes items from the accessory slots when the game uses items by name: crafting, building, fuel and the like.
+    /// </summary>
+    /// <param name="__instance">The inventory.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="amount">How many.</param>
+    /// <param name="itemQuality">Quality, or -1 for any.</param>
+    /// <param name="worldLevelBased">Vanilla's world level check.</param>
+    /// <returns>False when handled here.</returns>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.RemoveItem), typeof(string), typeof(int), typeof(int), typeof(bool))]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    public static bool RemoveItemByName(Inventory __instance, string name, int amount, int itemQuality, bool worldLevelBased)
+    {
+        if (!BackpackLayout.IsLocalInventory(__instance) || UtilitySlots.CountKept(__instance, name, itemQuality, worldLevelBased) == 0)
+        {
+            return true;
+        }
+
+        UtilitySlots.RemoveUnkept(__instance, name, amount, itemQuality, worldLevelBased);
+        return false;
+    }
+
+    /// <summary>
     /// Ammo in the ammo slot is used before any other of its kind.
     /// </summary>
     /// <param name="__instance">The inventory.</param>

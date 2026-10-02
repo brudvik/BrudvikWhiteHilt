@@ -10,6 +10,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ### Changed
 - **Heading ring on map portraits**: the small arrow at the bottom of your portrait is replaced by a ring around it with a point that slides round the edge as you turn. Nearby players get a white ring pointing where they face; further away the ring has no point. New setting `[Map] HeadingMarker`
 - **Munin's memory** and **Uncovered** sit side by side under the bottom-left corner of the large map, lined up with its left edge, and open upwards over the map. Uncovered no longer covers the vanilla buttons at the bottom right
+- The **Swamp Key** can be kept in the four extra accessory slots; it still opens crypt doors from there
+- Crafting, building and fuelling never take items from the accessory slots, so a key or amulet kept there is not used up by a recipe (e.g. the Trophy Altar's Swamp Key)
 
 ## v0.50.0 - 2026-10-02
 

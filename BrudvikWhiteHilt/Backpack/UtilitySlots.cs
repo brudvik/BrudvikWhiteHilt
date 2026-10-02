@@ -15,7 +15,8 @@ public static class UtilitySlots
 
     private const float CheckSeconds = 1f;
 
-    private static readonly HashSet<string> extraItems = new();
+    // The Swamp Key opens crypt doors from anywhere in the inventory, so it may be kept here out of the way.
+    private static readonly HashSet<string> extraItems = new() { "$item_cryptkey" };
     private static readonly List<ItemDrop.ItemData> worn = new();
     private static readonly HashSet<StatusEffect> applied = new();
     private static Player wornBy;
@@ -117,6 +118,69 @@ public static class UtilitySlots
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// True if the item lies in one of the accessory slots, where crafting, building and fuelling may not take it.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>True when kept in an accessory slot.</returns>
+    public static bool IsKept(ItemDrop.ItemData item)
+    {
+        return item.m_gridPos.y == BackpackLayout.UtilityRow && item.m_gridPos.x >= 0 && item.m_gridPos.x < Count;
+    }
+
+    /// <summary>
+    /// How many of the matching items lie in the accessory slots, by the same rules as <see cref="Inventory.CountItems"/>.
+    /// </summary>
+    /// <param name="inventory">The player's inventory.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="quality">Quality, or -1 for any.</param>
+    /// <param name="matchWorldLevel">Vanilla's world level check.</param>
+    /// <returns>The number kept there.</returns>
+    public static int CountKept(Inventory inventory, string name, int quality, bool matchWorldLevel)
+    {
+        int count = 0;
+        for (int x = 0; x < Count; x++)
+        {
+            ItemDrop.ItemData item = inventory.GetItemAt(x, BackpackLayout.UtilityRow);
+            if (item != null && Matches(item, name, quality, matchWorldLevel))
+            {
+                count += item.m_stack;
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Takes items by name like <see cref="Inventory.RemoveItem(string, int, int, bool)"/>, but never from the
+    /// accessory slots.
+    /// </summary>
+    /// <param name="inventory">The player's inventory.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="amount">How many.</param>
+    /// <param name="quality">Quality, or -1 for any.</param>
+    /// <param name="worldLevelBased">Vanilla's world level check.</param>
+    public static void RemoveUnkept(Inventory inventory, string name, int amount, int quality, bool worldLevelBased)
+    {
+        foreach (ItemDrop.ItemData item in inventory.m_inventory)
+        {
+            if (amount <= 0)
+            {
+                break;
+            }
+
+            if (!IsKept(item) && Matches(item, name, quality, worldLevelBased))
+            {
+                int taken = Mathf.Min(item.m_stack, amount);
+                item.m_stack -= taken;
+                amount -= taken;
+            }
+        }
+
+        inventory.m_inventory.RemoveAll(item => item.m_stack <= 0);
+        inventory.Changed();
     }
 
     /// <summary>
@@ -276,5 +340,11 @@ public static class UtilitySlots
 
         applied.Clear();
         applied.UnionWith(desired);
+    }
+
+    private static bool Matches(ItemDrop.ItemData item, string name, int quality, bool matchWorldLevel)
+    {
+        return item.m_shared.m_name == name && (quality < 0 || item.m_quality == quality)
+            && (!matchWorldLevel || item.m_worldLevel >= Game.m_worldLevel);
     }
 }
