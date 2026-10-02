@@ -336,7 +336,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             foreach (var pair in items)
             {
                 var shared = pair.Value;
-                if (!IsRealItem(shared)) continue;
+                if (!IsRealItem(shared) || ChestSupply.IsEarnedOnly(pair.Key)) continue;
 
                 if (!obtainable.Contains(pair.Key) && shared.m_itemType != ItemType.Fish)
                 {

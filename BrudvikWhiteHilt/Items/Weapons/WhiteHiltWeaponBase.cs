@@ -137,6 +137,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
                 GearUpgrades.Register(BaseName, NameToken, upgradeKind.Value);
             }
 
+            Binding.GearBinding.Register(NameToken, item.ItemData.m_itemType == ItemDrop.ItemData.ItemType.Shield);
+
             ApplyConfig();
 
             TryApplyModel(item);

@@ -152,6 +152,11 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
                 GearUpgrades.Register(BaseName, NameToken, upgradeKind.Value);
             }
 
+            if (upgradeKind == GearKind.Shield)
+            {
+                Binding.GearBinding.Register(NameToken, shield: true);
+            }
+
             ApplyConfig();
             if (!VisualHelper.IsHeadless)
             {

@@ -4,7 +4,7 @@
 
 ## ⚔️ WEAPONS
 
-All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals. Like the armor, they can be upgraded through the biomes, see [Upgrades through the biomes](#-upgrades-through-the-biomes).
+All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals. Like the armor, they can be upgraded through the biomes, see [Upgrades through the biomes](#-upgrades-through-the-biomes). A black beast trophy bound to a weapon or shield makes it stronger still, and a rune etched into a bound weapon gives it fire, frost, poison, lightning, a web or the grip of the deep, see [Binding and rune etching](smithing.md#-binding-and-rune-etching).
 
 The White Hilt Sword looks and burns like Dyrnwyn - every hit flares up in flames and sets the target briefly alight (+5 fire damage) - but has the Iron Sword's strength.
 

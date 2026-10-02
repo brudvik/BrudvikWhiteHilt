@@ -25,6 +25,8 @@ public class RuneForge : IWhiteHiltCustomPiece
     private static readonly string[] looks = { "New", "Worn", "Broken" };
 
     private readonly PieceManager instance;
+    private readonly BindingStone bindingStone = new();
+    private readonly RuneEtchingTable etchingTable = new();
 
     /// <inheritdoc/>
     public bool Enabled => true;
@@ -86,6 +88,8 @@ public class RuneForge : IWhiteHiltCustomPiece
 
             TryApplyVisual(piece, station);
             instance.AddPiece(piece);
+            bindingStone.Add(instance, station);
+            etchingTable.Add(instance, station);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }

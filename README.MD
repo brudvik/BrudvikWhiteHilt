@@ -51,7 +51,7 @@ The Exploration skill, the Cartographer's Desk, the Navigator's Table with route
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Repair Anvil" height="120">
 
-The Chain Bench for making chains at the forge, and the Repair Anvil that repairs all your gear at once.
+The Chain Bench for making chains at the forge, the Repair Anvil that repairs all your gear at once, and the Binding Stone and Rune Etching Table that bind black beast trophies and etch runes into White Hilt weapons.
 
 ### 🌀 [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
 

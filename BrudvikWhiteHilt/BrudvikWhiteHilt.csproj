@@ -136,6 +136,9 @@
     <Compile Include="Items\Ammunition\WhiteHiltAmmunitionBase.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltArrows\WhiteHiltArrows.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltBolts\WhiteHiltBolts.cs" />
+    <Compile Include="Items\Binding\BindingSettings.cs" />
+    <Compile Include="Items\Binding\GearBinding.cs" />
+    <Compile Include="Items\Binding\Infusion.cs" />
     <Compile Include="Items\GearUpgrades.cs" />
     <Compile Include="Items\Armors\WhiteHiltArmorBase.cs" />
     <Compile Include="Items\Armors\WhiteHiltCape\WhiteHiltCape.cs" />
@@ -464,6 +467,7 @@
     <Compile Include="Patches\Painting\PaintPatches.cs" />
     <Compile Include="Backpack\UtilitySlots.cs" />
     <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
+    <Compile Include="Patches\Gear\BindingPatches.cs" />
     <Compile Include="Patches\Gear\GearUpgradePatches.cs" />
     <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />
     <Compile Include="Patches\Backpack\BackpackInventoryPatches.cs" />
@@ -594,7 +598,12 @@
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgradeSetup.cs" />
     <Compile Include="Pieces\Smithing\ChainBench\ChainBench.cs" />
+    <Compile Include="Pieces\Smithing\RuneForge\BindingStone.cs" />
+    <Compile Include="Pieces\Smithing\RuneForge\BindingStoneComponent.cs" />
+    <Compile Include="Pieces\Smithing\RuneForge\RuneEtchingTable.cs" />
+    <Compile Include="Pieces\Smithing\RuneForge\RuneEtchingTableComponent.cs" />
     <Compile Include="Pieces\Smithing\RuneForge\RuneForge.cs" />
+    <Compile Include="Pieces\Smithing\RuneForge\RuneForgeExtensionComponent.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RuneRack.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RuneRackComponent.cs" />
     <Compile Include="Pieces\Portals\RuneRack\RunePortalRules.cs" />

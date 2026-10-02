@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.52.0 - 2026-10-02
+
+### Added
+- **Binding Stone** (Rune Forge extension: Stone ×20, Chain ×2, Surtling Core ×1): use a black beast trophy on it to bind it to the White Hilt weapon in your hand, or to the shield. One trophy per item, used up, and a new one replaces the old. The bonus follows the beast: +5% damage or block power with the Black Troll up to +20% with the Black Morgen and Black Bonemaw
+- **Rune Etching Table** (Rune Forge extension, the Galdr table's rune table: Fine Wood ×10, Iron ×4, Resin ×6): use a rune on it to etch it into a trophy-bound White Hilt weapon, with materials the mod adds: Dyrnwyn's Flame (Flametal Rune, Surtling Cores), Frost (Silver Rune, Crowberries), Venom (Bronze Rune, Poison Glands), Storm (Black Metal Rune, Kraken Ink), Spider's Web (Iron Rune, Spider Silk) and Grip of the Deep (Gold Rune, Kraken Ink and Tentacle). Its strength follows the bound trophy: 10% to 25% of the weapon's base damage
+- Binding and runes are kept on the item and shown in its tooltip. New sections `[Gear.Binding]` and `[Gear.Infusions]`. See [Smithing](docs/smithing.md#-binding-and-rune-etching)
+
+### Changed
+- Black beast trophies are never supplied by the restocking chests, carts or ship holds, also in Full mode
+
 ## v0.51.0 - 2026-10-02
 
 ### Added

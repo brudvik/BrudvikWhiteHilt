@@ -4,6 +4,7 @@ using BrudvikWhiteHilt.Chests.Configuration;
 using BrudvikWhiteHilt.Chests.Constants;
 using BrudvikWhiteHilt.Chests.Extensions;
 using BrudvikWhiteHilt.Chests.Utils;
+using BrudvikWhiteHilt.Difficulty.Beasts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,7 +109,19 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if the stack can be replaced by the chest's own stack.</returns>
         public static bool IsPlain(ItemDrop.ItemData item)
         {
-            return item.m_quality <= 1 && (item.m_customData == null || item.m_customData.Count == 0);
+            return item.m_quality <= 1 && (item.m_customData == null || item.m_customData.Count == 0)
+                && (item.m_dropPrefab == null || !IsEarnedOnly(item.m_dropPrefab.name));
+        }
+
+        /// <summary>
+        /// Checks whether an item is only earned by a kill and never supplied: the black beast trophies, which are bound
+        /// to White Hilt gear.
+        /// </summary>
+        /// <param name="prefabName">Prefab name of the item.</param>
+        /// <returns>True if no chest, cart or ship hold may make it unlimited.</returns>
+        public static bool IsEarnedOnly(string prefabName)
+        {
+            return BeastDefinition.All.Any(beast => beast.TrophyName == prefabName);
         }
 
         /// <summary>

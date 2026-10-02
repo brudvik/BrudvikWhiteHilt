@@ -37,7 +37,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 - It is about as strong as the biome's boss; bring friends.
 - A beast only comes once its biome's boss is defeated.
 - By day it sinks into the ground when no one is near.
-- It always drops its black trophy. The trophies will get a use later.
+- It always drops its black trophy, which can be bound to a White Hilt weapon or shield at the Binding Stone ([Smithing](smithing.md#-binding-and-rune-etching)).
 
 | Beast | Biome | Needs | Health (base ×) |
 |-------|-------|-------|-----------------|

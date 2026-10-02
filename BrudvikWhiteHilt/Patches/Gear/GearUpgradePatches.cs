@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Items;
+using BrudvikWhiteHilt.Items.Binding;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
@@ -41,7 +42,8 @@ public static class GearUpgradePatches
     }
 
     /// <summary>
-    /// Gives White Hilt weapons above quality 4 the damage of their biome levels.
+    /// Gives White Hilt weapons above quality 4 the damage of their biome levels, then a bound trophy's bonus and an
+    /// etched rune's damage.
     /// </summary>
     /// <param name="__instance">The item.</param>
     /// <param name="quality">The quality.</param>
@@ -51,10 +53,11 @@ public static class GearUpgradePatches
     public static void GetDamage(ItemDrop.ItemData __instance, int quality, ref HitData.DamageTypes __result)
     {
         GearUpgrades.CorrectDamage(__instance.m_shared, quality, ref __result);
+        GearBinding.ModifyDamage(__instance, ref __result);
     }
 
     /// <summary>
-    /// Gives White Hilt shields above quality 4 the block power of their biome levels.
+    /// Gives White Hilt shields above quality 4 the block power of their biome levels, then a bound trophy's bonus.
     /// </summary>
     /// <param name="__instance">The item.</param>
     /// <param name="quality">The quality.</param>
@@ -64,6 +67,7 @@ public static class GearUpgradePatches
     public static void GetBaseBlockPower(ItemDrop.ItemData __instance, int quality, ref float __result)
     {
         __result += GearUpgrades.BlockCorrection(__instance.m_shared, quality);
+        __result = GearBinding.ModifyBlockPower(__instance, __result);
     }
 
     /// <summary>

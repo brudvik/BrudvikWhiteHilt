@@ -41,8 +41,8 @@ Both shrug off chop and pickaxe damage and poison, resist fire and frost, and ar
 
 | Item | Description | Used for |
 |------|-------------|----------|
-| **Kraken Tentacle** ×4–6 | A slab of tentacle | Kraken Feast |
-| **Kraken Ink** ×3–5 | Thick black ink | Kraken Feast, and a black dye at the Paint Bench ([Painting](painting.md)) |
+| **Kraken Tentacle** ×4–6 | A slab of tentacle | Kraken Feast, the Grip of the Deep rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
+| **Kraken Ink** ×3–5 | Thick black ink | Kraken Feast, a black dye at the Paint Bench ([Painting](painting.md)), the Storm and Grip of the Deep runes ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Kraken Trophy** | Proof you lived | Your wall |
 | **Chitin** ×6–10 | Hard shell | Vanilla recipes |
 
