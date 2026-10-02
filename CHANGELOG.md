@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.53.0 - 2026-10-02
+
+### Added
+- **Treasure maps** from Hildir (750 coins, once The Elder is slain): each map buries a new treasure in land you have explored and shows a scrap of that land with a cross on it, drawn like an old chart with shores, height lines, forests, landmarks, a north arrow and a scale. Parts are faded and the edges torn, so you match it against your own map. A cairn with a stick and a red rag marks the spot; three pickaxe blows dig up a chest with a black beast trophy (of a beast whose boss is slain) and a few things from the mod. Help on the map follows `HintLevel` (Easy, Normal, Hard), and on Normal the Exploration skill fades less and adds landmark names and a dotted path. Carrying the map, you are told when the ground nearby looks dug up and dust rises from the heap. New section `[Treasure]`. See [Treasure maps](docs/treasure.md)
+- Own models for the treasure map, the heap of dug earth and the cairn, and the CC0 Treasure Chest from Poly Haven
+
+### Fixed
+- Buying a puppy from the Bog Witch no longer throws an error after the purchase (the trade entry had no buy effects)
+
 ## v0.52.0 - 2026-10-02
 
 ### Added

@@ -127,6 +127,12 @@ Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blockin
 
 Buy a puppy from the Bog Witch and raise it into a companion that follows, fights, learns tricks, grows old and has litters.
 
+### 🗺️ [Treasure maps](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/treasure.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure Chest" height="120">
+
+Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy.
+
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 
 A world that grows harder as you progress: up to 5 stars, black beasts in the dark hour and the rare blood moon.
@@ -209,6 +215,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Happy dog bark: ["Dog bark2.wav"](https://freesound.org/people/MisterTood/sounds/9032/) by [MisterTood](https://freesound.org/people/MisterTood/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Map compass: ["Seadogs Compass"](https://polyhaven.com/a/seadogs_compass) by Benny Weimer, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Dial and needle rendered from above, printed letters painted out and the needle's north end painted red.
+- Treasure chest model: ["Treasure Chest"](https://polyhaven.com/a/treasure_chest) by Rico Cilliers, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Reduced to 5000 faces, converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
 - White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
 - White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.

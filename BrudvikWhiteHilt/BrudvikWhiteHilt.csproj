@@ -330,6 +330,16 @@
     <Compile Include="Patches\Navigation\OverviewPatches.cs" />
     <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
     <Compile Include="Patches\Navigation\StoneDowsingPatches.cs" />
+    <Compile Include="Patches\Treasure\TreasurePatches.cs" />
+    <Compile Include="Treasure\BuriedTreasure.cs" />
+    <Compile Include="Treasure\TreasureLoot.cs" />
+    <Compile Include="Treasure\TreasureMapItem.cs" />
+    <Compile Include="Treasure\TreasureMapPanel.cs" />
+    <Compile Include="Treasure\TreasureMapRenderer.cs" />
+    <Compile Include="Treasure\TreasureRegistry.cs" />
+    <Compile Include="Treasure\TreasureService.cs" />
+    <Compile Include="Treasure\TreasureSettings.cs" />
+    <Compile Include="Treasure\TreasureSiteFinder.cs" />
     <Compile Include="Patches\Portals\PortalMapPatch.cs" />
     <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
     <Compile Include="Patches\Portals\RunePortalPatch.cs" />

@@ -68,6 +68,10 @@
 
     { "image": "paint_bench", "compose": "paintbench.preview.json", "view": { "yaw": 140, "pitch": 30 } },
     { "image": "white_hilt_paint_brush", "models": ["whpaintbrush"] },
-    { "image": "paint_pot", "models": ["paintbucket"] }
+    { "image": "paint_pot", "models": ["paintbucket"] },
+
+    { "image": "treasure_map", "models": ["treasuremap"], "view": { "yaw": 150, "pitch": 35, "zoom": 0.6 } },
+    { "image": "buried_treasure", "compose": "buriedtreasure.preview.json", "view": { "yaw": 150, "pitch": 22 } },
+    { "image": "treasure_chest", "models": ["treasurechest"] }
   ]
 }

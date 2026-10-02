@@ -1,0 +1,7 @@
+{
+  "name": "buriedtreasure",
+  "base": { "mesh": "treasuremound", "height": 0.4653 },
+  "props": [
+    { "mesh": "treasurecairn", "base": [2.686, 0.215, 1.827], "height": 3.678, "yaw": 35 }
+  ]
+}

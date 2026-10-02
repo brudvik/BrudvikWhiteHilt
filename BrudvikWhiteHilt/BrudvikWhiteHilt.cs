@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.52.0";
+    public const string PluginVersion = "0.53.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -117,6 +117,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
+        Treasure.TreasureSettings.Initialize();
+        Treasure.TreasureRegistry.Initialize();
         chests = Chests.ChestModule.Start();
         Chests.ChestCensus.RegisterCommand();
 
@@ -287,6 +289,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Planting.Plantables.Apply();
         forageables.ForEach(forageable => forageable.ApplyConfig());
         Monsters.MonsterRegistry.ApplyConfig();
+        Treasure.TreasureRegistry.ApplyConfig();
         foreach (IWhiteHiltConfigurable configurable in customItems.OfType<IWhiteHiltConfigurable>())
         {
             configurable.ApplyConfig();
