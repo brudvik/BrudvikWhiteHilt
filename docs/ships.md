@@ -37,6 +37,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 **Sailing help** (every ship, also vanilla ones):
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
 - **Speed and heading**: while steering, the speed in knots, the heading in degrees and compass point, where the wind comes from and the held course are shown under the wind indicator (`ShowSpeedAndHeading`).
+- **Sounding line**: the read-out also shows the depth of the water under the ship, rocks under water included (`ShowDepth`). While you steer, or ride a ship that sails its route, the water ahead is sounded too: 5 seconds of sailing ahead, at least 15 m and at most 60 m past the bow. If it gets shallower than 3.5 m or rocks lie in the way, the depth turns red, a message says *Shallow water ahead!* or *Rocks or something in the way ahead!* and the ship's bell rings. Not below 2 m/s, so it stays quiet while you lay to, and not more than once every 8 seconds (`ShoalWarning`, `ShoalBell` and the other `Shoal*` settings below).
 - **Camera zoom**: at the helm the camera zooms 2 m further out than in vanilla (`CameraExtraZoom`), and everyone aboard, standing on deck or sitting, can zoom out just as far (`CameraZoomAllAboard`).
 - **Camera sweep**: when a ship sets off on its route ("Take me there" or explorer mode, see [Navigation](navigation.md)), the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once.
 - **Push the ship**: standing on shore or in the water next to a ship that lies still, look at it and press **E** (hold to keep pushing). It is pushed away from you, off a beach or a rock.
@@ -96,5 +97,13 @@ Each player's own settings in `[Ships]`:
 | `RouteCameraSweepAngle` | 30 | Degrees to the side of the bow where the camera stops |
 | `RouteCameraSweepCancelSeconds` | 0.5 | Seconds back to you when the sweep is interrupted |
 | `RouteCameraSweepCancelLook` | 90 | Degrees the view must turn within about a second to interrupt; calm looking around and zooming do not |
+| `ShowDepth` | true | Show the depth under the ship in the read-out |
+| `ShoalWarning` | true | Warn of shallow water and rocks ahead |
+| `ShoalBell` | true | The warning rings the ship's bell |
+| `ShoalDepth` | 3.5 | Water shallower than this, in metres, counts as shallow (ships need about 2 m) |
+| `ShoalLookaheadSeconds` | 5 | Seconds of sailing ahead that are sounded |
+| `ShoalMinLookahead` / `ShoalMaxLookahead` | 15 / 60 | Metres ahead of the bow sounded at least and at most |
+| `ShoalMinSpeed` | 2 | No warning below this speed, in m/s |
+| `ShoalCooldown` | 8 | Seconds before the warning can come again |
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

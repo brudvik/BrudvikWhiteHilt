@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.43.0 - 2026-10-02
+
+### Added
+- **Sounding line and shoal warning** on every ship: the read-out under the wind indicator shows the depth of the water under the ship, rocks under water included. While you steer, or ride a ship that sails its route, the water ahead is sounded (5 seconds of sailing, 15 to 60 m past the bow); shallower than 3.5 m or rocks in the way turns the depth red, shows a warning and rings the new **ship's bell**. Quiet below 2 m/s and at most once every 8 seconds. Each player's own settings `Ships` → `ShowDepth`, `ShoalWarning`, `ShoalBell`, `Shoal*`. See [Ships](docs/ships.md)
+
 ## v0.42.0 - 2026-10-02
 
 ### Added

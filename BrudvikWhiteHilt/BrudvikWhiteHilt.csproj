@@ -561,6 +561,8 @@
     <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
     <Compile Include="Pieces\Ships\ShipAssist.cs" />
     <Compile Include="Pieces\Ships\ShipHud.cs" />
+    <Compile Include="Pieces\Ships\ShipBell.cs" />
+    <Compile Include="Pieces\Ships\ShipSounding.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipTentColliders.cs" />

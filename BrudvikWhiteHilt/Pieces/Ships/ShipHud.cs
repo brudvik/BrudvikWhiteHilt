@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
-/// Speed, heading and wind under the ship's wind indicator while steering, and the held course when it is on. While
+/// Speed, heading, depth and wind under the ship's wind indicator while steering, and the held course when it is on. While
 /// the ship sails a route on its own, the same for everyone aboard, with the time left to arrival.
 /// </summary>
 public static class ShipHud
@@ -47,6 +47,13 @@ public static class ShipHud
                 label.gameObject.SetActive(false);
             }
 
+            // The shoal warning works without the read-out.
+            if (ship != null && Time.unscaledTime >= nextRefresh)
+            {
+                nextRefresh = Time.unscaledTime + RefreshSeconds;
+                ShipSounding.Update(ship, route != null ? MeasureSpeed(ship) : Mathf.Abs(ship.GetSpeed()));
+            }
+
             return;
         }
 
@@ -69,6 +76,12 @@ public static class ShipHud
         float speed = sailingRoute ? MeasureSpeed(ship) : Mathf.Abs(ship.GetSpeed());
         float heading = ShipAssist.Heading(ship.transform);
         string text = $"{speed * KnotsPerMetrePerSecond:0.0} kn   {Mathf.RoundToInt(heading) % 360:000}° {Compass(heading)}";
+        string depth = ShipSounding.Update(ship, speed);
+        if (depth != null)
+        {
+            text += "\n" + depth;
+        }
+
         if (EnvMan.instance != null)
         {
             Vector3 wind = -EnvMan.instance.GetWindDir();

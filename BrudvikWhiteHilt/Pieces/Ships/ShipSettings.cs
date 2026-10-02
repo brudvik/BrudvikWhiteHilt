@@ -151,6 +151,33 @@ public static class ShipSettings
     /// <summary>Degrees the view must turn within about a second to interrupt the sweep.</summary>
     public static ConfigEntry<float> RouteCameraSweepCancelLook { get; private set; }
 
+    /// <summary>Whether the depth under the ship is shown in the ship's read-out; the player's own.</summary>
+    public static ConfigEntry<bool> ShowDepth { get; private set; }
+
+    /// <summary>Whether shallows and rocks ahead are warned of; the player's own.</summary>
+    public static ConfigEntry<bool> ShoalWarning { get; private set; }
+
+    /// <summary>Whether the warning rings the ship's bell.</summary>
+    public static ConfigEntry<bool> ShoalBell { get; private set; }
+
+    /// <summary>Water shallower than this, in metres, counts as shallow.</summary>
+    public static ConfigEntry<float> ShoalDepth { get; private set; }
+
+    /// <summary>Seconds of sailing ahead that are sounded.</summary>
+    public static ConfigEntry<float> ShoalLookaheadSeconds { get; private set; }
+
+    /// <summary>Metres ahead of the bow that are always sounded.</summary>
+    public static ConfigEntry<float> ShoalMinLookahead { get; private set; }
+
+    /// <summary>Metres ahead of the bow that are sounded at most.</summary>
+    public static ConfigEntry<float> ShoalMaxLookahead { get; private set; }
+
+    /// <summary>Speed in m/s below which there is no warning.</summary>
+    public static ConfigEntry<float> ShoalMinSpeed { get; private set; }
+
+    /// <summary>Seconds before the warning can come again.</summary>
+    public static ConfigEntry<float> ShoalCooldown { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -258,6 +285,24 @@ public static class ShipSettings
             "Seconds the camera takes back to you when the swing is interrupted by the mouse, standing up or opening a menu.", new AcceptableValueRange<float>(0.1f, 3f));
         RouteCameraSweepCancelLook = WhiteHiltConfig.BindLocal(Section, "RouteCameraSweepCancelLook", 90f,
             "Degrees you must turn the view within about a second to take the camera back. Looking calmly up and around, or zooming, does not interrupt the swing.", new AcceptableValueRange<float>(10f, 720f));
+        ShowDepth = WhiteHiltConfig.BindLocal(Section, "ShowDepth", true,
+            "Show the depth of the water under the ship in the read-out under the wind indicator.");
+        ShoalWarning = WhiteHiltConfig.BindLocal(Section, "ShoalWarning", true,
+            "Warn when shallow water or rocks lie ahead, while you steer or ride a ship that sails its route.");
+        ShoalBell = WhiteHiltConfig.BindLocal(Section, "ShoalBell", true,
+            "The shoal warning rings the ship's bell.");
+        ShoalDepth = WhiteHiltConfig.BindLocal(Section, "ShoalDepth", 3.5f,
+            "Water shallower than this, in metres, counts as shallow. Ships need about 2 m.", new AcceptableValueRange<float>(1f, 20f));
+        ShoalLookaheadSeconds = WhiteHiltConfig.BindLocal(Section, "ShoalLookaheadSeconds", 5f,
+            "Seconds of sailing ahead that are sounded, so the faster the ship, the further ahead.", new AcceptableValueRange<float>(1f, 30f));
+        ShoalMinLookahead = WhiteHiltConfig.BindLocal(Section, "ShoalMinLookahead", 15f,
+            "Metres ahead of the bow that are always sounded.", new AcceptableValueRange<float>(5f, 100f));
+        ShoalMaxLookahead = WhiteHiltConfig.BindLocal(Section, "ShoalMaxLookahead", 60f,
+            "Metres ahead of the bow that are sounded at most.", new AcceptableValueRange<float>(10f, 200f));
+        ShoalMinSpeed = WhiteHiltConfig.BindLocal(Section, "ShoalMinSpeed", 2f,
+            "Below this speed, in m/s, there is no warning, so it stays quiet while you lay to.", new AcceptableValueRange<float>(0f, 20f));
+        ShoalCooldown = WhiteHiltConfig.BindLocal(Section, "ShoalCooldown", 8f,
+            "Seconds before the shoal warning can come again.", new AcceptableValueRange<float>(1f, 120f));
 
         Translations.AddEnglish("whitehilt_autopilot_on", "Holding course {0}° when you let go of the helm");
         Translations.AddEnglish("whitehilt_autopilot_off", "Course holding off");
@@ -266,6 +311,9 @@ public static class ShipSettings
         Translations.AddEnglish("whitehilt_shiphud_wind", "Wind from {0}");
         Translations.AddEnglish("whitehilt_shiphud_course", "Holding course {0}°");
         Translations.AddEnglish("whitehilt_shiphud_eta", "Arrival in {0}");
+        Translations.AddEnglish("whitehilt_shiphud_depth", "Depth {0} m");
+        Translations.AddEnglish("whitehilt_shoal_shallow", "Shallow water ahead!");
+        Translations.AddEnglish("whitehilt_shoal_blocked", "Rocks or something in the way ahead!");
         Translations.AddEnglish("whitehilt_ship_push", "Push the ship");
         Translations.AddEnglish("whitehilt_route_open", "Route markers");
         Translations.AddEnglish("whitehilt_route_need_markers", "Exploration {0} is needed to set route markers");
