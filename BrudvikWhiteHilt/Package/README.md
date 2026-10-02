@@ -23,11 +23,11 @@ Every feature has its own page under [docs](https://github.com/brudvik/BrudvikWh
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt Sword" height="120">
 
-Indestructible weapons, shields, armour, tools and ammunition with their own models, the Megingjord upgrade and the Belt Pouch.
+Indestructible weapons, shields, armour, tools and ammunition with their own models that are upgraded biome by biome, the Megingjord upgrade and the Belt Pouch.
 
 ### 🧪 [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 
-Nineteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
+Eighteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
 
 ### ⛵ [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)
 
@@ -45,13 +45,13 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings, and built areas, fields, pastures and wards drawn on the map.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings with a ring showing which way they are heading, a compass on the map, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Repair Anvil" height="120">
 
-The Chain Bench for making chains at the forge, and the Repair Anvil that repairs all your gear at once.
+The Chain Bench for making chains at the forge, the Repair Anvil that repairs all your gear at once, and the Binding Stone and Rune Etching Table that bind black beast trophies and etch runes into White Hilt weapons.
 
 ### 🌀 [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
 
@@ -63,7 +63,7 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, and doors, gates and windows that close on their own.
+Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying boss trophies, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
@@ -127,6 +127,12 @@ Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blockin
 
 Buy a puppy from the Bog Witch and raise it into a companion that follows, fights, learns tricks, grows old and has litters.
 
+### 🗺️ [Treasure maps](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/treasure.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure Chest" height="120">
+
+Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy.
+
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 
 A world that grows harder as you progress: up to 5 stars, black beasts in the dark hour and the rare blood moon.
@@ -145,7 +151,7 @@ A great worm that breaks out of the forest floor at night, and poisonous giant s
 
 ### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
-An in-game settings window (cog in the inventory) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
+An in-game settings window (the Settings button in the inventory, or F7) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
 
 ## Compilation
 
@@ -198,6 +204,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Grooming Comb model: ["CC0 - Hair Comb 6"](https://sketchfab.com/3d-models/cc0-hair-comb-6-0bde272bb07b4e1a99fd2f981926e187) by [plaggy](https://sketchfab.com/plaggy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Tether Post model: ["Wooden Post"](https://sketchfab.com/3d-models/wooden-post-4991b5d72f534a339e02c10848ee322b) by [PionX](https://sketchfab.com/PionX), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim. Its chain is the Chain Bench's.
 - Dog House model: ["Dog House Free"](https://sketchfab.com/3d-models/dog-house-free-fc9e3897b3564f36be62748aaf46adb5) by [donnichols](https://sketchfab.com/donnichols), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Trophy Altar model: ["Stone Altar"](https://sketchfab.com/3d-models/stone-altar-3d4f2edb18e4424cabb41b60aa160cb5) by [TheoClarke](https://sketchfab.com/TheoClarke), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures reduced to 1024 px, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Bed model: ["Wicker_Basket"](https://sketchfab.com/3d-models/wicker-basket-c8e8dc18b73946daaa4d51f81783ceab) by [National Heritage Administration](https://sketchfab.com/NHA_Asset), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Lid cut away, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Bowl model: ["Bark_bowl_package"](https://sketchfab.com/3d-models/bark-bowl-package-81641c44d91f40de85bbe36c5a346223) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). The low bowl taken out of the set, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
 - Dog Whistle model: ["Wajia Flute"](https://sketchfab.com/3d-models/wajia-flute-e6d1c436d3bc41f99f49b5dc2c821b2f) by [3D Vault](https://sketchfab.com/3DVault), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
@@ -207,6 +214,8 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Dog whine: ["Dog Whine 5.wav"](https://freesound.org/people/esperri/sounds/118970/) by [esperri](https://freesound.org/people/esperri/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Happy dog bark: ["Dog bark2.wav"](https://freesound.org/people/MisterTood/sounds/9032/) by [MisterTood](https://freesound.org/people/MisterTood/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- Map compass: ["Seadogs Compass"](https://polyhaven.com/a/seadogs_compass) by Benny Weimer, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Dial and needle rendered from above, printed letters painted out and the needle's north end painted red.
+- Treasure chest model: ["Treasure Chest"](https://polyhaven.com/a/treasure_chest) by Rico Cilliers, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Reduced to 5000 faces, converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
 - White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
 - White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.

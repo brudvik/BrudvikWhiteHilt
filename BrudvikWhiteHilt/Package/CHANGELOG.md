@@ -2,10 +2,73 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.54.0 - 2026-10-02
+
+### Changed
+- **Binding Stone** has its own model: a broad runestone on a footing stone, bound with an iron band and a ring, with a serpent band of blood-red runes along its edge and a valknut round a Surtling Core. The runes and the core glow. It is solid stone to hit, and its collider fits the stone instead of the forge cooler it was copied from
+- **Rune Etching Table** has its own model: a carver's table with a stone slab half covered in runes, a chisel, a mallet, rune rings and a bowl of red ochre, instead of the Galdr table's rune table
+
+## v0.53.0 - 2026-10-02
+
+### Added
+- **Treasure maps** from Hildir (750 coins, once The Elder is slain): each map buries a new treasure in land you have explored and shows a scrap of that land with a cross on it, drawn like an old chart with shores, height lines, forests, landmarks, a north arrow and a scale. Parts are faded and the edges torn, so you match it against your own map. A cairn with a stick and a red rag marks the spot; three pickaxe blows dig up a chest with a black beast trophy (of a beast whose boss is slain) and a few things from the mod. Help on the map follows `HintLevel` (Easy, Normal, Hard), and on Normal the Exploration skill fades less and adds landmark names and a dotted path. Carrying the map, you are told when the ground nearby looks dug up and dust rises from the heap. New section `[Treasure]`. See [Treasure maps](docs/treasure.md)
+- Own models for the treasure map, the heap of dug earth and the cairn, and the CC0 Treasure Chest from Poly Haven
+
+### Fixed
+- Buying a puppy from the Bog Witch no longer throws an error after the purchase (the trade entry had no buy effects)
+
+## v0.52.0 - 2026-10-02
+
+### Added
+- **Binding Stone** (Rune Forge extension: Stone ×20, Chain ×2, Surtling Core ×1): use a black beast trophy on it to bind it to the White Hilt weapon in your hand, or to the shield. One trophy per item, used up, and a new one replaces the old. The bonus follows the beast: +5% damage or block power with the Black Troll up to +20% with the Black Morgen and Black Bonemaw
+- **Rune Etching Table** (Rune Forge extension, the Galdr table's rune table: Fine Wood ×10, Iron ×4, Resin ×6): use a rune on it to etch it into a trophy-bound White Hilt weapon, with materials the mod adds: Dyrnwyn's Flame (Flametal Rune, Surtling Cores), Frost (Silver Rune, Crowberries), Venom (Bronze Rune, Poison Glands), Storm (Black Metal Rune, Kraken Ink), Spider's Web (Iron Rune, Spider Silk) and Grip of the Deep (Gold Rune, Kraken Ink and Tentacle). Its strength follows the bound trophy: 10% to 25% of the weapon's base damage
+- Binding and runes are kept on the item and shown in its tooltip. New sections `[Gear.Binding]` and `[Gear.Infusions]`. See [Smithing](docs/smithing.md#-binding-and-rune-etching)
+
+### Changed
+- Black beast trophies are never supplied by the restocking chests, carts or ship holds, also in Full mode
+
+## v0.51.0 - 2026-10-02
+
+### Added
+- **Compass on the map**: a brass compass in the bottom-right corner of the minimap and the top-left corner of the large map. The letters stay put (the map is north up) and the needle points where you look, with the bearing in degrees under it. The letters follow the game's language (N, Ø, S, V in Norwegian). New section `[Map.Compass]`. See [Navigation](docs/navigation.md#-compass-on-the-map)
+
+### Changed
+- **Heading ring on map portraits**: the small arrow at the bottom of your portrait is replaced by a ring around it with a point that slides round the edge as you turn. Nearby players get a white ring pointing where they face; further away the ring has no point. New setting `[Map] HeadingMarker`
+- **Munin's memory** and **Uncovered** sit side by side under the bottom-left corner of the large map, lined up with its left edge, and open upwards over the map. Uncovered no longer covers the vanilla buttons at the bottom right
+- The **Swamp Key** can be kept in the four extra accessory slots; it still opens crypt doors from there
+- Crafting, building and fuelling never take items from the accessory slots, so a key or amulet kept there is not used up by a recipe (e.g. the Trophy Altar's Swamp Key)
+- In linear mode the **Gifts of Hugin, Munin and Brokkr** are no longer available: there you learn skills and find recipes yourself. A `[Tiers]` setting can still give them a tier
+
+## v0.50.0 - 2026-10-02
+
+### Added
+- **Trophy Altar**: a small stone altar with a miniature Eikthyr. One boss trophy and one Swamp Key give a full stack (20) of that trophy, so every extra stack costs another kill of The Elder. It copies the seven vanilla boss trophies, and a trophy only shows up once you have picked it up. Built at the workbench from Stone ×10, Fine Wood ×4, Iron ×2 and Ancient Bark ×2. New section `[TrophyAltar]`. See [Around the base](docs/base.md#-trophy-altar)
+
+## v0.49.0 - 2026-10-02
+
+### Added
+- **White Hilt weapons and shields grow with the world**, like the armor: quality 5 with Silver (Mountain), 6 with Black Metal (Plains), 7 with Carapace (Mistlands) and 8 with Flametal (Ashlands), Iron ×5 per level up to quality 4. A weapon gains 10%, 30%, 35% and 30% of its base damage at those levels (the White Hilt Sword goes from 79 slash at quality 4 to 137 at quality 8), a shield 20% and 40% of its base block power, always a little below the best vanilla gear of that biome. The staffs stay at quality 4. New sections `[Gear.Weapons] Upgrade*`, `*Damage` and `[Gear.Shields]`. See [White Hilt gear](docs/equipment.md#-upgrades-through-the-biomes)
+- Every shield upgrade also takes a **Lindorm Scale**, the first use of the Lindorm's loot
+
+### Changed
+- The Lindorm and giant spider loot is now used: **Gift of Loki** is brewed with Spider Silk (Loki made the first fishing net) instead of Raspberries, **Gift of Hel** with Poison Glands instead of Stone, and **Shore Nets** are mended with 2 Spider Silk, or 4 Leather Scraps without silk (`[Fishing.Net] MendWith` replaces `MendItem` and `MendAmount`)
+- **Gift of Idunn** is brewed with Lingonberries and Honey, and **Gift of Skadi** with Crowberries and Roseroot, instead of wood, stone and raspberries
+- The map table range is one setting for the Cartographer's Desk, Portal Astrolabe, Harbour Anchor and Munin's Perch: `[Navigation] MapTableRange` (was `[Portals] MapTableExtensionRange`, and the desk always used 5 m). The value is moved over
+- Config sections renamed to match the feature pages: `[Ranching]` is now `[Husbandry]` and `[Defenses]` is now `[Defences]`. The values are moved over
+- The console command `bsc_progress` is now `whitehilt_chest_progress`
+- Player portraits are kept in `BepInEx/config/BrudvikWhiteHilt/portraits/` with the blueprints and films; existing ones are moved there from `BepInEx/config/WhiteHilt/`
+- Documentation: everything the Exploration skill gives is in one table, the four map table pieces are listed together, and the linear tier table lists every item again
+
+### Fixed
+- O no longer uses the Lookout while the build camera is on, where it switches the photo view
+
+### Removed
+- **Gift of Mimir**: its map reveal overlapped the Exploration skill, the Lookout and the Navigator's Table. Gifts of Mimir and their mead bases in inventories and chests disappear, and its settings are removed from the config file
+
 ## v0.48.0 - 2026-10-02
 
 ### Added
-- **White Hilt armor grows with the world**: the armor and the uniforms upgrade past quality 4, one level per biome after the Swamp: quality 5 with Silver (Mountain), 6 with Black Metal (Plains), 7 with Carapace (Mistlands) and 8 with Flametal (Ashlands). A helmet, chest or leg piece goes 26 / 30 / 36 / 42, a cape gains 2 per level, always a little below the best vanilla armor of that biome. From quality 5 the station level of quality 4 is enough. New settings `[Gear.Armor] Upgrade*`, `*Armor` and `CapeArmorPerBiome`. See [White Hilt gear](docs/equipment.md#upgrades-through-the-biomes)
+- **White Hilt armor grows with the world**: the armor and the uniforms upgrade past quality 4, one level per biome after the Swamp: quality 5 with Silver (Mountain), 6 with Black Metal (Plains), 7 with Carapace (Mistlands) and 8 with Flametal (Ashlands). A helmet, chest or leg piece goes 26 / 30 / 36 / 42, a cape gains 2 per level, always a little below the best vanilla armor of that biome. From quality 5 the station level of quality 4 is enough. New settings `[Gear.Armor] Upgrade*`, `*Armor` and `CapeArmorPerBiome`. See [White Hilt gear](docs/equipment.md#-upgrades-through-the-biomes)
 
 ### Changed
 - White Hilt armor was too strong for the Swamp (a full set at quality 4 had 92 armor, more than the Mountain wolf set). A piece now has 18 armor at quality 1 and 24 at quality 4 (was 27), and a full set 80 at quality 4: good enough for the Mountains. `ArmorPerLevelBonus` is now 0 (reset once in existing config files)
