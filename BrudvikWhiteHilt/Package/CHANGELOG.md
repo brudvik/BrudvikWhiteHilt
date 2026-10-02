@@ -2,6 +2,41 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.57.1 - 2026-10-02
+
+### Fixed
+- **Rune Post**: a rune ring now shows on the post as soon as it is hung (or disappears when taken), instead of only after you left the area and came back. An error when the post was loaded stopped it from updating its look
+
+## v0.57.0 - 2026-10-02
+
+### Added
+- **Roofs**: six Viking roof coverings, each at 26°, 45° and 67° as roof, ridge, inner corner, outer corner and smoke hole: **turf roof** (sod over birch bark with a turf log along the eave; does not burn), **reed thatch**, **straw thatch**, **shingle roof** and **scale shingle roof** (tarred pine shingles with ridge boards) and **slate roof** (the strongest; does not burn). They snap like the vanilla thatch and sit right after it in the build menu. The overhang past the eave only shows on the lowest row. Wind and rain are muffled more under turf, slate, reed and straw. New sections `[Roofs]` and `[Roofs.<Covering>]`. See [Roofs](docs/roofs.md)
+- **Smoke holes (ljore)** with a hatch you open and close; it closes by itself when rain starts and opens when it stops, unless a fire burns below
+- **Dragon gable**: crossed barge boards with carved dragon heads for the ends of a ridge, made with Lindorm Scales (`[Roofs.Gable]`)
+- **Roseroot on turf roofs**: plant roseroot on a turf roof and pick it again and again (`[Roofs.Garden]`)
+- **Roof materials**: Birch Bark from felled birches and split birch logs, Turf from digging grassland with a pickaxe, Reed (a new Swamp forageable at the water's edge), Pine Tar from the new **Tar Kiln**, Slate and Soapstone from new slate outcrops and from any Mountain rock, and Straw from every barley and flax harvest (`[Roofs.Materials]`, `[Foraging.Reed]`)
+- **Soapstone Hearth**: a hearth of soapstone that burns twice as long on its wood and gives 3 comfort
+
+## v0.56.1 - 2026-10-02
+
+### Fixed
+- **Benches and stations with their own model** break into pieces of their own model when they are destroyed or removed, instead of into the pieces of the vanilla workbench, table, forge part or mortar they were made from. The Paint Bench, Rune Forge, Trophy Altar, Rune Etching Table, Binding Stone, Chain Bench, Herb Tray, Smoke Oven, Rune Post, Tether Post, Munin's Perch, Portal Astrolabe, Valkyrie Stone and Harbour Anchor split into 5 to 8 chunks that burst apart; things standing on them, such as the pots on the Paint Bench, fall off whole
+
+## v0.56.0 - 2026-10-02
+
+### Added
+- **Trophy Altar** copies ordinary trophies too: one trophy and one Hard Antler from Eikthyr give a full stack. It covers every trophy of the game itself except the boss trophies, which still take a Swamp Key, and deer trophies, which are left out because they summon Eikthyr. The White Hilt monsters' trophies, the black beast trophies and other mods' trophies are not copied. New settings `OrdinaryTrophies`, `AntlersPerCraft`, `OrdinaryTrophiesMade` and `ExcludedTrophies` in `[TrophyAltar]`. See [Base](docs/base.md)
+
+## v0.55.0 - 2026-10-02
+
+### Added
+- **Portal effects**: travelling by portal, Home Stone or Valkyrie Stone now looks like something. You rise, spin and stretch thin while a ring of glowing runes turns under you and sparks stream off your body, then vanish in a flash. At the far side the ring pulses while your world loads, and you appear in a flash of sparks and dust and settle to the ground. Others nearby see all of it. Your own camera swings out, the view widens and the screen flashes white behind a ring of runes; the loading screen waits for the effects. The colour follows the strongest rune at the portal you leave from, a dog travelling along gets a small flash, and leaving and arriving have their own sounds. New section `[Portals.Effects]`, each player's own. See [Portals & travel](docs/portals.md)
+
+## v0.54.2 - 2026-10-02
+
+### Fixed
+- **Portals**: a player who travels through a portal no longer stays behind as a frozen copy for players near the portal, repeating their attacks and emotes. This is a bug in the game itself: the server only told the others that the player had left when the old spot was already outside their area. The mod must be on the server for the fix to work
+
 ## v0.54.1 - 2026-10-02
 
 ### Fixed
