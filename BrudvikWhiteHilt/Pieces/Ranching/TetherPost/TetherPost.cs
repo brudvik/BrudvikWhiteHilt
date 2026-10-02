@@ -144,6 +144,7 @@ public class TetherPost : IWhiteHiltCustomPiece
             Texture2D chains = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("chains_albedo"), _ => new Color32(95, 95, 100, 255));
             VisualHelper.AddMesh(post, ForagingAssets.LoadMesh("chains"), chains, chainBase, ChainLength, Quaternion.Euler(0f, 90f, 0f));
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

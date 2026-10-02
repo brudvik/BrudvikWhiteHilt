@@ -81,6 +81,7 @@ public class HerbTray
             GameObject model = VisualHelper.ReplaceMesh(table.gameObject, ForagingAssets.LoadMesh("herbtray"), ForagingAssets.LoadTexture("herbtray_albedo"), size: Size);
             VisualHelper.FitBoxColliders(root, model);
 
+            PieceFragments.Apply(piece.PiecePrefab);
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
             {

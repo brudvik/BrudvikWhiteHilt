@@ -192,6 +192,7 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
 
             AddLight(prefab.transform);
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

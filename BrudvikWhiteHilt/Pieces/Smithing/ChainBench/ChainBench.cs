@@ -148,6 +148,7 @@ public class ChainBench : IWhiteHiltCustomPiece
             Texture2D chains = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("chains_albedo"), _ => new Color32(95, 95, 100, 255));
             VisualHelper.AddMesh(vise, ForagingAssets.LoadMesh("chains"), chains, new Vector3(0.145f, 0.32f, 0.245f), 0.4f, Quaternion.Euler(0f, 90f, 0f));
 
+            PieceFragments.Apply(piece.PiecePrefab);
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
             {

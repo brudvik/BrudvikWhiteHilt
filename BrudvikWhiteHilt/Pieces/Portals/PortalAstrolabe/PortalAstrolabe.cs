@@ -168,6 +168,7 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
 
             AddLight(prefab.transform);
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

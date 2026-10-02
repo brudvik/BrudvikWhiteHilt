@@ -377,7 +377,7 @@ public static class VisualHelper
     }
 
     // activeInHierarchy is always false inside Jotunn's disabled prefab container, so walk up to the root instead.
-    private static bool IsActiveBelow(Transform transform, Transform root)
+    internal static bool IsActiveBelow(Transform transform, Transform root)
     {
         for (Transform current = transform; current != null && current != root; current = current.parent)
         {

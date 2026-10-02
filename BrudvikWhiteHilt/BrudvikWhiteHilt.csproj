@@ -71,6 +71,7 @@
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
     <Compile Include="Helpers\FishTable.cs" />
     <Compile Include="Helpers\ForagingAssets.cs" />
+    <Compile Include="Helpers\PieceFragments.cs" />
     <Compile Include="Helpers\CreatureVisual.cs" />
     <Compile Include="Helpers\SpriteLoader.cs" />
     <Compile Include="Helpers\StatusEffectHelper.cs" />

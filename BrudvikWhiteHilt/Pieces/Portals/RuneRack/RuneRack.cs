@@ -165,6 +165,7 @@ public class RuneRack : IWhiteHiltCustomPiece
 
             AddRings(root, wood, plankPivot, scale);
             AddFullSetGlow(root, plankBase);
+            PieceFragments.Apply(piece.PiecePrefab);
 
             // Show every rune for the icon, so the build menu shows what the post is for.
             Transform rings = root.Find(RuneRackComponent.RingsName);

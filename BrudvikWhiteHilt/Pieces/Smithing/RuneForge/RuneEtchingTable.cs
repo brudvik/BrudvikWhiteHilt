@@ -68,7 +68,6 @@ public class RuneEtchingTable
             if (wearNTear != null)
             {
                 wearNTear.m_fragmentRoots = Array.Empty<GameObject>();
-                wearNTear.m_autoCreateFragments = false;
             }
 
             FitColliders(prefab.transform);
@@ -121,6 +120,7 @@ public class RuneEtchingTable
             Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
             VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("runeetchingtable_albedo"), template, pivot, Quaternion.identity, scale);
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

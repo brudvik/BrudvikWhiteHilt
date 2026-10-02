@@ -146,6 +146,7 @@ public class HarbourAnchor : IWhiteHiltCustomPiece
             Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
             VisualHelper.CreateModel(prefab.transform, mesh, ForagingAssets.LoadTexture("shipanchor_albedo"), template, pivot, Quaternion.identity, scale);
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

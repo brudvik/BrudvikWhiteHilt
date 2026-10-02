@@ -168,6 +168,7 @@ public class MuninsPerch : IWhiteHiltCustomPiece
                 material.SetColor("_EmissionColor", Color.white * 1.5f);
             }
 
+            PieceFragments.Apply(prefab);
             Sprite icon = VisualHelper.RenderIcon(prefab);
             if (icon != null)
             {

@@ -13,6 +13,7 @@ public static class ForagingAssets
     private const string ResourceName = "BrudvikWhiteHilt.Assets.whitehilt_foraging";
 
     private static AssetBundle bundle;
+    private static ILookup<string, Mesh> fragments;
 
     /// <summary>
     /// Loads a mesh from the bundle.
@@ -24,6 +25,19 @@ public static class ForagingAssets
         // Meshes are sub-assets of the imported model, so they are not found by LoadAsset.
         return GetBundle().LoadAllAssets<Mesh>().FirstOrDefault(mesh => mesh.name == name)
             ?? throw new InvalidOperationException($"Mesh '{name}' not found in {ResourceName}.");
+    }
+
+    /// <summary>
+    /// Loads the chunks a model breaks into (<c>&lt;name&gt;_frag0</c>, ...), written by convert_glb.py for a model with a <c>.fragments.json</c>.
+    /// </summary>
+    /// <param name="name">Mesh name of the whole model.</param>
+    /// <returns>The chunks, or none if the model has none.</returns>
+    public static Mesh[] LoadFragments(string name)
+    {
+        fragments ??= GetBundle().LoadAllAssets<Mesh>()
+            .Where(mesh => mesh.name.Contains("_frag"))
+            .ToLookup(mesh => mesh.name.Substring(0, mesh.name.LastIndexOf("_frag", StringComparison.Ordinal)));
+        return fragments[name].ToArray();
     }
 
     /// <summary>

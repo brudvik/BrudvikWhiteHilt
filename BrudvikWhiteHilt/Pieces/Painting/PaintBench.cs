@@ -138,6 +138,7 @@ public class PaintBench : IWhiteHiltCustomPiece
             }
 
             VisualHelper.FitBoxColliders(root, newLook);
+            PieceFragments.Apply(piece.PiecePrefab);
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
             {

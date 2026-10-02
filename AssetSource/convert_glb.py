@@ -25,6 +25,10 @@ under a weapon's attach transform with an identity transform (the hand is the or
 A <name>.paint.json recolours parts of the texture: {"paint": [{"material": "Wood"} or {"min": [...], "max": [...]}
 (in the final mesh space), "colour": [r, g, b], "strength": 0.9}]}.
 
+A <name>.fragments.json ({"count": 8}) also writes the model cut into about that many chunks of whole triangles as
+<name>_frag0.obj, <name>_frag1.obj, ... in the same space and with the same texture. A piece breaks into them when it is
+destroyed (PieceFragments.cs). Small separate parts (a nail, a handle) stay whole in one chunk.
+
 Usage: python convert_glb.py <input.glb> <output_dir> <name>
 """
 import io
@@ -272,6 +276,122 @@ def paint(image, positions, indices, corners, corner_materials, rules, wrap):
     return buffer.getvalue()
 
 
+def subdivide(positions, normals, corners, indices, parts):
+    """Halves the longest edge of every triangle until no edge is longer than 1/parts of the model's largest side, so
+    long planks made of a few thin triangles still break across, not into slivers. Returns new mesh arrays."""
+    extent = max(max(p[k] for p in positions) - min(p[k] for p in positions) for k in range(3))
+    limit = (extent / parts) ** 2
+    positions, normals = list(positions), list(normals)
+    midpoints, out_corners, out_indices = {}, [], []
+    stack = [(indices[i:i + 3], corners[i:i + 3]) for i in range(0, len(indices), 3)]
+    while stack:
+        triangle, uvs = stack.pop()
+        lengths = [sum((positions[triangle[k]][axis] - positions[triangle[(k + 1) % 3]][axis]) ** 2 for axis in range(3)) for k in range(3)]
+        k = max(range(3), key=lengths.__getitem__)
+        if lengths[k] <= limit:
+            out_indices += triangle
+            out_corners += uvs
+            continue
+        a, b, c = (triangle[(k + n) % 3] for n in range(3))
+        ua, ub, uc = (uvs[(k + n) % 3] for n in range(3))
+        key = (min(a, b), max(a, b))
+        if key not in midpoints:
+            midpoints[key] = len(positions)
+            positions.append([(positions[a][axis] + positions[b][axis]) / 2 for axis in range(3)])
+            normals.append(normalize([normals[a][axis] + normals[b][axis] for axis in range(3)]))
+        m = midpoints[key]
+        um = ((ua[0] + ub[0]) / 2, (ua[1] + ub[1]) / 2)
+        stack.append(([a, m, c], [ua, um, uc]))
+        stack.append(([m, b, c], [um, ub, uc]))
+    return positions, normals, out_corners, out_indices
+
+
+def fragment(positions, indices, count):
+    """Groups the triangles into about `count` chunks: area-weighted k-means on the triangle centres, then every
+    separate part smaller than half a chunk moves whole into the chunk that holds most of it. Returns the triangle
+    lists (first corner index), the same on every run."""
+    triangles = list(range(0, len(indices), 3))
+    centres, areas = [], []
+    for i in triangles:
+        a, b, c = (positions[v] for v in indices[i:i + 3])
+        centres.append([(a[k] + b[k] + c[k]) / 3 for k in range(3)])
+        u, w = [b[k] - a[k] for k in range(3)], [c[k] - a[k] for k in range(3)]
+        cross = [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]]
+        areas.append(math.sqrt(sum(x * x for x in cross)) / 2 + 1e-12)
+
+    def distance(p, q):
+        return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 + (p[2] - q[2]) ** 2
+
+    # Seeds from cutting the largest group in two along its longest side at the area median, so the chunks start
+    # balanced (farthest-point seeds stuck on the corners) and do not change between builds.
+    total = sum(areas)
+    groups = [list(range(len(triangles)))]
+    while len(groups) < min(count, len(triangles)):
+        group = max(groups, key=lambda g: sum(areas[t] for t in g))
+        if len(group) < 2:
+            break
+        extent = [max(centres[t][k] for t in group) - min(centres[t][k] for t in group) for k in range(3)]
+        axis = extent.index(max(extent))
+        ordered = sorted(group, key=lambda t: centres[t][axis])
+        half, running, cut = sum(areas[t] for t in group) / 2, 0.0, 1
+        for n, t in enumerate(ordered):
+            running += areas[t]
+            if running >= half:
+                cut = max(1, min(len(ordered) - 1, n + 1))
+                break
+        groups.remove(group)
+        groups += [ordered[:cut], ordered[cut:]]
+    seeds = [[sum(centres[t][k] * areas[t] for t in g) / sum(areas[t] for t in g) for k in range(3)] for g in groups]
+
+    labels = [0] * len(triangles)
+    for _ in range(10):
+        labels = [min(range(len(seeds)), key=lambda s: distance(c, seeds[s])) for c in centres]
+        sums = [[0.0, 0.0, 0.0, 0.0] for _ in seeds]
+        for c, a, label in zip(centres, areas, labels):
+            for k in range(3):
+                sums[label][k] += c[k] * a
+            sums[label][3] += a
+        seeds = [[s[k] / s[3] for k in range(3)] if s[3] > 0 else seed for s, seed in zip(sums, seeds)]
+
+    # Separate parts share no vertex position (glTF splits vertices at UV seams, so weld by position first).
+    parent = list(range(len(positions)))
+
+    def find(v):
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+
+    welded = {}
+    for v, p in enumerate(positions):
+        key = tuple(round(x, 4) for x in p)
+        if key in welded:
+            parent[find(v)] = find(welded[key])
+        else:
+            welded[key] = v
+    for i in triangles:
+        for corner in (1, 2):
+            parent[find(indices[i + corner])] = find(indices[i])
+
+    parts = {}
+    for t, i in enumerate(triangles):
+        parts.setdefault(find(indices[i]), []).append(t)
+    for members in parts.values():
+        if sum(areas[t] for t in members) >= total / count / 2:
+            continue
+        shares = {}
+        for t in members:
+            shares[labels[t]] = shares.get(labels[t], 0.0) + areas[t]
+        owner = max(shares, key=shares.get)
+        for t in members:
+            labels[t] = owner
+
+    chunks = {}
+    for t, label in enumerate(labels):
+        chunks.setdefault(label, []).append(triangles[t])
+    return [chunks[label] for label in sorted(chunks)]
+
+
 def subset(positions, normals, corners, indices, triangles):
     """Returns the mesh made of the given triangles (their first corner index), without unused vertices."""
     remap, kept_corners, kept = {}, [], []
@@ -390,6 +510,14 @@ def main(input_path, output_dir, name):
         part_positions, part_normals, _ = weapon_space(part_positions, part_normals, weapon, scale)
         write_obj(output_dir / f"{split['name']}.obj", split["name"], part_positions, part_normals, part_corners, part_indices, True)
         print(f"  split {split['name']}: {len(part_indices) // 3} triangles")
+
+    fragments_file = input_path.with_suffix(".fragments.json")
+    if not weapon and fragments_file.exists():
+        mesh = subdivide(positions, normals, corners, indices, 12)
+        chunks = fragment(mesh[0], mesh[3], json.loads(fragments_file.read_text())["count"])
+        for n, triangles in enumerate(chunks):
+            write_obj(output_dir / f"{name}_frag{n}.obj", f"{name}_frag{n}", *subset(*mesh, triangles), False)
+        print(f"  fragments: {len(chunks)} chunks of {', '.join(str(len(triangles)) for triangles in chunks)} triangles")
 
     paint_file = input_path.with_suffix(".paint.json")
     if use_atlas:

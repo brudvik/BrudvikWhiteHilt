@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.56.1 - 2026-10-02
+
+### Fixed
+- **Benches and stations with their own model** break into pieces of their own model when they are destroyed or removed, instead of into the pieces of the vanilla workbench, table, forge part or mortar they were made from. The Paint Bench, Rune Forge, Trophy Altar, Rune Etching Table, Binding Stone, Chain Bench, Herb Tray, Smoke Oven, Rune Post, Tether Post, Munin's Perch, Portal Astrolabe, Valkyrie Stone and Harbour Anchor split into 5 to 8 chunks that burst apart; things standing on them, such as the pots on the Paint Bench, fall off whole
+
 ## v0.56.0 - 2026-10-02
 
 ### Added

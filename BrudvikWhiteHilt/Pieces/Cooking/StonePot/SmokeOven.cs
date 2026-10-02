@@ -89,6 +89,7 @@ public class SmokeOven
             GameObject model = VisualHelper.ReplaceMesh(table.gameObject, ForagingAssets.LoadMesh("smokeoven"), ForagingAssets.LoadTexture("smokeoven_albedo"), size: Size);
             VisualHelper.FitBoxColliders(root, model);
 
+            PieceFragments.Apply(piece.PiecePrefab);
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
             if (icon != null)
             {
