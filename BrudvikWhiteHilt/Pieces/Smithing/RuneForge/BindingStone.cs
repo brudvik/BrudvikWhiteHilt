@@ -68,7 +68,7 @@ public class BindingStone
             CustomPiece piece = new(PrefabName, "forge_ext5", pieceConfig);
             piece.PiecePrefab.GetComponent<StationExtension>().m_craftingStation = runeForge;
             piece.PiecePrefab.AddComponent<BindingStoneComponent>();
-            ValkyrieStone.MakeStone(piece);
+            ValkyrieStone.MakeStone(piece, colliderSize.y / 2f);
             ReplaceCollider(piece.PiecePrefab);
             TryApplyVisual(piece);
             instance.AddPiece(piece);

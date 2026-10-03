@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Fixed
 - White Hilt rune circles that were Portal Stations stations could not be removed ("requires a workbench" next to a workbench), and would have dropped nothing: their workbench and building costs were never resolved
+- The Binding Stone and the Valkyrie Stone broke apart on stone floors: as stone they need ten times the support of wood, and their centre of mass lay on the floor's surface, so the support was reckoned sideways and ran out. It now sits in the middle of the stone, and rain no longer wears them
 
 ## v0.61.0 - 2026-10-03
 

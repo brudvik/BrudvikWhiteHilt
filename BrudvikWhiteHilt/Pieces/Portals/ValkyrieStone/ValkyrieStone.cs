@@ -91,7 +91,7 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
             CustomPiece piece = new(PrefabName, "piece_table", pieceConfig);
             GameObject prefab = piece.PiecePrefab;
             prefab.AddComponent<ValkyrieStoneComponent>();
-            MakeStone(piece);
+            MakeStone(piece, StoneHeight / 2f);
             FitColliders(prefab.transform);
             TryApplyVisual(piece);
             instance.AddPiece(piece);
@@ -109,7 +109,8 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
     /// Makes a cloned piece behave like stone: stone health, hit and break effects, no fragments of the vanilla piece.
     /// </summary>
     /// <param name="piece">The cloned piece.</param>
-    internal static void MakeStone(CustomPiece piece)
+    /// <param name="centreHeight">Height of the middle of the stone above its base.</param>
+    internal static void MakeStone(CustomPiece piece, float centreHeight)
     {
         GameObject pillar = PrefabManager.Instance.GetPrefab("stone_pillar");
         piece.Piece.m_comfort = 0;
@@ -123,6 +124,9 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
         // Without this the stone would break into table fragments.
         wearNTear.m_fragmentRoots = Array.Empty<GameObject>();
         wearNTear.m_materialType = WearNTear.MaterialType.Stone;
+        wearNTear.m_noRoofWear = false;
+        // Stone needs 100 support; a centre of mass on the floor's surface reckons it sideways and it breaks off.
+        wearNTear.m_comOffset = Vector3.up * centreHeight;
         WearNTear stone = pillar?.GetComponent<WearNTear>();
         if (stone != null)
         {
