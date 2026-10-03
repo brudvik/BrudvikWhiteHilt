@@ -231,6 +231,7 @@
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreyaEffect.cs" />
     <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyr.cs" />
     <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfHeimdall\GiftOfHeimdall.cs" />
     <Compile Include="Items\Potions\GiftOfHel\GiftOfHel.cs" />
     <Compile Include="Items\Potions\GiftOfHel\GiftOfHelEffect.cs" />
     <Compile Include="Items\Potions\GiftOfHugin\GiftOfHugin.cs" />

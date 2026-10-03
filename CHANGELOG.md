@@ -18,6 +18,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Juniper Sahti** (Cauldron, then Fermenter): Juniper Berries, Honey and Crowberries; spirit damage taken is halved for 10 minutes (`[Meads.JuniperSahti]`)
 - **Gift of Kvasir**: the mead of poetry, brewed from Meadowsweet, Honey and Angelica. Every skill rises 50% faster for 20 minutes (`[Potions.GiftOfKvasir]`)
 - **Gift of Ullr**: the hunter god's gift, brewed from Juniper Berries, Angelica and Feathers. Bows hit 25% harder, you move 15% faster and are harder to notice for 20 minutes (`[Potions.GiftOfUllr]`)
+- **Gift of Heimdall**: the watchman's gift, brewed from Angelica, Crowberries and Crystal. Every foe within 60 m shows on the map for 10 minutes (`[Potions.GiftOfHeimdall]`)
 
 ## v0.58.0 - 2026-10-03
 
