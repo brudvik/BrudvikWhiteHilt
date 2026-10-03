@@ -480,6 +480,216 @@ def build_peatbrick(geo, rng, np):
     geo.box((0, 0, 0.03), (0.12, 0.3, 0.06), "peat", top_swatch="peattop", jitter=rng)
 
 
+# ---------------------------------------------------------------------------------------------------------------- mountains
+
+def needle_spray(geo, rng, point, heading, count, length, swatch):
+    """A tuft of stiff needles pointing out and forward from a twig, as on juniper."""
+    side = heading.orthogonal().normalized()
+    other = heading.cross(side)
+    for k in range(count):
+        angle = 2 * math.pi * k / count + rng.uniform(-0.3, 0.3)
+        out = side * math.cos(angle) + other * math.sin(angle)
+        geo.leaf(point, (out * 0.8 + heading * 0.6), heading, length * rng.uniform(0.8, 1.1), length * 0.24, swatch,
+                 profile="linear", segments=2, fold=0.3, droop=0.0)
+
+
+@model("juniper", "Common juniper")
+def build_juniper(geo, rng, np):
+    V = geo.Vector
+    berries = []
+    for direction in spread_directions(6, rng, 0.35):
+        length = rng.uniform(0.6, 0.95)
+        stem = curve((0, 0, 0), direction, length, -0.15, 6, gravity=(0, 0, 1))
+        geo.tube(stem, [0.016 * (1 - 0.7 * i / 6) for i in range(7)], "wood", segments=5)
+        for i in range(1, 7):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            for k in range(2):
+                angle = rng.uniform(0, 2 * math.pi)
+                side = heading.orthogonal().normalized()
+                out = (side * math.cos(angle) + heading.cross(side) * math.sin(angle))
+                twig = curve(stem[i], (out * 0.8 + heading * 0.5), rng.uniform(0.08, 0.16), -0.2, 3, gravity=(0, 0, 1))
+                geo.tube(twig, [0.004, 0.003, 0.0025, 0.002], "wood", segments=3, cap=False)
+                for j in range(1, 4):
+                    twig_heading = (twig[j] - twig[j - 1]).normalized()
+                    needle_spray(geo, rng, twig[j], twig_heading, 5, 0.055, "needle")
+                if rng.random() < 0.8:
+                    berries.append(twig[2] + V((rng.normal(0, 0.015), rng.normal(0, 0.015), rng.normal(0, 0.012))))
+            needle_spray(geo, rng, stem[i], heading, 6, 0.06, "needle")
+    geo.target = "fruit"
+    for point in berries:
+        geo.blob(point, 0.012, "berry", subdivisions=2)
+    geo.target = "main"
+
+
+@model("angelica", "Angelica")
+def build_angelica(geo, rng, np):
+    V = geo.Vector
+    # Big, twice-divided leaves around the foot.
+    for direction in spread_directions(5, rng, 0.9):
+        stalk = curve((0, 0, 0.02), direction, 0.45, 0.5, 4)
+        geo.tube(stalk, [0.012, 0.01, 0.008, 0.006, 0.005], "stem", segments=5, cap=False)
+        for j in (2, 3, 4):
+            heading = (stalk[j] - stalk[j - 1]).normalized()
+            side = heading.cross(V((0, 0, 1))).normalized()
+            for sign in (-1, 1):
+                geo.leaf(stalk[j], (side * sign + heading * 0.5), (0, 0, 1), 0.16, 0.08, "leaf", profile="ovate",
+                         segments=4, fold=0.3, droop=0.25)
+        geo.leaf(stalk[-1], (stalk[-1] - stalk[-2]), (0, 0, 1), 0.18, 0.1, "leaf", profile="ovate", segments=4, fold=0.3, droop=0.25)
+    # One stout, hollow-looking stem with three globes of flowers.
+    stem = curve((0, 0, 0), (0.03, 0.02, 1), 1.35, 0.08, 8)
+    geo.tube(stem, [0.03 - 0.015 * i / 8 for i in range(9)], "stem", segments=7)
+    heads = [(stem[-1], (stem[-1] - stem[-2]).normalized(), 0.16)]
+    for i, angle in ((5, 0.4), (6, 3.6)):
+        out = V((math.cos(angle), math.sin(angle), 1.1)).normalized()
+        branch = curve(stem[i], out, 0.32, -0.25, 4, gravity=(0, 0, 1))
+        geo.tube(branch, [0.012, 0.011, 0.01, 0.009, 0.008], "stem", segments=5)
+        heads.append((branch[-1], (branch[-1] - branch[-2]).normalized(), 0.11))
+    for centre_point, heading, radius in heads:
+        side = heading.orthogonal().normalized()
+        other = heading.cross(side)
+        for k in range(26):
+            # Rays spread over a dome, each ending in a little ball of green-white flowers.
+            phi = math.acos(1 - 1.4 * (k + 0.5) / 26)
+            theta = k * 2.4
+            ray = (heading * math.cos(phi) + (side * math.cos(theta) + other * math.sin(theta)) * math.sin(phi)).normalized()
+            tip = centre_point + ray * radius
+            geo.tube([centre_point, tip], [0.0025, 0.002], "ray", segments=3, cap=False)
+            geo.blob(tip, radius * 0.16, "flower", subdivisions=2)
+
+
+@model("icelandmoss", "Iceland moss")
+def build_icelandmoss(geo, rng, np):
+    V = geo.Vector
+    for k in range(34):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = rng.uniform(0.0, 0.12)
+        base = V((math.cos(angle) * distance, math.sin(angle) * distance, 0.0))
+        up = V((rng.normal(0, 0.35), rng.normal(0, 0.35), 1.0)).normalized()
+        # Each lobe forks once into two curled straps.
+        mid = base + up * rng.uniform(0.03, 0.05)
+        geo.leaf(base, up, (math.cos(angle), math.sin(angle), 0), (mid - base).length, 0.022, "lobe", profile="linear",
+                 segments=2, fold=0.9, droop=0.0)
+        for sign in (-1, 1):
+            side = up.cross(V((math.cos(angle), math.sin(angle), 0))).normalized()
+            geo.leaf(mid, (up + side * 0.6 * sign), (math.cos(angle), math.sin(angle), 0), rng.uniform(0.035, 0.05), 0.018,
+                     "lobe", profile="lance", segments=3, fold=1.0, droop=-0.3)
+
+
+def snag(geo, rng, length, radius):
+    """A weathered dead branch lying on the ground, with a few broken side twigs; returns points along it."""
+    V = geo.Vector
+    points = [V((-length / 2 + length * i / 6, rng.normal(0, 0.02), radius * 0.6 + 0.01 * math.sin(i))) for i in range(7)]
+    geo.tube(points, [radius * (1 - 0.4 * i / 6) for i in range(7)], "deadwood", segments=6)
+    twigs = []
+    for i in (1, 3, 4):
+        angle = rng.uniform(-1.2, 1.2) + (math.pi if i % 2 else 0)
+        out = V((0.4, math.sin(angle), abs(math.cos(angle)) * 0.8 + 0.3)).normalized()
+        twig = curve(points[i], out, rng.uniform(0.12, 0.25), 0.2, 3)
+        geo.tube(twig, [radius * 0.45, radius * 0.35, radius * 0.25, radius * 0.18], "deadwood", segments=4)
+        twigs.append(twig)
+    return points, twigs
+
+
+def lichen_tuft(geo, rng, point, normal, size, swatch):
+    """A small shrubby tuft of forked lichen branches."""
+    V = geo.Vector
+    normal = V(normal).normalized()
+    for k in range(5):
+        direction = (normal + V((rng.normal(0, 0.6), rng.normal(0, 0.6), rng.normal(0, 0.6)))).normalized()
+        tip = point + direction * size * rng.uniform(0.6, 1.0)
+        geo.tube([point, tip], [size * 0.12, size * 0.07], swatch, segments=3)
+        for j in range(2):
+            fork = (direction + V((rng.normal(0, 0.7), rng.normal(0, 0.7), rng.normal(0, 0.7)))).normalized()
+            geo.tube([tip, tip + fork * size * 0.45], [size * 0.07, size * 0.04], swatch, segments=3)
+
+
+@model("wolflichen", "Wolf lichen on a dead branch")
+def build_wolflichen(geo, rng, np):
+    V = geo.Vector
+    points, twigs = snag(geo, rng, 0.75, 0.035)
+    geo.target = "fruit"
+    for i in range(1, 6):
+        for k in range(3):
+            angle = rng.uniform(-0.3, math.pi + 0.3)
+            normal = V((0, math.cos(angle), math.sin(angle)))
+            lichen_tuft(geo, rng, points[i] + normal * 0.028, normal, rng.uniform(0.07, 0.1), "lichen")
+    for twig in twigs:
+        lichen_tuft(geo, rng, twig[2], (twig[2] - twig[1]), 0.08, "lichen")
+    geo.target = "main"
+
+
+@model("wolflichenitem", "A handful of wolf lichen")
+def build_wolflichenitem(geo, rng, np):
+    V = geo.Vector
+    for k in range(6):
+        angle = rng.uniform(0, 2 * math.pi)
+        point = V((math.cos(angle) * 0.03, math.sin(angle) * 0.03, 0.0))
+        lichen_tuft(geo, rng, point, (math.cos(angle) * 0.4, math.sin(angle) * 0.4, 1), 0.06, "lichen")
+
+
+@model("mountainsorrel", "Mountain sorrel")
+def build_mountainsorrel(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(9, rng, 1.0, jitter=0.4):
+        stalk = curve((0, 0, 0.01), direction, rng.uniform(0.08, 0.13), 0.6, 3)
+        geo.tube(stalk, [0.0035, 0.003, 0.0028, 0.0025], "stalk", segments=4, cap=False)
+        heading = (stalk[-1] - stalk[-2]).normalized()
+        flat = V((heading.x, heading.y, 0.25)).normalized()
+        geo.leaf(stalk[-1], flat, (0, 0, 1), rng.uniform(0.05, 0.07), rng.uniform(0.06, 0.075), "leaf", profile="round",
+                 segments=5, fold=0.25, droop=0.2)
+    # Upright stems with loose red panicles of flat, winged fruits.
+    for k in range(3):
+        lean = (rng.normal(0, 0.15), rng.normal(0, 0.15), 1.0)
+        stem = curve((rng.normal(0, 0.01), rng.normal(0, 0.01), 0), lean, rng.uniform(0.24, 0.32), 0.15, 5)
+        geo.tube(stem, [0.003] * 6, "stalk", segments=4)
+        for i in (3, 4, 5):
+            for n in range(5):
+                offset = V((rng.normal(0, 0.012), rng.normal(0, 0.012), rng.uniform(-0.02, 0.02)))
+                point = stem[i] + offset
+                geo.tube([stem[i], point], [0.0012, 0.0012], "stalk", segments=3, cap=False)
+                geo.blob(point, 0.0055, "fruit", subdivisions=1, squash=(1.0, 1.0, 0.35))
+
+
+@model("rocklichen", "A stone crusted with rock lichen")
+def build_rocklichen(geo, rng, np):
+    V = geo.Vector
+    geo.blob((0, 0, 0.0), 0.2, "stone", subdivisions=3, squash=(1.0, 0.8, 0.55), rng=rng, bumps=0.1, flat_bottom=-0.2)
+    geo.target = "fruit"
+    # Flat rosettes of crust lichen hugging the top of the stone.
+    for k in range(14):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = rng.uniform(0.0, 0.14)
+        x, y = math.cos(angle) * distance, math.sin(angle) * distance * 0.8
+        z = 0.12 * math.sqrt(max(0.0, 1 - (distance / 0.2) ** 2)) + 0.01
+        geo.blob((x, y, z), rng.uniform(0.05, 0.08), "crust", subdivisions=2, squash=(1.0, 1.0, 0.15))
+    geo.target = "main"
+
+
+@model("rocklichenitem", "Scraped rock lichen")
+def build_rocklichenitem(geo, rng, np):
+    for k in range(5):
+        angle = rng.uniform(0, 2 * math.pi)
+        geo.blob((math.cos(angle) * 0.04, math.sin(angle) * 0.04, k * 0.006), rng.uniform(0.03, 0.045), "crust",
+                 subdivisions=2, squash=(1.0, 0.9, 0.18), rng=rng, bumps=0.15)
+
+
+@model("whetstone", "Whetstone")
+def build_whetstone(geo, rng, np):
+    points = [(-0.11 + 0.22 * i / 6, 0.0, 0.012) for i in range(7)]
+    radii = [0.01, 0.014, 0.015, 0.015, 0.015, 0.014, 0.011]
+    geo.tube(points, radii, "slate", segments=6)
+    geo.tube([(-0.115, 0.0, 0.012), (-0.135, 0.0, 0.03)], [0.003, 0.003], "cord", segments=4)
+
+
+@model("oilflask", "Small clay flask")
+def build_oilflask(geo, rng, np):
+    profile = [(0.0, 0.0), (0.035, 0.003), (0.045, 0.03), (0.042, 0.06), (0.025, 0.085), (0.012, 0.095), (0.012, 0.115)]
+    points = [(0, 0, z) for _, z in profile]
+    geo.tube(points, [r for r, _ in profile], "clay", segments=10)
+    geo.tube([(0, 0, 0.11), (0, 0, 0.13)], [0.013, 0.011], "cork", segments=8)
+    geo.tube([(0.0125, 0, 0.1), (0.03, 0, 0.08), (0.04, 0, 0.05)], [0.0025, 0.0025, 0.0025], "cord", segments=4)
+
+
 SWATCHES = {
     "bogbean": {
         "leaf": {"bottom": (0.12, 0.26, 0.08), "top": (0.3, 0.48, 0.16)},
@@ -523,6 +733,48 @@ SWATCHES = {
 }
 SWATCHES["bogironlump"] = SWATCHES["bogiron"]
 SWATCHES["peatbrick"] = SWATCHES["peatstack"]
+SWATCHES.update({
+    "juniper": {
+        "wood": {"bottom": (0.22, 0.16, 0.12), "top": (0.36, 0.28, 0.2), "streaks": 0.4},
+        "needle": {"bottom": (0.12, 0.22, 0.14), "top": (0.3, 0.42, 0.34), "noise": 0.15},
+        "berry": {"bottom": (0.1, 0.12, 0.2), "top": (0.38, 0.45, 0.6), "noise": 0.25, "cells": (4, 2)},
+    },
+    "angelica": {
+        "stem": {"bottom": (0.38, 0.2, 0.28), "top": (0.38, 0.5, 0.25), "noise": 0.1},
+        "leaf": {"bottom": (0.15, 0.3, 0.1), "top": (0.3, 0.48, 0.16)},
+        "ray": {"bottom": (0.35, 0.45, 0.22), "top": (0.55, 0.6, 0.3)},
+        "flower": {"bottom": (0.6, 0.7, 0.42), "top": (0.88, 0.9, 0.72), "noise": 0.15, "cells": (4, 2)},
+    },
+    "icelandmoss": {
+        "lobe": {"bottom": (0.3, 0.24, 0.16), "top": (0.55, 0.5, 0.32), "noise": 0.25, "cells": (6, 3),
+                 "spots": (0.62, 0.32, 0.26), "spot_share": 0.12, "spot_cells": (4, 2)},
+    },
+    "wolflichen": {
+        "deadwood": {"bottom": (0.4, 0.38, 0.35), "top": (0.62, 0.6, 0.56), "streaks": 0.6, "noise": 0.2},
+        "lichen": {"bottom": (0.62, 0.72, 0.12), "top": (0.88, 0.9, 0.3), "noise": 0.15, "cells": (4, 2)},
+    },
+    "mountainsorrel": {
+        "stalk": {"bottom": (0.45, 0.18, 0.15), "top": (0.35, 0.45, 0.18)},
+        "leaf": {"bottom": (0.22, 0.42, 0.14), "top": (0.4, 0.58, 0.2), "noise": 0.12},
+        "fruit": {"bottom": (0.55, 0.12, 0.1), "top": (0.78, 0.25, 0.18), "noise": 0.15},
+    },
+    "rocklichen": {
+        "stone": {"bottom": (0.3, 0.3, 0.31), "top": (0.48, 0.47, 0.46), "noise": 0.35, "cells": (12, 5, 2)},
+        "crust": {"bottom": (0.5, 0.42, 0.5), "top": (0.72, 0.68, 0.7), "noise": 0.35, "cells": (4, 2),
+                  "spots": (0.4, 0.25, 0.42), "spot_share": 0.35, "spot_cells": (5, 3)},
+    },
+    "whetstone": {
+        "slate": {"bottom": (0.24, 0.27, 0.3), "top": (0.36, 0.39, 0.42), "noise": 0.2, "streaks": 0.5},
+        "cord": {"bottom": (0.42, 0.32, 0.2), "top": (0.52, 0.4, 0.26)},
+    },
+    "oilflask": {
+        "clay": {"bottom": (0.42, 0.26, 0.18), "top": (0.6, 0.4, 0.28), "noise": 0.2, "cells": (8, 3)},
+        "cork": {"bottom": (0.5, 0.38, 0.24), "top": (0.62, 0.5, 0.32), "noise": 0.3},
+        "cord": {"bottom": (0.42, 0.32, 0.2), "top": (0.52, 0.4, 0.26)},
+    },
+})
+SWATCHES["wolflichenitem"] = SWATCHES["wolflichen"]
+SWATCHES["rocklichenitem"] = SWATCHES["rocklichen"]
 
 
 # ---------------------------------------------------------------------------------------------------------------- export
