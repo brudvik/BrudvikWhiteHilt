@@ -28,7 +28,7 @@ Looking at the portal shows which runes it has. Use the post to take the last ru
 
 ### Valkyrie Stone
 
-A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you to where you last fell in this world (the death marker on the map) for **one Surtling Core**. You arrive with everything you carry. Each death can be travelled to once; after the next death the stone works again.
+A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you to where you last fell in this world (the death marker on the map) for **one Surtling Core**. You arrive with everything you carry. Each death can be travelled to once; after the next death the stone works again, even if you die immediately after arrival at exactly the same coordinates.
 
 | Item | Use | Crafting Station | Requirements |
 |------|-----|------------------|--------------|

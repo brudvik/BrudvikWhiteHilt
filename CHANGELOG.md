@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.1 - 2026-10-03
+
+### Fixed
+- **Valkyrie Stone repeat deaths**: a new local death clears the previous trip marker before respawn saves the player, so dying again at exactly the same coordinates no longer blocks travel to the new death point. Trip cost and the once-per-death setting are unchanged.
+
 ## v0.77.0 - 2026-10-03
 
 ### Added

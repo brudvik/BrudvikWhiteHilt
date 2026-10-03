@@ -81,6 +81,11 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         return false;
     }
 
+    internal static void ResetUsedDeath(Player player)
+    {
+        player.m_customData.Remove(UsedDeathKey);
+    }
+
     private static void Travel(Player player)
     {
         // Checked again: the player may have died, dropped the core or used another stone while the popup was open.

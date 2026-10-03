@@ -401,6 +401,7 @@
     <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalComponent.cs" />
     <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalPieces.cs" />
     <Compile Include="Patches\Portals\HomeStonePatch.cs" />
+    <Compile Include="Patches\Portals\ValkyrieStonePatch.cs" />
     <Compile Include="Patches\Portals\PortalTravelMapPatch.cs" />
     <Compile Include="Items\Portals\HomeStone.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
