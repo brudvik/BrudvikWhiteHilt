@@ -45,6 +45,7 @@ public static class KrakenSpawner
             GameObject kraken = Object.Instantiate(prefab, point, Quaternion.LookRotation(toShip));
             ZNetView nview = kraken.GetComponent<ZNetView>();
             nview.GetZDO().Set(KrakenBody.ShipKey, ship.m_nview.GetZDO().m_uid);
+            nview.GetZDO().Set(KrakenBody.CrewKey, Mathf.Max(1, ship.m_players.Count));
             Jotunn.Logger.LogInfo($"The Kraken rises at {point} beside the ship at {centre}");
             return true;
         }
@@ -86,6 +87,7 @@ public static class KrakenSpawner
             point.y = WaterLevel() - TentacleSink;
             GameObject tentacle = Object.Instantiate(prefab, point, Quaternion.LookRotation(-direction));
             tentacle.GetComponent<ZNetView>().GetZDO().Set(KrakenTentacle.BodyKey, body);
+            tentacle.GetComponent<ZNetView>().GetZDO().Set(KrakenBody.CrewKey, kraken.GetComponent<ZNetView>().GetZDO().GetInt(KrakenBody.CrewKey, 1));
         }
     }
 

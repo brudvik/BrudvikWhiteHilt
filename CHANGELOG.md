@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.76.0 - 2026-10-03
+
+### Added
+- **Kraken crew damage scaling**: the Kraken and its tentacles deal 15% more solo damage to players and 3% more solo ship damage per additional player aboard when the encounter starts. Five aboard means +60% crew damage and +12% ship damage, on top of vanilla scaling. Crew size is saved on the Kraken and copied to its tentacles so leaving the ship does not reduce the bonus; admin summons use the same rule, and older encounters default to solo damage. Admin-synced `[Kraken] CrewDamagePerExtraPlayer` and `ShipDamagePerExtraPlayer` control the bonuses, with Norwegian setting texts; 0 disables each bonus. Existing zero-damage settings still block damage. Health, tentacle count, attack chance and cooldown are unchanged. Compilation and 12 isolated damage checks passed; multiplayer in-game testing remains required.
+
+## v0.75.1 - 2026-10-03
+
+### Changed
+- **More dangerous Kraken encounters for large crews**: doubled the default `ChancePerExtraPlayer` from 4 to 8 percentage points. Natural attack chance is now 8% per minute solo, 16% with two aboard, 24% with three and 40% with five, capped at 100%. All existing conditions and the world-wide cooldown remain unchanged. Existing configured values are preserved; set `[Kraken] ChancePerExtraPlayer` to 8 to adopt the new balance on an already configured server.
+
+## v0.75.0 - 2026-10-03
+
+### Added
+- **Kraken crew bonus**: each additional player aboard the same ship adds a configurable 4 percentage points to the natural attack chance per minute (8% solo, 12% with two, 16% with three), capped at 100%. Existing weather, night, biome, depth, progression and world-wide cooldown requirements remain unchanged. Admin-synced `[Kraken] ChancePerExtraPlayer` controls the bonus; 0 disables it. `ChancePerMinute = 0` still disables natural attacks. The diagnostic console command now shows crew size and effective chance. Server and clients must update together for the changed request RPC. Validated with compilation and isolated chance checks; multiplayer in-game testing remains required.
+
 ## v0.74.1 - 2026-10-03
 
 ### Fixed

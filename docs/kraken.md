@@ -20,7 +20,7 @@ The Kraken only comes when everything lines up:
 - the wind is **calm** (at most 0.35),
 - **Bonemass** is slain.
 
-Then, once a minute, there is an 8% chance it rises. It comes at most once every 90 minutes in the whole world.
+Then, once a minute, there is an 8% chance it rises with one player aboard. Each additional player on the same ship adds 8 percentage points: 16% with two players, 24% with three, and 40% with five, capped at 100%. Players on other ships do not contribute to that ship's chance. All the conditions above still apply. It comes at most once every 90 minutes in the whole world.
 
 ### The fight
 
@@ -36,6 +36,18 @@ Then, once a minute, there is an 8% chance it rises. It comes at most once every
 | **Kraken Tentacle** | 500 | Lash, 45 blunt, reaches about 12 m |
 
 Both shrug off chop and pickaxe damage and poison, resist fire and frost, and are weak to lightning.
+
+Large crews face harder blows. When the Kraken rises, it remembers how many players are aboard its target ship. Both the body and tentacles deal an extra **15% of solo damage to players** and **3% of solo ship damage** per additional crew member. These bonuses multiply the configured damage shares and stack with vanilla multiplayer and world-difficulty scaling; the attack values above are base values, before armor and resistances.
+
+| Players aboard at spawn | Extra damage to players | Extra damage to the ship |
+|---|---|---|
+| 1 | None | None |
+| 2 | +15% | +3% |
+| 3 | +30% | +6% |
+| 5 | +60% | +12% |
+| 10 | +135% | +27% |
+
+The crew bonus stays fixed for that encounter, even if players jump overboard, die or join later. It is saved with the Kraken and copied to its tentacles, including for admin-summoned encounters. Older Krakens without a saved crew count retain solo damage. Health and tentacle count are unchanged; vanilla effective-health scaling still applies. Set either extra-player damage setting to 0 to disable that bonus. A damage share of 0 still prevents that kind of damage entirely.
 
 The Kraken has its own deep, watery calls for idle, alert, slam, injury and death. Its tentacles share the calls and use a separate wet lash sound when striking. Set `[Kraken] Sounds` to false to keep the previous vanilla sounds.
 
@@ -59,7 +71,8 @@ Section `[Kraken]` (admin only, synced from the server):
 | `FogWeathers` | Misty | Weathers that count as fog |
 | `MaxWind` | 0.35 | Strongest wind that counts as calm |
 | `NightOnly` | true | Only at night |
-| `ChancePerMinute` | 8 | Percent per minute while every condition holds |
+| `ChancePerMinute` | 8 | Base percent per minute for one player while every condition holds; 0 disables natural attacks |
+| `ChancePerExtraPlayer` | 8 | Extra percentage points per additional player on the same ship, capped at 100% total; 0 disables the crew bonus |
 | `CooldownMinutes` | 90 | Real minutes between Krakens, world-wide |
 | `MinDepth` | 25 | Least depth of water under the ship |
 | `Tentacles` | 4 | Tentacles around the ship (0–8) |
@@ -67,6 +80,8 @@ Section `[Kraken]` (admin only, synced from the server):
 | `BodyDamage` / `TentacleDamage` | 90 / 45 | Blunt damage per blow |
 | `CrewDamagePercent` | 100 | Share of the damage the crew takes; 0 = never hurt |
 | `ShipDamagePercent` | 30 | Share of the damage the ship takes; 0 = never hurt |
+| `CrewDamagePerExtraPlayer` | 15 | Extra percent of solo damage to players per additional crew member at spawn, on top of vanilla scaling; 0 disables the bonus |
+| `ShipDamagePerExtraPlayer` | 3 | Extra percent of solo ship damage per additional crew member at spawn; 0 disables the bonus |
 | `HoldShip` | true | The Kraken holds the ship fast |
 | `RetreatMinutes` | 5 | Minutes before it gives up |
 | `Scale` | 1.5 | Size of the Kraken (after a restart) |
@@ -77,5 +92,5 @@ Section `[Octopus]`: `Enabled`, `MaxSpawned` (2) and `SpawnChance` (20%).
 
 ## Console commands
 
-- `whitehilt_kraken` shows every condition where you are, and whether it holds.
+- `whitehilt_kraken` shows every condition where you are, whether it holds, the number of players aboard and the resulting chance per minute before conditions and cooldown are applied.
 - `whitehilt_kraken summon` (admins) raises the Kraken beside your ship now.

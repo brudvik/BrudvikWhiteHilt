@@ -13,6 +13,9 @@ public class KrakenBody : MonoBehaviour
     /// <summary>ZDO key of the ship the Kraken came for.</summary>
     public const string ShipKey = "whitehilt_kraken_ship";
 
+    /// <summary>ZDO key of the crew size when the Kraken rose, shared with its tentacles.</summary>
+    public const string CrewKey = "whitehilt_kraken_crew";
+
     /// <summary>ZDO key of the time (ticks) the Kraken started to sink back; 0 while it stays.</summary>
     public const string RetreatKey = "whitehilt_kraken_retreat";
 

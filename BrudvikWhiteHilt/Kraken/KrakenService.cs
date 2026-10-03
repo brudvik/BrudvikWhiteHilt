@@ -44,6 +44,7 @@ public class KrakenService : MonoBehaviour
         string key = KrakenSettings.RequiredKey.Value;
         return $"Kraken: enabled {KrakenSettings.Enabled.Value}\n" +
             $"  on a ship: {ship != null}, own the ship: {ship != null && ship.m_nview.IsOwner()}\n" +
+            $"  players aboard: {(ship != null ? ship.m_players.Count : 0)}, chance per minute: {AttackChance(ship != null ? ship.m_players.Count : 0):0.##}%\n" +
             $"  ocean: {ship != null && Heightmap.FindBiome(ship.transform.position) == Heightmap.Biome.Ocean}, " +
             $"deep ({KrakenSettings.MinDepth.Value} m): {ship != null && KrakenSpawner.DeepEnough(ship.transform.position, KrakenSettings.MinDepth.Value)}\n" +
             $"  night: {EnvMan.IsNight()} (needed: {KrakenSettings.NightOnly.Value}), weather: {env?.m_name} (fog: {KrakenSettings.IsFog(env)})\n" +
@@ -62,7 +63,7 @@ public class KrakenService : MonoBehaviour
 
     private void Start()
     {
-        ZRoutedRpc.instance?.Register<ZDOID>(RequestRpc, RPC_Request);
+        ZRoutedRpc.instance?.Register<ZDOID, int>(RequestRpc, RPC_Request);
         ZRoutedRpc.instance?.Register<ZDOID>(SpawnRpc, RPC_Spawn);
         ZRoutedRpc.instance?.Register<ZDOID>(AdminRpc, RPC_Admin);
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
@@ -80,7 +81,7 @@ public class KrakenService : MonoBehaviour
         Ship ship = Ship.GetLocalShip();
         if (Conditions(ship))
         {
-            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), RequestRpc, ship.m_nview.GetZDO().m_uid);
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), RequestRpc, ship.m_nview.GetZDO().m_uid, ship.m_players.Count);
         }
     }
 
@@ -103,11 +104,22 @@ public class KrakenService : MonoBehaviour
             && KrakenSpawner.DeepEnough(position, KrakenSettings.MinDepth.Value);
     }
 
-    private void RPC_Request(long sender, ZDOID ship)
+    private static float AttackChance(int playersAboard)
+    {
+        float baseChance = KrakenSettings.ChancePerMinute.Value;
+        if (playersAboard <= 0 || baseChance <= 0f)
+        {
+            return 0f;
+        }
+
+        return Mathf.Clamp(baseChance + (playersAboard - 1) * KrakenSettings.ChancePerExtraPlayer.Value, 0f, 100f);
+    }
+
+    private void RPC_Request(long sender, ZDOID ship, int playersAboard)
     {
         if (!ZNet.instance.IsServer() || !KrakenSettings.Enabled.Value
             || Time.time - lastKraken < KrakenSettings.CooldownMinutes.Value * 60f
-            || Random.value * 100f >= KrakenSettings.ChancePerMinute.Value)
+            || Random.value * 100f >= AttackChance(playersAboard))
         {
             return;
         }

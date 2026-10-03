@@ -33,6 +33,9 @@ public static class KrakenSettings
     /// <summary>Chance per minute, in percent, while the conditions hold.</summary>
     public static ConfigEntry<float> ChancePerMinute { get; private set; }
 
+    /// <summary>Extra percentage points per additional player aboard the same ship.</summary>
+    public static ConfigEntry<float> ChancePerExtraPlayer { get; private set; }
+
     /// <summary>Minutes before the Kraken can come again anywhere in the world.</summary>
     public static ConfigEntry<float> CooldownMinutes { get; private set; }
 
@@ -59,6 +62,12 @@ public static class KrakenSettings
 
     /// <summary>Share, in percent, of the damage the ship takes.</summary>
     public static ConfigEntry<float> ShipDamagePercent { get; private set; }
+
+    /// <summary>Extra damage to players, in percent of solo damage, per additional crew member at spawn.</summary>
+    public static ConfigEntry<float> CrewDamagePerExtraPlayer { get; private set; }
+
+    /// <summary>Extra damage to the ship, in percent of solo ship damage, per additional crew member at spawn.</summary>
+    public static ConfigEntry<float> ShipDamagePerExtraPlayer { get; private set; }
 
     /// <summary>Whether the Kraken holds the ship while it lives.</summary>
     public static ConfigEntry<bool> HoldShip { get; private set; }
@@ -95,7 +104,10 @@ public static class KrakenSettings
         FogWeathers = WhiteHiltConfig.BindAdminOnly(Section, "FogWeathers", "Misty", "Weathers, comma separated, that count as fog.");
         MaxWind = WhiteHiltConfig.BindAdminOnly(Section, "MaxWind", 0.35f, "Strongest wind that still counts as calm (0 to 1).", new AcceptableValueRange<float>(0f, 1f));
         NightOnly = WhiteHiltConfig.BindAdminOnly(Section, "NightOnly", true, "The Kraken only comes at night.");
-        ChancePerMinute = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerMinute", 8f, "Chance per minute, in percent, while every condition holds.",
+        ChancePerMinute = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerMinute", 8f, "Base chance per minute for one player, in percent, while every condition holds. 0 disables natural attacks.",
+            new AcceptableValueRange<float>(0f, 100f));
+        ChancePerExtraPlayer = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerExtraPlayer", 8f,
+            "Extra percentage points per additional player aboard the same ship. Total chance is capped at 100%. 0 disables the crew bonus.",
             new AcceptableValueRange<float>(0f, 100f));
         CooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "CooldownMinutes", 90f, "Real minutes before the Kraken can come again, anywhere in the world.",
             new AcceptableValueRange<float>(0f, 1440f));
@@ -109,6 +121,12 @@ public static class KrakenSettings
             new AcceptableValueRange<float>(0f, 500f));
         ShipDamagePercent = WhiteHiltConfig.BindAdminOnly(Section, "ShipDamagePercent", 30f, "Share of the damage the ship takes, in percent. 0 = the ship is never hurt.",
             new AcceptableValueRange<float>(0f, 500f));
+        CrewDamagePerExtraPlayer = WhiteHiltConfig.BindAdminOnly(Section, "CrewDamagePerExtraPlayer", 15f,
+            "Extra percent of solo damage to players per additional player aboard when the Kraken rises. Applies to body and tentacles, on top of vanilla scaling. 0 disables the bonus.",
+            new AcceptableValueRange<float>(0f, 100f));
+        ShipDamagePerExtraPlayer = WhiteHiltConfig.BindAdminOnly(Section, "ShipDamagePerExtraPlayer", 3f,
+            "Extra percent of solo ship damage per additional player aboard when the Kraken rises. Applies to body and tentacles. 0 disables the bonus.",
+            new AcceptableValueRange<float>(0f, 100f));
         HoldShip = WhiteHiltConfig.BindAdminOnly(Section, "HoldShip", true, "The Kraken holds the ship fast while it lives.");
         RetreatMinutes = WhiteHiltConfig.BindAdminOnly(Section, "RetreatMinutes", 5f, "Minutes before the Kraken sinks back into the deep.",
             new AcceptableValueRange<float>(1f, 60f));

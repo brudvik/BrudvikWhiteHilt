@@ -48,14 +48,14 @@ public static class KrakenPatches
     [HarmonyPrefix]
     private static bool CharacterDamagePrefix(Character __instance, HitData hit)
     {
-        return !(__instance is Player) || Scale(hit, KrakenSettings.CrewDamagePercent.Value);
+        return !(__instance is Player) || Scale(hit, KrakenSettings.CrewDamagePercent.Value, KrakenSettings.CrewDamagePerExtraPlayer.Value);
     }
 
     [HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Damage))]
     [HarmonyPrefix]
     private static bool WearNTearDamagePrefix(HitData hit)
     {
-        return Scale(hit, KrakenSettings.ShipDamagePercent.Value);
+        return Scale(hit, KrakenSettings.ShipDamagePercent.Value, KrakenSettings.ShipDamagePerExtraPlayer.Value);
     }
 
     [HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Awake))]
@@ -118,7 +118,12 @@ public static class KrakenPatches
     }
 
     // Returns false when the hit is scaled to nothing, so it is skipped.
-    private static bool Scale(HitData hit, float percent)
+    private static float CrewDamageMultiplier(int playersAboard, float bonusPercent)
+    {
+        return 1f + Mathf.Max(0, playersAboard - 1) * bonusPercent / 100f;
+    }
+
+    private static bool Scale(HitData hit, float percent, float bonusPercent)
     {
         Character attacker = hit.GetAttacker();
         if (attacker == null || (attacker.GetComponent<KrakenBody>() == null && attacker.GetComponent<KrakenTentacle>() == null))
@@ -131,7 +136,9 @@ public static class KrakenPatches
             return false;
         }
 
-        hit.ApplyModifier(percent / 100f);
+        ZNetView nview = attacker.m_nview;
+        int crew = nview != null && nview.IsValid() ? nview.GetZDO().GetInt(KrakenBody.CrewKey, 1) : 1;
+        hit.ApplyModifier(percent / 100f * CrewDamageMultiplier(crew, bonusPercent));
         return true;
     }
 }
