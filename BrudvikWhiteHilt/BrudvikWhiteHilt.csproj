@@ -258,6 +258,7 @@
     <Compile Include="Items\Potions\GiftOfThor\GiftOfThorEffect.cs" />
     <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyr.cs" />
     <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfUllr\GiftOfUllr.cs" />
     <Compile Include="Items\Potions\PotionBase.cs" />
     <Compile Include="Items\Potions\PotionSettings.cs" />
     <Compile Include="Items\Tools\WhiteHiltAxe\WhiteHiltAxe.cs" />

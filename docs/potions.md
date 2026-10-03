@@ -6,7 +6,7 @@
 
 All potions are crafted in the **Cauldron** as Mead Base, then fermented in the **Fermenter** to produce the final mead.
 
-Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
+Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir, juniper and angelica for Ullr ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
 
 ### Timed Effects (20 minutes duration)
 
@@ -27,6 +27,7 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 | **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
 | **Gift of Idunn** | Grants youthful vigour - 1.25x health and 1.5x stamina/eitr regeneration. | Lingonberries ×10, Honey ×5, Dandelion ×5 |
 | **Gift of Kvasir** | The mead of poetry - every skill rises 50% faster. | Meadowsweet ×10, Honey ×10, Angelica ×3 |
+| **Gift of Ullr** | The hunter god of bow and ski - +25% bow damage, +15% movement speed, harder to notice. | Juniper Berries ×5, Angelica ×5, Feathers ×10 |
 
 ### Short Duration (10 minutes)
 
@@ -74,5 +75,6 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Sleipnir | `SpeedModifier` 0.5, `JumpModifier` 1.5, `FallDamageMultiplier` 0 |
 | Thor | `HomeItemStaminaMultiplier` 0.1, `AttackStaminaMultiplier` 0.5, `ChopDamageMultiplier` 2, `PickaxeDamageMultiplier` 2 |
 | Tyr | `CarryWeight` 100, `BlockStaminaMultiplier` 0, `DodgeStaminaMultiplier` 0.25, `PushForceMultiplier` 0.1 (knockback taken) |
+| Ullr | `BowDamage` 0.25, `SpeedModifier` 0.15, `StealthModifier` -0.3 |
 
 Changes apply on the next drink. The foraging meads are set in [Foraging & food](foraging.md).
