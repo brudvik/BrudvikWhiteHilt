@@ -40,7 +40,7 @@ public static class DyeCatalog
         Items.Foraging.RockLichen.RockLichen.PrefabName,
 
         // Plains
-        Items.Foraging.Rosehips.Rosehips.PrefabName, Items.Foraging.Yarrow.Yarrow.PrefabName,
+        Items.Foraging.Rosehips.Rosehips.PrefabName, Items.Foraging.Yarrow.Yarrow.PrefabName, Items.Foraging.Caraway.Caraway.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName
