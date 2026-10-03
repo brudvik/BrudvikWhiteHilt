@@ -8,6 +8,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Juniper Berries**: prickly juniper shrubs on the Mountain slopes, or from wild onions picked there (20%). Their blue berries hide when picked and grow back. A dye, and an ingredient against the dead (`[Foraging.JuniperBerries]`)
 - **Angelica**: a tall herb with green flower globes in the Mountains, or from wild onions picked there (20%). Vikings grew it and chewed the stalks for strength (`[Foraging.Angelica]`)
 - **Iceland Moss**: curly brown lichen on the Mountain heath, or from wild onions picked there (15%). Boiled into porridge (`[Foraging.IcelandMoss]`)
+- **Wolf Lichen**: bright yellow tufts on dead branches in the Mountains; the branch stays and the lichen grows back. Wolves drop it 10% of the time. A sulphur-yellow dye and a bane for beasts (`[Foraging.WolfLichen]`)
 
 ## v0.58.0 - 2026-10-03
 
