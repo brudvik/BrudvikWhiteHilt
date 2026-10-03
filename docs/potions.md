@@ -6,7 +6,7 @@
 
 All potions are crafted in the **Cauldron** as Mead Base, then fermented in the **Fermenter** to produce the final mead.
 
-Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
+Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
 
 ### Timed Effects (20 minutes duration)
 
@@ -32,6 +32,7 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 | Potion | Effect | Mead Base Requirements |
 |--------|--------|------------------------|
 | **Gift of Odin** | The Allfather's vigour - full heal on drink, +50 max HP, +2 HP/s, 2x health regeneration, 50% less fall damage. The strongest health potion, but you can still die. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
+| **Gift of Eir** | The healer among the gods - heals half your health on drink, ends poison, fire, frost, shock, tar and smoke and keeps them off, 2x health regeneration. | Sphagnum Moss ×10, Bog Bean ×5, Honey ×10 |
 
 ### Special Effects (30 minutes or until triggered)
 
@@ -56,6 +57,7 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 |---|---|
 | Baldur | `StealthModifier` -0.99, `NoiseModifier` -0.99, `Stealth` 0.01, `SneakStaminaMultiplier` 0 |
 | Brokkr | `SkillBonus` 25, `MaxSkillLevel` 100, `HomeItemStaminaMultiplier` 0 |
+| Eir | `DurationMinutes` 10, `HealShare` 0.5, `HealthRegenMultiplier` 2 |
 | Fenrir | `AttackSpeed` 1.5, `LifeSteal` 0.15, `SpeedModifier` 0.25, `AttackStaminaMultiplier` 0.5 |
 | Freya | `BonusStamina` 400, `StaminaUse` -0.9 (negative restores stamina), `StaminaRegenBonus` 40 |
 | Freyr | `HealthRegenMultiplier` 2, `StaminaRegenMultiplier` 2, `CarryWeight` 150, `HomeItemStaminaMultiplier` 0, `HealPerSecond` 1, `StaminaPerSecond` 5 |

@@ -212,6 +212,8 @@
     <Compile Include="Items\Potions\GiftOfBaldur\GiftOfBaldurEffect.cs" />
     <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkr.cs" />
     <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkrEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfEir\GiftOfEir.cs" />
+    <Compile Include="Items\Potions\GiftOfEir\GiftOfEirEffect.cs" />
     <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrir.cs" />
     <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrirEffect.cs" />
     <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreya.cs" />

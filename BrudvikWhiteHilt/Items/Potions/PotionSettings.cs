@@ -432,12 +432,28 @@ public static class PotionSettings
         Tyr.PushForceMultiplier = Bind(tyr, "PushForceMultiplier", 0.1f, 0f, 1f, "Multiplier on knockback taken.");
     }
 
-    private static ConfigEntry<float> BindDuration(string potion, float defaultMinutes)
+    /// <summary>
+    /// Binds the duration of a potion, for potions that keep their settings in their own class.
+    /// </summary>
+    /// <param name="potion">Base name of the potion, e.g. GiftOfEir.</param>
+    /// <param name="defaultMinutes">Default duration.</param>
+    /// <returns>The entry.</returns>
+    internal static ConfigEntry<float> BindDuration(string potion, float defaultMinutes)
     {
         return Bind(potion, "DurationMinutes", defaultMinutes, 1f, 240f, "Duration in minutes.");
     }
 
-    private static ConfigEntry<float> Bind(string potion, string key, float defaultValue, float min, float max, string description)
+    /// <summary>
+    /// Binds a number of a potion in its section, for potions that keep their settings in their own class.
+    /// </summary>
+    /// <param name="potion">Base name of the potion, e.g. GiftOfEir.</param>
+    /// <param name="key">Setting name.</param>
+    /// <param name="defaultValue">Default value.</param>
+    /// <param name="min">Lowest value.</param>
+    /// <param name="max">Highest value.</param>
+    /// <param name="description">English description.</param>
+    /// <returns>The entry.</returns>
+    internal static ConfigEntry<float> Bind(string potion, string key, float defaultValue, float min, float max, string description)
     {
         WhiteHiltConfig.SetSectionLabel(SectionPrefix + potion, Helpers.Translations.Token(Helpers.Translations.ItemKey(potion + "Mead")));
         return WhiteHiltConfig.BindAdminOnly(SectionPrefix + potion, key, defaultValue, description, new AcceptableValueRange<float>(min, max));

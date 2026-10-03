@@ -17,6 +17,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Meadowsweet Mead** (Cauldron, then Fermenter): Honey, Meadowsweet and Cranberries; 15% more armor and 25% less stagger for 10 minutes (`[Meads.MeadowsweetMead]`)
 - **Bog Bean Bitter** (Cauldron, then Fermenter): Bog Bean, Sweet Gale and Honey; ends poison, burning, frost, shock, tar and smoke at once and keeps them off for 3 minutes (`[Meads.BogBeanBitter]`)
 - **Labrador Tea Brew** (Cauldron, then Fermenter): Labrador Tea, Sweet Gale and Honey; leeches, deathsquitoes and ticks do not notice you for 10 minutes (`[Meads.LabradorTeaBrew]` `IgnoredBy`)
+- **Gift of Eir**: brewed from Sphagnum Moss, Bog Bean and Honey. Heals half your health at once, ends poison, fire and frost and keeps them off, and doubles health regeneration for 10 minutes (`[Potions.GiftOfEir]`)
 
 ## v0.57.2 - 2026-10-03
 

@@ -5,6 +5,7 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Potions;
 
@@ -29,9 +30,14 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The path to the icon of the potion.
+    /// The path to the embedded icon of the potion, or null to render the tinted mead as its icon.
     /// </summary>
-    protected abstract string IconPath { get; }
+    protected virtual string IconPath => null;
+
+    /// <summary>
+    /// Colour multiplied into the mead and its base when the potion has no embedded icon.
+    /// </summary>
+    protected virtual Color Tint => Color.white;
 
     /// <summary>
     /// Indicates whether the potion is enabled or not.
@@ -97,6 +103,11 @@ public abstract class PotionBase : IWhiteHiltCustomItem
             };
 
             CustomItem meadBase = new($"{BaseName}MeadBase", "MeadBaseHealthMinor", meadBaseConfig);
+            if (IconPath == null)
+            {
+                ApplyRenderedLook(meadBase);
+            }
+
             instance.AddItem(meadBase);
 
             // Create Mead
@@ -108,10 +119,21 @@ public abstract class PotionBase : IWhiteHiltCustomItem
 
             CustomItem mead = new($"{BaseName}Mead", "MeadHealthMinor", meadConfig);
             mead.ItemDrop.m_itemData.m_shared.m_description = Translations.Token($"{MeadKey}_description");
-            mead.ItemDrop.m_itemData.m_shared.m_icons[0] = AssetUtilsExtended.LoadTextureFromEmbeddedResource(IconPath).ConvertToSprite();
+            if (IconPath != null)
+            {
+                mead.ItemDrop.m_itemData.m_shared.m_icons[0] = AssetUtilsExtended.LoadTextureFromEmbeddedResource(IconPath).ConvertToSprite();
+            }
+            else
+            {
+                ApplyRenderedLook(mead);
+            }
 
             var effect = CreateEffect();
             ApplyEffectTokens(effect);
+            if (effect.m_icon == null)
+            {
+                effect.m_icon = mead.ItemDrop.m_itemData.m_shared.m_icons[0];
+            }
             var customEffect = new CustomStatusEffect(effect, fixReference: false);
             instance.AddStatusEffect(customEffect);
             mead.ItemDrop.m_itemData.m_shared.m_consumeStatusEffect = customEffect.StatusEffect;
@@ -207,6 +229,16 @@ public abstract class PotionBase : IWhiteHiltCustomItem
         if (!string.IsNullOrEmpty(text))
         {
             Translations.AddEnglish(key, text);
+        }
+    }
+
+    private void ApplyRenderedLook(CustomItem item)
+    {
+        VisualHelper.Tint(item.ItemPrefab, Tint);
+        Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab);
+        if (icon != null)
+        {
+            item.ItemDrop.m_itemData.m_shared.m_icons[0] = icon;
         }
     }
 }

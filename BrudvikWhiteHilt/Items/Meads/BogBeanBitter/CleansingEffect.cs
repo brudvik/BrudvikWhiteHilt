@@ -17,19 +17,23 @@ public class CleansingEffect : SE_Stats
     public override void Setup(Character character)
     {
         base.Setup(character);
-        Cleanse();
+        Cleanse(m_character);
     }
 
     /// <inheritdoc/>
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);
-        Cleanse();
+        Cleanse(m_character);
     }
 
-    private void Cleanse()
+    /// <summary>
+    /// Ends poison, fire, frost, lightning, tar and smoke on a character.
+    /// </summary>
+    /// <param name="character">The character, or null for nothing.</param>
+    public static void Cleanse(Character character)
     {
-        SEMan seMan = m_character?.GetSEMan();
+        SEMan seMan = character?.GetSEMan();
         if (seMan == null)
         {
             return;
