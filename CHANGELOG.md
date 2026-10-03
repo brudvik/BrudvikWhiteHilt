@@ -20,6 +20,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Smoked Grouper with Yarrow** (Stone Pot level 3): Grouper, Yarrow and Juniper Berries, 66 health and 34 stamina for 45 minutes; blocking uses 25% less stamina for the first half (`[Food.SmokedGrouperwithYarrow]`)
 - **Yarrow Gruit** (Cauldron, then Fermenter): Yarrow, Barley and Honey; below half health, health regenerates 2.5 times as fast for 10 minutes (`[Meads.YarrowGruit]`)
 - **Hop Ale** (Cauldron, then Fermenter): Hop Cones, Barley and Honey; for 30 minutes Rested lasts 50% longer, also a Rested you already have (`[Meads.HopAle]`)
+- **Henbane Beer** (Cauldron, then Fermenter): Henbane, Barley and Honey; berserkergang for 5 minutes: 30% more blunt, slash and pierce damage and no stagger, but half your armor, and you lose a fifth of your health when it ends (never fatal) (`[Meads.HenbaneBeer]`)
 
 ## v0.59.0 - 2026-10-03
 

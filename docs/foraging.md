@@ -89,6 +89,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Juniper Sahti** | Spirit damage taken is halved, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Juniper Berries ×10, Honey ×8, Crowberries ×3 |
 | **Yarrow Gruit** | Below half health, health regenerates 2.5 times as fast, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Yarrow ×8, Barley ×5, Honey ×3 |
 | **Hop Ale** | Rested lasts 50% longer, also a Rested you already have, 30 min. The base ferments into 6 ales | Cauldron, then Fermenter | Hop Cones ×8, Barley ×6, Honey ×2 |
+| **Henbane Beer** | Berserkergang, 5 min: 30% more blunt, slash and pierce damage, no stagger, half armor; you lose 20% health when it ends (never fatal). The base ferments into 6 beers | Cauldron, then Fermenter | Henbane ×4, Barley ×6, Honey ×4 |
 
 ## Config
 
@@ -113,7 +114,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | Bog Bean, Mountain Sorrel, Yarrow | 2–5 |
 | Reed, Cattail | 3–6 |
 
-Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3, the Hop Ale 30), plus:
+Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3, the Hop Ale 30, the Henbane Beer 5), plus:
 
 | Mead | Setting | Default |
 |---|---|---|
@@ -124,5 +125,6 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Labrador Tea Brew | `IgnoredBy` (prefab names) | Leech, Leech_cave, Deathsquito, Tick |
 | Yarrow Gruit | `WoundedBelow`, `WoundedRegenMultiplier` | 0.5, 2.5 |
 | Hop Ale | `RestedBonus` | 0.5 |
+| Henbane Beer | `DamageBonus`, `ArmorPenalty`, `CrashHealthShare` | 0.3, 0.5, 0.2 |
 
 Mead changes apply on the next drink.

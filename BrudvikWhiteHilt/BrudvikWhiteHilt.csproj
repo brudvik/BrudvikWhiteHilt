@@ -215,6 +215,7 @@
     <Compile Include="Items\Meads\JuniperSahti\JuniperSahti.cs" />
     <Compile Include="Items\Meads\YarrowGruit\YarrowGruit.cs" />
     <Compile Include="Items\Meads\HopAle\HopAle.cs" />
+    <Compile Include="Items\Meads\HenbaneBeer\HenbaneBeer.cs" />
     <Compile Include="Items\Meads\LabradorTeaBrew\InsectWardEffect.cs" />
     <Compile Include="Items\Meads\LabradorTeaBrew\LabradorTeaBrew.cs" />
     <Compile Include="Items\Meads\MeadowsweetMead\MeadowsweetMead.cs" />
