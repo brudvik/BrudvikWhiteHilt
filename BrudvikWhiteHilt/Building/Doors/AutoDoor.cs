@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Building.Doors;
@@ -12,6 +13,7 @@ public class AutoDoor : MonoBehaviour
     private const float TickSeconds = 0.5f;
 
     private static readonly int HoldKey = "whitehilt_door_hold".GetStableHashCode();
+    private static readonly HashSet<AutoDoor> instances = new();
 
     private Door door;
     private ZNetView nview;
@@ -112,6 +114,29 @@ public class AutoDoor : MonoBehaviour
         return Localization.instance.Localize(text);
     }
 
+    /// <summary>
+    /// Closes unattended timer-managed doors before leaving their active area, while their owner can still save them.
+    /// </summary>
+    /// <param name="referencePosition">The new centre of the local active area.</param>
+    public static void CloseOutsideActiveArea(Vector3 referencePosition)
+    {
+        if (!AutoDoorSettings.Enabled.Value)
+        {
+            return;
+        }
+
+        foreach (AutoDoor auto in instances)
+        {
+            if (auto != null && auto.nview != null && auto.nview.IsValid() && auto.nview.IsOwner()
+                && !ZNetScene.InActiveArea(auto.nview.GetZDO().GetPosition(), referencePosition)
+                && auto.IsOpen && auto.IsManaged && !auto.IsHeld
+                && AutoDoorSettings.ClosesByTimer(auto.Kind) && !auto.IsOpeningBusy())
+            {
+                auto.Close();
+            }
+        }
+    }
+
     private void Awake()
     {
         door = GetComponent<Door>();
@@ -123,7 +148,13 @@ public class AutoDoor : MonoBehaviour
         if (nview != null && nview.GetZDO() != null)
         {
             nview.Register<bool>(HoldRpc, RPC_Hold);
+            instances.Add(this);
         }
+    }
+
+    private void OnDestroy()
+    {
+        instances.Remove(this);
     }
 
     private void Update()

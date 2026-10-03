@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.74.1 - 2026-10-03
+
+### Fixed
+- **Self-closing doors after portal travel**: unattended timer-managed doors now save their closed state when their owner leaves the active area, before the scene unloads and ownership is released. This prevents a quick portal departure from leaving a door open with no running close timer. Leaving the active area on foot has the same safeguard; ordinary delays still apply inside it. Hold-open, nearby players and tamed animals, disabled settings, excluded pieces and key doors are respected. Validated with isolated behavior checks and compilation; in-game portal and multiplayer testing remains required.
+
 ## v0.74.0 - 2026-10-03
 
 ### Added

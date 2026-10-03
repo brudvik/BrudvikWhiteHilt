@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Building.Doors;
 using HarmonyLib;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.Building;
 
@@ -9,6 +10,34 @@ namespace BrudvikWhiteHilt.Patches.Building;
 [HarmonyPatch]
 public static class AutoDoorPatches
 {
+    /// <summary>
+    /// Detects when travel changes the local active zone, before the old scene and its door ownership are released.
+    /// </summary>
+    /// <param name="__instance">The network manager.</param>
+    /// <param name="pos">The new reference position.</param>
+    /// <param name="__state">Whether the active zone changed.</param>
+    [HarmonyPatch(typeof(ZNet), nameof(ZNet.SetReferencePosition))]
+    [HarmonyPrefix]
+    public static void ReferencePositionChanging(ZNet __instance, Vector3 pos, out bool __state)
+    {
+        __state = !ZoneSystem.GetZone(__instance.GetReferencePosition()).Equals(ZoneSystem.GetZone(pos));
+    }
+
+    /// <summary>
+    /// Saves unattended doors as closed when their owner leaves the active area, including through a portal.
+    /// </summary>
+    /// <param name="pos">The new reference position.</param>
+    /// <param name="__state">Whether the active zone changed.</param>
+    [HarmonyPatch(typeof(ZNet), nameof(ZNet.SetReferencePosition))]
+    [HarmonyPostfix]
+    public static void ReferencePositionChanged(Vector3 pos, bool __state)
+    {
+        if (__state)
+        {
+            AutoDoor.CloseOutsideActiveArea(pos);
+        }
+    }
+
     /// <summary>
     /// Adds the closer to doors that exist in the world; the placement ghost has no ZDO.
     /// </summary>

@@ -141,6 +141,8 @@ Ordinary trophies work the same way with a **Hard Antler** from Eikthyr instead 
 
 Doors, gates and windows built by players close on their own a few seconds after the last one went through. Nothing closes while a player (or a tamed animal) is within 3 m of the opening, so no door shuts in anyone's face. Doors with a key, doors that cannot be closed and doors in dungeons and villages are left alone.
 
+When the door's owner leaves the active area, for example through a distant portal, unattended timer-managed doors close before the area unloads, even if their delay has not expired yet. Hold-open, disabled automatic closing and the opening's player/animal safety checks still apply. Travel within the active area keeps the normal delay.
+
 - **Hold open**: Shift + E opens a door and holds it open until someone closes it with E; Shift + E on an open door holds it or lets it close on its own again. The hover text shows when a door is held open.
 - **Windows** close when rain or a storm begins and when night falls. They can be opened again while it lasts, and a window held open stays open.
 - **Raids**: when enemies on the hunt come within 20 m, doors, gates and windows close at once, also those held open.
