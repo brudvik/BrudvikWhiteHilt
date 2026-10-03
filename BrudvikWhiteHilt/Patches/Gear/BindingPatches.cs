@@ -38,7 +38,7 @@ public static class BindingPatches
     public static void Damage(Character __instance, HitData hit)
     {
         Player player = Player.m_localPlayer;
-        if (hit == null || player == null || __instance == player || hit.m_attacker != player.GetZDOID())
+        if (hit == null || player == null || __instance == player || hit.m_attacker != player.GetZDOID() || WardPatch.Striking)
         {
             return;
         }

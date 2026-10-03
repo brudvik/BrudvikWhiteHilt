@@ -48,7 +48,7 @@ At quality 8 a bound White Hilt Sword goes from 137 to 164 slash with the Black 
 
 ### Etching a rune
 
-Only a weapon with a bound trophy can be etched, and it holds one rune; etching another replaces it. The rune and the materials are used up. The rune strength comes from the bound trophy and is a share of the weapon's base damage (quality 1): with the Black Morgen trophy, Dyrnwyn's Flame adds 15 fire to the White Hilt Sword.
+Only a weapon with a bound trophy can be etched, and it holds one rune; etching another replaces it. The one exception is the Thunder Rune, which is etched into a bound shield on your arm. The rune and the materials are used up. The rune strength comes from the bound trophy and is a share of the weapon's base damage (quality 1): with the Black Morgen trophy, Dyrnwyn's Flame adds 15 fire to the White Hilt Sword.
 
 | Rune | Materials | Infusion |
 |------|-----------|----------|
@@ -63,6 +63,7 @@ Only a weapon with a bound trophy can be etched, and it holds one rune; etching 
 | Obsidian Rune | Ergot ×5 | **Dread**: a quarter of the hits send the target running in terror for 4 seconds; never bosses |
 | Mire Rune | Peat ×5, Tar ×3 | **Mire's Hold**: every hit tars the target, as a tar pit does, which slows it |
 | Blood Rune | Henbane ×5 | **Berserker's Rage**: the more health you have lost, the harder you hit: up to 60% more damage near death, 30% at half health |
+| Thunder Rune | Fine Wood ×10, Rosehips ×5 | **Rowan's Ward**, for a shield: a foe within 10 m whose blow you block is struck by lightning worth half the shield's base block power |
 
 The metal runes are the portal runes ([Portals & travel](portals.md)). The other runes are smithed at the Rune Forge only for etching; they cannot be hung on a rune post:
 
@@ -73,8 +74,9 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Obsidian Rune | Iron ×4, Obsidian ×5 |
 | Mire Rune | Iron ×4, Copper ×3, Tar ×2 |
 | Blood Rune | Iron ×4, Bloodbag ×5 |
+| Thunder Rune | Iron ×4, Silver ×2, Crystal ×3 |
 
-The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6).
+The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6), and `WardShare` (0.5).
 
 ---
 

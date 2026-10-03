@@ -239,6 +239,8 @@
     <Compile Include="Items\Runes\ObsidianRune\ObsidianRune.cs" />
     <Compile Include="Items\Runes\MireRune\MireRune.cs" />
     <Compile Include="Items\Runes\BloodRune\BloodRune.cs" />
+    <Compile Include="Items\Runes\ThunderRune\ThunderRune.cs" />
+    <Compile Include="Patches\Gear\WardPatch.cs" />
     <Compile Include="Items\Binding\DreadEffect.cs" />
     <Compile Include="Patches\Gear\DreadPatch.cs" />
     <Compile Include="Items\ShipUpgrades\ShipUpgrades.cs" />

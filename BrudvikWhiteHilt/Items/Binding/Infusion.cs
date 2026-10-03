@@ -40,6 +40,9 @@ public enum InfusionKind
 
     /// <summary>The Berserker's Rage: the more wounded the wielder, the harder the weapon hits.</summary>
     Berserker,
+
+    /// <summary>Rowan's Ward, for a shield: a foe whose blow is blocked is struck by lightning.</summary>
+    Ward,
 }
 
 /// <summary>
@@ -63,6 +66,7 @@ public sealed class Infusion
         new(InfusionKind.Dread, "WhiteHiltObsidianRune", "WhiteHiltErgot:5", "Dread"),
         new(InfusionKind.Mire, "WhiteHiltMireRune", "WhiteHiltPeat:5, Tar:3", "Mire's Hold"),
         new(InfusionKind.Berserker, "WhiteHiltBloodRune", "WhiteHiltHenbane:5", "Berserker's Rage"),
+        new(InfusionKind.Ward, "WhiteHiltThunderRune", "FineWood:10, WhiteHiltRosehips:5", "Rowan's Ward"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
@@ -87,6 +91,9 @@ public sealed class Infusion
 
     /// <summary>Translation key of its name.</summary>
     public string NameKey => $"whitehilt_infusion_{Kind.ToString().ToLowerInvariant()}";
+
+    /// <summary>Whether it is etched into a shield rather than a weapon.</summary>
+    public bool ForShield => Kind == InfusionKind.Ward;
 
     /// <summary>
     /// The infusion a rune etches.

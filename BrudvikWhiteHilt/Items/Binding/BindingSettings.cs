@@ -49,6 +49,9 @@ public static class BindingSettings
     /// <summary>Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death.</summary>
     public static ConfigEntry<float> BerserkerMaxBonus { get; private set; }
 
+    /// <summary>Lightning damage of Rowan's Ward, as a share of the shield's base block power.</summary>
+    public static ConfigEntry<float> WardShare { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -91,6 +94,9 @@ public static class BindingSettings
             "How long a creature runs in Dread, in seconds.", new AcceptableValueRange<float>(1f, 30f));
         BerserkerMaxBonus = WhiteHiltConfig.BindAdminOnly(InfusionSection, "BerserkerMaxBonus", 0.6f,
             "Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death; it grows with the health lost (0.6 = 60%, 30% at half health).",
+            new AcceptableValueRange<float>(0f, 3f));
+        WardShare = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WardShare", 0.5f,
+            "Lightning damage dealt by Rowan's Ward to a foe whose blow is blocked, as a share of the shield's base block power (0.5 = half).",
             new AcceptableValueRange<float>(0f, 3f));
     }
 

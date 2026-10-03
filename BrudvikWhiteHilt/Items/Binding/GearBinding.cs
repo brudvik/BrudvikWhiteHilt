@@ -36,6 +36,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused_dread", "Etched rune: {0}, {1}% of hits send the foe running for {2} s");
         Translations.AddEnglish("whitehilt_infused_mire", "Etched rune: {0}, every hit tars the target");
         Translations.AddEnglish("whitehilt_infused_berserker", "Etched rune: {0}, up to {1}% more damage the more health you have lost");
+        Translations.AddEnglish("whitehilt_infused_ward", "Etched rune: {0}, a foe whose blow you block is struck by {1} lightning");
         Infusion.RegisterTranslations();
     }
 
@@ -67,6 +68,28 @@ public static class GearBinding
     public static bool CanInfuse(ItemDrop.ItemData item)
     {
         return item?.m_shared != null && shieldBySharedName.TryGetValue(item.m_shared.m_name, out bool shield) && !shield;
+    }
+
+    /// <summary>
+    /// Whether an item is a White Hilt shield that can be bound and etched with a shield rune.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>True for a White Hilt shield.</returns>
+    public static bool IsShield(ItemDrop.ItemData item)
+    {
+        return item?.m_shared != null && shieldBySharedName.TryGetValue(item.m_shared.m_name, out bool shield) && shield;
+    }
+
+    /// <summary>
+    /// Lightning damage a shield etched with Rowan's Ward strikes back with.
+    /// </summary>
+    /// <param name="item">The shield.</param>
+    /// <returns>The damage, 0 for anything else.</returns>
+    public static float WardDamage(ItemDrop.ItemData item)
+    {
+        return GetBound(item) != null && GetInfusion(item)?.Kind == InfusionKind.Ward
+            ? item.GetBaseBlockPower(item.m_quality) * BindingSettings.WardShare.Value
+            : 0f;
     }
 
     /// <summary>
@@ -282,6 +305,8 @@ public static class GearBinding
                 InfusionKind.Mire => string.Format(localization.Localize("$whitehilt_infused_mire"), name),
                 InfusionKind.Berserker => string.Format(localization.Localize("$whitehilt_infused_berserker"), name,
                     Percent(BindingSettings.BerserkerMaxBonus.Value)),
+                InfusionKind.Ward => string.Format(localization.Localize("$whitehilt_infused_ward"), name,
+                    Translations.Number(WardDamage(item))),
                 InfusionKind.Deep => string.Format(localization.Localize("$whitehilt_infused_deep"), name, Percent(LifeSteal(item))),
                 InfusionKind.Wolfsbane => string.Format(localization.Localize("$whitehilt_infused_wolfsbane"), name,
                     Translations.Number(BindingSettings.WolfsbaneBeastMultiplier.Value)),

@@ -20,12 +20,13 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
     /// </summary>
     public static void RegisterTranslations()
     {
-        Translations.AddEnglish("whitehilt_etch_hint", "Etch a rune into your bound White Hilt weapon");
+        Translations.AddEnglish("whitehilt_etch_hint", "Etch a rune into your bound White Hilt weapon or shield");
         Translations.AddEnglish("whitehilt_etch_target", "In hand: {0}");
         Translations.AddEnglish("whitehilt_etch_none", "no rune");
         Translations.AddEnglish("whitehilt_etch_unbound", "Bind a black trophy to it at the Binding Stone first");
-        Translations.AddEnglish("msg_whitehilt_etch_usage", "Hold a trophy-bound White Hilt weapon, and use a rune from the hotbar on the table");
+        Translations.AddEnglish("msg_whitehilt_etch_usage", "Hold a trophy-bound White Hilt weapon or shield, and use a rune from the hotbar on the table");
         Translations.AddEnglish("msg_whitehilt_etch_noweapon", "Hold a White Hilt weapon");
+        Translations.AddEnglish("msg_whitehilt_etch_noshield", "Hold a White Hilt shield");
         Translations.AddEnglish("msg_whitehilt_etch_unbound", "The weapon must be bound with a black trophy at the Binding Stone first");
         Translations.AddEnglish("msg_whitehilt_etch_same", "That rune is already etched into it");
         Translations.AddEnglish("msg_whitehilt_etch_need", "You need {0}");
@@ -46,14 +47,8 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
 
         Player player = Player.m_localPlayer;
         ItemDrop.ItemData weapon = player != null ? HeldGear(player, shields: false) : null;
-        if (weapon != null)
-        {
-            Infusion current = GearBinding.GetInfusion(weapon);
-            string state = GearBinding.GetBound(weapon) == null ? "$whitehilt_etch_unbound"
-                : current != null ? Translations.Token(current.NameKey) : "$whitehilt_etch_none";
-            text += "\n" + string.Format(localization.Localize("$whitehilt_etch_target"), localization.Localize($"{weapon.m_shared.m_name}: {state}"));
-        }
-
+        text += TargetLine(weapon);
+        text += TargetLine(player != null ? HeldShield(player) : null);
         return text;
     }
 
@@ -71,11 +66,12 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
             return true;
         }
 
-        ItemDrop.ItemData weapon = HeldGear(player, shields: false);
+        ItemDrop.ItemData weapon = infusion.ForShield ? HeldShield(player) : HeldGear(player, shields: false);
         BeastDefinition bound = GearBinding.GetBound(weapon);
         if (weapon == null || bound == null)
         {
-            player.Message(MessageHud.MessageType.Center, weapon == null ? "$msg_whitehilt_etch_noweapon" : "$msg_whitehilt_etch_unbound");
+            string missing = infusion.ForShield ? "$msg_whitehilt_etch_noshield" : "$msg_whitehilt_etch_noweapon";
+            player.Message(MessageHud.MessageType.Center, weapon == null ? missing : "$msg_whitehilt_etch_unbound");
             return true;
         }
 
@@ -109,6 +105,27 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
     private static string CostText(List<(string SharedName, int Amount)> cost)
     {
         return string.Join(", ", cost.Select(part => $"{part.Amount} {Localization.instance.Localize(part.SharedName)}"));
+    }
+
+    // The White Hilt shield on the player's arm.
+    private static ItemDrop.ItemData HeldShield(Player player)
+    {
+        return GearBinding.IsShield(player.m_leftItem) ? player.m_leftItem : null;
+    }
+
+    // "In hand: <item>: <rune>" for a held piece of gear, or nothing.
+    private static string TargetLine(ItemDrop.ItemData gear)
+    {
+        if (gear == null)
+        {
+            return string.Empty;
+        }
+
+        Localization localization = Localization.instance;
+        Infusion current = GearBinding.GetInfusion(gear);
+        string state = GearBinding.GetBound(gear) == null ? "$whitehilt_etch_unbound"
+            : current != null ? Translations.Token(current.NameKey) : "$whitehilt_etch_none";
+        return "\n" + string.Format(localization.Localize("$whitehilt_etch_target"), localization.Localize($"{gear.m_shared.m_name}: {state}"));
     }
 
     private static string ItemName(string prefabName)
