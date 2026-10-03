@@ -180,6 +180,7 @@
     <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
     <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
     <Compile Include="Items\Foraging\ForageableBase.cs" />
+    <Compile Include="Items\Foraging\Henbane\Henbane.cs" />
     <Compile Include="Items\Foraging\IcelandMoss\IcelandMoss.cs" />
     <Compile Include="Items\Foraging\Juniper\Juniper.cs" />
     <Compile Include="Items\Foraging\LabradorTea\LabradorTea.cs" />
