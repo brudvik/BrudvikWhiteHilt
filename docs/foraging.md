@@ -87,6 +87,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Bog Bean Bitter** | Ends poison, burning, frost, shock, tar and smoke at once and keeps them off, 3 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Bog Bean ×10, Sweet Gale ×3, Honey ×5 |
 | **Labrador Tea Brew** | Leeches, deathsquitoes and ticks do not notice you, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Labrador Tea ×8, Sweet Gale ×2, Honey ×5 |
 | **Juniper Sahti** | Spirit damage taken is halved, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Juniper Berries ×10, Honey ×8, Crowberries ×3 |
+| **Yarrow Gruit** | Below half health, health regenerates 2.5 times as fast, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Yarrow ×8, Barley ×5, Honey ×3 |
 
 ## Config
 
@@ -120,5 +121,6 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Sweet Gale Ale | `CarryWeight` | 75 |
 | Meadowsweet Mead | `ArmorMultiplier`, `StaggerReduction` | 0.15, 0.25 |
 | Labrador Tea Brew | `IgnoredBy` (prefab names) | Leech, Leech_cave, Deathsquito, Tick |
+| Yarrow Gruit | `WoundedBelow`, `WoundedRegenMultiplier` | 0.5, 2.5 |
 
 Mead changes apply on the next drink.
