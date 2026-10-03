@@ -21,6 +21,7 @@ No custom shaders or prefabs are shipped. The bundle only contains meshes and te
 - `vanilla_prefab.py <prefab> [--materials] [--all-bundles]`: a vanilla prefab's hierarchy with local position/rotation/scale, mesh bounds, colliders, materials (shader, textures, colours); `--hash <name>` gives Valheim's stable hash.
 - `fragment_preview.py <out.png> <name> ...`: exploded view of a model's destruction chunks (see Destruction fragments below).
 - `AssetSource/Preview/compose_preview.py`, `weapon_fit.py`, `frame_axes.py`: see below.
+- `make_forage_models.py [name ...]`: builds procedural models with Blender into `AssetSource/Models` (every forageable from 0.58.0 on, the whetstone, oil flask, milk pail and rushlight). Each `@model` grows a mesh from tubes, leaves, blobs, boxes and flowers on one 4×4 palette texture (`SWATCHES`). Bushes write `<name>` and `<name>fruit` with marker triangles so both get the same bounds (`ForageableBase.ReplaceBushMesh` stacks them). Prefer this over a download for plants and small props: no license, tiny, and it matches the rest. Put a point the code needs (e.g. the rushlight's flame) at the top centre, since the converter centres x/z and scales the height to 1.
 
 ## 1. Find and check the model
 - Search with `find_models.py` (or the Sketchfab API directly: `https://api.sketchfab.com/v3/search?type=models&q=<term>&downloadable=true&license=cc0`). Other sources are Poly Haven (`https://api.polyhaven.com/assets?type=models`), Quaternius and Kenney. The last two are CC0 and stylized.

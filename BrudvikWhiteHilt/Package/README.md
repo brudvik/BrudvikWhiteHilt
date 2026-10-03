@@ -51,7 +51,7 @@ The Exploration skill, the Cartographer's Desk, the Navigator's Table with route
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Repair Anvil" height="120">
 
-The Chain Bench for making chains at the forge, the Repair Anvil that repairs all your gear at once, and the Binding Stone and Rune Etching Table that bind black beast trophies and etch runes into White Hilt weapons.
+The Chain Bench for making chains at the forge, the Repair Anvil that repairs all your gear at once, and the Binding Stone and Rune Etching Table that bind black beast trophies and etch runes into White Hilt weapons and shields, and whetstones and weapon oils.
 
 ### 🌀 [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
 
@@ -63,7 +63,7 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying trophies, and doors, gates and windows that close on their own.
+Surt's Brazier for fires without fuel, the Rushlight, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying trophies, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
@@ -105,7 +105,7 @@ A free build camera, precise rotation and nudging, undo, area repair, photos and
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
 
-Eight wild ingredients from the Meadows to the Mountains, the Stone Pot with its extensions, dishes and meads.
+Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales.
 
 ### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
 
