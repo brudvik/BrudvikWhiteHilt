@@ -39,7 +39,7 @@ The indestructible White Hilt Ship with nine deck upgrades, sailing help for eve
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="A palisade fort" height="120">
 
-A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway.
+A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway, moats round it and a drawbridge.
 
 ### 🧭 [Navigation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/navigation.md)
 
@@ -63,7 +63,7 @@ Runes that let portals carry metal, a portal network with a travel map and the H
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
 
-Surt's Brazier for fires without fuel, the Rushlight, crafting and building from nearby chests, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying trophies, and doors, gates and windows that close on their own.
+Surt's Brazier for fires without fuel, the Rushlight, crafting and building from nearby chests, a search that finds what lies in your chests, a guestbook that records visits, building and raids, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying trophies, and doors, gates and windows that close on their own.
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
@@ -95,17 +95,17 @@ Viking roofs of turf, reed, straw, tarred shingles and slate in every shape and 
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Paint Bench" height="120">
 
-The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes.
+The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes, and dye banners, sails and capes, with a loom for linen.
 
 ### 🏗️ [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
-A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator.
+A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator, moats included.
 
 ### 🍄 [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
 
-Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales.
+Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales, and cured ham, sausage, stockfish and rakfisk from the drying rack and the fermenter.
 
 ### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
 
@@ -127,6 +127,10 @@ A Net Winch with a fish barrel on the shore and Shore Nets set out in the water,
 
 Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blocking, husbandry and exploration, a new Foraging skill, food and crops with stars, the Compost Bin and configurable skill loss on death.
 
+### 📜 [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md)
+
+Each character's saga of its deeds, from slain bosses and black beasts to treasures and new lands, with renown that gives carry weight and stamina.
+
 ### 🐕 [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog House" height="120">
@@ -137,7 +141,7 @@ Buy a puppy from the Bog Witch and raise it into a companion that follows, fight
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure Chest" height="120">
 
-Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy.
+Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy, or follow a treasure hunt from map to map.
 
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 

@@ -2,6 +2,143 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.1 - 2026-10-03
+
+### Fixed
+- **Player portraits**: a player who died showed up with only the first letter of their name on the map for the rest of the session. While they waited to respawn they looked as if they had left, so their portrait was forgotten, and they never sent it again.
+
+## v0.69.0 - 2026-10-03
+
+### Added
+- **Guestbook**: a lectern with an open book that writes down who came by, what was built and torn down nearby and by whom, and raids with the creatures in them and how long they lasted. Anyone can read it. Built at the workbench from Wood ×6, Leather Scraps ×3 and Feathers ×1. New section `[Guestbook]`. See [Around the base](docs/base.md#-guestbook)
+
+## v0.68.0 - 2026-10-03
+
+### Added
+- **Chest search** (F9): type part of an item's name, and every chest, cart and ship hold within 100 m that you may open and that holds it glows and gets a map pin, with a list of how many there are and in how many chests. The marks stay for 60 seconds after the search closes (`[Storage]`)
+
+## v0.67.0 - 2026-10-03
+
+### Added
+- **Saga** (F8): every character keeps a saga of its deeds, each with its day: bosses, black beasts and great creatures slain near it, treasures dug up near it, first steps into a biome and skills reaching 25, 50, 75 and 100. Deeds give renown; every 20 renown is a rank, up to 10, and each rank gives +10 carry weight and +3 maximum stamina (`[Saga]`). See [Saga](docs/saga.md)
+
+## v0.66.0 - 2026-10-03
+
+### Added
+- **Treasure hunts**: Hildir also sells a **Treasure Hunt Map** (1500 coins). The chest under its cross holds a little loot and the next map of the hunt, whose treasure lies within 1200 m of where it is read. The last of the 3 maps leads to a chest with 2 black beast trophies and 6 draws from the loot list (`[Treasure] HuntSteps`, `HuntPrice`, `HuntStepMaxDistance`, `HuntStepLootRolls`, `HuntFinalLootRolls`, `HuntFinalTrophies`)
+
+## v0.65.0 - 2026-10-03
+
+### Added
+- **Loom** (Hammer, Workbench): an upright loom with stone weights that weaves **Linen Cloth** from Linen Thread
+- **Dyeing with a Paint Pot**: used from the hotbar while looking at a banner, it dyes only the banner's cloth; looking at a ship, it dyes the sail (with Linen Cloth); standing at a loom, it dyes the cape you wear, which everyone sees. Elsewhere the pot loads the brush as before (`[Textiles]`)
+
+## v0.64.0 - 2026-10-03
+
+### Added
+- **Drying Rack** (Hammer, Workbench): a rack of poles where meat and fish hang in the wind for game days until they are cured. It needs no fire and never burns anything; the production timers show the time left
+- **Cured Ham** from a **Seasoned Ham** (Stone Pot: Raw Meat, Wild Garlic, Thistle) after 3 days on the rack: 46 health and 24 stamina for 60 minutes, frost damage taken a quarter less
+- **Cured Sausage** from a **Raw Sausage** (Stone Pot: Raw Meat, Deer Meat, Thistle) after 2 days: 28 health and 46 stamina for 60 minutes, +40 carry weight
+- **Stockfish** from a Coral Cod after 2 days: 30 health and 50 stamina for 75 minutes, stamina regenerates 20% faster
+- **Rakfisk**: a **Rakfisk Tub** (Stone Pot: Pike, Honey) ferments into 4 in the fermenter: 40 health and 34 stamina for 50 minutes, poison damage taken halved (`[Curing]`, `[Food.<Name>]`)
+
+## v0.63.0 - 2026-10-03
+
+### Added
+- **Moats** (White Hilt hoe, Ctrl + H): click a wall to dig a moat round every wall connected to it, or click points on the ground for a line or a ring of your own. Three ditches: a dry **V-ditch**, a **wet moat** with water you can swim in, and a **staked ditch** with sharp stakes along its bottom. The dug earth becomes a bank outside or inside the ditch, or is carried away, and ground is left as a causeway in front of gates. It is dug as you walk along it, like a road; digging is free. Creatures down in a ditch move at half speed and slide down its sides for a while before they climb out (`[BuildTools.Moats]`)
+- **Drawbridge** (Hammer, Workbench): a 4 × 9 m deck over a moat that is lowered when opened and raised when closed, and follows the nearest gate (`[Defences] DrawbridgeLinkRange`)
+
+### Changed
+- *Reset* with the White Hilt hoe also takes away a moat dug there
+
+## v0.62.0 - 2026-10-03
+
+### Added
+- Lone giant spiders come out in the Black Forest at night, away from nests (`[Giant Spider] NightSpawnChance`, `NightSpawnSeconds`, `NightSpawnMax`)
+- **Old land is filled in**: spider nests, slate outcrops and forageables only grew in land generated after they came, so worlds explored earlier had none. Once per world and kind, when the server starts, that land now gets its share by the same rules and chances as new land, at least 50 m from anything built. Kinds added later are filled in the same way (`[OldLand] Enabled`, `BuildingDistance`)
+
+### Fixed
+- Spider nests were far rarer than `NestChancePerZone`: the generator tried only one spot per zone and gave up when it was steep, open or blocked. It now tries up to 50
+
+## v0.61.1 - 2026-10-03
+
+### Fixed
+- White Hilt rune circles that were Portal Stations stations could not be removed ("requires a workbench" next to a workbench), and would have dropped nothing: their workbench and building costs were never resolved
+- The Binding Stone and the Valkyrie Stone broke apart on stone floors: as stone they need ten times the support of wood, and their centre of mass lay on the floor's surface, so the support was reckoned sideways and ran out. It now sits in the middle of the stone, and rain no longer wears them
+
+## v0.61.0 - 2026-10-03
+
+### Added
+- **Thunder Rune** and **Rowan's Ward**: the first rune for a shield, of iron, silver and crystal. Etched with Fine Wood and Rosehips into a bound White Hilt shield, a foe within 10 m whose blow you block is struck by lightning worth half the shield's base block power (`[Gear.Infusions] WardCost`, `WardShare`)
+- **Rushlight** (Hammer, Workbench): a cattail rush dipped in fat, held slanted in an iron rush nip on a stump, with its own model. A small, dimmer light that burns Cattails instead of Resin, each twice as long
+
+### Changed
+- The Rune Etching Table etches a shield rune into the bound White Hilt shield on your arm
+
+## v0.60.0 - 2026-10-03
+
+### Added
+- **Rosehips**: dog roses on the Plains whose red hips hide when picked and grow back, or from cloudberry bushes picked there (30%). An orange-red dye (`[Foraging.Rosehips]`)
+- **Yarrow**: feathery leaves and flat white flower heads on the Plains, or from wild flax picked there (20%). A wound herb and an ale herb (`[Foraging.Yarrow]`)
+- **Caraway**: slender stems with umbrellas of white flowers on the Plains, or from wild barley picked there (20%). The northern spice (`[Foraging.Caraway]`)
+- **Woad**: blue-green leaves under yellow flowers on the Plains, or from wild flax picked there (15%). The deep blue dye; Rock Lichen now dyes the true purple of its lye bath (`[Foraging.Woad]`)
+- **Madder Root**: a scrambling plant with whorls of narrow leaves on the Plains, or from cloudberry bushes picked there (15%). Its roots are the red dye (`[Foraging.MadderRoot]`)
+- **Henbane**: a sticky weed with pale, purple-veined flowers by the Plains fields, or from wild barley picked there (10%). For seers and berserkers (`[Foraging.Henbane]`)
+- **Ergot**: patches of wild barley gone dark with blight on the Plains, or from wild barley picked there (15%). Its black horns bring dread (`[Foraging.Ergot]`)
+- **Hop Cones**: wild hop vines twined up old stakes on the Plains; the cones hide when picked and grow back. Cloudberry bushes picked there give them 10% of the time (`[Foraging.HopCones]`)
+- **Lox Milk**: crouch and use a tame lox to milk it once a day for 2 Lox Milk, one more from a groomed lox. Raises Animal Husbandry (`[Husbandry] LoxMilking`, `MilkPerLox`, `MilkDays`)
+- **Rosehip Soup** (Stone Pot level 2): Rosehips, Honey and Barley Flour, 32 health and 64 stamina for 40 minutes (`[Food.RosehipSoup]`)
+- **Caraway Lox Stew** (Stone Pot level 2): Lox Meat, Caraway, Onion and Turnip, 64 health and 36 stamina for 40 minutes (`[Food.CarawayLoxStew]`)
+- **Skyr with Cloudberries** (Stone Pot level 2): Lox Milk, Cloudberries and Honey, 48 health and 48 stamina for 45 minutes; health regenerates 25% faster for the first half (`[Food.SkyrwithCloudberries]`)
+- **Smoked Grouper with Yarrow** (Stone Pot level 3): Grouper, Yarrow and Juniper Berries, 66 health and 34 stamina for 45 minutes; blocking uses 25% less stamina for the first half (`[Food.SmokedGrouperwithYarrow]`)
+- **Yarrow Gruit** (Cauldron, then Fermenter): Yarrow, Barley and Honey; below half health, health regenerates 2.5 times as fast for 10 minutes (`[Meads.YarrowGruit]`)
+- **Hop Ale** (Cauldron, then Fermenter): Hop Cones, Barley and Honey; for 30 minutes Rested lasts 50% longer, also a Rested you already have (`[Meads.HopAle]`)
+- **Henbane Beer** (Cauldron, then Fermenter): Henbane, Barley and Honey; berserkergang for 5 minutes: 30% more blunt, slash and pierce damage and no stagger, but half your armor, and you lose a fifth of your health when it ends (never fatal) (`[Meads.HenbaneBeer]`)
+- **Gift of the Völva**: the seeress's draught, brewed from Henbane, Ergot and Rock Lichen. For 10 minutes the 40 nearest things to pick within 50 m, and every unopened chest the world placed there, show on the map (`[Potions.GiftOfVolva]`)
+- **Obsidian Rune** and **Dread**: a rune of iron and obsidian, smithed at the Rune Forge for etching. Etched with Ergot into a bound White Hilt weapon, a quarter of its hits send the foe running in terror for 4 seconds; never bosses (`[Gear.Infusions] DreadCost`, `DreadChance`, `DreadSeconds`)
+- **Mire Rune** and **Mire's Hold**: a rune of iron, copper and tar. Etched with Peat and Tar into a bound White Hilt weapon, every hit tars the target as a tar pit does, which slows it (`[Gear.Infusions] MireCost`)
+- **Blood Rune** and **Berserker's Rage**: a rune of iron and bloodbags. Etched with Henbane into a bound White Hilt weapon, it hits harder the more health you have lost: up to 60% more damage near death (`[Gear.Infusions] BerserkerCost`, `BerserkerMaxBonus`)
+
+## v0.59.0 - 2026-10-03
+
+### Added
+- **Juniper Berries**: prickly juniper shrubs on the Mountain slopes, or from wild onions picked there (20%). Their blue berries hide when picked and grow back. A dye, and an ingredient against the dead (`[Foraging.JuniperBerries]`)
+- **Angelica**: a tall herb with green flower globes in the Mountains, or from wild onions picked there (20%). Vikings grew it and chewed the stalks for strength (`[Foraging.Angelica]`)
+- **Iceland Moss**: curly brown lichen on the Mountain heath, or from wild onions picked there (15%). Boiled into porridge (`[Foraging.IcelandMoss]`)
+- **Wolf Lichen**: bright yellow tufts on dead branches in the Mountains; the branch stays and the lichen grows back. Wolves drop it 10% of the time. A sulphur-yellow dye and a bane for beasts (`[Foraging.WolfLichen]`)
+- **Mountain Sorrel**: round sour leaves and red seed spikes on damp Mountain ledges, or from wild onions picked there (25%) (`[Foraging.MountainSorrel]`)
+- **Rock Lichen**: grey crusts on Mountain stones; the stone stays and the crust grows back. Stone Golems drop it half the time. The purple dye the paint bench lacked (`[Foraging.RockLichen]`)
+- **Moss Porridge** (Stone Pot level 2): Iceland Moss, Crowberries and Honey, 30 health and 56 stamina for 35 minutes (`[Food.MossPorridge]`)
+- **Juniper-Smoked Wolf Ham** (Stone Pot level 3): Wolf Meat, Juniper Berries and Onion, 58 health and 30 stamina for 40 minutes; for the first 20 minutes frost damage is halved (`[Food.Juniper-SmokedWolfHam]`)
+- **Candied Angelica** (Stone Pot level 2): Angelica and Honey, a light snack of 20 health and 38 stamina that lasts 50 minutes (`[Food.CandiedAngelica]`)
+- **Mountain Sorrel Salad** (Stone Pot level 2): Mountain Sorrel, Onion and Wild Garlic, 28 health and 48 stamina for 35 minutes with faster healing (`[Food.MountainSorrelSalad]`)
+- **Juniper Sahti** (Cauldron, then Fermenter): Juniper Berries, Honey and Crowberries; spirit damage taken is halved for 10 minutes (`[Meads.JuniperSahti]`)
+- **Gift of Kvasir**: the mead of poetry, brewed from Meadowsweet, Honey and Angelica. Every skill rises 50% faster for 20 minutes (`[Potions.GiftOfKvasir]`)
+- **Gift of Ullr**: the hunter god's gift, brewed from Juniper Berries, Angelica and Feathers. Bows hit 25% harder, you move 15% faster and are harder to notice for 20 minutes (`[Potions.GiftOfUllr]`)
+- **Gift of Heimdall**: the watchman's gift, brewed from Angelica, Crowberries and Crystal. Every foe within 60 m shows on the map for 10 minutes (`[Potions.GiftOfHeimdall]`)
+- **Bone Rune** and **Seid Smoke**: a rune of iron, bone and silver, smithed at the Rune Forge and only etched, never hung on a post. Etched with Juniper Berries into a bound White Hilt weapon it adds spirit damage, the bane of draugr, skeletons and ghosts (`[Gear.Infusions] SeidCost`)
+- **Fang Rune** and **Wolfsbane**: a rune of iron, wolf fangs and silver. Etched with Wolf Lichen it adds poison damage that is three times as strong against beasts: wolves, fenrings, bears, boars, deer, lox, hares and asksvin (`[Gear.Infusions] WolfsbaneCost`, `WolfsbaneBeastMultiplier`, `WolfsbaneBeasts`)
+- **Whetstone**: a bar of mountain slate made at the Workbench. Use it from the inventory and your weapon deals 15% more slash and pierce damage for the next 30 hits (`[Coatings.Whetstone]` `Hits`, `Strength`)
+- **Juniper Oil** (Cauldron): Juniper Berries and Resin; for 30 hits a fifth of the weapon's physical damage is added as spirit damage (`[Coatings.JuniperOil]`)
+- **Wolf Lichen Oil** (Cauldron): Wolf Lichen and Entrails; for 30 hits a fifth of the weapon's physical damage is added as poison damage (`[Coatings.WolfLichenOil]`)
+
+## v0.58.0 - 2026-10-03
+
+### Added
+- **Sphagnum Moss**: red and green cushions of bog moss on the wet ground of the Swamp, or from red mushrooms picked there (25%). A dye and a healer's ingredient (`[Foraging.SphagnumMoss]`)
+- **Bog Bean**: three-lobed leaves and fringed white flowers at the edge of the Swamp water, or from wild turnips picked there (30%). Bitter, for fever draughts (`[Foraging.BogBean]`)
+- **Labrador Tea**: a low evergreen shrub on the Swamp hummocks with domes of white flowers, or from thistles picked there (20%). Its sharp smell keeps biting insects away (`[Foraging.LabradorTea]`)
+- **Cattail**: tall bog grass with brown velvet heads at the water's edge in the Swamp, or from wild turnips picked there (20%). Its roots give flour for Swamp dishes (`[Foraging.Cattail]`)
+- **Meadowsweet**: tall red stems with frothy cream flowers on the damp edges of the Swamp, or from wild turnips picked there (20%). It sweetens mead and dulls pain (`[Foraging.Meadowsweet]`)
+- **Bog Iron**: rust-brown lumps in the mud and shallow water of the Swamp. The Smelter turns each lump into Iron, the Iron Rune lets it through portals, and it gives a rust dye (`[Foraging.BogIron]`)
+- **Peat**: stacks of cut peat on the drier banks of the Swamp. Use a brick from the hotbar on a wood fire (campfire, hearth, bonfire) and it burns like two pieces of wood (`FuelValue`); the Charcoal Kiln turns it into Coal (`[Foraging.Peat]`)
+- **Bog Fish Stew** (Stone Pot): Trollfish, Cattail and Wild Garlic, 50 health and 30 stamina for 32 minutes (`[Food.BogFishStew]`)
+- **Cattail Porridge** (Stone Pot): Cattail, Cranberries and Honey, 22 health and 52 stamina for 32 minutes (`[Food.CattailPorridge]`)
+- **Meadowsweet Mead** (Cauldron, then Fermenter): Honey, Meadowsweet and Cranberries; 15% more armor and 25% less stagger for 10 minutes (`[Meads.MeadowsweetMead]`)
+- **Bog Bean Bitter** (Cauldron, then Fermenter): Bog Bean, Sweet Gale and Honey; ends poison, burning, frost, shock, tar and smoke at once and keeps them off for 3 minutes (`[Meads.BogBeanBitter]`)
+- **Labrador Tea Brew** (Cauldron, then Fermenter): Labrador Tea, Sweet Gale and Honey; leeches, deathsquitoes and ticks do not notice you for 10 minutes (`[Meads.LabradorTeaBrew]` `IgnoredBy`)
+- **Gift of Eir**: brewed from Sphagnum Moss, Bog Bean and Honey. Heals half your health at once, ends poison, fire and frost and keeps them off, and doubles health regeneration for 10 minutes (`[Potions.GiftOfEir]`)
+
 ## v0.57.2 - 2026-10-03
 
 ### Fixed
