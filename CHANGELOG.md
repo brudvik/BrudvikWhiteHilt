@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Juniper Berries**: prickly juniper shrubs on the Mountain slopes, or from wild onions picked there (20%). Their blue berries hide when picked and grow back. A dye, and an ingredient against the dead (`[Foraging.JuniperBerries]`)
+- **Angelica**: a tall herb with green flower globes in the Mountains, or from wild onions picked there (20%). Vikings grew it and chewed the stalks for strength (`[Foraging.Angelica]`)
 
 ## v0.58.0 - 2026-10-03
 

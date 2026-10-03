@@ -35,7 +35,7 @@ public static class DyeCatalog
         Items.Foraging.Peat.Peat.PrefabName,
 
         // Mountains
-        Items.Foraging.Juniper.Juniper.PrefabName,
+        Items.Foraging.Juniper.Juniper.PrefabName, Items.Foraging.Angelica.Angelica.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName

@@ -162,6 +162,7 @@
     <Compile Include="Items\Food\SweetGaleSausages\SweetGaleSausages.cs" />
     <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
     <Compile Include="Items\Food\WildGarlicSoup\WildGarlicSoup.cs" />
+    <Compile Include="Items\Foraging\Angelica\Angelica.cs" />
     <Compile Include="Items\Foraging\BogBean\BogBean.cs" />
     <Compile Include="Items\Foraging\BogIron\BogIron.cs" />
     <Compile Include="Items\Foraging\Cattail\Cattail.cs" />

@@ -13,9 +13,9 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 - a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
 - a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp, and a 30% chance to give Reed there, and a 20% chance to give Labrador Tea there
 - **Wolves** have a 20% chance to drop 1–2 Crowberries
-- a vanilla wild **Onion** in the Mountains has a 20% chance to also give Juniper Berries
+- a vanilla wild **Onion** in the Mountains has a 20% chance each to also give Juniper Berries and Angelica
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -36,6 +36,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Juniper Berries** | Bitter blue berries from a prickly shrub; the smoke keeps the dead away | Mountain slopes, or extra drop from wild Onion there | – |
+| **Angelica** | Tall herb with green flower globes, chewed for strength | Mountains, or extra drop from wild Onion there | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
 | **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
 | **Smoke Oven** | Stone Pot extension, a clay oven for smoking fish and meat, gives level 3 together with the Herb Tray | Hammer (next to the Stone Pot) | Stone ×10, Wood ×6, Iron ×2, Resin ×5 |
@@ -77,7 +78,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 
 | Forageable | Group size |
 |---|---|
-| Chanterelle, Porcini, Cranberries, Crowberries, Labrador Tea | 1–3 |
+| Chanterelle, Porcini, Cranberries, Crowberries, Labrador Tea, Angelica | 1–3 |
 | Lingonberries | 1–2 |
 | Bog Iron, Peat, Juniper Berries | 1–2 |
 | Roseroot, Sweet Gale, Sphagnum Moss, Meadowsweet | 2–4 |
