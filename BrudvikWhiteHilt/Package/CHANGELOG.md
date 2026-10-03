@@ -2,6 +2,110 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.3 - 2026-10-03
+
+### Fixed
+- **Settings window scrolling**: mouse-wheel sensitivity increases from 35 to 132 UI pixels per unit of wheel input in both settings lists.
+- **Portal list and map input**: the map ignores input while the pointer is over the open portal panel, so scrolling the list no longer zooms the map behind it. Map input outside the panel is unchanged. Compilation passed; pointer routing and scrolling feel still require in-game testing.
+
+## v0.77.2 - 2026-10-03
+
+### Fixed
+- **Portal list scrolling**: a wider, centred gold scrollbar handle on a darker track is easier to see and drag, with reserved space beside the portal rows. Mouse-wheel scrolling increases from 35 to 132 UI pixels per unit of wheel input, about three rows. The settings window is unchanged. Compilation passed; appearance and scrolling feel still require in-game testing.
+
+## v0.77.1 - 2026-10-03
+
+### Fixed
+- **Valkyrie Stone repeat deaths**: a new local death clears the previous trip marker before respawn saves the player, so dying again at exactly the same coordinates no longer blocks travel to the new death point. Trip cost and the once-per-death setting are unchanged.
+
+## v0.77.0 - 2026-10-03
+
+### Added
+- **Dragon ground fire**: Desert Dragons and Black Dragons leave temporary flame patches when their breath hits dry terrain. Defaults: 6 seconds, 1.5 m radius and 10 fire damage per second before resistance; damage inherits the projectile's star and black beast scaling. Nearby impacts merge, at most 3 new patches per breath and 6 active per dragon. Overlapping patches apply only the strongest damage on each target's network owner. No spreading, terrain changes, water ignition, dynamic lights or particle collision; buildings remain safe unless `BurnsBuildings` is enabled. Seven admin-synced ground-fire settings and Norwegian setting texts control the feature. Server and clients must update together. Compilation and isolated behavior checks passed; particle appearance, multiplayer ownership and performance still require in-game testing.
+
+### Changed
+- **Stronger dragons**: base health rises from 800 to 1200 and fire damage per breath flame from 15 to 20. Flame count and breath cooldown remain unchanged. Previous defaults migrate once; other configured values are preserved. Black Dragons retain their existing five stars and beast bonuses, giving 8100 health and 60 fire per flame with default difficulty settings, plus 30 ground fire damage per second before resistance.
+
+## v0.76.1 - 2026-10-03
+
+### Fixed
+- **Monster display names**: Desert Dragons, Lindorms, Giant Spiders, Krakens and Kraken Tentacles now show their localized names instead of internal `WhiteHilt_` prefab identifiers. Restore `Character.m_name` after Jotunn's cloning constructor overwrites the configured name. Internal prefab identifiers, saved creatures and spawn commands remain unchanged; black beasts and dogs already restore their names and are unaffected.
+
+## v0.76.0 - 2026-10-03
+
+### Added
+- **Kraken crew damage scaling**: the Kraken and its tentacles deal 15% more solo damage to players and 3% more solo ship damage per additional player aboard when the encounter starts. Five aboard means +60% crew damage and +12% ship damage, on top of vanilla scaling. Crew size is saved on the Kraken and copied to its tentacles so leaving the ship does not reduce the bonus; admin summons use the same rule, and older encounters default to solo damage. Admin-synced `[Kraken] CrewDamagePerExtraPlayer` and `ShipDamagePerExtraPlayer` control the bonuses, with Norwegian setting texts; 0 disables each bonus. Existing zero-damage settings still block damage. Health, tentacle count, attack chance and cooldown are unchanged. Compilation and 12 isolated damage checks passed; multiplayer in-game testing remains required.
+
+## v0.75.1 - 2026-10-03
+
+### Changed
+- **More dangerous Kraken encounters for large crews**: doubled the default `ChancePerExtraPlayer` from 4 to 8 percentage points. Natural attack chance is now 8% per minute solo, 16% with two aboard, 24% with three and 40% with five, capped at 100%. All existing conditions and the world-wide cooldown remain unchanged. Existing configured values are preserved; set `[Kraken] ChancePerExtraPlayer` to 8 to adopt the new balance on an already configured server.
+
+## v0.75.0 - 2026-10-03
+
+### Added
+- **Kraken crew bonus**: each additional player aboard the same ship adds a configurable 4 percentage points to the natural attack chance per minute (8% solo, 12% with two, 16% with three), capped at 100%. Existing weather, night, biome, depth, progression and world-wide cooldown requirements remain unchanged. Admin-synced `[Kraken] ChancePerExtraPlayer` controls the bonus; 0 disables it. `ChancePerMinute = 0` still disables natural attacks. The diagnostic console command now shows crew size and effective chance. Server and clients must update together for the changed request RPC. Validated with compilation and isolated chance checks; multiplayer in-game testing remains required.
+
+## v0.74.1 - 2026-10-03
+
+### Fixed
+- **Self-closing doors after portal travel**: unattended timer-managed doors now save their closed state when their owner leaves the active area, before the scene unloads and ownership is released. This prevents a quick portal departure from leaving a door open with no running close timer. Leaving the active area on foot has the same safeguard; ordinary delays still apply inside it. Hold-open, nearby players and tamed animals, disabled settings, excluded pieces and key doors are respected. Validated with isolated behavior checks and compilation; in-game portal and multiplayer testing remains required.
+
+## v0.74.0 - 2026-10-03
+
+### Added
+- **HUD compass**: a subdued horizontal tape above the day, clock and weather follows the camera's exact heading every frame after camera effects. Fixed centre indicator, eight direction labels, three-digit degrees and small/medium/large ticks; angular positioning wraps correctly across north. Defaults to 700 by 52 UI units and a 120-degree window, with fading edges and a faint optional background. Local `[HUD.Compass]` settings control dimensions, intervals, labels, placement, scale and opacity.
+- **Compass markers**: own unchecked saved map pins, known boss locations and own unchecked death markers use their existing map icons and the same angular projection. Off-screen markers are hidden, not clamped. Category switches, icon size and membership refresh are configurable; icons are pooled. `HudCompassMarkers.SetMarker` / `RemoveMarker` allow explicit custom world markers without scanning or revealing unknown locations. Portals, boats and other players are not automatically added in this version.
+
+### Changed
+- **Top HUD layout**: while the compass is visible, boss bars sit below it, the clock remains below the boss bars, and the existing ruby waypoint arrow stays below the visible clock. Original layout returns when the compass is disabled or hidden. Compass width and horizontal position are constrained to HUD space. The round map compasses and the ruby amulet's requirements are unchanged. Hidden with the HUD, death, inventory, menus and large map; visible while building.
+
+## v0.73.1 - 2026-10-03
+
+### Fixed
+- **Player portraits**: your own portrait and gold heading ring now draw in front of other players on both maps when markers overlap, including after switching maps or new player portraits appearing.
+
+## v0.73.0 - 2026-10-03
+
+### Added
+- **Munin's memory**: a gold infinity badge at the top-left of item icons shows which items are unlimited under the world's current chest rules. Warm, light backgrounds highlight items and locations found in the player's current biome, including kinds found in several biomes. Hover text includes both statuses. Location illustrations never count as unlimited items; ordering, discovered-only lists, filter rims, checkmarks and map selections are unchanged. Status follows biome and chest changes while the panel is open.
+
+## v0.72.4 - 2026-10-03
+
+### Fixed
+- **Mountain forageables**: lift plants and their existing pick colliders 0.2 m above their saved terrain point, and add a pick target matching the visible model with a minimum height of 0.4 m. Addresses low moss and lichen disappearing into slopes and the mismatch between custom models and vanilla pick colliders. Server-synced `GroundClearance` and `MinimumPickHeight` in each Mountain plant's foraging section apply when plants next load, including existing plants; saved positions, yields and regrowth are unchanged. In-game snow and steep-slope testing is still required.
+
+## v0.72.3 - 2026-10-03
+
+### Changed
+- **Lindorm**: boss progression sets its minimum strength when it emerges: 0 stars after Eikthyr, then 1 through 5 after the Elder, Bonemass, Moder, Yagluth and the Queen. Server-configurable `ProgressionStars` ignores ordinary biome star limits; encounters also receive the existing difficulty pressure bonuses at spawn. Their strength stays fixed during the fight.
+- **Gift of Surt**: halves fire damage by default instead of granting fire and frost immunity. Still an Ashlands potion; `FireModifier` configures its fire protection.
+- **Gift of Eir**: heals 25% and cleanses once when drunk, then grants 1.5x health regeneration for 2 minutes. No continuous cleansing; it cannot be drunk again while its effect is active. Bog Bean Bitter is unchanged.
+- **Gift of Freya**: duration reduced from 20 to 10 minutes, matching Odin; stamina effects are unchanged.
+- **Gift of Fenrir**: attack speed bonus reduced from 50% to 20%, and life steal from 15% to 5%.
+- **Desert Dragon**: default health increased from 500 to 800, also strengthening its Black Dragon cousin. No new attack in this balance pass.
+- Previous default values for Eir, Freya, Fenrir and dragon health migrate once; custom values are preserved. Buff combinations, giant spiders and the Kraken are unchanged.
+
+## v0.72.2 - 2026-10-03
+
+### Changed
+- **Lindorm**: default size increased from 1.3 to 1.6 (about 6.4 m long), and bite damage from 55 to 75 pierce. Configurable visual growth of 15% per star up to two stars; higher stars also use the difficulty size settings. Previous default config values migrate once; custom values are preserved.
+- **Monster sounds**: original growls and rasps for the Lindorm, deep watery calls and a separate tentacle lash for the Kraken, and growls, roars and fiery breath for Desert Dragons. Each has idle, alert, attack, injury and death sounds, controlled by its server-synced `Sounds` setting. Black Dragons inherit the dragon sounds. Visual effects and corpses remain unchanged, and inherited attack calls are removed when custom sounds are enabled.
+
+## v0.72.1 - 2026-10-03
+
+### Changed
+- **Giant spiders**: default size increased by 50% (about 2.4 m across), with configurable visual growth of 15% per star up to two stars. Higher stars retain the difficulty system's extra growth. Bite damage increased from 18 pierce / 15 poison to 30 pierce / 20 poison. Previous default config values migrate once; custom values are preserved.
+- **Giant spiders**: original clicks, rasps and hisses for idle, alert, bite, injury and death, switchable with `[Giant Spider] Sounds`.
+
+### Fixed
+- **Giant spiders**: face forwards instead of walking abdomen-first. The model import measures the fangs relative to the abdomen rather than the offset model origin, and centres the body horizontally.
+
+## v0.72.0 - 2026-10-03
+
+### Added
+- **Collection Post**: a carved workbench extension with a wicker basket gathers loose items into matching White Hilt category chests, with the Everlasting Chest as a fallback. Collection and chest radii are independently server-configurable (80 metres each by default, 10–200 metres). Use the post to pause/resume it; placement shows the collection radius. Full chests leave items on the ground, partial deposits keep their remainder, and starred/custom-data items retain their data. Player drops are excluded by default, with new drops marked across world reloads. Only loaded areas and accessible, closed chests are used. Server settings control interval, batch/search limits, connection distance, player drops and ownership retries. Reuses the existing carved post and wicker basket models.
+
 ## v0.71.0 - 2026-10-03
 
 ### Added

@@ -45,7 +45,7 @@ A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings with a ring showing which way they are heading, a compass on the map, and built areas, fields, pastures and wards drawn on the map.
+The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings with a ring showing which way they are heading, a compass on the map and a camera-following HUD compass above the clock with known world markers, and built areas, fields, pastures and wards drawn on the map.
 
 ### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
@@ -67,7 +67,7 @@ Surt's Brazier for fires without fuel, the Rushlight, crafting and building from
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest). Carts and ship holds keep unlimited items full too.
+Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest), with a workbench Collection Post that gathers and sorts nearby drops. Carts and ship holds keep unlimited items full too.
 
 ### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 
@@ -157,7 +157,7 @@ Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your s
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Giant Spider" height="120">
 
-A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and fire-breathing dragons over the Plains once Moder is slain.
+A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and dragons that breathe fire and leave burning ground over the Plains once Moder is slain.
 
 ### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
