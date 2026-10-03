@@ -37,6 +37,7 @@ public static class DyeCatalog
         // Mountains
         Items.Foraging.Juniper.Juniper.PrefabName, Items.Foraging.Angelica.Angelica.PrefabName, Items.Foraging.IcelandMoss.IcelandMoss.PrefabName,
         Items.Foraging.WolfLichen.WolfLichen.PrefabName, Items.Foraging.MountainSorrel.MountainSorrel.PrefabName,
+        Items.Foraging.RockLichen.RockLichen.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName
