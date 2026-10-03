@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.1 - 2026-10-03
+
+### Fixed
+- **Player portraits**: a player who died showed up with only the first letter of their name on the map for the rest of the session. While they waited to respawn they looked as if they had left, so their portrait was forgotten, and they never sent it again.
+
 ## v0.69.0 - 2026-10-03
 
 ### Added

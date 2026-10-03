@@ -29,6 +29,7 @@ public class PortraitNetwork : MonoBehaviour
     private readonly HashSet<string> requested = new();
     private readonly Dictionary<long, float> lastReply = new();
     private readonly Dictionary<long, float> lastData = new();
+    private readonly Dictionary<string, long> uidByName = new();
 
     private HashSet<long> seen = new();
     private string ownHash;
@@ -140,9 +141,26 @@ public class PortraitNetwork : MonoBehaviour
         foreach (ZNet.PlayerInfo player in ZNet.instance.GetPlayerList())
         {
             long uid = player.m_characterID.UserID;
-            if (uid == 0L || uid == self)
+
+            // A player waiting to respawn has no character (vanilla sets ZDOID.None) but has not left.
+            if (uid == 0L)
+            {
+                if (player.m_name != null && uidByName.TryGetValue(player.m_name, out long known))
+                {
+                    present.Add(known);
+                }
+
+                continue;
+            }
+
+            if (uid == self)
             {
                 continue;
+            }
+
+            if (player.m_name != null)
+            {
+                uidByName[player.m_name] = uid;
             }
 
             present.Add(uid);
@@ -166,6 +184,10 @@ public class PortraitNetwork : MonoBehaviour
             heard.Remove(gone);
             lastReply.Remove(gone);
             lastData.Remove(gone);
+            foreach (string name in uidByName.Where(entry => entry.Value == gone).Select(entry => entry.Key).ToList())
+            {
+                uidByName.Remove(name);
+            }
         }
 
         seen = present;
