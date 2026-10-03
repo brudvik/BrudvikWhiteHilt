@@ -39,6 +39,9 @@ public static class DyeCatalog
         Items.Foraging.WolfLichen.WolfLichen.PrefabName, Items.Foraging.MountainSorrel.MountainSorrel.PrefabName,
         Items.Foraging.RockLichen.RockLichen.PrefabName,
 
+        // Plains
+        Items.Foraging.Rosehips.Rosehips.PrefabName,
+
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName
     };

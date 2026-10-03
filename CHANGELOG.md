@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.60.0 - 2026-10-03
+
+### Added
+- **Rosehips**: dog roses on the Plains whose red hips hide when picked and grow back, or from cloudberry bushes picked there (30%). An orange-red dye (`[Foraging.Rosehips]`)
+
 ## v0.59.0 - 2026-10-03
 
 ### Added
