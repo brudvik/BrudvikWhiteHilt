@@ -24,6 +24,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Gift of the Völva**: the seeress's draught, brewed from Henbane, Ergot and Rock Lichen. For 10 minutes the 40 nearest things to pick within 50 m, and every unopened chest the world placed there, show on the map (`[Potions.GiftOfVolva]`)
 - **Obsidian Rune** and **Dread**: a rune of iron and obsidian, smithed at the Rune Forge for etching. Etched with Ergot into a bound White Hilt weapon, a quarter of its hits send the foe running in terror for 4 seconds; never bosses (`[Gear.Infusions] DreadCost`, `DreadChance`, `DreadSeconds`)
 - **Mire Rune** and **Mire's Hold**: a rune of iron, copper and tar. Etched with Peat and Tar into a bound White Hilt weapon, every hit tars the target as a tar pit does, which slows it (`[Gear.Infusions] MireCost`)
+- **Blood Rune** and **Berserker's Rage**: a rune of iron and bloodbags. Etched with Henbane into a bound White Hilt weapon, it hits harder the more health you have lost: up to 60% more damage near death (`[Gear.Infusions] BerserkerCost`, `BerserkerMaxBonus`)
 
 ## v0.59.0 - 2026-10-03
 

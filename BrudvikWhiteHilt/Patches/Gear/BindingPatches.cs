@@ -60,6 +60,12 @@ public static class BindingPatches
 
         hit.m_damage.m_poison *= GearBinding.PoisonMultiplier(weapon, __instance);
 
+        float rage = GearBinding.Rage(weapon, player);
+        if (rage > 0f)
+        {
+            hit.m_damage.Modify(1f + rage);
+        }
+
         float lifeSteal = GearBinding.LifeSteal(weapon);
         float damage = hit.GetTotalDamage();
         if (lifeSteal > 0f && damage > 0f)

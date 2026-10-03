@@ -35,6 +35,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused_wolfsbane", "Etched rune: {0}, the poison is {1} times as strong against beasts");
         Translations.AddEnglish("whitehilt_infused_dread", "Etched rune: {0}, {1}% of hits send the foe running for {2} s");
         Translations.AddEnglish("whitehilt_infused_mire", "Etched rune: {0}, every hit tars the target");
+        Translations.AddEnglish("whitehilt_infused_berserker", "Etched rune: {0}, up to {1}% more damage the more health you have lost");
         Infusion.RegisterTranslations();
     }
 
@@ -237,6 +238,22 @@ public static class GearBinding
     }
 
     /// <summary>
+    /// Extra damage of a weapon etched with the Berserker's Rage, which grows with the health its wielder has lost.
+    /// </summary>
+    /// <param name="item">The weapon.</param>
+    /// <param name="wielder">Who swings it.</param>
+    /// <returns>The share, e.g. 0.3; 0 for any other weapon.</returns>
+    public static float Rage(ItemDrop.ItemData item, Character wielder)
+    {
+        if (wielder == null || GetBound(item) == null || GetInfusion(item)?.Kind != InfusionKind.Berserker)
+        {
+            return 0f;
+        }
+
+        return BindingSettings.BerserkerMaxBonus.Value * UnityEngine.Mathf.Clamp01(1f - wielder.GetHealthPercentage());
+    }
+
+    /// <summary>
     /// Tooltip lines for a bound item.
     /// </summary>
     /// <param name="item">The item.</param>
@@ -263,6 +280,8 @@ public static class GearBinding
             {
                 InfusionKind.Web => string.Format(localization.Localize("$whitehilt_infused_web"), name),
                 InfusionKind.Mire => string.Format(localization.Localize("$whitehilt_infused_mire"), name),
+                InfusionKind.Berserker => string.Format(localization.Localize("$whitehilt_infused_berserker"), name,
+                    Percent(BindingSettings.BerserkerMaxBonus.Value)),
                 InfusionKind.Deep => string.Format(localization.Localize("$whitehilt_infused_deep"), name, Percent(LifeSteal(item))),
                 InfusionKind.Wolfsbane => string.Format(localization.Localize("$whitehilt_infused_wolfsbane"), name,
                     Translations.Number(BindingSettings.WolfsbaneBeastMultiplier.Value)),

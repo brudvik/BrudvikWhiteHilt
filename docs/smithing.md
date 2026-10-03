@@ -62,6 +62,7 @@ Only a weapon with a bound trophy can be etched, and it holds one rune; etching 
 | Fang Rune | Wolf Lichen ×10 | **Wolfsbane**: poison damage, three times as strong against beasts (wolves, fenrings, bears, boars, deer, lox, hares, asksvin) |
 | Obsidian Rune | Ergot ×5 | **Dread**: a quarter of the hits send the target running in terror for 4 seconds; never bosses |
 | Mire Rune | Peat ×5, Tar ×3 | **Mire's Hold**: every hit tars the target, as a tar pit does, which slows it |
+| Blood Rune | Henbane ×5 | **Berserker's Rage**: the more health you have lost, the harder you hit: up to 60% more damage near death, 30% at half health |
 
 The metal runes are the portal runes ([Portals & travel](portals.md)). The other runes are smithed at the Rune Forge only for etching; they cannot be hung on a rune post:
 
@@ -71,8 +72,9 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Fang Rune | Iron ×4, Wolf Fang ×3, Silver ×1 |
 | Obsidian Rune | Iron ×4, Obsidian ×5 |
 | Mire Rune | Iron ×4, Copper ×3, Tar ×2 |
+| Blood Rune | Iron ×4, Bloodbag ×5 |
 
-The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4).
+The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6).
 
 ---
 

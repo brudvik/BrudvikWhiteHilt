@@ -46,6 +46,9 @@ public static class BindingSettings
     /// <summary>How long a creature runs in Dread, in seconds.</summary>
     public static ConfigEntry<float> DreadSeconds { get; private set; }
 
+    /// <summary>Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death.</summary>
+    public static ConfigEntry<float> BerserkerMaxBonus { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -86,6 +89,9 @@ public static class BindingSettings
             new AcceptableValueRange<float>(0f, 1f));
         DreadSeconds = WhiteHiltConfig.BindAdminOnly(InfusionSection, "DreadSeconds", 4f,
             "How long a creature runs in Dread, in seconds.", new AcceptableValueRange<float>(1f, 30f));
+        BerserkerMaxBonus = WhiteHiltConfig.BindAdminOnly(InfusionSection, "BerserkerMaxBonus", 0.6f,
+            "Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death; it grows with the health lost (0.6 = 60%, 30% at half health).",
+            new AcceptableValueRange<float>(0f, 3f));
     }
 
     /// <summary>

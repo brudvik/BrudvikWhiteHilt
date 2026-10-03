@@ -37,6 +37,9 @@ public enum InfusionKind
 
     /// <summary>Mire's Hold: every hit tars the target, which slows it.</summary>
     Mire,
+
+    /// <summary>The Berserker's Rage: the more wounded the wielder, the harder the weapon hits.</summary>
+    Berserker,
 }
 
 /// <summary>
@@ -59,6 +62,7 @@ public sealed class Infusion
         new(InfusionKind.Wolfsbane, "WhiteHiltFangRune", "WhiteHiltWolfLichen:10", "Wolfsbane"),
         new(InfusionKind.Dread, "WhiteHiltObsidianRune", "WhiteHiltErgot:5", "Dread"),
         new(InfusionKind.Mire, "WhiteHiltMireRune", "WhiteHiltPeat:5, Tar:3", "Mire's Hold"),
+        new(InfusionKind.Berserker, "WhiteHiltBloodRune", "WhiteHiltHenbane:5", "Berserker's Rage"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
