@@ -53,6 +53,10 @@ public static class BindingPatches
         {
             hit.m_statusEffectHash = DreadEffect.Hash;
         }
+        else if (GearBinding.Tars(weapon) && hit.m_statusEffectHash == 0)
+        {
+            hit.m_statusEffectHash = SEMan.s_statusEffectTared;
+        }
 
         hit.m_damage.m_poison *= GearBinding.PoisonMultiplier(weapon, __instance);
 

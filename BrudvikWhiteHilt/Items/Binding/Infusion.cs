@@ -34,6 +34,9 @@ public enum InfusionKind
 
     /// <summary>Dread: some hits send the target running in terror.</summary>
     Dread,
+
+    /// <summary>Mire's Hold: every hit tars the target, which slows it.</summary>
+    Mire,
 }
 
 /// <summary>
@@ -55,6 +58,7 @@ public sealed class Infusion
         new(InfusionKind.Seid, "WhiteHiltBoneRune", "WhiteHiltJuniper:10", "Seid Smoke"),
         new(InfusionKind.Wolfsbane, "WhiteHiltFangRune", "WhiteHiltWolfLichen:10", "Wolfsbane"),
         new(InfusionKind.Dread, "WhiteHiltObsidianRune", "WhiteHiltErgot:5", "Dread"),
+        new(InfusionKind.Mire, "WhiteHiltMireRune", "WhiteHiltPeat:5, Tar:3", "Mire's Hold"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)

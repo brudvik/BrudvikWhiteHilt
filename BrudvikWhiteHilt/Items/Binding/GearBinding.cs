@@ -34,6 +34,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused_deep", "Etched rune: {0}, {1}% of the damage dealt comes back as health");
         Translations.AddEnglish("whitehilt_infused_wolfsbane", "Etched rune: {0}, the poison is {1} times as strong against beasts");
         Translations.AddEnglish("whitehilt_infused_dread", "Etched rune: {0}, {1}% of hits send the foe running for {2} s");
+        Translations.AddEnglish("whitehilt_infused_mire", "Etched rune: {0}, every hit tars the target");
         Infusion.RegisterTranslations();
     }
 
@@ -226,6 +227,16 @@ public static class GearBinding
     }
 
     /// <summary>
+    /// Whether every hit of a weapon tars the target.
+    /// </summary>
+    /// <param name="item">The weapon.</param>
+    /// <returns>True for a bound weapon etched with Mire's Hold.</returns>
+    public static bool Tars(ItemDrop.ItemData item)
+    {
+        return GetBound(item) != null && GetInfusion(item)?.Kind == InfusionKind.Mire;
+    }
+
+    /// <summary>
     /// Tooltip lines for a bound item.
     /// </summary>
     /// <param name="item">The item.</param>
@@ -251,6 +262,7 @@ public static class GearBinding
             string line = infusion.Kind switch
             {
                 InfusionKind.Web => string.Format(localization.Localize("$whitehilt_infused_web"), name),
+                InfusionKind.Mire => string.Format(localization.Localize("$whitehilt_infused_mire"), name),
                 InfusionKind.Deep => string.Format(localization.Localize("$whitehilt_infused_deep"), name, Percent(LifeSteal(item))),
                 InfusionKind.Wolfsbane => string.Format(localization.Localize("$whitehilt_infused_wolfsbane"), name,
                     Translations.Number(BindingSettings.WolfsbaneBeastMultiplier.Value)),
