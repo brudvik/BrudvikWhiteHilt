@@ -167,8 +167,8 @@ public static class MonsterSettings
         LindormCooldownMinutes = WhiteHiltConfig.BindAdminOnly(LindormSection, "CooldownMinutes", 30f, "Real minutes before the Lindorm can come for the same player again.",
             new AcceptableValueRange<float>(0f, 1440f));
         LindormHealth = WhiteHiltConfig.BindAdminOnly(LindormSection, "Health", 700f, "Health of the Lindorm.", new AcceptableValueRange<float>(50f, 20000f));
-        LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 55f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
-        LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.3f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
+        LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 75f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
+        LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.6f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
         LindormGiveUpSeconds = WhiteHiltConfig.BindAdminOnly(LindormSection, "GiveUpSeconds", 25f, "Seconds without prey in sight before the Lindorm burrows away.",
             new AcceptableValueRange<float>(5f, 600f));

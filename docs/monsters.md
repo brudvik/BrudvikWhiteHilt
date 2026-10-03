@@ -8,7 +8,11 @@ New monsters haunt the land: the Lindorm that breaks out of the ground at night,
 
 ## The Lindorm
 
-A great worm that lies in wait under the forest floor. It only comes when everything lines up:
+A great worm that lies in wait under the forest floor.
+
+The Lindorm is about **6.4 m long** at the default size and bites for **75 pierce damage**.
+
+It only comes when everything lines up:
 
 - you are **on foot** in the **Black Forest** or the **Swamp** (not on a ship, in the water, indoors or near your base),
 - it is **night**,
@@ -44,7 +48,7 @@ In the dark hour and under a blood moon, its black cousin, the **Black Dragon**,
 
 | | Health | Attack | Weak to |
 |---|---|---|---|
-| **Lindorm** | 700 | Bite, 55 pierce | Fire |
+| **Lindorm** | 700 | Bite, 75 pierce | Fire |
 | **Giant Spider** | 120 | Bite, 30 pierce + 20 poison, webs you | Blunt, fire |
 | **Spider Nest** | 300 | — | — |
 | **Desert Dragon** | 500 | Fire breath, 12 flames of 15 fire | Frost |
@@ -85,10 +89,12 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `NightOnly` | true | Only at night |
 | `ChancePerMinute` | 3 | Percent per minute while every condition holds |
 | `CooldownMinutes` | 30 | Real minutes before it can come for the same player again |
-| `Health` / `Damage` | 700 / 55 | Health, and pierce damage of its bite |
-| `Scale` | 1.3 | Size (1 = about 4 m long; after a restart) |
+| `Health` / `Damage` | 700 / 75 | Health, and pierce damage of its bite |
+| `Scale` | 1.6 | Size (1 = about 4 m long; default about 6.4 m; after a restart) |
 | `GiveUpSeconds` | 25 | Seconds without prey in sight before it burrows away |
 | `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
+
+On upgrade to 0.72.2, the previous Lindorm defaults (`Scale` 1.3, `Damage` 55) move to the new defaults once. Other configured values are preserved.
 
 Section `[Giant Spider]`:
 

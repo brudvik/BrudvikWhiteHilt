@@ -300,11 +300,19 @@ public static class WhiteHiltConfig
             Jotunn.Logger.LogInfo($"Config migration {id} applied.");
         }
 
-        if (!done.Contains("spider-0.72.1"))
+        foreach (var migration in new[]
         {
-            foreach ((string key, float previous) in new[] { ("Scale", 1f), ("Damage", 18f), ("Poison", 15f) })
+            (Id: "spider-0.72.1", Section: "Giant Spider", Values: new[] { ("Scale", 1f), ("Damage", 18f), ("Poison", 15f) }),
+            (Id: "lindorm-0.72.2", Section: "Lindorm", Values: new[] { ("Scale", 1.3f), ("Damage", 55f) })
+        })
+        {
+            if (done.Contains(migration.Id))
             {
-                ConfigDefinition definition = new("Giant Spider", key);
+                continue;
+            }
+            foreach ((string key, float previous) in migration.Values)
+            {
+                ConfigDefinition definition = new(migration.Section, key);
                 if (configFile.ContainsKey(definition))
                 {
                     ConfigEntryBase entry = configFile[definition];
@@ -314,10 +322,10 @@ public static class WhiteHiltConfig
                     }
                 }
             }
-            done.Add("spider-0.72.1");
+            done.Add(migration.Id);
             orphans[marker] = string.Join(",", done);
             changed = true;
-            Jotunn.Logger.LogInfo("Config migration spider-0.72.1 applied; custom spider values kept.");
+            Jotunn.Logger.LogInfo($"Config migration {migration.Id} applied; custom values kept.");
         }
 
         if (changed)
