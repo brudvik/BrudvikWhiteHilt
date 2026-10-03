@@ -16,6 +16,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Lox Milk**: crouch and use a tame lox to milk it once a day for 2 Lox Milk, one more from a groomed lox. Raises Animal Husbandry (`[Husbandry] LoxMilking`, `MilkPerLox`, `MilkDays`)
 - **Rosehip Soup** (Stone Pot level 2): Rosehips, Honey and Barley Flour, 32 health and 64 stamina for 40 minutes (`[Food.RosehipSoup]`)
 - **Caraway Lox Stew** (Stone Pot level 2): Lox Meat, Caraway, Onion and Turnip, 64 health and 36 stamina for 40 minutes (`[Food.CarawayLoxStew]`)
+- **Skyr with Cloudberries** (Stone Pot level 2): Lox Milk, Cloudberries and Honey, 48 health and 48 stamina for 45 minutes; health regenerates 25% faster for the first half (`[Food.SkyrwithCloudberries]`)
 
 ## v0.59.0 - 2026-10-03
 
