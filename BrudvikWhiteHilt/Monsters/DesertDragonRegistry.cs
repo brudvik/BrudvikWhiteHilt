@@ -185,6 +185,10 @@ public static class DesertDragonRegistry
         GameObject model = MonsterRegistry.AttachVisual(visual, Model, template, scale);
         model.transform.localPosition = modelPosition;
         Dress(model);
+        if (MonsterSettings.DragonSounds.Value)
+        {
+            MonsterRegistry.AddCreatureSounds(humanoid, ai, flame, "dragon");
+        }
         prefab.AddComponent<DragonFire>();
         CreatureManager.Instance.AddCreature(creature);
     }

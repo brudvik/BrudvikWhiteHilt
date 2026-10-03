@@ -37,6 +37,8 @@ Then, once a minute, there is an 8% chance it rises. It comes at most once every
 
 Both shrug off chop and pickaxe damage and poison, resist fire and frost, and are weak to lightning.
 
+The Kraken has its own deep, watery calls for idle, alert, slam, injury and death. Its tentacles share the calls and use a separate wet lash sound when striking. Set `[Kraken] Sounds` to false to keep the previous vanilla sounds.
+
 ### Loot
 
 | Item | Description | Used for |
@@ -68,6 +70,7 @@ Section `[Kraken]` (admin only, synced from the server):
 | `HoldShip` | true | The Kraken holds the ship fast |
 | `RetreatMinutes` | 5 | Minutes before it gives up |
 | `Scale` | 1.5 | Size of the Kraken (after a restart) |
+| `Sounds` | true | Own watery calls and tentacle lash (after a restart) |
 | `LootMultiplier` | 1 | Multiplier on the meat, ink and chitin it drops; the trophy stays one (after a restart) |
 
 Section `[Octopus]`: `Enabled`, `MaxSpawned` (2) and `SpawnChance` (20%).

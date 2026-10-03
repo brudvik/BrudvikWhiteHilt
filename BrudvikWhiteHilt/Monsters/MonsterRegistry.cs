@@ -54,6 +54,7 @@ public static class MonsterRegistry
 
     private static ZoneSystem.ZoneVegetation nestVegetation;
     private static SpawnSystem.SpawnData nightSpawn;
+    private static readonly Dictionary<string, GameObject> creatureSounds = new();
 
     /// <summary>
     /// Registers the translations, and the prefabs once the vanilla creatures can be cloned.
@@ -233,6 +234,10 @@ public static class MonsterRegistry
         levels.m_levelSetups = Enumerable.Range(1, Difficulty.CreatureStars.MaxLevel - 1)
             .Select(stars => new LevelEffects.LevelSetup { m_scale = 1f + Mathf.Min(stars, 2) * MonsterSettings.LindormStarScale.Value })
             .ToList();
+        if (MonsterSettings.LindormSounds.Value)
+        {
+            AddCreatureSounds(humanoid, ai, bite, "lindorm");
+        }
         prefab.AddComponent<LindormBurrow>();
         CreatureManager.Instance.AddCreature(creature);
     }
@@ -323,46 +328,67 @@ public static class MonsterRegistry
             .ToList();
         if (MonsterSettings.SpiderSounds.Value)
         {
-            AddSpiderSounds(humanoid, ai, bite);
+            AddCreatureSounds(humanoid, ai, bite, "spider", "bite");
         }
         CreatureManager.Instance.AddCreature(creature);
         return prefab;
     }
 
-    private static void AddSpiderSounds(Humanoid humanoid, MonsterAI ai, CustomItem bite)
+    internal static void AddCreatureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon, string prefix, string attack = "attack")
     {
-        GameObject source = ai.m_alertedEffects.m_effectPrefabs.Select(effect => effect.m_prefab)
+        GameObject source = (ai.m_alertedEffects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
+            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
+        source ??= PrefabManager.Instance.GetPrefab("Wolf")?.GetComponent<MonsterAI>()?.m_alertedEffects.m_effectPrefabs
+            ?.Select(effect => effect.m_prefab)
             .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
         if (source == null)
         {
-            Jotunn.Logger.LogWarning("Giant spider: no alert sound prefab to clone");
+            Jotunn.Logger.LogWarning($"{prefix}: no alert sound prefab to clone");
             return;
         }
 
         Dictionary<string, GameObject> sounds = new();
-        foreach (string name in new[] { "spideridle", "spideralert", "spiderbite", "spiderhit", "spiderdeath" })
+        foreach (string action in new[] { "idle", "alert", attack, "hit", "death" })
         {
-            GameObject effect = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
-            effect.GetComponentInChildren<ZSFX>(true).m_audioClips = new[] { ForagingAssets.LoadAudio(name) };
-            sounds[name] = effect;
+            string name = prefix + action;
+            if (!creatureSounds.TryGetValue(name, out GameObject effect))
+            {
+                AudioClip clip = ForagingAssets.LoadAudio(name);
+                effect = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
+                effect.GetComponentInChildren<ZSFX>(true).m_audioClips = new[] { clip };
+                creatureSounds[name] = effect;
+            }
+            sounds[action] = effect;
         }
 
-        ai.m_idleSound = ReplaceSound(ai.m_idleSound, sounds["spideridle"]);
-        ai.m_alertedEffects = ReplaceSound(ai.m_alertedEffects, sounds["spideralert"]);
-        humanoid.m_hitEffects = ReplaceSound(humanoid.m_hitEffects, sounds["spiderhit"]);
-        humanoid.m_critHitEffects = ReplaceSound(humanoid.m_critHitEffects, sounds["spiderhit"]);
-        humanoid.m_deathEffects = ReplaceSound(humanoid.m_deathEffects, sounds["spiderdeath"]);
-        ItemDrop.ItemData.SharedData shared = bite.ItemDrop.m_itemData.m_shared;
-        shared.m_triggerEffect = ReplaceSound(shared.m_triggerEffect, sounds["spiderbite"]);
+        ai.m_idleSound = ReplaceSound(ai.m_idleSound, sounds["idle"]);
+        ai.m_alertedEffects = ReplaceSound(ai.m_alertedEffects, sounds["alert"]);
+        humanoid.m_hitEffects = ReplaceSound(humanoid.m_hitEffects, sounds["hit"]);
+        humanoid.m_critHitEffects = ReplaceSound(humanoid.m_critHitEffects, sounds["hit"]);
+        humanoid.m_deathEffects = ReplaceSound(humanoid.m_deathEffects, sounds["death"]);
+        ItemDrop.ItemData.SharedData shared = weapon.ItemDrop.m_itemData.m_shared;
+        shared.m_startEffect = RemoveSounds(shared.m_startEffect);
+        shared.m_attack.m_startEffect = RemoveSounds(shared.m_attack.m_startEffect);
+        shared.m_attack.m_triggerEffect = RemoveSounds(shared.m_attack.m_triggerEffect);
+        shared.m_triggerEffect = ReplaceSound(shared.m_triggerEffect, sounds[attack]);
     }
 
     private static EffectList ReplaceSound(EffectList effects, GameObject sound)
     {
         return new EffectList
         {
+            m_effectPrefabs = RemoveSounds(effects).m_effectPrefabs
+                .Append(new EffectList.EffectData { m_prefab = sound, m_enabled = true })
+                .ToArray()
+        };
+    }
+
+    private static EffectList RemoveSounds(EffectList effects)
+    {
+        return new EffectList
+        {
             m_effectPrefabs = (effects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>())
                 .Where(effect => effect.m_prefab != null && effect.m_prefab.GetComponentInChildren<ZSFX>(true) == null)
-                .Append(new EffectList.EffectData { m_prefab = sound, m_enabled = true })
                 .ToArray()
         };
     }

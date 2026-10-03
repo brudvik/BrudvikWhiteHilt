@@ -10,7 +10,7 @@ New monsters haunt the land: the Lindorm that breaks out of the ground at night,
 
 A great worm that lies in wait under the forest floor.
 
-The Lindorm is about **6.4 m long** at the default size and bites for **75 pierce damage**. One and two stars add 15% and 30% visual size; higher stars also use the difficulty size settings.
+The Lindorm is about **6.4 m long** at the default size and bites for **75 pierce damage**. One and two stars add 15% and 30% visual size; higher stars also use the difficulty size settings. It has its own low growls and rasps for idle, alert, bite, injury and death.
 
 It only comes when everything lines up:
 
@@ -43,6 +43,7 @@ Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip
 - Its fire only hurts players and creatures; buildings are safe unless `BurnsBuildings` is on.
 - It is immune to fire and spirit damage, weak to frost, resists poison and ignores chop and pickaxe damage. Bring a bow.
 - When slain it tumbles out of the sky and lies where it fell for a while.
+- It has its own growls, roars and fiery breath sounds for idle, alert, attack, injury and death. The Black Dragon inherits them too.
 
 In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
 
@@ -92,6 +93,7 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `Health` / `Damage` | 700 / 75 | Health, and pierce damage of its bite |
 | `Scale` | 1.6 | Size (1 = about 4 m long; default about 6.4 m; after a restart) |
 | `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
+| `Sounds` | true | Own growls and rasps (after a restart) |
 | `GiveUpSeconds` | 25 | Seconds without prey in sight before it burrows away |
 | `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
 
@@ -137,6 +139,7 @@ Section `[Desert Dragon]`:
 | `FlySpeed` | 11 | Metres per second when it chases you (after a restart) |
 | `FlyHeightMin` / `FlyHeightMax` | 5 / 12 | Metres above the ground it flies at (after a restart) |
 | `Scale` | 1 | Size (1 = about 8 m from wingtip to wingtip; after a restart) |
+| `Sounds` | true | Own growls, roars and breath sounds, also on Black Dragons (after a restart) |
 | `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
 | `BurnsBuildings` | false | Its fire also damages the buildings it hits |
 

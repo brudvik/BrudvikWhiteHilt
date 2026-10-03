@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -247,6 +248,10 @@ public static class KrakenRegistry
         Transform visualRoot = ClearVisual(prefab);
         GameObject visual = CreatureVisual.Attach(visualRoot, "kraken", template, new Vector3(0f, -ModelDepth, 0f), Quaternion.identity, scale);
         visual.GetComponentInChildren<Animator>().gameObject.AddComponent<CharacterAnimEvent>().m_headRotation = false;
+        if (KrakenSettings.Sounds.Value)
+        {
+            MonsterRegistry.AddCreatureSounds(humanoid, ai, slam, "kraken");
+        }
         prefab.AddComponent<KrakenBody>();
         CreatureManager.Instance.AddCreature(creature);
     }
@@ -273,6 +278,10 @@ public static class KrakenRegistry
         MonsterAI ai = prefab.GetComponent<MonsterAI>();
         ai.m_viewRange = 40f;
         ai.m_hearRange = 40f;
+        if (KrakenSettings.Sounds.Value)
+        {
+            MonsterRegistry.AddCreatureSounds(humanoid, ai, lash, "kraken", "lash");
+        }
 
         if (!VisualHelper.IsHeadless)
         {

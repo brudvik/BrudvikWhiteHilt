@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Changed
 - **Lindorm**: default size increased from 1.3 to 1.6 (about 6.4 m long), and bite damage from 55 to 75 pierce. Configurable visual growth of 15% per star up to two stars; higher stars also use the difficulty size settings. Previous default config values migrate once; custom values are preserved.
+- **Monster sounds**: original growls and rasps for the Lindorm, deep watery calls and a separate tentacle lash for the Kraken, and growls, roars and fiery breath for Desert Dragons. Each has idle, alert, attack, injury and death sounds, controlled by its server-synced `Sounds` setting. Black Dragons inherit the dragon sounds. Visual effects and corpses remain unchanged, and inherited attack calls are removed when custom sounds are enabled.
 
 ## v0.72.1 - 2026-10-03
 

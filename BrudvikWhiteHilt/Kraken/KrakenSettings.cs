@@ -69,6 +69,9 @@ public static class KrakenSettings
     /// <summary>Size of the Kraken.</summary>
     public static ConfigEntry<float> Scale { get; private set; }
 
+    /// <summary>Whether the Kraken and its tentacles use their own sound effects.</summary>
+    public static ConfigEntry<bool> Sounds { get; private set; }
+
     /// <summary>Multiplier on the Kraken's loot, trophy excepted.</summary>
     public static ConfigEntry<float> LootMultiplier { get; private set; }
 
@@ -111,6 +114,8 @@ public static class KrakenSettings
             new AcceptableValueRange<float>(1f, 60f));
         Scale = WhiteHiltConfig.BindAdminOnly(Section, "Scale", 1.5f, "Size of the Kraken (1 = about 10 m long). Applies to new Krakens after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
+        Sounds = WhiteHiltConfig.BindAdminOnly(Section, "Sounds", true,
+            "Use the Kraken's own deep watery sounds for idle, alert, slam, injury and death, with a separate tentacle lash. Applies after a restart.");
         LootMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "LootMultiplier", 1f,
             "Multiplier on the meat, ink and chitin the Kraken drops (4-6, 3-5 and 6-10 at 1). The trophy stays one. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 10f));

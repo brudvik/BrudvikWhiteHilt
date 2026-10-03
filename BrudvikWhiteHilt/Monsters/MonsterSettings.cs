@@ -47,6 +47,9 @@ public static class MonsterSettings
     /// <summary>Visual growth per star, up to two stars.</summary>
     public static ConfigEntry<float> LindormStarScale { get; private set; }
 
+    /// <summary>Whether the Lindorm uses its own sound effects.</summary>
+    public static ConfigEntry<bool> LindormSounds { get; private set; }
+
     /// <summary>Seconds without prey before the Lindorm burrows away.</summary>
     public static ConfigEntry<float> LindormGiveUpSeconds { get; private set; }
 
@@ -149,6 +152,9 @@ public static class MonsterSettings
     /// <summary>Size of a Desert Dragon.</summary>
     public static ConfigEntry<float> DragonScale { get; private set; }
 
+    /// <summary>Whether Desert Dragons use their own sound effects.</summary>
+    public static ConfigEntry<bool> DragonSounds { get; private set; }
+
     /// <summary>Chance, in percent, that a Desert Dragon drops its trophy.</summary>
     public static ConfigEntry<float> DragonTrophyChance { get; private set; }
 
@@ -176,6 +182,8 @@ public static class MonsterSettings
         LindormStarScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "StarScale", 0.15f,
             "Visual growth per star up to two stars (0.15 = +15% / +30%). Higher stars also use the difficulty size settings. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 0.5f));
+        LindormSounds = WhiteHiltConfig.BindAdminOnly(LindormSection, "Sounds", true,
+            "Use the Lindorm's own rasps and growls for idle, alert, bite, injury and death. Applies after a restart.");
         LindormGiveUpSeconds = WhiteHiltConfig.BindAdminOnly(LindormSection, "GiveUpSeconds", 25f, "Seconds without prey in sight before the Lindorm burrows away.",
             new AcceptableValueRange<float>(5f, 600f));
         LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 15f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",
@@ -238,6 +246,8 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(2f, 50f));
         DragonScale = WhiteHiltConfig.BindAdminOnly(DragonSection, "Scale", 1f, "Size of a Desert Dragon (1 = about 8 m from wingtip to wingtip). Applies after a restart.",
             new AcceptableValueRange<float>(0.3f, 3f));
+        DragonSounds = WhiteHiltConfig.BindAdminOnly(DragonSection, "Sounds", true,
+            "Use the dragon's own growls, roars and breath for idle, alert, attack, injury and death. Black Dragons inherit these sounds. Applies after a restart.");
         DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 10f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         DragonBurnsBuildings = WhiteHiltConfig.BindAdminOnly(DragonSection, "BurnsBuildings", false,
