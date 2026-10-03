@@ -29,6 +29,8 @@ The White Hilt hoe digs moats round the fort: a dry V-ditch, a wet moat with wat
 
 Place the drawbridge with its posts at the inner edge of the moat and the deck reaching across. It follows the nearest gate within 12 m: when the gate opens the bridge is lowered, and when the gate closes, by hand, on its own or when enemies come near (see [self-closing doors](base.md)), the bridge is raised. It can also be opened and closed by hand.
 
+The raised and lowered positions stay the same after loading, and following a gate works on dedicated servers without an active door animation.
+
 ## Config
 
 Section `[Defences]` (admin only, synced from the server; it was `[Defenses]` before 0.49.0, and its value is moved over):

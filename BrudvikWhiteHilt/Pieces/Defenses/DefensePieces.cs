@@ -269,6 +269,8 @@ public class Drawbridge : DefensePieceBase
         DrawbridgeDriver driver = prefab.AddComponent<DrawbridgeDriver>();
         driver.m_door = door;
         driver.m_deck = deck;
+        driver.m_doorRest = door.localRotation;
+        driver.m_deckRest = deck.localRotation;
     }
 }
 

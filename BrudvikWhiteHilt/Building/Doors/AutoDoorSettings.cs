@@ -152,7 +152,7 @@ public static class AutoDoorSettings
         }
 
         // A drawbridge is raised and lowered like a gate.
-        if (prefabName == DrawbridgePrefab)
+        if (prefabName == DrawbridgePrefab || prefabName == "piece_drawbridge")
         {
             return DoorKind.Gate;
         }

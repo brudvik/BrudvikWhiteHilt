@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.2 - 2026-10-03
+
+### Fixed
+- **Self-closing doors**: automatic closing sets the closed state directly instead of depending on the owner's animator being ready for interaction. Repeated closing cannot reopen a door, and doors with inverted open/closed states are handled correctly.
+- **Drawbridges**: the vanilla drawbridge follows the gate closing settings. The White Hilt drawbridge keeps its prefab reference rotations when loaded, and follows gate changes without depending on the owner's animator; closing raises it instead of lowering it.
+
 ## v0.69.1 - 2026-10-03
 
 ### Fixed

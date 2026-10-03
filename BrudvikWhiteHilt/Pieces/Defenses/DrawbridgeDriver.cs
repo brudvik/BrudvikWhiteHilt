@@ -9,7 +9,6 @@ namespace BrudvikWhiteHilt.Pieces.Defenses;
 /// </summary>
 public class DrawbridgeDriver : MonoBehaviour
 {
-    private const string UseDoorRpc = "UseDoor";
     private const float RaisedAngle = 80f;
     private const float LinkSeconds = 0.5f;
 
@@ -19,8 +18,12 @@ public class DrawbridgeDriver : MonoBehaviour
     /// <summary>The deck, turning round the hinge.</summary>
     public Transform m_deck;
 
-    private Quaternion doorRest;
-    private Quaternion deckRest;
+    /// <summary>The hidden door's closed rotation, captured from the prefab before animation.</summary>
+    public Quaternion m_doorRest;
+
+    /// <summary>The deck's lowered rotation, captured from the prefab before animation.</summary>
+    public Quaternion m_deckRest;
+
     private ZNetView nview;
     private Door door;
     private ZNetView linked;
@@ -37,9 +40,6 @@ public class DrawbridgeDriver : MonoBehaviour
             enabled = false;
             return;
         }
-
-        doorRest = m_door.localRotation;
-        deckRest = m_deck.localRotation;
     }
 
     private void Update()
@@ -55,9 +55,9 @@ public class DrawbridgeDriver : MonoBehaviour
 
     private void LateUpdate()
     {
-        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(doorRest) * m_door.localRotation).eulerAngles.y));
+        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(m_doorRest) * m_door.localRotation).eulerAngles.y));
         float raised = RaisedAngle * (1f - Mathf.Clamp01(open / 90f));
-        m_deck.localRotation = deckRest * Quaternion.Euler(-raised, 0f, 0f);
+        m_deck.localRotation = m_deckRest * Quaternion.Euler(-raised, 0f, 0f);
     }
 
     // Follows the gate's changes only, so the bridge can still be worked by hand in between.
@@ -85,14 +85,10 @@ public class DrawbridgeDriver : MonoBehaviour
         {
             bool gateOpen = state != 0;
             bool bridgeOpen = nview.GetZDO().GetInt(ZDOVars.s_state) != 0;
-            if (gateOpen != bridgeOpen && door.CanInteract())
+            if (gateOpen != bridgeOpen)
             {
-                nview.InvokeRPC(UseDoorRpc, true);
-            }
-            else if (gateOpen != bridgeOpen)
-            {
-                // Still swinging; try again next time.
-                return;
+                nview.GetZDO().Set(ZDOVars.s_state, gateOpen ? 1 : 0);
+                door.UpdateState();
             }
         }
 

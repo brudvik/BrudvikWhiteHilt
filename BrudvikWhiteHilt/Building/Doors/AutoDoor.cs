@@ -4,13 +4,11 @@ namespace BrudvikWhiteHilt.Building.Doors;
 
 /// <summary>
 /// Closes a door, gate or window on its own: a while after the last one went through, when rain or night begins (windows)
-/// and when enemies come near. Added to every <see cref="Door"/>; runs on the machine that owns the door and closes it
-/// through the door's own UseDoor RPC, so sound, animation and sync stay vanilla.
+/// and when enemies come near. The owner sets the closed state; vanilla handles sound, animation and sync.
 /// </summary>
 public class AutoDoor : MonoBehaviour
 {
     private const string HoldRpc = "WhiteHiltDoorHold";
-    private const string UseDoorRpc = "UseDoor";
     private const float TickSeconds = 0.5f;
 
     private static readonly int HoldKey = "whitehilt_door_hold".GetStableHashCode();
@@ -35,7 +33,8 @@ public class AutoDoor : MonoBehaviour
     /// <summary>
     /// True while the door stands open.
     /// </summary>
-    public bool IsOpen => nview != null && nview.IsValid() && nview.GetZDO().GetInt(ZDOVars.s_state) != 0;
+    public bool IsOpen => nview != null && nview.IsValid()
+        && ((nview.GetZDO().GetInt(ZDOVars.s_state) != 0) != door.m_invertedOpenClosedText);
 
     /// <summary>
     /// True while the door is held open with Shift + Use.
@@ -214,11 +213,14 @@ public class AutoDoor : MonoBehaviour
 
     private void Close()
     {
-        // Vanilla ignores UseDoor while the door is still swinging; the next tick tries again.
-        if (door.CanInteract())
+        if (!nview.IsValid() || !nview.IsOwner() || !IsOpen)
         {
-            nview.InvokeRPC(UseDoorRpc, false);
+            return;
         }
+
+        nview.GetZDO().Set(ZDOVars.s_state, door.m_invertedOpenClosedText ? 1 : 0);
+        ClearHoldIfClosed();
+        door.UpdateState();
     }
 
     private bool IsOpeningBusy()

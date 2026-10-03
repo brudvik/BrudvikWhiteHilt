@@ -147,6 +147,8 @@ Doors, gates and windows built by players close on their own a few seconds after
 
 Whether a door is a gate or a window is told by its prefab name (`GateNames`, `WindowNames`), so doors from other mods work too.
 
+Vanilla and White Hilt drawbridges use the gate closing settings; closing raises the bridge. Automatic closing runs on the owner, including dedicated servers, without requiring the owner to animate the door. Player and tamed-animal clearance still applies.
+
 | Setting | Default | What it does |
 |---|---|---|
 | `Enabled` | true | Main switch |
