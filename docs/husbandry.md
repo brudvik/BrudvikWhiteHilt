@@ -12,14 +12,16 @@ Feed, groom and keep your tame animals instead of throwing food on the ground.
 - **Tether Post**: use it to keep the tame animals within 10 m wandering around the post; use it with the alternative key to set them free. Works like the "stay" command, around the post.
 - **Grooming Comb**: put it on the hotbar and use it on a tame animal once a day. A groomed animal is content for a day: it breeds faster (half the pregnancy, fewer missed breeding checks) and gives one more of each drop, except the trophy, when slaughtered.
 - **Produce**: a content, fed animal puts something in a Feeding Trough within 15 m: Boar Leather Scraps and Wolf Wolf Hair every day, Lox a Lox Pelt every third day.
+- **Lox Milk**: crouch and use a tame lox to milk it once a day: 2 Lox Milk, 3 from a groomed lox. Shift+Use still renames it. The milk goes into the Plains dishes ([Foraging & food](foraging.md)).
 
-<img src="images/feeding_trough.png" alt="Feeding Trough" title="Feeding Trough" height="140"> <img src="images/tether_post.png" alt="Tether Post" title="Tether Post" height="140"> <img src="images/grooming_comb.png" alt="Grooming Comb" title="Grooming Comb" height="140">
+<img src="images/feeding_trough.png" alt="Feeding Trough" title="Feeding Trough" height="140"> <img src="images/tether_post.png" alt="Tether Post" title="Tether Post" height="140"> <img src="images/grooming_comb.png" alt="Grooming Comb" title="Grooming Comb" height="140"> <img src="images/lox_milk.png" alt="Lox Milk" title="Lox Milk" height="140">
 
 | Item | Description | Crafted | Requirements |
 |------|-------------|---------|--------------|
 | **Feeding Trough** | Holds 8 stacks of food for animals nearby | Hammer (near Workbench) | Wood ×8, Stone ×4 |
 | **Tether Post** | A weathered post with a chain that keeps tame animals around it | Hammer (near Workbench) | Wood ×4, Leather Scraps ×2 |
 | **Grooming Comb** | Grooms a tame animal once a day | Workbench | Bone Fragments ×3, Deer Hide ×1 |
+| **Lox Milk** | Milk for the Plains dishes | Crouch and use a tame lox, once a day | – |
 
 ## Config
 
@@ -50,3 +52,6 @@ Section `[Husbandry]` (admin only, synced from the server; it was `[Ranching]` b
 | `ContentDropBonus` | 1 | Extra of each drop (not the trophy) from a groomed animal |
 | `TetherRange` | 10 | Metres a tether post reaches |
 | `TroughRange` | 15 | Metres within which animals use a feeding trough |
+| `LoxMilking` | true | Tame lox can be milked by crouching and using them |
+| `MilkPerLox` | 2 | Lox Milk from one milking; a groomed lox gives one more |
+| `MilkDays` | 1 | In-game days before a lox can be milked again |

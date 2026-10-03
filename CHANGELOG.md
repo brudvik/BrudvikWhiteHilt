@@ -13,6 +13,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Henbane**: a sticky weed with pale, purple-veined flowers by the Plains fields, or from wild barley picked there (10%). For seers and berserkers (`[Foraging.Henbane]`)
 - **Ergot**: patches of wild barley gone dark with blight on the Plains, or from wild barley picked there (15%). Its black horns bring dread (`[Foraging.Ergot]`)
 - **Hop Cones**: wild hop vines twined up old stakes on the Plains; the cones hide when picked and grow back. Cloudberry bushes picked there give them 10% of the time (`[Foraging.HopCones]`)
+- **Lox Milk**: crouch and use a tame lox to milk it once a day for 2 Lox Milk, one more from a groomed lox. Raises Animal Husbandry (`[Husbandry] LoxMilking`, `MilkPerLox`, `MilkDays`)
 
 ## v0.59.0 - 2026-10-03
 

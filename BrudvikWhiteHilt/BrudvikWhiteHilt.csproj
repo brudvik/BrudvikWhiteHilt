@@ -372,6 +372,8 @@
     <Compile Include="Items\Portals\HomeStone.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
     <Compile Include="Patches\Foraging\PeatFuelPatch.cs" />
+    <Compile Include="Patches\Ranching\LoxMilkingPatches.cs" />
+    <Compile Include="Ranching\LoxMilking.cs" />
     <Compile Include="Patches\Meads\InsectWardPatch.cs" />
     <Compile Include="Patches\Roofing\RoofDropPatches.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />

@@ -57,6 +57,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         WhiteHiltConfig.Initialize(Config);
         RanchingSettings.Initialize();
+        LoxMilking.Initialize();
         NavigationSettings.Initialize();
         Navigation.Waypoints.WaypointSettings.Initialize();
         Navigation.Weather.ForecastSettings.Initialize();
