@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Sphagnum Moss**: red and green cushions of bog moss on the wet ground of the Swamp, or from red mushrooms picked there (25%). A dye and a healer's ingredient (`[Foraging.SphagnumMoss]`)
+- **Bog Bean**: three-lobed leaves and fringed white flowers at the edge of the Swamp water, or from wild turnips picked there (30%). Bitter, for fever draughts (`[Foraging.BogBean]`)
 
 ## v0.57.2 - 2026-10-03
 

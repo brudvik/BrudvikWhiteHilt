@@ -160,6 +160,7 @@
     <Compile Include="Items\Food\SweetGaleSausages\SweetGaleSausages.cs" />
     <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
     <Compile Include="Items\Food\WildGarlicSoup\WildGarlicSoup.cs" />
+    <Compile Include="Items\Foraging\BogBean\BogBean.cs" />
     <Compile Include="Items\Foraging\Chanterelle\Chanterelle.cs" />
     <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
     <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
