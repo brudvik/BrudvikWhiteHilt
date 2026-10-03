@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Clock;
 
 /// <summary>
-/// The time of day at the top of the screen, in 24 hours, with the day number and a weather icon. Sunrise is 06:00 and
+/// The time of day above the upper-left hotbar, in 24 hours, with the day number and a weather icon. Sunrise is 06:00 and
 /// nightfall 18:00, as the game's own day and night. Warns before dark. Hidden in the inventory, in build mode, on the
 /// large map and in menus.
 /// </summary>
@@ -19,7 +19,6 @@ public static class GameClock
     private const float IconGap = 8f;
     private const float Nightfall = 18f;
 
-    // Boss health bars sit at the top centre too; the clock moves below them.
     private const float BossBarOffset = 80f;
 
     private static readonly Color dayColor = new(1f, 0.95f, 0.85f);
@@ -27,16 +26,15 @@ public static class GameClock
     private static readonly Dictionary<string, Sprite> icons = new();
 
     private static RectTransform root;
+    private static RectTransform hotbar;
+    private static Vector2 hotbarPosition;
+    private static readonly Vector3[] hotbarCorners = new Vector3[4];
     private static Text label;
     private static Image icon;
     private static float nextRefresh;
     private static float lastHours = -1f;
 
     internal static float BossOffset => EnemyHud.instance != null && EnemyHud.instance.ShowingBossHud() ? BossBarOffset : 0f;
-
-    internal static float VisibleBottom => root != null && root.gameObject.activeInHierarchy
-        ? -root.anchoredPosition.y + Mathf.Max(root.rect.height, root.rect.height / 2f + label.rectTransform.rect.height / 2f)
-        : 0f;
 
     /// <summary>
     /// Shows, hides and updates the clock. Called after the game's HUD update.
@@ -152,14 +150,31 @@ public static class GameClock
         }
 
         label.rectTransform.sizeDelta = new Vector2(width + 4f, size);
+        root.sizeDelta = new Vector2(width + 4f + (weather != null ? size + IconGap : 0f), size);
         UpdateLayout();
     }
 
     internal static void UpdateLayout()
     {
         if (root == null) return;
-        float top = Mathf.Max(ClockSettings.OffsetY.Value, Navigation.Compass.HudCompass.ReservedHeight);
-        root.anchoredPosition = new Vector2(0f, -top - BossOffset);
+        root.anchoredPosition = new Vector2(12f, -ClockSettings.OffsetY.Value);
+        if (hotbar != null)
+        {
+            hotbar.anchoredPosition = hotbarPosition;
+            if (root.gameObject.activeSelf)
+            {
+                hotbar.GetWorldCorners(hotbarCorners);
+                float barTop = root.parent.InverseTransformPoint(hotbarCorners[1]).y;
+                root.GetWorldCorners(hotbarCorners);
+                float clockBottom = root.parent.InverseTransformPoint(hotbarCorners[0]).y;
+                float overlap = barTop - clockBottom + IconGap;
+                if (overlap > 0f)
+                {
+                    Vector3 shift = hotbar.parent.InverseTransformVector(root.parent.TransformVector(new Vector3(0f, -overlap, 0f)));
+                    hotbar.anchoredPosition += new Vector2(shift.x, shift.y);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -239,6 +254,7 @@ public static class GameClock
         {
             root.gameObject.SetActive(visible);
             nextRefresh = 0f;
+            UpdateLayout();
         }
     }
 
@@ -253,10 +269,13 @@ public static class GameClock
         GameObject clock = new("WhiteHiltClock", typeof(RectTransform));
         root = (RectTransform)clock.transform;
         root.SetParent(hud.m_rootObject.transform, false);
-        root.anchorMin = new Vector2(0.5f, 1f);
-        root.anchorMax = new Vector2(0.5f, 1f);
-        root.pivot = new Vector2(0.5f, 1f);
+        root.anchorMin = new Vector2(0f, 1f);
+        root.anchorMax = new Vector2(0f, 1f);
+        root.pivot = new Vector2(0f, 1f);
         root.sizeDelta = new Vector2(10f, 40f);
+        HotkeyBar bar = hud.GetComponentInChildren<HotkeyBar>(true);
+        hotbar = bar != null ? bar.transform as RectTransform : null;
+        if (hotbar != null) hotbarPosition = hotbar.anchoredPosition;
 
         GameObject text = GUIManager.Instance.CreateText(string.Empty, root, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero,
             GUIManager.Instance.AveriaSerifBold, ClockSettings.FontSize.Value, dayColor, true, Color.black, 300f, 40f, false);

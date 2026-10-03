@@ -43,9 +43,9 @@ public static class ClockSettings
     /// </summary>
     public static void Initialize()
     {
-        AllowClock = WhiteHiltConfig.BindAdminOnly(Section, "AllowClock", true, "Players may show the clock at the top of the screen.");
+        AllowClock = WhiteHiltConfig.BindAdminOnly(Section, "AllowClock", true, "Players may show the clock above the upper-left hotbar.");
         Enabled = WhiteHiltConfig.BindLocal(Section, "Enabled", true,
-            "Show the time of day (24 hours) at the top of the screen. Hidden in the inventory, in build mode, on the large map and in menus.");
+            "Show the time of day (24 hours) above the upper-left hotbar. Hidden in the inventory, in build mode, on the large map and in menus.");
         ShowDay = WhiteHiltConfig.BindLocal(Section, "ShowDay", true, "Show the day number before the time.");
         ShowWeather = WhiteHiltConfig.BindLocal(Section, "ShowWeather", true, "Show an icon for the weather before the time.");
         RoundMinutes = WhiteHiltConfig.BindLocal(Section, "RoundMinutes", 1, "Round the time down to this many minutes: 1, 5, 10 or 15.");

@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.4 - 2026-10-04
+
+### Fixed
+- **Clock HUD placement**: day, time and weather now sit at the upper left above the weapon/tool hotbar instead of below the compass among status effects. The hotbar reserves space while the clock is visible and returns to its original position when hidden. Compass and boss bars no longer push the clock down; the ruby waypoint arrow no longer reserves space for the clock. Compilation passed; HUD scaling and appearance still require in-game testing.
+
 ## v0.77.3 - 2026-10-03
 
 ### Fixed

@@ -87,7 +87,7 @@ public static class WaypointHud
         if (root == null) return;
         float reserved = Compass.HudCompass.ReservedHeight;
         float top = reserved > 0f ? Mathf.Max(WaypointSettings.HudArrowTop.Value,
-            Mathf.Max(reserved + Clock.GameClock.BossOffset, Clock.GameClock.VisibleBottom + Compass.HudCompassSettings.LayoutGap.Value))
+            reserved + Clock.GameClock.BossOffset)
             : WaypointSettings.HudArrowTop.Value;
         root.anchoredPosition = new Vector2(0f, -top);
     }

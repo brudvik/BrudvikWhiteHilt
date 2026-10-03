@@ -127,15 +127,15 @@ A brass compass sits in the bottom-right corner of the minimap and the top-left 
 
 ## Horizontal HUD compass
 
-A horizontal compass tape sits at the very top of the HUD, above the day, clock and weather. A fixed centre indicator shows the exact direction the **camera** looks; ticks, labels and markers scroll beneath it without smoothing delay. North is 0, east 90, south 180 and west 270 degrees. Looking across north wraps continuously between 359 and 0. The tape shows 120 degrees in total by default, 60 to either side.
+A horizontal compass tape sits at the very top centre of the HUD. Day, clock and weather sit independently at the upper left above the weapon/tool hotbar. A fixed centre indicator shows the exact direction the **camera** looks; ticks, labels and markers scroll beneath it without smoothing delay. North is 0, east 90, south 180 and west 270 degrees. Looking across north wraps continuously between 359 and 0. The tape shows 120 degrees in total by default, 60 to either side.
 
 Small ticks appear every 5 degrees, medium ticks every 15 and large ticks every 45. Degree labels use three digits (`015`, `030`, `345`); at direction headings they are replaced by N, NE, E, SE, S, SW, W or NW. N/E/S/W are larger than the diagonal directions. These abbreviations stay the same in every language; the settings are localized. The typeface matches Valheim, with muted gold, a dark text outline, fading edges and a faint optional background.
 
 The marker row shows **your unchecked saved map pins**, **known boss locations** and **your unchecked death markers**, using the existing map icons. Bearings are measured from the player's position, relative to the camera heading. Markers outside the visible angle are hidden, never pinned to an edge; a marker at the player's exact horizontal position is hidden because it has no bearing. Checked markers are omitted. Nothing scans for undiscovered bosses or reveals hidden players. Portals, boats and other players are not automatically included yet.
 
-The compass is hidden during death, inventory, menus, text entry, trade and the large map, and follows the HUD's own hiding, including media mode. It stays visible while building. Boss bars move below it; the clock and existing ruby waypoint arrow remain below the boss bars without changing the amulet's requirements. Turning the compass off restores the previous layout and does not affect either round map compass.
+The compass is hidden during death, inventory, menus, text entry, trade and the large map, and follows the HUD's own hiding, including media mode. It stays visible while building. Boss bars move below it; the existing ruby waypoint arrow remains below the boss bars without changing the amulet's requirements. The upper-left clock is unaffected. Turning the compass off restores the previous centre layout and does not affect either round map compass.
 
-Dimensions and offsets are in Valheim canvas UI units, subject to the game's HUD scaling. The configured scale applies to the compass itself, not to the clock or boss bars. Width and horizontal offset are constrained to available HUD space. The clock's `OffsetY` and waypoint's `HudArrowTop` are minimum top distances while the compass is visible.
+Dimensions and offsets are in Valheim canvas UI units, subject to the game's HUD scaling. The configured scale applies to the compass itself, not to the clock or boss bars. Width and horizontal offset are constrained to available HUD space. The waypoint's `HudArrowTop` is a minimum top distance while the compass is visible; the clock's `OffsetY` is independent.
 
 | Setting (section `HUD.Compass`, local) | Default | Description |
 |--------------------------------------|---------|-------------|
