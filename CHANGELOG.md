@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.73.1 - 2026-10-03
+
+### Fixed
+- **Player portraits**: your own portrait and gold heading ring now draw in front of other players on both maps when markers overlap, including after switching maps or new player portraits appearing.
+
 ## v0.73.0 - 2026-10-03
 
 ### Added

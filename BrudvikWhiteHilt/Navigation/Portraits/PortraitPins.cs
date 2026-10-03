@@ -112,7 +112,6 @@ public static class PortraitPins
         float size = large ? LargeSize : SmallSize;
         int font = large ? LargeFont : SmallFont;
         bool showName = large || PortraitSettings.ShowNamesOnMinimap.Value;
-        UpdateOwn(map, layer, large, shown && enabled, size, font);
         RemoveGone();
         foreach (KeyValuePair<Minimap.PinData, long> owner in owners)
         {
@@ -147,6 +146,8 @@ public static class PortraitPins
                 pin.m_NamePinData.PinNameGameObject.SetActive(false);
             }
         }
+
+        UpdateOwn(map, layer, large, shown && enabled, size, font);
     }
 
     /// <summary>
@@ -178,7 +179,6 @@ public static class PortraitPins
             : "Portrait test pin added, but you have no portrait yet: it is taken in the main menu when the character is shown.";
     }
 
-    // Your portrait sits under the others, so it never hides another player.
     private static void UpdateOwn(Minimap map, RectTransform layer, bool large, bool show, float size, int font)
     {
         SetMarkerVisible(map.m_largeMarker, !show);
@@ -201,7 +201,11 @@ public static class PortraitPins
         }
 
         Place(ownView, layer, marker.position);
-        ownView.transform.SetAsFirstSibling();
+        if (ownView.transform.GetSiblingIndex() != layer.childCount - 1)
+        {
+            ownView.transform.SetAsLastSibling();
+        }
+
         Quaternion? heading = PortraitSettings.HeadingMarker.Value ? marker.rotation : null;
         ownView.Show(PortraitNetwork.Get(ZDOMan.GetSessionID()), player.GetPlayerName(), size, font, false, heading, ownRing);
     }
