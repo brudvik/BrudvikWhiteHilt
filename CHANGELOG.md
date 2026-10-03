@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.71.0 - 2026-10-03
+
+### Added
+- **Dog**: use a Dog House while your grown dog follows you to make it the dog's new home, wherever the house stands. The old house can stay. The hover text on a Dog House shows whether your dog lives there.
+
 ## v0.70.0 - 2026-10-03
 
 ### Added

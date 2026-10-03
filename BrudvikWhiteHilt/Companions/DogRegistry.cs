@@ -246,6 +246,10 @@ public static class DogRegistry
         Translations.AddEnglish("whitehilt_dog_remember", "You remember $1.");
         Translations.AddEnglish("whitehilt_dog_ghost", "For a moment, $1 sits by the grave.");
         Translations.AddEnglish("whitehilt_dog_home_pin", "Dog house");
+        Translations.AddEnglish("whitehilt_dog_make_home", "Make this $1's home");
+        Translations.AddEnglish("whitehilt_dog_lives_here", "$1 lives here");
+        Translations.AddEnglish("whitehilt_dog_new_home", "$1 has a new home.");
+        Translations.AddEnglish("whitehilt_dog_move_follow", "$1 must be grown and follow you to move in.");
         Translations.AddEnglish("whitehilt_dog_comes", "$1 comes running.");
         Translations.AddEnglish("whitehilt_dog_goes_home", "$1 goes home.");
         Translations.AddEnglish("whitehilt_dog_too_small", "$1 is too small to leave home.");

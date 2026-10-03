@@ -72,6 +72,7 @@ public sealed class DogCompanion : MonoBehaviour
     private const string HappyRpc = "WhiteHilt_DogHappy";
     private const string XpRpc = "WhiteHilt_DogXp";
     private const string CollarRpc = "WhiteHilt_DogCollar";
+    private const string HomeRpc = "WhiteHilt_DogHome";
 
     // A tick never counts more than a day, so time away from an unloaded dog barely counts.
     private const float MaxTickDays = 1f;
@@ -443,6 +444,18 @@ public sealed class DogCompanion : MonoBehaviour
     }
 
     /// <summary>
+    /// Moves the dog's home to a dog house, on the dog's owner.
+    /// </summary>
+    /// <param name="position">Position of the dog house.</param>
+    public void SetHome(Vector3 position)
+    {
+        if (Zdo != null)
+        {
+            nview.InvokeRPC(HomeRpc, position);
+        }
+    }
+
+    /// <summary>
     /// Calls the dog to follow the player, from the whistle. A far dog is brought over at once.
     /// </summary>
     /// <param name="player">The local player.</param>
@@ -570,6 +583,7 @@ public sealed class DogCompanion : MonoBehaviour
         nview.Register(HappyRpc, RPC_Happy);
         nview.Register<float>(XpRpc, RPC_Xp);
         nview.Register<int>(CollarRpc, RPC_Collar);
+        nview.Register<Vector3>(HomeRpc, RPC_Home);
         activities = GetComponent<DogActivities>();
         expression = GetComponent<DogExpression>();
         care = GetComponent<DogCare>();
@@ -1027,6 +1041,14 @@ public sealed class DogCompanion : MonoBehaviour
         if (nview.IsOwner())
         {
             Zdo.Set(collarKey, collar);
+        }
+    }
+
+    private void RPC_Home(long sender, Vector3 position)
+    {
+        if (nview.IsOwner())
+        {
+            Zdo.Set(homeKey, position);
         }
     }
 

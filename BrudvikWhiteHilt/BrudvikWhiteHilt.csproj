@@ -484,6 +484,7 @@
     <Compile Include="Companions\DogAction.cs" />
     <Compile Include="Companions\DogCare.cs" />
     <Compile Include="Companions\DogTricks.cs" />
+    <Compile Include="Companions\DogHouseHome.cs" />
     <Compile Include="Companions\DogMemorial.cs" />
     <Compile Include="Pieces\Companions\DogWaterBowl.cs" />
     <Compile Include="Pieces\Companions\DogGrave.cs" />

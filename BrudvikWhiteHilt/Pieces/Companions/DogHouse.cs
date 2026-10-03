@@ -34,7 +34,7 @@ public class DogHouse : DogPieceBase
     protected override string FullName => "Dog House";
 
     /// <inheritdoc/>
-    protected override string Description => "A small house for a dog, lined with a pelt. Where it stands is the dog's home, and the dog shelters in it from the rain.";
+    protected override string Description => "A small house for a dog, lined with a pelt. Where it stands is the dog's home, and the dog shelters in it from the rain. Use it while your grown dog follows you to move it in.";
 
     /// <inheritdoc/>
     protected override string BasePrefab => "rug_wolf";
@@ -73,6 +73,7 @@ public class DogHouse : DogPieceBase
         home.RestOffset = new Vector3(0f, 0.05f, -0.1f);
         home.RestYaw = 0f;
         home.ApproachOffset = new Vector3(0f, 0f, 1.6f);
+        prefab.AddComponent<DogHouseHome>();
     }
 
     /// <inheritdoc/>
