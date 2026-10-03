@@ -14,6 +14,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Ergot**: patches of wild barley gone dark with blight on the Plains, or from wild barley picked there (15%). Its black horns bring dread (`[Foraging.Ergot]`)
 - **Hop Cones**: wild hop vines twined up old stakes on the Plains; the cones hide when picked and grow back. Cloudberry bushes picked there give them 10% of the time (`[Foraging.HopCones]`)
 - **Lox Milk**: crouch and use a tame lox to milk it once a day for 2 Lox Milk, one more from a groomed lox. Raises Animal Husbandry (`[Husbandry] LoxMilking`, `MilkPerLox`, `MilkDays`)
+- **Rosehip Soup** (Stone Pot level 2): Rosehips, Honey and Barley Flour, 32 health and 64 stamina for 40 minutes (`[Food.RosehipSoup]`)
 
 ## v0.59.0 - 2026-10-03
 

@@ -162,6 +162,7 @@
     <Compile Include="Items\Food\JuniperSmokedHam\JuniperSmokedHam.cs" />
     <Compile Include="Items\Food\CandiedAngelica\CandiedAngelica.cs" />
     <Compile Include="Items\Food\SorrelSalad\SorrelSalad.cs" />
+    <Compile Include="Items\Food\RosehipSoup\RosehipSoup.cs" />
     <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
     <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
     <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
