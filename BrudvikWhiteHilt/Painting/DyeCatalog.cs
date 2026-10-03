@@ -32,6 +32,7 @@ public static class DyeCatalog
         "Turnip", "Bloodbag", "Guck", "Ooze", "Entrails", "WitheredBone", "Root", "BlackSoup", "TurnipStew",
         Items.Foraging.SphagnumMoss.SphagnumMoss.PrefabName, Items.Foraging.BogBean.BogBean.PrefabName, Items.Foraging.LabradorTea.LabradorTea.PrefabName,
         Items.Foraging.Cattail.Cattail.PrefabName, Items.Foraging.Meadowsweet.Meadowsweet.PrefabName, Items.Foraging.BogIron.BogIron.PrefabName,
+        Items.Foraging.Peat.Peat.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName

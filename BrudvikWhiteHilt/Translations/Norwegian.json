@@ -27,6 +27,8 @@
   "item_whitehiltmeadowsweet_description": "Skummende kremhvite blomster på røde stilker, med duft av honning og mandel. Bryggerne søter mjøden med den, og den demper et verkende hode.",
   "item_whitehiltbogiron": "Myrmalm",
   "item_whitehiltbogiron_description": "Rustbrune klumper fra bunnen av myra, der vannet har samlet jernet i årevis. Smelt dem til jern.",
+  "item_whitehiltpeat": "Torv",
+  "item_whitehiltpeat_description": "En mørk torvbrikke skjært ut av myra og tørket i stabel. Den ulmer lenge og varmt i et vedbål, og kolmila gjør den til kull.",
 
   "piece_whitehilt_stonepot": "Steingryte",
   "piece_whitehilt_stonepot_description": "En enkel steingryte for å lage mat av det du finner i naturen. Sett den over et leirbål.",
@@ -2183,6 +2185,8 @@
   "whitehilt_cfg_foraging_extradropchance_desc": "Sjansen for at du også får denne når du plukker den vanlige planten den hører til. 0 slår det av.",
   "whitehilt_cfg_foraging_creaturedropchance": "Sjanse fra skapninger",
   "whitehilt_cfg_foraging_creaturedropchance_desc": "Sjansen for at skapningen den hører til, slipper 1-2 når den drepes. 0 slår det av.",
+  "whitehilt_cfg_foraging_fuelvalue": "Brenselverdi",
+  "whitehilt_cfg_foraging_fuelvalue_desc": "Hvor mye ved én torvbrikke er verdt i et vedbål (leirbål, ildsted, bål). Bruk den fra hurtiglinjen på bålet.",
   "whitehilt_cfg_meads_durationminutes": "Varighet i minutter",
   "whitehilt_cfg_meads_durationminutes_desc": "Hvor lenge virkningen varer.",
   "whitehilt_cfg_meads_healthregenmultiplier": "Faktor for helsefornyelse",

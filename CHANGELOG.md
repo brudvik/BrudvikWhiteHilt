@@ -11,6 +11,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Cattail**: tall bog grass with brown velvet heads at the water's edge in the Swamp, or from wild turnips picked there (20%). Its roots give flour for Swamp dishes (`[Foraging.Cattail]`)
 - **Meadowsweet**: tall red stems with frothy cream flowers on the damp edges of the Swamp, or from wild turnips picked there (20%). It sweetens mead and dulls pain (`[Foraging.Meadowsweet]`)
 - **Bog Iron**: rust-brown lumps in the mud and shallow water of the Swamp. The Smelter turns each lump into Iron, the Iron Rune lets it through portals, and it gives a rust dye (`[Foraging.BogIron]`)
+- **Peat**: stacks of cut peat on the drier banks of the Swamp. Use a brick from the hotbar on a wood fire (campfire, hearth, bonfire) and it burns like two pieces of wood (`FuelValue`); the Charcoal Kiln turns it into Coal (`[Foraging.Peat]`)
 
 ## v0.57.2 - 2026-10-03
 

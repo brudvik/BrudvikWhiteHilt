@@ -169,6 +169,7 @@
     <Compile Include="Items\Foraging\ForageableBase.cs" />
     <Compile Include="Items\Foraging\LabradorTea\LabradorTea.cs" />
     <Compile Include="Items\Foraging\Meadowsweet\Meadowsweet.cs" />
+    <Compile Include="Items\Foraging\Peat\Peat.cs" />
     <Compile Include="Items\Foraging\Lingonberries\Lingonberries.cs" />
     <Compile Include="Items\Foraging\Porcini\Porcini.cs" />
     <Compile Include="Items\Foraging\Roseroot\Roseroot.cs" />
@@ -331,6 +332,7 @@
     <Compile Include="Patches\Portals\PortalTravelMapPatch.cs" />
     <Compile Include="Items\Portals\HomeStone.cs" />
     <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
+    <Compile Include="Patches\Foraging\PeatFuelPatch.cs" />
     <Compile Include="Patches\Roofing\RoofDropPatches.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
