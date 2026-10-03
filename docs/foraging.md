@@ -71,6 +71,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Meadowsweet Mead** | 15% more armor and 25% less stagger, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Meadowsweet ×8, Cranberries ×4 |
 | **Bog Bean Bitter** | Ends poison, burning, frost, shock, tar and smoke at once and keeps them off, 3 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Bog Bean ×10, Sweet Gale ×3, Honey ×5 |
 | **Labrador Tea Brew** | Leeches, deathsquitoes and ticks do not notice you, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Labrador Tea ×8, Sweet Gale ×2, Honey ×5 |
+| **Juniper Sahti** | Spirit damage taken is halved, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Juniper Berries ×10, Honey ×8, Crowberries ×3 |
 
 ## Config
 

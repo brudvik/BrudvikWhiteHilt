@@ -15,6 +15,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Juniper-Smoked Wolf Ham** (Stone Pot level 3): Wolf Meat, Juniper Berries and Onion, 58 health and 30 stamina for 40 minutes; for the first 20 minutes frost damage is halved (`[Food.Juniper-SmokedWolfHam]`)
 - **Candied Angelica** (Stone Pot level 2): Angelica and Honey, a light snack of 20 health and 38 stamina that lasts 50 minutes (`[Food.CandiedAngelica]`)
 - **Mountain Sorrel Salad** (Stone Pot level 2): Mountain Sorrel, Onion and Wild Garlic, 28 health and 48 stamina for 35 minutes with faster healing (`[Food.MountainSorrelSalad]`)
+- **Juniper Sahti** (Cauldron, then Fermenter): Juniper Berries, Honey and Crowberries; spirit damage taken is halved for 10 minutes (`[Meads.JuniperSahti]`)
 
 ## v0.58.0 - 2026-10-03
 
