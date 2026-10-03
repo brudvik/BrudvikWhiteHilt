@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.72.3 - 2026-10-03
+
+### Changed
+- **Lindorm**: boss progression sets its minimum strength when it emerges: 0 stars after Eikthyr, then 1 through 5 after the Elder, Bonemass, Moder, Yagluth and the Queen. Server-configurable `ProgressionStars` ignores ordinary biome star limits; encounters also receive the existing difficulty pressure bonuses at spawn. Their strength stays fixed during the fight.
+- **Gift of Surt**: halves fire damage by default instead of granting fire and frost immunity. Still an Ashlands potion; `FireModifier` configures its fire protection.
+- **Gift of Eir**: heals 25% and cleanses once when drunk, then grants 1.5x health regeneration for 2 minutes. No continuous cleansing; it cannot be drunk again while its effect is active. Bog Bean Bitter is unchanged.
+- **Gift of Freya**: duration reduced from 20 to 10 minutes, matching Odin; stamina effects are unchanged.
+- **Gift of Fenrir**: attack speed bonus reduced from 50% to 20%, and life steal from 15% to 5%.
+- **Desert Dragon**: default health increased from 500 to 800, also strengthening its Black Dragon cousin. No new attack in this balance pass.
+- Previous default values for Eir, Freya, Fenrir and dragon health migrate once; custom values are preserved. Buff combinations, giant spiders and the Kraken are unchanged.
+
 ## v0.72.2 - 2026-10-03
 
 ### Changed
