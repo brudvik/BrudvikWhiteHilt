@@ -2,6 +2,18 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.70.0 - 2026-10-03
+
+### Added
+- **Desert Dragons**: once Moder is slain, sand-coloured dragons about 8 m across fly over the Plains by day and night. They circle above you and breathe a stream of fire that leaves the mouth about as wide as the mouth and widens to 3 m towards the ground; it sets you burning. They are immune to fire, weak to frost and fall out of the sky when slain. They drop Desert Dragon Scales, sometimes a Surtling Core and rarely their trophy. Their fire leaves buildings alone unless `[Desert Dragon] BurnsBuildings` is on. Every number is in the `[Desert Dragon]` section. Model: "Red Dragon" by absol (CC BY 4.0).
+- **Dragonscale Broth**: a Plains dish from the Stone Pot (Desert Dragon Scale, Onion, Barley) whose buff halves fire damage.
+- **Dragonfire Arrow**: fire arrows tipped with Desert Dragon scale, 30 pierce and 60 fire, 20 per craft at the workbench.
+- **Black Dragon**: a new black beast of the dark hour and the blood moon. It is a black, 5 star Desert Dragon that comes in the Mountains and the Plains once Moder is slain. Its trophy can be bound at the Binding Stone (+10%, rune strength 15%).
+
+### Changed
+- **Beasts**: a biome can now have more than one black beast; when it does, one of them comes at random. `whitehilt_beast <biome>` also picks at random. Flying beasts are 10% slower in the air too.
+- A black beast cloned from one of the mod's own monsters leaves a black corpse.
+
 ## v0.69.4 - 2026-10-03
 
 ### Changed

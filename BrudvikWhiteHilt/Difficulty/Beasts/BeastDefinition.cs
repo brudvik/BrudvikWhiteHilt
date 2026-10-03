@@ -1,5 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BrudvikWhiteHilt.Difficulty.Beasts;
@@ -10,7 +12,7 @@ namespace BrudvikWhiteHilt.Difficulty.Beasts;
 public sealed class BeastDefinition
 {
     /// <summary>
-    /// Every beast, one per biome, and two at sea.
+    /// Every beast: at least one per biome, and two at sea.
     /// </summary>
     public static readonly BeastDefinition[] All =
     {
@@ -18,6 +20,7 @@ public sealed class BeastDefinition
         new("BlackAbomination", "Black Abomination", "Abomination", "TrophyAbomination", Heightmap.Biome.Swamp, false, "defeated_bonemass"),
         new("BlackStoneGolem", "Black Stone Golem", "StoneGolem", "TrophySGolem", Heightmap.Biome.Mountain, false, "defeated_dragon"),
         new("BlackFulingBerserker", "Black Fuling Berserker", "GoblinBrute", "TrophyGoblinBrute", Heightmap.Biome.Plains, false, "defeated_goblinking"),
+        new("BlackDragon", "Black Dragon", DesertDragonRegistry.DragonName, "TrophyHatchling", Heightmap.Biome.Mountain | Heightmap.Biome.Plains, false, "defeated_dragon"),
         new("BlackSeekerSoldier", "Black Seeker Soldier", "SeekerBrute", "TrophySeekerBrute", Heightmap.Biome.Mistlands, false, "defeated_queen"),
         new("BlackMorgen", "Black Morgen", "Morgen", "TrophyMorgen", Heightmap.Biome.AshLands, false, "defeated_fader"),
         new("BlackSerpent", "Black Serpent", "Serpent", "TrophySerpent", Heightmap.Biome.Ocean, true, "defeated_bonemass"),
@@ -49,13 +52,13 @@ public sealed class BeastDefinition
     /// <summary>English name.</summary>
     public string EnglishName { get; }
 
-    /// <summary>Vanilla creature it is cloned from.</summary>
+    /// <summary>Creature it is cloned from: a vanilla one, or one of the mod's monsters.</summary>
     public string BaseCreature { get; }
 
     /// <summary>Vanilla trophy its trophy is cloned from.</summary>
     public string BaseTrophy { get; }
 
-    /// <summary>Biome it comes in.</summary>
+    /// <summary>Biomes it comes in (flags).</summary>
     public Heightmap.Biome Biome { get; }
 
     /// <summary>Whether it comes for players on a ship.</summary>
@@ -77,36 +80,43 @@ public sealed class BeastDefinition
     public string TrophyKey => Translations.ItemKey(TrophyName);
 
     /// <summary>
-    /// The beast that comes for a player.
+    /// The beasts that may come for a player.
     /// </summary>
     /// <param name="biome">Biome the player is in.</param>
     /// <param name="atSea">Whether the player is on a ship.</param>
     /// <param name="bloodMoon">Whether a blood moon is up; then the Black Troll also comes to the Meadows.</param>
-    /// <returns>The beast, or null if none comes there.</returns>
-    public static BeastDefinition Resolve(Heightmap.Biome biome, bool atSea, bool bloodMoon)
+    /// <returns>The beasts; empty if none comes there.</returns>
+    public static List<BeastDefinition> Candidates(Heightmap.Biome biome, bool atSea, bool bloodMoon)
     {
         if (atSea)
         {
-            return All.FirstOrDefault(beast => beast.Sea && beast.Biome == (biome == Heightmap.Biome.AshLands ? Heightmap.Biome.AshLands : Heightmap.Biome.Ocean));
+            Heightmap.Biome sea = biome == Heightmap.Biome.AshLands ? Heightmap.Biome.AshLands : Heightmap.Biome.Ocean;
+            return All.Where(beast => beast.Sea && (beast.Biome & sea) != 0).ToList();
         }
 
         if (biome == Heightmap.Biome.Meadows)
         {
-            return bloodMoon && DifficultySettings.BloodMoonMeadows.Value ? All[0] : null;
+            return bloodMoon && DifficultySettings.BloodMoonMeadows.Value ? new List<BeastDefinition> { All[0] } : new List<BeastDefinition>();
         }
 
-        return All.FirstOrDefault(beast => !beast.Sea && beast.Biome == biome);
+        return All.Where(beast => !beast.Sea && biome != Heightmap.Biome.None && (beast.Biome & biome) != 0).ToList();
     }
 
     /// <summary>
-    /// Finds a beast by its key or by the name of its biome.
+    /// Finds a beast by its key, or picks one of a biome's beasts at random.
     /// </summary>
     /// <param name="text">Key such as BlackTroll, or a biome such as Swamp.</param>
     /// <returns>The beast, or null.</returns>
     public static BeastDefinition Find(string text)
     {
-        return All.FirstOrDefault(beast => string.Equals(beast.Key, text, StringComparison.OrdinalIgnoreCase))
-            ?? All.FirstOrDefault(beast => !beast.Sea && string.Equals(beast.Biome.ToString(), text, StringComparison.OrdinalIgnoreCase));
+        BeastDefinition named = All.FirstOrDefault(beast => string.Equals(beast.Key, text, StringComparison.OrdinalIgnoreCase));
+        if (named != null || !Enum.TryParse(text, true, out Heightmap.Biome biome) || biome == Heightmap.Biome.None)
+        {
+            return named;
+        }
+
+        List<BeastDefinition> matches = All.Where(beast => !beast.Sea && (beast.Biome & biome) != 0).ToList();
+        return matches.Count == 0 ? null : matches[UnityEngine.Random.Range(0, matches.Count)];
     }
 
     /// <summary>

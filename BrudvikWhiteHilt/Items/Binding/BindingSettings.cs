@@ -21,6 +21,7 @@ public static class BindingSettings
         ["BlackAbomination"] = (0.08f, 0.12f),
         ["BlackSerpent"] = (0.08f, 0.12f),
         ["BlackStoneGolem"] = (0.10f, 0.15f),
+        ["BlackDragon"] = (0.10f, 0.15f),
         ["BlackFulingBerserker"] = (0.12f, 0.18f),
         ["BlackSeekerSoldier"] = (0.15f, 0.21f),
         ["BlackMorgen"] = (0.20f, 0.25f),

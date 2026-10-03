@@ -35,7 +35,8 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 - Only one beast comes within 150 m.
 - A beast has 1.5× the health of a 5 star creature, and 15% more damage within the 3× limit. It is 10% slower, so you can get away.
 - It is about as strong as the biome's boss; bring friends.
-- A beast only comes once its biome's boss is defeated.
+- A beast only comes once its biome's boss is defeated. The Black Dragon comes once Moder is slain, in the Plains too.
+- Where two beasts share a biome, one of them comes at random.
 - By day it sinks into the ground when no one is near.
 - It always drops its black trophy, which can be bound to a White Hilt weapon or shield at the Binding Stone ([Smithing](smithing.md#-binding-and-rune-etching)).
 
@@ -45,6 +46,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 | **Black Abomination** | Swamp | Bonemass | 800 × 6.75 |
 | **Black Stone Golem** | Mountain | Moder | 800 × 6.75 |
 | **Black Fuling Berserker** | Plains | Yagluth | 800 × 6.75 |
+| **Black Dragon** | Mountain and Plains, flying ([Desert Dragon](monsters.md#desert-dragons)) | Moder | 500 × 6.75 |
 | **Black Seeker Soldier** | Mistlands | The Queen | 1500 × 6.75 |
 | **Black Morgen** | Ashlands | Fader | 1600 × 6.75 |
 | **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |

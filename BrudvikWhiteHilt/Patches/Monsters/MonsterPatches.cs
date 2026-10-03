@@ -4,7 +4,8 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Monsters;
 
 /// <summary>
-/// Hooks the Lindorm service onto the game object, and keeps a Lindorm still and unhurt while it is below ground.
+/// Hooks the Lindorm service onto the game object, keeps a Lindorm still and unhurt while it is below ground, and keeps
+/// dragon fire off buildings unless the config allows it.
 /// </summary>
 [HarmonyPatch]
 public static class MonsterPatches
@@ -37,5 +38,18 @@ public static class MonsterPatches
     {
         LindormBurrow burrow = __instance.GetComponent<LindormBurrow>();
         return burrow == null || !burrow.IsHidden;
+    }
+
+    [HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Damage))]
+    [HarmonyPrefix]
+    private static bool WearNTearDamagePrefix(HitData hit)
+    {
+        if (MonsterSettings.DragonBurnsBuildings.Value)
+        {
+            return true;
+        }
+
+        Character attacker = hit.GetAttacker();
+        return attacker == null || attacker.GetComponent<DragonFire>() == null;
     }
 }

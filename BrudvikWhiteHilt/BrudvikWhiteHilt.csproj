@@ -134,6 +134,7 @@
     <Compile Include="Helpers\WearNTearHelper.cs" />
     <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />
     <Compile Include="Items\Accessories\WhiteHiltMegingjord\WhiteHiltMegingjord.cs" />
+    <Compile Include="Items\Ammunition\DragonfireArrow.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltAmmunitionBase.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltArrows\WhiteHiltArrows.cs" />
     <Compile Include="Items\Ammunition\WhiteHiltBolts\WhiteHiltBolts.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Items\Food\BogFishStew\BogFishStew.cs" />
     <Compile Include="Items\Food\CattailPorridge\CattailPorridge.cs" />
     <Compile Include="Items\Food\CranberrySoup\CranberrySoup.cs" />
+    <Compile Include="Items\Food\DragonscaleBroth\DragonscaleBroth.cs" />
     <Compile Include="Items\Food\LingonberrySoup\LingonberrySoup.cs" />
     <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
     <Compile Include="Items\Food\MossPorridge\MossPorridge.cs" />
@@ -522,6 +524,9 @@
     <Compile Include="Kraken\KrakenSpawner.cs" />
     <Compile Include="Kraken\KrakenTentacle.cs" />
     <Compile Include="Kraken\OctopusSwim.cs" />
+    <Compile Include="Monsters\DesertDragonRegistry.cs" />
+    <Compile Include="Monsters\DragonFire.cs" />
+    <Compile Include="Monsters\DragonFlame.cs" />
     <Compile Include="Monsters\LindormBurrow.cs" />
     <Compile Include="Monsters\LindormService.cs" />
     <Compile Include="Monsters\MonsterCommands.cs" />

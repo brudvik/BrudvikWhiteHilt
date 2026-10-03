@@ -74,6 +74,7 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 | **Rosehip Soup** | Plains: 32 health, 64 stamina, 40 min | Stone Pot level 2 | Rosehips ×3, Honey ×1, Barley Flour ×1 |
 | **Caraway Lox Stew** | Plains: 64 health, 36 stamina, 40 min | Stone Pot level 2 | Lox Meat ×1, Caraway ×2, Onion ×1, Turnip ×1 |
 | **Skyr with Cloudberries** | Plains: 48 health, 48 stamina, 45 min. Buff: health regenerates 25% faster | Stone Pot level 2 | [Lox Milk](husbandry.md) ×2, Cloudberries ×3, Honey ×1 |
+| **Dragonscale Broth** | Plains: 50 health, 30 stamina, 40 min. Buff: fire damage taken is halved | Stone Pot level 2 | [Desert Dragon Scale](monsters.md#desert-dragons) ×1, Onion ×2, Barley ×2 |
 | **Smoked Fish** | 56 health, 32 stamina, 40 min. Buff: swim 50% faster, swimming uses 50% less stamina | Stone Pot level 3 | Perch ×1, Sweet Gale ×1, Lingonberries ×2 |
 | **Smoked Wolf Jerky** | 34 health, 58 stamina, 40 min. Buff: running and jumping use 20% less stamina | Stone Pot level 3 | Wolf Meat ×1, Wild Garlic ×1, Roseroot ×1 |
 | **Juniper-Smoked Wolf Ham** | 58 health, 30 stamina, 40 min. Buff: frost damage taken is halved | Stone Pot level 3 | Wolf Meat ×2, Juniper Berries ×3, Onion ×1 |

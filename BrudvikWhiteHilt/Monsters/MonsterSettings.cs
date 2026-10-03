@@ -6,12 +6,13 @@ using System.Linq;
 namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
-/// Config of the Lindorm and the giant spider. Admin only, synced from the server.
+/// Config of the Lindorm, the giant spider and the Desert Dragon. Admin only, synced from the server.
 /// </summary>
 public static class MonsterSettings
 {
     private const string LindormSection = "Lindorm";
     private const string SpiderSection = "Giant Spider";
+    private const string DragonSection = "Desert Dragon";
 
     private static string parsedBiomes;
     private static Heightmap.Biome biomes;
@@ -94,6 +95,57 @@ public static class MonsterSettings
     /// <summary>Lone spiders near a player at most.</summary>
     public static ConfigEntry<int> NightSpawnMax { get; private set; }
 
+    /// <summary>Whether Desert Dragons fly over the Plains.</summary>
+    public static ConfigEntry<bool> DragonEnabled { get; private set; }
+
+    /// <summary>Global key that must be set before Desert Dragons come; empty for none.</summary>
+    public static ConfigEntry<string> DragonRequiredKey { get; private set; }
+
+    /// <summary>Chance, in percent, per spawn check that a Desert Dragon comes.</summary>
+    public static ConfigEntry<float> DragonSpawnChance { get; private set; }
+
+    /// <summary>Seconds between two spawn checks for Desert Dragons.</summary>
+    public static ConfigEntry<float> DragonSpawnSeconds { get; private set; }
+
+    /// <summary>Desert Dragons near a player at most.</summary>
+    public static ConfigEntry<int> DragonSpawnMax { get; private set; }
+
+    /// <summary>Health of a Desert Dragon.</summary>
+    public static ConfigEntry<float> DragonHealth { get; private set; }
+
+    /// <summary>Fire damage of each flame in its breath.</summary>
+    public static ConfigEntry<float> DragonFireDamage { get; private set; }
+
+    /// <summary>Flames in one breath.</summary>
+    public static ConfigEntry<int> DragonFlames { get; private set; }
+
+    /// <summary>Seconds between two breaths.</summary>
+    public static ConfigEntry<float> DragonBreathSeconds { get; private set; }
+
+    /// <summary>Distance, in metres, it breathes fire from.</summary>
+    public static ConfigEntry<float> DragonBreathRange { get; private set; }
+
+    /// <summary>Width, in metres, of the fire from halfway through the breath range.</summary>
+    public static ConfigEntry<float> DragonBreathWidth { get; private set; }
+
+    /// <summary>Speed, in metres per second, it flies at when chasing.</summary>
+    public static ConfigEntry<float> DragonFlySpeed { get; private set; }
+
+    /// <summary>Lowest height, in metres above the ground, it flies at.</summary>
+    public static ConfigEntry<float> DragonFlyHeightMin { get; private set; }
+
+    /// <summary>Highest height, in metres above the ground, it flies at.</summary>
+    public static ConfigEntry<float> DragonFlyHeightMax { get; private set; }
+
+    /// <summary>Size of a Desert Dragon.</summary>
+    public static ConfigEntry<float> DragonScale { get; private set; }
+
+    /// <summary>Chance, in percent, that a Desert Dragon drops its trophy.</summary>
+    public static ConfigEntry<float> DragonTrophyChance { get; private set; }
+
+    /// <summary>Whether its fire also burns buildings.</summary>
+    public static ConfigEntry<bool> DragonBurnsBuildings { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -141,6 +193,38 @@ public static class MonsterSettings
         NightSpawnSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NightSpawnSeconds", 240f, "Seconds between two spawn checks for lone spiders.",
             new AcceptableValueRange<float>(10f, 3600f));
         NightSpawnMax = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NightSpawnMax", 1, "Lone spiders around a player at most.", new AcceptableValueRange<int>(1, 10));
+
+        DragonEnabled = WhiteHiltConfig.BindAdminOnly(DragonSection, "Enabled", true, "Fire-breathing Desert Dragons fly over the Plains once Moder is slain.");
+        DragonRequiredKey = WhiteHiltConfig.BindAdminOnly(DragonSection, "RequiredKey", "defeated_dragon",
+            "Global key needed before Desert Dragons come (defeated_dragon = Moder is slain). Empty: from the start.");
+        DragonSpawnChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnChance", 10f, "Chance, in percent, per spawn check that a Desert Dragon comes. 0 = none.",
+            new AcceptableValueRange<float>(0f, 100f));
+        DragonSpawnSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnSeconds", 300f, "Seconds between two spawn checks for Desert Dragons.",
+            new AcceptableValueRange<float>(10f, 3600f));
+        DragonSpawnMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnMax", 1, "Desert Dragons around a player at most.", new AcceptableValueRange<int>(1, 10));
+        DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 500f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
+        DragonFireDamage = WhiteHiltConfig.BindAdminOnly(DragonSection, "FireDamage", 15f, "Fire damage of each flame in its breath; fire also sets you burning. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 1000f));
+        DragonFlames = WhiteHiltConfig.BindAdminOnly(DragonSection, "Flames", 12, "Flames in one breath. Applies after a restart.", new AcceptableValueRange<int>(1, 30));
+        DragonBreathSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "BreathSeconds", 8f, "Seconds between two breaths at most. Applies after a restart.",
+            new AcceptableValueRange<float>(2f, 60f));
+        DragonBreathRange = WhiteHiltConfig.BindAdminOnly(DragonSection, "BreathRange", 25f, "Distance, in metres, a Desert Dragon breathes fire from. Applies after a restart.",
+            new AcceptableValueRange<float>(5f, 40f));
+        DragonBreathWidth = WhiteHiltConfig.BindAdminOnly(DragonSection, "BreathWidth", 3f,
+            "Width, in metres, of the fire from halfway through the breath range, about where it meets the ground. It leaves the mouth about as wide as the mouth. Applies after a restart.",
+            new AcceptableValueRange<float>(0.5f, 10f));
+        DragonFlySpeed = WhiteHiltConfig.BindAdminOnly(DragonSection, "FlySpeed", 11f, "Speed, in metres per second, a Desert Dragon flies at when it chases you. Applies after a restart.",
+            new AcceptableValueRange<float>(2f, 30f));
+        DragonFlyHeightMin = WhiteHiltConfig.BindAdminOnly(DragonSection, "FlyHeightMin", 5f, "Lowest height, in metres above the ground, a Desert Dragon flies at. Applies after a restart.",
+            new AcceptableValueRange<float>(2f, 50f));
+        DragonFlyHeightMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "FlyHeightMax", 12f, "Highest height, in metres above the ground, a Desert Dragon flies at. Applies after a restart.",
+            new AcceptableValueRange<float>(2f, 50f));
+        DragonScale = WhiteHiltConfig.BindAdminOnly(DragonSection, "Scale", 1f, "Size of a Desert Dragon (1 = about 8 m from wingtip to wingtip). Applies after a restart.",
+            new AcceptableValueRange<float>(0.3f, 3f));
+        DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 10f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 100f));
+        DragonBurnsBuildings = WhiteHiltConfig.BindAdminOnly(DragonSection, "BurnsBuildings", false,
+            "Its fire also damages the buildings it hits. Off: its fire only hurts players and creatures.");
     }
 
     /// <summary>

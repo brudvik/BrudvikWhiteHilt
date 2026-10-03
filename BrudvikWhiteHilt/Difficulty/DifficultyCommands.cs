@@ -84,7 +84,13 @@ public static class DifficultyCommands
         private static string CurrentBeast()
         {
             Player player = Player.m_localPlayer;
-            return player == null ? null : BeastDefinition.Resolve(player.GetCurrentBiome(), Ship.GetLocalShip() != null, true)?.Key;
+            if (player == null)
+            {
+                return null;
+            }
+
+            List<BeastDefinition> candidates = BeastDefinition.Candidates(player.GetCurrentBiome(), Ship.GetLocalShip() != null, true);
+            return candidates.Count == 0 ? null : candidates[UnityEngine.Random.Range(0, candidates.Count)].Key;
         }
     }
 }

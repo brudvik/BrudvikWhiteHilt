@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.69.4";
+    public const string PluginVersion = "0.70.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -113,7 +113,6 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();
-        Difficulty.Beasts.BeastRegistry.Initialize();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
@@ -124,6 +123,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         OldLand.OldLandSettings.Initialize();
         Monsters.MonsterCommands.Register();
         Monsters.MonsterRegistry.Initialize();
+        Monsters.DesertDragonRegistry.Initialize();
+        // After the monsters: the Black Dragon is cloned from the Desert Dragon.
+        Difficulty.Beasts.BeastRegistry.Initialize();
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
@@ -306,6 +308,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Planting.Plantables.Apply();
         forageables.ForEach(forageable => forageable.ApplyConfig());
         Monsters.MonsterRegistry.ApplyConfig();
+        Monsters.DesertDragonRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
         Items.Roofing.RoofMaterials.ApplyConfig();
         Pieces.Roofs.RoofCatalog.ApplyConfig();

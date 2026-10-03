@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -63,6 +64,8 @@ public static class BeastRegistry
     {
         string name = Translations.Token(beast.NameKey);
         CustomCreature creature = new(beast.PrefabName, beast.BaseCreature, new CreatureConfig { Name = name });
+        // A mod monster's drops are still Jotunn mocks here, and its clone would keep them unresolved.
+        creature.FixReference = CreatureManager.Instance.GetCreature(beast.BaseCreature) != null;
         GameObject prefab = creature.Prefab;
 
         Character character = prefab.GetComponent<Character>();
@@ -72,11 +75,13 @@ public static class BeastRegistry
         character.m_walkSpeed *= speed;
         character.m_runSpeed *= speed;
         character.m_swimSpeed *= speed;
+        character.m_flySlowSpeed *= speed;
+        character.m_flyFastSpeed *= speed;
 
         CharacterDrop drops = prefab.GetComponent<CharacterDrop>();
         if (drops != null)
         {
-            drops.m_drops.RemoveAll(drop => drop.m_prefab != null && drop.m_prefab.name.StartsWith("Trophy", StringComparison.Ordinal));
+            drops.m_drops.RemoveAll(drop => drop.m_prefab != null && drop.m_prefab.name.Contains("Trophy"));
             drops.m_drops.Add(new CharacterDrop.Drop
             {
                 m_prefab = trophy,
@@ -90,9 +95,27 @@ public static class BeastRegistry
         }
 
         Darken(prefab);
+        DarkenCorpses(beast, character);
         AddGlow(prefab);
         prefab.AddComponent<BeastBehaviour>();
         CreatureManager.Instance.AddCreature(creature);
+    }
+
+    // A beast cloned from one of the mod's monsters would otherwise leave that monster's coloured corpse.
+    private static void DarkenCorpses(BeastDefinition beast, Character character)
+    {
+        foreach (EffectList.EffectData effect in character.m_deathEffects.m_effectPrefabs)
+        {
+            if (effect.m_prefab == null || effect.m_prefab.GetComponent<MonsterCorpse>() == null)
+            {
+                continue;
+            }
+
+            GameObject corpse = PrefabManager.Instance.CreateClonedPrefab($"{beast.PrefabName}Corpse", effect.m_prefab);
+            Darken(corpse);
+            PrefabManager.Instance.AddPrefab(new CustomPrefab(corpse, false));
+            effect.m_prefab = corpse;
+        }
     }
 
     private static void Darken(GameObject root)

@@ -1,10 +1,10 @@
-# 🕷️ Lindorm & giant spiders
+# 🕷️ Lindorm, giant spiders & Desert Dragons
 
 [← Back to the README](../README.MD)
 
-<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140">
+<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140">
 
-Two new monsters haunt the forest and the swamp: the Lindorm that breaks out of the ground at night, and giant spiders that nest among the trees.
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains.
 
 ## The Lindorm
 
@@ -30,11 +30,22 @@ Nests appear in about 15% of the Black Forest's zones as the land is generated. 
 
 At night, a **lone spider** may also come out anywhere in the forest, nest or no nest.
 
+## Desert Dragons
+
+Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip take to the skies over the **Plains**, by day and by night. A Desert Dragon never lands: it circles 5–12 m above the ground, swoops down and **breathes a stream of fire** at you from up to 25 m away. The fire leaves its mouth about as wide as the mouth and widens to 3 m on its way down, so step aside rather than back. It sets you burning, so fire resistance helps.
+
+- Its fire only hurts players and creatures; buildings are safe unless `BurnsBuildings` is on.
+- It is immune to fire and spirit damage, weak to frost, resists poison and ignores chop and pickaxe damage. Bring a bow.
+- When slain it tumbles out of the sky and lies where it fell for a while.
+
+In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
+
 | | Health | Attack | Weak to |
 |---|---|---|---|
 | **Lindorm** | 700 | Bite, 55 pierce | Fire |
 | **Giant Spider** | 120 | Bite, 18 pierce + 15 poison, webs you | Blunt, fire |
 | **Spider Nest** | 300 | — | — |
+| **Desert Dragon** | 500 | Fire breath, 12 flames of 15 fire | Frost |
 
 The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is immune to spirit damage. Spiders ignore chop and pickaxe damage and are immune to poison.
 
@@ -49,6 +60,16 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
 | **Spider Silk** ×3–5 | Spider Nest | Always | As above |
+| **Desert Dragon Scale** ×2–3 | Desert Dragon | Always | Dragonscale Broth, Dragonfire Arrows (below) |
+| **Surtling Core** | Desert Dragon | 50% | Vanilla recipes |
+| **Desert Dragon Trophy** | Desert Dragon | 10% | Your wall |
+
+### Made from Desert Dragon Scales
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Dragonscale Broth** | Plains: 50 health, 30 stamina, 40 min. Buff: fire damage taken is halved | Stone Pot level 2 ([Foraging](foraging.md)) | Desert Dragon Scale ×1, Onion ×2, Barley ×2 |
+| **Dragonfire Arrow** ×20 | Fire arrows with 30 pierce and 60 fire damage (the vanilla Fire Arrow has 11 and 22). Set in `[Gear.WhiteHiltDragonfireArrow]` `Pierce` and `Fire` | Workbench level 2 | Wood ×8, Feathers ×2, Desert Dragon Scale ×1 |
 
 ## Config
 
@@ -86,8 +107,28 @@ Section `[Giant Spider]`:
 | `NightSpawnSeconds` | 240 | Seconds between two spawn checks for lone spiders |
 | `NightSpawnMax` | 1 | Lone spiders around a player at most |
 
+Section `[Desert Dragon]`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | Desert Dragons over the Plains |
+| `RequiredKey` | defeated_dragon | Global key needed first; empty for none |
+| `SpawnChance` | 10 | Percent chance per spawn check; 0 = none |
+| `SpawnSeconds` | 300 | Seconds between two spawn checks |
+| `SpawnMax` | 1 | Desert Dragons around a player at most |
+| `Health` | 500 | Health (after a restart) |
+| `FireDamage` / `Flames` | 15 / 12 | Fire damage of each flame, and flames in one breath (after a restart) |
+| `BreathSeconds` | 8 | Seconds between two breaths at most (after a restart) |
+| `BreathRange` | 25 | Metres it breathes fire from (after a restart) |
+| `BreathWidth` | 3 | Metres wide the fire gets halfway through its range, about at the ground (after a restart) |
+| `FlySpeed` | 11 | Metres per second when it chases you (after a restart) |
+| `FlyHeightMin` / `FlyHeightMax` | 5 / 12 | Metres above the ground it flies at (after a restart) |
+| `Scale` | 1 | Size (1 = about 8 m from wingtip to wingtip; after a restart) |
+| `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
+| `BurnsBuildings` | false | Its fire also damages the buildings it hits |
+
 ## Console commands
 
 - `whitehilt_lindorm` shows every condition where you are, and whether it holds.
 - `whitehilt_lindorm summon` (admins) lets the Lindorm break out near you now.
-- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest` and `spawn WhiteHilt_Lindorm`.
+- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm` and `spawn WhiteHilt_DesertDragon`.

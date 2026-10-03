@@ -1,0 +1,28 @@
+{
+  "source": "Red Dragon by absol, CC BY 4.0, https://sketchfab.com/3d-models/red-dragon-d53fe00255334386a0fd1f4ac2858cab",
+  "generate": [
+    {
+      "name": "flame",
+      "base": { "take": "fly", "frame": 107 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 10, "rot": { "neck1": [-12, 0, 0], "neck2": [-12, 0, 0], "head1": [-10, 0, 0], "ago1": [-30, 0, 0] } },
+        { "frame": 45, "rot": { "neck1": [-12, 0, 0], "neck2": [-12, 0, 0], "head1": [-10, 0, 0], "ago1": [-30, 0, 0] } },
+        { "frame": 56 }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "fly", "take": "fly", "loop": true },
+    { "name": "flame", "take": "flame", "loop": false },
+    { "name": "die", "take": "fall", "loop": false }
+  ],
+  "front_bone": "head2_13",
+  "controller": {
+    "idle": "fly",
+    "move": "fly",
+    "move_speed": 6,
+    "attacks": [ { "trigger": "dragon_flame", "clip": "flame", "hit": 0.2 } ],
+    "always_animate": true
+  }
+}

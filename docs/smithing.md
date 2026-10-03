@@ -39,7 +39,7 @@ One trophy per weapon or shield. The trophy is used up; binding another replaces
 |--------|-------|---------------|
 | Black Troll | +5% | 10% |
 | Black Abomination, Black Serpent | +8% | 12% |
-| Black Stone Golem | +10% | 15% |
+| Black Stone Golem, Black Dragon | +10% | 15% |
 | Black Fuling Berserker | +12% | 18% |
 | Black Seeker Soldier | +15% | 21% |
 | Black Morgen, Black Bonemaw | +20% | 25% |

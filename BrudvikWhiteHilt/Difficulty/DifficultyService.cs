@@ -322,7 +322,7 @@ public class DifficultyService : MonoBehaviour
 
         Heightmap.Biome biome = player.GetCurrentBiome();
         bool atSea = Ship.GetLocalShip() != null;
-        if (BeastDefinition.Resolve(biome, atSea, bloodMoon) == null
+        if (BeastDefinition.Candidates(biome, atSea, bloodMoon).Count == 0
             || (!bloodMoon && !DifficultySettings.IsBadWeather(EnvMan.instance.GetCurrentEnvironment()))
             || EffectArea.IsPointInsideArea(player.transform.position, EffectArea.Type.PlayerBase) != null)
         {
@@ -364,11 +364,13 @@ public class DifficultyService : MonoBehaviour
         }
 
         requestsTonight[sender] = made + 1;
-        BeastDefinition beast = BeastDefinition.Resolve((Heightmap.Biome)biome, atSea, bloodMoon);
-        if (!CanCome(beast) || beastsTonight.Any(other => Vector3.Distance(other, position) < DifficultySettings.BeastSpacing.Value))
+        List<BeastDefinition> candidates = BeastDefinition.Candidates((Heightmap.Biome)biome, atSea, bloodMoon).Where(CanCome).ToList();
+        if (candidates.Count == 0 || beastsTonight.Any(other => Vector3.Distance(other, position) < DifficultySettings.BeastSpacing.Value))
         {
             return;
         }
+
+        BeastDefinition beast = candidates[UnityEngine.Random.Range(0, candidates.Count)];
 
         float chance = DifficultySettings.BeastChance.Value / 100f * (0.5f + DifficultyState.Pressure)
             * (bloodMoon ? DifficultySettings.BloodMoonBeastChance.Value : 1f);

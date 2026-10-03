@@ -154,7 +154,7 @@ public static class MonsterRegistry
         };
     }
 
-    private static void AddItem(string name, string copyFrom, Action<GameObject> recolor)
+    internal static void AddItem(string name, string copyFrom, Action<GameObject> recolor)
     {
         CustomItem item = new(name, copyFrom);
         ItemDrop.ItemData.SharedData shared = item.ItemDrop.m_itemData.m_shared;
@@ -458,7 +458,7 @@ public static class MonsterRegistry
         return weapon;
     }
 
-    private static GameObject CreateCorpse(string name, string creature, Material template, float scale, float sinkAfter, float sinkSpeed, float lifetime)
+    internal static GameObject CreateCorpse(string name, string creature, Material template, float scale, float sinkAfter, float sinkSpeed, float lifetime)
     {
         GameObject prefab = PrefabManager.Instance.CreateEmptyPrefab(name);
         foreach (Component part in prefab.GetComponents<Component>().Where(part => part is MeshRenderer || part is MeshFilter || part is Collider))
@@ -476,8 +476,8 @@ public static class MonsterRegistry
         return prefab;
     }
 
-    // The Greyling's own look, feet and level sizes go; its body, AI, sync and drops stay.
-    private static Transform PrepareClone(GameObject prefab)
+    // The base creature's own look, feet and level sizes go; its body, AI, sync and drops stay, and so do the children in keep.
+    internal static Transform PrepareClone(GameObject prefab, params string[] keep)
     {
         foreach (FootStep step in prefab.GetComponents<FootStep>())
         {
@@ -486,7 +486,7 @@ public static class MonsterRegistry
 
         foreach (Transform child in prefab.transform.Cast<Transform>().ToArray())
         {
-            if (child.name != "Visual" && child.name != "EyePos")
+            if (child.name != "Visual" && child.name != "EyePos" && !keep.Contains(child.name))
             {
                 UnityEngine.Object.DestroyImmediate(child.gameObject);
             }
@@ -512,7 +512,7 @@ public static class MonsterRegistry
         return visual;
     }
 
-    private static Humanoid SetUpHumanoid(GameObject prefab, float health, CustomItem weapon, GameObject corpse, string effectsFrom)
+    internal static Humanoid SetUpHumanoid(GameObject prefab, float health, CustomItem weapon, GameObject corpse, string effectsFrom)
     {
         Humanoid humanoid = prefab.GetComponent<Humanoid>();
         humanoid.m_health = health;
@@ -551,7 +551,7 @@ public static class MonsterRegistry
         return humanoid;
     }
 
-    private static void SetCollider(GameObject prefab, Vector3 center, float radius, float height, Vector3 eye)
+    internal static void SetCollider(GameObject prefab, Vector3 center, float radius, float height, Vector3 eye)
     {
         CapsuleCollider capsule = prefab.GetComponent<CapsuleCollider>();
         capsule.center = center;
@@ -565,13 +565,14 @@ public static class MonsterRegistry
         }
     }
 
-    private static void AttachVisual(Transform visual, string creature, Material template, float scale)
+    internal static GameObject AttachVisual(Transform visual, string creature, Material template, float scale)
     {
         GameObject model = CreatureVisual.Attach(visual, creature, template, Vector3.zero, Quaternion.identity, scale);
         model.GetComponentInChildren<Animator>().gameObject.AddComponent<CharacterAnimEvent>().m_headRotation = false;
+        return model;
     }
 
-    private static DropConfig Drop(string item, int min, int max, float chance)
+    internal static DropConfig Drop(string item, int min, int max, float chance)
     {
         return new DropConfig { Item = item, MinAmount = min, MaxAmount = max, Chance = chance, LevelMultiplier = false };
     }
