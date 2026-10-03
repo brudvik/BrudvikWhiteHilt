@@ -88,6 +88,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Labrador Tea Brew** | Leeches, deathsquitoes and ticks do not notice you, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Labrador Tea ×8, Sweet Gale ×2, Honey ×5 |
 | **Juniper Sahti** | Spirit damage taken is halved, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Juniper Berries ×10, Honey ×8, Crowberries ×3 |
 | **Yarrow Gruit** | Below half health, health regenerates 2.5 times as fast, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Yarrow ×8, Barley ×5, Honey ×3 |
+| **Hop Ale** | Rested lasts 50% longer, also a Rested you already have, 30 min. The base ferments into 6 ales | Cauldron, then Fermenter | Hop Cones ×8, Barley ×6, Honey ×2 |
 
 ## Config
 
@@ -112,7 +113,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | Bog Bean, Mountain Sorrel, Yarrow | 2–5 |
 | Reed, Cattail | 3–6 |
 
-Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3), plus:
+Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3, the Hop Ale 30), plus:
 
 | Mead | Setting | Default |
 |---|---|---|
@@ -122,5 +123,6 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Meadowsweet Mead | `ArmorMultiplier`, `StaggerReduction` | 0.15, 0.25 |
 | Labrador Tea Brew | `IgnoredBy` (prefab names) | Leech, Leech_cave, Deathsquito, Tick |
 | Yarrow Gruit | `WoundedBelow`, `WoundedRegenMultiplier` | 0.5, 2.5 |
+| Hop Ale | `RestedBonus` | 0.5 |
 
 Mead changes apply on the next drink.

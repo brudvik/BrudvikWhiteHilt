@@ -214,6 +214,7 @@
     <Compile Include="Items\Meads\LingonberryMead\LingonberryMead.cs" />
     <Compile Include="Items\Meads\JuniperSahti\JuniperSahti.cs" />
     <Compile Include="Items\Meads\YarrowGruit\YarrowGruit.cs" />
+    <Compile Include="Items\Meads\HopAle\HopAle.cs" />
     <Compile Include="Items\Meads\LabradorTeaBrew\InsectWardEffect.cs" />
     <Compile Include="Items\Meads\LabradorTeaBrew\LabradorTeaBrew.cs" />
     <Compile Include="Items\Meads\MeadowsweetMead\MeadowsweetMead.cs" />
@@ -380,6 +381,7 @@
     <Compile Include="Patches\Ranching\LoxMilkingPatches.cs" />
     <Compile Include="Ranching\LoxMilking.cs" />
     <Compile Include="Patches\Meads\InsectWardPatch.cs" />
+    <Compile Include="Patches\Meads\DeepSleepPatch.cs" />
     <Compile Include="Patches\Roofing\RoofDropPatches.cs" />
     <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
     <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
