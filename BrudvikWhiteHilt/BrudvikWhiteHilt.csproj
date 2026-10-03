@@ -604,6 +604,11 @@
     <Compile Include="Saga\SagaSettings.cs" />
     <Compile Include="Patches\Saga\SagaPatches.cs" />
     <Compile Include="Storage\StorageSearch.cs" />
+    <Compile Include="Guestbook\GuestbookPanel.cs" />
+    <Compile Include="Guestbook\GuestbookSettings.cs" />
+    <Compile Include="Guestbook\GuestbookStand.cs" />
+    <Compile Include="Pieces\Guestbook\GuestbookPiece.cs" />
+    <Compile Include="Patches\Guestbook\GuestbookPatches.cs" />
     <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
     <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />

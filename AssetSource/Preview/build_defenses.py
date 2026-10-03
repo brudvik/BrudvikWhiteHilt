@@ -416,6 +416,21 @@ RACK_TOP = 2.1  # ridge pole of the drying rack; the mod hangs its eight slots 0
 LOOM_LEAN = 0.45  # how far the loom's uprights lean back over their 2.6 m
 
 
+def guestbook():
+    """A guestbook on a stand: a post on a cross foot, a slanted desk board and an open parchment on it."""
+    top = 1.1
+    tilt = 25.0
+    normal = (0.0, math.cos(math.radians(tilt)), math.sin(math.radians(tilt)))
+    parts = [post(0, 0, 0.05, top - 0.02, 0.09)]
+    for yaw in (0, 90):
+        parts.append(rotate(log((-0.35, 0.06, 0), (0.35, 0.06, 0), 0.06), yaw))
+    parts.append(part("wood_floor_1x1", (0, top - 0.06, 0), (tilt, 0, 0), (0.6, 0.6, 0.45)))
+    parts.append(log((-0.3, top - 0.12, 0.2), (0.3, top - 0.12, 0.2), 0.025))
+    parts.append(part("seachart", (normal[0] * 0.03, top - 0.06 + 0.05 + normal[1] * 0.03, normal[2] * 0.03), (90 + tilt, 0, 0), (0.28, 0.28, 0.28)))
+    colliders = [box((0, top / 2, 0), (0.6, top + 0.15, 0.5))]
+    return parts, colliders, []
+
+
 def loom():
     """A warp-weighted loom: two leaning uprights, a cloth beam with a woven band, the warp with stone weights, a heddle rod."""
     rng = random.Random("vev")
@@ -665,6 +680,7 @@ def main():
     pieces.append(defence("vev", "piece_workbench", *loom(),
                           keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                           views=views(("front", 160, 10), ("side", 90, 10), ("angle", -140, 25))))
+    pieces.append(defence("gjestebok", "wood_pole2", *guestbook(), views=views(("front", 180, 20), ("side", 90, 15), ("angle", -140, 30))))
     pieces.append({"name": "oversikt", "parts": [
         piece("skanseport"),
         piece("skansevegg", (-6.4, 0, 0)),

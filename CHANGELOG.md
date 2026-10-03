@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.0 - 2026-10-03
+
+### Added
+- **Guestbook**: a lectern with an open book that writes down who came by, what was built and torn down nearby and by whom, and raids with the creatures in them and how long they lasted. Anyone can read it. Built at the workbench from Wood ×6, Leather Scraps ×3 and Feathers ×1. New section `[Guestbook]`. See [Around the base](docs/base.md#-guestbook)
+
 ## v0.68.0 - 2026-10-03
 
 ### Added

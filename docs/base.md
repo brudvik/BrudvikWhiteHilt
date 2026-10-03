@@ -49,6 +49,32 @@ Section `[Storage]`: `SearchRange` (100 m, admin), `MarkSeconds` (60, your own);
 
 ---
 
+## 📖 GUESTBOOK
+
+An open book on a lectern that keeps the history of the place around it. Anyone can read it with **E**; it does not need a ward and cannot be locked. Each line has the in-game day and time.
+
+- **Visits**: a player who comes within range is written down, again only after being away for a while. Whoever is already there when the book is loaded is not counted.
+- **Built / torn down**: placing or removing a piece in range is written down with the player's name. Several of the same piece by the same player within a short time become one line with a count (*Kari built Wood wall x12*).
+- **Raids**: hostile creatures that are alerted or hunting within range start a raid line naming them (*Raid: Greydwarf x3, Troll*), and a second line when it has been quiet for a minute (*The raid was beaten off after 4 min*).
+
+The oldest lines go first once the book is full. Only the book's owner (whoever has the area loaded) writes, so nothing is counted twice.
+
+<img src="images/guestbook.png" alt="Guestbook" title="Guestbook" height="140">
+
+| Piece | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Guestbook** | Records visits, building and raids nearby | Workbench | Wood ×6, Leather Scraps ×3, Feathers ×1 |
+
+| Setting (`[Guestbook]`) | Default | Description |
+|---|---|---|
+| `Radius` | 40 | Range the book watches, in metres |
+| `VisitGapMinutes` | 720 | Game minutes a visitor must have been away to be written down again (a game day is 1440 game minutes) |
+| `MergeMinutes` | 240 | Game minutes within which the same piece by the same player becomes one line |
+| `RaidQuietSeconds` | 60 | Seconds without enemies before a raid counts as over |
+| `MaxEntries` | 100 | Lines a book keeps |
+
+---
+
 ## 🧾 CRAFTING PANEL
 
 The crafting panel and the build menu show what you have, not only what a recipe costs.

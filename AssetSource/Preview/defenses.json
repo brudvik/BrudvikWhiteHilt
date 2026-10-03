@@ -14291,6 +14291,147 @@
    ]
   },
   {
+   "name": "gjestebok",
+   "base": "wood_pole2",
+   "parts": [
+    {
+     "mesh": "wood_pole_log",
+     "position": [
+      0,
+      0.565,
+      0
+     ],
+     "scale": [
+      0.346,
+      0.464,
+      0.346
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.06,
+      0.0
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      0.333
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.06,
+      0.0
+     ],
+     "rotation": [
+      -0.0,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.545,
+      0.545,
+      0.333
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      1.04,
+      0
+     ],
+     "rotation": [
+      25.0,
+      0,
+      0
+     ],
+     "scale": [
+      0.6,
+      0.6,
+      0.45
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      0.98,
+      0.2
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.227,
+      0.227,
+      0.286
+     ]
+    },
+    {
+     "mesh": "seachart",
+     "position": [
+      0.0,
+      1.117,
+      0.013
+     ],
+     "rotation": [
+      115.0,
+      0,
+      0
+     ],
+     "scale": [
+      0.28,
+      0.28,
+      0.28
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      0.55,
+      0
+     ],
+     "size": [
+      0.6,
+      1.25,
+      0.5
+     ]
+    }
+   ],
+   "snapPoints": [],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 20
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 15
+    },
+    {
+     "label": "angle",
+     "yaw": -140,
+     "pitch": 30
+    }
+   ]
+  },
+  {
    "name": "oversikt",
    "parts": [
     {
