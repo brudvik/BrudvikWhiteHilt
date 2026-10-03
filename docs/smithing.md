@@ -76,10 +76,11 @@ The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast
 
 Use one from the inventory and the weapon in hand hits harder for a number of hits (shown on the effect icon); woodcutting and mining do not use them up. Any weapon can take them, not only White Hilt gear.
 
-<img src="images/whetstone.png" alt="Whetstone" title="Whetstone" height="140">
+<img src="images/whetstone.png" alt="Whetstone" title="Whetstone" height="140"> <img src="images/weapon_oil.png" alt="Weapon oil" title="Weapon oil" height="140">
 
 | Item | Effect | Crafting Station | Requirements |
 |------|--------|------------------|--------------|
 | **Whetstone** | +15% slash and pierce damage for 30 hits | Workbench | Slate ×2, Leather Scraps ×1 |
+| **Juniper Oil** | 20% of the physical damage added as spirit damage for 30 hits | Cauldron | Juniper Berries ×5, Resin ×3 |
 
 Each has a section `[Coatings.<Name>]` (e.g. `[Coatings.Whetstone]`) with `Hits` (30) and `Strength`.
