@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.3 - 2026-10-03
+
+### Fixed
+- **Settings window scrolling**: mouse-wheel sensitivity increases from 35 to 132 UI pixels per unit of wheel input in both settings lists.
+- **Portal list and map input**: the map ignores input while the pointer is over the open portal panel, so scrolling the list no longer zooms the map behind it. Map input outside the panel is unchanged. Compilation passed; pointer routing and scrolling feel still require in-game testing.
+
+## v0.77.2 - 2026-10-03
+
+### Fixed
+- **Portal list scrolling**: a wider, centred gold scrollbar handle on a darker track is easier to see and drag, with reserved space beside the portal rows. Mouse-wheel scrolling increases from 35 to 132 UI pixels per unit of wheel input, about three rows. The settings window is unchanged. Compilation passed; appearance and scrolling feel still require in-game testing.
+
 ## v0.77.1 - 2026-10-03
 
 ### Fixed

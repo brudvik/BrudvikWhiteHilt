@@ -57,6 +57,24 @@ public class PortalTravelPanel : MonoBehaviour
     public static bool SearchFocused => IsOpen && instance.search != null && instance.search.isFocused;
 
     /// <summary>
+    /// True while the pointer is over the open portal panel rather than the map behind it.
+    /// </summary>
+    public static bool PointerOverPanel
+    {
+        get
+        {
+            if (!IsOpen)
+            {
+                return false;
+            }
+
+            Canvas canvas = instance.GetComponentInParent<Canvas>().rootCanvas;
+            Camera camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            return RectTransformUtility.RectangleContainsScreenPoint((RectTransform)instance.transform, ZInput.pointerPosition, camera);
+        }
+    }
+
+    /// <summary>
     /// Opens the travel map at a portal.
     /// </summary>
     /// <param name="portal">The portal used.</param>
@@ -153,8 +171,14 @@ public class PortalTravelPanel : MonoBehaviour
         search.onValueChanged.AddListener(_ => RefreshList());
         CreateButton(panel, top, new Vector2(140f, -138f), 125f, OnToggleSort, out sortLabel);
 
-        GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, HandleSize, HandleBorder, GUIManager.Instance.ValheimScrollbarHandleColorBlock,
-            new Color(0f, 0f, 0f, 0.35f), PanelWidth - 40f, 400f);
+        const float scrollbarWidth = 24f;
+        ColorBlock scrollbarColors = GUIManager.Instance.ValheimScrollbarHandleColorBlock;
+        scrollbarColors.normalColor = selectedColor;
+        scrollbarColors.highlightedColor = new Color(1f, 0.9f, 0.6f);
+        scrollbarColors.pressedColor = new Color(1f, 0.95f, 0.8f);
+        scrollbarColors.selectedColor = scrollbarColors.highlightedColor;
+        GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, scrollbarWidth, HandleBorder, scrollbarColors,
+            new Color(0f, 0f, 0f, 0.75f), PanelWidth - 40f, 400f);
         RectTransform scrollRect = (RectTransform)scroll.transform;
         scrollRect.anchorMin = new Vector2(0f, 0f);
         scrollRect.anchorMax = new Vector2(1f, 1f);
@@ -162,7 +186,20 @@ public class PortalTravelPanel : MonoBehaviour
         scrollRect.offsetMin = new Vector2(20f, 70f);
         scrollRect.offsetMax = new Vector2(-20f, -165f);
         StretchScrollView(scrollRect);
-        listContent = scroll.GetComponentInChildren<ScrollRect>().content;
+        ScrollRect portalScroll = scroll.GetComponentInChildren<ScrollRect>();
+        portalScroll.scrollSensitivity = (RowHeight + 4f) * 3f;
+        portalScroll.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
+        Stretch(portalScroll.viewport, Vector2.zero, new Vector2(-(scrollbarWidth + 2f * HandleBorder), 0f));
+        RectTransform scrollbarRect = (RectTransform)portalScroll.verticalScrollbar.transform;
+        scrollbarRect.sizeDelta = new Vector2(scrollbarWidth, -2f * HandleBorder);
+        scrollbarRect.anchoredPosition = Vector2.zero;
+        RectTransform handle = portalScroll.verticalScrollbar.handleRect;
+        handle.anchorMin = new Vector2(0f, handle.anchorMin.y);
+        handle.anchorMax = new Vector2(1f, handle.anchorMax.y);
+        handle.offsetMin = new Vector2(2f, 0f);
+        handle.offsetMax = new Vector2(-2f, 0f);
+        handle.GetComponent<Image>().color = Color.white;
+        listContent = portalScroll.content;
         VerticalLayoutGroup layout = listContent.GetComponent<VerticalLayoutGroup>();
         layout.spacing = 4f;
         layout.childControlHeight = true;

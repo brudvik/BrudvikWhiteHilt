@@ -11,6 +11,20 @@ namespace BrudvikWhiteHilt.Patches.Portals;
 public static class PortalTravelMapPatch
 {
     /// <summary>
+    /// Keeps input over the portal panel from also zooming or dragging the map behind it.
+    /// </summary>
+    /// <param name="takeInput">Whether the map may process input this frame.</param>
+    [HarmonyPatch(nameof(Minimap.UpdateMap))]
+    [HarmonyPrefix]
+    public static void IgnorePanelInput(ref bool takeInput)
+    {
+        if (PortalTravelPanel.PointerOverPanel)
+        {
+            takeInput = false;
+        }
+    }
+
+    /// <summary>
     /// Counts the search field as map text input, so M and the other map keys are left alone while typing.
     /// </summary>
     /// <param name="__result">True while text is being typed.</param>

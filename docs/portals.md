@@ -50,6 +50,8 @@ One portal network instead of pairs: every White Hilt portal leads to every othe
 
 Stations built with the Portal Stations mod become White Hilt rune circles, with their names and privacy. Remove Portal Stations from the server and every client at the same time.
 
+The portal list has a wide gold scrollbar on a dark track; drag it or use the mouse wheel to scroll about three rows per notch. Scrolling over the portal panel does not zoom the map; move the pointer onto the map to zoom normally.
+
 The **Home Stone** takes you to your home portal from anywhere. It then rests for 5 minutes (configurable), shown as a status effect with the time left; dying or logging out does not end the rest. Within 2 minutes of going home (`HomeReturnMinutes`, 0 turns it off), using it again takes you back to where you were, even while it rests. It follows the ordinary portal rules, both ways.
 
 <img src="images/white_hilt_portal.png" alt="White Hilt Portal" title="White Hilt Portal" height="140"> <img src="images/rune_circle.png" alt="White Hilt Rune Circle" title="White Hilt Rune Circle" height="140"> <img src="images/home_stone.png" alt="Home Stone" title="Home Stone" height="140">

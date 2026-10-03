@@ -240,7 +240,9 @@ public class ConfigWindow : MonoBehaviour
         rect.offsetMin = offsetMin;
         rect.offsetMax = offsetMax;
         PortalTravelPanel.StretchScrollView(rect);
-        RectTransform content = scroll.GetComponentInChildren<ScrollRect>().content;
+        ScrollRect settingsScroll = scroll.GetComponentInChildren<ScrollRect>();
+        settingsScroll.scrollSensitivity = 132f;
+        RectTransform content = settingsScroll.content;
         VerticalLayoutGroup layout = content.GetComponent<VerticalLayoutGroup>();
         layout.spacing = 2f;
         layout.padding = new RectOffset(6, 14, 6, 6);

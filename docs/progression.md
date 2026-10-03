@@ -6,6 +6,8 @@
 
 Open the inventory (Tab) and click **Settings** in the small White Hilt panel in the bottom left corner, or press **F7** anywhere (`Settings.Keys` → `OpenSettings`). The window shows every White Hilt setting, in English or Norwegian, grouped by feature, with a search field.
 
+Both lists support mouse-wheel scrolling at the same speed as the portal list.
+
 - **My settings**: your own choices, such as keys, labels, the clock and sound. Always editable.
 - **Server and world**: the rules. Editable in a local game and by server admins (`adminlist.txt`). Other players see the values the server uses, read-only.
 - Changes are collected until you press **Save**; **Close** or Esc throws them away. Changed settings are marked in orange, ↺ puts a setting back to its default, and hovering a setting shows what it does and its default.
