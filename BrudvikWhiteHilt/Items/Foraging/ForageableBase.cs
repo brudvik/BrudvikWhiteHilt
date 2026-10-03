@@ -29,10 +29,14 @@ public abstract class ForageableBase
     private readonly ConfigEntry<int> pickAmount;
     private readonly ConfigEntry<int> groupSizeMin;
     private readonly ConfigEntry<int> groupSizeMax;
+    private readonly ConfigEntry<float> groundClearance;
+    private readonly ConfigEntry<float> minimumPickHeight;
     private ZoneSystem.ZoneVegetation vegetation;
     private Pickable pickable;
     private float vanillaRespawnMinutes;
     private int vanillaAmount;
+    private float appliedGroundClearance;
+    private GameObject pickTarget;
 
     /// <summary>
     /// Prefab name of the ingredient item.
@@ -126,6 +130,16 @@ public abstract class ForageableBase
             $"How many {FullName} one plant gives. 0 = the same as the vanilla {CopyPickableFrom}. Applies to plants loaded after the change.",
             new AcceptableValueRange<int>(0, 20));
 
+        if ((Vegetation.Biome & Heightmap.Biome.Mountain) != 0)
+        {
+            groundClearance = WhiteHiltConfig.BindAdminOnly(section, "GroundClearance", 0.2f,
+                "Lift the plant and its pick colliders above the terrain, in metres. Applies to plants loaded after the change, including existing plants.",
+                new AcceptableValueRange<float>(0f, 1f));
+            minimumPickHeight = WhiteHiltConfig.BindAdminOnly(section, "MinimumPickHeight", 0.4f,
+                "Minimum height of the pick target above the visible plant's base, in metres. Applies to plants loaded after the change.",
+                new AcceptableValueRange<float>(0.1f, 1f));
+        }
+
         if (ExtraDropFrom != null)
         {
             extraDropChance = WhiteHiltConfig.BindAdminOnly(section, "ExtraDropChance", ExtraDropChance,
@@ -169,10 +183,13 @@ public abstract class ForageableBase
             pickable.m_overrideName = string.Empty;
             pickable.m_extraDrops = new DropTable();
             this.pickable = pickable;
+            appliedGroundClearance = 0f;
+            pickTarget = null;
             vanillaRespawnMinutes = pickable.m_respawnTimeMinutes;
             vanillaAmount = pickable.m_amount;
             ApplyPickableConfig();
             TryApplyPickableVisual(pickablePrefab, pickable);
+            ApplyMountainPlacement(pickablePrefab, pickable);
 
             CustomVegetation customVegetation = new(pickablePrefab, false, Vegetation);
             ZoneManager.Instance.AddCustomVegetation(customVegetation);
@@ -202,6 +219,10 @@ public abstract class ForageableBase
     {
         ApplyVegetationConfig();
         ApplyPickableConfig();
+        if (pickable != null)
+        {
+            ApplyMountainPlacement(pickable.gameObject, pickable);
+        }
         if (ZNetScene.instance != null)
         {
             AddCreatureDrop();
@@ -397,6 +418,86 @@ public abstract class ForageableBase
 
         pickable.m_respawnTimeMinutes = respawnMinutes.Value > 0f ? respawnMinutes.Value : vanillaRespawnMinutes;
         pickable.m_amount = pickAmount.Value > 0 ? pickAmount.Value : vanillaAmount;
+    }
+
+    private void ApplyMountainPlacement(GameObject prefab, Pickable plant)
+    {
+        if (groundClearance == null)
+        {
+            return;
+        }
+
+        foreach (Transform child in prefab.transform)
+        {
+            child.localPosition += Vector3.up * (groundClearance.Value - appliedGroundClearance);
+        }
+        appliedGroundClearance = groundClearance.Value;
+
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        bool hasBounds = false;
+        Bounds bounds = default;
+        foreach (MeshRenderer renderer in prefab.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            if (!renderer.enabled || !renderer.gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            MeshFilter filter = renderer.GetComponent<MeshFilter>();
+            if (filter == null || filter.sharedMesh == null)
+            {
+                continue;
+            }
+
+            Bounds meshBounds = filter.sharedMesh.bounds;
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 point = meshBounds.center + Vector3.Scale(meshBounds.extents,
+                    new Vector3((corner & 1) == 0 ? -1f : 1f, (corner & 2) == 0 ? -1f : 1f, (corner & 4) == 0 ? -1f : 1f));
+                point = prefab.transform.InverseTransformPoint(renderer.transform.TransformPoint(point));
+                if (!hasBounds)
+                {
+                    bounds = new Bounds(point, Vector3.zero);
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(point);
+                }
+            }
+        }
+
+        if (!hasBounds)
+        {
+            return;
+        }
+
+        GameObject target = pickTarget;
+        if (target == null)
+        {
+            target = new GameObject("WhiteHiltPickTarget");
+            target.AddComponent<BoxCollider>();
+            pickTarget = target;
+        }
+        target.layer = prefab.layer;
+        target.transform.SetParent(prefab.transform, false);
+        target.transform.localRotation = Quaternion.identity;
+        target.transform.localScale = Vector3.one;
+        Vector3 size = bounds.size;
+        size.y = Mathf.Max(size.y, minimumPickHeight.Value);
+        target.transform.localPosition = new Vector3(bounds.center.x, bounds.min.y + size.y * 0.5f, bounds.center.z);
+        if (plant.m_hideWhenPicked != null)
+        {
+            target.transform.SetParent(plant.m_hideWhenPicked.transform, true);
+        }
+        BoxCollider collider = target.GetComponent<BoxCollider>();
+        collider.size = new Vector3(size.x / target.transform.lossyScale.x * prefab.transform.lossyScale.x,
+            size.y / target.transform.lossyScale.y * prefab.transform.lossyScale.y,
+            size.z / target.transform.lossyScale.z * prefab.transform.lossyScale.z);
     }
 
     private void TryApplyVisual(GameObject visualRoot)

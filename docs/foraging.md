@@ -124,7 +124,11 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group |
 | `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
 | `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |
+| `GroundClearance` | 0.2 | Mountains only: lift the plant and its pick colliders above the saved terrain point, in metres |
+| `MinimumPickHeight` | 0.4 | Mountains only: minimum height of the model-aligned pick target, in metres |
 | `FuelValue` | 2 | Peat only: how much wood one brick is worth in a wood fire |
+
+Mountain plants have a pick target fitted to their visible model, with extra height for low moss and lichen. The two placement settings apply to plants loaded after a change, including plants already saved in the world. Leave the area until it unloads and return, or restart the game. Their saved positions, picking yield and regrowth are unchanged.
 
 | Forageable | Group size |
 |---|---|

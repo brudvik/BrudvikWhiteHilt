@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.72.4 - 2026-10-03
+
+### Fixed
+- **Mountain forageables**: lift plants and their existing pick colliders 0.2 m above their saved terrain point, and add a pick target matching the visible model with a minimum height of 0.4 m. Addresses low moss and lichen disappearing into slopes and the mismatch between custom models and vanilla pick colliders. Server-synced `GroundClearance` and `MinimumPickHeight` in each Mountain plant's foraging section apply when plants next load, including existing plants; saved positions, yields and regrowth are unchanged. In-game snow and steep-slope testing is still required.
+
 ## v0.72.3 - 2026-10-03
 
 ### Changed
