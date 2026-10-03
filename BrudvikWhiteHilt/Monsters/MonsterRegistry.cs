@@ -197,6 +197,7 @@ public static class MonsterRegistry
         GameObject prefab = creature.Prefab;
         Transform visual = PrepareClone(prefab);
         Humanoid humanoid = SetUpHumanoid(prefab, MonsterSettings.LindormHealth.Value, bite, corpse, "Serpent");
+        humanoid.m_name = Translations.Token("enemy_whitehilt_lindorm");
         humanoid.m_walkSpeed = 2.5f;
         humanoid.m_runSpeed = 6f;
         humanoid.m_speed = 2.5f;
@@ -290,6 +291,7 @@ public static class MonsterRegistry
         GameObject prefab = creature.Prefab;
         Transform visual = PrepareClone(prefab);
         Humanoid humanoid = SetUpHumanoid(prefab, MonsterSettings.SpiderHealth.Value, bite, corpse, "Seeker");
+        humanoid.m_name = Translations.Token("enemy_whitehilt_giantspider");
         humanoid.m_walkSpeed = 2.5f;
         humanoid.m_runSpeed = 7f;
         humanoid.m_speed = 2.5f;

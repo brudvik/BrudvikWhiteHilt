@@ -6,6 +6,8 @@
 
 The sea is no longer empty. Octopuses swim in the deep, and on a still, foggy night the Kraken may rise beside your ship.
 
+Creature labels use localized names: Kraken and Kraken Tentacle (Kraken and Krakententakkel in Norwegian), not their internal `WhiteHilt_` prefab identifiers.
+
 ## Octopus
 
 Octopuses swim below the surface of the ocean, jetting along mantle first in short pulses. Catch them with a fishing rod and ocean bait, like the fish they share the water with. Cook them into **Octopus Stew** in the Stone Pot (see [Foraging & food](foraging.md)).

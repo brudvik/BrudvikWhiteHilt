@@ -137,6 +137,7 @@ public static class DesertDragonRegistry
         GameObject prefab = creature.Prefab;
         Transform visual = MonsterRegistry.PrepareClone(prefab, "Attack collider");
         Humanoid humanoid = MonsterRegistry.SetUpHumanoid(prefab, MonsterSettings.DragonHealth.Value, flame, corpse, BaseCreature);
+        humanoid.m_name = Translations.Token("enemy_whitehilt_desertdragon");
         humanoid.m_flying = true;
         humanoid.m_flySlowSpeed = MonsterSettings.DragonFlySpeed.Value * 0.45f;
         humanoid.m_flyFastSpeed = MonsterSettings.DragonFlySpeed.Value;

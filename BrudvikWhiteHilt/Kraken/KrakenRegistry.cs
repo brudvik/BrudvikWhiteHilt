@@ -224,6 +224,7 @@ public static class KrakenRegistry
         });
         GameObject prefab = creature.Prefab;
         Humanoid humanoid = prefab.GetComponent<Humanoid>();
+        humanoid.m_name = Translations.Token("enemy_whitehilt_kraken");
         humanoid.m_health = KrakenSettings.BodyHealth.Value;
         humanoid.m_defaultItems = new[] { slam.ItemPrefab };
         humanoid.m_randomWeapon = new GameObject[0];
@@ -269,6 +270,7 @@ public static class KrakenRegistry
         GameObject prefab = creature.Prefab;
         prefab.transform.localScale = Vector3.one * scale;
         Humanoid humanoid = prefab.GetComponent<Humanoid>();
+        humanoid.m_name = Translations.Token("enemy_whitehilt_krakententacle");
         humanoid.m_health = KrakenSettings.TentacleHealth.Value;
         humanoid.m_defaultItems = new[] { lash.ItemPrefab };
         humanoid.m_randomWeapon = new GameObject[0];

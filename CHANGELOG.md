@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.76.1 - 2026-10-03
+
+### Fixed
+- **Monster display names**: Desert Dragons, Lindorms, Giant Spiders, Krakens and Kraken Tentacles now show their localized names instead of internal `WhiteHilt_` prefab identifiers. Restore `Character.m_name` after Jotunn's cloning constructor overwrites the configured name. Internal prefab identifiers, saved creatures and spawn commands remain unchanged; black beasts and dogs already restore their names and are unaffected.
+
 ## v0.76.0 - 2026-10-03
 
 ### Added
