@@ -16,6 +16,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Candied Angelica** (Stone Pot level 2): Angelica and Honey, a light snack of 20 health and 38 stamina that lasts 50 minutes (`[Food.CandiedAngelica]`)
 - **Mountain Sorrel Salad** (Stone Pot level 2): Mountain Sorrel, Onion and Wild Garlic, 28 health and 48 stamina for 35 minutes with faster healing (`[Food.MountainSorrelSalad]`)
 - **Juniper Sahti** (Cauldron, then Fermenter): Juniper Berries, Honey and Crowberries; spirit damage taken is halved for 10 minutes (`[Meads.JuniperSahti]`)
+- **Gift of Kvasir**: the mead of poetry, brewed from Meadowsweet, Honey and Angelica. Every skill rises 50% faster for 20 minutes (`[Potions.GiftOfKvasir]`)
 
 ## v0.58.0 - 2026-10-03
 

@@ -6,7 +6,7 @@
 
 All potions are crafted in the **Cauldron** as Mead Base, then fermented in the **Fermenter** to produce the final mead.
 
-Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
+Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
 
 ### Timed Effects (20 minutes duration)
 
@@ -26,6 +26,7 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 | **Gift of Fenrir** | Grants wolf ferocity - +50% attack speed, -50% attack stamina, +25% movement speed, heals 15% of damage dealt. | Wood ×5, Mushroom ×5, Dandelion ×5 |
 | **Gift of Freyr** | Grants fertility god blessing - 2x health/stamina regen, +150 carry weight, no building/farming stamina, +1 HP/s and +5 stamina/s. | Stone ×5, Raspberries ×5, Mushroom ×5 |
 | **Gift of Idunn** | Grants youthful vigour - 1.25x health and 1.5x stamina/eitr regeneration. | Lingonberries ×10, Honey ×5, Dandelion ×5 |
+| **Gift of Kvasir** | The mead of poetry - every skill rises 50% faster. | Meadowsweet ×10, Honey ×10, Angelica ×3 |
 
 ### Short Duration (10 minutes)
 
@@ -64,6 +65,7 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Hel | `DurationMinutes` 30, `TriggerHealthFraction` 0.1 |
 | Hugin | `SkillLevel` 100 (no duration) |
 | Idunn | `HealthRegenMultiplier` 1.25, `StaminaRegenMultiplier` 1.5, `EitrRegenMultiplier` 1.5, `HealPerSecond` 0 |
+| Kvasir | `SkillGain` 0.5 |
 | Loki | `BonusEitr` 500, `EitrRegenBonus` 80 |
 | Njord | `SwimSpeedModifier` 1, `SwimStaminaMultiplier` 0, `MinSwimStamina` 20, `SwimStaminaRefill` 50 |
 | Odin | `DurationMinutes` 10, `BonusMaxHealth` 50, `FallDamageMultiplier` 0.5, `HealthRegenBonus` 1 (1 doubles it), `HealPerSecond` 2 |

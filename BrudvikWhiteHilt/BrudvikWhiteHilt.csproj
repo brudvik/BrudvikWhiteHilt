@@ -237,6 +237,7 @@
     <Compile Include="Items\Potions\GiftOfHugin\GiftOfHuginEffect.cs" />
     <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunn.cs" />
     <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunnEffect.cs" />
+    <Compile Include="Items\Potions\GiftOfKvasir\GiftOfKvasir.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLoki.cs" />
     <Compile Include="Items\Potions\GiftOfLoki\GiftOfLokiEffect.cs" />
     <Compile Include="Items\Potions\GiftOfMunin\GiftOfMunin.cs" />
