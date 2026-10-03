@@ -197,6 +197,7 @@
     <Compile Include="Items\Foraging\SweetGale\SweetGale.cs" />
     <Compile Include="Items\Foraging\WildGarlic\WildGarlic.cs" />
     <Compile Include="Items\Foraging\WolfLichen\WolfLichen.cs" />
+    <Compile Include="Items\Foraging\Woad\Woad.cs" />
     <Compile Include="Items\Foraging\Yarrow\Yarrow.cs" />
     <Compile Include="Items\Meads\BogBeanBitter\BogBeanBitter.cs" />
     <Compile Include="Items\Meads\BogBeanBitter\CleansingEffect.cs" />

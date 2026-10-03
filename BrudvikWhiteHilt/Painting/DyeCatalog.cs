@@ -41,9 +41,17 @@ public static class DyeCatalog
 
         // Plains
         Items.Foraging.Rosehips.Rosehips.PrefabName, Items.Foraging.Yarrow.Yarrow.PrefabName, Items.Foraging.Caraway.Caraway.PrefabName,
+        Items.Foraging.Woad.Woad.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName
+    };
+
+    // Dyes whose plant does not look like the colour it gives, in gamma space.
+    private static readonly Dictionary<string, Color> dyeColours = new()
+    {
+        [Items.Foraging.Woad.Woad.PrefabName] = new Color(0.13f, 0.22f, 0.52f),
+        [Items.Foraging.RockLichen.RockLichen.PrefabName] = new Color(0.45f, 0.16f, 0.45f)
     };
 
     private static List<Dye> dyes;
@@ -282,7 +290,8 @@ public static class DyeCatalog
                 continue;
             }
 
-            measured.Add(new Dye { Prefab = prefabName, Name = shared.m_name, Linear = IconColor(icon).linear });
+            Color colour = dyeColours.TryGetValue(prefabName, out Color fixedColour) ? fixedColour : IconColor(icon);
+            measured.Add(new Dye { Prefab = prefabName, Name = shared.m_name, Linear = colour.linear });
         }
 
         return measured;
