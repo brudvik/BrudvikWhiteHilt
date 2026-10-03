@@ -16,6 +16,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Cattail Porridge** (Stone Pot): Cattail, Cranberries and Honey, 22 health and 52 stamina for 32 minutes (`[Food.CattailPorridge]`)
 - **Meadowsweet Mead** (Cauldron, then Fermenter): Honey, Meadowsweet and Cranberries; 15% more armor and 25% less stagger for 10 minutes (`[Meads.MeadowsweetMead]`)
 - **Bog Bean Bitter** (Cauldron, then Fermenter): Bog Bean, Sweet Gale and Honey; ends poison, burning, frost, shock, tar and smoke at once and keeps them off for 3 minutes (`[Meads.BogBeanBitter]`)
+- **Labrador Tea Brew** (Cauldron, then Fermenter): Labrador Tea, Sweet Gale and Honey; leeches, deathsquitoes and ticks do not notice you for 10 minutes (`[Meads.LabradorTeaBrew]` `IgnoredBy`)
 
 ## v0.57.2 - 2026-10-03
 

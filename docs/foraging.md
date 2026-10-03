@@ -58,6 +58,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Crowberry Wine** | Health regenerates 50% faster, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Crowberries ×10, Roseroot ×2 |
 | **Meadowsweet Mead** | 15% more armor and 25% less stagger, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Meadowsweet ×8, Cranberries ×4 |
 | **Bog Bean Bitter** | Ends poison, burning, frost, shock, tar and smoke at once and keeps them off, 3 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Bog Bean ×10, Sweet Gale ×3, Honey ×5 |
+| **Labrador Tea Brew** | Leeches, deathsquitoes and ticks do not notice you, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Labrador Tea ×8, Sweet Gale ×2, Honey ×5 |
 
 ## Config
 
@@ -90,5 +91,6 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Roseroot Mead | `StaminaRegenMultiplier` | 1.5 |
 | Sweet Gale Ale | `CarryWeight` | 75 |
 | Meadowsweet Mead | `ArmorMultiplier`, `StaggerReduction` | 0.15, 0.25 |
+| Labrador Tea Brew | `IgnoredBy` (prefab names) | Leech, Leech_cave, Deathsquito, Tick |
 
 Mead changes apply on the next drink.
