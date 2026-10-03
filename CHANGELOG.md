@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.65.0 - 2026-10-03
+
+### Added
+- **Loom** (Hammer, Workbench): an upright loom with stone weights that weaves **Linen Cloth** from Linen Thread
+- **Dyeing with a Paint Pot**: used from the hotbar while looking at a banner, it dyes only the banner's cloth; looking at a ship, it dyes the sail (with Linen Cloth); standing at a loom, it dyes the cape you wear, which everyone sees. Elsewhere the pot loads the brush as before (`[Textiles]`)
+
 ## v0.64.0 - 2026-10-03
 
 ### Added

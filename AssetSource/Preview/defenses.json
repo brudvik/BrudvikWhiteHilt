@@ -13437,6 +13437,860 @@
    ]
   },
   {
+   "name": "vev",
+   "base": "piece_workbench",
+   "parts": [
+    {
+     "mesh": "stake_support",
+     "position": [
+      -1.05,
+      1.2,
+      -0.125
+     ],
+     "rotation": [
+      -80.181,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      1.257
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      1.05,
+      1.2,
+      -0.125
+     ],
+     "rotation": [
+      -80.181,
+      180.0,
+      0
+     ],
+     "scale": [
+      0.727,
+      0.727,
+      1.257
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      2.3,
+      -0.235
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.636,
+      0.636,
+      1.19
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      0,
+      1.95,
+      -0.155
+     ],
+     "rotation": [
+      -9.819,
+      0,
+      0
+     ],
+     "scale": [
+      0.95,
+      1.5,
+      0.05
+     ],
+     "tint": [
+      1.6,
+      1.5,
+      1.25
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.86,
+      1.048,
+      0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.581
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.785,
+      1.041,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.588
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.71,
+      1.061,
+      -0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.57
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.636,
+      1.045,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.585
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.561,
+      1.061,
+      -0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.569
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.486,
+      1.057,
+      -0.0
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.573
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.411,
+      1.043,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.587
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.337,
+      1.044,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.586
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.262,
+      1.065,
+      -0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.566
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.187,
+      1.043,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.587
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.112,
+      1.041,
+      0.003
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.589
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.037,
+      1.062,
+      -0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.569
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.037,
+      1.051,
+      0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.579
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.112,
+      1.062,
+      -0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.568
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.187,
+      1.044,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.586
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.262,
+      1.054,
+      0.0
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.576
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.337,
+      1.058,
+      -0.0
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.572
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.411,
+      1.049,
+      0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.581
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.486,
+      1.051,
+      0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.579
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.561,
+      1.045,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.584
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.636,
+      1.041,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.589
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.71,
+      1.06,
+      -0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.57
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.785,
+      1.044,
+      0.002
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.586
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.86,
+      1.051,
+      0.001
+     ],
+     "rotation": [
+      80.181,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.064,
+      0.064,
+      0.578
+     ],
+     "tint": [
+      1.7,
+      1.6,
+      1.4
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.72,
+      0.439,
+      0.127
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.432,
+      0.407,
+      0.132
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      -0.144,
+      0.41,
+      0.132
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.144,
+      0.445,
+      0.126
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.432,
+      0.448,
+      0.125
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.72,
+      0.399,
+      0.134
+     ],
+     "rotation": [
+      -90.0,
+      0.0,
+      0
+     ],
+     "scale": [
+      0.591,
+      0.591,
+      0.057
+     ],
+     "tint": [
+      0.5,
+      0.5,
+      0.52
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.15,
+      0.024
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.227,
+      0.227,
+      1.048
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      1.25,
+      -0.12
+     ],
+     "size": [
+      2.3,
+      2.6,
+      0.55
+     ]
+    }
+   ],
+   "snapPoints": [],
+   "keep": [
+    "roof_check_pint",
+    "connectionEffectPoint",
+    "PlayerBase",
+    "GuidePoint",
+    "AreaMarker"
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 160,
+     "pitch": 10
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 10
+    },
+    {
+     "label": "angle",
+     "yaw": -140,
+     "pitch": 25
+    }
+   ]
+  },
+  {
    "name": "oversikt",
    "parts": [
     {

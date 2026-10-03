@@ -413,6 +413,33 @@ def views(*items):
 BRIDGE_LENGTH = 9.0
 BRIDGE_TOP = 0.3
 RACK_TOP = 2.1  # ridge pole of the drying rack; the mod hangs its eight slots 0.35 m below it
+LOOM_LEAN = 0.45  # how far the loom's uprights lean back over their 2.6 m
+
+
+def loom():
+    """A warp-weighted loom: two leaning uprights, a cloth beam with a woven band, the warp with stone weights, a heddle rod."""
+    rng = random.Random("vev")
+
+    def z_at(y):
+        return 0.1 - LOOM_LEAN * (y + 0.1) / 2.6
+
+    parts = []
+    for x in (-1.05, 1.05):
+        parts.append(log((x, -0.1, z_at(-0.1)), (x, 2.5, z_at(2.5)), 0.08))
+    parts.append(log((-1.25, 2.3, z_at(2.3) + 0.08), (1.25, 2.3, z_at(2.3) + 0.08), 0.07))
+    tilt = -math.degrees(math.atan(LOOM_LEAN / 2.6))
+    parts.append(part("wood_beam", (0, 1.95, z_at(1.95) + 0.1), (tilt, 0, 0), (0.95, 1.5, 0.05), tint=[1.6, 1.5, 1.25]))
+    for i in range(24):
+        x = -0.86 + i * 1.72 / 23
+        bottom = 0.45 + rng.uniform(-0.03, 0.03)
+        parts.append(log((x, 1.65, z_at(1.65) + 0.1), (x, bottom, z_at(bottom) + 0.1), 0.007, tint=[1.7, 1.6, 1.4], detail=True))
+    for i in range(6):
+        x = -0.72 + i * 1.44 / 5
+        y = 0.42 + rng.uniform(-0.03, 0.03)
+        parts.append(log((x, y - 0.06, z_at(y) + 0.12), (x, y + 0.06, z_at(y) + 0.12), 0.065, tint=[0.5, 0.5, 0.52]))
+    parts.append(log((-1.1, 1.15, z_at(1.15) + 0.14), (1.1, 1.15, z_at(1.15) + 0.14), 0.025))
+    colliders = [box((0, 1.25, -0.12), (2.3, 2.6, 0.55))]
+    return parts, colliders, []
 
 
 def drying_rack():
@@ -635,6 +662,9 @@ def main():
                           views=views(("outside", 160, 25), ("side", 90, 10), ("top", 180, 65))))
     pieces.append(defence("hjell", "piece_cookingstation_iron", *drying_rack(), keep=[f"slot{i}" for i in range(5)],
                           views=views(("front", 160, 15), ("side", 90, 10), ("top", 180, 65))))
+    pieces.append(defence("vev", "piece_workbench", *loom(),
+                          keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
+                          views=views(("front", 160, 10), ("side", 90, 10), ("angle", -140, 25))))
     pieces.append({"name": "oversikt", "parts": [
         piece("skanseport"),
         piece("skansevegg", (-6.4, 0, 0)),

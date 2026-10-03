@@ -54,7 +54,11 @@ public static class PaintPatches
             return true;
         }
 
-        PaintBrush.LoadFrom(player, item);
+        if (!global::BrudvikWhiteHilt.Textiles.Dyeing.TryUse(player, item))
+        {
+            PaintBrush.LoadFrom(player, item);
+        }
+
         return false;
     }
 

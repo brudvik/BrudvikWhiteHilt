@@ -593,6 +593,12 @@
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\SmokeOven.cs" />
     <Compile Include="Pieces\Cooking\DryingRack.cs" />
+    <Compile Include="Pieces\Textiles\Loom.cs" />
+    <Compile Include="Items\Textiles\LinenCloth.cs" />
+    <Compile Include="Textiles\DyedCloth.cs" />
+    <Compile Include="Textiles\Dyeing.cs" />
+    <Compile Include="Textiles\TextileSettings.cs" />
+    <Compile Include="Patches\Textiles\TextilePatches.cs" />
     <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
     <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />

@@ -95,7 +95,7 @@ Viking roofs of turf, reed, straw, tarred shingles and slate in every shape and 
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Paint Bench" height="120">
 
-The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes.
+The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes, and dye banners, sails and capes, with a loom for linen.
 
 ### 🏗️ [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
