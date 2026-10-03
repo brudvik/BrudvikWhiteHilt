@@ -2,6 +2,39 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.71.0 - 2026-10-03
+
+### Added
+- **Dog**: use a Dog House while your grown dog follows you to make it the dog's new home, wherever the house stands. The old house can stay. The hover text on a Dog House shows whether your dog lives there.
+
+## v0.70.0 - 2026-10-03
+
+### Added
+- **Desert Dragons**: once Moder is slain, sand-coloured dragons about 8 m across fly over the Plains by day and night. They circle above you and breathe a stream of fire that leaves the mouth about as wide as the mouth and widens to 3 m towards the ground; it sets you burning. They are immune to fire, weak to frost and fall out of the sky when slain. They drop Desert Dragon Scales, sometimes a Surtling Core and rarely their trophy. Their fire leaves buildings alone unless `[Desert Dragon] BurnsBuildings` is on. Every number is in the `[Desert Dragon]` section. Model: "Red Dragon" by absol (CC BY 4.0).
+- **Dragonscale Broth**: a Plains dish from the Stone Pot (Desert Dragon Scale, Onion, Barley) whose buff halves fire damage.
+- **Dragonfire Arrow**: fire arrows tipped with Desert Dragon scale, 30 pierce and 60 fire, 20 per craft at the workbench.
+- **Black Dragon**: a new black beast of the dark hour and the blood moon. It is a black, 5 star Desert Dragon that comes in the Mountains and the Plains once Moder is slain. Its trophy can be bound at the Binding Stone (+10%, rune strength 15%).
+
+### Changed
+- **Beasts**: a biome can now have more than one black beast; when it does, one of them comes at random. `whitehilt_beast <biome>` also picks at random. Flying beasts are 10% slower in the air too.
+- A black beast cloned from one of the mod's own monsters leaves a black corpse.
+
+## v0.69.4 - 2026-10-03
+
+### Changed
+- **White Hilt Rune Circle**: the ground portal's stone base, runes and collision shape are one third as tall, with the same diameter. The stone surface is now 4 cm above the ground instead of 12 cm. Standing and ship portals are unchanged.
+
+## v0.69.3 - 2026-10-03
+
+### Fixed
+- **Munin's memory**: icons remain in their original colours on opaque light-grey discs even when switched off. Coloured rims and checkmarks show active filters, grey rims show inactive filters, and rims brighten on hover. Panel size and filtering are unchanged.
+
+## v0.69.2 - 2026-10-03
+
+### Fixed
+- **Self-closing doors**: automatic closing sets the closed state directly instead of depending on the owner's animator being ready for interaction. Repeated closing cannot reopen a door, and doors with inverted open/closed states are handled correctly.
+- **Drawbridges**: the vanilla drawbridge follows the gate closing settings. The White Hilt drawbridge keeps its prefab reference rotations when loaded, and follows gate changes without depending on the owner's animator; closing raises it instead of lowering it.
+
 ## v0.69.1 - 2026-10-03
 
 ### Fixed

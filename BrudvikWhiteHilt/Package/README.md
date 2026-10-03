@@ -153,11 +153,11 @@ A world that grows harder as you progress: up to 5 stars, black beasts in the da
 
 Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your ship with its tentacles.
 
-### 🕷️ [Lindorm & giant spiders](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
+### 🕷️ [Lindorm, giant spiders & Desert Dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Giant Spider" height="120">
 
-A great worm that breaks out of the forest floor at night, and poisonous giant spiders around nests in the Black Forest.
+A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and fire-breathing dragons over the Plains once Moder is slain.
 
 ### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 
@@ -249,6 +249,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Octopus model: ["Octopus"](https://sketchfab.com/3d-models/f9c0186d5ac54bcfada2b6113de40ede) by [rkuhlf](https://sketchfab.com/rkuhlf), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with its animations and rescaled for Valheim.
 - Lindorm model: ["Worm Monster"](https://sketchfab.com/3d-models/5563066315694125b741901681d387c5) by [CR!STALLL](https://sketchfab.com/CR1STALLL), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with six of its animations and rescaled for Valheim.
 - Giant Spider model: ["Wolf Spider (Rigged) - (Rabidosa rabida)"](https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe) by [Dreaming In Alternation 27](https://sketchfab.com/DreamingInAlternation27), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, idle, bite, hit and death animations added, and rescaled for Valheim.
+- Desert Dragon model: ["Red Dragon"](https://sketchfab.com/3d-models/red-dragon-d53fe00255334386a0fd1f4ac2858cab) by [absol](https://sketchfab.com/absol_cg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, a fire-breathing animation added, recoloured in game and rescaled for Valheim.
 
 ## Known issues
 
