@@ -9,6 +9,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Yarrow**: feathery leaves and flat white flower heads on the Plains, or from wild flax picked there (20%). A wound herb and an ale herb (`[Foraging.Yarrow]`)
 - **Caraway**: slender stems with umbrellas of white flowers on the Plains, or from wild barley picked there (20%). The northern spice (`[Foraging.Caraway]`)
 - **Woad**: blue-green leaves under yellow flowers on the Plains, or from wild flax picked there (15%). The deep blue dye; Rock Lichen now dyes the true purple of its lye bath (`[Foraging.Woad]`)
+- **Madder Root**: a scrambling plant with whorls of narrow leaves on the Plains, or from cloudberry bushes picked there (15%). Its roots are the red dye (`[Foraging.MadderRoot]`)
 
 ## v0.59.0 - 2026-10-03
 

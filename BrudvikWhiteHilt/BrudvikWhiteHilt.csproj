@@ -183,6 +183,7 @@
     <Compile Include="Items\Foraging\IcelandMoss\IcelandMoss.cs" />
     <Compile Include="Items\Foraging\Juniper\Juniper.cs" />
     <Compile Include="Items\Foraging\LabradorTea\LabradorTea.cs" />
+    <Compile Include="Items\Foraging\Madder\Madder.cs" />
     <Compile Include="Items\Foraging\Meadowsweet\Meadowsweet.cs" />
     <Compile Include="Items\Foraging\MountainSorrel\MountainSorrel.cs" />
     <Compile Include="Items\Foraging\Peat\Peat.cs" />
