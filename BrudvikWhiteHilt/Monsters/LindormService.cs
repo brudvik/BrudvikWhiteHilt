@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BrudvikWhiteHilt.Difficulty;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Monsters;
@@ -52,7 +53,7 @@ public class LindormService : MonoBehaviour
             $"  on foot: {player != null && OnFoot(player)}, outside a base: {player != null && EffectArea.IsPointInsideArea(position, EffectArea.Type.PlayerBase, BaseMargin) == null}\n" +
             $"  night: {EnvMan.IsNight()} (needed: {MonsterSettings.LindormNightOnly.Value})\n" +
             $"  key {(string.IsNullOrEmpty(key) ? "(none)" : key)}: {string.IsNullOrEmpty(key) || (ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key))}\n" +
-            $"  Lindorms nearby: {CountNear(position)}";
+            $"  Lindorms nearby: {CountNear(position)}, progression stars: {MonsterSettings.GetLindormLevel() - 1}";
     }
 
     private static void Print(string message)
@@ -66,7 +67,7 @@ public class LindormService : MonoBehaviour
     private void Start()
     {
         ZRoutedRpc.instance?.Register(RequestRpc, RPC_Request);
-        ZRoutedRpc.instance?.Register(SpawnRpc, RPC_Spawn);
+        ZRoutedRpc.instance?.Register<int>(SpawnRpc, RPC_Spawn);
         ZRoutedRpc.instance?.Register(AdminRpc, RPC_Admin);
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
         nextCheck = Time.time + CheckInterval;
@@ -131,14 +132,14 @@ public class LindormService : MonoBehaviour
         }
 
         lastLindorm[sender] = Time.time;
-        ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc);
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc, MonsterSettings.GetLindormLevel());
     }
 
-    private void RPC_Spawn(long sender)
+    private void RPC_Spawn(long sender, int level)
     {
         if (sender == ZRoutedRpc.instance.GetServerPeerID() && Player.m_localPlayer != null)
         {
-            Spawn(Player.m_localPlayer);
+            Spawn(Player.m_localPlayer, level);
         }
     }
 
@@ -156,7 +157,7 @@ public class LindormService : MonoBehaviour
         }
 
         lastLindorm[sender] = Time.time;
-        ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc);
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc, MonsterSettings.GetLindormLevel());
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, ReplyRpc, "The ground heaves.");
     }
 
@@ -179,7 +180,7 @@ public class LindormService : MonoBehaviour
         return peer?.m_socket != null && ZNet.instance.IsAdmin(peer.m_socket.GetHostName());
     }
 
-    private static void Spawn(Player player)
+    private static void Spawn(Player player, int level)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(MonsterRegistry.LindormName) : null;
         if (prefab == null || !TryFindPoint(player.transform.position, out Vector3 point))
@@ -190,9 +191,19 @@ public class LindormService : MonoBehaviour
 
         Vector3 toPlayer = player.transform.position - point;
         toPlayer.y = 0f;
-        GameObject instance = Instantiate(prefab, point, toPlayer.sqrMagnitude > 0.01f ? Quaternion.LookRotation(toPlayer) : Quaternion.identity);
+        GameObject instance;
+        CreatureStars.BeginSpawn(false);
+        try
+        {
+            instance = Instantiate(prefab, point, toPlayer.sqrMagnitude > 0.01f ? Quaternion.LookRotation(toPlayer) : Quaternion.identity);
+        }
+        finally
+        {
+            CreatureStars.EndSpawn();
+        }
+        instance.GetComponent<Character>()?.SetLevel(Mathf.Clamp(level, 1, CreatureStars.MaxLevel));
         instance.GetComponent<BaseAI>()?.SetHuntPlayer(true);
-        Jotunn.Logger.LogInfo($"The Lindorm broke out of the ground near {player.GetPlayerName()} at {point}");
+        Jotunn.Logger.LogInfo($"The Lindorm broke out of the ground near {player.GetPlayerName()} at {point}, level {level}");
     }
 
     private static bool TryFindPoint(Vector3 origin, out Vector3 point)

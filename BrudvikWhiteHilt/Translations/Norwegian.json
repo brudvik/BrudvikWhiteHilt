@@ -2897,6 +2897,8 @@
   "whitehilt_cfg_lindorm_health_desc": "Helsen til lindormen.",
   "whitehilt_cfg_lindorm_damage": "Skade",
   "whitehilt_cfg_lindorm_damage_desc": "Stikkskade fra lindormens bitt.",
+  "whitehilt_cfg_lindorm_progressionstars": "Stjerner etter bossprogresjon",
+  "whitehilt_cfg_lindorm_progressionstars_desc": "Minste antall stjerner ved spawn etter hver beseiret boss, som global-nøkkel:stjerner (0–5), kommaseparert. Høyeste opplåste verdi brukes, uavhengig av biomets stjernegrense. Tom: ingen progresjonsstjerner.",
   "whitehilt_cfg_lindorm_scale": "Størrelse",
   "whitehilt_cfg_lindorm_scale_desc": "Størrelsen på lindormen (1 = omtrent 4 m lang). Gjelder etter omstart.",
   "whitehilt_cfg_lindorm_starscale": "Vekst per stjerne",

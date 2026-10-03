@@ -24,6 +24,19 @@ Then, once a minute, there is a 3% chance it **breaks out of the ground** 9–15
 - It **burrows back down**, without loot, when it has lost you for about 25 seconds, or soon after dawn.
 - When slain it writhes, falls still and sinks into the ground.
 
+Its strength is set when it emerges, according to the world's defeated bosses, not the victim's equipment. It starts at 0 stars after Eikthyr, then gains a minimum of 1, 2, 3, 4 and 5 stars after the Elder, Bonemass, Moder, Yagluth and the Queen. This ignores ordinary biome star limits, so new players in an advanced world should be wary. Natural encounters and `whitehilt_lindorm summon` use the same progression.
+
+| Latest defeated boss | Stars | Health | Pierce damage |
+|---|---|---|---|
+| Eikthyr | 0 | 700 | 75 |
+| The Elder | 1 | 1400 | 112.5 |
+| Bonemass | 2 | 2100 | 150 |
+| Moder | 3 | 2450 | 168.75 |
+| Yagluth | 4 | 2800 | 187.5 |
+| The Queen | 5 | 3150 | 206.25 |
+
+These values use the default difficulty star formulas, before pressure bonuses (up to +20% health and +10% damage). The chosen stars and pressure bonuses stay fixed for that encounter. Empty `ProgressionStars` disables boss-based stars; disabling difficulty stars disables the pressure bonus, not the configured boss-based stars.
+
 ## Giant spiders
 
 Giant spiders live around **spider nests** in the Black Forest: a pale, web-covered mound with a ring of eggs. A nest keeps up to 3 spiders near it and sends out a new one every 20 seconds or so while someone is close. **Destroy the nest** to stop them; it drops Spider Silk.
@@ -91,6 +104,7 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `ChancePerMinute` | 3 | Percent per minute while every condition holds |
 | `CooldownMinutes` | 30 | Real minutes before it can come for the same player again |
 | `Health` / `Damage` | 700 / 75 | Health, and pierce damage of its bite |
+| `ProgressionStars` | defeated_gdking:1, defeated_bonemass:2, defeated_dragon:3, defeated_goblinking:4, defeated_queen:5 | Minimum stars after each global boss key, 0–5; highest unlocked value wins. Empty: no boss scaling. Applies to new encounters |
 | `Scale` | 1.6 | Size (1 = about 4 m long; default about 6.4 m; after a restart) |
 | `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
 | `Sounds` | true | Own growls and rasps (after a restart) |

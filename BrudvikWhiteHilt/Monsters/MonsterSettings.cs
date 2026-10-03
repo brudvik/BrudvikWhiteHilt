@@ -41,6 +41,9 @@ public static class MonsterSettings
     /// <summary>Pierce damage of its bite.</summary>
     public static ConfigEntry<float> LindormDamage { get; private set; }
 
+    /// <summary>Minimum stars after each defeated boss, as global-key:stars pairs.</summary>
+    public static ConfigEntry<string> LindormProgressionStars { get; private set; }
+
     /// <summary>Size of the Lindorm.</summary>
     public static ConfigEntry<float> LindormScale { get; private set; }
 
@@ -177,6 +180,9 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0f, 1440f));
         LindormHealth = WhiteHiltConfig.BindAdminOnly(LindormSection, "Health", 700f, "Health of the Lindorm.", new AcceptableValueRange<float>(50f, 20000f));
         LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 75f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
+        LindormProgressionStars = WhiteHiltConfig.BindAdminOnly(LindormSection, "ProgressionStars",
+            "defeated_gdking:1, defeated_bonemass:2, defeated_dragon:3, defeated_goblinking:4, defeated_queen:5",
+            "Minimum stars at spawn after each defeated boss, as global-key:stars pairs (0-5), comma separated. Uses the highest unlocked value, ignoring biome star limits. Empty: no progression stars.");
         LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.6f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
         LindormStarScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "StarScale", 0.15f,
@@ -252,6 +258,27 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0f, 100f));
         DragonBurnsBuildings = WhiteHiltConfig.BindAdminOnly(DragonSection, "BurnsBuildings", false,
             "Its fire also damages the buildings it hits. Off: its fire only hurts players and creatures.");
+    }
+
+    /// <summary>Gets the Lindorm's spawn level from the world's defeated bosses.</summary>
+    /// <returns>One plus the highest unlocked configured star count, between 1 and 6.</returns>
+    public static int GetLindormLevel()
+    {
+        int stars = 0;
+        ZoneSystem zones = ZoneSystem.instance;
+        if (zones != null)
+        {
+            foreach (string part in (LindormProgressionStars.Value ?? string.Empty).Split(','))
+            {
+                string[] pair = part.Split(':');
+                if (pair.Length == 2 && int.TryParse(pair[1].Trim(), out int configured)
+                    && zones.GetGlobalKey(pair[0].Trim()))
+                {
+                    stars = Math.Max(stars, Math.Min(5, Math.Max(0, configured)));
+                }
+            }
+        }
+        return stars + 1;
     }
 
     /// <summary>
