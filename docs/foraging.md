@@ -75,6 +75,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Smoked Fish** | 56 health, 32 stamina, 40 min. Buff: swim 50% faster, swimming uses 50% less stamina | Stone Pot level 3 | Perch ×1, Sweet Gale ×1, Lingonberries ×2 |
 | **Smoked Wolf Jerky** | 34 health, 58 stamina, 40 min. Buff: running and jumping use 20% less stamina | Stone Pot level 3 | Wolf Meat ×1, Wild Garlic ×1, Roseroot ×1 |
 | **Juniper-Smoked Wolf Ham** | 58 health, 30 stamina, 40 min. Buff: frost damage taken is halved | Stone Pot level 3 | Wolf Meat ×2, Juniper Berries ×3, Onion ×1 |
+| **Smoked Grouper with Yarrow** | 66 health, 34 stamina, 45 min. Buff: blocking uses 25% less stamina | Stone Pot level 3 | Grouper ×1, Yarrow ×2, Juniper Berries ×1 |
 | **Octopus Stew** | Ocean: 50 health, 40 stamina, 35 min | Stone Pot level 2 | Octopus ×1, Turnip ×2, Wild Garlic ×1 |
 | **Kraken Feast** | Ocean: 70 health, 40 stamina, 40 min. Buff: health and stamina regenerate 25% faster | Stone Pot level 3 | Kraken Tentacle ×1, Kraken Ink ×1, Turnip ×2, Roseroot ×1 |
 | **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |

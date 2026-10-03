@@ -17,6 +17,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Rosehip Soup** (Stone Pot level 2): Rosehips, Honey and Barley Flour, 32 health and 64 stamina for 40 minutes (`[Food.RosehipSoup]`)
 - **Caraway Lox Stew** (Stone Pot level 2): Lox Meat, Caraway, Onion and Turnip, 64 health and 36 stamina for 40 minutes (`[Food.CarawayLoxStew]`)
 - **Skyr with Cloudberries** (Stone Pot level 2): Lox Milk, Cloudberries and Honey, 48 health and 48 stamina for 45 minutes; health regenerates 25% faster for the first half (`[Food.SkyrwithCloudberries]`)
+- **Smoked Grouper with Yarrow** (Stone Pot level 3): Grouper, Yarrow and Juniper Berries, 66 health and 34 stamina for 45 minutes; blocking uses 25% less stamina for the first half (`[Food.SmokedGrouperwithYarrow]`)
 
 ## v0.59.0 - 2026-10-03
 

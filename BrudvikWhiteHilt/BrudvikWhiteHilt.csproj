@@ -165,6 +165,7 @@
     <Compile Include="Items\Food\RosehipSoup\RosehipSoup.cs" />
     <Compile Include="Items\Food\CarawayLoxStew\CarawayLoxStew.cs" />
     <Compile Include="Items\Food\CloudberrySkyr\CloudberrySkyr.cs" />
+    <Compile Include="Items\Food\SmokedGrouper\SmokedGrouper.cs" />
     <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
     <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
     <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
