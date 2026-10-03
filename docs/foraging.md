@@ -57,6 +57,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Sweet Gale Ale** | +75 carry weight, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Honey ×10, Sweet Gale ×10, Blueberries ×5 |
 | **Crowberry Wine** | Health regenerates 50% faster, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Crowberries ×10, Roseroot ×2 |
 | **Meadowsweet Mead** | 15% more armor and 25% less stagger, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Meadowsweet ×8, Cranberries ×4 |
+| **Bog Bean Bitter** | Ends poison, burning, frost, shock, tar and smoke at once and keeps them off, 3 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Bog Bean ×10, Sweet Gale ×3, Honey ×5 |
 
 ## Config
 
@@ -81,7 +82,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | Bog Bean | 2–5 |
 | Reed, Cattail | 3–6 |
 
-Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10), plus:
+Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3), plus:
 
 | Mead | Setting | Default |
 |---|---|---|

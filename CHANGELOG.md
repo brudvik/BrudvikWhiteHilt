@@ -15,6 +15,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Bog Fish Stew** (Stone Pot): Trollfish, Cattail and Wild Garlic, 50 health and 30 stamina for 32 minutes (`[Food.BogFishStew]`)
 - **Cattail Porridge** (Stone Pot): Cattail, Cranberries and Honey, 22 health and 52 stamina for 32 minutes (`[Food.CattailPorridge]`)
 - **Meadowsweet Mead** (Cauldron, then Fermenter): Honey, Meadowsweet and Cranberries; 15% more armor and 25% less stagger for 10 minutes (`[Meads.MeadowsweetMead]`)
+- **Bog Bean Bitter** (Cauldron, then Fermenter): Bog Bean, Sweet Gale and Honey; ends poison, burning, frost, shock, tar and smoke at once and keeps them off for 3 minutes (`[Meads.BogBeanBitter]`)
 
 ## v0.57.2 - 2026-10-03
 

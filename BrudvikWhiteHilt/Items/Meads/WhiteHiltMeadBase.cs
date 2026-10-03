@@ -188,9 +188,18 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// <param name="effect">The mead's status effect.</param>
     protected abstract void ConfigureEffect(SE_Stats effect);
 
+    /// <summary>
+    /// Creates the empty status effect, for a mead whose effect needs its own code.
+    /// </summary>
+    /// <returns>A new status effect.</returns>
+    protected virtual SE_Stats CreateEffectInstance()
+    {
+        return ScriptableObject.CreateInstance<SE_Stats>();
+    }
+
     private SE_Stats CreateEffect(ItemDrop.ItemData.SharedData shared)
     {
-        SE_Stats effect = ScriptableObject.CreateInstance<SE_Stats>();
+        SE_Stats effect = CreateEffectInstance();
         effect.name = $"SE_{BaseName}";
         effect.m_name = Translations.Token(NameKey);
         effect.m_tooltip = Translations.Token(TooltipKey);

@@ -180,6 +180,8 @@
     <Compile Include="Items\Roofing\RoofMaterials.cs" />
     <Compile Include="Items\Foraging\SweetGale\SweetGale.cs" />
     <Compile Include="Items\Foraging\WildGarlic\WildGarlic.cs" />
+    <Compile Include="Items\Meads\BogBeanBitter\BogBeanBitter.cs" />
+    <Compile Include="Items\Meads\BogBeanBitter\CleansingEffect.cs" />
     <Compile Include="Items\Meads\CranberryMead\CranberryMead.cs" />
     <Compile Include="Items\Meads\CrowberryWine\CrowberryWine.cs" />
     <Compile Include="Items\Meads\LingonberryMead\LingonberryMead.cs" />
