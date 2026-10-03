@@ -455,7 +455,8 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
 
         foreach (string name in PortalStationsPrefabs)
         {
-            PrefabManager.Instance.AddPrefab(PrefabManager.Instance.CreateClonedPrefab(name, prefab));
+            // The clone copies Jotunn's mock workbench and resource items; without fixReference they are never resolved.
+            PrefabManager.Instance.AddPrefab(new CustomPrefab(PrefabManager.Instance.CreateClonedPrefab(name, prefab), fixReference: true));
         }
     }
 }

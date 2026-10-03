@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.61.1 - 2026-10-03
+
+### Fixed
+- White Hilt rune circles that were Portal Stations stations could not be removed ("requires a workbench" next to a workbench), and would have dropped nothing: their workbench and building costs were never resolved
+
 ## v0.61.0 - 2026-10-03
 
 ### Added
