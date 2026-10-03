@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.78.0 - 2026-10-04
+
+### Added
+- **Horn of the Deep**: a forge-crafted celebration-horn clone with black trim, a synchronized mouth-and-arm blowing pose and an original deep sustained WAV tone. Equip it and attack to blow; movement, swimming, combat actions, attaching or putting it away cancels the call. A completed call asks the server to summon Kraken beside a ship in deep Ocean, or an unlocked black beast belonging to the land biome. Boss requirements, disabled creatures, nearby encounters and a configurable world-wide horn cooldown are respected; weather and dark-hour rolls are bypassed. Meadows and Deep North have no horn beast. Horn-called Kraken stays by day but keeps its retreat timer; horn-called land beasts stay by day while players are within the encounter range. Compilation, 31 production-server checks, 20 production arm-geometry checks, trim coverage and packed-audio checks passed; multiplayer animation and sound still require in-game testing.
+
+## v0.77.5 - 2026-10-04
+
+### Fixed
+- **Portal list scrollbar and footer**: the scrollbar now sits outside the masked scroll view and its row canvas, with explicit right-edge anchors and a centred handle. Rows follow the reserved viewport width. The panel's lower edge is raised to leave room for the Munin's memory and Uncovered headers below the map. Compilation passed; thumb visibility, dragging and scaled layout still require in-game testing.
+
+## v0.77.4 - 2026-10-04
+
+### Fixed
+- **Clock HUD placement**: day, time and weather now sit at the upper left above the weapon/tool hotbar instead of below the compass among status effects. The hotbar reserves space while the clock is visible and returns to its original position when hidden. Compass and boss bars no longer push the clock down; the ruby waypoint arrow no longer reserves space for the clock. Compilation passed; HUD scaling and appearance still require in-game testing.
+
 ## v0.77.3 - 2026-10-03
 
 ### Fixed
