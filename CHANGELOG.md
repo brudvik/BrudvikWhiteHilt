@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.66.0 - 2026-10-03
+
+### Added
+- **Treasure hunts**: Hildir also sells a **Treasure Hunt Map** (1500 coins). The chest under its cross holds a little loot and the next map of the hunt, whose treasure lies within 1200 m of where it is read. The last of the 3 maps leads to a chest with 2 black beast trophies and 6 draws from the loot list (`[Treasure] HuntSteps`, `HuntPrice`, `HuntStepMaxDistance`, `HuntStepLootRolls`, `HuntFinalLootRolls`, `HuntFinalTrophies`)
+
 ## v0.65.0 - 2026-10-03
 
 ### Added

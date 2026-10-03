@@ -26,19 +26,30 @@ public static class TreasureLoot
     /// <param name="inventory">The chest's inventory.</param>
     public static void Fill(Inventory inventory)
     {
+        Fill(inventory, TreasureSettings.TrophyCount.Value, TreasureSettings.LootRolls.Value);
+    }
+
+    /// <summary>
+    /// Puts a given amount of treasure into a chest's inventory.
+    /// </summary>
+    /// <param name="inventory">The chest's inventory.</param>
+    /// <param name="trophyCount">Black beast trophies.</param>
+    /// <param name="lootRolls">Draws from the loot list.</param>
+    public static void Fill(Inventory inventory, int trophyCount, int lootRolls)
+    {
         List<GameObject> trophies = BeastDefinition.All
             .Where(beast => ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(beast.BossKey))
             .Select(beast => ObjectDB.instance.GetItemPrefab(beast.TrophyName))
             .Where(prefab => prefab != null)
             .ToList();
-        for (int i = 0; i < TreasureSettings.TrophyCount.Value && trophies.Count > 0; i++)
+        for (int i = 0; i < trophyCount && trophies.Count > 0; i++)
         {
             inventory.AddItem(trophies[Random.Range(0, trophies.Count)], 1);
         }
 
         List<Entry> entries = Parse(TreasureSettings.Loot.Value);
         float total = entries.Sum(entry => entry.Weight);
-        for (int i = 0; i < TreasureSettings.LootRolls.Value && total > 0f; i++)
+        for (int i = 0; i < lootRolls && total > 0f; i++)
         {
             float pick = Random.Range(0f, total);
             Entry chosen = entries.Last();

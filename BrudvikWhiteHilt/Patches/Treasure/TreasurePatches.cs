@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Treasure;
 using HarmonyLib;
+using System;
 using System.Linq;
 
 namespace BrudvikWhiteHilt.Patches.Treasure;
@@ -24,15 +25,22 @@ public static class TreasurePatches
     private static void BoughtPostfix(Trader.TradeItem item)
     {
         Player player = Player.m_localPlayer;
-        if (player == null || item?.m_prefab == null || item.m_prefab.name != TreasureMapItem.PrefabName)
+        string bought = item?.m_prefab != null ? item.m_prefab.name : null;
+        if (player == null || (bought != TreasureMapItem.PrefabName && bought != TreasureMapItem.HuntPrefabName))
         {
             return;
         }
 
-        ItemDrop.ItemData map = player.GetInventory().GetAllItems().LastOrDefault(candidate => TreasureMapItem.IsMap(candidate) && TreasureMapItem.GetId(candidate) == null);
+        ItemDrop.ItemData map = player.GetInventory().GetAllItems()
+            .LastOrDefault(candidate => candidate.m_dropPrefab != null && candidate.m_dropPrefab.name == bought && TreasureMapItem.GetId(candidate) == null);
         if (map != null)
         {
             TreasureMapItem.Assign(map, item.m_price);
+            if (bought == TreasureMapItem.HuntPrefabName)
+            {
+                TreasureMapItem.SetHunt(map, 1, Math.Max(1, TreasureSettings.HuntSteps.Value));
+            }
+
             TreasureService.RequestSite(player, map);
         }
     }
@@ -74,5 +82,10 @@ public static class TreasurePatches
             : TreasureMapItem.GetSite(item) == null ? "whitehilt_treasure_tip_unmarked"
             : "whitehilt_treasure_tip_waiting";
         __result += "\n\n<color=orange>" + Translations.Word(key) + "</color>";
+        int steps = TreasureMapItem.GetSteps(item);
+        if (steps > 1)
+        {
+            __result += "\n" + string.Format(Translations.Word("whitehilt_treasure_tip_step"), TreasureMapItem.GetStep(item), steps);
+        }
     }
 }

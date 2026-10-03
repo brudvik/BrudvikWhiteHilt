@@ -49,6 +49,9 @@ public static class TreasureRegistry
     {
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(TreasureMapItem.PrefabName), "Treasure Map",
             "A scrap of a map from Hildir, with a cross where something lies buried. Use it to unroll it and compare it with your own map. Bring a pickaxe.");
+        Translations.AddEnglishNameAndDescription(Translations.ItemKey(TreasureMapItem.HuntPrefabName), "Treasure Hunt Map",
+            "An old, stained map from Hildir. The chest under its cross holds no gold, only the next map, and the last of them leads to a great treasure. Use it to unroll it.");
+        Translations.AddEnglish("whitehilt_treasure_tip_step", "Treasure hunt: map {0} of {1}.");
         Translations.AddEnglish("whitehilt_treasure_mound", "Dug earth");
         Translations.AddEnglish("whitehilt_treasure_mound_hint", "Someone has dug here. Dig with a pickaxe");
         Translations.AddEnglish("whitehilt_treasure_chest", "Treasure chest");
@@ -100,21 +103,22 @@ public static class TreasureRegistry
     private static void AddPrefabs()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= AddPrefabs;
-        AddMap();
+        AddMap(TreasureMapItem.PrefabName, null);
+        AddMap(TreasureMapItem.HuntPrefabName, new Color(0.7f, 0.6f, 0.45f));
         AddMound();
         AddChest();
     }
 
-    private static void AddMap()
+    private static void AddMap(string prefabName, Color? tint)
     {
         try
         {
             ItemConfig config = new()
             {
-                Name = Translations.Token(Translations.ItemKey(TreasureMapItem.PrefabName)),
-                Description = Translations.Token(Translations.ItemKey(TreasureMapItem.PrefabName) + "_description")
+                Name = Translations.Token(Translations.ItemKey(prefabName)),
+                Description = Translations.Token(Translations.ItemKey(prefabName) + "_description")
             };
-            CustomItem item = new(TreasureMapItem.PrefabName, MapSource, config);
+            CustomItem item = new(prefabName, MapSource, config);
             ItemDrop.ItemData.SharedData shared = item.ItemDrop.m_itemData.m_shared;
             shared.m_weight = 0.1f;
             shared.m_maxStackSize = 1;
@@ -126,6 +130,11 @@ public static class TreasureRegistry
                 try
                 {
                     VisualHelper.ReplaceMesh(item.ItemPrefab, ForagingAssets.LoadMesh("treasuremap"), ForagingAssets.LoadTexture("treasuremap_albedo"), size: MapLength);
+                    if (tint.HasValue)
+                    {
+                        VisualHelper.Tint(item.ItemPrefab, tint.Value);
+                    }
+
                     Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab);
                     if (icon != null)
                     {
@@ -134,7 +143,7 @@ public static class TreasureRegistry
                 }
                 catch (Exception ex)
                 {
-                    Jotunn.Logger.LogWarning($"{TreasureMapItem.PrefabName}: no custom look: {ex.Message}");
+                    Jotunn.Logger.LogWarning($"{prefabName}: no custom look: {ex.Message}");
                 }
             }
 
@@ -273,14 +282,21 @@ public static class TreasureRegistry
 
     private static void UpdateTrader(Trader trader)
     {
-        ItemDrop map = PrefabManager.Instance.GetPrefab(TreasureMapItem.PrefabName)?.GetComponent<ItemDrop>();
+        UpdateTradeItem(trader, TreasureMapItem.PrefabName, TreasureSettings.Enabled.Value, TreasureSettings.Price.Value);
+        UpdateTradeItem(trader, TreasureMapItem.HuntPrefabName, TreasureSettings.Enabled.Value && TreasureSettings.HuntSteps.Value > 0,
+            TreasureSettings.HuntPrice.Value);
+    }
+
+    private static void UpdateTradeItem(Trader trader, string prefabName, bool sold, int price)
+    {
+        ItemDrop map = PrefabManager.Instance.GetPrefab(prefabName)?.GetComponent<ItemDrop>();
         if (map == null)
         {
             return;
         }
 
         Trader.TradeItem entry = trader.m_items.Find(candidate => candidate.m_prefab == map);
-        if (!TreasureSettings.Enabled.Value)
+        if (!sold)
         {
             if (entry != null)
             {
@@ -296,7 +312,7 @@ public static class TreasureRegistry
             trader.m_items.Add(entry);
         }
 
-        entry.m_price = TreasureSettings.Price.Value;
+        entry.m_price = price;
         entry.m_requiredGlobalKey = TreasureSettings.RequiredGlobalKey.Value?.Trim() ?? string.Empty;
     }
 

@@ -53,8 +53,9 @@ public static class TreasureSiteFinder
     /// </summary>
     /// <param name="origin">The buyer's position.</param>
     /// <param name="random">Random source.</param>
+    /// <param name="maxDistance">Farthest distance instead of the setting, e.g. for the next map of a hunt.</param>
     /// <returns>Up to 16 candidates, those by water first.</returns>
-    public static List<TreasureCandidate> Find(Vector3 origin, System.Random random)
+    public static List<TreasureCandidate> Find(Vector3 origin, System.Random random, float? maxDistance = null)
     {
         List<TreasureCandidate> found = new();
         Minimap map = Minimap.instance;
@@ -67,7 +68,7 @@ public static class TreasureSiteFinder
         float water = ZoneSystem.instance.m_waterLevel;
         float size = TreasureSettings.FragmentSize.Value;
         float min = TreasureSettings.MinDistance.Value;
-        float max = Mathf.Max(min + 50f, TreasureSettings.MaxDistance.Value);
+        float max = Mathf.Max(min + 50f, maxDistance ?? TreasureSettings.MaxDistance.Value);
         Heightmap.Biome allowed = AllowedBiomes();
         for (int attempt = 0; attempt < MaxTries && found.Count < MaxCandidates; attempt++)
         {

@@ -26,6 +26,10 @@ Each map is a new treasure in a new place, with its own piece of land. Maps can 
 
 If no place suits, or you already have 3 treasures waiting in the ground, Hildir takes the map back and you get your coins back.
 
+## Treasure hunts
+
+Hildir also sells a **Treasure Hunt Map** for 1500 coins, a darker, stained map. It works like a treasure map, but the chest under its cross holds only a little loot and the **next map** of the hunt. Read that map where you found it: its treasure is buried within 1200 m of there. A hunt has 3 maps; the chest of the last one holds 2 black beast trophies and 6 draws from the loot list. The tooltip of every hunt map says which map of the hunt it is.
+
 ## What the map shows
 
 The map is drawn from the land itself, like an old chart: water as an ink wash with thick shorelines, height lines and shading for hills, little trees where the forests are, a red cross on the treasure, a north arrow and a scale bar. It is **incomplete on purpose**: patches have faded away, the edges are torn, and the cross is never in the middle.
@@ -80,9 +84,14 @@ Section `[Treasure]` (admin only, synced from the server):
 | `SkillNamesLevel` | 40 | Exploration level from which a Normal map names its landmarks |
 | `SkillPathLevel` | 70 | Exploration level from which a Normal map shows the dotted path |
 | `SkillFadeReduction` | 0.6 | Share of the faded patches that comes back at Exploration 100 |
+| `HuntSteps` | 3 | Maps in a treasure hunt; 0 and Hildir sells no hunts |
+| `HuntPrice` | 1500 | Coins a treasure hunt costs |
+| `HuntStepMaxDistance` | 1200 | Farthest the next treasure of a hunt lies from where its map is first read, in metres |
+| `HuntStepLootRolls` | 1 | Draws from the loot list in a chest that holds the next map |
+| `HuntFinalLootRolls` / `HuntFinalTrophies` | 6 / 2 | Draws and black beast trophies in the last chest of a hunt |
 
 The default loot list holds the five meads, smoked fish, wolf jerky and sweet gale sausages, White Hilt arrows and bolts, the gifts of Freya, Thor, Odin, Njord and Skadi, bronze and iron runes, lingonberries, crowberries, roseroot and coins.
 
 ## Testing with devcommands
 
-`spawn WhiteHiltTreasureMap` gives an unmarked map. Use it to have a treasure buried for it, just like one bought from Hildir (no coins are given back if no place is found).
+`spawn WhiteHiltTreasureMap` gives an unmarked map. Use it to have a treasure buried for it, just like one bought from Hildir (no coins are given back if no place is found). `spawn WhiteHiltTreasureHunt` gives a hunt map, but only a bought one starts a hunt; a spawned one is a single map.

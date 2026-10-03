@@ -58,7 +58,10 @@ public class TreasureService : MonoBehaviour
 
         pending[id] = Time.time;
 
-        List<TreasureCandidate> candidates = TreasureSiteFinder.Find(player.transform.position, random);
+        int step = TreasureMapItem.GetStep(map);
+        int steps = TreasureMapItem.GetSteps(map);
+        List<TreasureCandidate> candidates = TreasureSiteFinder.Find(player.transform.position, random,
+            step > 1 ? TreasureSettings.HuntStepMaxDistance.Value : null);
         if (candidates.Count == 0)
         {
             pending.Remove(id);
@@ -78,6 +81,8 @@ public class TreasureService : MonoBehaviour
             package.Write(candidate.NearWater);
         }
 
+        package.Write(step);
+        package.Write(steps);
         ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), RequestRpc, package);
     }
 
@@ -155,6 +160,9 @@ public class TreasureService : MonoBehaviour
             candidates.Add(new TreasureCandidate(chest, centre, package.ReadBool()));
         }
 
+        int step = package.ReadInt();
+        int steps = package.ReadInt();
+
         RefreshMounds();
         ZPackage reply = new();
         reply.Write(id);
@@ -167,7 +175,7 @@ public class TreasureService : MonoBehaviour
         {
             reply.Write(ResultTooMany);
         }
-        else if (TryBury(id, playerId, candidates, out Mound buried))
+        else if (TryBury(id, playerId, candidates, step, steps, out Mound buried))
         {
             WriteSite(reply, buried.Zdo, buried.Centre, buried.Size);
         }
@@ -179,7 +187,7 @@ public class TreasureService : MonoBehaviour
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, ReplyRpc, reply);
     }
 
-    private bool TryBury(string id, long playerId, List<TreasureCandidate> candidates, out Mound buried)
+    private bool TryBury(string id, long playerId, List<TreasureCandidate> candidates, int step, int steps, out Mound buried)
     {
         buried = null;
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(TreasureRegistry.MoundPrefabName) : null;
@@ -210,6 +218,8 @@ public class TreasureService : MonoBehaviour
             zdo.Set(BuriedTreasure.BuyerKey, playerId);
             zdo.Set(BuriedTreasure.CentreKey, new Vector3(candidate.Centre.x, 0f, candidate.Centre.y));
             zdo.Set(BuriedTreasure.SizeKey, TreasureSettings.FragmentSize.Value);
+            zdo.Set(BuriedTreasure.StepKey, step);
+            zdo.Set(BuriedTreasure.StepsKey, steps);
 
             // Nobody owns it until a player comes near; then that player's client takes it over.
             zdo.SetOwnerInternal(0L);

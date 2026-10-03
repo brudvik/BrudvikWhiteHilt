@@ -137,7 +137,7 @@ Buy a puppy from the Bog Witch and raise it into a companion that follows, fight
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure Chest" height="120">
 
-Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy.
+Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy, or follow a treasure hunt from map to map.
 
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 

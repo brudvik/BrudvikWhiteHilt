@@ -22,6 +22,12 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
     /// <summary>ZDO key of the width of the map.</summary>
     public const string SizeKey = "whitehilt_treasure_size";
 
+    /// <summary>ZDO key of the treasure hunt step the mound is, 1 for the first.</summary>
+    public const string StepKey = "whitehilt_treasure_step";
+
+    /// <summary>ZDO key of the number of maps in the treasure hunt, 1 for a single map.</summary>
+    public const string StepsKey = "whitehilt_treasure_steps";
+
     private const string DugKey = "whitehilt_treasure_dug";
     private const string SettledKey = "whitehilt_treasure_settled";
     private const string DigRpc = "WhiteHiltTreasureDig";
@@ -222,10 +228,42 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
 
         GameObject chest = Instantiate(prefab, transform.position, transform.rotation);
         Container container = chest.GetComponent<Container>();
-        TreasureLoot.Fill(container.GetInventory());
+        ZDO zdo = nview.GetZDO();
+        int step = Mathf.Max(1, zdo.GetInt(StepKey, 1));
+        int steps = Mathf.Max(1, zdo.GetInt(StepsKey, 1));
+        if (step < steps)
+        {
+            AddNextMap(container.GetInventory(), step + 1, steps);
+            TreasureLoot.Fill(container.GetInventory(), 0, TreasureSettings.HuntStepLootRolls.Value);
+        }
+        else if (steps > 1)
+        {
+            TreasureLoot.Fill(container.GetInventory(), TreasureSettings.HuntFinalTrophies.Value, TreasureSettings.HuntFinalLootRolls.Value);
+        }
+        else
+        {
+            TreasureLoot.Fill(container.GetInventory());
+        }
+
         chest.GetComponent<ZNetView>()?.GetZDO()?.Set(IdKey, id);
         TreasureRegistry.UnearthEffect?.Create(transform.position, Quaternion.identity);
         TreasureService.AnnounceFound(id);
         ZNetScene.instance.Destroy(gameObject);
+    }
+
+    // The next map of a hunt, not marked yet: reading it buries the next treasure near where it is read.
+    private static void AddNextMap(Inventory inventory, int step, int steps)
+    {
+        GameObject prefab = ObjectDB.instance.GetItemPrefab(TreasureMapItem.HuntPrefabName);
+        if (prefab == null)
+        {
+            return;
+        }
+
+        ItemDrop.ItemData map = prefab.GetComponent<ItemDrop>().m_itemData.Clone();
+        map.m_dropPrefab = prefab;
+        map.m_stack = 1;
+        TreasureMapItem.SetHunt(map, step, steps);
+        inventory.AddItem(map);
     }
 }

@@ -61,7 +61,12 @@ public static class TreasureMapItem
     /// <summary>Prefab name of the map.</summary>
     public const string PrefabName = "WhiteHiltTreasureMap";
 
+    /// <summary>Prefab name of a map of a treasure hunt.</summary>
+    public const string HuntPrefabName = "WhiteHiltTreasureHunt";
+
     private const string IdKey = "whitehilt_treasure_id";
+    private const string StepKey = "whitehilt_treasure_step";
+    private const string StepsKey = "whitehilt_treasure_steps";
     private const string SiteKey = "whitehilt_treasure_site";
     private const string MarksKey = "whitehilt_treasure_marks";
     private const string MoundKey = "whitehilt_treasure_mound";
@@ -76,7 +81,39 @@ public static class TreasureMapItem
     /// <returns>True for a treasure map.</returns>
     public static bool IsMap(ItemDrop.ItemData item)
     {
-        return item?.m_dropPrefab != null && item.m_dropPrefab.name == PrefabName;
+        return item?.m_dropPrefab != null && (item.m_dropPrefab.name == PrefabName || item.m_dropPrefab.name == HuntPrefabName);
+    }
+
+    /// <summary>
+    /// The step of a treasure hunt a map leads to, 1 for the first; a single map is step 1 of 1.
+    /// </summary>
+    /// <param name="item">The map.</param>
+    /// <returns>The step.</returns>
+    public static int GetStep(ItemDrop.ItemData item)
+    {
+        return int.TryParse(Get(item, StepKey), NumberStyles.Integer, CultureInfo.InvariantCulture, out int step) ? Mathf.Max(1, step) : 1;
+    }
+
+    /// <summary>
+    /// The number of maps in the map's treasure hunt, 1 for a single map.
+    /// </summary>
+    /// <param name="item">The map.</param>
+    /// <returns>The number of steps.</returns>
+    public static int GetSteps(ItemDrop.ItemData item)
+    {
+        return int.TryParse(Get(item, StepsKey), NumberStyles.Integer, CultureInfo.InvariantCulture, out int steps) ? Mathf.Max(1, steps) : 1;
+    }
+
+    /// <summary>
+    /// Makes a map part of a treasure hunt.
+    /// </summary>
+    /// <param name="item">The map.</param>
+    /// <param name="step">The step it leads to.</param>
+    /// <param name="steps">Maps in the hunt.</param>
+    public static void SetHunt(ItemDrop.ItemData item, int step, int steps)
+    {
+        item.m_customData[StepKey] = step.ToString(CultureInfo.InvariantCulture);
+        item.m_customData[StepsKey] = steps.ToString(CultureInfo.InvariantCulture);
     }
 
     /// <summary>

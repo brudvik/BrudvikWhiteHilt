@@ -97,6 +97,24 @@ public static class TreasureSettings
     /// <summary>Share of the faded parts restored at Exploration 100; less at lower levels.</summary>
     public static ConfigEntry<float> SkillFadeReduction { get; private set; }
 
+    /// <summary>Maps in a treasure hunt; 0 and Hildir sells no hunts.</summary>
+    public static ConfigEntry<int> HuntSteps { get; private set; }
+
+    /// <summary>Coins a treasure hunt costs.</summary>
+    public static ConfigEntry<int> HuntPrice { get; private set; }
+
+    /// <summary>Farthest the next treasure of a hunt lies from where its map is read, in metres.</summary>
+    public static ConfigEntry<float> HuntStepMaxDistance { get; private set; }
+
+    /// <summary>Draws from the loot list in a chest that holds the next map of a hunt.</summary>
+    public static ConfigEntry<int> HuntStepLootRolls { get; private set; }
+
+    /// <summary>Draws from the loot list in the last chest of a hunt.</summary>
+    public static ConfigEntry<int> HuntFinalLootRolls { get; private set; }
+
+    /// <summary>Black beast trophies in the last chest of a hunt.</summary>
+    public static ConfigEntry<int> HuntFinalTrophies { get; private set; }
+
     /// <summary>
     /// Binds the entries. Call from the plugin's Awake, after the config is set up.
     /// </summary>
@@ -148,5 +166,16 @@ public static class TreasureSettings
             "Exploration level from which a Normal map shows a dotted path from a landmark to the cross.", new AcceptableValueRange<int>(0, 100));
         SkillFadeReduction = WhiteHiltConfig.BindAdminOnly(Section, "SkillFadeReduction", 0.6f,
             "Share of the faded parts that comes back at Exploration 100, less at lower levels (0.6 = 60%).", new AcceptableValueRange<float>(0f, 1f));
+        HuntSteps = WhiteHiltConfig.BindAdminOnly(Section, "HuntSteps", 3,
+            "Maps in a treasure hunt from Hildir: each chest but the last holds the next map. 0: she sells no hunts.", new AcceptableValueRange<int>(0, 10));
+        HuntPrice = WhiteHiltConfig.BindAdminOnly(Section, "HuntPrice", 1500, "Coins a treasure hunt costs at Hildir.", new AcceptableValueRange<int>(0, 20000));
+        HuntStepMaxDistance = WhiteHiltConfig.BindAdminOnly(Section, "HuntStepMaxDistance", 1200f,
+            "Farthest the next treasure of a hunt lies from where its map is first read, in metres.", new AcceptableValueRange<float>(300f, 10000f));
+        HuntStepLootRolls = WhiteHiltConfig.BindAdminOnly(Section, "HuntStepLootRolls", 1,
+            "Draws from the loot list in a chest that holds the next map of a hunt.", new AcceptableValueRange<int>(0, 10));
+        HuntFinalLootRolls = WhiteHiltConfig.BindAdminOnly(Section, "HuntFinalLootRolls", 6,
+            "Draws from the loot list in the last chest of a hunt.", new AcceptableValueRange<int>(0, 20));
+        HuntFinalTrophies = WhiteHiltConfig.BindAdminOnly(Section, "HuntFinalTrophies", 2,
+            "Black beast trophies in the last chest of a hunt, of beasts whose boss has been defeated.", new AcceptableValueRange<int>(0, 5));
     }
 }
