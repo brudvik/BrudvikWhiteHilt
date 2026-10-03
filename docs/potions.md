@@ -6,7 +6,7 @@
 
 All potions are crafted in the **Cauldron** as Mead Base, then fermented in the **Fermenter** to produce the final mead.
 
-Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir, juniper and angelica for Ullr, angelica for Heimdall ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
+Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir, juniper and angelica for Ullr, angelica for Heimdall, henbane, ergot and rock lichen for the Völva ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
 
 ### Timed Effects (20 minutes duration)
 
@@ -36,6 +36,7 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 | **Gift of Odin** | The Allfather's vigour - full heal on drink, +50 max HP, +2 HP/s, 2x health regeneration, 50% less fall damage. The strongest health potion, but you can still die. | Mushroom ×20, Raspberries ×20, Blueberries ×20 |
 | **Gift of Eir** | The healer among the gods - heals half your health on drink, ends poison, fire, frost, shock, tar and smoke and keeps them off, 2x health regeneration. | Sphagnum Moss ×10, Bog Bean ×5, Honey ×10 |
 | **Gift of Heimdall** | The watchman who hears the grass grow - every foe within 60 m shows on the map. | Angelica ×5, Crowberries ×10, Crystal ×2 |
+| **Gift of the Völva** | The seeress's draught - the 40 nearest things to pick within 50 m, and unopened chests the world placed there, show on the map. | Henbane ×4, Ergot ×3, Rock Lichen ×5 |
 
 ### Special Effects (30 minutes or until triggered)
 
@@ -65,6 +66,7 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Freya | `BonusStamina` 400, `StaminaUse` -0.9 (negative restores stamina), `StaminaRegenBonus` 40 |
 | Freyr | `HealthRegenMultiplier` 2, `StaminaRegenMultiplier` 2, `CarryWeight` 150, `HomeItemStaminaMultiplier` 0, `HealPerSecond` 1, `StaminaPerSecond` 5 |
 | Heimdall | `DurationMinutes` 10, `Radius` 60, `RefreshSeconds` 2 |
+| Völva | `DurationMinutes` 10, `SightRadius` 50, `MaxPins` 40, `RefreshSeconds` 4 |
 | Hel | `DurationMinutes` 30, `TriggerHealthFraction` 0.1 |
 | Hugin | `SkillLevel` 100 (no duration) |
 | Idunn | `HealthRegenMultiplier` 1.25, `StaminaRegenMultiplier` 1.5, `EitrRegenMultiplier` 1.5, `HealPerSecond` 0 |

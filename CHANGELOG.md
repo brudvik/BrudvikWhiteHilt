@@ -21,6 +21,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Yarrow Gruit** (Cauldron, then Fermenter): Yarrow, Barley and Honey; below half health, health regenerates 2.5 times as fast for 10 minutes (`[Meads.YarrowGruit]`)
 - **Hop Ale** (Cauldron, then Fermenter): Hop Cones, Barley and Honey; for 30 minutes Rested lasts 50% longer, also a Rested you already have (`[Meads.HopAle]`)
 - **Henbane Beer** (Cauldron, then Fermenter): Henbane, Barley and Honey; berserkergang for 5 minutes: 30% more blunt, slash and pierce damage and no stagger, but half your armor, and you lose a fifth of your health when it ends (never fatal) (`[Meads.HenbaneBeer]`)
+- **Gift of the Völva**: the seeress's draught, brewed from Henbane, Ergot and Rock Lichen. For 10 minutes the 40 nearest things to pick within 50 m, and every unopened chest the world placed there, show on the map (`[Potions.GiftOfVolva]`)
 
 ## v0.59.0 - 2026-10-03
 
