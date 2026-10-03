@@ -51,6 +51,13 @@
 
     { "image": "chanterelle", "models": ["chanterelle"] },
     { "image": "porcini", "models": ["porcini"] },
+    { "image": "sphagnum_moss", "models": ["sphagnum"], "view": { "yaw": 150, "pitch": 35 } },
+    { "image": "bog_bean", "models": ["bogbean"] },
+    { "image": "labrador_tea", "models": ["labradortea", "labradorteafruit"] },
+    { "image": "cattail", "models": ["cattail"] },
+    { "image": "meadowsweet", "models": ["meadowsweet"] },
+    { "image": "bog_iron", "models": ["bogiron"], "view": { "yaw": 150, "pitch": 35 } },
+    { "image": "peat", "models": ["peatstack"], "view": { "yaw": 150, "pitch": 35 } },
     { "image": "stone_pot", "models": ["stonepot"] },
     { "image": "herb_tray", "models": ["herbtray"] },
     { "image": "smoke_oven", "models": ["smokeoven"] },
