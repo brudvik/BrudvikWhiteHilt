@@ -8,6 +8,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Sphagnum Moss**: red and green cushions of bog moss on the wet ground of the Swamp, or from red mushrooms picked there (25%). A dye and a healer's ingredient (`[Foraging.SphagnumMoss]`)
 - **Bog Bean**: three-lobed leaves and fringed white flowers at the edge of the Swamp water, or from wild turnips picked there (30%). Bitter, for fever draughts (`[Foraging.BogBean]`)
 - **Labrador Tea**: a low evergreen shrub on the Swamp hummocks with domes of white flowers, or from thistles picked there (20%). Its sharp smell keeps biting insects away (`[Foraging.LabradorTea]`)
+- **Cattail**: tall bog grass with brown velvet heads at the water's edge in the Swamp, or from wild turnips picked there (20%). Its roots give flour for Swamp dishes (`[Foraging.Cattail]`)
 
 ## v0.57.2 - 2026-10-03
 
