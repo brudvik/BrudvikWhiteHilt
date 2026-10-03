@@ -26,6 +26,8 @@ Giant spiders live around **spider nests** in the Black Forest: a pale, web-cove
 
 Their bite is **poisonous** and **webs** you: you move at half speed for 3 seconds. They are afraid of fire, avoid water and are weak to blunt and fire damage.
 
+A normal spider is about **2.4 m across** (50% larger than before). One and two stars add 15% and 30% visual size, respectively; higher stars also use the [Difficulty](difficulty.md) size settings. They have their own dry clicks, rasps and hisses for idle, alert, bite, injury and death.
+
 Nests appear in about 15% of the Black Forest's zones as the land is generated. Land generated before the spiders came gets its nests once, when the server starts: the same zones win the same roll, and the nest goes on a free, flat forest spot at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)).
 
 At night, a **lone spider** may also come out anywhere in the forest, nest or no nest.
@@ -43,7 +45,7 @@ In the dark hour and under a blood moon, its black cousin, the **Black Dragon**,
 | | Health | Attack | Weak to |
 |---|---|---|---|
 | **Lindorm** | 700 | Bite, 55 pierce | Fire |
-| **Giant Spider** | 120 | Bite, 18 pierce + 15 poison, webs you | Blunt, fire |
+| **Giant Spider** | 120 | Bite, 30 pierce + 20 poison, webs you | Blunt, fire |
 | **Spider Nest** | 300 | — | — |
 | **Desert Dragon** | 500 | Fire breath, 12 flames of 15 fire | Frost |
 
@@ -94,9 +96,11 @@ Section `[Giant Spider]`:
 |---|---|---|
 | `Enabled` | true | Nests and lone spiders in the Black Forest |
 | `Health` | 120 | Health of a spider |
-| `Damage` / `Poison` | 18 / 15 | Pierce and poison damage of its bite |
+| `Damage` / `Poison` | 30 / 20 | Pierce and poison damage of its bite |
 | `WebSeconds` | 3 | Seconds a bite slows you; 0 = no slow |
-| `Scale` | 1 | Size (1 = about 1.6 m across; after a restart) |
+| `Scale` | 1.5 | Size (1 = about 1.6 m across; default about 2.4 m; after a restart) |
+| `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
+| `Sounds` | true | Own spider clicks, rasps and hisses (after a restart) |
 | `NestChancePerZone` | 0.15 | Chance of a nest in each Black Forest zone |
 | `NestHealth` | 300 | Health of a nest |
 | `NestMaxNear` | 3 | Spiders a nest keeps around it |
@@ -106,6 +110,8 @@ Section `[Giant Spider]`:
 | `NightSpawnChance` | 20 | Percent chance per spawn check of a lone spider at night; 0 = none |
 | `NightSpawnSeconds` | 240 | Seconds between two spawn checks for lone spiders |
 | `NightSpawnMax` | 1 | Lone spiders around a player at most |
+
+On upgrade to 0.72.1, the previous spider defaults (`Scale` 1, `Damage` 18, `Poison` 15) move to the new defaults once. Other configured values are preserved.
 
 Section `[Desert Dragon]`:
 

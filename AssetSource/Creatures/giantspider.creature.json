@@ -49,6 +49,7 @@
     { "name": "die", "take": "die", "loop": false }
   ],
   "front_bone": "Fang.L_038",
+  "front_origin_bone": "Back_037",
   "controller": {
     "idle": "idle",
     "move": "walk",

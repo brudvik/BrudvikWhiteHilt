@@ -68,6 +68,12 @@ public static class MonsterSettings
     /// <summary>Size of a giant spider.</summary>
     public static ConfigEntry<float> SpiderScale { get; private set; }
 
+    /// <summary>Visual growth per star, up to two stars.</summary>
+    public static ConfigEntry<float> SpiderStarScale { get; private set; }
+
+    /// <summary>Whether spiders use their own clicks and hisses.</summary>
+    public static ConfigEntry<bool> SpiderSounds { get; private set; }
+
     /// <summary>Chance, in percent, that a giant spider drops its trophy.</summary>
     public static ConfigEntry<float> SpiderTrophyChance { get; private set; }
 
@@ -171,12 +177,17 @@ public static class MonsterSettings
 
         SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in the Black Forest and roam it at night. Off: no new nests and no lone spiders.");
         SpiderHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Health", 120f, "Health of a giant spider.", new AcceptableValueRange<float>(10f, 5000f));
-        SpiderDamage = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Damage", 18f, "Pierce damage of a giant spider's bite.", new AcceptableValueRange<float>(0f, 500f));
-        SpiderPoison = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Poison", 15f, "Poison damage of a giant spider's bite, dealt over time.", new AcceptableValueRange<float>(0f, 500f));
+        SpiderDamage = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Damage", 30f, "Pierce damage of a giant spider's bite.", new AcceptableValueRange<float>(0f, 500f));
+        SpiderPoison = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Poison", 20f, "Poison damage of a giant spider's bite, dealt over time.", new AcceptableValueRange<float>(0f, 500f));
         SpiderWebSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "WebSeconds", 3f, "Seconds a bite slows its victim with web. 0 = no slow.",
             new AcceptableValueRange<float>(0f, 30f));
-        SpiderScale = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Scale", 1f, "Size of a giant spider (1 = about 1.6 m across). Applies after a restart.",
+        SpiderScale = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Scale", 1.5f, "Size of a giant spider (1 = about 1.6 m across). Applies after a restart.",
             new AcceptableValueRange<float>(0.3f, 3f));
+        SpiderStarScale = WhiteHiltConfig.BindAdminOnly(SpiderSection, "StarScale", 0.15f,
+            "Visual growth per star up to two stars (0.15 = +15% / +30%). Higher stars also use the difficulty size settings. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 0.5f));
+        SpiderSounds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Sounds", true,
+            "Use the spider's own clicks, rasps and hisses for idle, alert, bite, injury and death. Applies after a restart.");
         SpiderTrophyChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "TrophyChance", 10f, "Chance, in percent, that a giant spider drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         NestChancePerZone = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestChancePerZone", 0.15f,

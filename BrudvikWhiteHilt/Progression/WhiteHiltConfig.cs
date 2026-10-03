@@ -300,6 +300,26 @@ public static class WhiteHiltConfig
             Jotunn.Logger.LogInfo($"Config migration {id} applied.");
         }
 
+        if (!done.Contains("spider-0.72.1"))
+        {
+            foreach ((string key, float previous) in new[] { ("Scale", 1f), ("Damage", 18f), ("Poison", 15f) })
+            {
+                ConfigDefinition definition = new("Giant Spider", key);
+                if (configFile.ContainsKey(definition))
+                {
+                    ConfigEntryBase entry = configFile[definition];
+                    if (entry.BoxedValue is float value && value == previous)
+                    {
+                        entry.BoxedValue = entry.DefaultValue;
+                    }
+                }
+            }
+            done.Add("spider-0.72.1");
+            orphans[marker] = string.Join(",", done);
+            changed = true;
+            Jotunn.Logger.LogInfo("Config migration spider-0.72.1 applied; custom spider values kept.");
+        }
+
         if (changed)
         {
             configFile.Save();

@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.72.1 - 2026-10-03
+
+### Changed
+- **Giant spiders**: default size increased by 50% (about 2.4 m across), with configurable visual growth of 15% per star up to two stars. Higher stars retain the difficulty system's extra growth. Bite damage increased from 18 pierce / 15 poison to 30 pierce / 20 poison. Previous default config values migrate once; custom values are preserved.
+- **Giant spiders**: original clicks, rasps and hisses for idle, alert, bite, injury and death, switchable with `[Giant Spider] Sounds`.
+
+### Fixed
+- **Giant spiders**: face forwards instead of walking abdomen-first. The model import measures the fangs relative to the abdomen rather than the offset model origin, and centres the body horizontally.
+
 ## v0.72.0 - 2026-10-03
 
 ### Added

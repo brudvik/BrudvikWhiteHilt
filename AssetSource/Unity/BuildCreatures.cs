@@ -57,6 +57,7 @@ public static class BuildCreatures
     {
         public ClipSpec[] clips = new ClipSpec[0];
         public string front_bone;
+        public string front_origin_bone;
         public ControllerSpec controller = new();
     }
 
@@ -354,12 +355,25 @@ public static class BuildCreatures
         {
             Transform front = model.GetComponentsInChildren<Transform>(true).FirstOrDefault(each => each.name == spec.front_bone)
                 ?? throw new InvalidOperationException($"{name}: no bone '{spec.front_bone}'");
-            if (root.transform.InverseTransformPoint(front.position).z < 0f)
+            Transform origin = string.IsNullOrEmpty(spec.front_origin_bone) ? root.transform
+                : model.GetComponentsInChildren<Transform>(true).FirstOrDefault(each => each.name == spec.front_origin_bone)
+                    ?? throw new InvalidOperationException($"{name}: no bone '{spec.front_origin_bone}'");
+            if (root.transform.InverseTransformDirection(front.position - origin.position).z < 0f)
             {
                 model.transform.localRotation = Quaternion.Euler(0f, 180f, 0f) * model.transform.localRotation;
             }
 
-            Debug.Log($"[WhiteHilt] Creature '{name}': front bone {spec.front_bone} at {root.transform.InverseTransformPoint(front.position):F2}");
+            float forward = root.transform.InverseTransformDirection(front.position - origin.position).z;
+            if (forward <= 0f)
+            {
+                throw new InvalidOperationException($"{name}: front bone must face +z relative to '{origin.name}'");
+            }
+            if (!string.IsNullOrEmpty(spec.front_origin_bone))
+            {
+                Vector3 offset = root.transform.InverseTransformPoint(origin.position);
+                model.transform.localPosition -= new Vector3(offset.x, 0f, offset.z);
+            }
+            Debug.Log($"[WhiteHilt] Creature '{name}': front bone {spec.front_bone}, origin {origin.name}, forward {forward:R}");
         }
 
         Bounds bounds = MeasureBounds(root, renderers);

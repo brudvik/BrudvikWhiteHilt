@@ -313,8 +313,54 @@ public static class MonsterRegistry
         ai.m_fleeIfNotAlerted = false;
 
         AttachVisual(visual, "giantspider", template, scale);
+        LevelEffects levels = visual.gameObject.AddComponent<LevelEffects>();
+        levels.m_levelSetups = Enumerable.Range(1, Difficulty.CreatureStars.MaxLevel - 1)
+            .Select(stars => new LevelEffects.LevelSetup { m_scale = 1f + Mathf.Min(stars, 2) * MonsterSettings.SpiderStarScale.Value })
+            .ToList();
+        if (MonsterSettings.SpiderSounds.Value)
+        {
+            AddSpiderSounds(humanoid, ai, bite);
+        }
         CreatureManager.Instance.AddCreature(creature);
         return prefab;
+    }
+
+    private static void AddSpiderSounds(Humanoid humanoid, MonsterAI ai, CustomItem bite)
+    {
+        GameObject source = ai.m_alertedEffects.m_effectPrefabs.Select(effect => effect.m_prefab)
+            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
+        if (source == null)
+        {
+            Jotunn.Logger.LogWarning("Giant spider: no alert sound prefab to clone");
+            return;
+        }
+
+        Dictionary<string, GameObject> sounds = new();
+        foreach (string name in new[] { "spideridle", "spideralert", "spiderbite", "spiderhit", "spiderdeath" })
+        {
+            GameObject effect = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
+            effect.GetComponentInChildren<ZSFX>(true).m_audioClips = new[] { ForagingAssets.LoadAudio(name) };
+            sounds[name] = effect;
+        }
+
+        ai.m_idleSound = ReplaceSound(ai.m_idleSound, sounds["spideridle"]);
+        ai.m_alertedEffects = ReplaceSound(ai.m_alertedEffects, sounds["spideralert"]);
+        humanoid.m_hitEffects = ReplaceSound(humanoid.m_hitEffects, sounds["spiderhit"]);
+        humanoid.m_critHitEffects = ReplaceSound(humanoid.m_critHitEffects, sounds["spiderhit"]);
+        humanoid.m_deathEffects = ReplaceSound(humanoid.m_deathEffects, sounds["spiderdeath"]);
+        ItemDrop.ItemData.SharedData shared = bite.ItemDrop.m_itemData.m_shared;
+        shared.m_triggerEffect = ReplaceSound(shared.m_triggerEffect, sounds["spiderbite"]);
+    }
+
+    private static EffectList ReplaceSound(EffectList effects, GameObject sound)
+    {
+        return new EffectList
+        {
+            m_effectPrefabs = (effects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>())
+                .Where(effect => effect.m_prefab != null && effect.m_prefab.GetComponentInChildren<ZSFX>(true) == null)
+                .Append(new EffectList.EffectData { m_prefab = sound, m_enabled = true })
+                .ToArray()
+        };
     }
 
     private static StatusEffect AddWebEffect()
