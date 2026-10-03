@@ -58,5 +58,12 @@ Only a weapon with a bound trophy can be etched, and it holds one rune; etching 
 | Black Metal Rune | Kraken Ink ×3 | **Storm**: lightning damage |
 | Iron Rune | Spider Silk ×5 | **Spider's Web**: every hit webs the target, as a giant spider's bite does |
 | Gold Rune | Kraken Ink ×3, Kraken Tentacle ×1 | **Grip of the Deep**: half the rune strength comes back as health of the damage dealt (12.5% with the Black Morgen trophy) |
+| Bone Rune | Juniper Berries ×10 | **Seid Smoke**: spirit damage, the bane of draugr, skeletons and ghosts |
+
+The metal runes are the portal runes ([Portals & travel](portals.md)). The other runes are smithed at the Rune Forge only for etching; they cannot be hung on a rune post:
+
+| Etching rune | Rune Forge |
+|------|-----------|
+| Bone Rune | Iron ×4, Bone Fragments ×10, Silver ×1 |
 
 The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5).

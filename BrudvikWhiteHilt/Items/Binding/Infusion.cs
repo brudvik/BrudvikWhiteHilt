@@ -25,6 +25,9 @@ public enum InfusionKind
 
     /// <summary>Lightning damage.</summary>
     Storm,
+
+    /// <summary>Seid smoke: spirit damage, the bane of the dead.</summary>
+    Seid,
 }
 
 /// <summary>
@@ -43,6 +46,7 @@ public sealed class Infusion
         new(InfusionKind.Web, "WhiteHiltIronRune", "WhiteHilt_SpiderSilk:5", "Spider's Web"),
         new(InfusionKind.Deep, "WhiteHiltGoldRune", "WhiteHilt_KrakenInk:3, WhiteHilt_KrakenMeat:1", "Grip of the Deep"),
         new(InfusionKind.Storm, "WhiteHiltBlackMetalRune", "WhiteHilt_KrakenInk:3", "Storm"),
+        new(InfusionKind.Seid, "WhiteHiltBoneRune", "WhiteHiltJuniper:10", "Seid Smoke"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
@@ -108,6 +112,9 @@ public sealed class Infusion
                 break;
             case InfusionKind.Storm:
                 damages.m_lightning += amount;
+                break;
+            case InfusionKind.Seid:
+                damages.m_spirit += amount;
                 break;
         }
     }

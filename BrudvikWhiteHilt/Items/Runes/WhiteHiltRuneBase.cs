@@ -38,7 +38,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private ItemDrop.ItemData.SharedData shared;
 
     /// <summary>
-    /// Position of the rune on the post, from 0 to <see cref="Count"/> - 1. Also its bit in the post's mask.
+    /// Position of the rune on the post, from 0 to <see cref="Count"/> - 1. Also its bit in the post's mask. -1 for a rune
+    /// that is only etched into weapons and never hung on a post.
     /// </summary>
     public abstract int Index { get; }
 
@@ -82,8 +83,13 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// </summary>
     protected virtual int IronCost => 2 + Index * 2;
 
+    /// <summary>
+    /// Materials the rune forge takes besides the iron.
+    /// </summary>
+    protected virtual RequirementConfig[] ExtraRequirements => Array.Empty<RequirementConfig>();
+
     /// <inheritdoc/>
-    public ProgressionTier DefaultTier => ProgressionTier.Swamp;
+    public virtual ProgressionTier DefaultTier => ProgressionTier.Swamp;
 
     /// <inheritdoc/>
     public string Id => BaseName;
@@ -126,7 +132,11 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected WhiteHiltRuneBase(ItemManager instance)
     {
         this.instance = instance;
-        all[Index] = this;
+        if (Index >= 0)
+        {
+            all[Index] = this;
+        }
+
         BindConfig();
         Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
     }
@@ -177,7 +187,7 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
                 Requirements = new RequirementConfig[]
                 {
                     new() { Item = "Iron", Amount = IronCost, Recover = false }
-                }
+                }.Concat(ExtraRequirements).ToArray()
             });
 
             ItemDrop.ItemData.SharedData runeShared = rune.ItemDrop.m_itemData.m_shared;

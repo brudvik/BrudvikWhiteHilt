@@ -19,6 +19,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Gift of Kvasir**: the mead of poetry, brewed from Meadowsweet, Honey and Angelica. Every skill rises 50% faster for 20 minutes (`[Potions.GiftOfKvasir]`)
 - **Gift of Ullr**: the hunter god's gift, brewed from Juniper Berries, Angelica and Feathers. Bows hit 25% harder, you move 15% faster and are harder to notice for 20 minutes (`[Potions.GiftOfUllr]`)
 - **Gift of Heimdall**: the watchman's gift, brewed from Angelica, Crowberries and Crystal. Every foe within 60 m shows on the map for 10 minutes (`[Potions.GiftOfHeimdall]`)
+- **Bone Rune** and **Seid Smoke**: a rune of iron, bone and silver, smithed at the Rune Forge and only etched, never hung on a post. Etched with Juniper Berries into a bound White Hilt weapon it adds spirit damage, the bane of draugr, skeletons and ghosts (`[Gear.Infusions] SeidCost`)
 
 ## v0.58.0 - 2026-10-03
 

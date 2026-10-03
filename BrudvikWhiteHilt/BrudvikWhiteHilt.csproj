@@ -213,6 +213,8 @@
     <Compile Include="Items\Runes\IronRune\IronRune.cs" />
     <Compile Include="Items\Runes\SilverRune\SilverRune.cs" />
     <Compile Include="Items\Runes\WhiteHiltRuneBase.cs" />
+    <Compile Include="Items\Runes\EtchingRuneBase.cs" />
+    <Compile Include="Items\Runes\BoneRune\BoneRune.cs" />
     <Compile Include="Items\ShipUpgrades\ShipUpgrades.cs" />
     <Compile Include="Items\ShipUpgrades\WhiteHiltShipUpgradeBase.cs" />
     <Compile Include="Items\IWhiteHiltConfigurable.cs" />
