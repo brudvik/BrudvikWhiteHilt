@@ -69,3 +69,17 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Fang Rune | Iron ×4, Wolf Fang ×3, Silver ×1 |
 
 The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names).
+
+---
+
+## 🪨 WHETSTONE AND WEAPON OILS
+
+Use one from the inventory and the weapon in hand hits harder for a number of hits (shown on the effect icon); woodcutting and mining do not use them up. Any weapon can take them, not only White Hilt gear.
+
+<img src="images/whetstone.png" alt="Whetstone" title="Whetstone" height="140">
+
+| Item | Effect | Crafting Station | Requirements |
+|------|--------|------------------|--------------|
+| **Whetstone** | +15% slash and pierce damage for 30 hits | Workbench | Slate ×2, Leather Scraps ×1 |
+
+Each has a section `[Coatings.<Name>]` (e.g. `[Coatings.Whetstone]`) with `Hits` (30) and `Strength`.

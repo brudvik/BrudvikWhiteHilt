@@ -352,8 +352,13 @@ public abstract class ForageableBase
         }
     }
 
-    // The mushroom's material does not sway in the wind, so models made of many parts keep together.
-    private static Material PlantMaterial(Texture2D texture)
+    /// <summary>
+    /// A copy of the mushroom's material with a bundle texture. It does not sway in the wind, so models made of many parts
+    /// keep together. Cached per texture.
+    /// </summary>
+    /// <param name="texture">Albedo texture.</param>
+    /// <returns>The material.</returns>
+    internal static Material PlantMaterial(Texture2D texture)
     {
         if (plantMaterials.TryGetValue(texture, out Material material))
         {
