@@ -67,26 +67,25 @@ Each item class must implement:
 
 ## Game Balance Guidelines
 
-### Material Tier Restrictions
+### The biome rule
 
-**IMPORTANT**: All crafting requirements must use materials available up to and including the **Swamp biome**:
+**IMPORTANT**: Content belongs to the biome where it is found or first makes sense: a forageable to the biome it grows in, a dish, mead, potion, rune, dye or piece to the latest biome among its ingredients. A recipe may use materials from **its own biome and every earlier biome**, never from a later one, and its strength (food stats, effect, damage, `ProgressionTier`) fits that biome.
 
-**Allowed Materials (Meadows → Swamp)**:
-- Basic: Wood, Stone, Resin, Leather Scraps, Deer Hide
-- Black Forest: Bronze, Copper, Tin, Core Wood, Fine Wood, Troll Hide
-- Swamp: Iron, Chain, Withered Bone, Ancient Bark (ElderBark), Guck, Root, Surtling Core
-
-**NOT Allowed (Mountains and beyond)**:
-- Mountains: Silver, Obsidian, Freeze Gland, Wolf materials
-- Plains: Black Metal, Linen Thread, Needle, Padded armor materials
-- Mistlands: Black Marble, Eitr, Yggdrasil Wood, Carapace
+Biome order and their typical materials:
+- Meadows: Wood, Stone, Flint, Resin, Leather Scraps, Deer Hide, Raspberries, Honey
+- Black Forest: Bronze, Copper, Tin, Core Wood, Fine Wood, Troll Hide, Blueberries, Carrot, Thistle
+- Swamp: Iron, Chain, Withered Bone, Ancient Bark (ElderBark), Guck, Root, Surtling Core, Turnip, Entrails, Bloodbag
+- Mountains: Silver, Obsidian, Freeze Gland, Wolf Pelt and Meat, Onion, Crystal, Slate, Soapstone
+- Plains: Black Metal, Linen Thread, Needle, Barley, Flax, Cloudberries, Lox Meat and Pelt, Tar
+- Mistlands: Black Marble, Eitr, Yggdrasil Wood, Carapace, Sap
 - Ashlands: Flametal, Askvin materials
 
-**Exception – Stone Pot food and foraging meads**: Recipes cooked in the Stone Pot (`Items/Food/`) and the meads brewed from White Hilt forageables (`Items/Meads/`) may use food ingredients from any biome up to and including the **Mountains** (e.g. Wolf Meat, Onion, and the White Hilt Mountains forageables). The ingredients gate them naturally, so these recipes stay at `ProgressionTier.Start` and must not get tier materials such as Bronze or Silver. Gift potions may use the White Hilt forageables up to the Mountains too (Skadi uses Crowberries and Roseroot). Gear, tools and pieces still follow the Swamp rule.
+Ocean materials (Octopus, Kraken Ink and Tentacle) count as Swamp, since the Kraken rises once Bonemass is slain.
 
-**Exception – gear biome upgrades and the White Hilt Cape**: White Hilt armor (uniforms included), weapons and shields upgrade past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor]`, `[Gear.Weapons]` and `[Gear.Shields] Upgrade*`, see `Items/GearUpgrades.cs`; shields also take a Lindorm Scale per level, staffs stay at quality 4). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape. The crafting recipes themselves still follow the Swamp rule.
+- Things gated by their own ingredients (Stone Pot dishes in `Items/Food/`, meads in `Items/Meads/`, roofs in `Pieces/Roofs/`) stay at `ProgressionTier.Start`, or are not tied to tiers at all, and must not get extra tier materials such as Bronze or Silver.
+- The White Hilt forageables of a biome (`Items/Foraging/`) count as that biome's materials.
 
-**Exception – roofs and their materials**: each roof covering (`Pieces/Roofs/`) may use the materials of its own biome up to and including the **Plains**: the slate roof takes Slate (Mountains), the straw thatch Straw (Plains), the Soapstone Hearth Soapstone (Mountains). The materials gate them naturally, so the roofs are not tied to progression tiers; they are switched and priced per covering in `[Roofs.<Covering>]`. Other pieces still follow the Swamp rule.
+**Exception – White Hilt gear**: the crafting recipes of White Hilt armor (uniforms included), weapons, shields and tools still use materials up to and including the **Swamp**, since the gear grows with the player instead. It upgrades past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor]`, `[Gear.Weapons]` and `[Gear.Shields] Upgrade*`, see `Items/GearUpgrades.cs`; shields also take a Lindorm Scale per level, staffs stay at quality 4). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape.
 
 ### CopyFrom Item References
 
@@ -204,7 +203,7 @@ BrudvikWhiteHilt/
 Before committing changes:
 
 1. ✅ All new classes have XML documentation
-2. ✅ Crafting requirements use Swamp-tier or earlier materials
+2. ✅ Crafting requirements follow the biome rule (White Hilt gear recipes: Swamp or earlier)
 3. ✅ `Enabled` property is set appropriately
 4. ✅ Version number incremented in `AssemblyInfo.cs`
 5. ✅ Changelog updated in `CHANGELOG.md`
