@@ -155,6 +155,7 @@
     <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
     <Compile Include="Items\Food\MossPorridge\MossPorridge.cs" />
     <Compile Include="Items\Food\JuniperSmokedHam\JuniperSmokedHam.cs" />
+    <Compile Include="Items\Food\CandiedAngelica\CandiedAngelica.cs" />
     <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
     <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
     <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
