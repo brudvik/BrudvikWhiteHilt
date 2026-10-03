@@ -34,6 +34,12 @@ public static class BindingSettings
     /// <summary>Share of the infusion strength that the Grip of the Deep gives back as health.</summary>
     public static ConfigEntry<float> DeepLifeStealShare { get; private set; }
 
+    /// <summary>How many times stronger Wolfsbane's poison is against beasts.</summary>
+    public static ConfigEntry<float> WolfsbaneBeastMultiplier { get; private set; }
+
+    /// <summary>Creatures (prefab names, comma separated) that Wolfsbane counts as beasts.</summary>
+    public static ConfigEntry<string> WolfsbaneBeasts { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -64,6 +70,11 @@ public static class BindingSettings
         DeepLifeStealShare = WhiteHiltConfig.BindAdminOnly(InfusionSection, "DeepLifeStealShare", 0.5f,
             "Share of the infusion strength the Grip of the Deep gives back as health of the damage dealt (0.5 with a strength of 25% = 12.5%).",
             new AcceptableValueRange<float>(0f, 4f));
+        WolfsbaneBeastMultiplier = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WolfsbaneBeastMultiplier", 3f,
+            "How many times stronger Wolfsbane's poison is against beasts.", new AcceptableValueRange<float>(1f, 10f));
+        WolfsbaneBeasts = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WolfsbaneBeasts",
+            "Wolf,Wolf_cub,Fenring,Fenring_Cultist,Ulv,Bjorn,Unbjorn,Boar,Deer,Lox,Hare,Asksvin",
+            "Creatures (prefab names, comma separated) that Wolfsbane counts as beasts.");
     }
 
     /// <summary>

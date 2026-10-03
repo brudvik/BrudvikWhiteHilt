@@ -215,6 +215,7 @@
     <Compile Include="Items\Runes\WhiteHiltRuneBase.cs" />
     <Compile Include="Items\Runes\EtchingRuneBase.cs" />
     <Compile Include="Items\Runes\BoneRune\BoneRune.cs" />
+    <Compile Include="Items\Runes\FangRune\FangRune.cs" />
     <Compile Include="Items\ShipUpgrades\ShipUpgrades.cs" />
     <Compile Include="Items\ShipUpgrades\WhiteHiltShipUpgradeBase.cs" />
     <Compile Include="Items\IWhiteHiltConfigurable.cs" />

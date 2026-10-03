@@ -28,6 +28,9 @@ public enum InfusionKind
 
     /// <summary>Seid smoke: spirit damage, the bane of the dead.</summary>
     Seid,
+
+    /// <summary>Wolfsbane: poison damage, several times as strong against beasts.</summary>
+    Wolfsbane,
 }
 
 /// <summary>
@@ -47,6 +50,7 @@ public sealed class Infusion
         new(InfusionKind.Deep, "WhiteHiltGoldRune", "WhiteHilt_KrakenInk:3, WhiteHilt_KrakenMeat:1", "Grip of the Deep"),
         new(InfusionKind.Storm, "WhiteHiltBlackMetalRune", "WhiteHilt_KrakenInk:3", "Storm"),
         new(InfusionKind.Seid, "WhiteHiltBoneRune", "WhiteHiltJuniper:10", "Seid Smoke"),
+        new(InfusionKind.Wolfsbane, "WhiteHiltFangRune", "WhiteHiltWolfLichen:10", "Wolfsbane"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
@@ -108,6 +112,7 @@ public sealed class Infusion
                 damages.m_frost += amount;
                 break;
             case InfusionKind.Venom:
+            case InfusionKind.Wolfsbane:
                 damages.m_poison += amount;
                 break;
             case InfusionKind.Storm:

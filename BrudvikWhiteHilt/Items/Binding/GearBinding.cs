@@ -19,6 +19,8 @@ public static class GearBinding
     public const string InfusionKey = "whitehilt_infusion";
 
     private static readonly Dictionary<string, bool> shieldBySharedName = new();
+    private static string beastsParsedFrom;
+    private static HashSet<string> beastNames = new();
 
     /// <summary>
     /// Registers the English texts. Call from the plugin's Awake.
@@ -30,6 +32,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused", "Etched rune: {0}");
         Translations.AddEnglish("whitehilt_infused_web", "Etched rune: {0}, every hit webs the target");
         Translations.AddEnglish("whitehilt_infused_deep", "Etched rune: {0}, {1}% of the damage dealt comes back as health");
+        Translations.AddEnglish("whitehilt_infused_wolfsbane", "Etched rune: {0}, the poison is {1} times as strong against beasts");
         Infusion.RegisterTranslations();
     }
 
@@ -178,6 +181,30 @@ public static class GearBinding
     }
 
     /// <summary>
+    /// How many times stronger a weapon's poison is against a target: Wolfsbane against beasts.
+    /// </summary>
+    /// <param name="item">The weapon.</param>
+    /// <param name="target">The creature hit.</param>
+    /// <returns>The multiplier, 1 for anything else.</returns>
+    public static float PoisonMultiplier(ItemDrop.ItemData item, Character target)
+    {
+        if (target == null || GetBound(item) == null || GetInfusion(item)?.Kind != InfusionKind.Wolfsbane)
+        {
+            return 1f;
+        }
+
+        string beasts = BindingSettings.WolfsbaneBeasts.Value ?? string.Empty;
+        if (!ReferenceEquals(beasts, beastsParsedFrom))
+        {
+            beastsParsedFrom = beasts;
+            beastNames = new HashSet<string>(beasts.Split(',').Select(name => name.Trim()).Where(name => name.Length > 0),
+                StringComparer.OrdinalIgnoreCase);
+        }
+
+        return beastNames.Contains(global::Utils.GetPrefabName(target.gameObject)) ? BindingSettings.WolfsbaneBeastMultiplier.Value : 1f;
+    }
+
+    /// <summary>
     /// Whether every hit of a weapon webs the target.
     /// </summary>
     /// <param name="item">The weapon.</param>
@@ -214,6 +241,8 @@ public static class GearBinding
             {
                 InfusionKind.Web => string.Format(localization.Localize("$whitehilt_infused_web"), name),
                 InfusionKind.Deep => string.Format(localization.Localize("$whitehilt_infused_deep"), name, Percent(LifeSteal(item))),
+                InfusionKind.Wolfsbane => string.Format(localization.Localize("$whitehilt_infused_wolfsbane"), name,
+                    Translations.Number(BindingSettings.WolfsbaneBeastMultiplier.Value)),
                 _ => string.Format(localization.Localize("$whitehilt_infused"), name),
             };
             text += "\n<color=orange>" + line + "</color>";
