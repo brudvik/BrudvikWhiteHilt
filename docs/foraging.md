@@ -15,9 +15,10 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 - **Wolves** have a 20% chance to drop 1–2 Crowberries, and a 10% chance to drop 1–2 Wolf Lichen
 - **Stone Golems** have a 50% chance to drop 1–2 Rock Lichen
 - a vanilla **Cloudberry bush** on the Plains has a 30% chance to also give Rosehips
+- a vanilla wild **Flax** on the Plains has a 20% chance to also give Yarrow
 - a vanilla wild **Onion** in the Mountains has a 25% chance to also give Mountain Sorrel, a 20% chance each to give Juniper Berries and Angelica, and a 15% chance to give Iceland Moss
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140"> <img src="images/yarrow.png" alt="Yarrow" title="Yarrow" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -44,6 +45,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Mountain Sorrel** | Round sour leaves with red seed spikes | Damp Mountain ledges, or extra drop from wild Onion there | – |
 | **Rock Lichen** | Grey stone crusts that dye purple | Mountain stones, or dropped by Stone Golems | – |
 | **Rosehips** | Red hips of the thorny dog rose | Plains, or extra drop from Cloudberry bush there | – |
+| **Yarrow** | Feathery herb with flat white flower heads, for wounds and ale | Plains, or extra drop from wild Flax there | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
 | **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
 | **Smoke Oven** | Stone Pot extension, a clay oven for smoking fish and meat, gives level 3 together with the Herb Tray | Hammer (next to the Stone Pot) | Stone ×10, Wood ×6, Iron ×2, Resin ×5 |
@@ -95,7 +97,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | Bog Iron, Peat, Juniper Berries, Wolf Lichen, Rock Lichen | 1–2 |
 | Roseroot, Sweet Gale, Sphagnum Moss, Meadowsweet, Iceland Moss | 2–4 |
 | Wild Garlic | 3–6 |
-| Bog Bean, Mountain Sorrel | 2–5 |
+| Bog Bean, Mountain Sorrel, Yarrow | 2–5 |
 | Reed, Cattail | 3–6 |
 
 Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3), plus:

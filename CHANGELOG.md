@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Rosehips**: dog roses on the Plains whose red hips hide when picked and grow back, or from cloudberry bushes picked there (30%). An orange-red dye (`[Foraging.Rosehips]`)
+- **Yarrow**: feathery leaves and flat white flower heads on the Plains, or from wild flax picked there (20%). A wound herb and an ale herb (`[Foraging.Yarrow]`)
 
 ## v0.59.0 - 2026-10-03
 
