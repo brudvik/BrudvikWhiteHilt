@@ -672,6 +672,11 @@
     <Compile Include="Navigation\Portraits\PortraitSettings.cs" />
     <Compile Include="Navigation\Compass\CompassSettings.cs" />
     <Compile Include="Navigation\Compass\MapCompass.cs" />
+    <Compile Include="Navigation\Compass\CompassGeometry.cs" />
+    <Compile Include="Navigation\Compass\HudCompassSettings.cs" />
+    <Compile Include="Navigation\Compass\HudCompass.cs" />
+    <Compile Include="Navigation\Compass\HudCompassMarkers.cs" />
+    <Compile Include="Navigation\Compass\HudCompassLayout.cs" />
     <Compile Include="Navigation\LargeMapFrame.cs" />
     <Compile Include="Navigation\Portraits\PortraitStore.cs" />
     <Compile Include="Navigation\RavenSightEffect.cs" />

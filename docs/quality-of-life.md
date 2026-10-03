@@ -8,6 +8,8 @@ The time of day in 24 hours at the top of the screen, e.g. **Day 42 · 14:37**, 
 
 The `Clock` section sets whether it shows (`Enabled`), the day number (`ShowDay`), the weather icon (`ShowWeather`), rounding (`RoundMinutes`, 1 = every minute), the warning (`DuskWarningHours`, 0 = off), `FontSize` and `OffsetY`; `Clock.Keys` → `ToggleClock` binds a key to show and hide it. A server can turn the clock off for everyone with `AllowClock`.
 
+The [horizontal HUD compass](navigation.md#horizontal-hud-compass) sits above the clock. While it is visible, `OffsetY` is a minimum distance: the clock moves below the compass and, during a boss fight, below the boss bar. Disabling the compass restores the original clock layout.
+
 ---
 
 ## 🔊 INDOOR SOUND

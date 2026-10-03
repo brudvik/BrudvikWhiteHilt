@@ -125,6 +125,50 @@ A brass compass sits in the bottom-right corner of the minimap and the top-left 
 | `MinimapSize` | 56 | Width on the minimap, in pixels (32 to 120) |
 | `LargeMapSize` | 110 | Width on the large map, in pixels (48 to 220) |
 
+## Horizontal HUD compass
+
+A horizontal compass tape sits at the very top of the HUD, above the day, clock and weather. A fixed centre indicator shows the exact direction the **camera** looks; ticks, labels and markers scroll beneath it without smoothing delay. North is 0, east 90, south 180 and west 270 degrees. Looking across north wraps continuously between 359 and 0. The tape shows 120 degrees in total by default, 60 to either side.
+
+Small ticks appear every 5 degrees, medium ticks every 15 and large ticks every 45. Degree labels use three digits (`015`, `030`, `345`); at direction headings they are replaced by N, NE, E, SE, S, SW, W or NW. N/E/S/W are larger than the diagonal directions. These abbreviations stay the same in every language; the settings are localized. The typeface matches Valheim, with muted gold, a dark text outline, fading edges and a faint optional background.
+
+The marker row shows **your unchecked saved map pins**, **known boss locations** and **your unchecked death markers**, using the existing map icons. Bearings are measured from the player's position, relative to the camera heading. Markers outside the visible angle are hidden, never pinned to an edge; a marker at the player's exact horizontal position is hidden because it has no bearing. Checked markers are omitted. Nothing scans for undiscovered bosses or reveals hidden players. Portals, boats and other players are not automatically included yet.
+
+The compass is hidden during death, inventory, menus, text entry, trade and the large map, and follows the HUD's own hiding, including media mode. It stays visible while building. Boss bars move below it; the clock and existing ruby waypoint arrow remain below the boss bars without changing the amulet's requirements. Turning the compass off restores the previous layout and does not affect either round map compass.
+
+Dimensions and offsets are in Valheim canvas UI units, subject to the game's HUD scaling. The configured scale applies to the compass itself, not to the clock or boss bars. Width and horizontal offset are constrained to available HUD space. The clock's `OffsetY` and waypoint's `HudArrowTop` are minimum top distances while the compass is visible.
+
+| Setting (section `HUD.Compass`, local) | Default | Description |
+|--------------------------------------|---------|-------------|
+| `Enabled` | true | Show the HUD compass |
+| `CompassWidth` | 700 | Width before scale (200 to 1600) |
+| `CompassHeight` | 52 | Height before scale (45 to 120) |
+| `VisibleDegrees` | 120 | Total angular window (30 to 180) |
+| `TickInterval` | 5 | Small tick interval; supported divisors of 360 |
+| `MediumTickInterval` | 15 | Medium tick interval |
+| `NumberInterval` | 15 | Degree label interval |
+| `MajorTickInterval` | 45 | Large tick interval |
+| `ShowDegrees` | true | Degree labels on the moving tape |
+| `ShowCardinalDirections` | true | Eight direction labels, taking precedence over numbers |
+| `MarkerVisibility` | true | Master switch for world markers |
+| `MarkerSize` | 14 | Icon size before scale (8 to 24), also limited to the marker row |
+| `ShowOwnPins` | true | Your unchecked saved ordinary pins, not shared or synthetic pins |
+| `ShowBosses` | true | Known unchecked boss pins |
+| `ShowDeath` | true | Your unchecked death pins |
+| `VerticalPosition` | 8 | Distance down from HUD top |
+| `HorizontalPosition` | 0 | Offset from HUD centre; positive is right |
+| `Scale` | 1 | Compass scale (0.5 to 2) |
+| `Opacity` | 0.9 | Overall alpha; zero hides the compass and releases its layout space |
+| `EdgeFade` | 0.2 | Fraction of each half fading at its outer edge; zero disables fade |
+| `BackgroundOpacity` | 0.08 | Dark background alpha; zero removes it |
+| `LayoutGap` | 12 | Gap before the HUD elements below the compass |
+| `MarkerRefreshSeconds` | 0.5 | Check for added/removed pins; marker positions still update every frame |
+
+Intervals have selectable values that divide 360. If intervals do not align, their headings are combined so requested labels and major ticks still exist. The default layout creates 72 tick objects once; these are repositioned, not recreated each frame. Changing tick/label settings rebuilds the tick set. Marker icons are pooled and reused.
+
+### Custom world markers
+
+`BrudvikWhiteHilt.Navigation.Compass.HudCompassMarkers.SetMarker(id, worldPosition, sprite)` adds or updates an explicit world marker. Call on Unity's main thread with a stable unique ID; update its position when it moves. `RemoveMarker(id)` removes it; a null sprite also removes it. Registered markers respect `MarkerVisibility`, size, fade and the same off-screen hiding. They are transient, local UI state and are cleared when the local player or map instance changes. A future portal, boat or player adapter can provide only information the player is already allowed to see.
+
 ## 🏰 Built areas, fields, pastures and wards
 
 The map shows where people have built. The server looks through the whole world every half minute and groups what it finds into areas of 16 m squares; squares up to two apart belong to the same area, so a path or garden between houses does not split a base.

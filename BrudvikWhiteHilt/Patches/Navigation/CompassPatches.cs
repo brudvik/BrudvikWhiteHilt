@@ -19,4 +19,20 @@ public static class CompassPatches
     {
         MapCompass.Update(__instance);
     }
+
+    /// <summary>Scrolls the HUD tape after the camera and its camera effects have updated.</summary>
+    [HarmonyPatch(typeof(GameCamera), "LateUpdate")]
+    [HarmonyPostfix]
+    public static void CameraLateUpdate()
+    {
+        HudCompass.Update();
+    }
+
+    /// <summary>Places newly created boss bars below the tape regardless of late-update ordering.</summary>
+    [HarmonyPatch(typeof(EnemyHud), "LateUpdate")]
+    [HarmonyPostfix]
+    public static void EnemyLateUpdate()
+    {
+        HudCompassLayout.Update();
+    }
 }

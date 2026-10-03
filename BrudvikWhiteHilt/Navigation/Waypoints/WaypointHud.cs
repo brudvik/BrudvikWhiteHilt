@@ -62,7 +62,7 @@ public static class WaypointHud
         }
 
         float size = WaypointSettings.HudArrowSize.Value;
-        root.anchoredPosition = new Vector2(0f, -WaypointSettings.HudArrowTop.Value);
+        UpdateLayout();
         arrow.rectTransform.sizeDelta = new Vector2(size, size);
         arrow.rectTransform.anchoredPosition = new Vector2(0f, -size / 2f);
         label.rectTransform.anchoredPosition = new Vector2(0f, -size);
@@ -80,6 +80,16 @@ public static class WaypointHud
         {
             label.text = text;
         }
+    }
+
+    internal static void UpdateLayout()
+    {
+        if (root == null) return;
+        float reserved = Compass.HudCompass.ReservedHeight;
+        float top = reserved > 0f ? Mathf.Max(WaypointSettings.HudArrowTop.Value,
+            Mathf.Max(reserved + Clock.GameClock.BossOffset, Clock.GameClock.VisibleBottom + Compass.HudCompassSettings.LayoutGap.Value))
+            : WaypointSettings.HudArrowTop.Value;
+        root.anchoredPosition = new Vector2(0f, -top);
     }
 
     private static bool Ensure(Minimap map)

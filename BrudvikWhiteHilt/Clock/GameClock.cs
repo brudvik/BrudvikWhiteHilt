@@ -32,6 +32,12 @@ public static class GameClock
     private static float nextRefresh;
     private static float lastHours = -1f;
 
+    internal static float BossOffset => EnemyHud.instance != null && EnemyHud.instance.ShowingBossHud() ? BossBarOffset : 0f;
+
+    internal static float VisibleBottom => root != null && root.gameObject.activeInHierarchy
+        ? -root.anchoredPosition.y + Mathf.Max(root.rect.height, root.rect.height / 2f + label.rectTransform.rect.height / 2f)
+        : 0f;
+
     /// <summary>
     /// Shows, hides and updates the clock. Called after the game's HUD update.
     /// </summary>
@@ -146,8 +152,14 @@ public static class GameClock
         }
 
         label.rectTransform.sizeDelta = new Vector2(width + 4f, size);
-        float boss = EnemyHud.instance != null && EnemyHud.instance.ShowingBossHud() ? BossBarOffset : 0f;
-        root.anchoredPosition = new Vector2(0f, -ClockSettings.OffsetY.Value - boss);
+        UpdateLayout();
+    }
+
+    internal static void UpdateLayout()
+    {
+        if (root == null) return;
+        float top = Mathf.Max(ClockSettings.OffsetY.Value, Navigation.Compass.HudCompass.ReservedHeight);
+        root.anchoredPosition = new Vector2(0f, -top - BossOffset);
     }
 
     /// <summary>

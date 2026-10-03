@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.74.0 - 2026-10-03
+
+### Added
+- **HUD compass**: a subdued horizontal tape above the day, clock and weather follows the camera's exact heading every frame after camera effects. Fixed centre indicator, eight direction labels, three-digit degrees and small/medium/large ticks; angular positioning wraps correctly across north. Defaults to 700 by 52 UI units and a 120-degree window, with fading edges and a faint optional background. Local `[HUD.Compass]` settings control dimensions, intervals, labels, placement, scale and opacity.
+- **Compass markers**: own unchecked saved map pins, known boss locations and own unchecked death markers use their existing map icons and the same angular projection. Off-screen markers are hidden, not clamped. Category switches, icon size and membership refresh are configurable; icons are pooled. `HudCompassMarkers.SetMarker` / `RemoveMarker` allow explicit custom world markers without scanning or revealing unknown locations. Portals, boats and other players are not automatically added in this version.
+
+### Changed
+- **Top HUD layout**: while the compass is visible, boss bars sit below it, the clock remains below the boss bars, and the existing ruby waypoint arrow stays below the visible clock. Original layout returns when the compass is disabled or hidden. Compass width and horizontal position are constrained to HUD space. The round map compasses and the ruby amulet's requirements are unchanged. Hidden with the HUD, death, inventory, menus and large map; visible while building.
+
 ## v0.73.1 - 2026-10-03
 
 ### Fixed
