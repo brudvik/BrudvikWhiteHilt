@@ -5,7 +5,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfSurt;
 
 /// <summary>
 /// This class defines the effect of the Gift of Surt potion.
-/// Grants immunity to fire and cold damage.
+/// Grants resistance to fire damage.
 /// </summary>
 public class GiftOfSurtEffect : SE_Stats
 {
@@ -21,7 +21,7 @@ public class GiftOfSurtEffect : SE_Stats
         m_startMessage = $"You burn with the power of {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Immune to fire and cold damage";
+        m_tooltip = "Protection against fire damage";
     }
 
     /// <summary>
@@ -32,11 +32,9 @@ public class GiftOfSurtEffect : SE_Stats
         m_activationAnimation = "emote_challenge";
         m_ttl = PotionSettings.Surt.DurationMinutes.Value * 60f;
         
-        // Set damage modifiers for fire and frost immunity
         m_mods = new System.Collections.Generic.List<HitData.DamageModPair>
         {
-            new HitData.DamageModPair { m_type = HitData.DamageType.Fire, m_modifier = HitData.DamageModifier.Immune },
-            new HitData.DamageModPair { m_type = HitData.DamageType.Frost, m_modifier = HitData.DamageModifier.Immune }
+            new HitData.DamageModPair { m_type = HitData.DamageType.Fire, m_modifier = PotionSettings.Surt.FireModifier.Value }
         };
         
     }

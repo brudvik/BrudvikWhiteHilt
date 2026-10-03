@@ -271,6 +271,9 @@ public static class PotionSettings
     {
         /// <summary>Duration in minutes.</summary>
         public static ConfigEntry<float> DurationMinutes { get; internal set; }
+
+        /// <summary>Resistance applied to fire damage.</summary>
+        public static ConfigEntry<HitData.DamageModifier> FireModifier { get; internal set; }
     }
 
     /// <summary>
@@ -342,13 +345,13 @@ public static class PotionSettings
 
         const string fenrir = "GiftOfFenrir";
         Fenrir.DurationMinutes = BindDuration(fenrir, 20f);
-        Fenrir.AttackSpeed = Bind(fenrir, "AttackSpeed", 1.5f, 1f, 3f, "Animation speed multiplier while attacking.");
-        Fenrir.LifeSteal = Bind(fenrir, "LifeSteal", 0.15f, 0f, 1f, "Share of damage dealt returned as health.");
+        Fenrir.AttackSpeed = Bind(fenrir, "AttackSpeed", 1.2f, 1f, 3f, "Animation speed multiplier while attacking.");
+        Fenrir.LifeSteal = Bind(fenrir, "LifeSteal", 0.05f, 0f, 1f, "Share of damage dealt returned as health.");
         Fenrir.SpeedModifier = Bind(fenrir, "SpeedModifier", 0.25f, 0f, 2f, "Movement speed modifier; 0.25 is 25% faster.");
         Fenrir.AttackStaminaMultiplier = Bind(fenrir, "AttackStaminaMultiplier", 0.5f, 0f, 1f, "Multiplier on attack stamina usage.");
 
         const string freya = "GiftOfFreya";
-        Freya.DurationMinutes = BindDuration(freya, 20f);
+        Freya.DurationMinutes = BindDuration(freya, 10f);
         Freya.BonusStamina = Bind(freya, "BonusStamina", 400f, 0f, 5000f, "Stamina added on top of a full refill when drunk.");
         Freya.StaminaUse = Bind(freya, "StaminaUse", -0.9f, -10f, 10f, "Stamina cost of running, jumping, attacking, blocking, dodging, swimming, building and sneaking; negative restores stamina.");
         Freya.StaminaRegenBonus = Bind(freya, "StaminaRegenBonus", 40f, 0f, 500f, "Stamina regeneration added.");
@@ -411,6 +414,8 @@ public static class PotionSettings
         Sleipnir.FallDamageMultiplier = Bind(sleipnir, "FallDamageMultiplier", 0f, 0f, 1f, "Multiplier on fall damage.");
 
         Surt.DurationMinutes = BindDuration("GiftOfSurt", 20f);
+        Surt.FireModifier = WhiteHiltConfig.BindAdminOnly("Potions.GiftOfSurt", "FireModifier", HitData.DamageModifier.Resistant,
+            "Fire damage modifier while Surt is active. Resistant halves fire damage; frost is not affected.");
 
         const string thor = "GiftOfThor";
         Thor.DurationMinutes = BindDuration(thor, 20f);

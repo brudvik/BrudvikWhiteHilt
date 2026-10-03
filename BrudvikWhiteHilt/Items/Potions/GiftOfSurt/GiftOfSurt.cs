@@ -7,7 +7,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfSurt;
 
 /// <summary>
 /// This class defines the Gift of Surt potion.
-/// Grants immunity to fire and cold damage.
+/// Grants resistance to fire damage.
 /// </summary>
 public class GiftOfSurt : PotionBase
 {

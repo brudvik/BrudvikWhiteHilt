@@ -9,8 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfEir;
 
 /// <summary>
-/// The Gift of Eir, the healer among the gods: heals a share of your health at once, ends poison, fire and frost and keeps
-/// them off, and speeds up health regeneration. Brewed from Swamp herbs; its icon is the rendered, tinted mead.
+/// The Gift of Eir, the healer among the gods: heals and cleanses once when drunk, then speeds up health regeneration.
+/// Brewed from Swamp herbs; its icon is the rendered, tinted mead.
 /// </summary>
 public class GiftOfEir : PotionBase
 {
@@ -19,9 +19,9 @@ public class GiftOfEir : PotionBase
     // Bound before the base constructor, which creates the effect once to register its text.
     static GiftOfEir()
     {
-        DurationMinutes = PotionSettings.BindDuration(Name, 10f);
-        HealShare = PotionSettings.BindSetting(Name, "HealShare", 0.5f, 0f, 1f, "Share of max health healed at once (0.5 = half).");
-        HealthRegenMultiplier = PotionSettings.BindSetting(Name, "HealthRegenMultiplier", 2f, 1f, 10f, "Health regeneration multiplier.");
+        DurationMinutes = PotionSettings.BindDuration(Name, 2f);
+        HealShare = PotionSettings.BindSetting(Name, "HealShare", 0.25f, 0f, 1f, "Share of max health healed at once (0.25 = a quarter).");
+        HealthRegenMultiplier = PotionSettings.BindSetting(Name, "HealthRegenMultiplier", 1.5f, 1f, 10f, "Health regeneration multiplier.");
     }
 
     /// <summary>

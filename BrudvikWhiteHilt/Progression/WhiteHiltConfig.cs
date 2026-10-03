@@ -303,7 +303,10 @@ public static class WhiteHiltConfig
         foreach (var migration in new[]
         {
             (Id: "spider-0.72.1", Section: "Giant Spider", Values: new[] { ("Scale", 1f), ("Damage", 18f), ("Poison", 15f) }),
-            (Id: "lindorm-0.72.2", Section: "Lindorm", Values: new[] { ("Scale", 1.3f), ("Damage", 55f) })
+            (Id: "lindorm-0.72.2", Section: "Lindorm", Values: new[] { ("Scale", 1.3f), ("Damage", 55f) }),
+            (Id: "freya-0.72.3", Section: "Potions.GiftOfFreya", Values: new[] { ("DurationMinutes", 20f) }),
+            (Id: "fenrir-0.72.3", Section: "Potions.GiftOfFenrir", Values: new[] { ("AttackSpeed", 1.5f), ("LifeSteal", 0.15f) }),
+            (Id: "eir-0.72.3", Section: "Potions.GiftOfEir", Values: new[] { ("DurationMinutes", 10f), ("HealShare", 0.5f), ("HealthRegenMultiplier", 2f) })
         })
         {
             if (done.Contains(migration.Id))

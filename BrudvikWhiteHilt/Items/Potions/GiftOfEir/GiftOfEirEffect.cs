@@ -3,7 +3,7 @@ using BrudvikWhiteHilt.Items.Meads.BogBeanBitter;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfEir;
 
 /// <summary>
-/// The effect of the Gift of Eir: heals at once, cleanses poison, fire and frost and keeps them off, and speeds up
+/// The effect of the Gift of Eir: heals and cleanses once when drunk, and speeds up
 /// health regeneration.
 /// </summary>
 public class GiftOfEirEffect : SE_Stats
@@ -20,7 +20,7 @@ public class GiftOfEirEffect : SE_Stats
         m_startMessage = $"Eir tends your wounds with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Heals at once, ends poison, fire and frost and keeps them off, faster health regeneration";
+        m_tooltip = "Heals and cleanses once when drunk, faster health regeneration";
     }
 
     /// <summary>
@@ -44,10 +44,4 @@ public class GiftOfEirEffect : SE_Stats
         }
     }
 
-    /// <inheritdoc/>
-    public override void UpdateStatusEffect(float dt)
-    {
-        base.UpdateStatusEffect(dt);
-        CleansingEffect.Cleanse(m_character);
-    }
 }
