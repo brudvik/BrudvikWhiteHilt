@@ -690,6 +690,255 @@ def build_oilflask(geo, rng, np):
     geo.tube([(0.0125, 0, 0.1), (0.03, 0, 0.08), (0.04, 0, 0.05)], [0.0025, 0.0025, 0.0025], "cord", segments=4)
 
 
+# ---------------------------------------------------------------------------------------------------------------- plains
+
+def pinnate(geo, rng, start, direction, length, pairs, leaflet, swatch, stalk_swatch, droop=0.4):
+    """A leaf stalk with pairs of leaflets and one at the tip."""
+    V = geo.Vector
+    rachis = curve(start, direction, length, droop, max(2, pairs))
+    geo.tube(rachis, [0.0025] * len(rachis), stalk_swatch, segments=3, cap=False)
+    for j in range(1, len(rachis)):
+        heading = (rachis[j] - rachis[j - 1]).normalized()
+        side = heading.cross(V((0, 0, 1)))
+        side = side.normalized() if side.length > 1e-3 else heading.orthogonal().normalized()
+        for sign in (-1, 1):
+            geo.leaf(rachis[j], (side * sign + heading * 0.5), (0, 0, 1), leaflet, leaflet * 0.55, swatch, profile="ovate",
+                     segments=3, fold=0.25, droop=0.15)
+    geo.leaf(rachis[-1], (rachis[-1] - rachis[-2]), (0, 0, 1), leaflet * 1.1, leaflet * 0.6, swatch, profile="ovate", segments=3, fold=0.25, droop=0.15)
+
+
+@model("rosehip", "Dog rose with hips")
+def build_rosehip(geo, rng, np):
+    V = geo.Vector
+    hips = []
+    for direction in spread_directions(9, rng, 0.45):
+        length = rng.uniform(0.8, 1.2)
+        cane = curve((0, 0, 0), direction, length, 0.55, 7)
+        geo.tube(cane, [0.012 * (1 - 0.6 * i / 7) for i in range(8)], "cane", segments=5)
+        for i in range(2, 8):
+            heading = (cane[i] - cane[i - 1]).normalized()
+            side = heading.orthogonal().normalized()
+            # Thorns.
+            for k in range(2):
+                angle = rng.uniform(0, 2 * math.pi)
+                out = side * math.cos(angle) + heading.cross(side) * math.sin(angle)
+                geo.tube([cane[i] + out * 0.006, cane[i] + out * 0.02 - heading * 0.006], [0.003, 0.0005], "thorn", segments=3)
+            angle = rng.uniform(0, 2 * math.pi)
+            out = (side * math.cos(angle) + heading.cross(side) * math.sin(angle) + V((0, 0, 0.3))).normalized()
+            pinnate(geo, rng, cane[i], out, 0.14, 2, 0.055, "leaf", "cane", droop=0.3)
+            if i >= 4:
+                hips.append((cane[i] + out * 0.03, out))
+    geo.target = "fruit"
+    for point, out in hips:
+        for k in range(rng.integers(1, 3)):
+            hang = (out + V((rng.normal(0, 0.3), rng.normal(0, 0.3), -0.8))).normalized()
+            tip = point + hang * 0.035
+            geo.tube([point, tip], [0.0018, 0.0015], "cane", segments=3, cap=False)
+            geo.blob(tip + hang * 0.014, 0.017, "hip", subdivisions=2, squash=(1.0, 1.0, 1.35))
+            geo.blob(tip + hang * 0.035, 0.005, "sepal", subdivisions=1)
+    geo.target = "main"
+
+
+def corymb(geo, rng, top, radius, count, swatch, size):
+    """A flat-topped head of tiny flowers."""
+    V = geo.Vector
+    for k in range(count):
+        r = radius * math.sqrt(rng.random())
+        angle = rng.uniform(0, 2 * math.pi)
+        point = top + V((math.cos(angle) * r, math.sin(angle) * r, rng.normal(0, size * 0.3)))
+        geo.blob(point, size, swatch, subdivisions=1, squash=(1.0, 1.0, 0.6))
+
+
+@model("yarrow", "Yarrow")
+def build_yarrow(geo, rng, np):
+    V = geo.Vector
+    # Feathery, finely cut leaves around the foot.
+    for direction in spread_directions(8, rng, 0.9, jitter=0.4):
+        rachis = curve((0, 0, 0.01), direction, rng.uniform(0.12, 0.18), 0.6, 6)
+        geo.tube(rachis, [0.002] * 7, "leaf", segments=3, cap=False)
+        for j in range(1, 7):
+            heading = (rachis[j] - rachis[j - 1]).normalized()
+            side = heading.cross(V((0, 0, 1))).normalized()
+            for sign in (-1, 1):
+                geo.leaf(rachis[j], (side * sign + heading * 0.3), (0, 0, 1), 0.02, 0.005, "leaf", profile="linear", segments=2, fold=0.2, droop=0.1)
+    for k in range(3):
+        lean = (rng.normal(0, 0.12), rng.normal(0, 0.12), 1.0)
+        stem = curve((rng.normal(0, 0.015), rng.normal(0, 0.015), 0), lean, rng.uniform(0.38, 0.5), 0.1, 6)
+        geo.tube(stem, [0.0035] * 7, "stem", segments=4)
+        for i in (2, 4):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            geo.leaf(stem[i], (heading.orthogonal() + heading).normalized(), (0, 0, 1), 0.05, 0.01, "leaf", profile="linear", segments=3, fold=0.2, droop=0.2)
+        top = stem[-1]
+        for j in range(5):
+            angle = j * 1.256 + rng.normal(0, 0.2)
+            tip = top + V((math.cos(angle) * 0.02, math.sin(angle) * 0.02, 0.012))
+            geo.tube([top - V((0, 0, 0.02)), tip], [0.0015, 0.0012], "stem", segments=3, cap=False)
+        corymb(geo, rng, top + V((0, 0, 0.015)), 0.04, 45, "flower", 0.0045)
+
+
+@model("caraway", "Caraway")
+def build_caraway(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(6, rng, 0.9, jitter=0.4):
+        rachis = curve((0, 0, 0.01), direction, rng.uniform(0.12, 0.16), 0.5, 5)
+        geo.tube(rachis, [0.002] * 6, "leaf", segments=3, cap=False)
+        for j in range(1, 6):
+            heading = (rachis[j] - rachis[j - 1]).normalized()
+            side = heading.cross(V((0, 0, 1))).normalized()
+            for sign in (-1, 1):
+                for n in range(2):
+                    geo.leaf(rachis[j], (side * sign + heading * (0.2 + n * 0.5)), (0, 0, 1), 0.016, 0.003, "leaf", profile="linear", segments=2, fold=0.0, droop=0.1)
+    stem = curve((0, 0, 0), (0.03, 0.0, 1.0), 0.45, 0.05, 6)
+    geo.tube(stem, [0.004] * 7, "stem", segments=4)
+    branches = [stem]
+    for i, angle in ((3, 0.5), (4, 2.6), (5, 4.4)):
+        out = V((math.cos(angle), math.sin(angle), 1.3)).normalized()
+        branch = curve(stem[i], out, rng.uniform(0.15, 0.22), -0.1, 3, gravity=(0, 0, 1))
+        geo.tube(branch, [0.0025] * 4, "stem", segments=3)
+        branches.append(branch)
+    for branch in branches:
+        top = branch[-1]
+        for j in range(8):
+            angle = j * 0.785 + rng.normal(0, 0.15)
+            ray_tip = top + V((math.cos(angle) * 0.035, math.sin(angle) * 0.035, 0.03))
+            geo.tube([top, ray_tip], [0.0012, 0.001], "stem", segments=3, cap=False)
+            for n in range(5):
+                a2 = rng.uniform(0, 2 * math.pi)
+                point = ray_tip + V((math.cos(a2) * 0.007, math.sin(a2) * 0.007, 0.006))
+                geo.blob(point, 0.0028, "flower", subdivisions=1)
+
+
+@model("woad", "Woad in flower")
+def build_woad(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(8, rng, 1.0, jitter=0.4):
+        geo.leaf((0, 0, 0.02), direction, (0, 0, 1), rng.uniform(0.16, 0.22), 0.05, "leaf", profile="lance", segments=5, fold=0.25, droop=0.35)
+    stem = curve((0, 0, 0), (0.02, 0.03, 1.0), 0.75, 0.08, 7)
+    geo.tube(stem, [0.006 - 0.002 * i / 7 for i in range(8)], "stem", segments=5)
+    for i in (1, 2, 3):
+        heading = (stem[i] - stem[i - 1]).normalized()
+        out = heading.orthogonal().normalized()
+        geo.leaf(stem[i], (out + heading * 1.5), (0, 0, 1), 0.09, 0.025, "leaf", profile="lance", segments=4, fold=0.2, droop=0.1)
+    for i in range(4, 8):
+        for k in range(2):
+            angle = rng.uniform(0, 2 * math.pi)
+            out = V((math.cos(angle), math.sin(angle), 1.2)).normalized()
+            branch = curve(stem[i], out, rng.uniform(0.1, 0.18), -0.2, 3, gravity=(0, 0, 1))
+            geo.tube(branch, [0.0022] * 4, "stem", segments=3, cap=False)
+            for n in range(9):
+                point = branch[-1] + V((rng.normal(0, 0.02), rng.normal(0, 0.02), rng.normal(0.01, 0.015)))
+                geo.blob(point, 0.006, "flower", subdivisions=1)
+    corymb(geo, rng, stem[-1] + V((0, 0, 0.01)), 0.035, 18, "flower", 0.006)
+
+
+@model("madder", "Madder")
+def build_madder(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(6, rng, 0.9, jitter=0.5):
+        stem = curve((0, 0, 0.01), direction, rng.uniform(0.4, 0.6), 0.7, 6)
+        geo.tube(stem, [0.0035] * 7, "stem", segments=4, cap=False)
+        for i in range(1, 7):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            side = heading.orthogonal().normalized()
+            other = heading.cross(side)
+            # Whorls of narrow leaves at each node.
+            for k in range(5):
+                angle = 2 * math.pi * k / 5
+                out = side * math.cos(angle) + other * math.sin(angle)
+                geo.leaf(stem[i], (out + heading * 0.2), heading, 0.045, 0.012, "leaf", profile="lance", segments=3, fold=0.15, droop=0.2)
+            if i >= 4:
+                for n in range(4):
+                    point = stem[i] + V((rng.normal(0, 0.015), rng.normal(0, 0.015), 0.01 + abs(rng.normal(0, 0.01))))
+                    geo.blob(point, 0.0035, "flower", subdivisions=1)
+
+
+@model("madderroot", "Madder roots")
+def build_madderroot(geo, rng, np):
+    V = geo.Vector
+    for k in range(6):
+        angle = rng.uniform(0, 2 * math.pi)
+        direction = V((math.cos(angle), math.sin(angle), rng.uniform(-0.15, 0.15)))
+        root = curve((0, 0, 0.012), direction, rng.uniform(0.12, 0.2), rng.uniform(-0.6, 0.6), 6, gravity=(0, 0, 1))
+        geo.tube(root, [0.006 * (1 - 0.6 * i / 6) for i in range(7)], "root", segments=5)
+
+
+@model("henbane", "Henbane in flower")
+def build_henbane(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(7, rng, 1.0, jitter=0.4):
+        geo.leaf((0, 0, 0.02), direction, (0, 0, 1), rng.uniform(0.14, 0.2), 0.08, "leaf", profile="ovate", segments=5, fold=0.3, droop=0.3)
+    for k in range(2):
+        lean = (rng.normal(0, 0.15), rng.normal(0, 0.15), 1.0)
+        stem = curve((rng.normal(0, 0.02), rng.normal(0, 0.02), 0), lean, rng.uniform(0.45, 0.6), 0.25, 6)
+        geo.tube(stem, [0.007 - 0.003 * i / 6 for i in range(7)], "stem", segments=5)
+        for i in range(2, 7):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            out = heading.orthogonal().normalized()
+            angle = i * 2.4
+            out = (out * math.cos(angle) + heading.cross(out) * math.sin(angle)).normalized()
+            geo.leaf(stem[i], (out + heading * 0.4), heading, 0.08, 0.04, "leaf", profile="ovate", segments=4, fold=0.3, droop=0.2)
+            # A pale funnel flower with a purple throat in the leaf axil.
+            mouth = stem[i] + out * 0.03 + heading * 0.02
+            facing = (out + heading * 0.6).normalized()
+            geo.tube([mouth - facing * 0.025, mouth], [0.004, 0.012], "flower", segments=7, cap=False)
+            geo.blob(mouth - facing * 0.004, 0.006, "throat", subdivisions=1, squash=(1, 1, 0.5))
+
+
+@model("ergot", "Ergot")
+def build_ergot(geo, rng, np):
+    V = geo.Vector
+    for k in range(7):
+        angle = rng.uniform(0, 2 * math.pi)
+        direction = V((math.cos(angle) * 0.6, math.sin(angle) * 0.6, rng.uniform(0.2, 0.9))).normalized()
+        spur = curve((math.cos(angle) * 0.008, math.sin(angle) * 0.008, 0.004), direction, rng.uniform(0.03, 0.045), 0.6, 4)
+        geo.tube(spur, [0.004, 0.0045, 0.004, 0.003, 0.0012], "spur", segments=5)
+
+
+@model("hops", "Wild hops on a dead stake")
+def build_hops(geo, rng, np):
+    V = geo.Vector
+    geo.tube([(0, 0, 0), (0.02, 0.0, 0.8), (0.03, 0.01, 1.55)], [0.03, 0.025, 0.02], "stake", segments=6)
+    geo.target = "main"
+    cones = []
+    for vine in range(2):
+        phase = vine * math.pi
+        points = []
+        for i in range(40):
+            t = i / 39
+            z = 0.05 + t * 1.45
+            angle = phase + t * 9.5
+            centre = V((0.02 * t * 1.5, 0.005 * t, z))
+            points.append(centre + V((math.cos(angle) * 0.04, math.sin(angle) * 0.04, 0.0)))
+        geo.tube(points, [0.004] * len(points), "vine", segments=4, cap=False)
+        for i in range(3, 40, 3):
+            heading = (points[i] - points[i - 1]).normalized()
+            out = (points[i] - V((points[i].x * 0.0, 0.0, points[i].z))).normalized()
+            out = V((out.x, out.y, 0.3)).normalized()
+            geo.leaf(points[i], out, (0, 0, 1), rng.uniform(0.12, 0.16), 0.13, "leaf", profile="round", segments=4, fold=0.3, droop=0.3)
+            if i > 12:
+                cones.append((points[i], out))
+    geo.target = "fruit"
+    for point, out in cones:
+        for k in range(2):
+            hang = (out * 0.6 + V((rng.normal(0, 0.3), rng.normal(0, 0.3), -0.8))).normalized()
+            tip = point + hang * 0.05
+            geo.tube([point, tip], [0.0018, 0.0018], "vine", segments=3, cap=False)
+            geo.blob(tip + hang * 0.025, 0.02, "cone", subdivisions=2, squash=(0.85, 0.85, 1.5))
+    geo.target = "main"
+
+
+@model("milkpail", "Pail of lox milk")
+def build_milkpail(geo, rng, np):
+    profile = [(0.075, 0.0), (0.08, 0.004), (0.085, 0.06), (0.09, 0.12), (0.092, 0.13)]
+    geo.tube([(0, 0, z) for _, z in profile], [r for r, _ in profile], "wood", segments=14, cap=False)
+    geo.blob((0, 0, 0.0), 0.075, "wood", subdivisions=2, squash=(1.0, 1.0, 0.02))
+    geo.blob((0, 0, 0.112), 0.087, "milk", subdivisions=3, squash=(1.0, 1.0, 0.02))
+    for z in (0.03, 0.1):
+        geo.tube([(0, 0, z - 0.004), (0, 0, z + 0.004)], [0.087 + z * 0.05, 0.087 + z * 0.05], "band", segments=14, cap=False)
+    handle = [(-0.09, 0, 0.12), (-0.07, 0, 0.19), (0.0, 0, 0.22), (0.07, 0, 0.19), (0.09, 0, 0.12)]
+    geo.tube(handle, [0.005] * 5, "band", segments=4, cap=False)
+
+
 SWATCHES = {
     "bogbean": {
         "leaf": {"bottom": (0.12, 0.26, 0.08), "top": (0.3, 0.48, 0.16)},
@@ -775,6 +1024,58 @@ SWATCHES.update({
 })
 SWATCHES["wolflichenitem"] = SWATCHES["wolflichen"]
 SWATCHES["rocklichenitem"] = SWATCHES["rocklichen"]
+SWATCHES.update({
+    "rosehip": {
+        "cane": {"bottom": (0.32, 0.2, 0.14), "top": (0.3, 0.4, 0.18), "noise": 0.1},
+        "thorn": {"bottom": (0.4, 0.22, 0.16), "top": (0.6, 0.45, 0.3)},
+        "leaf": {"bottom": (0.14, 0.28, 0.1), "top": (0.28, 0.45, 0.16)},
+        "hip": {"bottom": (0.55, 0.06, 0.04), "top": (0.9, 0.22, 0.08), "noise": 0.1},
+        "sepal": {"bottom": (0.2, 0.15, 0.1), "top": (0.3, 0.22, 0.14)},
+    },
+    "yarrow": {
+        "leaf": {"bottom": (0.18, 0.3, 0.12), "top": (0.3, 0.44, 0.2)},
+        "stem": {"bottom": (0.3, 0.38, 0.2), "top": (0.4, 0.46, 0.26)},
+        "flower": {"bottom": (0.88, 0.82, 0.82), "top": (0.98, 0.96, 0.94), "noise": 0.06},
+    },
+    "caraway": {
+        "leaf": {"bottom": (0.2, 0.36, 0.14), "top": (0.34, 0.5, 0.2)},
+        "stem": {"bottom": (0.32, 0.42, 0.2), "top": (0.42, 0.5, 0.26)},
+        "flower": {"bottom": (0.9, 0.9, 0.86), "top": (0.98, 0.98, 0.96), "noise": 0.05},
+    },
+    "woad": {
+        "leaf": {"bottom": (0.18, 0.3, 0.3), "top": (0.34, 0.46, 0.44), "noise": 0.1},
+        "stem": {"bottom": (0.26, 0.36, 0.3), "top": (0.36, 0.46, 0.36)},
+        "flower": {"bottom": (0.85, 0.75, 0.1), "top": (1.0, 0.9, 0.25), "noise": 0.1},
+    },
+    "madder": {
+        "stem": {"bottom": (0.3, 0.38, 0.16), "top": (0.38, 0.46, 0.2)},
+        "leaf": {"bottom": (0.18, 0.32, 0.1), "top": (0.3, 0.46, 0.16)},
+        "flower": {"bottom": (0.75, 0.78, 0.3), "top": (0.9, 0.9, 0.45)},
+    },
+    "madderroot": {
+        "root": {"bottom": (0.45, 0.08, 0.06), "top": (0.7, 0.18, 0.1), "noise": 0.25, "streaks": 0.4},
+    },
+    "henbane": {
+        "leaf": {"bottom": (0.24, 0.32, 0.2), "top": (0.4, 0.48, 0.32), "noise": 0.15},
+        "stem": {"bottom": (0.3, 0.36, 0.22), "top": (0.4, 0.46, 0.3)},
+        "flower": {"bottom": (0.5, 0.25, 0.45), "top": (0.92, 0.88, 0.62), "noise": 0.08, "streaks": 0.6},
+        "throat": {"bottom": (0.25, 0.08, 0.22), "top": (0.4, 0.12, 0.35)},
+    },
+    "ergot": {
+        "spur": {"bottom": (0.08, 0.05, 0.08), "top": (0.25, 0.12, 0.25), "noise": 0.2},
+    },
+    "hops": {
+        "stake": {"bottom": (0.35, 0.33, 0.3), "top": (0.5, 0.48, 0.44), "streaks": 0.6, "noise": 0.2},
+        "vine": {"bottom": (0.28, 0.38, 0.14), "top": (0.36, 0.48, 0.18)},
+        "leaf": {"bottom": (0.16, 0.32, 0.1), "top": (0.28, 0.46, 0.16)},
+        "cone": {"bottom": (0.5, 0.68, 0.3), "top": (0.72, 0.82, 0.45), "noise": 0.12, "cells": (4, 2)},
+    },
+    "milkpail": {
+        "wood": {"bottom": (0.4, 0.28, 0.17), "top": (0.55, 0.4, 0.26), "streaks": 0.6, "noise": 0.15},
+        "band": {"bottom": (0.25, 0.24, 0.22), "top": (0.36, 0.35, 0.32)},
+        "milk": {"bottom": (0.93, 0.92, 0.86), "top": (0.98, 0.97, 0.93), "noise": 0.03},
+    },
+})
 
 
 # ---------------------------------------------------------------------------------------------------------------- export
