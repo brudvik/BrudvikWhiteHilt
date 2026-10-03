@@ -118,6 +118,28 @@ public static class DiscoveryCatalog
         Translations.AddEnglish("whitehilt_disc_hint", "Click an icon to show or hide it on the map");
         Translations.AddEnglish("whitehilt_disc_ripe", "{0} ready to pick");
         Translations.AddEnglish("whitehilt_disc_found", "{0} found");
+        Translations.AddEnglish("whitehilt_disc_unlimited", "Unlimited in chests");
+        Translations.AddEnglish("whitehilt_disc_current_biome", "Found in this biome");
+    }
+
+    internal static Dictionary<string, Heightmap.Biome> GetLocationBiomes()
+    {
+        Dictionary<string, Heightmap.Biome> result = new();
+        if (ZoneSystem.instance == null)
+        {
+            return result;
+        }
+
+        foreach (ZoneSystem.ZoneLocation location in ZoneSystem.instance.m_locations)
+        {
+            if (TryClassifyLocation(location.m_prefabName, out string key, out _))
+            {
+                result.TryGetValue(key, out Heightmap.Biome biomes);
+                result[key] = biomes | location.m_biome;
+            }
+        }
+
+        return result;
     }
 
     /// <summary>

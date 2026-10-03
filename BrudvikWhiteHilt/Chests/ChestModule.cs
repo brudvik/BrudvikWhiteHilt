@@ -183,6 +183,8 @@ namespace BrudvikWhiteHilt.Chests
 
         internal bool IsCollectionChest(Container container) => !IsDestroyed(container) && FindPiece(container) != null;
 
+        internal IReadOnlyList<string> GetGatherableItems(Heightmap.Biome biome) => biomeCatalog.GetItems(biome);
+
         internal int CollectionPriority(Container container, ItemDrop.ItemData item)
         {
             if (!chestSupply.IsReady || IsDestroyed(container) || item.m_dropPrefab == null) return -1;

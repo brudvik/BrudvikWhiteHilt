@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.72.4";
+    public const string PluginVersion = "0.73.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -135,6 +135,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Roofing.RoofMaterials.Initialize();
         Pieces.Roofs.RoofCatalog.Initialize();
         chests = Chests.ChestModule.Start();
+        Navigation.Discoveries.DiscoveryPanel.Chests = chests;
         Chests.Collection.CollectionSettings.Initialize();
         Chests.Collection.CollectionPostComponent.Module = chests;
         Chests.ChestCensus.RegisterCommand();

@@ -1,6 +1,7 @@
 using Jotunn.Managers;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,13 +22,17 @@ public static class DiscoveryPanel
     private const float Gap = 5f;
     private const float HeaderHeight = 30f;
     private const float GroupHeight = 24f;
-    private const float FooterHeight = 42f;
+    private const float FooterHeight = 72f;
     private const float Width = Padding * 2f + Columns * IconSize + (Columns - 1) * Gap;
     private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
     private static readonly Color offRim = new(0.48f, 0.48f, 0.48f, 1f);
     private static readonly Color iconBack = new(0.82f, 0.82f, 0.82f, 1f);
+    private static readonly Color biomeBack = new(1f, 0.9f, 0.62f, 1f);
+    private static readonly Color unlimitedGold = new(1f, 210f / 255f, 77f / 255f, 1f);
     private static readonly List<KindToggle> toggles = new();
+
+    internal static global::BrudvikWhiteHilt.Chests.ChestModule Chests { get; set; }
 
     private static GameObject panel;
     private static RectTransform content;
@@ -38,6 +43,8 @@ public static class DiscoveryPanel
     private static bool builtLocked;
     private static int builtData = -1;
     private static int paintedFilter = -1;
+    private static ZoneSystem builtLocationsFor;
+    private static Dictionary<string, Heightmap.Biome> locationBiomes = new();
 
     /// <summary>
     /// The panel while it shows on the large map, else null; the overview lines up to its right.
@@ -83,6 +90,8 @@ public static class DiscoveryPanel
         {
             Paint();
         }
+
+        PaintStatus();
     }
 
     private static void Create()
@@ -188,7 +197,30 @@ public static class DiscoveryPanel
             checkRect.anchoredPosition = new Vector2(-4f, 4f);
             AddCheckStroke(check.transform, new Vector2(-2f, -1f), 4f, -45f);
             AddCheckStroke(check.transform, new Vector2(1f, 0f), 7f, 45f);
-            KindToggle toggle = new() { Key = key, Rim = back, Check = check.gameObject, Colour = DiscoveryOverlay.GroupColour(group) };
+            Image badgeBack = CreateDisc(button.transform, "UnlimitedBackground", new Color(0.16f, 0.16f, 0.16f, 1f));
+            RectTransform badgeBackRect = badgeBack.rectTransform;
+            badgeBackRect.anchorMin = badgeBackRect.anchorMax = new Vector2(0f, 1f);
+            badgeBackRect.pivot = new Vector2(0f, 1f);
+            badgeBackRect.anchoredPosition = new Vector2(-2f, 3f);
+            badgeBackRect.sizeDelta = new Vector2(23f, 18f);
+            GameObject badgeObject = new("Unlimited", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform badgeRect = (RectTransform)badgeObject.transform;
+            badgeRect.SetParent(badgeBack.transform, false);
+            badgeRect.anchorMin = Vector2.zero;
+            badgeRect.anchorMax = Vector2.one;
+            badgeRect.offsetMin = Vector2.zero;
+            badgeRect.offsetMax = Vector2.zero;
+            TextMeshProUGUI badge = badgeObject.GetComponent<TextMeshProUGUI>();
+            badge.font = InventoryGui.instance != null ? InventoryGui.instance.m_containerName.font : TMP_Settings.defaultFontAsset;
+            badge.text = badge.font != null && badge.font.HasCharacter('\u221E', true, true) ? "\u221E" : "MAX";
+            badge.fontSize = badge.text == "MAX" ? 10f : 20f;
+            badge.fontStyle = FontStyles.Bold;
+            badge.alignment = TextAlignmentOptions.Center;
+            badge.color = unlimitedGold;
+            badge.raycastTarget = false;
+            badgeBack.gameObject.SetActive(false);
+            KindToggle toggle = new() { Key = key, Rim = back, Background = inner, UnlimitedBadge = badgeBack.gameObject,
+                Check = check.gameObject, Colour = DiscoveryOverlay.GroupColour(group) };
             string hover = $"{DiscoveryCatalog.GetLabel(key)}\n{string.Format(Localization.instance.Localize("$whitehilt_disc_found"), kind.Total)}";
             AddHover(button, hover, toggle);
             toggles.Add(toggle);
@@ -196,6 +228,59 @@ public static class DiscoveryPanel
 
         int rows = (kinds.Count + Columns - 1) / Columns;
         return y + rows * IconSize + (rows - 1) * Gap;
+    }
+
+    private static void PaintStatus()
+    {
+        if (builtLocationsFor != ZoneSystem.instance)
+        {
+            locationBiomes = DiscoveryCatalog.GetLocationBiomes();
+            builtLocationsFor = ZoneSystem.instance;
+        }
+
+        Heightmap.Biome biome = Player.m_localPlayer.GetCurrentBiome();
+        IReadOnlyList<string> items = Chests?.GetGatherableItems(biome);
+        foreach (KindToggle toggle in toggles)
+        {
+            bool inBiome;
+            bool unlimited = false;
+            if (toggle.Key.StartsWith(DiscoveryCatalog.ItemPrefix, System.StringComparison.Ordinal))
+            {
+                string name = toggle.Key.Substring(DiscoveryCatalog.ItemPrefix.Length);
+                inBiome = items != null && items.Contains(name);
+                ItemDrop item = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(name)?.GetComponent<ItemDrop>() : null;
+                unlimited = item != null && Chests?.GetUnlimitedChest(name, item.m_itemData.m_shared) != null;
+            }
+            else
+            {
+                inBiome = locationBiomes.TryGetValue(toggle.Key, out Heightmap.Biome biomes) && (biomes & biome) != 0;
+            }
+
+            toggle.Background.color = inBiome ? biomeBack : iconBack;
+            toggle.UnlimitedBadge.SetActive(unlimited);
+            toggle.InBiome = inBiome;
+            toggle.Unlimited = unlimited;
+            if (toggle.Hovered)
+            {
+                SetFooter(GetHoverText(toggle));
+            }
+        }
+    }
+
+    private static string GetHoverText(KindToggle toggle)
+    {
+        string text = toggle.HoverText;
+        if (toggle.Unlimited)
+        {
+            text += "\n" + Localization.instance.Localize("$whitehilt_disc_unlimited");
+        }
+
+        if (toggle.InBiome)
+        {
+            text += "\n" + Localization.instance.Localize("$whitehilt_disc_current_biome");
+        }
+
+        return text;
     }
 
     private static void Paint()
@@ -275,13 +360,14 @@ public static class DiscoveryPanel
 
     private static void AddHover(GameObject target, string text, KindToggle toggle)
     {
+        toggle.HoverText = text;
         EventTrigger trigger = target.AddComponent<EventTrigger>();
         EventTrigger.Entry enter = new() { eventID = EventTriggerType.PointerEnter };
         enter.callback.AddListener(_ =>
         {
             toggle.Hovered = true;
             PaintToggle(toggle);
-            SetFooter(text);
+            SetFooter(GetHoverText(toggle));
         });
         EventTrigger.Entry exit = new() { eventID = EventTriggerType.PointerExit };
         exit.callback.AddListener(_ =>
@@ -316,8 +402,13 @@ public static class DiscoveryPanel
     {
         public string Key;
         public Image Rim;
+        public Image Background;
+        public GameObject UnlimitedBadge;
         public GameObject Check;
         public Color Colour;
         public bool Hovered;
+        public string HoverText;
+        public bool InBiome;
+        public bool Unlimited;
     }
 }

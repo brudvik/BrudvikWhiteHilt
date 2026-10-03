@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.73.0 - 2026-10-03
+
+### Added
+- **Munin's memory**: a gold infinity badge at the top-left of item icons shows which items are unlimited under the world's current chest rules. Warm, light backgrounds highlight items and locations found in the player's current biome, including kinds found in several biomes. Hover text includes both statuses. Location illustrations never count as unlimited items; ordering, discovered-only lists, filter rims, checkmarks and map selections are unchanged. Status follows biome and chest changes while the panel is open.
+
 ## v0.72.4 - 2026-10-03
 
 ### Fixed

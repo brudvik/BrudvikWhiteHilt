@@ -1462,6 +1462,8 @@
   "whitehilt_disc_hint": "Klikk på et ikon for å vise eller skjule det på kartet",
   "whitehilt_disc_ripe": "{0} klare til plukking",
   "whitehilt_disc_found": "{0} funnet",
+  "whitehilt_disc_unlimited": "Uendelig i kistene",
+  "whitehilt_disc_current_biome": "Finnes i dette biomet",
   "whitehilt_skill_foraging": "Sanking",
   "whitehilt_skill_foraging_description": "Å plukke ville bær, sopp og urter. Gir mer av hvert plukk, stjerner på det du plukker og etter hvert sveipeplukking.",
   "whitehilt_perk_keen_eye": "Skarpt blikk",
