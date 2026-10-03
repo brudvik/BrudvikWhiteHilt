@@ -10,7 +10,7 @@ New monsters haunt the land: the Lindorm that breaks out of the ground at night,
 
 A great worm that lies in wait under the forest floor.
 
-The Lindorm is about **6.4 m long** at the default size and bites for **75 pierce damage**.
+The Lindorm is about **6.4 m long** at the default size and bites for **75 pierce damage**. One and two stars add 15% and 30% visual size; higher stars also use the difficulty size settings.
 
 It only comes when everything lines up:
 
@@ -91,6 +91,7 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `CooldownMinutes` | 30 | Real minutes before it can come for the same player again |
 | `Health` / `Damage` | 700 / 75 | Health, and pierce damage of its bite |
 | `Scale` | 1.6 | Size (1 = about 4 m long; default about 6.4 m; after a restart) |
+| `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
 | `GiveUpSeconds` | 25 | Seconds without prey in sight before it burrows away |
 | `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
 

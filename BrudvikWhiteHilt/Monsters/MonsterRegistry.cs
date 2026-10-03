@@ -229,6 +229,10 @@ public static class MonsterRegistry
         ai.m_randomMoveRange = 6f;
 
         AttachVisual(visual, "lindorm", template, scale);
+        LevelEffects levels = visual.gameObject.AddComponent<LevelEffects>();
+        levels.m_levelSetups = Enumerable.Range(1, Difficulty.CreatureStars.MaxLevel - 1)
+            .Select(stars => new LevelEffects.LevelSetup { m_scale = 1f + Mathf.Min(stars, 2) * MonsterSettings.LindormStarScale.Value })
+            .ToList();
         prefab.AddComponent<LindormBurrow>();
         CreatureManager.Instance.AddCreature(creature);
     }

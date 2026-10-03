@@ -44,6 +44,9 @@ public static class MonsterSettings
     /// <summary>Size of the Lindorm.</summary>
     public static ConfigEntry<float> LindormScale { get; private set; }
 
+    /// <summary>Visual growth per star, up to two stars.</summary>
+    public static ConfigEntry<float> LindormStarScale { get; private set; }
+
     /// <summary>Seconds without prey before the Lindorm burrows away.</summary>
     public static ConfigEntry<float> LindormGiveUpSeconds { get; private set; }
 
@@ -170,6 +173,9 @@ public static class MonsterSettings
         LindormDamage = WhiteHiltConfig.BindAdminOnly(LindormSection, "Damage", 75f, "Pierce damage of the Lindorm's bite.", new AcceptableValueRange<float>(0f, 1000f));
         LindormScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "Scale", 1.6f, "Size of the Lindorm (1 = about 4 m long). Applies after a restart.",
             new AcceptableValueRange<float>(0.5f, 3f));
+        LindormStarScale = WhiteHiltConfig.BindAdminOnly(LindormSection, "StarScale", 0.15f,
+            "Visual growth per star up to two stars (0.15 = +15% / +30%). Higher stars also use the difficulty size settings. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 0.5f));
         LindormGiveUpSeconds = WhiteHiltConfig.BindAdminOnly(LindormSection, "GiveUpSeconds", 25f, "Seconds without prey in sight before the Lindorm burrows away.",
             new AcceptableValueRange<float>(5f, 600f));
         LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 15f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",

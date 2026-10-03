@@ -5,7 +5,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## v0.72.2 - 2026-10-03
 
 ### Changed
-- **Lindorm**: default size increased from 1.3 to 1.6 (about 6.4 m long), and bite damage from 55 to 75 pierce. Previous default config values migrate once; custom values are preserved.
+- **Lindorm**: default size increased from 1.3 to 1.6 (about 6.4 m long), and bite damage from 55 to 75 pierce. Configurable visual growth of 15% per star up to two stars; higher stars also use the difficulty size settings. Previous default config values migrate once; custom values are preserved.
 
 ## v0.72.1 - 2026-10-03
 

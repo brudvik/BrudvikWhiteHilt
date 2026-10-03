@@ -2897,6 +2897,8 @@
   "whitehilt_cfg_lindorm_damage_desc": "Stikkskade fra lindormens bitt.",
   "whitehilt_cfg_lindorm_scale": "Størrelse",
   "whitehilt_cfg_lindorm_scale_desc": "Størrelsen på lindormen (1 = omtrent 4 m lang). Gjelder etter omstart.",
+  "whitehilt_cfg_lindorm_starscale": "Vekst per stjerne",
+  "whitehilt_cfg_lindorm_starscale_desc": "Visuell vekst per stjerne opptil to stjerner (0.15 = +15 % / +30 %). Flere stjerner bruker også størrelsesinnstillingene for vanskelighetsgrad. Gjelder etter omstart.",
   "whitehilt_cfg_lindorm_giveupseconds": "Sekunder før den gir opp",
   "whitehilt_cfg_lindorm_giveupseconds_desc": "Sekunder uten bytte i sikte før lindormen graver seg bort.",
   "whitehilt_cfg_lindorm_trophychance": "Sjanse for trofé",
