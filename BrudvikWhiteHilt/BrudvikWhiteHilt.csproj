@@ -240,6 +240,7 @@
     <Compile Include="Items\Runes\MireRune\MireRune.cs" />
     <Compile Include="Items\Runes\BloodRune\BloodRune.cs" />
     <Compile Include="Items\Runes\ThunderRune\ThunderRune.cs" />
+    <Compile Include="Pieces\Lights\Rushlight.cs" />
     <Compile Include="Patches\Gear\WardPatch.cs" />
     <Compile Include="Items\Binding\DreadEffect.cs" />
     <Compile Include="Patches\Gear\DreadPatch.cs" />

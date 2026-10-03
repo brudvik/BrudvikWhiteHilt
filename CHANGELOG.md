@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Thunder Rune** and **Rowan's Ward**: the first rune for a shield, of iron, silver and crystal. Etched with Fine Wood and Rosehips into a bound White Hilt shield, a foe within 10 m whose blow you block is struck by lightning worth half the shield's base block power (`[Gear.Infusions] WardCost`, `WardShare`)
+- **Rushlight** (Hammer, Workbench): a cattail rush dipped in fat, held slanted in an iron rush nip on a stump, with its own model. A small, dimmer light that burns Cattails instead of Resin, each twice as long
 
 ### Changed
 - The Rune Etching Table etches a shield rune into the bound White Hilt shield on your arm

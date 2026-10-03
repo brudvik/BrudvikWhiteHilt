@@ -16,6 +16,18 @@ The config (`EternalFire` section) decides when it applies: `Progression` (defau
 
 ---
 
+## 🕯️ RUSHLIGHT
+
+The old light of the poor: a cattail rush dipped in fat and held slanted in an iron rush nip. It gives less light than a standing torch, and burns [Cattails](foraging.md) instead of Resin, each twice as long. Surt's Brazier keeps it lit like any other torch.
+
+<img src="images/rushlight.png" alt="Rushlight" title="Rushlight" height="140">
+
+| Piece | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Rushlight** | A small light that burns Cattails | Workbench | Wood ×2, Iron ×1, Cattail ×2 |
+
+---
+
 ## 📦 CRAFTING FROM CHESTS
 
 What lies in the chests, carts and ship holds within 30 m counts as your own when you **craft**, **build**, **fuel** or **smelt**, and **cook**. Requirements that are partly in chests show their amount in amber, with a small chest on the icon; the tooltip shows how many are in your inventory and how many in chests. A chest that something is taken from opens its lid and glows briefly.

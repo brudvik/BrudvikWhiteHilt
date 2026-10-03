@@ -948,6 +948,41 @@ def build_milkpail(geo, rng, np):
     geo.tube(handle, [0.005] * 5, "band", segments=4, cap=False)
 
 
+# ---------------------------------------------------------------------------------------------------------------- extras
+
+@model("rushlight", "A rushlight in an iron rush nip on a stump")
+def build_rushlight(geo, rng, np):
+    """The burning tip of the rush is the highest point and stands right above the centre of the stump, so the code
+    can put the flame at the top middle of the model."""
+    V = geo.Vector
+    geo.tube([(0, 0, 0), (0, 0, 0.08), (0, 0, 0.16)], [0.09, 0.086, 0.08], "wood", segments=10)
+    geo.blob((0, 0, 0.16), 0.08, "wood", subdivisions=2, squash=(1, 1, 0.05))
+    rod_x = -0.05
+    clip = V((rod_x, 0, 0.97))
+    geo.tube([(rod_x, 0, 0.15), (rod_x, 0, 0.5), clip], [0.009, 0.008, 0.007], "iron", segments=6)
+    for z in (0.17, 0.5):
+        geo.tube([(rod_x, 0, z - 0.008), (rod_x, 0, z + 0.008)], [0.013, 0.013], "iron", segments=6)
+    # A twist of the rod between the collars, as the smith left it.
+    twist = [V((rod_x + 0.011 * math.cos(t * 0.6), 0.011 * math.sin(t * 0.6), 0.28 + t * 0.012)) for t in range(18)]
+    geo.tube(twist, [0.003] * len(twist), "iron", segments=4, cap=False)
+    # The rush, held slanted in the nip; its tip is over the centre.
+    heading = V((0.6, 0, 0.8))
+    tip = clip + heading * (abs(rod_x) / 0.6)
+    geo.tube([clip - heading * 0.06, tip - heading * 0.014], [0.006, 0.006], "rush", segments=6, cap=False)
+    geo.tube([tip - heading * 0.014, tip], [0.006, 0.002], "char", segments=6)
+    # The jaws either side of the rush, and the knuckle.
+    for side in (-1, 1):
+        offset = V((0, side * 0.006, 0))
+        geo.tube([clip - heading * 0.022 + offset, clip + heading * 0.022 + offset], [0.0035, 0.0035], "iron", segments=4)
+    geo.blob(clip, 0.011, "iron", subdivisions=1)
+    # The candle socket on a curled arm, the counterweight of the nip.
+    arm = [clip, clip + V((-0.012, 0, 0.012)), clip + V((-0.02, 0, 0.022))]
+    geo.tube(arm, [0.004] * 3, "iron", segments=4, cap=False)
+    socket = arm[-1]
+    geo.tube([socket, socket + V((0, 0, 0.022))], [0.007, 0.011], "iron", segments=8, cap=False)
+    geo.blob(socket, 0.007, "iron", subdivisions=1, squash=(1, 1, 0.4))
+
+
 SWATCHES = {
     "bogbean": {
         "leaf": {"bottom": (0.12, 0.26, 0.08), "top": (0.3, 0.48, 0.16)},
@@ -1086,6 +1121,12 @@ SWATCHES.update({
     },
 })
 SWATCHES["hopcones"] = SWATCHES["hops"]
+SWATCHES["rushlight"] = {
+    "wood": {"bottom": (0.26, 0.18, 0.12), "top": (0.55, 0.44, 0.3), "streaks": 0.6, "noise": 0.2},
+    "iron": {"bottom": (0.1, 0.1, 0.11), "top": (0.2, 0.19, 0.19), "noise": 0.3, "cells": (8, 3)},
+    "rush": {"bottom": (0.7, 0.62, 0.4), "top": (0.84, 0.77, 0.52), "noise": 0.12, "streaks": 0.5},
+    "char": {"bottom": (0.05, 0.04, 0.03), "top": (0.12, 0.08, 0.05), "noise": 0.2},
+}
 
 
 # ---------------------------------------------------------------------------------------------------------------- export

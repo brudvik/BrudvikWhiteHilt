@@ -528,6 +528,8 @@
   "item_whitehiltbloodrune_description": "En jernring herdet i blodet fra igler og skåret med raseriets runer. Ristet inn i et bundet våpen med bulmeurt hogger den hardere jo mer du blør.",
   "item_whitehiltthunderrune": "Tordenrune",
   "item_whitehiltthunderrune_description": "En krystall satt i sølv og jern som summer som lufta før et uvær. Rogna berget Tor fra flommen; ristet inn i et bundet skjold med finved og røde bær slår den tilbake med lynet hans.",
+  "piece_whitehilt_rushlight": "Sivlys",
+  "piece_whitehilt_rushlight_description": "Et dunkjevlesiv dyppet i fett, holdt skrått i en jernklype. Et lite, osénde lys; fyr det med dunkjevle.",
   "item_whitehiltwhetstone": "Brynestein",
   "item_whitehiltwhetstone_description": "En stav av fin fjellskifer på en snor. Noen strøk, og eggen biter dypere. Bruk den fra inventaret.",
   "se_whitehiltwhetstone_tooltip": "Skjerpet egg: +{0} % kutt- og stikkskade i {1} slag",
