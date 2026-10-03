@@ -29,7 +29,7 @@ public class IronRune : WhiteHiltRuneBase
     /// <inheritdoc/>
     protected override string[] UnlockedItems => new[]
     {
-        "$item_ironore", "$item_iron", "$item_ironscrap", "$item_ironpit"
+        "$item_ironore", "$item_iron", "$item_ironscrap", "$item_ironpit", "$item_whitehiltbogiron"
     };
 
     /// <inheritdoc/>

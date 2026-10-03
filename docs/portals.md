@@ -20,7 +20,7 @@ Looking at the portal shows which runes it has. Use the post to take the last ru
 | **Rune Forge** | Crafting station for the runes | Hammer (next to a Forge) | Fine Wood ×6, Iron ×6, Stone ×10 |
 | **Rune Post** | Holds up to six runes | Hammer (Workbench) | Wood ×6, Fine Wood ×4, Iron ×2 |
 | **Bronze Rune** | Copper, tin, bronze (ores and scrap) | Rune Forge | Iron ×2 |
-| **Iron Rune** | Iron (ore and scrap) | Rune Forge | Iron ×4 |
+| **Iron Rune** | Iron (ore, scrap and bog iron) | Rune Forge | Iron ×4 |
 | **Silver Rune** | Silver (ore) | Rune Forge | Iron ×6 |
 | **Black Metal Rune** | Black metal (scrap) | Rune Forge | Iron ×8 |
 | **Flametal Rune** | Flametal (ore, also the legacy kind) | Rune Forge | Iron ×10 |

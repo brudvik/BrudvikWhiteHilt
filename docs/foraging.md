@@ -14,7 +14,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 - a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp, and a 30% chance to give Reed there, and a 20% chance to give Labrador Tea there
 - **Wolves** have a 20% chance to drop 1–2 Crowberries
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -30,6 +30,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Labrador Tea** | Low bog shrub with white flower heads and a sharp smell | Swamp hummocks, or extra drop from Thistle there | – |
 | **Cattail** | Tall bog grass with brown velvet heads; the roots give flour | The water's edge in the Swamp, or extra drop from wild Turnip there | – |
 | **Meadowsweet** | Frothy cream flowers that sweeten mead and dull pain | Damp edges of the Swamp, or extra drop from wild Turnip there | – |
+| **Bog Iron** | Rust-brown lumps; the Smelter turns each into Iron | Mud and shallow water in the Swamp | – |
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
@@ -69,6 +70,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 |---|---|
 | Chanterelle, Porcini, Cranberries, Crowberries, Labrador Tea | 1–3 |
 | Lingonberries | 1–2 |
+| Bog Iron | 1–2 |
 | Roseroot, Sweet Gale, Sphagnum Moss, Meadowsweet | 2–4 |
 | Wild Garlic | 3–6 |
 | Bog Bean | 2–5 |

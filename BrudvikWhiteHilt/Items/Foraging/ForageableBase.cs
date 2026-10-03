@@ -183,6 +183,7 @@ public abstract class ForageableBase
                 ForagingDropPatch.Register(ExtraDropFrom, ExtraDropBiome, BaseName, () => extraDropChance.Value);
             }
 
+            OnAdded();
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }
         catch (Exception ex)
@@ -254,6 +255,13 @@ public abstract class ForageableBase
     /// </summary>
     /// <param name="visualRoot">The item prefab, or the visible part of the pickable.</param>
     protected abstract void ApplyVisual(GameObject visualRoot);
+
+    /// <summary>
+    /// Registers what else the forageable brings, such as a smelter conversion. Runs after the item and pickable exist.
+    /// </summary>
+    protected virtual void OnAdded()
+    {
+    }
 
     /// <summary>
     /// Changes the look of the cloned pickable. By default <see cref="ApplyVisual"/> on the part hidden when picked.

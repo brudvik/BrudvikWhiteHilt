@@ -10,6 +10,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Labrador Tea**: a low evergreen shrub on the Swamp hummocks with domes of white flowers, or from thistles picked there (20%). Its sharp smell keeps biting insects away (`[Foraging.LabradorTea]`)
 - **Cattail**: tall bog grass with brown velvet heads at the water's edge in the Swamp, or from wild turnips picked there (20%). Its roots give flour for Swamp dishes (`[Foraging.Cattail]`)
 - **Meadowsweet**: tall red stems with frothy cream flowers on the damp edges of the Swamp, or from wild turnips picked there (20%). It sweetens mead and dulls pain (`[Foraging.Meadowsweet]`)
+- **Bog Iron**: rust-brown lumps in the mud and shallow water of the Swamp. The Smelter turns each lump into Iron, the Iron Rune lets it through portals, and it gives a rust dye (`[Foraging.BogIron]`)
 
 ## v0.57.2 - 2026-10-03
 

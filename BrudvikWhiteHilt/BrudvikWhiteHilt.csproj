@@ -161,6 +161,7 @@
     <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
     <Compile Include="Items\Food\WildGarlicSoup\WildGarlicSoup.cs" />
     <Compile Include="Items\Foraging\BogBean\BogBean.cs" />
+    <Compile Include="Items\Foraging\BogIron\BogIron.cs" />
     <Compile Include="Items\Foraging\Cattail\Cattail.cs" />
     <Compile Include="Items\Foraging\Chanterelle\Chanterelle.cs" />
     <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
