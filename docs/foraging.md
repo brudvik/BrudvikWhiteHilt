@@ -44,6 +44,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Sweet Gale Sausages** | Swamp: 48 health, 26 stamina, 32 min | Stone Pot | Sweet Gale ×2, Wild Garlic ×1, Entrails ×3 |
 | **Cranberry Soup** | Swamp: 26 health, 48 stamina, 32 min | Stone Pot | Cranberries ×3, Lingonberries ×1, Turnip ×1 |
 | **Bog Fish Stew** | Swamp: 50 health, 30 stamina, 32 min | Stone Pot | Trollfish ×1, Cattail ×2, Wild Garlic ×1 |
+| **Cattail Porridge** | Swamp: 22 health, 52 stamina, 32 min | Stone Pot | Cattail ×3, Cranberries ×2, Honey ×1 |
 | **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot level 2 | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
 | **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot level 2 | Roseroot ×3, Lingonberries ×1, Onion ×1 |
 | **Smoked Fish** | 56 health, 32 stamina, 40 min. Buff: swim 50% faster, swimming uses 50% less stamina | Stone Pot level 3 | Perch ×1, Sweet Gale ×1, Lingonberries ×2 |

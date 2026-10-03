@@ -149,6 +149,7 @@
     <Compile Include="Items\Armors\WhiteHiltShield\WhiteHiltShield.cs" />
     <Compile Include="Items\Food\ChanterelleStew\ChanterelleStew.cs" />
     <Compile Include="Items\Food\BogFishStew\BogFishStew.cs" />
+    <Compile Include="Items\Food\CattailPorridge\CattailPorridge.cs" />
     <Compile Include="Items\Food\CranberrySoup\CranberrySoup.cs" />
     <Compile Include="Items\Food\LingonberrySoup\LingonberrySoup.cs" />
     <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
