@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.5 - 2026-10-04
+
+### Fixed
+- **Portal list scrollbar and footer**: the scrollbar now sits outside the masked scroll view and its row canvas, with explicit right-edge anchors and a centred handle. Rows follow the reserved viewport width. The panel's lower edge is raised to leave room for the Munin's memory and Uncovered headers below the map. Compilation passed; thumb visibility, dragging and scaled layout still require in-game testing.
+
 ## v0.77.4 - 2026-10-04
 
 ### Fixed

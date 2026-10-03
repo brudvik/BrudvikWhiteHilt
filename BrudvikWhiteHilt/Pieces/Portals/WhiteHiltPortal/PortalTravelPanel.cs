@@ -146,6 +146,7 @@ public class PortalTravelPanel : MonoBehaviour
         rect.pivot = new Vector2(0f, 0.5f);
         rect.sizeDelta = new Vector2(PanelWidth, 0f);
         rect.anchoredPosition = new Vector2(20f, 0f);
+        rect.offsetMin = new Vector2(rect.offsetMin.x, 112f);
 
         PortalTravelPanel travelPanel = panel.AddComponent<PortalTravelPanel>();
         travelPanel.BuildContent(rect);
@@ -191,15 +192,25 @@ public class PortalTravelPanel : MonoBehaviour
         portalScroll.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
         Stretch(portalScroll.viewport, Vector2.zero, new Vector2(-(scrollbarWidth + 2f * HandleBorder), 0f));
         RectTransform scrollbarRect = (RectTransform)portalScroll.verticalScrollbar.transform;
+        scrollbarRect.SetParent(scrollRect, false);
+        scrollbarRect.anchorMin = new Vector2(1f, 0f);
+        scrollbarRect.anchorMax = Vector2.one;
+        scrollbarRect.pivot = new Vector2(1f, 0.5f);
         scrollbarRect.sizeDelta = new Vector2(scrollbarWidth, -2f * HandleBorder);
         scrollbarRect.anchoredPosition = Vector2.zero;
+        Stretch((RectTransform)portalScroll.verticalScrollbar.handleRect.parent, Vector2.zero, Vector2.zero);
         RectTransform handle = portalScroll.verticalScrollbar.handleRect;
+        handle.pivot = new Vector2(0.5f, 0.5f);
         handle.anchorMin = new Vector2(0f, handle.anchorMin.y);
         handle.anchorMax = new Vector2(1f, handle.anchorMax.y);
         handle.offsetMin = new Vector2(2f, 0f);
         handle.offsetMax = new Vector2(-2f, 0f);
         handle.GetComponent<Image>().color = Color.white;
         listContent = portalScroll.content;
+        listContent.anchorMin = new Vector2(0f, 1f);
+        listContent.anchorMax = Vector2.one;
+        listContent.sizeDelta = new Vector2(0f, listContent.sizeDelta.y);
+        listContent.anchoredPosition = Vector2.zero;
         VerticalLayoutGroup layout = listContent.GetComponent<VerticalLayoutGroup>();
         layout.spacing = 4f;
         layout.childControlHeight = true;
