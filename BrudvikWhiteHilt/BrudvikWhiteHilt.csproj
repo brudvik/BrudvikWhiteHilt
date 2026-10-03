@@ -167,6 +167,7 @@
     <Compile Include="Items\Foraging\Lingonberries\Lingonberries.cs" />
     <Compile Include="Items\Foraging\Porcini\Porcini.cs" />
     <Compile Include="Items\Foraging\Roseroot\Roseroot.cs" />
+    <Compile Include="Items\Foraging\SphagnumMoss\SphagnumMoss.cs" />
     <Compile Include="Items\Foraging\Reed\Reed.cs" />
     <Compile Include="Items\Roofing\RoofMaterials.cs" />
     <Compile Include="Items\Foraging\SweetGale\SweetGale.cs" />

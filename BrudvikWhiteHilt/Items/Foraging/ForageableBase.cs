@@ -6,6 +6,7 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Foraging;
@@ -17,6 +18,8 @@ namespace BrudvikWhiteHilt.Items.Foraging;
 /// </summary>
 public abstract class ForageableBase
 {
+    private static readonly Dictionary<Texture2D, Material> plantMaterials = new();
+
     private readonly ConfigEntry<bool> spawn;
     private readonly ConfigEntry<float> spawnPerZone;
     private readonly ConfigEntry<float> extraDropChance;
@@ -168,7 +171,7 @@ public abstract class ForageableBase
             vanillaRespawnMinutes = pickable.m_respawnTimeMinutes;
             vanillaAmount = pickable.m_amount;
             ApplyPickableConfig();
-            TryApplyVisual(pickable.m_hideWhenPicked != null ? pickable.m_hideWhenPicked : pickablePrefab);
+            TryApplyPickableVisual(pickablePrefab, pickable);
 
             CustomVegetation customVegetation = new(pickablePrefab, false, Vegetation);
             ZoneManager.Instance.AddCustomVegetation(customVegetation);
@@ -252,6 +255,109 @@ public abstract class ForageableBase
     /// <param name="visualRoot">The item prefab, or the visible part of the pickable.</param>
     protected abstract void ApplyVisual(GameObject visualRoot);
 
+    /// <summary>
+    /// Changes the look of the cloned pickable. By default <see cref="ApplyVisual"/> on the part hidden when picked.
+    /// </summary>
+    /// <param name="pickablePrefab">The pickable prefab.</param>
+    /// <param name="pickable">Its pickable component.</param>
+    protected virtual void ApplyPickableVisual(GameObject pickablePrefab, Pickable pickable)
+    {
+        ApplyVisual(pickable.m_hideWhenPicked != null ? pickable.m_hideWhenPicked : pickablePrefab);
+    }
+
+    /// <summary>
+    /// Whether a visual root is the item prefab rather than the pickable.
+    /// </summary>
+    /// <param name="visualRoot">The object passed to <see cref="ApplyVisual"/>.</param>
+    /// <returns>True for the item.</returns>
+    protected static bool IsItem(GameObject visualRoot)
+    {
+        return visualRoot.GetComponent<ItemDrop>() != null;
+    }
+
+    /// <summary>
+    /// Shows a bundle model in place of the vanilla look, with a static plant material. On an item it takes the height
+    /// of the vanilla item; on a pickable it stands on the ground, <paramref name="height"/> metres high.
+    /// </summary>
+    /// <param name="visualRoot">The object passed to <see cref="ApplyVisual"/>.</param>
+    /// <param name="modelName">Bundle mesh name; its texture is <c>&lt;modelName&gt;_albedo</c>.</param>
+    /// <param name="height">Height on the ground, in metres.</param>
+    /// <returns>The new model.</returns>
+    protected static GameObject ReplacePlantMesh(GameObject visualRoot, string modelName, float height)
+    {
+        Mesh mesh = ForagingAssets.LoadMesh(modelName);
+        Texture2D texture = ForagingAssets.LoadTexture($"{modelName}_albedo");
+        if (IsItem(visualRoot))
+        {
+            GameObject itemModel = VisualHelper.ReplaceMesh(visualRoot, mesh, texture);
+            itemModel.GetComponent<MeshRenderer>().sharedMaterial = PlantMaterial(texture);
+            return itemModel;
+        }
+
+        Vector3 size = mesh.bounds.size;
+        float longest = height * Mathf.Max(size.x, size.y, size.z) / size.y / visualRoot.transform.lossyScale.y;
+        GameObject model = VisualHelper.ReplaceMesh(visualRoot, mesh, texture, size: longest);
+        model.GetComponent<MeshRenderer>().sharedMaterial = PlantMaterial(texture);
+
+        // Vanilla plants reach below the ground, so the base goes to the pickable's origin instead.
+        Transform ground = visualRoot.GetComponentInParent<Pickable>(true)?.transform ?? visualRoot.transform;
+        Vector3 position = model.transform.position;
+        model.transform.position = new Vector3(position.x, ground.position.y - 0.02f, position.z);
+        return model;
+    }
+
+    /// <summary>
+    /// Shows a bush from the bundle on a pickable bush: <c>&lt;modelName&gt;</c> stays, <c>&lt;modelName&gt;fruit</c>
+    /// (berries or flowers, made with the same bounds) hides when picked.
+    /// </summary>
+    /// <param name="pickablePrefab">The pickable prefab.</param>
+    /// <param name="pickable">Its pickable component.</param>
+    /// <param name="modelName">Bundle mesh name of the bush.</param>
+    /// <param name="height">Height on the ground, in metres.</param>
+    protected static void ReplaceBushMesh(GameObject pickablePrefab, Pickable pickable, string modelName, float height)
+    {
+        GameObject model = ReplacePlantMesh(pickablePrefab, modelName, height);
+        MeshRenderer renderer = model.GetComponent<MeshRenderer>();
+        Mesh fruitMesh = ForagingAssets.LoadMesh($"{modelName}fruit");
+        GameObject fruit = VisualHelper.AddMesh(model, fruitMesh, null, Vector3.zero, model.GetComponent<MeshFilter>().sharedMesh.bounds.size.y);
+        fruit.GetComponent<MeshRenderer>().sharedMaterial = renderer.sharedMaterial;
+        if (pickable.m_hideWhenPicked != null)
+        {
+            fruit.transform.SetParent(pickable.m_hideWhenPicked.transform, true);
+        }
+    }
+
+    /// <summary>
+    /// Removes the glow of a cloned thistle: its point light and its flare and bee particles.
+    /// </summary>
+    /// <param name="pickablePrefab">The pickable prefab.</param>
+    protected static void RemoveGlow(GameObject pickablePrefab)
+    {
+        foreach (Light light in pickablePrefab.GetComponentsInChildren<Light>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(light.gameObject);
+        }
+
+        foreach (ParticleSystem particles in pickablePrefab.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(particles.gameObject);
+        }
+    }
+
+    // The mushroom's material does not sway in the wind, so models made of many parts keep together.
+    private static Material PlantMaterial(Texture2D texture)
+    {
+        if (plantMaterials.TryGetValue(texture, out Material material))
+        {
+            return material;
+        }
+
+        Material template = PrefabManager.Cache.GetPrefab<GameObject>("Pickable_Mushroom").GetComponentInChildren<MeshRenderer>(true).sharedMaterial;
+        material = VisualHelper.CreateTexturedMaterial(template, texture, $"{texture.name}_plant");
+        plantMaterials[texture] = material;
+        return material;
+    }
+
     // The ZoneSystem keeps this same object, so changes apply to zones generated afterwards.
     private void ApplyVegetationConfig()
     {
@@ -280,6 +386,16 @@ public abstract class ForageableBase
 
     private void TryApplyVisual(GameObject visualRoot)
     {
+        TryApplyVisual(visualRoot.name, () => ApplyVisual(visualRoot));
+    }
+
+    private void TryApplyPickableVisual(GameObject pickablePrefab, Pickable pickable)
+    {
+        TryApplyVisual(pickablePrefab.name, () => ApplyPickableVisual(pickablePrefab, pickable));
+    }
+
+    private void TryApplyVisual(string name, Action apply)
+    {
         if (VisualHelper.IsHeadless)
         {
             return;
@@ -288,11 +404,11 @@ public abstract class ForageableBase
         // A broken look must not remove the item, or players would lose it from their inventories.
         try
         {
-            ApplyVisual(visualRoot);
+            apply();
         }
         catch (Exception ex)
         {
-            Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look of {visualRoot.name}: {ex.Message}");
+            Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look of {name}: {ex.Message}");
         }
     }
 }

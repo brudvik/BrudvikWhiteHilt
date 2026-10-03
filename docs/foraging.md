@@ -7,13 +7,13 @@
 New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp** and the **Mountains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
 
 The plants spawn in zones that have not been generated yet. In areas you have already explored:
-- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp
+- a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla **Blueberry bush** has a 30% chance to also give Lingonberries
 - a vanilla **Thistle** has a 30% chance to also give Sweet Gale in the Swamp, and a 30% chance to give Reed there
 - **Wolves** have a 20% chance to drop 1–2 Crowberries
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -24,6 +24,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Cranberries** | Sour dark red berries | Swamp tussocks, or extra drop from Mushroom there | – |
 | **Sweet Gale** | Bitter bog shrub | Swamp, or extra drop from Thistle there | – |
 | **Reed** | Tall swamp reed for [reed thatch](roofs.md) | The water's edge in the Swamp, or extra drop from Thistle there | – |
+| **Sphagnum Moss** | Red and green cushions of bog moss, for dyes and healing drinks | Wet ground in the Swamp, or extra drop from Mushroom there | – |
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
@@ -63,7 +64,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 |---|---|
 | Chanterelle, Porcini, Cranberries, Crowberries | 1–3 |
 | Lingonberries | 1–2 |
-| Roseroot, Sweet Gale | 2–4 |
+| Roseroot, Sweet Gale, Sphagnum Moss | 2–4 |
 | Wild Garlic | 3–6 |
 | Reed | 3–6 |
 
