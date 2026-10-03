@@ -12,6 +12,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Mountain Sorrel**: round sour leaves and red seed spikes on damp Mountain ledges, or from wild onions picked there (25%) (`[Foraging.MountainSorrel]`)
 - **Rock Lichen**: grey crusts on Mountain stones; the stone stays and the crust grows back. Stone Golems drop it half the time. The purple dye the paint bench lacked (`[Foraging.RockLichen]`)
 - **Moss Porridge** (Stone Pot level 2): Iceland Moss, Crowberries and Honey, 30 health and 56 stamina for 35 minutes (`[Food.MossPorridge]`)
+- **Juniper-Smoked Wolf Ham** (Stone Pot level 3): Wolf Meat, Juniper Berries and Onion, 58 health and 30 stamina for 40 minutes; for the first 20 minutes frost damage is halved (`[Food.Juniper-SmokedWolfHam]`)
 
 ## v0.58.0 - 2026-10-03
 
