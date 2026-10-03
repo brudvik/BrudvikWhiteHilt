@@ -23,6 +23,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Fang Rune** and **Wolfsbane**: a rune of iron, wolf fangs and silver. Etched with Wolf Lichen it adds poison damage that is three times as strong against beasts: wolves, fenrings, bears, boars, deer, lox, hares and asksvin (`[Gear.Infusions] WolfsbaneCost`, `WolfsbaneBeastMultiplier`, `WolfsbaneBeasts`)
 - **Whetstone**: a bar of mountain slate made at the Workbench. Use it from the inventory and your weapon deals 15% more slash and pierce damage for the next 30 hits (`[Coatings.Whetstone]` `Hits`, `Strength`)
 - **Juniper Oil** (Cauldron): Juniper Berries and Resin; for 30 hits a fifth of the weapon's physical damage is added as spirit damage (`[Coatings.JuniperOil]`)
+- **Wolf Lichen Oil** (Cauldron): Wolf Lichen and Entrails; for 30 hits a fifth of the weapon's physical damage is added as poison damage (`[Coatings.WolfLichenOil]`)
 
 ## v0.58.0 - 2026-10-03
 

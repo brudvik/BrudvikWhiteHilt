@@ -152,6 +152,7 @@
     <Compile Include="Items\Coatings\WeaponCoatingEffect.cs" />
     <Compile Include="Items\Coatings\Whetstone\Whetstone.cs" />
     <Compile Include="Items\Coatings\JuniperOil\JuniperOil.cs" />
+    <Compile Include="Items\Coatings\WolfLichenOil\WolfLichenOil.cs" />
     <Compile Include="Items\Food\BogFishStew\BogFishStew.cs" />
     <Compile Include="Items\Food\CattailPorridge\CattailPorridge.cs" />
     <Compile Include="Items\Food\CranberrySoup\CranberrySoup.cs" />
