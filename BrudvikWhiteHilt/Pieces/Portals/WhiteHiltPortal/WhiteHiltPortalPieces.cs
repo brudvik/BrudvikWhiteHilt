@@ -297,6 +297,7 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
 
     private const float Diameter = 4f;
     private const float Lift = 0.01f;
+    private const float HeightScale = 1f / 3f;
 
     // The stone base; make_portal_base.py builds the model with the same sizes.
     private const float BaseRadius = 2.4f;
@@ -349,7 +350,7 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
             for (int i = 0; i < ColliderSides; i++)
             {
                 float angle = i * 2f * Mathf.PI / ColliderSides;
-                vertices.Add(ringCentre + new Vector3(Mathf.Cos(angle) * radius, height, Mathf.Sin(angle) * radius));
+                vertices.Add(ringCentre + new Vector3(Mathf.Cos(angle) * radius, height * HeightScale, Mathf.Sin(angle) * radius));
             }
         }
 
@@ -392,7 +393,8 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
 
         // The converted model is 1 high from the bottom of its skirt, which reaches into the ground.
         GameObject stone = VisualHelper.CreateModel(prefab.transform, ForagingAssets.LoadMesh("portalbase"), ForagingAssets.LoadTexture("portalbase_albedo"), template,
-            ringCentre + Vector3.down * BaseSkirt, Quaternion.identity, BaseHeight + BaseSkirt);
+            ringCentre + Vector3.down * (BaseSkirt * HeightScale), Quaternion.identity, BaseHeight + BaseSkirt);
+        stone.transform.localScale = Vector3.Scale(stone.transform.localScale, new Vector3(1f, HeightScale, 1f));
         Material material = stone.GetComponent<MeshRenderer>().sharedMaterial;
         if (material.HasProperty("_EmissionMap"))
         {
@@ -407,7 +409,7 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
         }
 
         prefab.AddComponent<PortalBaseGlow>();
-        AddRuneCircle(prefab.transform, template, Diameter, BaseHeight + Lift);
+        AddRuneCircle(prefab.transform, template, Diameter, (BaseHeight + Lift) * HeightScale, HeightScale);
     }
 
     /// <summary>
@@ -417,11 +419,13 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
     /// <param name="template">Renderer whose material the model copies.</param>
     /// <param name="diameter">Diameter of the circle, in metres.</param>
     /// <param name="lift">Height above the parent, so it does not flicker with the surface below.</param>
-    public static void AddRuneCircle(Transform parent, Renderer template, float diameter, float lift)
+    /// <param name="heightScale">Vertical scale of the rune model; its diameter stays unchanged.</param>
+    public static void AddRuneCircle(Transform parent, Renderer template, float diameter, float lift, float heightScale = 1f)
     {
         Mesh mesh = ForagingAssets.LoadMesh("portalground");
         float scale = diameter / Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z);
         GameObject circle = VisualHelper.CreateModel(parent, mesh, ForagingAssets.LoadTexture("portalground_albedo"), template, Vector3.up * lift, Quaternion.identity, scale);
+        circle.transform.localScale = new Vector3(scale, scale * heightScale, scale);
         Material material = circle.GetComponent<MeshRenderer>().sharedMaterial;
         if (material.HasProperty("_EmissionMap"))
         {

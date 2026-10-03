@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.4 - 2026-10-03
+
+### Changed
+- **White Hilt Rune Circle**: the ground portal's stone base, runes and collision shape are one third as tall, with the same diameter. The stone surface is now 4 cm above the ground instead of 12 cm. Standing and ship portals are unchanged.
+
 ## v0.69.3 - 2026-10-03
 
 ### Fixed

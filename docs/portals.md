@@ -57,7 +57,7 @@ The **Home Stone** takes you to your home portal from anywhere. It then rests fo
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **White Hilt Portal** | A standing stone arch with the portal swirl | Hammer (Workbench) | Stone ×30, Fine Wood ×10, Surtling Core ×2, Greydwarf Eye ×10 |
-| **White Hilt Rune Circle** | The same portal, as a flat circle of glowing runes on a round slab of dark stone. The rim glows faint blue, a little stronger as you come near, and slopes down to the ground so you walk straight onto it | Hammer (Workbench) | Stone ×20, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
+| **White Hilt Rune Circle** | The same portal, as a flat circle of glowing runes on a thin round slab of dark stone, with its surface just 4 cm above the ground. The rim glows faint blue, a little stronger as you come near, and slopes down to the ground so you walk straight onto it | Hammer (Workbench) | Stone ×20, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
 | **Home Stone** | Takes you to your home portal, then rests; used again within 2 minutes, it takes you back | Rune Forge | Stone ×4, Iron ×2, Surtling Core ×1, Greydwarf Eye ×5 |
 
 The server sends the portal list every 10–20 seconds, so a new or renamed portal shows up in the list after a short while.
