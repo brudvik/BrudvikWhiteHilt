@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Navigation.Discoveries;
 /// <summary>
 /// The panel under the bottom-left corner of the large map where the player picks which discoveries to show. Its header
 /// stays under the map and the list opens upwards over it. It lists only kinds that have been found, by group, as icons
-/// that are grey while switched off. It shows while Munin's Perch shares discoveries; below the Exploration level it
+/// on light discs, with coloured rims and checkmarks while switched on. It shows while Munin's Perch shares discoveries; below the Exploration level it
 /// only says what level is needed.
 /// </summary>
 public static class DiscoveryPanel
@@ -25,8 +25,8 @@ public static class DiscoveryPanel
     private const float Width = Padding * 2f + Columns * IconSize + (Columns - 1) * Gap;
     private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
-    private static readonly Color offBack = new(0.2f, 0.2f, 0.2f, 0.85f);
-    private static readonly Color offIcon = new(0.45f, 0.45f, 0.45f, 0.7f);
+    private static readonly Color offRim = new(0.48f, 0.48f, 0.48f, 1f);
+    private static readonly Color iconBack = new(0.82f, 0.82f, 0.82f, 1f);
     private static readonly List<KindToggle> toggles = new();
 
     private static GameObject panel;
@@ -166,6 +166,9 @@ public static class DiscoveryPanel
             GameObject button = CreateButton(x, top, IconSize, IconSize, () => DiscoveryFilter.Toggle(key));
             Image back = button.GetComponent<Image>();
             back.sprite = DiscoveryOverlay.Disc();
+            Image inner = CreateDisc(button.transform, "Background", iconBack);
+            inner.rectTransform.offsetMin = new Vector2(2f, 2f);
+            inner.rectTransform.offsetMax = new Vector2(-2f, -2f);
             GameObject iconObject = new("Icon", typeof(RectTransform), typeof(Image));
             RectTransform iconRect = (RectTransform)iconObject.transform;
             iconRect.SetParent(button.transform, false);
@@ -177,9 +180,18 @@ public static class DiscoveryPanel
             icon.sprite = DiscoveryCatalog.GetIcon(key);
             icon.preserveAspect = true;
             icon.raycastTarget = false;
+            icon.color = Color.white;
+            Image check = CreateDisc(button.transform, "Check", new Color(0.16f, 0.16f, 0.16f, 1f));
+            RectTransform checkRect = check.rectTransform;
+            checkRect.anchorMin = checkRect.anchorMax = new Vector2(1f, 0f);
+            checkRect.sizeDelta = new Vector2(12f, 12f);
+            checkRect.anchoredPosition = new Vector2(-4f, 4f);
+            AddCheckStroke(check.transform, new Vector2(-2f, -1f), 4f, -45f);
+            AddCheckStroke(check.transform, new Vector2(1f, 0f), 7f, 45f);
+            KindToggle toggle = new() { Key = key, Rim = back, Check = check.gameObject, Colour = DiscoveryOverlay.GroupColour(group) };
             string hover = $"{DiscoveryCatalog.GetLabel(key)}\n{string.Format(Localization.instance.Localize("$whitehilt_disc_found"), kind.Total)}";
-            AddHover(button, hover);
-            toggles.Add(new KindToggle { Key = key, Back = back, Icon = icon, Colour = DiscoveryOverlay.GroupColour(group) });
+            AddHover(button, hover, toggle);
+            toggles.Add(toggle);
         }
 
         int rows = (kinds.Count + Columns - 1) / Columns;
@@ -191,10 +203,45 @@ public static class DiscoveryPanel
         paintedFilter = DiscoveryFilter.Version;
         foreach (KindToggle toggle in toggles)
         {
-            bool on = DiscoveryFilter.IsShown(toggle.Key);
-            toggle.Back.color = on ? toggle.Colour : offBack;
-            toggle.Icon.color = on ? Color.white : offIcon;
+            PaintToggle(toggle);
         }
+    }
+
+    private static void PaintToggle(KindToggle toggle)
+    {
+        bool on = DiscoveryFilter.IsShown(toggle.Key);
+        Color rim = on ? toggle.Colour : offRim;
+        toggle.Rim.color = toggle.Hovered ? Color.Lerp(rim, Color.white, 0.65f) : rim;
+        toggle.Check.SetActive(on);
+    }
+
+    private static Image CreateDisc(Transform parent, string name, Color colour)
+    {
+        GameObject disc = new(name, typeof(RectTransform), typeof(Image));
+        Image image = disc.GetComponent<Image>();
+        image.rectTransform.SetParent(parent, false);
+        image.rectTransform.anchorMin = Vector2.zero;
+        image.rectTransform.anchorMax = Vector2.one;
+        image.rectTransform.offsetMin = Vector2.zero;
+        image.rectTransform.offsetMax = Vector2.zero;
+        image.sprite = DiscoveryOverlay.Disc();
+        image.color = colour;
+        image.raycastTarget = false;
+        return image;
+    }
+
+    private static void AddCheckStroke(Transform parent, Vector2 position, float length, float angle)
+    {
+        GameObject stroke = new("Stroke", typeof(RectTransform), typeof(Image));
+        RectTransform rect = (RectTransform)stroke.transform;
+        rect.SetParent(parent, false);
+        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = position;
+        rect.sizeDelta = new Vector2(length, 2f);
+        rect.localRotation = Quaternion.Euler(0f, 0f, angle);
+        Image image = stroke.GetComponent<Image>();
+        image.color = Color.white;
+        image.raycastTarget = false;
     }
 
     private static GameObject CreateButton(float x, float y, float width, float height, UnityEngine.Events.UnityAction onClick)
@@ -226,13 +273,23 @@ public static class DiscoveryPanel
         return component;
     }
 
-    private static void AddHover(GameObject target, string text)
+    private static void AddHover(GameObject target, string text, KindToggle toggle)
     {
         EventTrigger trigger = target.AddComponent<EventTrigger>();
         EventTrigger.Entry enter = new() { eventID = EventTriggerType.PointerEnter };
-        enter.callback.AddListener(_ => SetFooter(text));
+        enter.callback.AddListener(_ =>
+        {
+            toggle.Hovered = true;
+            PaintToggle(toggle);
+            SetFooter(text);
+        });
         EventTrigger.Entry exit = new() { eventID = EventTriggerType.PointerExit };
-        exit.callback.AddListener(_ => SetFooter(footerDefault));
+        exit.callback.AddListener(_ =>
+        {
+            toggle.Hovered = false;
+            PaintToggle(toggle);
+            SetFooter(footerDefault);
+        });
         trigger.triggers.Add(enter);
         trigger.triggers.Add(exit);
     }
@@ -258,8 +315,9 @@ public static class DiscoveryPanel
     private sealed class KindToggle
     {
         public string Key;
-        public Image Back;
-        public Image Icon;
+        public Image Rim;
+        public GameObject Check;
         public Color Colour;
+        public bool Hovered;
     }
 }

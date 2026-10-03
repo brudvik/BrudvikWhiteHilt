@@ -165,6 +165,7 @@ Munin, Odin's raven of memory, remembers everything found on a map table's map. 
 
 - **What counts as found**: only what is uncovered on the map of the map table the perch stands at. Players add to it the vanilla way, by recording their map on the table. With several tables that each have a perch, all of their maps count.
 - **Nothing shows at first.** A panel under the bottom-left corner of the large map, **Munin's memory**, lists every kind that has been found, by group. Click the header to open it upwards over the map, click an icon to show or hide that kind, and click a group's name to show or hide the whole group. Hovering over an icon shows its name and how many have been found. Your choice is saved with the character.
+- Icons keep their original colours on light-grey discs in both states. A coloured rim and a small checkmark mean the kind is shown; a grey rim without a checkmark means it is hidden. The rim brightens on hover.
 - **Exploration**: the large map shows the markers from Exploration 20, the minimap from Exploration 50. Below that, the panel only says what level you need.
 - Plants and deposits of one kind within 64 m are counted as one marker with their number. Markers that would overlap on screen merge too, so zoom in to tell them apart. Hover over a marker to see its name, its number and, for plants, how many are ready to pick.
 - Crops near player-built pieces are left out, since they are planted, not wild. Anything a player has placed is left out too.

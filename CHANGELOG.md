@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.69.3 - 2026-10-03
+
+### Fixed
+- **Munin's memory**: icons remain in their original colours on opaque light-grey discs even when switched off. Coloured rims and checkmarks show active filters, grey rims show inactive filters, and rims brighten on hover. Panel size and filtering are unchanged.
+
 ## v0.69.2 - 2026-10-03
 
 ### Fixed
