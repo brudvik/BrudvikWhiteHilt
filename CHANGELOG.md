@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.78.0 - 2026-10-04
+
+### Added
+- **Horn of the Deep**: a forge-crafted celebration-horn clone with black trim, a synchronized mouth-and-arm blowing pose and an original deep sustained WAV tone. Equip it and attack to blow; movement, swimming, combat actions, attaching or putting it away cancels the call. A completed call asks the server to summon Kraken beside a ship in deep Ocean, or an unlocked black beast belonging to the land biome. Boss requirements, disabled creatures, nearby encounters and a configurable world-wide horn cooldown are respected; weather and dark-hour rolls are bypassed. Meadows and Deep North have no horn beast. Horn-called Kraken stays by day but keeps its retreat timer; horn-called land beasts stay by day while players are within the encounter range. Compilation, 31 production-server checks, 20 production arm-geometry checks, trim coverage and packed-audio checks passed; multiplayer animation and sound still require in-game testing.
+
 ## v0.77.5 - 2026-10-04
 
 ### Fixed

@@ -145,13 +145,13 @@ Buy a treasure map from Hildir, match its scrap of land against your own map and
 
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 
-A world that grows harder as you progress: up to 5 stars, black beasts in the dark hour and the rare blood moon.
+A world that grows harder as you progress: up to 5 stars, black beasts, the rare blood moon and a black-trimmed horn to call a biome's beast.
 
 ### 🐙 [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken" height="120">
 
-Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your ship with its tentacles.
+Octopuses in the deep, and Kraken beside your ship on a calm, foggy night or called by the Horn of the Deep.
 
 ### 🕷️ [Lindorm, giant spiders & Desert Dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
 

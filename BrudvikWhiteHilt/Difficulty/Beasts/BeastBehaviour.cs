@@ -35,8 +35,10 @@ public class BeastBehaviour : MonoBehaviour
             return;
         }
 
+        float quietRange = nview.GetZDO().GetBool(Items.Summoning.SummoningHornService.SummonedKey)
+            ? Items.Summoning.SummoningHornService.EncounterRange.Value : QuietRange;
         if (!DifficultySettings.DespawnAtDawn.Value || DifficultyState.IsNightHour(DifficultyState.Hours())
-            || Player.IsPlayerInRange(transform.position, QuietRange))
+            || Player.IsPlayerInRange(transform.position, quietRange))
         {
             return;
         }

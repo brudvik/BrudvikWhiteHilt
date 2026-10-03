@@ -17,8 +17,9 @@ public static class BeastSpawner
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="beast">The beast.</param>
+    /// <param name="summoned">Whether a horn called this beast.</param>
     /// <returns>True if it was spawned.</returns>
-    public static bool Spawn(Player player, BeastDefinition beast)
+    public static bool Spawn(Player player, BeastDefinition beast, bool summoned = false)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(beast.PrefabName) : null;
         if (prefab == null)
@@ -40,6 +41,7 @@ public static class BeastSpawner
         Character character = instance.GetComponent<Character>();
         ZDO zdo = character.m_nview.GetZDO();
         zdo.Set(CreatureStars.BeastKey, true);
+        zdo.Set(Items.Summoning.SummoningHornService.SummonedKey, summoned);
         zdo.Set(CreatureStars.HealthKey, DifficultySettings.BeastHealth.Value);
         zdo.Set(CreatureStars.DamageKey, DifficultySettings.BeastDamage.Value);
         character.SetLevel(CreatureStars.MaxLevel);

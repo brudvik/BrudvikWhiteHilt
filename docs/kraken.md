@@ -24,6 +24,12 @@ The Kraken only comes when everything lines up:
 
 Then, once a minute, there is an 8% chance it rises with one player aboard. Each additional player on the same ship adds 8 percentage points: 16% with two players, 24% with three, and 40% with five, capped at 100%. Players on other ships do not contribute to that ship's chance. All the conditions above still apply. It comes at most once every 90 minutes in the whole world.
 
+### Horn of the Deep
+
+The [Horn of the Deep](difficulty.md#horn-of-the-deep) can deliberately call Kraken: equip it and attack to complete a horn call while aboard a ship in **Ocean**, over at least the configured `MinDepth`, after the configured `RequiredKey` boss is defeated. No fog, calm wind, night or chance roll is needed. Kraken must be enabled. The server applies the horn's own cooldown and nearby-encounter checks.
+
+A horn-called Kraken does not retreat merely because it is daytime. Its normal `RetreatMinutes` limit and retreat when players leave still apply. Naturally occurring Kraken is unchanged.
+
 ### The fight
 
 1. The sea shakes and **the Kraken rises** beside the ship, its glowing eyes just above the water.

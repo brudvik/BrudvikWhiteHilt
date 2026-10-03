@@ -158,7 +158,8 @@ public class KrakenBody : MonoBehaviour
         }
 
         bool tooLong = Seconds(StartKey) > KrakenSettings.RetreatMinutes.Value * 60f;
-        bool dawn = KrakenSettings.NightOnly.Value && !EnvMan.IsNight();
+        bool dawn = KrakenSettings.NightOnly.Value && !EnvMan.IsNight()
+            && !zdo.GetBool(Items.Summoning.SummoningHornService.SummonedKey);
         if (tooLong || dawn || Time.time - lastPlayerNear > 20f)
         {
             Retreat();

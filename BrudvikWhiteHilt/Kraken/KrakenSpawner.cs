@@ -18,8 +18,9 @@ public static class KrakenSpawner
     /// Raises the Kraken beside a ship.
     /// </summary>
     /// <param name="ship">The ship.</param>
+    /// <param name="summoned">Whether a horn called this Kraken, allowing it to stay by day.</param>
     /// <returns>True if it rose.</returns>
-    public static bool Spawn(Ship ship)
+    public static bool Spawn(Ship ship, bool summoned = false)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(KrakenRegistry.BodyName) : null;
         if (prefab == null || ship == null)
@@ -46,6 +47,7 @@ public static class KrakenSpawner
             ZNetView nview = kraken.GetComponent<ZNetView>();
             nview.GetZDO().Set(KrakenBody.ShipKey, ship.m_nview.GetZDO().m_uid);
             nview.GetZDO().Set(KrakenBody.CrewKey, Mathf.Max(1, ship.m_players.Count));
+            nview.GetZDO().Set(Items.Summoning.SummoningHornService.SummonedKey, summoned);
             Jotunn.Logger.LogInfo($"The Kraken rises at {point} beside the ship at {centre}");
             return true;
         }
