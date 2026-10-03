@@ -147,7 +147,7 @@ public static class RoofSettings
         SoapstoneChance = WhiteHiltConfig.BindAdminOnly(MaterialSection, "SoapstoneChance", 0.08f,
             "Chance, for each stone a Mountain rock drops, that a soapstone comes with it. 0 turns it off.", new AcceptableValueRange<float>(0f, 1f));
         SlateOutcropPerZone = WhiteHiltConfig.BindAdminOnly(MaterialSection, "SlateOutcropPerZone", 0.12f,
-            "Chance of a slate outcrop in each Mountain zone generated from now on.", new AcceptableValueRange<float>(0f, 1f));
+            "Chance of a slate outcrop in each Mountain zone: in newly generated land, and once in land generated before the outcrops came ([OldLand]).", new AcceptableValueRange<float>(0f, 1f));
         StrawChance = WhiteHiltConfig.BindAdminOnly(MaterialSection, "StrawChance", 1f,
             "Chance that harvesting barley or flax, wild or grown, also gives straw. 0 turns it off.", new AcceptableValueRange<float>(0f, 1f));
         TarKilnSeconds = WhiteHiltConfig.BindAdminOnly(MaterialSection, "TarKilnSeconds", 40f,

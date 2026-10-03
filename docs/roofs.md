@@ -51,7 +51,7 @@ On a turf roof (not on its ridges, corners or smoke holes) you can plant roseroo
 | **Soapstone** | Slate outcrops, or an 8% chance per stone from any Mountain rock | Soapstone Hearth |
 | **Straw** | Every harvest of barley or flax, wild or grown | Straw thatch |
 
-Reed and slate outcrops only appear in zones generated from now on; the extra drops work everywhere.
+Reed and slate outcrops appear as new land is generated, and once, when the server starts, in land generated before they came (`[OldLand]`, see [Progression](progression.md)); the extra drops work everywhere.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
@@ -101,7 +101,7 @@ Section `[Roofs.Materials]`:
 | `TurfBiomes` | Meadows, BlackForest, Plains | Biomes where digging gives turf |
 | `SlateChance` | 0.25 | Chance per stone from a Mountain rock that a slate comes with it |
 | `SoapstoneChance` | 0.08 | Chance per stone from a Mountain rock that a soapstone comes with it |
-| `SlateOutcropPerZone` | 0.12 | Chance of a slate outcrop in each Mountain zone generated from now on |
+| `SlateOutcropPerZone` | 0.12 | Chance of a slate outcrop in each Mountain zone |
 | `StrawChance` | 1 | Chance that harvesting barley or flax gives straw |
 | `TarKilnSeconds` | 40 | Seconds the Tar Kiln takes for one pine tar |
 | `TarKilnCapacity` | 25 | Core wood the Tar Kiln holds |

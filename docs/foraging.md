@@ -6,7 +6,7 @@
 
 New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, the **Mountains** and the **Plains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
 
-The plants spawn in zones that have not been generated yet. In areas you have already explored:
+The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla wild **Turnip** in the Swamp has a 30% chance to also give Bog Bean, and a 20% chance each to give Cattail and Meadowsweet
@@ -99,7 +99,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 
 | Setting | Default | What it does |
 |---|---|---|
-| `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group, in zones generated from now on |
+| `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group |
 | `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
 | `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |
 | `FuelValue` | 2 | Peat only: how much wood one brick is worth in a wood fire |

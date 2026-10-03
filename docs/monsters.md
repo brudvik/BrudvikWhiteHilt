@@ -26,7 +26,9 @@ Giant spiders live around **spider nests** in the Black Forest: a pale, web-cove
 
 Their bite is **poisonous** and **webs** you: you move at half speed for 3 seconds. They are afraid of fire, avoid water and are weak to blunt and fire damage.
 
-Nests only appear in **newly generated** Black Forest land, in about 15% of its zones. Land you have already explored keeps what it had.
+Nests appear in about 15% of the Black Forest's zones as the land is generated. Land generated before the spiders came gets its nests once, when the server starts: the same zones win the same roll, and the nest goes on a free, flat forest spot at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)).
+
+At night, a **lone spider** may also come out anywhere in the forest, nest or no nest.
 
 | | Health | Attack | Weak to |
 |---|---|---|---|
@@ -69,17 +71,20 @@ Section `[Giant Spider]`:
 
 | Setting | Default | What it does |
 |---|---|---|
-| `Enabled` | true | New nests appear in new Black Forest land |
+| `Enabled` | true | Nests and lone spiders in the Black Forest |
 | `Health` | 120 | Health of a spider |
 | `Damage` / `Poison` | 18 / 15 | Pierce and poison damage of its bite |
 | `WebSeconds` | 3 | Seconds a bite slows you; 0 = no slow |
 | `Scale` | 1 | Size (1 = about 1.6 m across; after a restart) |
-| `NestChancePerZone` | 0.15 | Chance of a nest in each new Black Forest zone |
+| `NestChancePerZone` | 0.15 | Chance of a nest in each Black Forest zone |
 | `NestHealth` | 300 | Health of a nest |
 | `NestMaxNear` | 3 | Spiders a nest keeps around it |
 | `TrophyChance` | 10 | Percent chance of a spider's trophy (after a restart) |
 | `NestSpawnSeconds` | 20 | Seconds between two spiders from a nest (after a restart) |
 | `NestLevelUpChance` | 10 | Percent chance a spider from a nest gets a star (after a restart) |
+| `NightSpawnChance` | 20 | Percent chance per spawn check of a lone spider at night; 0 = none |
+| `NightSpawnSeconds` | 240 | Seconds between two spawn checks for lone spiders |
+| `NightSpawnMax` | 1 | Lone spiders around a player at most |
 
 ## Console commands
 

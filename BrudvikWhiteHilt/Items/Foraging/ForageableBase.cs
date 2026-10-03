@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.OldLand;
 using BrudvikWhiteHilt.Patches.Foraging;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -13,8 +14,8 @@ namespace BrudvikWhiteHilt.Items.Foraging;
 
 /// <summary>
 /// Base class for ingredients that grow in the world and can be picked.
-/// Each forageable adds an item and a pickable plant that spawns in new zones. An extra drop on a vanilla plant or creature
-/// makes the ingredient available in areas that were explored before the mod was installed.
+/// Each forageable adds an item and a pickable plant that spawns in new zones, and once in land generated before it came
+/// (<see cref="OldLandFiller"/>). An extra drop on a vanilla plant or creature makes the ingredient easier to find there.
 /// </summary>
 public abstract class ForageableBase
 {
@@ -110,14 +111,14 @@ public abstract class ForageableBase
         AcceptableValueRange<float> chance = new(0f, 1f);
 
         spawn = WhiteHiltConfig.BindAdminOnly(section, "Spawn", true,
-            $"Let {FullName} grow in zones that are generated from now on. Zones that already exist are not changed.");
+            $"Let {FullName} grow in newly generated zones, and once in land generated before it came ([OldLand]).");
         spawnPerZone = WhiteHiltConfig.BindAdminOnly(section, "SpawnPerZone", Vegetation.Max,
             "Maximum number of groups per zone (64 x 64 m). Values below 1 are a chance to place one group.",
             new AcceptableValueRange<float>(0f, 20f));
         groupSizeMin = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMin", Vegetation.GroupSizeMin,
-            "Fewest plants in a group, in zones generated from now on.", new AcceptableValueRange<int>(1, 20));
+            "Fewest plants in a group, in zones placed from now on.", new AcceptableValueRange<int>(1, 20));
         groupSizeMax = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMax", Vegetation.GroupSizeMax,
-            "Most plants in a group, in zones generated from now on.", new AcceptableValueRange<int>(1, 20));
+            "Most plants in a group, in zones placed from now on.", new AcceptableValueRange<int>(1, 20));
         respawnMinutes = WhiteHiltConfig.BindAdminOnly(section, "RegrowMinutes", 0f,
             $"In-game minutes before a picked {FullName} grows back. 0 = the same as the vanilla {CopyPickableFrom}. Applies to plants loaded after the change.",
             new AcceptableValueRange<float>(0f, 10000f));
@@ -177,6 +178,7 @@ public abstract class ForageableBase
             ZoneManager.Instance.AddCustomVegetation(customVegetation);
             vegetation = customVegetation.Vegetation;
             ApplyVegetationConfig();
+            OldLandFiller.Register(vegetation, 1f);
 
             if (ExtraDropFrom != null)
             {

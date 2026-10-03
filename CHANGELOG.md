@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.62.0 - 2026-10-03
+
+### Added
+- Lone giant spiders come out in the Black Forest at night, away from nests (`[Giant Spider] NightSpawnChance`, `NightSpawnSeconds`, `NightSpawnMax`)
+- **Old land is filled in**: spider nests, slate outcrops and forageables only grew in land generated after they came, so worlds explored earlier had none. Once per world and kind, when the server starts, that land now gets its share by the same rules and chances as new land, at least 50 m from anything built. Kinds added later are filled in the same way (`[OldLand] Enabled`, `BuildingDistance`)
+
+### Fixed
+- Spider nests were far rarer than `NestChancePerZone`: the generator tried only one spot per zone and gave up when it was steep, open or blocked. It now tries up to 50
+
 ## v0.61.1 - 2026-10-03
 
 ### Fixed

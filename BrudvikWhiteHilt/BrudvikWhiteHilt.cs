@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.61.1";
+    public const string PluginVersion = "0.62.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -115,6 +115,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();
         Monsters.MonsterSettings.Initialize();
+        OldLand.OldLandSettings.Initialize();
         Monsters.MonsterCommands.Register();
         Monsters.MonsterRegistry.Initialize();
         Companions.CompanionRest.Initialize();

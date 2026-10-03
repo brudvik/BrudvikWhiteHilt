@@ -85,6 +85,15 @@ public static class MonsterSettings
     /// <summary>Chance, in percent, that a spider from a nest gets a star.</summary>
     public static ConfigEntry<float> NestLevelUpChance { get; private set; }
 
+    /// <summary>Chance, in percent, per spawn check that a lone spider comes out at night.</summary>
+    public static ConfigEntry<float> NightSpawnChance { get; private set; }
+
+    /// <summary>Seconds between two spawn checks for lone spiders.</summary>
+    public static ConfigEntry<float> NightSpawnSeconds { get; private set; }
+
+    /// <summary>Lone spiders near a player at most.</summary>
+    public static ConfigEntry<int> NightSpawnMax { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -108,7 +117,7 @@ public static class MonsterSettings
         LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 15f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
 
-        SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in newly generated Black Forest land. Off: no new nests.");
+        SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in the Black Forest and roam it at night. Off: no new nests and no lone spiders.");
         SpiderHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Health", 120f, "Health of a giant spider.", new AcceptableValueRange<float>(10f, 5000f));
         SpiderDamage = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Damage", 18f, "Pierce damage of a giant spider's bite.", new AcceptableValueRange<float>(0f, 500f));
         SpiderPoison = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Poison", 15f, "Poison damage of a giant spider's bite, dealt over time.", new AcceptableValueRange<float>(0f, 500f));
@@ -119,13 +128,19 @@ public static class MonsterSettings
         SpiderTrophyChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "TrophyChance", 10f, "Chance, in percent, that a giant spider drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         NestChancePerZone = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestChancePerZone", 0.15f,
-            "Chance of a nest in each newly generated Black Forest zone (64 x 64 m). Existing land keeps what it has.", new AcceptableValueRange<float>(0f, 1f));
+            "Chance of a nest in each Black Forest zone (64 x 64 m): in newly generated land, and once in land generated before the spiders came ([OldLand]).",
+            new AcceptableValueRange<float>(0f, 1f));
         NestHealth = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestHealth", 300f, "Health of a nest.", new AcceptableValueRange<float>(10f, 10000f));
         NestMaxNear = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestMaxNear", 3, "Spiders a nest keeps around it at most.", new AcceptableValueRange<int>(1, 10));
         NestSpawnSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestSpawnSeconds", 20f, "Seconds between two spiders from a nest. Applies after a restart.",
             new AcceptableValueRange<float>(5f, 600f));
         NestLevelUpChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestLevelUpChance", 10f,
             "Chance, in percent, that a spider from a nest gets a star. Applies after a restart.", new AcceptableValueRange<float>(0f, 100f));
+        NightSpawnChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NightSpawnChance", 20f,
+            "Chance, in percent, per spawn check that a lone spider comes out in the Black Forest at night, away from nests. 0 = none.", new AcceptableValueRange<float>(0f, 100f));
+        NightSpawnSeconds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NightSpawnSeconds", 240f, "Seconds between two spawn checks for lone spiders.",
+            new AcceptableValueRange<float>(10f, 3600f));
+        NightSpawnMax = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NightSpawnMax", 1, "Lone spiders around a player at most.", new AcceptableValueRange<int>(1, 10));
     }
 
     /// <summary>

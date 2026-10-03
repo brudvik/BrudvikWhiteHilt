@@ -53,6 +53,7 @@ public static class MonsterRegistry
     private const float SpiderBaseScale = 50f;
 
     private static ZoneSystem.ZoneVegetation nestVegetation;
+    private static SpawnSystem.SpawnData nightSpawn;
 
     /// <summary>
     /// Registers the translations, and the prefabs once the vanilla creatures can be cloned.
@@ -83,6 +84,14 @@ public static class MonsterRegistry
     /// </summary>
     public static void ApplyConfig()
     {
+        if (nightSpawn != null)
+        {
+            nightSpawn.m_enabled = MonsterSettings.SpiderEnabled.Value && MonsterSettings.NightSpawnChance.Value > 0f;
+            nightSpawn.m_spawnChance = MonsterSettings.NightSpawnChance.Value;
+            nightSpawn.m_spawnInterval = MonsterSettings.NightSpawnSeconds.Value;
+            nightSpawn.m_maxSpawned = MonsterSettings.NightSpawnMax.Value;
+        }
+
         if (nestVegetation == null)
         {
             return;
@@ -246,8 +255,29 @@ public static class MonsterRegistry
                 Drop(SilkName, 1, 2, 100f),
                 Drop(GlandName, 1, 1, 50f),
                 Drop(SpiderTrophyName, 1, 1, MonsterSettings.SpiderTrophyChance.Value)
+            },
+            SpawnConfigs = new[]
+            {
+                new SpawnConfig
+                {
+                    Name = $"{SpiderName}_Night",
+                    Biome = Heightmap.Biome.BlackForest,
+                    SpawnAtDay = false,
+                    SpawnAtNight = true,
+                    SpawnInForest = true,
+                    SpawnOutsideForest = false,
+                    SpawnChance = MonsterSettings.NightSpawnChance.Value,
+                    SpawnInterval = MonsterSettings.NightSpawnSeconds.Value,
+                    MaxSpawned = MonsterSettings.NightSpawnMax.Value,
+                    SpawnDistance = 40f,
+                    MinAltitude = 1f,
+                    MaxTilt = 30f,
+                    MinLevel = 1,
+                    MaxLevel = 2
+                }
             }
         });
+        nightSpawn = creature.Spawns.FirstOrDefault();
         GameObject prefab = creature.Prefab;
         Transform visual = PrepareClone(prefab);
         Humanoid humanoid = SetUpHumanoid(prefab, MonsterSettings.SpiderHealth.Value, bite, corpse, "Seeker");
@@ -355,6 +385,8 @@ public static class MonsterRegistry
             Biome = Heightmap.Biome.BlackForest,
             Min = 1,
             Max = MonsterSettings.NestChancePerZone.Value,
+            // One try per zone (the default) often fails the checks below, which made nests far rarer than the chance.
+            ForcePlacement = true,
             GroupSizeMin = 1,
             GroupSizeMax = 1,
             MinAltitude = 2f,
@@ -367,6 +399,7 @@ public static class MonsterRegistry
         ZoneManager.Instance.AddCustomVegetation(vegetation);
         nestVegetation = vegetation.Vegetation;
         ApplyConfig();
+        OldLand.OldLandFiller.Register(nestVegetation, 3f);
     }
 
     // Pale, web-covered pile with a ring of eggs around its foot.

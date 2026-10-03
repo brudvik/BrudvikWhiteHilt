@@ -208,6 +208,7 @@ public static class RoofMaterials
         ZoneManager.Instance.AddCustomVegetation(vegetation);
         outcropVegetation = vegetation.Vegetation;
         ApplyConfig();
+        OldLand.OldLandFiller.Register(outcropVegetation, 4f, OutcropFracName);
     }
 
     // The copper veins become dark, blue-grey slate. Materials are shared, so each is recoloured once.

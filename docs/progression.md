@@ -23,11 +23,13 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 | `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
 | `[Content] <ItemId>` | `true` (default)/`false` | Off: the item or piece can no longer be crafted or built. Existing copies are kept. |
 | `[Recipes] <ItemId>` | empty (default) or a list | Empty: the built-in recipe. Otherwise `Prefab:Amount` or `Prefab:Amount:AmountPerLevel`, comma separated, e.g. `Iron:10:5, FineWood:4`. Unknown prefabs are skipped with a warning. Pieces keep at most as many requirements as the build menu shows. |
-| `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in zones generated from now on. Existing zones are not changed. |
+| `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in new zones, and once in old land (`[OldLand]`). |
 | `[Foraging.<Name>] SpawnPerZone` | 0–20 | Maximum groups per zone (64 × 64 m). Values below 1 are a chance to place one group. |
 | `[Foraging.<Name>] ExtraDropChance` | 0–1 | Chance that picking the matching vanilla plant also gives the ingredient. 0 turns it off. |
 | `[Foraging.Crowberries] CreatureDropChance` | 0–1 | Chance that a Wolf drops 1–2 Crowberries. |
 | `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish. Changes also apply to food already in inventories. |
+| `[OldLand] Enabled` | `true` (default)/`false` | When the server starts, land generated before a spider nest, slate outcrop or forageable came gets its share, once per world and kind, by the same rules as new land. |
+| `[OldLand] BuildingDistance` | 0–200 (default 50) | Metres anything placed in old land keeps from anything built. |
 
 `[Content]` and `[Recipes]` use the same `<ItemId>` keys as `[Tiers]`.
 
