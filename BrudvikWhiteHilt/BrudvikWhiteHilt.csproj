@@ -178,6 +178,7 @@
     <Compile Include="Items\Foraging\Cattail\Cattail.cs" />
     <Compile Include="Items\Foraging\Chanterelle\Chanterelle.cs" />
     <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
+    <Compile Include="Items\Foraging\Ergot\Ergot.cs" />
     <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
     <Compile Include="Items\Foraging\ForageableBase.cs" />
     <Compile Include="Items\Foraging\Henbane\Henbane.cs" />
