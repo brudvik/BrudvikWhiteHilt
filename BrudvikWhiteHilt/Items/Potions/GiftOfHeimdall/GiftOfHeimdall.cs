@@ -21,8 +21,8 @@ public class GiftOfHeimdall : PotionBase
     static GiftOfHeimdall()
     {
         DurationMinutes = PotionSettings.BindDuration(Name, 10f);
-        Radius = PotionSettings.Bind(Name, "Radius", 60f, 10f, 200f, "How far away foes show on the map, in metres.");
-        RefreshSeconds = PotionSettings.Bind(Name, "RefreshSeconds", 2f, 0.5f, 10f, "Seconds between updates of the foes on the map.");
+        Radius = PotionSettings.BindSetting(Name, "Radius", 60f, 10f, 200f, "How far away foes show on the map, in metres.");
+        RefreshSeconds = PotionSettings.BindSetting(Name, "RefreshSeconds", 2f, 0.5f, 10f, "Seconds between updates of the foes on the map.");
     }
 
     /// <summary>

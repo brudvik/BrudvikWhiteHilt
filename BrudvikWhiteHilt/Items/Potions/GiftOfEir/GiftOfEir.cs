@@ -20,8 +20,8 @@ public class GiftOfEir : PotionBase
     static GiftOfEir()
     {
         DurationMinutes = PotionSettings.BindDuration(Name, 10f);
-        HealShare = PotionSettings.Bind(Name, "HealShare", 0.5f, 0f, 1f, "Share of max health healed at once (0.5 = half).");
-        HealthRegenMultiplier = PotionSettings.Bind(Name, "HealthRegenMultiplier", 2f, 1f, 10f, "Health regeneration multiplier.");
+        HealShare = PotionSettings.BindSetting(Name, "HealShare", 0.5f, 0f, 1f, "Share of max health healed at once (0.5 = half).");
+        HealthRegenMultiplier = PotionSettings.BindSetting(Name, "HealthRegenMultiplier", 2f, 1f, 10f, "Health regeneration multiplier.");
     }
 
     /// <summary>

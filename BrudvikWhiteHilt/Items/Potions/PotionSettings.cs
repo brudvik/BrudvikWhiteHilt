@@ -453,7 +453,12 @@ public static class PotionSettings
     /// <param name="max">Highest value.</param>
     /// <param name="description">English description.</param>
     /// <returns>The entry.</returns>
-    internal static ConfigEntry<float> Bind(string potion, string key, float defaultValue, float min, float max, string description)
+    internal static ConfigEntry<float> BindSetting(string potion, string key, float defaultValue, float min, float max, string description)
+    {
+        return Bind(potion, key, defaultValue, min, max, description);
+    }
+
+    private static ConfigEntry<float> Bind(string potion, string key, float defaultValue, float min, float max, string description)
     {
         WhiteHiltConfig.SetSectionLabel(SectionPrefix + potion, Helpers.Translations.Token(Helpers.Translations.ItemKey(potion + "Mead")));
         return WhiteHiltConfig.BindAdminOnly(SectionPrefix + potion, key, defaultValue, description, new AcceptableValueRange<float>(min, max));

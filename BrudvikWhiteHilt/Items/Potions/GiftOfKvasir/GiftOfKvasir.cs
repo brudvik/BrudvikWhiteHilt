@@ -20,7 +20,7 @@ public class GiftOfKvasir : PotionBase
     static GiftOfKvasir()
     {
         DurationMinutes = PotionSettings.BindDuration(Name, 20f);
-        SkillGain = PotionSettings.Bind(Name, "SkillGain", 0.5f, 0f, 5f, "Extra skill experience while the gift lasts (0.5 = 50% more).");
+        SkillGain = PotionSettings.BindSetting(Name, "SkillGain", 0.5f, 0f, 5f, "Extra skill experience while the gift lasts (0.5 = 50% more).");
     }
 
     /// <summary>

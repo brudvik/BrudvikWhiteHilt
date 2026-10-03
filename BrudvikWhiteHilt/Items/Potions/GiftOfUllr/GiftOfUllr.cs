@@ -20,9 +20,9 @@ public class GiftOfUllr : PotionBase
     static GiftOfUllr()
     {
         DurationMinutes = PotionSettings.BindDuration(Name, 20f);
-        BowDamage = PotionSettings.Bind(Name, "BowDamage", 0.25f, 0f, 2f, "Extra damage with bows (0.25 = 25%).");
-        SpeedModifier = PotionSettings.Bind(Name, "SpeedModifier", 0.15f, 0f, 1f, "Extra movement speed (0.15 = 15%).");
-        StealthModifier = PotionSettings.Bind(Name, "StealthModifier", -0.3f, -1f, 0f, "Change to how easily you are noticed; -1 makes you nearly impossible to notice.");
+        BowDamage = PotionSettings.BindSetting(Name, "BowDamage", 0.25f, 0f, 2f, "Extra damage with bows (0.25 = 25%).");
+        SpeedModifier = PotionSettings.BindSetting(Name, "SpeedModifier", 0.15f, 0f, 1f, "Extra movement speed (0.15 = 15%).");
+        StealthModifier = PotionSettings.BindSetting(Name, "StealthModifier", -0.3f, -1f, 0f, "Change to how easily you are noticed; -1 makes you nearly impossible to notice.");
     }
 
     /// <summary>
