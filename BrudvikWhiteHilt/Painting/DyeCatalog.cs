@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Painting;
 
 /// <summary>
-/// The food and animal products that colour paint, up to and including the Swamp. The colour of each is measured once
+/// The food and animal products that colour paint, and the coloured White Hilt forageables. The colour of each is measured once
 /// from its icon; a mix of up to three of them, one to three of each, is searched for the colour closest to the one wanted.
 /// </summary>
 public static class DyeCatalog
@@ -33,6 +33,9 @@ public static class DyeCatalog
         Items.Foraging.SphagnumMoss.SphagnumMoss.PrefabName, Items.Foraging.BogBean.BogBean.PrefabName, Items.Foraging.LabradorTea.LabradorTea.PrefabName,
         Items.Foraging.Cattail.Cattail.PrefabName, Items.Foraging.Meadowsweet.Meadowsweet.PrefabName, Items.Foraging.BogIron.BogIron.PrefabName,
         Items.Foraging.Peat.Peat.PrefabName,
+
+        // Mountains
+        Items.Foraging.Juniper.Juniper.PrefabName,
 
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName

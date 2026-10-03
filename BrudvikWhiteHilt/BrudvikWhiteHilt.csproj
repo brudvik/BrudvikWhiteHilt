@@ -169,6 +169,7 @@
     <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
     <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
     <Compile Include="Items\Foraging\ForageableBase.cs" />
+    <Compile Include="Items\Foraging\Juniper\Juniper.cs" />
     <Compile Include="Items\Foraging\LabradorTea\LabradorTea.cs" />
     <Compile Include="Items\Foraging\Meadowsweet\Meadowsweet.cs" />
     <Compile Include="Items\Foraging\Peat\Peat.cs" />
