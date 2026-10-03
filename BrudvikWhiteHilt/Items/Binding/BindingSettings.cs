@@ -40,6 +40,12 @@ public static class BindingSettings
     /// <summary>Creatures (prefab names, comma separated) that Wolfsbane counts as beasts.</summary>
     public static ConfigEntry<string> WolfsbaneBeasts { get; private set; }
 
+    /// <summary>Chance that a hit of a weapon etched with Dread sends the target running.</summary>
+    public static ConfigEntry<float> DreadChance { get; private set; }
+
+    /// <summary>How long a creature runs in Dread, in seconds.</summary>
+    public static ConfigEntry<float> DreadSeconds { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -75,6 +81,11 @@ public static class BindingSettings
         WolfsbaneBeasts = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WolfsbaneBeasts",
             "Wolf,Wolf_cub,Fenring,Fenring_Cultist,Ulv,Bjorn,Unbjorn,Boar,Deer,Lox,Hare,Asksvin",
             "Creatures (prefab names, comma separated) that Wolfsbane counts as beasts.");
+        DreadChance = WhiteHiltConfig.BindAdminOnly(InfusionSection, "DreadChance", 0.25f,
+            "Chance that a hit of a weapon etched with Dread sends the target running (0.25 = 25%). Never bosses.",
+            new AcceptableValueRange<float>(0f, 1f));
+        DreadSeconds = WhiteHiltConfig.BindAdminOnly(InfusionSection, "DreadSeconds", 4f,
+            "How long a creature runs in Dread, in seconds.", new AcceptableValueRange<float>(1f, 30f));
     }
 
     /// <summary>

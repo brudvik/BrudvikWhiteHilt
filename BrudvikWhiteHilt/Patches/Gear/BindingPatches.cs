@@ -48,6 +48,11 @@ public static class BindingPatches
         {
             hit.m_statusEffectHash = webHash;
         }
+        else if (GearBinding.Dreads(weapon) && hit.m_statusEffectHash == 0 && !__instance.IsBoss()
+            && UnityEngine.Random.value < BindingSettings.DreadChance.Value)
+        {
+            hit.m_statusEffectHash = DreadEffect.Hash;
+        }
 
         hit.m_damage.m_poison *= GearBinding.PoisonMultiplier(weapon, __instance);
 

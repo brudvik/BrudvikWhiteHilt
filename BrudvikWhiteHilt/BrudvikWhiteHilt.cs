@@ -110,6 +110,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Difficulty.Beasts.BeastRegistry.Initialize();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
+        Items.Binding.DreadEffect.Register();
         Kraken.KrakenSettings.Initialize();
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();

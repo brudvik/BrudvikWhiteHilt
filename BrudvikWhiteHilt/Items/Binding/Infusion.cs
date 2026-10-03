@@ -31,6 +31,9 @@ public enum InfusionKind
 
     /// <summary>Wolfsbane: poison damage, several times as strong against beasts.</summary>
     Wolfsbane,
+
+    /// <summary>Dread: some hits send the target running in terror.</summary>
+    Dread,
 }
 
 /// <summary>
@@ -51,6 +54,7 @@ public sealed class Infusion
         new(InfusionKind.Storm, "WhiteHiltBlackMetalRune", "WhiteHilt_KrakenInk:3", "Storm"),
         new(InfusionKind.Seid, "WhiteHiltBoneRune", "WhiteHiltJuniper:10", "Seid Smoke"),
         new(InfusionKind.Wolfsbane, "WhiteHiltFangRune", "WhiteHiltWolfLichen:10", "Wolfsbane"),
+        new(InfusionKind.Dread, "WhiteHiltObsidianRune", "WhiteHiltErgot:5", "Dread"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
