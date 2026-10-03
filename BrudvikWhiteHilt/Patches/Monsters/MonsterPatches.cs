@@ -15,6 +15,14 @@ public static class MonsterPatches
     private static void GameStartPostfix(Game __instance)
     {
         __instance.gameObject.AddComponent<LindormService>();
+        __instance.gameObject.AddComponent<DragonGroundFireDamage>();
+    }
+
+    [HarmonyPatch(typeof(Attack), nameof(Attack.ProjectileAttackTriggered))]
+    [HarmonyPrefix]
+    private static void BreathPrefix(Attack __instance)
+    {
+        __instance.m_character?.GetComponent<DragonFire>()?.BeginBreath();
     }
 
     [HarmonyPatch(typeof(MonsterAI), nameof(MonsterAI.UpdateAI))]

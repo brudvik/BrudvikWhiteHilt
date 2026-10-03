@@ -157,7 +157,7 @@ Octopuses in the deep, and on a calm, foggy night the Kraken rises beside your s
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Giant Spider" height="120">
 
-A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and fire-breathing dragons over the Plains once Moder is slain.
+A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and dragons that breathe fire and leave burning ground over the Plains once Moder is slain.
 
 ### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
 

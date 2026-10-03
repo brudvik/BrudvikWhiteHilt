@@ -533,6 +533,7 @@
     <Compile Include="Monsters\DesertDragonRegistry.cs" />
     <Compile Include="Monsters\DragonFire.cs" />
     <Compile Include="Monsters\DragonFlame.cs" />
+    <Compile Include="Monsters\DragonGroundFire.cs" />
     <Compile Include="Monsters\LindormBurrow.cs" />
     <Compile Include="Monsters\LindormService.cs" />
     <Compile Include="Monsters\MonsterCommands.cs" />

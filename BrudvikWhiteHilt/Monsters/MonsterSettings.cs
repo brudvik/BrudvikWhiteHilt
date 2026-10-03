@@ -164,6 +164,27 @@ public static class MonsterSettings
     /// <summary>Whether its fire also burns buildings.</summary>
     public static ConfigEntry<bool> DragonBurnsBuildings { get; private set; }
 
+    /// <summary>Whether breath impacts leave temporary ground fire.</summary>
+    public static ConfigEntry<bool> DragonGroundFire { get; private set; }
+
+    /// <summary>Base fire damage per second from burning ground.</summary>
+    public static ConfigEntry<float> DragonGroundDamage { get; private set; }
+
+    /// <summary>Seconds ground fire remains active.</summary>
+    public static ConfigEntry<float> DragonGroundSeconds { get; private set; }
+
+    /// <summary>Radius of a ground fire patch in metres.</summary>
+    public static ConfigEntry<float> DragonGroundRadius { get; private set; }
+
+    /// <summary>Seconds between ground damage checks.</summary>
+    public static ConfigEntry<float> DragonGroundTickSeconds { get; private set; }
+
+    /// <summary>New ground fire patches allowed in one breath.</summary>
+    public static ConfigEntry<int> DragonGroundPerBreath { get; private set; }
+
+    /// <summary>Active ground fire patches allowed per dragon.</summary>
+    public static ConfigEntry<int> DragonGroundMax { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
@@ -233,8 +254,8 @@ public static class MonsterSettings
         DragonSpawnSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnSeconds", 300f, "Seconds between two spawn checks for Desert Dragons.",
             new AcceptableValueRange<float>(10f, 3600f));
         DragonSpawnMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnMax", 1, "Desert Dragons around a player at most.", new AcceptableValueRange<int>(1, 10));
-        DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 800f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
-        DragonFireDamage = WhiteHiltConfig.BindAdminOnly(DragonSection, "FireDamage", 15f, "Fire damage of each flame in its breath; fire also sets you burning. Applies after a restart.",
+        DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 1200f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
+        DragonFireDamage = WhiteHiltConfig.BindAdminOnly(DragonSection, "FireDamage", 20f, "Fire damage of each flame in its breath; fire also sets you burning. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 1000f));
         DragonFlames = WhiteHiltConfig.BindAdminOnly(DragonSection, "Flames", 12, "Flames in one breath. Applies after a restart.", new AcceptableValueRange<int>(1, 30));
         DragonBreathSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "BreathSeconds", 8f, "Seconds between two breaths at most. Applies after a restart.",
@@ -258,6 +279,20 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0f, 100f));
         DragonBurnsBuildings = WhiteHiltConfig.BindAdminOnly(DragonSection, "BurnsBuildings", false,
             "Its fire also damages the buildings it hits. Off: its fire only hurts players and creatures.");
+        DragonGroundFire = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundFire", true,
+            "Breath hitting dry terrain leaves temporary fire. No spreading or terrain changes.");
+        DragonGroundDamage = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundDamage", 10f,
+            "Ground fire damage per second before resistance, scaled like the breath by stars and black beast bonuses. Overlapping patches do not stack.", new AcceptableValueRange<float>(0f, 1000f));
+        DragonGroundSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundSeconds", 6f,
+            "Seconds a ground fire patch lasts.", new AcceptableValueRange<float>(1f, 30f));
+        DragonGroundRadius = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundRadius", 1.5f,
+            "Radius in metres of each ground fire patch. Nearby impacts merge.", new AcceptableValueRange<float>(0.5f, 5f));
+        DragonGroundTickSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundTickSeconds", 1f,
+            "Seconds between ground damage checks. Damage per check scales with this interval.", new AcceptableValueRange<float>(0.5f, 3f));
+        DragonGroundPerBreath = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundPerBreath", 3,
+            "Maximum new ground fire patches in one breath.", new AcceptableValueRange<int>(1, 6));
+        DragonGroundMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundMax", 6,
+            "Maximum active ground fire patches per dragon, including its previous breaths.", new AcceptableValueRange<int>(1, 12));
     }
 
     /// <summary>Gets the Lindorm's spawn level from the world's defeated bosses.</summary>

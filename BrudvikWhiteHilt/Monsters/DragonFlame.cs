@@ -43,6 +43,23 @@ public class DragonFlame : MonoBehaviour
         Grow(Mathf.Clamp01((Time.time - born) / Mathf.Max(0.05f, GrowSeconds)));
     }
 
+    private void Start()
+    {
+        if (projectile != null)
+        {
+            projectile.m_onHit += OnHit;
+        }
+    }
+
+    private void OnHit(Collider collider, Vector3 point, bool water)
+    {
+        if (!water && collider != null && collider.GetComponent<Heightmap>() != null &&
+            projectile.m_nview.IsValid() && projectile.m_nview.IsOwner() && projectile.m_owner != null)
+        {
+            projectile.m_owner.GetComponent<DragonFire>()?.Ignite(projectile, point);
+        }
+    }
+
     private void Grow(float progress)
     {
         float size = Mathf.Lerp(StartSize, EndSize, progress);

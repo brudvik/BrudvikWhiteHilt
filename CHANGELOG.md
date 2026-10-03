@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.77.0 - 2026-10-03
+
+### Added
+- **Dragon ground fire**: Desert Dragons and Black Dragons leave temporary flame patches when their breath hits dry terrain. Defaults: 6 seconds, 1.5 m radius and 10 fire damage per second before resistance; damage inherits the projectile's star and black beast scaling. Nearby impacts merge, at most 3 new patches per breath and 6 active per dragon. Overlapping patches apply only the strongest damage on each target's network owner. No spreading, terrain changes, water ignition, dynamic lights or particle collision; buildings remain safe unless `BurnsBuildings` is enabled. Seven admin-synced ground-fire settings and Norwegian setting texts control the feature. Server and clients must update together. Compilation and isolated behavior checks passed; particle appearance, multiplayer ownership and performance still require in-game testing.
+
+### Changed
+- **Stronger dragons**: base health rises from 800 to 1200 and fire damage per breath flame from 15 to 20. Flame count and breath cooldown remain unchanged. Previous defaults migrate once; other configured values are preserved. Black Dragons retain their existing five stars and beast bonuses, giving 8100 health and 60 fire per flame with default difficulty settings, plus 30 ground fire damage per second before resistance.
+
 ## v0.76.1 - 2026-10-03
 
 ### Fixed

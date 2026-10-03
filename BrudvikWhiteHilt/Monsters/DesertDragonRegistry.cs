@@ -199,6 +199,7 @@ public static class DesertDragonRegistry
     {
         float range = MonsterSettings.DragonBreathRange.Value;
         float width = MonsterSettings.DragonBreathWidth.Value;
+        DragonGroundFire.Register(PrefabManager.Instance.GetPrefab(BaseProjectile));
         GameObject projectile = PrefabManager.Instance.CreateClonedPrefab(ProjectileName, BaseProjectile);
         // Flames fly a little past the breath range, then die out.
         projectile.GetComponent<Projectile>().m_ttl = range * 1.5f / FlameSpeed;

@@ -55,6 +55,7 @@ At night, a **lone spider** may also come out anywhere in the forest, nest or no
 
 Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip take to the skies over the **Plains**, by day and by night. A Desert Dragon never lands: it circles 5–12 m above the ground, swoops down and **breathes a stream of fire** at you from up to 25 m away. The fire leaves its mouth about as wide as the mouth and widens to 3 m on its way down, so step aside rather than back. It sets you burning, so fire resistance helps.
 
+- Breath hitting dry terrain leaves **ground flames for 6 seconds**, with a **1.5 m radius** and **10 fire damage per second** before resistance. Nearby impacts merge; at most 3 new patches per breath and 6 active per dragon. Overlapping fields apply only their strongest damage, not their sum. Fire does not spread, change the terrain or ignite water. Damage is checked once per second and scales with stars and black beast bonuses like the breath.
 - Its fire only hurts players and creatures; buildings are safe unless `BurnsBuildings` is on.
 - It is immune to fire and spirit damage, weak to frost, resists poison and ignores chop and pickaxe damage. Bring a bow.
 - When slain it tumbles out of the sky and lies where it fell for a while.
@@ -62,12 +63,14 @@ Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip
 
 In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
 
+With default settings, a 0/1/2-star Desert Dragon has **1200/2400/3600 health**, **20/30/40 fire damage per breath flame** and **10/15/20 ground fire damage per second** before resistance and any pressure bonuses. A naturally summoned **Black Dragon** has five stars and the existing beast bonuses: **8100 health**, **60 fire damage per breath flame** and **30 ground fire damage per second**, with damage capped by the difficulty settings. Changing difficulty settings changes these values; a plain devcommand spawn does not apply the natural beast encounter bonuses.
+
 | | Health | Attack | Weak to |
 |---|---|---|---|
 | **Lindorm** | 700 | Bite, 75 pierce | Fire |
 | **Giant Spider** | 120 | Bite, 30 pierce + 20 poison, webs you | Blunt, fire |
 | **Spider Nest** | 300 | — | — |
-| **Desert Dragon** | 800 | Fire breath, 12 flames of 15 fire | Frost |
+| **Desert Dragon** | 1200 | Fire breath, 12 flames of 20 fire; ground flames, 10 fire/sec | Frost |
 
 The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is immune to spirit damage. Spiders ignore chop and pickaxe damage and are immune to poison.
 
@@ -147,8 +150,8 @@ Section `[Desert Dragon]`:
 | `SpawnChance` | 10 | Percent chance per spawn check; 0 = none |
 | `SpawnSeconds` | 300 | Seconds between two spawn checks |
 | `SpawnMax` | 1 | Desert Dragons around a player at most |
-| `Health` | 800 | Health (after a restart); the old default 500 migrates once in 0.72.3 |
-| `FireDamage` / `Flames` | 15 / 12 | Fire damage of each flame, and flames in one breath (after a restart) |
+| `Health` | 1200 | Health (after a restart) |
+| `FireDamage` / `Flames` | 20 / 12 | Fire damage of each flame, and flames in one breath (after a restart) |
 | `BreathSeconds` | 8 | Seconds between two breaths at most (after a restart) |
 | `BreathRange` | 25 | Metres it breathes fire from (after a restart) |
 | `BreathWidth` | 3 | Metres wide the fire gets halfway through its range, about at the ground (after a restart) |
@@ -158,6 +161,15 @@ Section `[Desert Dragon]`:
 | `Sounds` | true | Own growls, roars and breath sounds, also on Black Dragons (after a restart) |
 | `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
 | `BurnsBuildings` | false | Its fire also damages the buildings it hits |
+| `GroundFire` | true | Dry terrain impacts leave short-lived flames; no spreading or terrain changes |
+| `GroundDamage` | 10 | Base fire damage per second before resistance, scaled like the final breath projectile; overlapping fields do not stack |
+| `GroundSeconds` | 6 | Seconds a patch lasts; nearby impacts refresh it |
+| `GroundRadius` | 1.5 | Metres around each patch; nearby impacts merge |
+| `GroundTickSeconds` | 1 | Seconds between damage checks; damage per check scales with the interval |
+| `GroundPerBreath` | 3 | Maximum new patches per breath |
+| `GroundMax` | 6 | Maximum active patches per dragon, including earlier breaths |
+
+On upgrade to 0.77.0, previous defaults (`Health` 800, `FireDamage` 15) move to 1200 and 20 once. The older health default 500 is also migrated. Other configured values are preserved. New creature prefabs need a restart; update both server and clients for ground fire. Its particle appearance, multiplayer ownership and performance still need in-game testing.
 
 ## Console commands
 
