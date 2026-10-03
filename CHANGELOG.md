@@ -12,6 +12,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Madder Root**: a scrambling plant with whorls of narrow leaves on the Plains, or from cloudberry bushes picked there (15%). Its roots are the red dye (`[Foraging.MadderRoot]`)
 - **Henbane**: a sticky weed with pale, purple-veined flowers by the Plains fields, or from wild barley picked there (10%). For seers and berserkers (`[Foraging.Henbane]`)
 - **Ergot**: patches of wild barley gone dark with blight on the Plains, or from wild barley picked there (15%). Its black horns bring dread (`[Foraging.Ergot]`)
+- **Hop Cones**: wild hop vines twined up old stakes on the Plains; the cones hide when picked and grow back. Cloudberry bushes picked there give them 10% of the time (`[Foraging.HopCones]`)
 
 ## v0.59.0 - 2026-10-03
 

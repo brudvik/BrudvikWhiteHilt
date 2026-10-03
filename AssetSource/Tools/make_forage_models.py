@@ -927,6 +927,15 @@ def build_hops(geo, rng, np):
     geo.target = "main"
 
 
+@model("hopcones", "A handful of hop cones")
+def build_hopcones(geo, rng, np):
+    for k in range(6):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.0 if k == 0 else rng.uniform(0.02, 0.035)
+        geo.blob((math.cos(angle) * distance, math.sin(angle) * distance, 0.012 + (0.01 if k == 0 else 0.0)), 0.02, "cone",
+                 subdivisions=2, squash=(0.85, 0.85, 1.4))
+
+
 @model("milkpail", "Pail of lox milk")
 def build_milkpail(geo, rng, np):
     profile = [(0.075, 0.0), (0.08, 0.004), (0.085, 0.06), (0.09, 0.12), (0.092, 0.13)]
@@ -1076,6 +1085,7 @@ SWATCHES.update({
         "milk": {"bottom": (0.93, 0.92, 0.86), "top": (0.98, 0.97, 0.93), "noise": 0.03},
     },
 })
+SWATCHES["hopcones"] = SWATCHES["hops"]
 
 
 # ---------------------------------------------------------------------------------------------------------------- export
