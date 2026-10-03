@@ -41,6 +41,14 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ---
 
+## 🔎 SEARCHING THE CHESTS
+
+Press **F9** and type part of an item's name. Every chest, cart and ship hold within 100 m that you may open and that holds a match glows and gets a pin on the map, and the list shows each match with how many there are and in how many chests. The chests keep glowing and their pins stay for 60 seconds after you close the search, so you can walk to them. Only chests in the loaded world are found.
+
+Section `[Storage]`: `SearchRange` (100 m, admin), `MarkSeconds` (60, your own); `[Storage.Keys] Search` (F9).
+
+---
+
 ## 🧾 CRAFTING PANEL
 
 The crafting panel and the build menu show what you have, not only what a recipe costs.

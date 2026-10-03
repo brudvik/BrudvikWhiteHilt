@@ -603,6 +603,7 @@
     <Compile Include="Saga\SagaPanel.cs" />
     <Compile Include="Saga\SagaSettings.cs" />
     <Compile Include="Patches\Saga\SagaPatches.cs" />
+    <Compile Include="Storage\StorageSearch.cs" />
     <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
     <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />

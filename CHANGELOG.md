@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.68.0 - 2026-10-03
+
+### Added
+- **Chest search** (F9): type part of an item's name, and every chest, cart and ship hold within 100 m that you may open and that holds it glows and gets a map pin, with a list of how many there are and in how many chests. The marks stay for 60 seconds after the search closes (`[Storage]`)
+
 ## v0.67.0 - 2026-10-03
 
 ### Added

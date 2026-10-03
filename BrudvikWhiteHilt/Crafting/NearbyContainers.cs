@@ -153,6 +153,16 @@ public static class NearbyContainers
     }
 
     /// <summary>
+    /// Every container in the loaded world.
+    /// </summary>
+    /// <returns>The containers.</returns>
+    public static IEnumerable<Container> Registered()
+    {
+        all.RemoveWhere(container => container == null);
+        return all;
+    }
+
+    /// <summary>
     /// Switches the use of chests off and on when the toggle key is pressed. Call once a frame for the local player.
     /// </summary>
     /// <param name="player">The local player.</param>
