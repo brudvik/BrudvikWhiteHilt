@@ -1,5 +1,7 @@
 ﻿using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Kraken;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
 
@@ -55,8 +57,8 @@ public class GiftOfOdinEffect : SE_Stats
         base.Setup(character);
 
         // The food update adds the bonus from now on; raise it at once so the heal below fills it.
-        character.SetMaxHealth(character.GetMaxHealth() + BonusMaxHealth);
-        character.Heal(character.GetMaxHealth());
+        character.SetMaxHealth(character.GetMaxHealth() + BonusMaxHealth * KrakenBody.PotionFactor(character, KrakenSettings.OdinBonusShare.Value));
+        character.Heal(character.GetMaxHealth() * KrakenBody.PotionFactor(character, KrakenSettings.OdinHealingShare.Value));
     }
 
     /// <summary>
@@ -66,7 +68,8 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="damage"></param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
-        damage *= PotionSettings.Odin.FallDamageMultiplier.Value;
+        damage *= Mathf.Lerp(1f, PotionSettings.Odin.FallDamageMultiplier.Value,
+            KrakenBody.PotionFactor(m_character, KrakenSettings.OdinBonusShare.Value));
     }
 
     /// <summary>
@@ -75,7 +78,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="regenMultiplier"></param>
     public override void ModifyHealthRegen(ref float regenMultiplier)
     {
-        regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value;
+        regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value * KrakenBody.PotionFactor(m_character, KrakenSettings.OdinHealingShare.Value);
     }
 
     /// <summary>
@@ -85,7 +88,8 @@ public class GiftOfOdinEffect : SE_Stats
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);
-        m_character.Heal(PotionSettings.Odin.HealPerSecond.Value * dt, showText: false);
+        m_character.Heal(PotionSettings.Odin.HealPerSecond.Value * dt
+            * KrakenBody.PotionFactor(m_character, KrakenSettings.OdinHealingShare.Value), showText: false);
     }
 
 }

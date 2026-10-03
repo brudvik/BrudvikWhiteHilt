@@ -10,6 +10,7 @@
 #>
 param(
     [string]$Out = '',
+    [string]$Creature = '',
     [string]$UnityPath = "C:\Program Files\Unity\Hub\Editor\6000.0.75f1\Editor\Unity.exe"
 )
 
@@ -28,10 +29,12 @@ if (-not (Test-Path (Join-Path $project 'Assets\Creatures'))) {
 
 $editorScripts = Join-Path $project 'Assets\Editor'
 Copy-Item (Join-Path $repoRoot 'AssetSource\Unity\CreaturePreview.cs') $editorScripts -Force
+Copy-Item (Join-Path $repoRoot 'BrudvikWhiteHilt\Kraken\KrakenAppearance.cs') $editorScripts -Force
 
 # Unity.exe is a GUI application, so the call operator would not wait for it. No -nographics: the camera must render.
 $arguments = @('-batchmode', '-quit', '-projectPath', "`"$project`"", '-executeMethod', 'CreaturePreview.Render',
     '-previewOut', "`"$Out`"", '-logFile', "`"$logFile`"")
+if ($Creature) { $arguments += @('-previewCreature', $Creature) }
 $process = Start-Process -FilePath $UnityPath -ArgumentList $arguments -Wait -PassThru -NoNewWindow
 Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-Host $_.Line }
 if ($process.ExitCode -ne 0) {

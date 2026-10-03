@@ -37,6 +37,15 @@ Several of them are brewed from what the mod adds to the world: lingonberries fo
 | **Gift of Heimdall** | The watchman who hears the grass grow - every foe within 60 m shows on the map. | Angelica ×5, Crowberries ×10, Crystal ×2 |
 | **Gift of the Völva** | The seeress's draught - the 40 nearest things to pick within 50 m, and unopened chests the world placed there, show on the map. | Henbane ×4, Ergot ×3, Rock Lichen ×5 |
 
+### During a Kraken fight
+
+Within 80 m of a living, non-retreating [Kraken](kraken.md), Odin and Freya retain useful but reduced benefits:
+
+- **Odin:** +30 maximum HP, +0.5 HP/s, 1.25x health regeneration and 30% less fall damage. Drinking heals 25% of maximum HP rather than fully healing.
+- **Freya:** +20 stamina regeneration. Action costs blend halfway between normal cost and Freya's configured cost, clamped to zero rather than generating stamina. Drinking still refills stamina up to its normal maximum; Freya does not increase maximum stamina.
+
+These are defaults, before other effects. The status effects and their durations remain intact. Full strength returns outside range, or when Kraken dies or retreats, including for players overboard. The range and retained shares are server settings in `[Kraken]`: `PotionRange`, `OdinBonusShare`, `OdinHealingShare`, `FreyaShare`. Range 0 disables the attenuation; a share of 1 retains full strength for that benefit. Other potions are unchanged.
+
 ### Emergency Draught (2 minutes)
 
 | Potion | Effect | Mead Base Requirements |

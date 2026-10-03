@@ -37,11 +37,7 @@ public static class KrakenPatches
         body.linearVelocity = new Vector3(velocity.x * keep, velocity.y, velocity.z * keep);
         body.angularVelocity *= Mathf.Exp(-1.5f * fixedDeltaTime);
 
-        // Now and then the arms under the hull give the ship a shove.
-        if (Random.value < fixedDeltaTime * 0.3f)
-        {
-            body.AddTorque(__instance.transform.forward * Random.Range(-0.35f, 0.35f), ForceMode.VelocityChange);
-        }
+        KrakenBody.Lift(__instance, fixedDeltaTime);
     }
 
     [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
@@ -138,7 +134,11 @@ public static class KrakenPatches
 
         ZNetView nview = attacker.m_nview;
         int crew = nview != null && nview.IsValid() ? nview.GetZDO().GetInt(KrakenBody.CrewKey, 1) : 1;
-        hit.ApplyModifier(percent / 100f * CrewDamageMultiplier(crew, bonusPercent));
+        ZDO body = nview != null && nview.IsValid() ? nview.GetZDO() : null;
+        if (attacker.GetComponent<KrakenTentacle>() != null && body != null)
+            body = ZDOMan.instance.GetZDO(body.GetZDOID(KrakenTentacle.BodyKey));
+        float rage = body != null && body.GetBool(KrakenBody.EnragedKey) ? KrakenSettings.EnrageDamage.Value : 1f;
+        hit.ApplyModifier(percent / 100f * CrewDamageMultiplier(crew, bonusPercent) * rage);
         return true;
     }
 }

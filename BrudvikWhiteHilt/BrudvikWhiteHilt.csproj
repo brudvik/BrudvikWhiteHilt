@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\Summoning\SummoningHornService.cs" />
+    <Compile Include="Kraken\KrakenAppearance.cs" />
     <Compile Include="Items\Summoning\SummoningHorn.cs" />
     <Compile Include="Items\Summoning\HornCaller.cs" />
     <Compile Include="Chests\Collection\CollectionSettings.cs" />

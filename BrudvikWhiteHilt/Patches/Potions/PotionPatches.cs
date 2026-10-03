@@ -16,7 +16,8 @@ public static class OdinMaxHealthPatch
     {
         if (StatusEffectHelper.Has<GiftOfOdinEffect>(__instance))
         {
-            hp += GiftOfOdinEffect.BonusMaxHealth;
+            hp += GiftOfOdinEffect.BonusMaxHealth * global::BrudvikWhiteHilt.Kraken.KrakenBody.PotionFactor(__instance,
+                global::BrudvikWhiteHilt.Kraken.KrakenSettings.OdinBonusShare.Value);
         }
     }
 }

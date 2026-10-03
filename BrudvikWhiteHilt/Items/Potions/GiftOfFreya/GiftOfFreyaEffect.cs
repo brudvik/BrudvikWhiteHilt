@@ -1,5 +1,6 @@
 ﻿using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Kraken;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfFreya;
@@ -50,7 +51,8 @@ public class GiftOfFreyaEffect : SE_Stats
     public override void Setup(Character character)
     {
         base.Setup(character);
-        character.AddStamina(character.GetMaxStamina() + PotionSettings.Freya.BonusStamina.Value);
+        character.AddStamina(character.GetMaxStamina() + PotionSettings.Freya.BonusStamina.Value
+            * KrakenBody.PotionFactor(character, KrakenSettings.FreyaShare.Value));
     }
 
     /// <summary>
@@ -61,7 +63,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="dir"></param>
     public override void ModifyRunStaminaDrain(float baseDrain, ref float drain, Vector3 dir)
     {
-        drain = PotionSettings.Freya.StaminaUse.Value;
+        drain = StaminaCost(baseDrain);
     }
 
     /// <summary>
@@ -71,7 +73,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyJumpStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -81,7 +83,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyAttackStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -91,7 +93,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyBlockStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -101,7 +103,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyDodgeStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -111,7 +113,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySwimStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -121,7 +123,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -131,7 +133,7 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaUse"></param>
     public override void ModifySneakStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
-        staminaUse = PotionSettings.Freya.StaminaUse.Value;
+        staminaUse = StaminaCost(baseStaminaUse);
     }
 
     /// <summary>
@@ -140,7 +142,14 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaRegen"></param>
     public override void ModifyStaminaRegen(ref float staminaRegen)
     {
-        staminaRegen += PotionSettings.Freya.StaminaRegenBonus.Value;
+        staminaRegen += PotionSettings.Freya.StaminaRegenBonus.Value * KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value);
+    }
+
+    private float StaminaCost(float baseCost)
+    {
+        float share = KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value);
+        float cost = Mathf.Lerp(baseCost, PotionSettings.Freya.StaminaUse.Value, share);
+        return share < 1f ? Mathf.Max(0f, cost) : cost;
     }
 
 }

@@ -24,6 +24,10 @@ public static class CreaturePreview
         Directory.CreateDirectory(outFolder);
         foreach (string path in Directory.GetFiles("Assets/Creatures", "*_visual.prefab"))
         {
+            string[] args = Environment.GetCommandLineArgs();
+            int filter = Array.IndexOf(args, "-previewCreature");
+            if (filter >= 0 && Path.GetFileNameWithoutExtension(path) != args[filter + 1] + "_visual")
+                continue;
             RenderCreature(path.Replace('\\', '/'), outFolder);
         }
     }
@@ -31,6 +35,10 @@ public static class CreaturePreview
     private static void RenderCreature(string path, string outFolder)
     {
         GameObject instance = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path));
+        if (Path.GetFileName(path) == "kraken_visual.prefab")
+        {
+            BrudvikWhiteHilt.Kraken.KrakenAppearance.Apply(instance);
+        }
         Animator animator = instance.GetComponentInChildren<Animator>();
         AnimationClip[] clips = animator.runtimeAnimatorController.animationClips.Distinct().ToArray();
 

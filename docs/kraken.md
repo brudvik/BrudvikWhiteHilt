@@ -28,20 +28,26 @@ Then, once a minute, there is an 8% chance it rises with one player aboard. Each
 
 The [Horn of the Deep](difficulty.md#horn-of-the-deep) can deliberately call Kraken: equip it and attack to complete a horn call while aboard a ship in **Ocean**, over at least the configured `MinDepth`, after the configured `RequiredKey` boss is defeated. No fog, calm wind, night or chance roll is needed. Kraken must be enabled. The server applies the horn's own cooldown and nearby-encounter checks.
 
+On dedicated servers, the server checks network data and authorizes the caller's client to raise Kraken beside the loaded ship. The cooldown starts only after successful spawn confirmation. Update both server and clients to 0.78.1 or newer; `Horn:` log entries show rejections and results.
+
 A horn-called Kraken does not retreat merely because it is daytime. Its normal `RetreatMinutes` limit and retreat when players leave still apply. Naturally occurring Kraken is unchanged.
 
 ### The fight
 
-1. The sea shakes and **the Kraken rises** beside the ship, its glowing eyes just above the water.
-2. **Tentacles** break the surface in a ring around the ship and lash at everyone aboard.
-3. The Kraken **holds the ship fast**: it barely moves and rocks now and then.
+1. The sea shakes and **the Kraken rises** beside the ship, with dark wine-black hide, narrow red eyes and more of its head above water.
+2. **Six tentacles** break the surface in a ring around the ship and lash at everyone aboard.
+3. The Kraken **holds the ship fast** and periodically lifts the hull up to **1.8 m** above its usual waterline. A roar and camera shake give **three seconds of warning**, then the ship rises and lowers over four seconds. The ship's network owner applies bounded forces, not teleports.
 4. **Kill the Kraken** to free the ship. Its tentacles die with it, and the dead Kraken sinks into the deep.
 5. It gives up after 5 minutes, at dawn, or when no one is near, and sinks back with its tentacles, without loot.
 
 | | Health | Attack |
 |---|---|---|
-| **Kraken** | 4000 | Slam, 90 blunt, reaches about 13 m |
-| **Kraken Tentacle** | 500 | Lash, 45 blunt, reaches about 12 m |
+| **Kraken** | 8000 | Slam, 140 blunt, reaches about 13 m |
+| **Kraken Tentacle** | 900 | Lash, 70 blunt, reaches about 12 m |
+
+Below **50% health**, Kraken becomes enraged: body and tentacle damage rises by **50%**, the body's animation runs **1.4x** faster, and subsequent hull lifts come sooner. The three-second warning is never shortened, and a lift already underway keeps its original duration. The base attack interval is three seconds; animation duration and AI targeting also limit actual attack frequency. Ships receive **50%** of the configured attack damage before crew, enrage and world scaling. Bring a prepared crew; the hull can be lost.
+
+Within **80 m** of a living Kraken that is not retreating, [Odin and Freya](potions.md#during-a-kraken-fight) are weakened but remain useful. Odin keeps +30 maximum HP, +0.5 HP/s, 1.25x health regeneration and 30% fall-damage protection at default settings; drinking it heals 25% of maximum HP instead of filling health. Freya keeps +20 stamina regeneration and reduced action costs instead of restoring stamina from actions. Potion durations do not change, and full strength returns automatically outside the encounter, on death or retreat. Other potions are unchanged.
 
 Both shrug off chop and pickaxe damage and poison, resist fire and frost, and are weak to lightning.
 
@@ -55,9 +61,9 @@ Large crews face harder blows. When the Kraken rises, it remembers how many play
 | 5 | +60% | +12% |
 | 10 | +135% | +27% |
 
-The crew bonus stays fixed for that encounter, even if players jump overboard, die or join later. It is saved with the Kraken and copied to its tentacles, including for admin-summoned encounters. Older Krakens without a saved crew count retain solo damage. Health and tentacle count are unchanged; vanilla effective-health scaling still applies. Set either extra-player damage setting to 0 to disable that bonus. A damage share of 0 still prevents that kind of damage entirely.
+The crew bonus stays fixed for that encounter, even if players jump overboard, die or join later. It is saved with the Kraken and copied to its tentacles, including for admin-summoned encounters. Older Krakens without a saved crew count retain solo damage. This crew bonus does not change health or tentacle count; vanilla effective-health scaling still applies. Set either extra-player damage setting to 0 to disable that bonus. A damage share of 0 still prevents that kind of damage entirely.
 
-The Kraken has its own deep, watery calls for idle, alert, slam, injury and death. Its tentacles share the calls and use a separate wet lash sound when striking. Set `[Kraken] Sounds` to false to keep the previous vanilla sounds.
+The Kraken has its own deep, watery calls for idle, alert, slam, injury and death, with deeper pitch, periodic ambient calls and lift/enrage warning roars. Its tentacles share the calls and use a separate wet lash sound when striking. Sounds carry up to 180 m at default settings. Set `[Kraken] Sounds` to false to keep the previous vanilla sounds (custom warning and ambient calls stop).
 
 ### Loot
 
@@ -83,20 +89,40 @@ Section `[Kraken]` (admin only, synced from the server):
 | `ChancePerExtraPlayer` | 8 | Extra percentage points per additional player on the same ship, capped at 100% total; 0 disables the crew bonus |
 | `CooldownMinutes` | 90 | Real minutes between Krakens, world-wide |
 | `MinDepth` | 25 | Least depth of water under the ship |
-| `Tentacles` | 4 | Tentacles around the ship (0–8) |
-| `BodyHealth` / `TentacleHealth` | 4000 / 500 | Health |
-| `BodyDamage` / `TentacleDamage` | 90 / 45 | Blunt damage per blow |
+| `Tentacles` | 6 | Tentacles around the ship (0–8) |
+| `BodyHealth` / `TentacleHealth` | 8000 / 900 | Health |
+| `BodyDamage` / `TentacleDamage` | 140 / 70 | Blunt damage per blow |
 | `CrewDamagePercent` | 100 | Share of the damage the crew takes; 0 = never hurt |
-| `ShipDamagePercent` | 30 | Share of the damage the ship takes; 0 = never hurt |
+| `ShipDamagePercent` | 50 | Share of the damage the ship takes; 0 = never hurt |
 | `CrewDamagePerExtraPlayer` | 15 | Extra percent of solo damage to players per additional crew member at spawn, on top of vanilla scaling; 0 disables the bonus |
 | `ShipDamagePerExtraPlayer` | 3 | Extra percent of solo ship damage per additional crew member at spawn; 0 disables the bonus |
 | `HoldShip` | true | The Kraken holds the ship fast |
+| `LiftShip` | true | Periodic hull lift; also requires `HoldShip` |
+| `LiftHeight` | 1.8 | Maximum lift above the usual hull waterline, metres (0–4) |
+| `LiftInterval` | 14 | Seconds between lift cycles, shortened by enrage but never below warning + lift duration |
+| `LiftWarningSeconds` | 3 | Warning seconds before lifting, preserved during enrage |
+| `LiftSeconds` | 4 | Seconds raising and lowering the hull, shortened for subsequent enraged lifts |
+| `LiftAcceleration` | 8 | Maximum vertical acceleration, m/s² |
+| `EnrageHealthShare` | 0.5 | Health fraction for enrage; 0 disables it |
+| `EnrageDamage` | 1.5 | Body and tentacle damage multiplier while enraged |
+| `EnrageSpeed` | 1.4 | Body-animation and subsequent lift-cycle speed while enraged |
+| `AttackInterval` | 3 | Minimum melee attack interval, seconds (after a restart) |
+| `SoundVolume` | 1 | Kraken/tentacle sound volume, 0–1 (after a restart) |
+| `SoundRange` | 180 | Audible range, metres (after a restart) |
+| `SoundPitch` | 0.75 | Sound pitch; lower sounds deeper (after a restart) |
+| `AmbientSeconds` | 9 | Seconds between ambient body calls |
+| `PotionRange` | 80 | Range for Odin/Freya attenuation; 0 disables it |
+| `OdinBonusShare` | 0.6 | Retained fraction of max-health and fall-protection bonuses |
+| `OdinHealingShare` | 0.25 | Retained fraction of instant/passive healing and regeneration bonus |
+| `FreyaShare` | 0.5 | Retained stamina benefits; costs blend toward normal, never negative while attenuated |
 | `RetreatMinutes` | 5 | Minutes before it gives up |
 | `Scale` | 1.5 | Size of the Kraken (after a restart) |
 | `Sounds` | true | Own watery calls and tentacle lash (after a restart) |
 | `LootMultiplier` | 1 | Multiplier on the meat, ink and chitin it drops; the trophy stays one (after a restart) |
 
 Section `[Octopus]`: `Enabled`, `MaxSpawned` (2) and `SpawnChance` (20%).
+
+On upgrade to 0.79.0, the previous defaults for tentacle count, health, damage and ship-damage share migrate once. Custom values are preserved. Setting a retained potion share to 1 keeps that benefit at full strength.
 
 ## Console commands
 

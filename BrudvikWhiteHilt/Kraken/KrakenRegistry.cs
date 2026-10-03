@@ -48,7 +48,7 @@ public static class KrakenRegistry
 
     // The Lurker's eyes sit this high on the 10.5 m model; the Kraken's origin is at the waterline, so the model sinks by it.
     private const float EyeHeight = 7.6f;
-    private const float EyesAboveWater = 1.1f;
+    private const float EyesAboveWater = 2.2f;
 
     private static readonly Color inkTint = new(0.12f, 0.1f, 0.2f);
     private static readonly Color meatTint = new(0.75f, 0.35f, 0.45f);
@@ -200,6 +200,7 @@ public static class KrakenRegistry
 
         float scale = KrakenSettings.Scale.Value;
         GameObject visual = CreatureVisual.Attach(prefab.transform, "kraken", template, new Vector3(0f, -ModelDepth, 0f), Quaternion.identity, scale);
+        DressBody(visual);
         prefab.AddComponent<KrakenCorpse>().Visual = visual.transform;
         PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
         return prefab;
@@ -252,7 +253,9 @@ public static class KrakenRegistry
         if (KrakenSettings.Sounds.Value)
         {
             MonsterRegistry.AddCreatureSounds(humanoid, ai, slam, "kraken");
+            ConfigureSounds(humanoid, ai, slam);
         }
+        DressBody(visual);
         prefab.AddComponent<KrakenBody>();
         CreatureManager.Instance.AddCreature(creature);
     }
@@ -283,6 +286,7 @@ public static class KrakenRegistry
         if (KrakenSettings.Sounds.Value)
         {
             MonsterRegistry.AddCreatureSounds(humanoid, ai, lash, "kraken", "lash");
+            ConfigureSounds(humanoid, ai, lash);
         }
 
         if (!VisualHelper.IsHeadless)
@@ -308,7 +312,7 @@ public static class KrakenRegistry
         shared.m_damages = new HitData.DamageTypes { m_blunt = damage };
         shared.m_attackForce = 120f;
         shared.m_aiAttackRange = range * 0.9f;
-        shared.m_aiAttackInterval = 4f;
+        shared.m_aiAttackInterval = KrakenSettings.AttackInterval.Value;
         shared.m_aiAttackMaxAngle = 35f;
         Attack attack = shared.m_attack;
         attack.m_attackAnimation = trigger;
@@ -322,6 +326,36 @@ public static class KrakenRegistry
         attack.m_hitTerrain = false;
         ItemManager.Instance.AddItem(weapon);
         return weapon;
+    }
+
+    private static void ConfigureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon)
+    {
+        var effects = new[] { ai.m_idleSound, ai.m_alertedEffects, humanoid.m_hitEffects, humanoid.m_critHitEffects,
+            humanoid.m_deathEffects, weapon.ItemDrop.m_itemData.m_shared.m_triggerEffect };
+        foreach (GameObject effect in effects.SelectMany(list => list.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>())
+            .Select(data => data.m_prefab).Where(prefab => prefab != null
+                && prefab.name.StartsWith("sfx_whitehilt_kraken", StringComparison.Ordinal)).Distinct())
+        {
+            foreach (ZSFX sound in effect.GetComponentsInChildren<ZSFX>(true))
+            {
+                sound.m_minVol = sound.m_maxVol = KrakenSettings.SoundVolume.Value;
+                sound.m_minPitch = sound.m_maxPitch = KrakenSettings.SoundPitch.Value;
+                AudioSource audio = sound.GetComponent<AudioSource>();
+                if (audio != null)
+                {
+                    audio.minDistance = KrakenSettings.SoundRange.Value / 6f;
+                    audio.maxDistance = KrakenSettings.SoundRange.Value;
+                    audio.rolloffMode = AudioRolloffMode.Linear;
+                }
+            }
+        }
+    }
+
+    private static void DressBody(GameObject visual)
+    {
+        if (VisualHelper.IsHeadless)
+            return;
+        KrakenAppearance.Apply(visual);
     }
 
     private static DropConfig Drop(string item, int min, int max, float multiplier)

@@ -306,6 +306,7 @@ public static class WhiteHiltConfig
             (Id: "lindorm-0.72.2", Section: "Lindorm", Values: new[] { ("Scale", 1.3f), ("Damage", 55f) }),
             (Id: "dragon-0.72.3", Section: "Desert Dragon", Values: new[] { ("Health", 500f) }),
             (Id: "dragon-0.77.0", Section: "Desert Dragon", Values: new[] { ("Health", 800f), ("FireDamage", 15f) }),
+            (Id: "kraken-0.79.0", Section: "Kraken", Values: new[] { ("Tentacles", 4f), ("BodyHealth", 4000f), ("TentacleHealth", 500f), ("BodyDamage", 90f), ("TentacleDamage", 45f), ("ShipDamagePercent", 30f) }),
             (Id: "freya-0.72.3", Section: "Potions.GiftOfFreya", Values: new[] { ("DurationMinutes", 20f) }),
             (Id: "fenrir-0.72.3", Section: "Potions.GiftOfFenrir", Values: new[] { ("AttackSpeed", 1.5f), ("LifeSteal", 0.15f) }),
             (Id: "eir-0.72.3", Section: "Potions.GiftOfEir", Values: new[] { ("DurationMinutes", 10f), ("HealShare", 0.5f), ("HealthRegenMultiplier", 2f) })
@@ -321,7 +322,8 @@ public static class WhiteHiltConfig
                 if (configFile.ContainsKey(definition))
                 {
                     ConfigEntryBase entry = configFile[definition];
-                    if (entry.BoxedValue is float value && value == previous)
+                    if ((entry.BoxedValue is float value && value == previous)
+                        || (entry.BoxedValue is int count && count == previous))
                     {
                         entry.BoxedValue = entry.DefaultValue;
                     }

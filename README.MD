@@ -151,7 +151,7 @@ A world that grows harder as you progress: up to 5 stars, black beasts, the rare
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken" height="120">
 
-Octopuses in the deep, and Kraken beside your ship on a calm, foggy night or called by the Horn of the Deep.
+Octopuses in the deep, and a brutal Kraken that grips and lifts ships, becomes enraged and tempers Odin and Freya, naturally or called by the Horn of the Deep.
 
 ### 🕷️ [Lindorm, giant spiders & Desert Dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
 

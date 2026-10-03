@@ -72,6 +72,8 @@ On land it calls a random **enabled, boss-unlocked** black beast from the curren
 
 In Ocean it instead calls [Kraken](kraken.md#horn-of-the-deep), only from a ship over sufficiently deep water. A disabled creature cannot be called. The server validates the caller and the equipped horn, processes each call once, blocks calls near an existing living Kraken or black beast, and applies one world-wide horn cooldown after a successful spawn. Failed calls do not spend the cooldown. This timer resets when the world session restarts; it is separate from natural encounter timers.
 
+Dedicated servers validate player, ship and nearby-encounter network data without needing live objects at the caller's location. The server authorizes the caller's client to create the encounter and waits for its confirmation before starting the cooldown. Other calls are blocked while confirmation is pending; an expired reservation is released on the next call. Server and clients must run the updated horn protocol (0.78.1 or newer). Both logs include `Horn:` diagnostics for rejected calls, authorizations and spawn results.
+
 Admin-synchronized section `[SummoningHorn]`:
 
 | Setting | Default | Meaning |
@@ -81,7 +83,7 @@ Admin-synchronized section `[SummoningHorn]`:
 | `CooldownSeconds` | 300 | World-wide seconds between successful horn summons |
 | `EncounterRange` | 150 | Nearby encounter exclusion radius, and daytime player range for horn-called land beasts, in metres |
 | `SoundRange` | 150 | Maximum audible distance in metres |
-| `NetworkGraceSeconds` | 5 | Allowed network delay after a completed call |
+| `NetworkGraceSeconds` | 5 | Allowed network delay after a completed call, and timeout for client spawn confirmation |
 
 The standard `[Content] WhiteHiltSummoningHorn` and `[Recipes] WhiteHiltSummoningHorn` settings control crafting availability and the recipe. No extra progression-tier ingredients are added by default. Console testing: `spawn WhiteHiltSummoningHorn`.
 

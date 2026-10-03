@@ -2,6 +2,25 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.79.0 - 2026-10-04
+
+### Added
+- **Brutal Kraken encounter**: six tentacles, periodic owner-controlled hull lifts with a three-second warning, and a synchronized enraged phase below half health. Enrage increases body and tentacle damage by 50%, speeds up the body's animation and shortens subsequent lift cycles without cutting warnings short. Lift height, acceleration, timing and enrage are server-configurable.
+- **Potion pressure near Kraken**: within 80 m of a living, non-retreating Kraken, Odin retains 60% of its health/fall-protection bonus and 25% of its healing bonuses; Freya retains 50% of its stamina benefits, blending action costs toward normal and preventing stamina generation while attenuated. Both retain useful protection, keep their duration, and automatically return to full strength outside the fight. Range and retained shares are configurable; other potions are unchanged.
+
+### Changed
+- **Kraken strength**: body health 4000 -> 8000, tentacle health 500 -> 900, slam 90 -> 140, lash 45 -> 70 and ship-damage share 30% -> 50%; attack interval is now three seconds. Previous default settings migrate once; custom values are preserved.
+- **Kraken presence**: darker wine-black hide, narrow slanted red eyes, more of the head above water, deeper calls audible up to 180 m, periodic ambient calls and warning/enrage roars. Runtime appearance is reused by the Unity preview tool. The existing model and attribution are retained.
+
+### Fixed
+- Includes the dedicated-server horn correction from 0.78.1. The user confirmed Kraken spawning in game after the correction. Server and clients must update together.
+- Compilation, 71 isolated production Kraken/potion checks (including 1001 lift-height samples and a gravity-enabled lift simulation) and rendered idle/attack/death previews passed. Final boat handling, sound mix and combat balance still require an in-game retest.
+
+## v0.78.1 - 2026-10-04
+
+### Fixed
+- **Horn summons on dedicated servers**: validate the caller and nearby encounters using network data instead of requiring live player and ship objects on the server. The server authorizes the caller's client to spawn the encounter, reserves the pending call and starts the world-wide cooldown only after a successful confirmation. Rejections, authorizations and spawn results are logged with a `Horn:` prefix. Server and clients must update together. Compilation and 43 isolated production-service checks passed; the user confirmed Kraken spawning in game.
+
 ## v0.78.0 - 2026-10-04
 
 ### Added
