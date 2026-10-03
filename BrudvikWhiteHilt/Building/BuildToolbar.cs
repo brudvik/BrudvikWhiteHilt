@@ -278,7 +278,7 @@ public class BuildToolbar : MonoBehaviour
                 BuildTools.FormatFactor(BuildCamera.SpeedFactor), BuildToolSettings.KeyName(MediaSettings.KeyPhoto),
                 BuildToolSettings.KeyName(MediaSettings.KeyPhotoView), BuildToolSettings.KeyName(MediaSettings.KeyPanel))
             : string.Format(Localization.instance.Localize("$whitehilt_build_hint"), cameraKey, cursorKey);
-        string modeHint = string.Join("\n", new[] { GroupTools.HintLine, RepairTools.HintLine, Terrain.HoeTools.HintLine, Terrain.FarmTools.HintLine, Terrain.RoadBuilder.HintLine }
+        string modeHint = string.Join("\n", new[] { GroupTools.HintLine, RepairTools.HintLine, Terrain.HoeTools.HintLine, Moats.MoatTool.HintLine, Terrain.FarmTools.HintLine, Terrain.RoadBuilder.HintLine }
             .Where(line => !string.IsNullOrEmpty(line)));
         if (modeHint.Length > 0)
         {

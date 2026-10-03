@@ -76,6 +76,7 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 | Paint (hoe) | Ctrl + P | Stone, dirt or grass over an area without changing its height |
 | Reset (hoe) | Ctrl + T | Put an area back to the ground as the world made it |
 | Height reference (hoe) | Ctrl + M | The panel shows the height where you aim and the difference from the reference |
+| Moat (hoe) | Ctrl + H | Dig a moat round a wall or along points you click, see [Moats](#moats) |
 | Big brush (hoe) | Ctrl + mouse wheel | The hoe's own level, raise, smooth and paths work over 1 to 8 m, costing more for the larger area. A circle shows the size |
 | Grid (cultivator) | Ctrl + G | Plant rows x columns at once (arrows), as far apart as the plant needs to grow, counting the size of the grown crop (PgUp / PgDn for more, never less). Green places can be planted, red ones cannot (wrong biome, no room, too close to a plant that would stop growing, not cultivated). The ground is cultivated first if *Cultivate under* is on |
 | Refill (cultivator) | Ctrl + R | Plant the empty places of the last grid again |
@@ -84,3 +85,40 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 | Growth (cultivator) | panel | Labels over nearby plants: time left in green, or why a plant is not growing in red. Picked berry bushes, mushrooms and flowers show when they grow back in blue |
 
 Ctrl + Z takes back terrain changes for 60 seconds, with the stone. On a server the change is taken back where the terrain is yours to change. Levelling, lowering, dirt and cultivating are free; paved stone and raised ground cost stone as with the vanilla hoe for the same area and height. The game keeps ground within 8 m of where it started; the tools warn when a change would go past that. The `BuildTools.Terrain` section lets the server switch the tools off, change the cost, allow or forbid harvesting areas, and limit the size of one change (2500 m² by default). It also sets `AreaReach` (60 m, how far away an area can be picked without the build camera), `MaxBrushRadius` (8 m, the hoe's big brush), `RoadBuildReach` (40 m, a planned road is built while you are this close) and `MaxGridRows` (30, rows and columns in one cultivator grid).
+
+### Moats
+
+<img src="images/moat_vditch.png" alt="V-ditch with a bank" title="V-ditch with a bank" height="140"> <img src="images/moat_wet.png" alt="Wet moat with a drawbridge" title="Wet moat with a drawbridge" height="140"> <img src="images/moat_staked.png" alt="Staked ditch" title="Staked ditch" height="140">
+
+With the White Hilt hoe, Ctrl + H (or *Moat* on the Terrain panel) digs a moat. Click a wall, gate or tower to dig round every wall connected to it: the moat follows the outline of the walls, a berm away from them, and only where walls stand behind it. Or click points on the ground: click the first point again to close a ring, or the last point again to finish. Both edges of the ditch are drawn on the ground before you start. Like a road, the moat is then dug stretch by stretch while you are near it, and it carries on after a restart. Digging and the bank cost nothing; the sharp stakes of a staked ditch cost what they cost to build.
+
+<img src="images/moat_profiles.png" alt="The three moat profiles" title="The three moat profiles" height="300">
+
+| Ditch | Shape |
+|------|-------|
+| **V-ditch** | Dry and V-shaped, 6 m wide and 2.5 m deep |
+| **Wet moat** | Flat-bottomed, 8 m wide with a 4 m bottom and 2.4 m deep, filled with water 0.6 m below its lowest edge. The water stays level, so on sloping ground it steps down from stretch to stretch |
+| **Staked ditch** | V-shaped, 5 m wide and 2 m deep, with vanilla sharp stakes along the bottom every 2.6 m |
+
+The panel picks the ditch, where the dug earth goes (a bank outside the ditch, a bank inside it, or carried away) and whether ground is left as a causeway in front of gates. Over a wet moat, build a [Drawbridge](defences.md).
+
+Creatures down in a ditch move at half speed, and for the first 10 seconds they slide down its steep sides as players do, before they claw their way out. Players, tamed animals and bosses are not affected. *Reset* (Ctrl + T) over a ditch also takes away its moat, so it no longer slows anything.
+
+Section `[BuildTools.Moats]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | Allow digging moats |
+| `Berm` | 3 | Ground left between a followed wall and the ditch, in metres |
+| `SpikedWidth`, `SpikedDepth` | 6, 2.5 | Size of the V-ditch |
+| `WetWidth`, `WetBottom`, `WetDepth` | 8, 4, 2.4 | Size of the wet moat |
+| `Freeboard` | 0.6 | How far the water stays below the lowest edge of the wet moat |
+| `Water` | true | Fill new wet moats with water you can swim in |
+| `StakedWidth`, `StakedDepth` | 5, 2 | Size of the staked ditch |
+| `StakeSpacing` | 2.6 | Metres between the sharp stakes |
+| `BankWidth`, `BankHeight` | 5, 1.2 | Size of the bank |
+| `CausewayWidth` | 5 | Width of the ground left in front of gates |
+| `FollowReach` | 60 | How far from the clicked piece connected walls are followed |
+| `CreatureSpeed` | 0.5 | Speed of creatures in a ditch, as a share of their normal speed |
+| `CreatureSlideAngle` | 38 | Creatures in a ditch slide down slopes steeper than this; 90 turns it off |
+| `ClimbOutSeconds` | 10 | Seconds a creature slides before it claws its way out |

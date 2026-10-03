@@ -210,6 +210,69 @@ public class PalisadeGatehouse : DefensePieceBase
 }
 
 /// <summary>
+/// A drawbridge over a moat: a deck hinged at one end that is raised when closed and lowered when opened, following the
+/// nearest gate.
+/// </summary>
+public class Drawbridge : DefensePieceBase
+{
+    /// <summary>
+    /// Constructor for the Drawbridge class.
+    /// </summary>
+    /// <param name="instance">The piece manager.</param>
+    public Drawbridge(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string LayoutName => "vindebro";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Drawbridge";
+
+    /// <inheritdoc/>
+    protected override string Description => "A deck nine metres long that spans a moat. Open it to lower it and close it to raise it; it follows the nearest gate.";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "RoundLog", Amount = 10, Recover = true },
+        new() { Item = "Wood", Amount = 20, Recover = true },
+        new() { Item = "Iron", Amount = 4, Recover = true },
+        new() { Item = "Chain", Amount = 2, Recover = true }
+    };
+
+    /// <inheritdoc/>
+    protected override float Health => DefenseSettings.Scale(2000f);
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Swamp;
+
+    // As for the gatehouse, the vanilla door stays as an invisible driver for opening, closing and sync.
+    /// <inheritdoc/>
+    protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
+    {
+        Transform door = prefab.transform.Find("door");
+        if (door == null || !groups.TryGetValue("deck", out Transform deck))
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: the vanilla door or the deck was not found, the bridge will not move.");
+            return;
+        }
+
+        foreach (Renderer renderer in door.GetComponentsInChildren<Renderer>(true))
+        {
+            renderer.enabled = false;
+        }
+
+        foreach (Collider collider in door.GetComponentsInChildren<Collider>(true))
+        {
+            Object.DestroyImmediate(collider);
+        }
+
+        DrawbridgeDriver driver = prefab.AddComponent<DrawbridgeDriver>();
+        driver.m_door = door;
+        driver.m_deck = deck;
+    }
+}
+
+/// <summary>
 /// Base class for the watchtowers, which differ only in size.
 /// </summary>
 public abstract class WatchtowerBase : DefensePieceBase

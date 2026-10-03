@@ -39,6 +39,7 @@ public static class BuildTools
         MediaMode.Tick();
         TerrainEdit.Tick();
         RoadBuilder.Tick(player);
+        Moats.MoatBuilder.Tick(player);
         GrowthMarkers.Tick(player);
         BuildGizmos.UpdateAxes(player);
         if (!player.InPlaceMode())

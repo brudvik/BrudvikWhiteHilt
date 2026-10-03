@@ -28,6 +28,7 @@ public enum DoorKind
 public static class AutoDoorSettings
 {
     private const string Section = "Doors";
+    private const string DrawbridgePrefab = "piece_whitehilt_vindebro";
 
     private static readonly NameSet excluded = new(exact: true);
     private static readonly NameSet gateNames = new(exact: false);
@@ -148,6 +149,12 @@ public static class AutoDoorSettings
         if (windowNames.Matches(WindowNames.Value, prefabName))
         {
             return DoorKind.Window;
+        }
+
+        // A drawbridge is raised and lowered like a gate.
+        if (prefabName == DrawbridgePrefab)
+        {
+            return DoorKind.Gate;
         }
 
         return gateNames.Matches(GateNames.Value, prefabName) ? DoorKind.Gate : DoorKind.Door;

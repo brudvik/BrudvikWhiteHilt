@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Building.Groups;
+using BrudvikWhiteHilt.Building.Moats;
 using System.Globalization;
 using UnityEngine;
 
@@ -49,7 +50,10 @@ public static class HoeTools
         Paint,
 
         /// <summary>Put an area back to the original terrain.</summary>
-        Reset
+        Reset,
+
+        /// <summary>Dig a moat.</summary>
+        Moat
     }
 
     /// <summary>
@@ -159,6 +163,14 @@ public static class HoeTools
             case ToolMode.Reset:
                 TickRectangle(player);
                 break;
+            case ToolMode.Moat:
+                HintLine = string.Empty;
+                if (!MoatTool.Tick(player))
+                {
+                    Exit();
+                }
+
+                break;
             default:
                 HintLine = string.Empty;
                 break;
@@ -191,6 +203,7 @@ public static class HoeTools
         plan = null;
         area.Clear();
         BuildGizmos.HideBox();
+        MoatTool.Clear();
         HintLine = string.Empty;
     }
 
@@ -277,7 +290,7 @@ public static class HoeTools
         ConfigEntry<KeyboardShortcut>[] keys =
         {
             TerrainSettings.KeyRoad, TerrainSettings.KeyArea, TerrainSettings.KeyShape, TerrainSettings.KeyPaint, TerrainSettings.KeyReset,
-            TerrainSettings.KeyReference
+            TerrainSettings.KeyReference, TerrainSettings.KeyHarvest
         };
         foreach (ConfigEntry<KeyboardShortcut> key in keys)
         {
@@ -306,6 +319,10 @@ public static class HoeTools
             else if (key == TerrainSettings.KeyReset)
             {
                 Toggle(ToolMode.Reset);
+            }
+            else if (key == TerrainSettings.KeyHarvest)
+            {
+                Toggle(ToolMode.Moat);
             }
             else
             {
@@ -564,6 +581,7 @@ public static class HoeTools
         TerrainEdit.Reset(job, point => point.x >= min.x - 0.01f && point.x <= max.x + 0.01f && point.z >= min.y - 0.01f && point.z <= max.y + 0.01f,
             centre, Vector2.Distance(min, max) / 2f + 1f);
         TerrainEdit.Complete(job);
+        MoatSection.RemoveInside(min, max);
     }
 
     private static Vector3 RampEnd(Vector3 start, Vector3 aim)

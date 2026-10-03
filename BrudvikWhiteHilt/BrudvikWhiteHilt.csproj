@@ -351,6 +351,13 @@
     <Compile Include="Building\Terrain\TerrainPanel.cs" />
     <Compile Include="Building\Terrain\TerrainSettings.cs" />
     <Compile Include="Building\Terrain\TerrainShapes.cs" />
+    <Compile Include="Building\Moats\MoatBuilder.cs" />
+    <Compile Include="Building\Moats\MoatEffects.cs" />
+    <Compile Include="Building\Moats\MoatGeometry.cs" />
+    <Compile Include="Building\Moats\MoatSection.cs" />
+    <Compile Include="Building\Moats\MoatSettings.cs" />
+    <Compile Include="Building\Moats\MoatTool.cs" />
+    <Compile Include="Patches\Building\MoatPatches.cs" />
     <Compile Include="Patches\Building\TerrainPatches.cs" />
     <Compile Include="Building\Media\Film.cs" />
     <Compile Include="Building\Media\FilmPlayer.cs" />
@@ -588,6 +595,7 @@
     <Compile Include="Pieces\Defenses\DefensePieceBase.cs" />
     <Compile Include="Pieces\Defenses\DefensePieces.cs" />
     <Compile Include="Pieces\Defenses\GateLeafDriver.cs" />
+    <Compile Include="Pieces\Defenses\DrawbridgeDriver.cs" />
     <Compile Include="Pieces\Defenses\VanillaMeshLibrary.cs" />
     <Compile Include="Pieces\Navigation\CartographerDesk.cs" />
     <Compile Include="Pieces\Navigation\MapTableProximity.cs" />

@@ -131,7 +131,7 @@ public static class TerrainSettings
         KeyPaint = BindKey("Paint", KeyCode.P, "Hoe: paint an area with stone, dirt or grass.");
         KeyReset = BindKey("Reset", KeyCode.T, "Hoe: put an area back to the original terrain.");
         KeyReference = BindKey("Reference", KeyCode.M, "Hoe: set the height reference to where you aim.");
-        KeyHarvest = BindKey("Harvest", KeyCode.H, "Cultivator: harvest every ripe crop in an area.");
+        KeyHarvest = BindKey("Harvest", KeyCode.H, "Hoe: dig a moat. Cultivator: harvest every ripe crop in an area.");
     }
 
     private static bool Holding(Player player, string prefab)

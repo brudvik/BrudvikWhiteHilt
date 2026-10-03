@@ -39,7 +39,7 @@ The indestructible White Hilt Ship with nine deck upgrades, sailing help for eve
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="A palisade fort" height="120">
 
-A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway.
+A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway, moats round it and a drawbridge.
 
 ### 🧭 [Navigation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/navigation.md)
 
@@ -99,7 +99,7 @@ The Paint Bench and brush: paint or stain any building piece in a colour mixed f
 
 ### 🏗️ [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
-A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator.
+A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator, moats included.
 
 ### 🍄 [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)
 

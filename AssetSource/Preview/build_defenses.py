@@ -410,6 +410,42 @@ def views(*items):
     return [{"label": label, "yaw": yaw, "pitch": pitch} for label, yaw, pitch in items]
 
 
+BRIDGE_LENGTH = 9.0
+BRIDGE_TOP = 0.3
+
+
+def drawbridge():
+    """A drawbridge 4 m wide, hinged at z = 0 and reaching BRIDGE_LENGTH out along +z over a moat.
+
+    The deck lies in the group "deck", which the mod turns up round the hinge when the bridge is closed. Two posts with a
+    crossbar stand at the hinge.
+    """
+    rng = random.Random("vindebro")
+    top, length = BRIDGE_TOP, BRIDGE_LENGTH
+    parts = []
+    z = 0.0
+    while z < length - 0.01:
+        z1 = min(length, z + 2.0)
+        parts.append(dict(floor(-2.0, 2.0, z, z1, top), group="deck"))
+        z = z1
+    for x in (-1.75, 1.75):
+        parts.append(beam((x, top - 0.28, 0.1), (x, top - 0.28, length - 0.1), 0.3, group="deck"))
+    for z in (0.4, length / 2, length - 0.4):
+        parts.append(beam((-2.0, top - 0.5, z), (2.0, top - 0.5, z), 0.22, group="deck"))
+    for z in (1.5, length - 1.5):
+        parts.append(beam((-2.0, top + 0.02, z), (2.0, top + 0.02, z), 0.05, height=0.12, texture="metalwall", group="deck", detail=True))
+    for x in (-1.9, 1.9):
+        parts.append(part("wood_pole", (x, top + 0.05, length - 0.35), (90, 0, 0), (0.5, 0.08, 0.5), texture="metalwall", group="deck", detail=True))
+    for x in (-2.45, 2.45):
+        parts.append(post(x, -0.15, -0.4, 4.4 + rng.uniform(-0.05, 0.05), 0.22))
+    parts.append(log((-2.65, 4.2, -0.15), (2.65, 4.2, -0.15), 0.18))
+    colliders = [box((0, top - 0.25, length / 2), (4.0, 0.5, length), group="deck"),
+                 box((-2.45, 2.0, -0.15), (0.45, 4.8, 0.45)), box((2.45, 2.0, -0.15), (0.45, 4.8, 0.45))]
+    snaps = [(-2.0, 0, 0), (2.0, 0, 0)]
+    groups = [{"name": "deck", "pivot": [0, top, 0]}]
+    return parts, colliders, snaps, groups
+
+
 # Map scrolls grow with the Exploration skill: one plus one per ten levels. Each lies in its own group, scroll_1..scroll_11.
 SCROLLS = 11
 SCROLL_SCALE = 0.055  # the scroll mesh is 8 long for a height of 1, so about 0.44 m long and 6 cm thick
@@ -577,6 +613,9 @@ def main():
     pieces.append(defence("spansk_rytter", "piece_sharpstakes", *cheval_de_frise(), keep=["HIT AREA"],
                           hitArea=box((0, 0.7, 0), (4.6, 1.4, 1.9)),
                           views=views(("front", 180, 15), ("side", 90, 10), ("angle", -40, 30))))
+    bridge_parts, bridge_colliders, bridge_snaps, bridge_groups = drawbridge()
+    pieces.append(defence("vindebro", "wood_gate", bridge_parts, bridge_colliders, bridge_snaps, groups=bridge_groups, keep=["door"],
+                          views=views(("outside", 160, 25), ("side", 90, 10), ("top", 180, 65))))
     pieces.append({"name": "oversikt", "parts": [
         piece("skanseport"),
         piece("skansevegg", (-6.4, 0, 0)),

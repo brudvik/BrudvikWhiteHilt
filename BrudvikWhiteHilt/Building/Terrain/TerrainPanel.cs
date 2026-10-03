@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Building.Moats;
 using Jotunn.Managers;
 using System;
 using UnityEngine;
@@ -30,6 +31,10 @@ public class TerrainPanel : MonoBehaviour
     private Text gradeLabel;
     private Text evenLabel;
     private Text pauseLabel;
+    private Text moatProfileLabel;
+    private Text moatBankLabel;
+    private Text moatCausewayLabel;
+    private Text moatPauseLabel;
     private Text autoLabel;
     private Text growthLabel;
     private float nextRow;
@@ -96,7 +101,7 @@ public class TerrainPanel : MonoBehaviour
         float right = half + RowGap;
 
         hoePanel = CreatePanel("$whitehilt_terrain", out Transform hoe);
-        hoeStatus = AddText(hoe, 56f);
+        hoeStatus = AddText(hoe, 74f);
         AddButton(hoe, 0f, half, "$whitehilt_terrain_road", TerrainSettings.KeyRoad, p => { HoeTools.Exit(); RoadBuilder.StartPlanning(p); });
         AddButton(hoe, right, half, "$whitehilt_terrain_level", TerrainSettings.KeyArea, _ => HoeTools.Toggle(HoeTools.ToolMode.Level));
         NextRow();
@@ -114,6 +119,15 @@ public class TerrainPanel : MonoBehaviour
         NextRow();
         pauseLabel = AddButton(hoe, 0f, half, null, null, _ => RoadBuilder.TogglePause());
         AddButton(hoe, right, half, "$whitehilt_terrain_cancel", null, _ => RoadBuilder.Cancel());
+        NextRow();
+        AddButton(hoe, 0f, half, "$whitehilt_moat", TerrainSettings.KeyHarvest, _ => HoeTools.Toggle(HoeTools.ToolMode.Moat));
+        moatProfileLabel = AddButton(hoe, right, half, null, null, _ => MoatTool.CycleProfile());
+        NextRow();
+        moatBankLabel = AddButton(hoe, 0f, half, null, null, _ => MoatTool.CycleBank());
+        moatCausewayLabel = AddButton(hoe, right, half, null, null, _ => MoatTool.ToggleCauseways());
+        NextRow();
+        moatPauseLabel = AddButton(hoe, 0f, half, null, null, _ => MoatBuilder.TogglePause());
+        AddButton(hoe, right, half, "$whitehilt_moat_cancel", null, _ => MoatBuilder.Cancel());
         NextRow();
         Finish(hoePanel);
 
@@ -147,13 +161,17 @@ public class TerrainPanel : MonoBehaviour
 
             string brush = string.Format(Localization.instance.Localize("$whitehilt_terrain_brush"),
                 HoeTools.BrushRadius > 0f ? HoeTools.Metres(HoeTools.BrushRadius) : "-", BuildToolSettings.KeyName(BuildToolSettings.TiltWheelModifier.Value));
-            hoeStatus.text = height + "\n" + brush + "\n" + RoadBuilder.Status();
+            hoeStatus.text = height + "\n" + brush + "\n" + RoadBuilder.Status() + "\n" + MoatBuilder.Status();
             surfaceLabel.text = Localization.instance.Localize("$whitehilt_terrain_surface") + ": " + HoeTools.SurfaceName(HoeTools.Paving);
             widthLabel.text = Localization.instance.Localize("$whitehilt_terrain_width") + ": " + HoeTools.Width.ToString("0") + " m";
             gradeLabel.text = Localization.instance.Localize("$whitehilt_terrain_grade") + ": "
                 + (HoeTools.Grade > 0f ? HoeTools.Grade.ToString("0") + " %" : Localization.instance.Localize("$whitehilt_terrain_grade_free"));
             evenLabel.text = Localization.instance.Localize(HoeTools.EvenRoad ? "$whitehilt_terrain_follow_even" : "$whitehilt_terrain_follow_terrain");
             pauseLabel.text = Localization.instance.Localize(RoadBuilder.Paused ? "$whitehilt_terrain_resume" : "$whitehilt_terrain_pause");
+            moatProfileLabel.text = Localization.instance.Localize("$whitehilt_moat_profile") + ": " + MoatSettings.ProfileName(MoatSettings.Profile);
+            moatBankLabel.text = Localization.instance.Localize("$whitehilt_moat_bank") + ": " + MoatSettings.BankName(MoatSettings.Bank);
+            moatCausewayLabel.text = Localization.instance.Localize("$whitehilt_moat_causeways") + ": " + (MoatSettings.Causeways ? on : off);
+            moatPauseLabel.text = Localization.instance.Localize(MoatBuilder.Paused ? "$whitehilt_moat_resume" : "$whitehilt_moat_pause");
         }
         else
         {

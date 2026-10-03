@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.62.0";
+    public const string PluginVersion = "0.63.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -85,6 +85,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
         Building.Terrain.TerrainSettings.Initialize();
+        Building.Moats.MoatSettings.Initialize();
         Building.Doors.AutoDoorSettings.Initialize();
         Planting.PlantingSettings.Initialize();
         Backpack.BackpackSettings.Initialize();
@@ -229,6 +230,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             Mastery.MasteryEffects.Register();
             Pieces.Ships.ShipBell.Create();
             Pieces.Portals.Effects.PortalFx.CreateSounds();
+            Building.Moats.MoatSection.CreatePrefab();
 
             Jotunn.Logger.LogInfo("All custom items have been added!");
         }

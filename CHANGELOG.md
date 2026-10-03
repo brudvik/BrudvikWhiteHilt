@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.63.0 - 2026-10-03
+
+### Added
+- **Moats** (White Hilt hoe, Ctrl + H): click a wall to dig a moat round every wall connected to it, or click points on the ground for a line or a ring of your own. Three ditches: a dry **V-ditch**, a **wet moat** with water you can swim in, and a **staked ditch** with sharp stakes along its bottom. The dug earth becomes a bank outside or inside the ditch, or is carried away, and ground is left as a causeway in front of gates. It is dug as you walk along it, like a road; digging is free. Creatures down in a ditch move at half speed and slide down its sides for a while before they climb out (`[BuildTools.Moats]`)
+- **Drawbridge** (Hammer, Workbench): a 4 × 9 m deck over a moat that is lowered when opened and raised when closed, and follows the nearest gate (`[Defences] DrawbridgeLinkRange`)
+
+### Changed
+- *Reset* with the White Hilt hoe also takes away a moat dug there
+
 ## v0.62.0 - 2026-10-03
 
 ### Added

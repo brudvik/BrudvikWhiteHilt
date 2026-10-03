@@ -14,7 +14,9 @@ public static class BuildGizmos
     private const float RingShowSeconds = 2f;
 
     private static readonly Color ringColor = new(1f, 0.7f, 0.25f, 0.6f);
+    private static readonly Color pathColor = new(0.35f, 0.75f, 1f, 0.9f);
     private static readonly List<LineRenderer> rings = new();
+    private static readonly List<LineRenderer> paths = new();
 
     private static GameObject root;
     private static Material material;
@@ -140,6 +142,49 @@ public static class BuildGizmos
     }
 
     /// <summary>
+    /// Draws several separate lines, e.g. both edges of a planned moat.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    public static void ShowPaths(IList<Vector3[]> lines)
+    {
+        if (!EnsureRoot())
+        {
+            return;
+        }
+
+        for (int i = 0; i < lines.Count; i++)
+        {
+            if (i == paths.Count)
+            {
+                paths.Add(CreateLine("Path", pathColor, 0.06f));
+            }
+
+            paths[i].positionCount = lines[i].Length;
+            paths[i].SetPositions(lines[i]);
+            paths[i].gameObject.SetActive(true);
+        }
+
+        for (int i = lines.Count; i < paths.Count; i++)
+        {
+            paths[i].gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Hides the lines drawn by <see cref="ShowPaths"/>.
+    /// </summary>
+    public static void HidePaths()
+    {
+        foreach (LineRenderer line in paths)
+        {
+            if (line != null)
+            {
+                line.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
     /// Draws a flat circle, e.g. the size of the hoe's brush.
     /// </summary>
     /// <param name="centre">Centre of the circle.</param>
@@ -213,6 +258,7 @@ public static class BuildGizmos
     public static void HideAll()
     {
         HideBox();
+        HidePaths();
         SetAxesActive(false);
         ringsUntil = 0f;
         foreach (LineRenderer ring in rings)
@@ -246,6 +292,7 @@ public static class BuildGizmos
         boxLine = null;
         circle = null;
         rings.Clear();
+        paths.Clear();
         if (material == null)
         {
             Shader shader = Shader.Find("Sprites/Default") ?? Shader.Find("UI/Default");

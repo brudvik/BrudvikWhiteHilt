@@ -6,7 +6,7 @@
 
 A palisade fort for the early game, built from Valheim's own stakes, logs and planks. Every walkway is 2 m up, so the rampart, its corners and bends, the gatehouse and the first floor of every watchtower join into one walk all the way round. Each piece is one building piece with one health bar, and its meshes are merged when the game starts, so a whole fort stays light.
 
-<img src="images/palisade_rampart.png" alt="Palisade Rampart" title="Palisade Rampart" height="140"> <img src="images/rampart_corner.png" alt="Rampart Corner" title="Rampart Corner" height="140"> <img src="images/rampart_bend.png" alt="Rampart Bend" title="Rampart Bend" height="140"> <img src="images/rampart_stairs.png" alt="Rampart Stairs" title="Rampart Stairs" height="140"> <img src="images/gatehouse.png" alt="Gatehouse" title="Gatehouse" height="140"> <img src="images/small_watchtower.png" alt="Small Watchtower" title="Small Watchtower" height="140"> <img src="images/watchtower.png" alt="Watchtower" title="Watchtower" height="140"> <img src="images/large_watchtower.png" alt="Large Watchtower" title="Large Watchtower" height="140"> <img src="images/cheval_de_frise.png" alt="Cheval de Frise" title="Cheval de Frise" height="140"> <img src="images/fort_overview.png" alt="A fort put together" title="A fort put together" height="140">
+<img src="images/palisade_rampart.png" alt="Palisade Rampart" title="Palisade Rampart" height="140"> <img src="images/rampart_corner.png" alt="Rampart Corner" title="Rampart Corner" height="140"> <img src="images/rampart_bend.png" alt="Rampart Bend" title="Rampart Bend" height="140"> <img src="images/rampart_stairs.png" alt="Rampart Stairs" title="Rampart Stairs" height="140"> <img src="images/gatehouse.png" alt="Gatehouse" title="Gatehouse" height="140"> <img src="images/small_watchtower.png" alt="Small Watchtower" title="Small Watchtower" height="140"> <img src="images/watchtower.png" alt="Watchtower" title="Watchtower" height="140"> <img src="images/large_watchtower.png" alt="Large Watchtower" title="Large Watchtower" height="140"> <img src="images/cheval_de_frise.png" alt="Cheval de Frise" title="Cheval de Frise" height="140"> <img src="images/drawbridge.png" alt="Drawbridge" title="Drawbridge" height="140"> <img src="images/fort_overview.png" alt="A fort put together" title="A fort put together" height="140">
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -19,8 +19,15 @@ A palisade fort for the early game, built from Valheim's own stakes, logs and pl
 | **Watchtower** | 3 × 3 m, two floors, overhanging parapet and roof | Hammer (Workbench) | Core Wood ×20, Wood ×30, Stone ×6, Resin ×6 |
 | **Large Watchtower** | 4 × 4 m, three floors with parapets on the two upper ones, and a roof | Hammer (Workbench) | Core Wood ×32, Wood ×50, Stone ×10, Resin ×10 |
 | **Cheval de Frise** | A log with crossed sharpened stakes that hurts creatures running into it | Hammer (Workbench) | Core Wood ×4, Wood ×4 |
+| **Drawbridge** | A 4 × 9 m deck over a moat, hinged at one end between two posts. Open it to lower it, close it to raise it | Hammer (Workbench) | Core Wood ×10, Wood ×20, Iron ×4, Chain ×2 |
 
 In the towers, use the ladder to climb to the next floor up, or hold the alternate key (Shift) to climb down.
+
+### Moats and the drawbridge
+
+The White Hilt hoe digs moats round the fort: a dry V-ditch, a wet moat with water or a ditch with sharp stakes, with causeways left in front of the gates. See [Moats](build-tools.md#moats).
+
+Place the drawbridge with its posts at the inner edge of the moat and the deck reaching across. It follows the nearest gate within 12 m: when the gate opens the bridge is lowered, and when the gate closes, by hand, on its own or when enemies come near (see [self-closing doors](base.md)), the bridge is raised. It can also be opened and closed by hand.
 
 ## Config
 
@@ -28,4 +35,5 @@ Section `[Defences]` (admin only, synced from the server; it was `[Defenses]` be
 
 | Setting | Default | What it does |
 |---|---|---|
-| `HealthMultiplier` | 1 | Multiplier on the health of the rampart, gatehouse, watchtowers and cheval de frise. Placed pieces keep their damage; a repair brings them to the new full health |
+| `HealthMultiplier` | 1 | Multiplier on the health of the rampart, gatehouse, watchtowers, cheval de frise and drawbridge. Placed pieces keep their damage; a repair brings them to the new full health |
+| `DrawbridgeLinkRange` | 12 | A drawbridge follows the nearest gate within this many metres. 0 turns it off |
