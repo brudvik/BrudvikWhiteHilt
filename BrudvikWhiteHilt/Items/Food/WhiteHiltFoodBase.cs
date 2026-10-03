@@ -89,6 +89,11 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// </summary>
     protected virtual string BuffTooltip => null;
 
+    /// <summary>
+    /// Whether the food is cooked in the Stone Pot. Cured foods come from the drying rack or the fermenter instead.
+    /// </summary>
+    protected virtual bool HasRecipe => true;
+
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Start;
 
@@ -142,11 +147,14 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
             ItemConfig itemConfig = new()
             {
                 Name = Translations.Token(NameKey),
-                Description = Translations.Token($"{NameKey}_description"),
-                CraftingStation = StonePot.PrefabName,
-                MinStationLevel = MinStationLevel,
-                Requirements = Requirements
+                Description = Translations.Token($"{NameKey}_description")
             };
+            if (HasRecipe)
+            {
+                itemConfig.CraftingStation = StonePot.PrefabName;
+                itemConfig.MinStationLevel = MinStationLevel;
+                itemConfig.Requirements = Requirements;
+            }
 
             CustomItem food = new(BaseName, CopyFrom, itemConfig);
             shared = food.ItemDrop.m_itemData.m_shared;
@@ -168,6 +176,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
 
             ApplyConfig();
             instance.AddItem(food);
+            AddConversions(instance);
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
         }
@@ -203,6 +212,14 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// </summary>
     /// <param name="effect">The food's buff, empty apart from its name, icon and tooltip.</param>
     protected virtual void ConfigureBuff(SE_Stats effect)
+    {
+    }
+
+    /// <summary>
+    /// Adds the conversions that make a food without a recipe, e.g. on the drying rack.
+    /// </summary>
+    /// <param name="items">The item manager.</param>
+    protected virtual void AddConversions(ItemManager items)
     {
     }
 

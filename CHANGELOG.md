@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.64.0 - 2026-10-03
+
+### Added
+- **Drying Rack** (Hammer, Workbench): a rack of poles where meat and fish hang in the wind for game days until they are cured. It needs no fire and never burns anything; the production timers show the time left
+- **Cured Ham** from a **Seasoned Ham** (Stone Pot: Raw Meat, Wild Garlic, Thistle) after 3 days on the rack: 46 health and 24 stamina for 60 minutes, frost damage taken a quarter less
+- **Cured Sausage** from a **Raw Sausage** (Stone Pot: Raw Meat, Deer Meat, Thistle) after 2 days: 28 health and 46 stamina for 60 minutes, +40 carry weight
+- **Stockfish** from a Coral Cod after 2 days: 30 health and 50 stamina for 75 minutes, stamina regenerates 20% faster
+- **Rakfisk**: a **Rakfisk Tub** (Stone Pot: Pike, Honey) ferments into 4 in the fermenter: 40 health and 34 stamina for 50 minutes, poison damage taken halved (`[Curing]`, `[Food.<Name>]`)
+
 ## v0.63.0 - 2026-10-03
 
 ### Added

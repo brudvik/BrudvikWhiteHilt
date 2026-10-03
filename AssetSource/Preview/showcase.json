@@ -12,6 +12,7 @@
     { "image": "large_watchtower", "piece": "vakttarn_stor", "view": { "yaw": 140, "pitch": 15 } },
     { "image": "cheval_de_frise", "piece": "spansk_rytter", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "drawbridge", "piece": "vindebro", "view": { "yaw": 140, "pitch": 25 } },
+    { "image": "drying_rack", "piece": "hjell", "view": { "yaw": 150, "pitch": 15 } },
     { "image": "fort_overview", "piece": "oversikt", "view": { "yaw": 140, "pitch": 35 } },
 
     { "image": "cartographers_desk", "piece": "kartmakerbenk", "view": { "yaw": 140, "pitch": 30 } },

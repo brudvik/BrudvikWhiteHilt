@@ -412,6 +412,23 @@ def views(*items):
 
 BRIDGE_LENGTH = 9.0
 BRIDGE_TOP = 0.3
+RACK_TOP = 2.1  # ridge pole of the drying rack; the mod hangs its eight slots 0.35 m below it
+
+
+def drying_rack():
+    """A drying rack (hjell): two trestles of crossed poles at x = +-1.8 carrying a ridge pole RACK_TOP up, and two rails."""
+    rng = random.Random("hjell")
+    top = RACK_TOP
+    parts = []
+    for x in (-1.8, 1.8):
+        for z in (-0.8, 0.8):
+            lean = rng.uniform(-0.03, 0.03)
+            parts.append(log((x + lean, -0.2, z), (x - lean, top + 0.35, -z * 0.35), 0.07))
+    parts.append(log((-2.2, top + 0.02, 0), (2.2, top + 0.02, 0), 0.08))
+    for z in (-0.38, 0.38):
+        parts.append(log((-2.0, 0.9, z), (2.0, 0.9, z), 0.05))
+    colliders = [box((x, 1.1, 0), (0.3, 2.6, 1.7)) for x in (-1.8, 1.8)] + [box((0, top, 0), (4.4, 0.2, 0.2))]
+    return parts, colliders, []
 
 
 def drawbridge():
@@ -616,6 +633,8 @@ def main():
     bridge_parts, bridge_colliders, bridge_snaps, bridge_groups = drawbridge()
     pieces.append(defence("vindebro", "wood_gate", bridge_parts, bridge_colliders, bridge_snaps, groups=bridge_groups, keep=["door"],
                           views=views(("outside", 160, 25), ("side", 90, 10), ("top", 180, 65))))
+    pieces.append(defence("hjell", "piece_cookingstation_iron", *drying_rack(), keep=[f"slot{i}" for i in range(5)],
+                          views=views(("front", 160, 15), ("side", 90, 10), ("top", 180, 65))))
     pieces.append({"name": "oversikt", "parts": [
         piece("skanseport"),
         piece("skansevegg", (-6.4, 0, 0)),

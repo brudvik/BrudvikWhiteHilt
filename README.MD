@@ -105,7 +105,7 @@ A free build camera, precise rotation and nudging, undo, area repair, photos and
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
 
-Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales.
+Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales, and cured ham, sausage, stockfish and rakfisk from the drying rack and the fermenter.
 
 ### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
 

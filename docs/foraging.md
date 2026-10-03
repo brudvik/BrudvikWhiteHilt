@@ -6,6 +6,8 @@
 
 New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, the **Mountains** and the **Plains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
 
+Some food is cured instead of cooked: hams, sausages and coral cod hang on a **Drying Rack** for game days until they are cured, and pike in a **Rakfisk Tub** ferments into rakfisk in the vanilla fermenter. Cured food lasts an hour or more and gives a buff for the first half. The rack needs no fire, never burns anything and shows its time left with the production timers.
+
 The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
@@ -19,7 +21,7 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 - a vanilla wild **Barley** on the Plains has a 20% chance to also give Caraway, a 15% chance to give Ergot and a 10% chance to give Henbane
 - a vanilla wild **Onion** in the Mountains has a 25% chance to also give Mountain Sorrel, a 20% chance each to give Juniper Berries and Angelica, and a 15% chance to give Iceland Moss
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140"> <img src="images/yarrow.png" alt="Yarrow" title="Yarrow" height="140"> <img src="images/caraway.png" alt="Caraway" title="Caraway" height="140"> <img src="images/woad.png" alt="Woad" title="Woad" height="140"> <img src="images/madder.png" alt="Madder" title="Madder" height="140"> <img src="images/henbane.png" alt="Henbane" title="Henbane" height="140"> <img src="images/ergot.png" alt="Ergot" title="Ergot" height="140"> <img src="images/wild_hops.png" alt="Hop Cones" title="Hop Cones" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/drying_rack.png" alt="Drying Rack" title="Drying Rack" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140"> <img src="images/yarrow.png" alt="Yarrow" title="Yarrow" height="140"> <img src="images/caraway.png" alt="Caraway" title="Caraway" height="140"> <img src="images/woad.png" alt="Woad" title="Woad" height="140"> <img src="images/madder.png" alt="Madder" title="Madder" height="140"> <img src="images/henbane.png" alt="Henbane" title="Henbane" height="140"> <img src="images/ergot.png" alt="Ergot" title="Ergot" height="140"> <img src="images/wild_hops.png" alt="Hop Cones" title="Hop Cones" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -78,6 +80,14 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 | **Smoked Grouper with Yarrow** | 66 health, 34 stamina, 45 min. Buff: blocking uses 25% less stamina | Stone Pot level 3 | Grouper ×1, Yarrow ×2, Juniper Berries ×1 |
 | **Octopus Stew** | Ocean: 50 health, 40 stamina, 35 min | Stone Pot level 2 | Octopus ×1, Turnip ×2, Wild Garlic ×1 |
 | **Kraken Feast** | Ocean: 70 health, 40 stamina, 40 min. Buff: health and stamina regenerate 25% faster | Stone Pot level 3 | Kraken Tentacle ×1, Kraken Ink ×1, Turnip ×2, Roseroot ×1 |
+| **Drying Rack** | A rack of poles where meat and fish hang in the wind for days to cure. Needs no fire; eight places | Hammer (Workbench) | Wood ×10, Core Wood ×4, Leather Scraps ×2 |
+| **Seasoned Ham** | Black Forest: a ham ready to cure | Stone Pot | Raw Meat ×2, Wild Garlic ×1, Thistle ×1 |
+| **Raw Sausage** | Black Forest: a sausage ready to cure | Stone Pot | Raw Meat ×1, Deer Meat ×1, Thistle ×1 |
+| **Cured Ham** | Black Forest: 46 health, 24 stamina, 60 min. Buff: frost damage taken is a quarter less | Drying Rack, 3 game days | Seasoned Ham |
+| **Cured Sausage** | Black Forest: 28 health, 46 stamina, 60 min. Buff: +40 carry weight | Drying Rack, 2 game days | Raw Sausage |
+| **Stockfish** | Ocean: 30 health, 50 stamina, 75 min. Buff: stamina regenerates 20% faster | Drying Rack, 2 game days | Coral Cod |
+| **Rakfisk Tub** | Black Forest: pike laid down to ferment | Stone Pot | Pike ×2, Honey ×1 |
+| **Rakfisk** | Black Forest: 40 health, 34 stamina, 50 min. Buff: poison damage taken is halved. A tub ferments into 4 | Fermenter | Rakfisk Tub |
 | **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |
 | **Roseroot Mead** | Stamina regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Roseroot ×5, Crowberries ×5 |
 | **Cranberry Mead** | Poison resistance, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Cranberries ×10, Lingonberries ×3 |
@@ -94,6 +104,17 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 ## Config
 
 Admin only, synced from the server. The spawn, drop and Stone Pot food settings are listed in [Progression](progression.md).
+
+Section `[Curing]`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `HamDays` | 3 | Game days a seasoned ham hangs on the drying rack (a game day is 30 minutes) |
+| `SausageDays` | 2 | Game days a raw sausage hangs |
+| `StockfishDays` | 2 | Game days a coral cod hangs |
+| `RakfiskYield` | 4 | Rakfisk from one tub in the fermenter; takes effect after a restart |
+
+The cured foods have their own `[Food.<Name>]` sections like the Stone Pot dishes.
 
 Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`):
 

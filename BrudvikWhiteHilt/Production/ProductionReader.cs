@@ -313,7 +313,7 @@ public static class ProductionReader
             status.Lines.Add(Colored(Text("$whitehilt_prod_burnt", burnt), Red));
         }
 
-        if (station.m_useFuel && !eternal && fuel > 0f && station.m_secPerFuel > 0)
+        if (station.m_useFuel && !eternal && fuel > 0f && station.m_secPerFuel > 0 && station.m_fuelItem != null)
         {
             double lasts = fuel * station.m_secPerFuel / speed;
             bool runsShort = raw > 0 && lasts < lastRaw;
