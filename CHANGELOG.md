@@ -14,6 +14,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Peat**: stacks of cut peat on the drier banks of the Swamp. Use a brick from the hotbar on a wood fire (campfire, hearth, bonfire) and it burns like two pieces of wood (`FuelValue`); the Charcoal Kiln turns it into Coal (`[Foraging.Peat]`)
 - **Bog Fish Stew** (Stone Pot): Trollfish, Cattail and Wild Garlic, 50 health and 30 stamina for 32 minutes (`[Food.BogFishStew]`)
 - **Cattail Porridge** (Stone Pot): Cattail, Cranberries and Honey, 22 health and 52 stamina for 32 minutes (`[Food.CattailPorridge]`)
+- **Meadowsweet Mead** (Cauldron, then Fermenter): Honey, Meadowsweet and Cranberries; 15% more armor and 25% less stagger for 10 minutes (`[Meads.MeadowsweetMead]`)
 
 ## v0.57.2 - 2026-10-03
 

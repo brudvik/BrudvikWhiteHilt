@@ -183,6 +183,7 @@
     <Compile Include="Items\Meads\CranberryMead\CranberryMead.cs" />
     <Compile Include="Items\Meads\CrowberryWine\CrowberryWine.cs" />
     <Compile Include="Items\Meads\LingonberryMead\LingonberryMead.cs" />
+    <Compile Include="Items\Meads\MeadowsweetMead\MeadowsweetMead.cs" />
     <Compile Include="Items\Meads\RoserootMead\RoserootMead.cs" />
     <Compile Include="Items\Meads\SweetGaleAle\SweetGaleAle.cs" />
     <Compile Include="Items\Meads\WhiteHiltMeadBase.cs" />
