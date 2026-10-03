@@ -11,6 +11,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Wolf Lichen**: bright yellow tufts on dead branches in the Mountains; the branch stays and the lichen grows back. Wolves drop it 10% of the time. A sulphur-yellow dye and a bane for beasts (`[Foraging.WolfLichen]`)
 - **Mountain Sorrel**: round sour leaves and red seed spikes on damp Mountain ledges, or from wild onions picked there (25%) (`[Foraging.MountainSorrel]`)
 - **Rock Lichen**: grey crusts on Mountain stones; the stone stays and the crust grows back. Stone Golems drop it half the time. The purple dye the paint bench lacked (`[Foraging.RockLichen]`)
+- **Moss Porridge** (Stone Pot level 2): Iceland Moss, Crowberries and Honey, 30 health and 56 stamina for 35 minutes (`[Food.MossPorridge]`)
 
 ## v0.58.0 - 2026-10-03
 

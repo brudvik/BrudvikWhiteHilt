@@ -55,6 +55,7 @@ The plants spawn in zones that have not been generated yet. In areas you have al
 | **Cattail Porridge** | Swamp: 22 health, 52 stamina, 32 min | Stone Pot | Cattail ×3, Cranberries ×2, Honey ×1 |
 | **Mountain Stew** | Mountains: 52 health, 34 stamina, 35 min | Stone Pot level 2 | Crowberries ×3, Porcini ×1, Wolf Meat ×1 |
 | **Roseroot Broth** | Mountains: 30 health, 55 stamina, 35 min | Stone Pot level 2 | Roseroot ×3, Lingonberries ×1, Onion ×1 |
+| **Moss Porridge** | Mountains: 30 health, 56 stamina, 35 min | Stone Pot level 2 | Iceland Moss ×3, Crowberries ×2, Honey ×1 |
 | **Smoked Fish** | 56 health, 32 stamina, 40 min. Buff: swim 50% faster, swimming uses 50% less stamina | Stone Pot level 3 | Perch ×1, Sweet Gale ×1, Lingonberries ×2 |
 | **Smoked Wolf Jerky** | 34 health, 58 stamina, 40 min. Buff: running and jumping use 20% less stamina | Stone Pot level 3 | Wolf Meat ×1, Wild Garlic ×1, Roseroot ×1 |
 | **Octopus Stew** | Ocean: 50 health, 40 stamina, 35 min | Stone Pot level 2 | Octopus ×1, Turnip ×2, Wild Garlic ×1 |

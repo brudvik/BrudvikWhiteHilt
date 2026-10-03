@@ -153,6 +153,7 @@
     <Compile Include="Items\Food\CranberrySoup\CranberrySoup.cs" />
     <Compile Include="Items\Food\LingonberrySoup\LingonberrySoup.cs" />
     <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
+    <Compile Include="Items\Food\MossPorridge\MossPorridge.cs" />
     <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
     <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
     <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
