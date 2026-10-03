@@ -233,7 +233,7 @@ public static class MonsterSettings
         DragonSpawnSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnSeconds", 300f, "Seconds between two spawn checks for Desert Dragons.",
             new AcceptableValueRange<float>(10f, 3600f));
         DragonSpawnMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnMax", 1, "Desert Dragons around a player at most.", new AcceptableValueRange<int>(1, 10));
-        DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 500f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
+        DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 800f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
         DragonFireDamage = WhiteHiltConfig.BindAdminOnly(DragonSection, "FireDamage", 15f, "Fire damage of each flame in its breath; fire also sets you burning. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 1000f));
         DragonFlames = WhiteHiltConfig.BindAdminOnly(DragonSection, "Flames", 12, "Flames in one breath. Applies after a restart.", new AcceptableValueRange<int>(1, 30));

@@ -46,7 +46,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 | **Black Abomination** | Swamp | Bonemass | 800 × 6.75 |
 | **Black Stone Golem** | Mountain | Moder | 800 × 6.75 |
 | **Black Fuling Berserker** | Plains | Yagluth | 800 × 6.75 |
-| **Black Dragon** | Mountain and Plains, flying ([Desert Dragon](monsters.md#desert-dragons)) | Moder | 500 × 6.75 |
+| **Black Dragon** | Mountain and Plains, flying ([Desert Dragon](monsters.md#desert-dragons)) | Moder | 800 × 6.75 |
 | **Black Seeker Soldier** | Mistlands | The Queen | 1500 × 6.75 |
 | **Black Morgen** | Ashlands | Fader | 1600 × 6.75 |
 | **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |

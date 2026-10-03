@@ -65,7 +65,7 @@ In the dark hour and under a blood moon, its black cousin, the **Black Dragon**,
 | **Lindorm** | 700 | Bite, 75 pierce | Fire |
 | **Giant Spider** | 120 | Bite, 30 pierce + 20 poison, webs you | Blunt, fire |
 | **Spider Nest** | 300 | — | — |
-| **Desert Dragon** | 500 | Fire breath, 12 flames of 15 fire | Frost |
+| **Desert Dragon** | 800 | Fire breath, 12 flames of 15 fire | Frost |
 
 The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is immune to spirit damage. Spiders ignore chop and pickaxe damage and are immune to poison.
 
@@ -145,7 +145,7 @@ Section `[Desert Dragon]`:
 | `SpawnChance` | 10 | Percent chance per spawn check; 0 = none |
 | `SpawnSeconds` | 300 | Seconds between two spawn checks |
 | `SpawnMax` | 1 | Desert Dragons around a player at most |
-| `Health` | 500 | Health (after a restart) |
+| `Health` | 800 | Health (after a restart); the old default 500 migrates once in 0.72.3 |
 | `FireDamage` / `Flames` | 15 / 12 | Fire damage of each flame, and flames in one breath (after a restart) |
 | `BreathSeconds` | 8 | Seconds between two breaths at most (after a restart) |
 | `BreathRange` | 25 | Metres it breathes fire from (after a restart) |
