@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.71.0";
+    public const string PluginVersion = "0.72.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -135,6 +135,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Roofing.RoofMaterials.Initialize();
         Pieces.Roofs.RoofCatalog.Initialize();
         chests = Chests.ChestModule.Start();
+        Chests.Collection.CollectionSettings.Initialize();
+        Chests.Collection.CollectionPostComponent.Module = chests;
         Chests.ChestCensus.RegisterCommand();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.

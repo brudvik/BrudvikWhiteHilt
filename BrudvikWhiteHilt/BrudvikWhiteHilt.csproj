@@ -67,6 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chests\Collection\CollectionSettings.cs" />
+    <Compile Include="Chests\Collection\CollectionChestLink.cs" />
+    <Compile Include="Chests\Collection\CollectionPostComponent.cs" />
+    <Compile Include="Pieces\Storage\CollectionPost.cs" />
+    <Compile Include="Patches\Chests\CollectionPostPatches.cs" />
     <Compile Include="Extensions\Texture2dExtension.cs" />
     <Compile Include="Helpers\AssetUtilsExtended.cs" />
     <Compile Include="Helpers\FishTable.cs" />

@@ -181,6 +181,64 @@ namespace BrudvikWhiteHilt.Chests
             return required > 0;
         }
 
+        internal bool IsCollectionChest(Container container) => !IsDestroyed(container) && FindPiece(container) != null;
+
+        internal int CollectionPriority(Container container, ItemDrop.ItemData item)
+        {
+            if (!chestSupply.IsReady || IsDestroyed(container) || item.m_dropPrefab == null) return -1;
+            var piece = FindPiece(container);
+            if (piece == null) return -1;
+            var category = piece.CustomPieceConfig.ItemCategory;
+            if (category == ChestCategory.None) return 1;
+            return itemCatalog.Contains(category, item.m_dropPrefab.name) ? 0 : -1;
+        }
+
+        internal int DepositCollected(Container container, ItemDrop.ItemData source)
+        {
+            if (CollectionPriority(container, source) < 0 || container.m_nview == null || !container.m_nview.IsValid()
+                || !container.m_nview.IsOwner() || container.IsInUse()) return 0;
+
+            var piece = FindPiece(container);
+            var category = piece.CustomPieceConfig.ItemCategory;
+            container.Load();
+            RegisterChest(container);
+            container.Restock(category, chestSupply, settings.SortContents.Value);
+            var inventory = container.GetInventory();
+            if (chestSupply.AbsorbsDeposit(category, inventory, source)) return source.m_stack;
+
+            var incoming = source.Clone();
+            var amount = incoming.m_stack;
+            if (ChestSupply.IsPlain(incoming) && ChestSupply.IsStackable(incoming.m_shared))
+            {
+                foreach (var stored in new List<ItemDrop.ItemData>(inventory.GetAllItems()))
+                {
+                    if (incoming.m_stack <= 0) break;
+                    if (!ChestSupply.IsPlain(stored) || !stored.IsSameType(incoming) || stored.m_quality != incoming.m_quality
+                        || stored.m_variant != incoming.m_variant || stored.m_worldLevel != incoming.m_worldLevel
+                        || stored.m_crafterID != incoming.m_crafterID || stored.m_crafterName != incoming.m_crafterName
+                        || stored.m_durability != incoming.m_durability || stored.m_cheated != incoming.m_cheated) continue;
+                    var space = stored.m_shared.m_maxStackSize - stored.m_stack;
+                    if (space > 0) inventory.AddItem(incoming, Math.Min(space, incoming.m_stack), stored.m_gridPos.x, stored.m_gridPos.y);
+                }
+            }
+
+            while (incoming.m_stack > 0)
+            {
+                var slot = inventory.FindEmptySlot(true);
+                if (slot.x < 0) break;
+                inventory.AddItem(incoming, Math.Min(incoming.m_stack, incoming.m_shared.m_maxStackSize), slot.x, slot.y);
+            }
+
+            var accepted = amount - incoming.m_stack;
+            if (accepted > 0)
+            {
+                container.Restock(category, chestSupply, settings.SortContents.Value);
+                container.Save();
+                ReportStock(container, category);
+            }
+            return accepted;
+        }
+
         private void HandleSettingsChanged()
         {
             itemCatalog.Invalidate();

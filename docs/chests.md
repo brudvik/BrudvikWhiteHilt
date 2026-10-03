@@ -39,6 +39,40 @@ The contents of every chest are worked out when a world loads. Every item in the
 
 Items that cannot be obtained in normal play (creature attacks, test items, unused variants) are left out. `DumpItemLists` writes every chest's list to the BepInEx log.
 
+### Collection Post
+
+<img src="images/collection_post.png" alt="Collection Post" title="Collection Post" height="140">
+
+A carved post with a wicker basket, built with the **Hammer** in **Chests**. It is a workbench extension and adds one station level; it collects only while a workbench stands within its connection distance. **Use (E)** pauses or resumes each post, and the collection radius is shown while placing it. An active post casts a soft golden light.
+
+| Piece | Station | Requirements |
+|-------|---------|--------------|
+| Collection Post | Workbench | Fine Wood ×10, Bronze ×5, Surtling Core ×2 (recoverable) |
+
+- Collects loose drops from trees, mining, creatures and production, not plants still growing, grave contents or items inside other containers or machines. Living fish and items stuck in tar are left alone.
+- Both the collection radius and the receiving-chest radius default to **80 metres**, measured from the post; each is independently configurable from 10 to 200 metres.
+- Matching category chests are tried first, nearest to the drop first. Other matching chests follow, with the **Everlasting Chest** as the fallback. Include/Exclude category settings apply. Ordinary chests, carts and ship holds are not receivers.
+- When only some of a stack fits, only that amount moves. Full chests leave the remainder on the ground. Items already unlimited are absorbed under the existing chest rules, including when no slots are free.
+- Quality, fish level, variant, durability, crafter and custom data are kept. Starred and custom-data items are stored separately and never absorbed.
+- Player-dropped items are left alone by default. New player drops are marked in world data, so that protection survives reloading; drops made before this feature cannot be identified after a reload.
+- Only accessible, closed chests are used, and wards are respected. Overlapping posts assign each drop to the nearest active post. The nearest loaded player processes the post and requests ownership before transferring items.
+- Collection only works in **loaded areas while a player is nearby**, including on a dedicated server with clients connected. Increasing the radius does not load distant parts of a base or keep collecting while everyone is away.
+- Collection does not discover materials or recipes for players; use **Learn all** in the chest as before. Linear, Discovered and Full mode retain their existing unlock/restocking rules.
+
+Server settings are in **Chests.Collection**. The build recipe and progression tier use the usual **Recipes** and **Tiers** entry `piece_whitehilt_collectionpost` (Black Forest by default).
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enabled | On | Enable collection by placed posts |
+| Radius | 80 m | Collection radius (10–200 m) |
+| ChestRadius | 80 m | Receiving-chest radius (10–200 m) |
+| IntervalSeconds | 2 | Seconds between collection rounds (0.5–60) |
+| StacksPerRound | 20 | Maximum loose stacks processed per post per round (1–200) |
+| ScanLimit | 200 | Maximum loaded drops examined per round (20–2000); larger lists are scanned over successive rounds |
+| StationDistance | 5 m | Maximum workbench connection distance (1–30 m) |
+| CollectPlayerDrops | Off | Also gather deliberately dropped items |
+| OwnershipRetrySeconds | 5 | Retry interval for unanswered chest ownership requests (1–60 seconds) |
+
 ### Restocking
 
 - Every unlimited item takes one full stack. When one recipe or build piece needs more than a stack (more than 50 wood, say), the chest keeps enough full stacks for it.

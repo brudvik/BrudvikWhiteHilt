@@ -1,0 +1,12 @@
+{
+  "name": "collectionpost",
+  "base": { "mesh": "muninpost", "height": 2.2 },
+  "props": [
+    { "mesh": "dogbed", "base": [0.0, 0.0, 0.29545455], "height": 0.07272727, "yaw": 0 }
+  ],
+  "views": [
+    { "label": "front", "yaw": 90, "pitch": 15 },
+    { "label": "angle", "yaw": 140, "pitch": 25 },
+    { "label": "top", "yaw": 90, "pitch": 65 }
+  ]
+}

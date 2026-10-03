@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.72.0 - 2026-10-03
+
+### Added
+- **Collection Post**: a carved workbench extension with a wicker basket gathers loose items into matching White Hilt category chests, with the Everlasting Chest as a fallback. Collection and chest radii are independently server-configurable (80 metres each by default, 10–200 metres). Use the post to pause/resume it; placement shows the collection radius. Full chests leave items on the ground, partial deposits keep their remainder, and starred/custom-data items retain their data. Player drops are excluded by default, with new drops marked across world reloads. Only loaded areas and accessible, closed chests are used. Server settings control interval, batch/search limits, connection distance, player drops and ownership retries. Reuses the existing carved post and wicker basket models.
+
 ## v0.71.0 - 2026-10-03
 
 ### Added
