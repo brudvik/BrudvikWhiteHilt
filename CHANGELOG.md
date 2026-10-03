@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.67.0 - 2026-10-03
+
+### Added
+- **Saga** (F8): every character keeps a saga of its deeds, each with its day: bosses, black beasts and great creatures slain near it, treasures dug up near it, first steps into a biome and skills reaching 25, 50, 75 and 100. Deeds give renown; every 20 renown is a rank, up to 10, and each rank gives +10 carry weight and +3 maximum stamina (`[Saga]`). See [Saga](docs/saga.md)
+
 ## v0.66.0 - 2026-10-03
 
 ### Added

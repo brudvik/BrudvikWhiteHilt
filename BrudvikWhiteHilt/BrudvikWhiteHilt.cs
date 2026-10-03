@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.66.0";
+    public const string PluginVersion = "0.67.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -88,6 +88,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Moats.MoatSettings.Initialize();
         Items.Curing.CuringSettings.Initialize();
         Textiles.TextileSettings.Initialize();
+        Saga.SagaSettings.Initialize();
         Building.Doors.AutoDoorSettings.Initialize();
         Planting.PlantingSettings.Initialize();
         Backpack.BackpackSettings.Initialize();
@@ -164,6 +165,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         Settings.ConfigButton.EnsureCreated();
         Settings.ConfigWindow.CheckKey();
+        Saga.SagaPanel.CheckKey();
         chests?.Update();
         if (refreshPending)
         {

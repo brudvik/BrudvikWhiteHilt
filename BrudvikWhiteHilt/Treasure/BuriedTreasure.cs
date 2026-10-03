@@ -248,6 +248,7 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         chest.GetComponent<ZNetView>()?.GetZDO()?.Set(IdKey, id);
         TreasureRegistry.UnearthEffect?.Create(transform.position, Quaternion.identity);
         TreasureService.AnnounceFound(id);
+        global::BrudvikWhiteHilt.Saga.SagaLog.Announce(global::BrudvikWhiteHilt.Saga.SagaKind.Treasure, "$whitehilt_treasure_chest", transform.position);
         ZNetScene.instance.Destroy(gameObject);
     }
 

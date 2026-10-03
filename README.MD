@@ -127,6 +127,10 @@ A Net Winch with a fish barrel on the shore and Shore Nets set out in the water,
 
 Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blocking, husbandry and exploration, a new Foraging skill, food and crops with stars, the Compost Bin and configurable skill loss on death.
 
+### 📜 [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md)
+
+Each character's saga of its deeds, from slain bosses and black beasts to treasures and new lands, with renown that gives carry weight and stamina.
+
 ### 🐕 [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog House" height="120">

@@ -599,6 +599,10 @@
     <Compile Include="Textiles\Dyeing.cs" />
     <Compile Include="Textiles\TextileSettings.cs" />
     <Compile Include="Patches\Textiles\TextilePatches.cs" />
+    <Compile Include="Saga\SagaLog.cs" />
+    <Compile Include="Saga\SagaPanel.cs" />
+    <Compile Include="Saga\SagaSettings.cs" />
+    <Compile Include="Patches\Saga\SagaPatches.cs" />
     <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
     <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />
