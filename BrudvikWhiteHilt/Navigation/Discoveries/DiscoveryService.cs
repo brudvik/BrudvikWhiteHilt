@@ -224,6 +224,7 @@ public class DiscoveryService : MonoBehaviour
 
             cluster.Sum += find.Position;
             cluster.Count++;
+            cluster.Members.Add(find);
             cluster.Pickable |= find.Pickable;
             cluster.Ripe += find.Ripe ? 1 : 0;
         }
@@ -233,11 +234,37 @@ public class DiscoveryService : MonoBehaviour
             entries.Add(new DiscoveryEntry
             {
                 Kind = pair.Key.Kind,
-                Position = pair.Value.Sum / pair.Value.Count,
+                Position = MarkerPosition(pair.Value),
                 Count = pair.Value.Count,
                 Ripe = pair.Value.Pickable ? pair.Value.Ripe : -1
             });
         }
+    }
+
+    // The middle of a square's finds can lie between two groups with nothing there, so the marker goes on the find
+    // nearest to it, an unpicked one where the square has any, and pinging it leads to something to pick.
+    private static Vector3 MarkerPosition(Cluster cluster)
+    {
+        Vector3 middle = cluster.Sum / cluster.Count;
+        bool anyRipe = cluster.Pickable && cluster.Ripe > 0;
+        Vector3 best = middle;
+        float bestDistance = float.MaxValue;
+        foreach (RawFind member in cluster.Members)
+        {
+            if (anyRipe && !member.Ripe)
+            {
+                continue;
+            }
+
+            float distance = Utils.DistanceXZ(member.Position, middle);
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                best = member.Position;
+            }
+        }
+
+        return best;
     }
 
     private void AddLocations(List<DiscoveryEntry> entries, bool onlyTable)
@@ -575,6 +602,7 @@ public class DiscoveryService : MonoBehaviour
 
     private sealed class Cluster
     {
+        public readonly List<RawFind> Members = new();
         public Vector3 Sum;
         public int Count;
         public int Ripe;

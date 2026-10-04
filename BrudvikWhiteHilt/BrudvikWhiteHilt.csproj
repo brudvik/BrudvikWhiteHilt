@@ -556,6 +556,7 @@
     <Compile Include="Monsters\MonsterRegistry.cs" />
     <Compile Include="Monsters\MonsterSettings.cs" />
     <Compile Include="OldLand\OldLandFiller.cs" />
+    <Compile Include="OldLand\OldLandGrounding.cs" />
     <Compile Include="OldLand\OldLandSettings.cs" />
     <Compile Include="Patches\OldLand\OldLandPatches.cs" />
     <Compile Include="Patches\Kraken\KrakenPatches.cs" />

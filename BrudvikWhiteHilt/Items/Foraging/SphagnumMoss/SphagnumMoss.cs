@@ -57,6 +57,6 @@ public class SphagnumMoss : ForageableBase
     /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
-        ReplacePlantMesh(visualRoot, "sphagnum", 0.1f);
+        ReplacePlantMesh(visualRoot, "sphagnum", 0.2f);
     }
 }

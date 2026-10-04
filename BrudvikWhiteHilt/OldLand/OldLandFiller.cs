@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.OldLand;
 /// Runs on the server's <see cref="Game"/> object. The zone generator only places vegetation in land it generates, so
 /// content added as vegetation (spider nests, slate outcrops, forageables) is missing from land generated before it came.
 /// Once per world and kind, this gives that land its share: each zone gets the generator's own roll and placement rules,
-/// with heights from the world generator, on free spots away from anything built, unless the zone already has the kind.
+/// with the heights of the terrain the game builds there, on free spots away from anything built, unless the zone already
+/// has the kind. <see cref="OldLandGrounding"/> puts objects placed before those heights were right back on the ground.
 /// </summary>
 public class OldLandFiller : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class OldLandFiller : MonoBehaviour
         {
             return;
         }
+
+        OldLandGrounding grounding = vegetation.m_prefab.GetComponent<OldLandGrounding>();
+        if (grounding == null)
+        {
+            grounding = vegetation.m_prefab.AddComponent<OldLandGrounding>();
+        }
+
+        grounding.GroundOffset = vegetation.m_groundOffset;
 
         string name = vegetation.m_prefab.name;
         HashSet<int> hashes = new(alsoCounts.Select(other => other.GetStableHashCode())) { name.GetStableHashCode() };
@@ -282,15 +291,15 @@ public class OldLandFiller : MonoBehaviour
             return false;
         }
 
-        point.y = world.GetHeight(point.x, point.z);
+        point.y = TerrainHeight(point.x, point.z);
         float altitude = point.y - ZoneSystem.instance.m_waterLevel;
         if (altitude < vegetation.m_minAltitude || altitude > vegetation.m_maxAltitude)
         {
             return false;
         }
 
-        normal = new Vector3(world.GetHeight(point.x - 1f, point.z) - world.GetHeight(point.x + 1f, point.z), 2f,
-            world.GetHeight(point.x, point.z - 1f) - world.GetHeight(point.x, point.z + 1f)).normalized;
+        normal = new Vector3(TerrainHeight(point.x - 1f, point.z) - TerrainHeight(point.x + 1f, point.z), 2f,
+            TerrainHeight(point.x, point.z - 1f) - TerrainHeight(point.x, point.z + 1f)).normalized;
         if (normal.y < minNormal || normal.y > maxNormal)
         {
             return false;
@@ -306,6 +315,52 @@ public class OldLandFiller : MonoBehaviour
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// The height of the terrain the game builds at a point. Its heightmap blends the heights of the zone's four corner
+    /// biomes over the whole zone (HeightmapBuilder), so near a biome border the ground lies well away from the height of
+    /// the biome at the point: metres higher in a Swamp beside a Meadow or Black Forest, burying what was placed there.
+    /// </summary>
+    /// <param name="x">World x.</param>
+    /// <param name="z">World z.</param>
+    /// <returns>The height, before any terrain changes.</returns>
+    internal static float TerrainHeight(float x, float z)
+    {
+        WorldGenerator world = WorldGenerator.instance;
+        float size = ZoneSystem.instance.m_zoneSize;
+        int vertices = Mathf.RoundToInt(size);
+        Vector3 corner = ZoneSystem.GetZonePos(ZoneSystem.GetZone(new Vector3(x, 0f, z))) - new Vector3(size / 2f, 0f, size / 2f);
+        Heightmap.Biome b0 = world.GetBiome(corner.x, corner.z);
+        Heightmap.Biome b1 = world.GetBiome(corner.x + size, corner.z);
+        Heightmap.Biome b2 = world.GetBiome(corner.x, corner.z + size);
+        Heightmap.Biome b3 = world.GetBiome(corner.x + size, corner.z + size);
+        bool single = b0 == b1 && b0 == b2 && b0 == b3;
+
+        float Vertex(int vx, int vz)
+        {
+            float wx = corner.x + vx;
+            float wz = corner.z + vz;
+            if (single)
+            {
+                return world.GetBiomeHeight(b0, wx, wz, out _);
+            }
+
+            float tx = Mathf.SmoothStep(0f, 1f, (float)vx / vertices);
+            float tz = Mathf.SmoothStep(0f, 1f, (float)vz / vertices);
+            float bottom = Mathf.Lerp(world.GetBiomeHeight(b0, wx, wz, out _), world.GetBiomeHeight(b1, wx, wz, out _), tx);
+            float top = Mathf.Lerp(world.GetBiomeHeight(b2, wx, wz, out _), world.GetBiomeHeight(b3, wx, wz, out _), tx);
+            return Mathf.Lerp(bottom, top, tz);
+        }
+
+        // The terrain mesh has a vertex every metre; between them the ground is close to the bilinear blend.
+        float fx = x - corner.x;
+        float fz = z - corner.z;
+        int ix = Mathf.Clamp(Mathf.FloorToInt(fx), 0, vertices - 1);
+        int iz = Mathf.Clamp(Mathf.FloorToInt(fz), 0, vertices - 1);
+        float sx = Mathf.Clamp01(fx - ix);
+        float sz = Mathf.Clamp01(fz - iz);
+        return Mathf.Lerp(Mathf.Lerp(Vertex(ix, iz), Vertex(ix + 1, iz), sx), Mathf.Lerp(Vertex(ix, iz + 1), Vertex(ix + 1, iz + 1), sx), sz);
     }
 
     // The unbuilt objects around the zone, which block spots, and the prefabs the zone itself has.

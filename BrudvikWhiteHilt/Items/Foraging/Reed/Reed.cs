@@ -38,7 +38,7 @@ public class Reed : ForageableBase
         GroupSizeMin = 3,
         GroupSizeMax = 6,
         GroupRadius = 3f,
-        MinAltitude = -0.8f,
+        MinAltitude = -0.5f,
         MaxAltitude = 0.8f,
         MaxTilt = 25f,
         ScaleMin = 1f,

@@ -57,6 +57,6 @@ public class Madder : ForageableBase
     /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
-        ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "madderroot" : "madder", 0.27f);
+        ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "madderroot" : "madder", 0.45f);
     }
 }

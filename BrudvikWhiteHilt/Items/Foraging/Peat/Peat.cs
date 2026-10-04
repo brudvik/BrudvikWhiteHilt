@@ -77,7 +77,7 @@ public class Peat : ForageableBase
     /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
-        ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "peatbrick" : "peatstack", 0.12f);
+        ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "peatbrick" : "peatstack", 0.3f);
     }
 
     /// <inheritdoc/>

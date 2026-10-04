@@ -46,9 +46,9 @@ Yarrow has longer flowering stems and a base height of 0.72 m before natural spa
 
 Caraway likewise has a longer main stem and a base height of 0.74 m rather than 0.54 m. Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat have 0.1 m of configurable ground clearance to help keep these low models above the terrain; their models and pick colliders move together. Moss, lichen and creeping plants keep their existing placement.
 
-Bog Iron and Peat also have a model-aligned pick target. Existing occurrences get the clearance when their area reloads or the game restarts, without changing their saved positions, yield or regrowth. The clearance reduces burial by small terrain differences, but does not compensate for large terrain raising. Bog Iron in shallow water can still be underwater.
+Bog Iron (about 0.22 m high) and Peat (a stack about 0.3 m high) are large enough to show above the Swamp's grass, and also have a model-aligned pick target. Existing occurrences get the clearance when their area reloads or the game restarts, without changing their saved positions, yield or regrowth. The clearance reduces burial by small terrain differences, but does not compensate for large terrain raising. New Bog Iron grows at most ankle-deep (0.3 m) in water; lumps placed deeper by earlier versions stay where they are. For the same reason Sphagnum Moss is about 0.2 m high, Iceland Moss 0.15 m and Madder 0.45 m, and new Reed stands at most 0.5 m deep in water.
 
-The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). On top of that:
+The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). Plants placed there by earlier versions that lie buried or float, mostly Bog Iron and Peat at the edges of the Swamp, move onto the ground when their area loads. On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla wild **Turnip** in the Swamp has a 30% chance to also give Bog Bean, and a 20% chance each to give Cattail and Meadowsweet
@@ -77,7 +77,7 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 | **Labrador Tea** | Low bog shrub with white flower heads and a sharp smell | Swamp hummocks, or extra drop from Thistle there | – |
 | **Cattail** | Tall bog grass with brown velvet heads; the roots give flour | The water's edge in the Swamp, or extra drop from wild Turnip there | – |
 | **Meadowsweet** | Frothy cream flowers that sweeten mead and dull pain | Damp edges of the Swamp, or extra drop from wild Turnip there | – |
-| **Bog Iron** | Rust-brown lumps; the Smelter turns each into Iron | Mud and shallow water in the Swamp | – |
+| **Bog Iron** | Rust-brown lumps; the Smelter turns each into Iron | Mud and ankle-deep water in the Swamp | – |
 | **Peat** | Cut peat; burns like two pieces of wood when used from the hotbar on a wood fire, and the Charcoal Kiln turns it into Coal | Drier banks of the Swamp | – |
 | **Crowberries** | Small black berries | Open Mountain slopes, or dropped by Wolves | – |
 | **Roseroot** | Mountain herb with yellow flowers | Rocky Mountain slopes | – |

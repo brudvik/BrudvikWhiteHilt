@@ -56,6 +56,6 @@ public class IcelandMoss : ForageableBase
     /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
-        ReplacePlantMesh(visualRoot, "icelandmoss", 0.09f);
+        ReplacePlantMesh(visualRoot, "icelandmoss", 0.15f);
     }
 }
