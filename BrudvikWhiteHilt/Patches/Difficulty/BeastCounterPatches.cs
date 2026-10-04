@@ -59,11 +59,10 @@ public static class BeastCounterPatches
     /// <summary>Rejects incompatible treatment use and replaces the previous material preparation.</summary>
     /// <param name="__instance">User.</param>
     /// <param name="item">Consumable.</param>
-    /// <param name="__result">Whether the use was handled.</param>
     /// <returns>True to use the normal consumption path.</returns>
     [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UseItem))]
     [HarmonyPrefix]
-    public static bool UseItem(Humanoid __instance, ItemDrop.ItemData item, ref bool __result)
+    public static bool UseItem(Humanoid __instance, ItemDrop.ItemData item)
     {
         BeastCounterCoating coating = item?.m_shared?.m_consumeStatusEffect as BeastCounterCoating;
         if (coating == null)
@@ -74,7 +73,6 @@ public static class BeastCounterPatches
         if (!BeastCounterCoating.Accepts(counter, __instance.GetCurrentWeapon()))
         {
             __instance.Message(MessageHud.MessageType.Center, "$whitehilt_counter_wrongweapon");
-            __result = true;
             return false;
         }
         if (__instance is Player player && player.CanConsumeItem(item))

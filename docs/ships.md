@@ -19,6 +19,8 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Comfort bonus: +5
 - Its own look: a carved dragon figurehead, a white sail with gold stripes along the edges and the White Hilt logo in the middle, a whitewashed hull with gold fittings, and shields with the logo along the rail
 
+Recolouring leaves materials without a main texture, including the vanilla water mask, unchanged.
+
 **Ship Upgrades** (crafted at the Workbench, used on the mast like an item on an item stand; use the mast to take the last one off):
 
 | Upgrade | Effect | Requirements |

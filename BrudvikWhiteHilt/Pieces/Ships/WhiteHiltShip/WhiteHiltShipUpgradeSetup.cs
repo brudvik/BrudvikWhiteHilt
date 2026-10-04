@@ -325,7 +325,7 @@ public static class WhiteHiltShipUpgradeSetup
         }
 
         return root.Find("ship/visual")?.GetComponentsInChildren<MeshRenderer>()
-            .FirstOrDefault(renderer => renderer.sharedMaterial != null && renderer.sharedMaterial.mainTexture != null)
+            .FirstOrDefault(renderer => renderer.sharedMaterial != null && renderer.sharedMaterial.HasProperty("_MainTex") && renderer.sharedMaterial.mainTexture != null)
             ?? throw new InvalidOperationException("no hull renderer under ship/visual");
     }
 

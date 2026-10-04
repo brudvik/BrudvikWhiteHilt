@@ -103,7 +103,7 @@ public static class WhiteHiltShipLook
     private static void PaintSail(Transform ship)
     {
         Renderer[] sails = ship.GetComponentsInChildren<SkinnedMeshRenderer>(true)
-            .Where(renderer => renderer.sharedMaterials.Any(material => material != null && material.mainTexture != null && material.mainTexture.name.StartsWith("sail_diffuse")))
+            .Where(renderer => renderer.sharedMaterials.Any(material => material != null && material.HasProperty("_MainTex") && material.mainTexture != null && material.mainTexture.name.StartsWith("sail_diffuse")))
             .ToArray<Renderer>();
         if (sails.Length == 0)
         {
@@ -300,7 +300,7 @@ public static class WhiteHiltShipLook
             for (int i = 0; i < materials.Length; i++)
             {
                 Material source = materials[i];
-                if (source == null || source.mainTexture == null || !matches(source.mainTexture.name))
+                if (source == null || !source.HasProperty("_MainTex") || source.mainTexture == null || !matches(source.mainTexture.name))
                 {
                     continue;
                 }
