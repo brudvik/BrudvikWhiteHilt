@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.1 - 2026-10-04
+
+### Changed
+- **Skidbladnir's tent and cargo barrels at full size**: the tent was shrunk to a third and stood low at the port rail. It now has the longship's size, spans the whole waist from the boarding ladder's gap towards the forecastle stair and is high enough to walk under. The cargo barrels and crates are more than twice as large and stand along the port rail beneath it.
+
+### Fixed
+- **Building on Skidbladnir lines up with the ship**: placed pieces follow the deck's heading and tilt instead of the world's, so they stand level on the deck even when the ship rocks or lies at an angle. Rotation steps, the grid, nudging and copying follow the ship too.
+- **Crafting stations can be placed on Skidbladnir**: workbenches, forges, stonecutters, the Ship Workbench and other pieces that may not stand in water were always shown as invalid placement, since the build ray then looked past the ship to the water below.
+
 ## v0.89.0 - 2026-10-04
 
 ### Added

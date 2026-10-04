@@ -205,6 +205,7 @@ public static class BuildToolPatches
     public static void UpdatePlacementGhostPrefix()
     {
         BuildRotation.SnappedThisFrame = false;
+        BuildRotation.Frame = null;
     }
 
     /// <summary>

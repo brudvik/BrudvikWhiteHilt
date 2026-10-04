@@ -56,13 +56,13 @@ public static class SkidbladnirPatches
     /// <param name="piece">Ordinary supporting piece, if any.</param>
     /// <param name="heightmap">Terrain beneath the ray.</param>
     /// <param name="waterSurface">Water hit, if any.</param>
-    /// <param name="water">Whether the selected piece uses water placement.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.PieceRayTest))]
     [HarmonyPostfix]
     public static void BuildingRay(Player __instance, ref bool __result, ref Vector3 point, ref Vector3 normal,
-        ref Piece piece, ref Heightmap heightmap, ref Collider waterSurface, bool water)
+        ref Piece piece, ref Heightmap heightmap, ref Collider waterSurface)
     {
-        if (!SkidbladnirSettings.Building.Value || water || GameCamera.instance == null || __instance.m_placementGhost == null) return;
+        // Stations are m_noInWater, which makes vanilla pass water=true; water pieces are excluded by Allowed.
+        if (!SkidbladnirSettings.Building.Value || GameCamera.instance == null || __instance.m_placementGhost == null) return;
         Piece selected = __instance.m_placementGhost.GetComponent<Piece>();
         if (!Allowed(selected)) return;
         if (!Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out RaycastHit hit,
@@ -81,6 +81,7 @@ public static class SkidbladnirPatches
         heightmap = null;
         waterSurface = null;
         __result = true;
+        global::BrudvikWhiteHilt.Building.BuildRotation.Frame = ship.transform;
     }
 
     /// <summary>Captures the support ship for the piece creation transaction.</summary>

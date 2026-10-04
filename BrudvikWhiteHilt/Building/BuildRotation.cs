@@ -39,6 +39,11 @@ public static class BuildRotation
     /// <summary>Set when the ghost snapped to another piece this frame; the grid then leaves it alone.</summary>
     public static bool SnappedThisFrame { get; set; }
 
+    /// <summary>Moving structure the ghost is placed on this frame, e.g. Skidbladnir; rotation and grid follow it. Null on land.</summary>
+    public static Transform Frame { get; set; }
+
+    private static Quaternion FrameRotation => Frame != null ? Frame.rotation : Quaternion.identity;
+
     /// <summary>
     /// Stands in for vanilla's <c>Quaternion.Euler(0, yaw, 0)</c> when the ghost is rotated.
     /// Unity's Euler applies roll, then pitch, then yaw, so the tilt follows the piece's own heading.
@@ -49,7 +54,7 @@ public static class BuildRotation
     /// <returns>The full rotation.</returns>
     public static Quaternion Compose(float x, float y, float z)
     {
-        return Quaternion.Euler(x + pitch, y + extraYaw, z + roll + (flipped ? 180f : 0f));
+        return FrameRotation * Quaternion.Euler(x + pitch, y + extraYaw, z + roll + (flipped ? 180f : 0f));
     }
 
     /// <summary>
@@ -172,7 +177,8 @@ public static class BuildRotation
     /// <param name="piece">The piece that was copied.</param>
     public static void CopyFrom(Player player, Piece piece)
     {
-        Vector3 euler = piece.transform.rotation.eulerAngles;
+        Transform ship = piece.GetComponentInParent<global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirShip>()?.transform;
+        Vector3 euler = (ship != null ? Quaternion.Inverse(ship.rotation) * piece.transform.rotation : piece.transform.rotation).eulerAngles;
         player.m_placeRotation = Mathf.RoundToInt(euler.y / player.m_placeRotationDegrees);
         extraYaw = euler.y - player.m_placeRotation * player.m_placeRotationDegrees;
         pitch = Normalize(euler.x);
@@ -205,7 +211,7 @@ public static class BuildRotation
             wanted = Vector3.ProjectOnPlane(view.up * forward + view.right * right, Vector3.up);
         }
 
-        Quaternion heading = Quaternion.Euler(0f, Yaw(player), 0f);
+        Quaternion heading = FrameRotation * Quaternion.Euler(0f, Yaw(player), 0f);
         Vector3 best = Vector3.forward;
         float bestDot = float.NegativeInfinity;
         foreach (Vector3 axis in new[] { Vector3.forward, Vector3.back, Vector3.right, Vector3.left })
@@ -241,7 +247,7 @@ public static class BuildRotation
             return;
         }
 
-        Vector3 position = ghost.transform.position;
+        Vector3 position = Frame != null ? Frame.InverseTransformPoint(ghost.transform.position) : ghost.transform.position;
         if (GridOn && !SnappedThisFrame)
         {
             float size = Mathf.Max(0.05f, BuildToolSettings.GridSize.Value);
@@ -249,7 +255,8 @@ public static class BuildRotation
             position.z = Mathf.Round(position.z / size) * size;
         }
 
-        ghost.transform.position = position + Quaternion.Euler(0f, Yaw(player), 0f) * nudge;
+        position += Quaternion.Euler(0f, Yaw(player), 0f) * nudge;
+        ghost.transform.position = Frame != null ? Frame.TransformPoint(position) : position;
     }
 
     private static float NextQuickAngle(float angle)

@@ -387,9 +387,11 @@ internal static class SkidbladnirModel
         if (storage != null)
         {
             // The rail shields would stretch the fitted group along the whole hull.
-            foreach (Transform shield in storage.Cast<Transform>().Where(child => child.name.StartsWith("Shield")).ToArray())
+            // The lone barrel stands 1.5 m off the rest and would halve the fitted size.
+            foreach (Transform shield in storage.Cast<Transform>().Where(child => child.name.StartsWith("Shield") || child.name == "barrell (1)").ToArray())
                 UnityEngine.Object.DestroyImmediate(shield.gameObject);
-            FitGroup(root, storage, At(1.85f, 2.5f, 6.85f), new Vector2(1.3f, 1.4f));
+            // Along the port rail under the tent, between the boarding ladder and the brazier.
+            FitGroup(root, storage, At(-1.97f, 2.5f, 3.9f), new Vector2(1.4f, 2.9f));
             foreach (Transform barrel in storage) barrel.gameObject.SetActive(false);
         }
         Transform[] parts = customize.Cast<Transform>().Where(child => child.name.StartsWith("ShipTen")
@@ -405,11 +407,12 @@ internal static class SkidbladnirModel
             colliders.SetParent(tent, true);
             colliders.gameObject.SetActive(true);
         }
-        FitGroup(root, tent, At(-1.65f, 2.5f, 4.2f), new Vector2(2.0f, 2.2f));
+        // Longship size across the waist, from the boarding ladder's gap (z 2.4) towards the forecastle stair.
+        FitGroup(root, tent, At(0f, 2.5f, 4.675f), new Vector2(6.4f, 4.6f));
         tent.gameObject.SetActive(false);
         WhiteHiltShipUpgrades upgrades = root.GetComponent<WhiteHiltShipUpgrades>();
-        upgrades.m_tentCenter = At(-1.65f, 3.5f, 4.2f);
-        upgrades.m_tentSize = new Vector3(2.0f, 2.4f, 2.2f);
+        upgrades.m_tentCenter = At(0f, 3.7f, 4.675f);
+        upgrades.m_tentSize = new Vector3(5.4f, 2.4f, 4.45f);
     }
 
     private static void FitGroup(Transform root, Transform group, Vector3 position, Vector2 footprint)
@@ -422,7 +425,7 @@ internal static class SkidbladnirModel
         if (points.Length == 0) return;
         Bounds bounds = new(points[0], Vector3.zero);
         foreach (Vector3 point in points) bounds.Encapsulate(point);
-        float scale = Mathf.Min(footprint.x / bounds.size.x, footprint.y / bounds.size.z);
+        float scale = Mathf.Min(1f, Mathf.Min(footprint.x / bounds.size.x, footprint.y / bounds.size.z));
         Vector3 basePoint = new(bounds.center.x, bounds.min.y, bounds.center.z);
         Vector3 localBase = group.InverseTransformPoint(root.TransformPoint(basePoint));
         group.localScale *= scale;
