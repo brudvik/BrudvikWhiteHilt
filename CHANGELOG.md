@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.83.0 - 2026-10-04
+
+### Added
+- **Root Dowser (Rotsøker)**: craft at Workbench level 2 from Bone Fragments ×10, Wood ×5, Resin ×5 and Greydwarf Eye ×2. Worn in an accessory slot, it finds the nearest loaded, unpicked Madder Root or Roseroot plant within 30 m with green, higher-pitched Wishbone-style pulses that speed up nearby. Within 3 m the nearest plant receives a faint local green light. Picked plants stop signalling until they regrow; loose items and random bonus roots are ignored. Adds configurable target items, search distance, scan and pulse intervals, sound pitch and glow settings with Norwegian text. Normal content/recipe settings apply; no extra bronze or Bonemass requirement. In-game lighting, pulse appearance and simultaneous accessories still require testing.
+
 ## v0.82.0 - 2026-10-04
 
 ### Added

@@ -483,6 +483,7 @@
     <Compile Include="Backpack\BackpackGui.cs" />
     <Compile Include="Items\Accessories\BeltPouch.cs" />
     <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
+    <Compile Include="Items\Accessories\RootDowser.cs" />
     <Compile Include="Items\Accessories\StoneDowser.cs" />
     <Compile Include="Backpack\BackpackInput.cs" />
     <Compile Include="Backpack\HandSlots.cs" />
@@ -652,6 +653,8 @@
     <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
     <Compile Include="Navigation\ExplorationSkill.cs" />
     <Compile Include="Navigation\NavigationSettings.cs" />
+    <Compile Include="Navigation\Dowsing\RootDowsingEffect.cs" />
+    <Compile Include="Navigation\Dowsing\RootDowsingSettings.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingEffect.cs" />
     <Compile Include="Navigation\Dowsing\StoneDowsingService.cs" />
     <Compile Include="Navigation\MinimapEdgeArrow.cs" />

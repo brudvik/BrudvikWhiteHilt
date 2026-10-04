@@ -23,6 +23,7 @@ public static class StoneDowsingPatches
         if (__instance.m_nview != null && __instance.m_nview.GetZDO() != null)
         {
             StoneDowsingTargets.Register(__instance);
+            RootDowsingEffect.Register(__instance);
         }
     }
 }

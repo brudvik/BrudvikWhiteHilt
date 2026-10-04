@@ -4,6 +4,36 @@
 
 ## 🍄 FORAGING & FOOD
 
+### Root Dowser
+
+The **Root Dowser** (`WhiteHiltRootDowser`, **Rotsøker** in Norwegian) is an accessory. Its ingredients unlock the recipe without an extra bronze requirement in Linear mode, and neither a root nor Bonemass's Wishbone is required.
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Root Dowser** | Finds unpicked root-bearing plants with proximity pulses and a nearby green light | Workbench level 2 | Bone Fragments ×10, Wood ×5, Resin ×5, Greydwarf Eye ×2 |
+
+Wear it in an accessory slot to find the nearest unpicked **Madder Root** or **Roseroot** plant within **30 m**. Green Wishbone-style pulses have a higher-pitched sound and speed up as you approach, from one pulse every 5 seconds at the boundary to one every second beside the plant. Within **3 m**, the nearest plant receives a faint green light visible only on your client. It disappears when the plant is picked, goes out of range, or the dowser is taken off. Plants become targets again when they regrow; harvest them normally, without digging.
+
+Only loaded plants whose main drop is a configured item are tracked. Loose drops, random bonus roots from Cloudberry bushes and unrelated plants are ignored. No permanent map pins are added, and the vanilla Wishbone and Stone Dowser are unchanged.
+
+Server-synced settings under `[Gear.WhiteHiltRootDowser]`:
+
+| Key | Default | Meaning |
+|-----|---------|---------|
+| `Items` | `WhiteHiltMadder,WhiteHiltRoseroot` | Comma-separated main-drop item prefab names; changes apply to already loaded plants |
+| `PingRange` | 30 | Search distance in metres |
+| `ScanSeconds` | 1 | Seconds between nearest-target searches |
+| `CloseInterval` | 1 | Seconds between pulses beside a plant |
+| `DistantInterval` | 5 | Seconds between pulses at the boundary, never faster than `CloseInterval` |
+| `PingPitch` | 1.3 | Sound pitch relative to Wishbone; requires a restart |
+| `GlowDistance` | 3 | Distance in metres for green light; zero disables it |
+| `GlowRange` | 1 | Green light radius in metres |
+| `GlowIntensity` | 0.6 | Green light brightness |
+
+The normal `[Content] WhiteHiltRootDowser` and `[Recipes] WhiteHiltRootDowser` entries control availability and ingredients. Search behavior is checked offline; lighting, pulse appearance and simultaneous accessory use still require in-game testing.
+
+### Growing Ingredients
+
 New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, the **Mountains** and the **Plains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
 
 Some food is cured instead of cooked: hams, sausages and coral cod hang on a **Drying Rack** for game days until they are cured, and pike in a **Rakfisk Tub** ferments into rakfisk in the vanilla fermenter. Cured food lasts an hour or more and gives a buff for the first half. The rack needs no fire, never burns anything and shows its time left with the production timers.
