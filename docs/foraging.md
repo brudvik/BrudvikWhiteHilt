@@ -8,6 +8,8 @@ New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, th
 
 Some food is cured instead of cooked: hams, sausages and coral cod hang on a **Drying Rack** for game days until they are cured, and pike in a **Rakfisk Tub** ferments into rakfisk in the vanilla fermenter. Cured food lasts an hour or more and gives a buff for the first half. The rack needs no fire, never burns anything and shows its time left with the production timers.
 
+Dropped procedural ingredients, including Rock Lichen, fit the longest side of their vanilla item template so flat models stay compact. This does not change the size of growing plants.
+
 The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic

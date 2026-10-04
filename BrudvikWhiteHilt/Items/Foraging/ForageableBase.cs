@@ -307,7 +307,7 @@ public abstract class ForageableBase
     }
 
     /// <summary>
-    /// Shows a bundle model in place of the vanilla look, with a static plant material. On an item it takes the height
+    /// Shows a bundle model in place of the vanilla look, with a static plant material. On an item it takes the longest side
     /// of the vanilla item; on a pickable it stands on the ground, <paramref name="height"/> metres high.
     /// </summary>
     /// <param name="visualRoot">The object passed to <see cref="ApplyVisual"/>.</param>
@@ -320,7 +320,7 @@ public abstract class ForageableBase
         Texture2D texture = ForagingAssets.LoadTexture($"{modelName}_albedo");
         if (IsItem(visualRoot))
         {
-            GameObject itemModel = VisualHelper.ReplaceMesh(visualRoot, mesh, texture);
+            GameObject itemModel = VisualHelper.ReplaceMesh(visualRoot, mesh, texture, fitLongestSide: true);
             itemModel.GetComponent<MeshRenderer>().sharedMaterial = PlantMaterial(texture);
             return itemModel;
         }

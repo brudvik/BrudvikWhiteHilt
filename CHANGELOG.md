@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.80.1 - 2026-10-04
+
+### Fixed
+- **Dropped forageable size**: Rock Lichen and the other procedural forageable items now fit the longest side of the original item rather than its height, preventing flat or wide models from becoming oversized when dropped. Hidden equip models remain excluded, as in the earlier Chanterelle fix. Growing plants keep their existing sizes.
+
 ## v0.80.0 - 2026-10-04
 
 ### Added

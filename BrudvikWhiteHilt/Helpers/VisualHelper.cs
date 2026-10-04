@@ -27,8 +27,9 @@ public static class VisualHelper
     /// <param name="texture">Albedo texture for the replacement mesh.</param>
     /// <param name="hang">Fit the width instead of the height and keep the top in place, for a model that hangs where the old one hung.</param>
     /// <param name="size">Longest side of the new model, in local units of <paramref name="visualRoot"/>. Overrides the fitting, for a model with a very different shape.</param>
+    /// <param name="fitLongestSide">Fit the longest side instead of the height, so flat items do not become oversized. Explicit size and hanging fits take precedence.</param>
     /// <returns>The new model.</returns>
-    public static GameObject ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture, bool hang = false, float? size = null)
+    public static GameObject ReplaceMesh(GameObject visualRoot, Mesh mesh, Texture2D texture, bool hang = false, float? size = null, bool fitLongestSide = false)
     {
         Transform root = visualRoot.transform;
         MeshRenderer[] renderers = visualRoot.GetComponentsInChildren<MeshRenderer>(true)
@@ -60,7 +61,9 @@ public static class VisualHelper
             ? size.Value / Mathf.Max(meshSize.x, meshSize.y, meshSize.z)
             : hang
                 ? Mathf.Max(target.size.x, target.size.z) / Mathf.Max(meshSize.x, meshSize.z)
-                : target.size.y / meshSize.y;
+                : fitLongestSide
+                    ? Mathf.Max(target.size.x, target.size.y, target.size.z) / Mathf.Max(meshSize.x, meshSize.y, meshSize.z)
+                    : target.size.y / meshSize.y;
         Vector3 meshBase = new(mesh.bounds.center.x, hang ? mesh.bounds.max.y : mesh.bounds.min.y, mesh.bounds.center.z);
         Vector3 targetBase = new(target.center.x, hang ? target.max.y : target.min.y, target.center.z);
 
