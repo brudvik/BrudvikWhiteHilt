@@ -47,6 +47,8 @@ On Kraken's target [White Hilt Ship](ships.md), a lit Ship Lantern flickers befo
 | **Kraken** | 8000 | Slam, 140 blunt, reaches about 13 m |
 | **Kraken Tentacle** | 900 | Lash, 70 blunt, reaches about 12 m |
 
+**The ship tent is not a safe hiding place.** On its target White Hilt Ship, one of the existing tentacles attempts a sweep every **18-30 seconds** while alive. If the Ship Tent upgrade is installed and a living sailor stands beneath it with room for the tentacle, it fixes a horizontal lane through the side opening at that sailor's position. Everyone aboard receives a **two-second warning** before the tentacle reaches in and withdraws over **three seconds**. Move away from the lane to avoid it. Sailors still in its path take **10 base blunt damage** and a strong shove toward the opposite side opening, at most once per sweep. The hit can be blocked or dodged and uses normal crew/enrage damage scaling. The indestructible hull remains unaffected; players on the tent roof or other ships are not targeted. No extra tentacle is spawned, and killing the designated tentacle stops these sweeps for that encounter. Removing the tent, killing Kraken, retreating or leaving the encounter range cancels a sweep. Ship holding and lifting are not required.
+
 Below **50% health**, Kraken becomes enraged: body and tentacle damage rises by **50%**, the body's animation runs **1.4x** faster, and subsequent hull lifts come sooner. The three-second warning is never shortened, and a lift already underway keeps its original duration. The base attack interval is three seconds; animation duration and AI targeting also limit actual attack frequency. Ships receive **50%** of the configured attack damage before crew, enrage and world scaling. Bring a prepared crew; the hull can be lost.
 
 Within **80 m** of a living Kraken that is not retreating, [Odin and Freya](potions.md#during-a-kraken-fight) are weakened but remain useful. Odin keeps +30 maximum HP, +0.5 HP/s, 1.25x health regeneration and 30% fall-damage protection at default settings; drinking it heals 25% of maximum HP instead of filling health. Freya keeps +20 stamina regeneration and reduced action costs instead of restoring stamina from actions. Potion durations do not change, and full strength returns automatically outside the encounter, on death or retreat. Other potions are unchanged.
@@ -92,6 +94,14 @@ Section `[Kraken]` (admin only, synced from the server):
 | `CooldownMinutes` | 90 | Real minutes between Krakens, world-wide |
 | `MinDepth` | 25 | Least depth of water under the ship |
 | `Tentacles` | 6 | Tentacles around the ship (0–8) |
+| `TentSweep` | true | One existing tentacle can sweep under an installed White Hilt Ship tent |
+| `TentSweepInterval` / `TentSweepJitter` | 18 / 12 | Minimum seconds between attempts plus up to this many random extra seconds |
+| `TentSweepWarning` | 2 | Warning seconds before entering the side opening |
+| `TentSweepSeconds` | 3 | Seconds reaching in and withdrawing |
+| `TentSweepRadius` | 0.65 | Hit radius in metres; paths without clearance are skipped |
+| `TentSweepDamage` | 10 | Base blunt damage, scaled by the usual crew/enrage settings |
+| `TentSweepPush` | 30 | Knockback force toward the opposite side opening |
+| `TentSweepRange` | 60 | Maximum distance from Kraken to its target ship, metres |
 | `BodyHealth` / `TentacleHealth` | 8000 / 900 | Health |
 | `BodyDamage` / `TentacleDamage` | 140 / 70 | Blunt damage per blow |
 | `CrewDamagePercent` | 100 | Share of the damage the crew takes; 0 = never hurt |

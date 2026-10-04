@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.82.0 - 2026-10-04
+
+### Added
+- **Kraken tent sweep**: one existing tentacle periodically reaches horizontally through the side opening beneath an installed White Hilt Ship tent, aiming at a sheltered sailor. Collision checks try the targeted height and slightly lower/higher openings, skipping blocked paths. A two-second warning precedes the visible three-second reach and withdrawal. Players still in the swept lane receive light blunt damage and a strong shove toward the opposite opening; moving away avoids the hit. Ship invulnerability is unchanged. Only the tentacle's network owner delivers hits, with saved per-player hit stamps preventing duplicates after ownership changes. Adds server-synced timing, radius, damage, knockback and range settings with Norwegian text. Compilation and 32 isolated production-component checks passed; visual clearance, actual knockback and multiplayer require in-game testing. Update server and clients together.
+
 ## v0.81.0 - 2026-10-04
 
 ### Added

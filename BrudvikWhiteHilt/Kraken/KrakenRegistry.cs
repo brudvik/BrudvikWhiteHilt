@@ -68,6 +68,7 @@ public static class KrakenRegistry
         Translations.AddEnglish("enemy_whitehilt_kraken", "Kraken");
         Translations.AddEnglish("enemy_whitehilt_krakententacle", "Kraken Tentacle");
         Translations.AddEnglish("msg_whitehilt_kraken_rises", "Something vast rises from the deep...");
+        Translations.AddEnglish("whitehilt_kraken_tentsweep", "A tentacle reaches beneath the tent!");
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(OctopusName), "Octopus",
             "A soft, clever thing from the deep. It slipped the hook twice before you had it.");
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(InkName), "Kraken Ink",

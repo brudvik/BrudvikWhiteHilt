@@ -75,6 +75,7 @@ public static class KrakenSpawner
         away.y = 0f;
         float start = Mathf.Atan2(away.x, away.z) * Mathf.Rad2Deg - 120f;
         ZDOID body = kraken.GetComponent<ZNetView>().GetZDO().m_uid;
+        bool sweepAssigned = false;
         for (int i = 0; i < count; i++)
         {
             // Spread over the 240 degrees away from the Kraken.
@@ -89,6 +90,8 @@ public static class KrakenSpawner
             point.y = WaterLevel() - TentacleSink;
             GameObject tentacle = Object.Instantiate(prefab, point, Quaternion.LookRotation(-direction));
             tentacle.GetComponent<ZNetView>().GetZDO().Set(KrakenTentacle.BodyKey, body);
+            tentacle.GetComponent<ZNetView>().GetZDO().Set(KrakenTentacle.SweeperKey, !sweepAssigned);
+            sweepAssigned = true;
             tentacle.GetComponent<ZNetView>().GetZDO().Set(KrakenBody.CrewKey, kraken.GetComponent<ZNetView>().GetZDO().GetInt(KrakenBody.CrewKey, 1));
         }
     }

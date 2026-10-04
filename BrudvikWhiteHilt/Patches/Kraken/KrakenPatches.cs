@@ -15,6 +15,18 @@ public static class KrakenPatches
     private const string OctopusTemplate = "Fish8";
     private const string OctopusSpawnName = "WhiteHilt octopus";
 
+    [HarmonyPatch(typeof(MonsterAI), nameof(MonsterAI.UpdateAI))]
+    [HarmonyPrefix]
+    private static bool MonsterAIUpdatePrefix(MonsterAI __instance, ref bool __result)
+    {
+        KrakenTentacle tentacle = __instance.GetComponent<KrakenTentacle>();
+        if (tentacle == null || !tentacle.IsSweeping)
+            return true;
+        __instance.StopMoving();
+        __result = true;
+        return false;
+    }
+
     [HarmonyPatch(typeof(Game), nameof(Game.Start))]
     [HarmonyPostfix]
     private static void GameStartPostfix(Game __instance)

@@ -57,6 +57,25 @@ public static class KrakenSettings
     /// <summary>Blunt damage of a tentacle's blow.</summary>
     public static ConfigEntry<float> TentacleDamage { get; private set; }
 
+    /// <summary>Whether one tentacle sweeps beneath an installed ship tent.</summary>
+    public static ConfigEntry<bool> TentSweep { get; private set; }
+    /// <summary>Minimum seconds between tent sweeps.</summary>
+    public static ConfigEntry<float> TentSweepInterval { get; private set; }
+    /// <summary>Maximum additional random seconds between tent sweeps.</summary>
+    public static ConfigEntry<float> TentSweepJitter { get; private set; }
+    /// <summary>Warning seconds before a tent sweep.</summary>
+    public static ConfigEntry<float> TentSweepWarning { get; private set; }
+    /// <summary>Seconds for a tentacle to enter and withdraw.</summary>
+    public static ConfigEntry<float> TentSweepSeconds { get; private set; }
+    /// <summary>Radius of the sweeping tentacle in metres.</summary>
+    public static ConfigEntry<float> TentSweepRadius { get; private set; }
+    /// <summary>Blunt damage of a tent sweep before encounter scaling.</summary>
+    public static ConfigEntry<float> TentSweepDamage { get; private set; }
+    /// <summary>Knockback force of a tent sweep.</summary>
+    public static ConfigEntry<float> TentSweepPush { get; private set; }
+    /// <summary>Maximum distance from the Kraken to its target ship for tent sweeps.</summary>
+    public static ConfigEntry<float> TentSweepRange { get; private set; }
+
     /// <summary>Share, in percent, of the damage the crew takes.</summary>
     public static ConfigEntry<float> CrewDamagePercent { get; private set; }
 
@@ -154,6 +173,15 @@ public static class KrakenSettings
         TentacleHealth = WhiteHiltConfig.BindAdminOnly(Section, "TentacleHealth", 900f, "Health of each tentacle.", new AcceptableValueRange<float>(10f, 20000f));
         BodyDamage = WhiteHiltConfig.BindAdminOnly(Section, "BodyDamage", 140f, "Blunt damage of the Kraken's slam.", new AcceptableValueRange<float>(0f, 1000f));
         TentacleDamage = WhiteHiltConfig.BindAdminOnly(Section, "TentacleDamage", 70f, "Blunt damage of a tentacle's blow.", new AcceptableValueRange<float>(0f, 1000f));
+        TentSweep = WhiteHiltConfig.BindAdminOnly(Section, "TentSweep", true, "One existing tentacle can sweep through the side opening of an installed White Hilt Ship tent.");
+        TentSweepInterval = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepInterval", 18f, "Minimum seconds between tent sweep attempts.", new AcceptableValueRange<float>(5f, 120f));
+        TentSweepJitter = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepJitter", 12f, "Maximum extra random seconds between tent sweep attempts.", new AcceptableValueRange<float>(0f, 120f));
+        TentSweepWarning = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepWarning", 2f, "Warning seconds before the tentacle enters; move away from its path.", new AcceptableValueRange<float>(1f, 10f));
+        TentSweepSeconds = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepSeconds", 3f, "Seconds for the tentacle to enter and withdraw.", new AcceptableValueRange<float>(1f, 10f));
+        TentSweepRadius = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepRadius", 0.65f, "Tent sweep hit radius in metres.", new AcceptableValueRange<float>(0.1f, 1f));
+        TentSweepDamage = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepDamage", 10f, "Blunt damage before crew and enrage scaling; the sweep mainly knocks sailors out of shelter.", new AcceptableValueRange<float>(0f, 1000f));
+        TentSweepPush = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepPush", 30f, "Knockback force towards the opposite side opening.", new AcceptableValueRange<float>(0f, 100f));
+        TentSweepRange = WhiteHiltConfig.BindAdminOnly(Section, "TentSweepRange", 60f, "Maximum Kraken-to-target-ship distance for tent sweeps, in metres.", new AcceptableValueRange<float>(5f, 200f));
         CrewDamagePercent = WhiteHiltConfig.BindAdminOnly(Section, "CrewDamagePercent", 100f, "Share of the damage the crew takes, in percent. 0 = the crew is never hurt.",
             new AcceptableValueRange<float>(0f, 500f));
         ShipDamagePercent = WhiteHiltConfig.BindAdminOnly(Section, "ShipDamagePercent", 50f, "Share of the damage the ship takes, in percent. 0 = the ship is never hurt.",
