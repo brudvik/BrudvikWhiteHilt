@@ -2,6 +2,37 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.87.0 - 2026-10-04
+
+### Added
+- **Iron grate panels** in 2×1 m, 4×4 m and 4×1 m sizes (width × height), built as single hammer pieces from unscaled vanilla grate sections. Preserve vanilla bar thickness, wear/destruction models, strength and building category; add edge snap points every metre, fitted placement collision, icons and Norwegian text. Cost Iron ×2, ×8 and ×4 respectively, with normal per-piece content/recipe configuration. Original grates are unchanged. Live snapping, placement, refunds and multiplayer require in-game testing.
+
+## v0.86.2 - 2026-10-04
+
+### Fixed
+- **Root Dowser pulse interruptions**: preserve time toward the next pulse when switching between available roots, preventing repeated nearest-target changes from postponing every signal. Pulses continue to speed up on approach and slow down on retreat using the existing settings. Offline target-switching and approach/retreat checks pass; the reported in-game audio behavior still requires verification.
+
+## v0.86.1 - 2026-10-04
+
+### Fixed
+- **Bog Iron and Peat ground clearance**: enable configurable 0.1 m clearance, lifting their visuals and pick colliders together and fitting a pick target to the visible model. Existing occurrences update when loaded again; saved positions, spawning, yields and regrowth are unchanged. This reduces burial by small terrain differences but does not compensate for large terrain raising or make underwater Bog Iron visible above water. Live terrain visibility still requires in-game testing.
+
+## v0.86.0 - 2026-10-04
+
+### Added
+- **Wall drawers** for all fourteen restocking chest categories, usable on player-built wooden and stone walls both ashore and aboard Skidbladnir. Independent prefabs keep the original inventory dimensions, category icons, hover/progress UI and restocking behavior. Original chest inventories are unchanged. New models, Norwegian text and feature documentation included. Live crafting, wall placement and multiplayer persistence still require backup-world testing.
+
+## v0.85.0 - 2026-10-04
+
+### Added
+- **Ship workshops**: an everlasting White Hilt Ship Hammer with a separate build menu for a compact Workbench, Forge and Stonecutter, restricted to stationary Skidbladnir. Preserves vanilla recipes, extensions, shelter rules and building costs; uses small original Blender tables/tools and the existing Repair Anvil model for the forge.
+
+## v0.84.0 - 2026-10-04
+
+### Added
+- **Skidbladnir**: Freyr's indestructible sailing home (`WhiteHiltSkidbladnir`), with an empty lower deck for player-built furnishings and stations, stairs, boarding ladder and a mast-top lookout. Supports the existing nine ship upgrades, Navigator's Table, routes and its own deck-portal arrival point. Persistent ship-local furniture attachments preserve independent inventories and survive parent-ship unloading; dismantling requires first removing furnishings. Horizontal speed is capped at at most half the White Hilt Ship's calculated ideal full-sail speed. Adds server-synced building, waterline, speed, furniture-position update and sail-animation settings with Norwegian text. Model by 3ddans, CC BY 4.0, with a reproducible separate ship export. Live sailing, stations, shelter, reloading and multiplayer still require validation in a backup world; update server and clients together.
+- Compilation, bundle export, Norwegian config coverage and 314 isolated Unity production-code/geometry checks passed. These checks use controlled network stand-ins and do not replace live multiplayer testing.
+
 ## v0.83.1 - 2026-10-04
 
 ### Fixed
