@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.83.1 - 2026-10-04
+
+### Fixed
+- **Startup Harmony patch failure**: remove the Beast Counter treatment prefix's invalid result parameter from the void `Humanoid.UseItem` method. Incompatible treatments still show the wrong-weapon message and skip normal item use; compatible treatments retain normal consumption.
+- **Ship water-mask material error**: check for `_MainTex` before reading ship material textures, preserving the vanilla water mask without logging a missing-property error during recolouring or upgrade preparation.
+
 ## v0.83.0 - 2026-10-04
 
 ### Added
