@@ -84,6 +84,25 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         }
 
         /// <summary>
+        /// Gets every chest an item is placed in, the one from <see cref="GetCategory"/> first.
+        /// </summary>
+        /// <param name="prefabName">The item prefab name.</param>
+        /// <returns>The chest categories, empty if the item is in no chest.</returns>
+        public List<ChestCategory> GetCategories(string prefabName)
+        {
+            var result = new List<ChestCategory>();
+            var main = GetCategory(prefabName);
+            if (main == ChestCategory.None) return result;
+
+            result.Add(main);
+            foreach (var pair in setsByCategory)
+            {
+                if (pair.Key != main && pair.Key != ChestCategory.None && pair.Value.Contains(prefabName)) result.Add(pair.Key);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Gets the largest amount of an item that a single recipe, upgrade or build piece requires.
         /// </summary>
         /// <param name="prefabName">The item prefab name.</param>

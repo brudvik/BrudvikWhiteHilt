@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Biome = Heightmap.Biome;
 
@@ -27,7 +28,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
         private const float PanelWidth = 640f;
         private const float PanelHeight = 620f;
         private const float ListWidth = PanelWidth - 50f;
-        private const float RowHeight = 44f;
+        private const float RowHeight = 54f;
         private const float RefreshSeconds = 0.5f;
         private const string Gold = "#FFD24D";
         private const string Infinity = "\u221E";
@@ -43,6 +44,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
         private readonly ChestSupply supply;
         private readonly WorldProgress progress;
         private readonly Func<ChestCategory, string?> chestName;
+        private readonly Func<ChestCategory, (Sprite? Icon, Color Color)> chestLook;
+        private readonly Func<IReadOnlyCollection<ChestCategory>, int> highlight;
         private readonly Func<Sprite?> buttonIcon;
         private readonly List<Row> rows = new();
 
@@ -66,15 +69,20 @@ namespace BrudvikWhiteHilt.Chests.Piece
         /// <param name="supply">Decides which items are unlimited.</param>
         /// <param name="progress">The world-wide progress, with the amounts stored towards unlocking items.</param>
         /// <param name="chestName">Gets the translated name of the chest for a category.</param>
+        /// <param name="chestLook">Gets the icon and glow colour of the chest for a category.</param>
+        /// <param name="highlight">Lights up the chests of the categories near the player; returns how many.</param>
         /// <param name="buttonIcon">Loads the icon for the button that opens the panel.</param>
         public GatheringPanel(ItemCatalog catalog, BiomeCatalog biomes, ChestSupply supply, WorldProgress progress,
-            Func<ChestCategory, string?> chestName, Func<Sprite?> buttonIcon)
+            Func<ChestCategory, string?> chestName, Func<ChestCategory, (Sprite? Icon, Color Color)> chestLook,
+            Func<IReadOnlyCollection<ChestCategory>, int> highlight, Func<Sprite?> buttonIcon)
         {
             this.catalog = catalog;
             this.biomes = biomes;
             this.supply = supply;
             this.progress = progress;
             this.chestName = chestName;
+            this.chestLook = chestLook;
+            this.highlight = highlight;
             this.buttonIcon = buttonIcon;
         }
 
@@ -200,7 +208,9 @@ namespace BrudvikWhiteHilt.Chests.Piece
                 var shared = catalog.GetShared(name);
                 if (shared == null) continue;
 
-                var entry = new Entry(shared, Texts.Localize(shared.m_name), chestName(catalog.GetCategory(name)));
+                var categories = catalog.GetCategories(name);
+                var names = categories.Select(chestName).Where(chest => !string.IsNullOrEmpty(chest)).ToList();
+                var entry = new Entry(shared, Texts.Localize(shared.m_name), names.Count == 0 ? null : string.Join(" / ", names), categories);
                 bag.TryGetValue(name, out entry.InBag);
 
                 if (supply.IsUnlimited(name, shared))
@@ -238,8 +248,14 @@ namespace BrudvikWhiteHilt.Chests.Piece
             row.Group.alpha = entry.State == EntryState.Normal ? 0.45f : 1f;
             row.Icon.sprite = entry.Shared.m_icons != null && entry.Shared.m_icons.Length > 0 ? entry.Shared.m_icons[0] : null;
             row.Icon.enabled = row.Icon.sprite != null;
+            row.Entry = entry;
             row.Name.text = entry.DisplayName;
             row.Chest.text = entry.ChestName ?? string.Empty;
+            var look = entry.Categories.Count > 0 ? chestLook(entry.Categories[0]) : (null, Color.white);
+            row.Chest.color = look.Color;
+            row.ChestIcon.sprite = look.Icon;
+            row.ChestIcon.enabled = look.Icon != null && entry.ChestName != null;
+            row.Chest.rectTransform.anchoredPosition = new Vector2(row.ChestIcon.enabled ? 74f : 50f, -12f);
             row.Bag.text = entry.InBag > 0 ? Texts.Get("bsc_gather_bag", entry.InBag) : string.Empty;
 
             var showBar = entry.State == EntryState.Progress;
@@ -330,6 +346,10 @@ namespace BrudvikWhiteHilt.Chests.Piece
             Place(emptyText.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(PanelWidth - 60f, 30f));
             emptyText.text = Texts.Get("bsc_gather_empty");
 
+            var hint = CreateText("Hint", panel.transform, 14f, TextAlignmentOptions.Center, SubtleColor);
+            Place(hint.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 6f), new Vector2(PanelWidth - 60f, 20f));
+            hint.text = Texts.Get("bsc_gather_click_hint");
+
             panel.SetActive(false);
         }
 
@@ -410,8 +430,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             var element = root.AddComponent<LayoutElement>();
             element.minHeight = element.preferredHeight = RowHeight;
             var background = root.AddComponent<Image>();
-            background.color = new Color(1f, 1f, 1f, index % 2 == 0 ? 0.06f : 0.02f);
-            background.raycastTarget = false;
+            var restAlpha = index % 2 == 0 ? 0.06f : 0.02f;
+            background.color = new Color(1f, 1f, 1f, restAlpha);
             var group = root.AddComponent<CanvasGroup>();
 
             var iconObject = new GameObject("Icon", typeof(RectTransform));
@@ -421,11 +441,19 @@ namespace BrudvikWhiteHilt.Chests.Piece
             icon.raycastTarget = false;
             Place(icon.rectTransform, new Vector2(0f, 0.5f), new Vector2(6f, 0f), new Vector2(36f, 36f));
 
-            var name = CreateText("Name", root.transform, 17f, TextAlignmentOptions.Left, Color.white);
-            Place(name.rectTransform, new Vector2(0f, 0.5f), new Vector2(50f, 9f), new Vector2(230f, 22f));
+            var name = CreateText("Name", root.transform, 19f, TextAlignmentOptions.Left, Color.white);
+            Place(name.rectTransform, new Vector2(0f, 0.5f), new Vector2(50f, 11f), new Vector2(235f, 24f));
 
-            var chest = CreateText("Chest", root.transform, 13f, TextAlignmentOptions.Left, SubtleColor);
-            Place(chest.rectTransform, new Vector2(0f, 0.5f), new Vector2(50f, -11f), new Vector2(230f, 18f));
+            // Which chest it goes in, with that chest's sign and in the colour it glows, so it is easy to spot.
+            var chestIconObject = new GameObject("ChestIcon", typeof(RectTransform));
+            chestIconObject.transform.SetParent(root.transform, false);
+            var chestIcon = chestIconObject.AddComponent<Image>();
+            chestIcon.preserveAspect = true;
+            chestIcon.raycastTarget = false;
+            Place(chestIcon.rectTransform, new Vector2(0f, 0.5f), new Vector2(50f, -12f), new Vector2(20f, 20f));
+
+            var chest = CreateText("Chest", root.transform, 16f, TextAlignmentOptions.Left, SubtleColor);
+            Place(chest.rectTransform, new Vector2(0f, 0.5f), new Vector2(74f, -12f), new Vector2(211f, 22f));
 
             var bar = new GameObject("Bar", typeof(RectTransform));
             bar.transform.SetParent(root.transform, false);
@@ -458,7 +486,30 @@ namespace BrudvikWhiteHilt.Chests.Piece
             var bag = CreateText("Bag", root.transform, 13f, TextAlignmentOptions.Left, BagColor);
             Place(bag.rectTransform, new Vector2(0f, 0.5f), new Vector2(450f, -11f), new Vector2(ListWidth - 465f, 18f));
 
-            return new Row(root, group, icon, name, chest, bar, fill, amount, unlimited, status, bag);
+            var row = new Row(root, group, icon, name, chestIcon, chest, bar, fill, amount, unlimited, status, bag);
+            var button = root.AddComponent<Button>();
+            button.transition = Selectable.Transition.None;
+            button.targetGraphic = background;
+            button.onClick.AddListener(() => Highlight(row.Entry));
+            var trigger = root.AddComponent<EventTrigger>();
+            var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+            enter.callback.AddListener(_ => background.color = new Color(1f, 1f, 1f, 0.16f));
+            var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+            exit.callback.AddListener(_ => background.color = new Color(1f, 1f, 1f, restAlpha));
+            trigger.triggers.Add(enter);
+            trigger.triggers.Add(exit);
+            return row;
+        }
+
+        private void Highlight(Entry? entry)
+        {
+            var player = Player.m_localPlayer;
+            if (entry == null || player == null || entry.Categories.Count == 0 || entry.ChestName == null) return;
+
+            var count = highlight(entry.Categories);
+            player.Message(MessageHud.MessageType.TopLeft, count > 0
+                ? Texts.Get("bsc_gather_highlight", count, entry.ChestName)
+                : Texts.Get("bsc_gather_highlight_none", entry.ChestName, Mathf.RoundToInt(ChestHighlight.Range)));
         }
 
         private TMP_Text CreateText(string name, Transform parent, float size, TextAlignmentOptions alignment, Color color)
@@ -505,12 +556,15 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
         private sealed class Entry
         {
-            public Entry(ItemDrop.ItemData.SharedData shared, string displayName, string? chestName)
+            public Entry(ItemDrop.ItemData.SharedData shared, string displayName, string? chestName, List<ChestCategory> categories)
             {
                 Shared = shared;
                 DisplayName = displayName;
                 ChestName = chestName;
+                Categories = categories;
             }
+
+            public List<ChestCategory> Categories { get; }
 
             public ItemDrop.ItemData.SharedData Shared { get; }
 
@@ -529,13 +583,14 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
         private sealed class Row
         {
-            public Row(GameObject root, CanvasGroup group, Image icon, TMP_Text name, TMP_Text chest, GameObject bar,
+            public Row(GameObject root, CanvasGroup group, Image icon, TMP_Text name, Image chestIcon, TMP_Text chest, GameObject bar,
                 RectTransform fill, TMP_Text amount, TMP_Text unlimited, TMP_Text status, TMP_Text bag)
             {
                 Root = root;
                 Group = group;
                 Icon = icon;
                 Name = name;
+                ChestIcon = chestIcon;
                 Chest = chest;
                 Bar = bar;
                 Fill = fill;
@@ -553,7 +608,11 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
             public TMP_Text Name { get; }
 
+            public Image ChestIcon { get; }
+
             public TMP_Text Chest { get; }
+
+            public Entry? Entry { get; set; }
 
             public GameObject Bar { get; }
 

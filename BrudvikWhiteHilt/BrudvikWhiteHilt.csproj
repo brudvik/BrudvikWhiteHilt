@@ -132,6 +132,7 @@
     <Compile Include="Chests\Helpers\SpriteLoader.cs" />
     <Compile Include="Chests\Helpers\WorldProgress.cs" />
     <Compile Include="Chests\Models\CustomChestModel.cs" />
+    <Compile Include="Chests\Piece\ChestHighlight.cs" />
     <Compile Include="Chests\Piece\ChestHoverPanel.cs" />
     <Compile Include="Chests\Piece\ChestIndicator.cs" />
     <Compile Include="Chests\Piece\ChestLearnUi.cs" />

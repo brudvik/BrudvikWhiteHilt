@@ -16,6 +16,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Managers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -104,7 +105,8 @@ namespace BrudvikWhiteHilt.Chests
             hoverPanel = new ChestHoverPanel(chestSupply, FindPiece, () => settings.ShowHoverPanel.Value);
             biomeCatalog = new BiomeCatalog(settings);
             learnUi = new ChestLearnUi(FindPiece, () => settings.LearnAll.Value, () => settings.LearnTrophies.Value);
-            gatheringPanel = new GatheringPanel(itemCatalog, biomeCatalog, chestSupply, worldProgress, GetChestName, LoadGatheringIcon);
+            gatheringPanel = new GatheringPanel(itemCatalog, biomeCatalog, chestSupply, worldProgress, GetChestName, GetChestLook, HighlightChests,
+                LoadGatheringIcon);
 
             WhiteHiltConfig.File.SettingChanged += (_, _) => HandleSettingsChanged();
             SynchronizationManager.OnConfigurationSynchronized += (_, _) => HandleSettingsChanged();
@@ -315,6 +317,36 @@ namespace BrudvikWhiteHilt.Chests
 
             var piece = customPieces.Find(candidate => candidate.CustomPieceConfig.ItemCategory == category);
             return piece == null ? null : Texts.Localize(piece.Tooltip);
+        }
+
+        // The chest's own build icon (its category sign) and the colour it glows in, for the gathering panel.
+        private (Sprite? Icon, Color Color) GetChestLook(ChestCategory category)
+        {
+            var piece = customPieces.Find(candidate => candidate.CustomPieceConfig.ItemCategory == category);
+            return piece == null ? (null, Color.white) : (piece.Piece?.m_icon, ChestEffects.GetGlowColor(piece.Color));
+        }
+
+        /// <summary>
+        /// Makes the loaded chests and wall drawers of the given categories near the local player light up for a while.
+        /// </summary>
+        /// <returns>How many light up.</returns>
+        private int HighlightChests(IReadOnlyCollection<ChestCategory> categories)
+        {
+            var player = Player.m_localPlayer;
+            if (player == null || categories.Count == 0) return 0;
+
+            var count = 0;
+            var range = ChestHighlight.Range * ChestHighlight.Range;
+            foreach (var container in global::BrudvikWhiteHilt.Crafting.NearbyContainers.Registered())
+            {
+                var piece = FindPiece(container);
+                if (piece == null || IsDestroyed(container) || !categories.Contains(piece.CustomPieceConfig.ItemCategory)
+                    || (container.transform.position - player.transform.position).sqrMagnitude > range) continue;
+
+                ChestHighlight.Flash(container, ChestEffects.GetGlowColor(piece.Color));
+                count++;
+            }
+            return count;
         }
 
         private Sprite? LoadGatheringIcon()

@@ -58,5 +58,8 @@
   "bsc_gather_missing": "mangler {0}",
   "bsc_gather_bag": "+{0} i sekken",
   "bsc_gather_not_discovered": "Ikke oppdaget",
-  "bsc_gather_waiting": "Venter på serveren"
+  "bsc_gather_waiting": "Venter på serveren",
+  "bsc_gather_click_hint": "Klikk på en ting for å få kistene den hører hjemme i til å lyse opp",
+  "bsc_gather_highlight": "{0} kister lyser opp: {1}",
+  "bsc_gather_highlight_none": "Ingen {0} innen {1} m"
 }
