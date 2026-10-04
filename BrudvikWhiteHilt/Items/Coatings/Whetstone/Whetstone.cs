@@ -33,7 +33,7 @@ public class Whetstone : WeaponCoatingBase
     protected override string ModelName => "whetstone";
 
     /// <inheritdoc/>
-    protected override string CraftingStation => CraftingStations.Workbench;
+    protected override string CraftingStation => CraftingStations.Stonecutter;
 
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]

@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.90.0 - 2026-10-04
+
+### Changed
+- **The Whetstone is made at the Stonecutter** instead of the Workbench, where stone is worked.
+
 ## v0.89.8 - 2026-10-04
 
 ### Added
