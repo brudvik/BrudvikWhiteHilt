@@ -113,8 +113,17 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <param name="prefabName">The effect prefab name.</param>
         public static void Play(Container container, string prefabName)
         {
-            var effect = GetEffect(prefabName);
-            effect?.Create(container.transform.position + Vector3.up * 0.8f, Quaternion.identity);
+            Play(container.transform.position + Vector3.up * 0.8f, prefabName);
+        }
+
+        /// <summary>
+        /// Plays an effect at a position.
+        /// </summary>
+        /// <param name="position">Where the effect appears.</param>
+        /// <param name="prefabName">The effect prefab name.</param>
+        public static void Play(Vector3 position, string prefabName)
+        {
+            GetEffect(prefabName)?.Create(position, Quaternion.identity);
         }
 
         private static EffectList? GetEffect(string prefabName)

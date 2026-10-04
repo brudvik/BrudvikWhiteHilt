@@ -72,14 +72,16 @@ Test placement, opening, hover indicators, restocking and saved contents in a ba
 
 A carved post with a wicker basket, built with the **Hammer** in **Chests** near a workbench. It works on its own, without a workbench. **Use (E)** opens the basket, **Shift + Use** pauses or resumes the post, and the collection radius is shown while placing it. An active post casts a soft golden light.
 
+- **Seeing it work:** each time the post moves something, its light flares and a sparkle rises over the basket and over every chest that received items, for every player nearby. The hover text shows how many chests the post can use, how much it sorted last and how long ago. While stacks in the basket fit in no chest, the light turns red and breathes slowly, and the hover text says how many stacks are left.
+
 | Piece | Station | Requirements |
 |-------|---------|--------------|
 | Collection Post | Workbench | Fine Wood ×10, Bronze ×5, Surtling Core ×2 (recoverable) |
 
 - Collects loose drops from trees, mining, creatures and production, not plants still growing, grave contents or items inside other containers or machines. Living fish and items stuck in tar are left alone.
-- **The basket** holds 8 × 4 slots. Put items in and close it: the post sorts them into the receiving chests by the same rules as loose drops, a few seconds later. Items a chest already holds without limit are absorbed. What fits nowhere stays in the basket for you to take back. Nothing moves while someone has the basket open, and removing the post drops what is left in it.
+- **The basket** holds 8 × 4 slots. Put items in and close it: the post sorts them into the receiving chests by the same rules as loose drops, usually within a few seconds; the first delivery to a chest another player last used takes a round longer. Up to **StacksPerRound** basket stacks are tried each round, in turn, so stacks that fit nowhere never hold up the rest. Items a chest already holds without limit are absorbed. What fits nowhere stays in the basket for you to take back. Nothing moves while someone has the basket open, and removing the post drops what is left in it.
 - Both the collection radius and the receiving-chest radius default to **80 metres**, measured from the post; each is independently configurable from 10 to 200 metres.
-- Matching category chests are tried first, then chests that already hold the item, then the nearest. Other matching chests follow, with the **Everlasting Chest** as the fallback. Include/Exclude category settings apply. Ordinary chests, carts and ship holds are not receivers.
+- Every matching chest is a candidate: an item may belong to several categories, and a category may have several chests and wall drawers. Matching category chests are tried first, and among them chests that already hold the item without limit (and so absorb it), then chests that already hold it, then the nearest. When one chest is full the rest goes to the next. The **Everlasting Chest** is the fallback, and is never used while a matching category chest is still being handed over from another player. Include/Exclude category settings apply. Ordinary chests, carts and ship holds are not receivers.
 - When only some of a stack fits, only that amount moves. Full chests leave the remainder on the ground. Items already unlimited are absorbed under the existing chest rules, including when no slots are free.
 - Quality, fish level, variant, durability, crafter and custom data are kept. Starred and custom-data items are stored separately and never absorbed.
 - Player-dropped items are left alone by default. New player drops are marked in world data, so that protection survives reloading; drops made before this feature cannot be identified after a reload.

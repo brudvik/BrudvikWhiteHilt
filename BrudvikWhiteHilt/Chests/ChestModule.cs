@@ -195,6 +195,13 @@ namespace BrudvikWhiteHilt.Chests
             return itemCatalog.Contains(category, item.m_dropPrefab.name) ? 0 : -1;
         }
 
+        // Whether the chest would take the whole stack without using a slot, as it already holds the item without limit.
+        internal bool AbsorbsCollected(Container container, ItemDrop.ItemData item)
+        {
+            if (CollectionPriority(container, item) < 0 || container.GetInventory() == null) return false;
+            return chestSupply.AbsorbsDeposit(FindPiece(container).CustomPieceConfig.ItemCategory, container.GetInventory(), item);
+        }
+
         internal int DepositCollected(Container container, ItemDrop.ItemData source)
         {
             if (CollectionPriority(container, source) < 0 || container.m_nview == null || !container.m_nview.IsValid()

@@ -26,7 +26,9 @@ internal static class CollectionSettings
         ScanLimit = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "ScanLimit", 200, "Maximum loaded drops examined per round; larger sets are scanned over several rounds.", new AcceptableValueRange<int>(20, 2000));
         PlayerDrops = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "CollectPlayerDrops", false, "Also collect items deliberately dropped by players.");
         OwnershipRetry = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "OwnershipRetrySeconds", 5f, "Seconds before retrying a chest ownership request that received no response.", new AcceptableValueRange<float>(1f, 60f));
-        Translations.AddEnglish("whitehilt_collection_active", "Collecting into nearby chests");
+        Translations.AddEnglish("whitehilt_collection_active", "Collecting into {0} chests nearby");
+        Translations.AddEnglish("whitehilt_collection_stuck", "{0} stacks in the basket have no room in any chest");
+        Translations.AddEnglish("whitehilt_collection_last", "Last sorted: {0} items, {1} s ago");
         Translations.AddEnglish("whitehilt_collection_paused", "Collection paused");
         Translations.AddEnglish("whitehilt_collection_nochests", "No accessible White Hilt chests in range");
         Translations.AddEnglish("whitehilt_collection_toggle", "Pause / resume collection");
