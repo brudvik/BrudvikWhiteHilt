@@ -14,11 +14,20 @@ internal static class CollectionPostPatches
             __instance.gameObject.AddComponent<CollectionChestLink>();
     }
 
-    [HarmonyPatch(typeof(StationExtension), nameof(StationExtension.GetHoverText)), HarmonyPostfix]
-    private static void Hover(StationExtension __instance, ref string __result)
+    [HarmonyPatch(typeof(Container), nameof(Container.GetHoverText)), HarmonyPostfix]
+    private static void Hover(Container __instance, ref string __result)
     {
         var collector = __instance.GetComponent<CollectionPostComponent>();
-        if (collector != null) __result = collector.GetHoverText();
+        if (collector != null) __result += collector.GetHoverText();
+    }
+
+    [HarmonyPatch(typeof(Container), nameof(Container.Interact)), HarmonyPrefix]
+    private static bool Interact(Container __instance, bool hold, bool alt, ref bool __result)
+    {
+        if (!alt || hold || __instance.GetComponent<CollectionPostComponent>() is not CollectionPostComponent collector) return true;
+        collector.RequestToggle();
+        __result = true;
+        return false;
     }
 
     [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.OnPlayerDrop)), HarmonyPostfix]

@@ -4,7 +4,7 @@ using BrudvikWhiteHilt.Progression;
 
 namespace BrudvikWhiteHilt.Chests.Collection;
 
-/// <summary>Server-controlled settings for workbench collection posts.</summary>
+/// <summary>Server-controlled settings for collection posts.</summary>
 internal static class CollectionSettings
 {
     internal static ConfigEntry<bool> Enabled;
@@ -13,7 +13,6 @@ internal static class CollectionSettings
     internal static ConfigEntry<float> Interval;
     internal static ConfigEntry<int> BatchSize;
     internal static ConfigEntry<int> ScanLimit;
-    internal static ConfigEntry<float> StationDistance;
     internal static ConfigEntry<bool> PlayerDrops;
     internal static ConfigEntry<float> OwnershipRetry;
 
@@ -25,12 +24,10 @@ internal static class CollectionSettings
         Interval = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "IntervalSeconds", 2f, "Seconds between collection rounds.", new AcceptableValueRange<float>(0.5f, 60f));
         BatchSize = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "StacksPerRound", 20, "Maximum loose stacks processed per post each round.", new AcceptableValueRange<int>(1, 200));
         ScanLimit = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "ScanLimit", 200, "Maximum loaded drops examined per round; larger sets are scanned over several rounds.", new AcceptableValueRange<int>(20, 2000));
-        StationDistance = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "StationDistance", 5f, "Maximum distance to the connected workbench, in metres.", new AcceptableValueRange<float>(1f, 30f));
         PlayerDrops = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "CollectPlayerDrops", false, "Also collect items deliberately dropped by players.");
         OwnershipRetry = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "OwnershipRetrySeconds", 5f, "Seconds before retrying a chest ownership request that received no response.", new AcceptableValueRange<float>(1f, 60f));
         Translations.AddEnglish("whitehilt_collection_active", "Collecting into nearby chests");
         Translations.AddEnglish("whitehilt_collection_paused", "Collection paused");
-        Translations.AddEnglish("whitehilt_collection_nobench", "No workbench connected");
         Translations.AddEnglish("whitehilt_collection_nochests", "No accessible White Hilt chests in range");
         Translations.AddEnglish("whitehilt_collection_toggle", "Pause / resume collection");
         Translations.AddEnglish("whitehilt_collection_ranges", "Collection: {0} m; chests: {1} m");

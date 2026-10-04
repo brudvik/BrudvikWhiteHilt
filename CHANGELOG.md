@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.0 - 2026-10-04
+
+### Added
+- **Drop items in the Collection Post**: its basket now holds 8 × 4 slots. Put items in and close it, and the post sorts them into nearby White Hilt chests by the same rules as loose drops: category chests first, then the Everlasting Chest, and items a chest already holds without limit are absorbed. Items that fit nowhere stay in the basket. **Use** opens the basket; pausing moved to **Shift + Use**.
+
+### Changed
+- **The Collection Post stands on its own**: it no longer needs a workbench nearby and is no longer a workbench extension, so a workbench it stood next to loses that station level. The `StationDistance` setting is removed.
+- **Collection prefers chests that already hold an item**: among chests of the same kind, the one already holding the item gets it before the nearest one.
+
 ## v0.88.2 - 2026-10-04
 
 ### Changed

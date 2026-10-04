@@ -56,6 +56,7 @@ public static class WhiteHiltConfig
         (TiersSection, "GiftOfMimir"),
         ("Fishing.Net", "MendItem"),
         ("Fishing.Net", "MendAmount"),
+        ("Chests.Collection", "StationDistance"),
     };
 
     // Renamed sections; their values move over before anything is bound.
