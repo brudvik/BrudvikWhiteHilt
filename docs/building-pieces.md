@@ -1,4 +1,4 @@
-# 🪵 Beams, poles & banners
+# 🪵 Beams, poles, grates & banners
 
 [← Back to the README](../README.MD)
 
@@ -31,3 +31,19 @@ More lengths and angles of the vanilla beams and poles, in the hammer right afte
 | **Wood iron pole 1m** | Wood iron pole | ×0.5 | Shortened |
 | **Wood iron beam 26°** | Wood iron beam | ×1 | Tilted to the 26° roof, snaps like the vanilla 26° wood beam |
 | **Wood iron beam 45°** | Wood iron beam | ×1 | Tilted to the 45° roof, snaps like the vanilla 45° wood beam |
+
+---
+
+## Iron Grates
+
+Three additional single-piece panels in the hammer's vanilla building category. Dimensions below are width × height. They repeat unscaled vanilla grate models, preserving the bar thickness and spacing rather than stretching the bars. The 4×4 m panel has seams between four 2×2 m sections.
+
+| Piece | Made from | Requirements |
+|-------|-----------|--------------|
+| **Iron grate 2×1 m** | Two 1×1 m grates | Iron ×2 |
+| **Iron grate 4×4 m** | Four 2×2 m grates | Iron ×8 |
+| **Iron grate 4×1 m** | Four 1×1 m grates | Iron ×4 |
+
+Each panel has its own placement collision, icon and snap points every metre along its edges, including corners and midpoints. The original 1×1 and 2×2 m pieces remain unchanged. New panels keep the source grate's strength, support material, build-station rules and wear/destruction effects. The recipes unlock through Iron without extra progression materials.
+
+The usual `Content` and `Recipes` settings apply separately to `piece_whitehilt_iron_grate_2x1`, `piece_whitehilt_iron_grate_4x4` and `piece_whitehilt_iron_grate_4x1`. Live placement, snapping, removal/refunds and multiplayer still require in-game testing.

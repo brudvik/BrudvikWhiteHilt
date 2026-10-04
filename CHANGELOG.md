@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.87.0 - 2026-10-04
+
+### Added
+- **Iron grate panels** in 2×1 m, 4×4 m and 4×1 m sizes (width × height), built as single hammer pieces from unscaled vanilla grate sections. Preserve vanilla bar thickness, wear/destruction models, strength and building category; add edge snap points every metre, fitted placement collision, icons and Norwegian text. Cost Iron ×2, ×8 and ×4 respectively, with normal per-piece content/recipe configuration. Original grates are unchanged. Live snapping, placement, refunds and multiplayer require in-game testing.
+
 ## v0.86.2 - 2026-10-04
 
 ### Fixed

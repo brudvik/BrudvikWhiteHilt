@@ -83,7 +83,7 @@ A clock with the weather on the HUD, muffled weather indoors, and dropped items 
 
 ### 🪵 [Beams, poles & banners](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md)
 
-Longer and angled beams and poles, White Hilt banners, and the logo in the main menu and loading screen.
+Longer and angled beams and poles, iron grates in more sizes, White Hilt banners, and the logo in the main menu and loading screen.
 
 ### 🏠 [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
 

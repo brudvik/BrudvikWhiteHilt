@@ -594,6 +594,7 @@
     <Compile Include="Backpack\HotbarSupply.cs" />
     <Compile Include="Pieces\Structure\BeamPieceBase.cs" />
     <Compile Include="Pieces\Structure\BeamPieces.cs" />
+    <Compile Include="Pieces\Structure\IronGratePieces.cs" />
     <Compile Include="Painting\DyeCatalog.cs" />
     <Compile Include="Painting\PaintBrush.cs" />
     <Compile Include="Painting\PaintColor.cs" />
