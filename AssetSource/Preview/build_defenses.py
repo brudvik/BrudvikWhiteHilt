@@ -623,6 +623,59 @@ def mooring_post():
 
 MOORING_ROPE_Y = 1.0
 
+def drystone_course(x0, x1, y, height, depth, rng, along_z=False):
+    """One course of field stones between x0 and x1 (or z0 and z1), stones of uneven length set end to end."""
+    parts = []
+    x = x0
+    while x < x1 - 0.05:
+        length = min(rng.uniform(0.32, 0.55), x1 - x)
+        # A sliver would be left at the end: this stone takes it.
+        if x1 - x - length < 0.2:
+            length = x1 - x
+        middle = x + length / 2
+        size = (length * 1.15 / 1.14, height * rng.uniform(1.05, 1.3) / 0.69, depth * rng.uniform(0.8, 1.0) / 0.9)
+        shade = rng.uniform(0.72, 0.95)
+        sway = rng.uniform(-0.03, 0.03)
+        position = (sway, y + 0.16 * size[1], middle) if along_z else (middle, y + 0.16 * size[1], sway)
+        yaw = (90 if along_z else 0) + rng.uniform(-10, 10)
+        parts.append(part("rock", position, (rng.uniform(-6, 6), yaw, rng.uniform(-6, 6)), size, tint=[shade, shade, shade * 0.97]))
+        x += length
+    return parts
+
+
+def drystone_wall(length, height, seed, depth=0.6):
+    """A dry stone wall along x, centred on the origin: courses of field stones, each set off half a stone from the one
+    below, narrowing a little towards the top."""
+    rng = random.Random(seed)
+    courses = max(2, round(height / 0.3))
+    course = height / courses
+    parts = []
+    for i in range(courses):
+        offset = rng.uniform(0.1, 0.25) if i % 2 else 0
+        d = depth * (1 - 0.15 * i / courses)
+        parts += drystone_course(-length / 2 - offset, length / 2, i * course, course, d, rng)
+    # Stones reaching past the ends are cut back by the course range; keep the wall inside its length.
+    colliders = [box((0, height / 2, 0), (length, height, depth))]
+    snaps = [(-length / 2, 0, 0), (length / 2, 0, 0), (-length / 2, height, 0), (length / 2, height, 0)]
+    return parts, colliders, snaps
+
+
+def drystone_corner(height, seed, depth=0.6):
+    """A corner of dry stone wall: 1 m along +x and 1 m along +z from a shared corner stone at the origin."""
+    rng = random.Random(seed)
+    courses = max(2, round(height / 0.3))
+    course = height / courses
+    parts = []
+    for i in range(courses):
+        d = depth * (1 - 0.15 * i / courses)
+        parts += drystone_course(depth / 2, 1.0, i * course, course, d, rng)
+        parts += drystone_course(-depth / 2, 1.0, i * course, course, d, rng, along_z=True)
+    colliders = [box((0.5 - depth / 4, height / 2, 0), (1.0 + depth / 2, height, depth)),
+                 box((0, height / 2, 0.5 - depth / 4), (depth, height, 1.0 + depth / 2))]
+    snaps = [(1.0, 0, 0), (0, 0, 1.0), (1.0, height, 0), (0, height, 1.0), (0, 0, 0), (0, height, 0)]
+    return parts, colliders, snaps
+
+
 def ship_setting():
     """A ship setting: 22 raised stones in the outline of a ship, 12 m long and 4 m wide, the tallest at the stems.
 
@@ -768,6 +821,10 @@ def navigation_pieces():
                 views=views(("angle", 150, 30), ("side", 90, 12), ("top", 180, 80))),
         defence("steinring", "wood_pole2", *stone_ring(), [],
                 views=views(("angle", 160, 35), ("side", 90, 15), ("top", 180, 80))),
+        defence("torrmur", "stone_wall_1x1", *drystone_wall(2.0, 0.9, 3101), views=views(("front", 160, 15), ("side", 90, 10), ("top", 180, 70))),
+        defence("torrmur_1m", "stone_wall_1x1", *drystone_wall(1.0, 0.9, 3202), views=views(("front", 160, 15), ("side", 90, 10), ("top", 180, 70))),
+        defence("torrmur_hjorne", "stone_wall_1x1", *drystone_corner(0.9, 3303), views=views(("outside", -135, 20), ("inside", 45, 25), ("top", 180, 70))),
+        defence("steingard", "stone_wall_1x1", *drystone_wall(2.0, 0.6, 3404, depth=0.5), views=views(("front", 160, 15), ("side", 90, 10), ("top", 180, 70))),
         defence("skipsbyggerbenk", "piece_workbench", *shipwright_bench(), [],
                 keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                 views=views(("front", 180, 20), ("side", 130, 20), ("back", -30, 30))),

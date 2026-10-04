@@ -757,6 +757,7 @@
     <Compile Include="Pieces\Ships\ManOverboard.cs" />
     <Compile Include="Pieces\Ships\MooringPost.cs" />
     <Compile Include="Pieces\Ships\ShipwrightBench.cs" />
+    <Compile Include="Pieces\Stonework\DryStoneWalls.cs" />
     <Compile Include="Pieces\Stonework\HnefataflBoard.cs" />
     <Compile Include="Pieces\Stonework\MemorialStone.cs" />
     <Compile Include="Pieces\Stonework\ShipSetting.cs" />

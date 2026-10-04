@@ -59,3 +59,16 @@ Thin slabs of slate in the same stone as the [slate roof](roofs.md), for floors,
 | **Slate Path** (`piece_whitehilt_slatepath`) | Four loose flagstones in 2 × 2 m, laid end to end for a path | Hammer, near a Stonecutter | Slate ×3 |
 
 Slate comes from slate outcrops in the Mountains (see [Roofs](roofs.md)).
+
+## Dry stone walls
+
+<img src="images/dry_stone_walls.png" alt="Dry stone wall, corner and field wall" title="Dry stone wall, corner and field wall" height="140">
+
+Field stones stacked without mortar, each course set off from the one below, as round Norwegian farms and fields. The walls snap end to end and on top of each other, and the corner joins two of them. They are stone: they want the ground or stone under them.
+
+| Piece | Use | Crafting Station | Requirements |
+|-------|-----|------------------|--------------|
+| **Dry Stone Wall** (`piece_whitehilt_torrmur`) | 2 m long, 0.9 m high | Hammer, near a Stonecutter | Stone ×12 |
+| **Dry Stone Wall 1 m** (`piece_whitehilt_torrmur_1m`) | 1 m long, 0.9 m high, to close a gap | Hammer, near a Stonecutter | Stone ×6 |
+| **Dry Stone Wall Corner** (`piece_whitehilt_torrmur_hjorne`) | 1 m each way, 0.9 m high | Hammer, near a Stonecutter | Stone ×10 |
+| **Field Wall** (`piece_whitehilt_steingard`) | A low wall round fields, 2 m long, 0.6 m high | Hammer, near a Stonecutter | Stone ×8 |
