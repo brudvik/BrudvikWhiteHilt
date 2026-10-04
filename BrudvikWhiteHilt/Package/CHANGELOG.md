@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.3 - 2026-10-04
+
+### Added
+- **The Collection Post shows what it does**: when it moves items, its light flares and a sparkle rises over the basket and over each chest that received something, for every player nearby. The hover text shows how many chests it uses and what it sorted last. While stacks in the basket fit in no chest, the light turns red and breathes, and the hover text counts those stacks.
+
+### Fixed
+- **Basket items that fit nowhere no longer block the rest**: with 20 or more such stacks first in the basket, the stacks behind them were never sorted. The basket is now tried a batch at a time in turn.
+- **One chest changing hands no longer stops the whole basket**: a chest last used by another player is requested together with the others, and the remaining stacks keep moving meanwhile. Items wait for their category chest instead of falling through to the Everlasting Chest.
+- **Items held in several chests are spread correctly**: chests that absorb an item without limit are preferred, a full chest passes the rest on to the next matching chest or wall drawer, and collection rounds with many posts and chests are lighter.
+
 ## v0.89.2 - 2026-10-04
 
 ### Changed
