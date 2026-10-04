@@ -15,6 +15,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 - Ashlands damage immune and resistant
 - Always has tailwind (full sail speed regardless of wind direction) (`Ships` → `AlwaysTailwind`)
 - Sails five times harder than the vanilla code default (`Ships` → `SailForce`, 0.5)
+- During manual sailing, the helmsman is preferred as network owner of the White Hilt Ship (`HelmOwnership`). Ownership stays with a player using the cargo hold or sea chest until both are closed and the open-request grace period has elapsed. Both inventories and current motion are saved before handing ownership back. Speed and sail force are unchanged; this does not remove network latency or passenger-side movement corrections.
 - Comfort bonus: +5
 - Its own look: a carved dragon figurehead, a white sail with gold stripes along the edges and the White Hilt logo in the middle, a whitewashed hull with gold fittings, and shields with the logo along the rail
 
@@ -37,7 +38,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 **Sailing help** (every ship, also vanilla ones):
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
 - **Speed and heading**: while steering, the speed in knots, the heading in degrees and compass point, where the wind comes from and the held course are shown under the wind indicator (`ShowSpeedAndHeading`).
-- **Sounding line**: the read-out also shows the depth of the water under the ship, rocks under water included (`ShowDepth`). While you steer, or ride a ship that sails its route, the water ahead is sounded too: 5 seconds of sailing ahead, at least 15 m and at most 60 m past the bow. If it gets shallower than 3.5 m or rocks lie in the way, the depth turns red, a message says *Shallow water ahead!* or *Rocks or something in the way ahead!* and the ship's bell rings. Not below 2 m/s, so it stays quiet while you lay to, and not more than once every 8 seconds (`ShoalWarning`, `ShoalBell` and the other `Shoal*` settings below).
+- **Sounding line**: the read-out also shows the depth of the water under the ship, rocks under water included (`ShowDepth`). While you steer, or ride a ship that sails its route, the water ahead is sounded too: 5 seconds of sailing ahead, at least 15 m and at most 60 m past the bow. Depth and obstacle scans run once a second (`SoundingInterval`), rather than on each read-out refresh. If it gets shallower than 3.5 m or rocks lie in the way, the depth turns red, a message says *Shallow water ahead!* or *Rocks or something in the way ahead!* and the ship's bell rings. Not below 2 m/s, so it stays quiet while you lay to. Continuous danger, such as sailing beside a shallow shore, gives a reminder only every 60 seconds (`ShoalRepeatSeconds`). After 5 seconds of clear water at warning speed (`ShoalClearSeconds`), the next danger can warn again, still respecting the minimum 8-second pause (`ShoalCooldown`). Stopping or a brief gap in the shallows does not reset the reminder.
 - **Camera zoom**: at the helm the camera zooms 2 m further out than in vanilla (`CameraExtraZoom`), and everyone aboard, standing on deck or sitting, can zoom out just as far (`CameraZoomAllAboard`).
 - **Camera sweep**: when a ship sets off on its route ("Take me there" or explorer mode, see [Navigation](navigation.md)), the camera of everyone sitting aboard swings out around the ship, stops for a moment in front of the sail and comes round to behind you again, with the HUD hidden. Looking calmly around does not disturb it; a quick swing of the mouse, standing up or opening a menu brings the camera back at once.
 - **Push the ship**: standing on shore or in the water next to a ship that lies still, look at it and press **E** (hold to keep pushing). It is pushed away from you, off a beach or a rock.
@@ -67,6 +68,9 @@ Section `[Ships]` (admin only, synced from the server):
 | Setting | Default | What it does |
 |---|---|---|
 | `HoldCourse` | true | Ships can hold their course with nobody at the helm |
+| `HelmOwnership` | true | Prefer the White Hilt Ship's helmsman as network owner when both containers are idle; no change to vanilla ships or autopilot ownership |
+| `HelmOwnershipInterval` | 0.5 | Seconds between ownership checks |
+| `ContainerOwnershipGrace` | 2 | Seconds ownership is reserved after cargo open/stack or sea chest open requests; an open container remains protected after this timeout |
 | `PushShip` | true | A still ship can be pushed off the shore |
 | `PushSpeed` | 2.5 | Speed in m/s one push gives |
 | `PushMaxShipSpeed` | 1.5 | A ship can only be pushed below this speed, in m/s |
@@ -118,12 +122,23 @@ Each player's own settings in `[Ships]`:
 | `RouteCameraSweepCancelSeconds` | 0.5 | Seconds back to you when the sweep is interrupted |
 | `RouteCameraSweepCancelLook` | 90 | Degrees the view must turn within about a second to interrupt; calm looking around and zooming do not |
 | `ShowDepth` | true | Show the depth under the ship in the read-out |
+| `SoundingInterval` | 1 | Seconds between depth and obstacle scans; results are cached between scans |
 | `ShoalWarning` | true | Warn of shallow water and rocks ahead |
 | `ShoalBell` | true | The warning rings the ship's bell |
 | `ShoalDepth` | 3.5 | Water shallower than this, in metres, counts as shallow (ships need about 2 m) |
 | `ShoalLookaheadSeconds` | 5 | Seconds of sailing ahead that are sounded |
 | `ShoalMinLookahead` / `ShoalMaxLookahead` | 15 / 60 | Metres ahead of the bow sounded at least and at most |
 | `ShoalMinSpeed` | 2 | No warning below this speed, in m/s |
-| `ShoalCooldown` | 8 | Seconds before the warning can come again |
+| `ShoalCooldown` | 8 | Minimum seconds between warnings, including new danger encounters |
+| `ShoalRepeatSeconds` | 60 | Seconds between reminders during continuous danger |
+| `ShoalClearSeconds` | 5 | Seconds of clear water at warning speed before another danger counts as new |
+| `ShipDiagnostics` | false | Log White Hilt Ship ownership and update timing locally while aboard |
+| `ShipDiagnosticsInterval` | 5 | Seconds between diagnostic samples; ownership changes also trigger a sample |
+
+### Multiplayer diagnostics
+
+Enable `[Ships] ShipDiagnostics` on the helmsman's client and on a passenger's client to compare `Ship diagnostics` entries in the BepInEx log. Samples include network owner, previous owner, helmsman player ID, passengers, container use, time since the last observed ZDO revision, largest observed revision gap and peak frame time. Owner peer IDs and helmsman player IDs are different identifiers. Revision timing includes inventory and control changes and is not a direct network-ping or movement-packet measurement.
+
+For an in-game check, sail with multiple players at full sail and through turns, then have a passenger open, edit and close each container. Check that the ship returns to the helmsman's ownership and that both inventories retain their contents after reopening and reloading. Along a shallow shore, expect one initial warning and one reminder per minute, with a new warning after a sustained clear stretch. Compilation and isolated production-method checks passed; multiplayer smoothness and inventory handoff still require this in-game validation. Server and clients should update together.
 
 `[Gear.ShipUpgrades] Weight` (5) sets the weight of each ship upgrade item.

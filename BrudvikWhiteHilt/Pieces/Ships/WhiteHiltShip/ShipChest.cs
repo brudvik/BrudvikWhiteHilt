@@ -105,6 +105,7 @@ public class ShipChest : MonoBehaviour
             return;
         }
 
+        nview.GetComponent<ShipAssist>()?.ReserveContainerOwnership();
         ZDOMan.instance.ForceSendZDO(sender, nview.GetZDO().m_uid);
         nview.GetZDO().SetOwner(sender);
         nview.InvokeRPC(sender, OpenedRpc, true);

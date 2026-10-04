@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.80.3 - 2026-10-04
+
+### Fixed
+- **White Hilt Ship helm ownership**: prefer the helmsman's client for manual sailing physics when both cargo containers are idle. Container open/stack requests reserve ownership, open inventories block handoff, and both inventories plus current motion are saved before transferring back. The new owner restores received speed and rudder before vanilla physics updates them. Vanilla ships, autopilot ownership, sail force and speed are unchanged. Includes server-synced ownership settings and optional local ownership/frame/ZDO-revision diagnostics. Compilation and 44 isolated production-method checks passed; the reported multiplayer lag was not reproduced and in-game smoothness and inventory handoff still require testing. Server and clients should update together.
+
+### Changed
+- **Quieter, lighter sounding**: depth and obstacle scans run once per second by default instead of five times per second. Persistent shallow-water danger gives a reminder every 60 seconds rather than repeating on the eight-second cooldown. Five seconds of clear water at warning speed rearm a new encounter; short gaps or stopping do not. The existing minimum warning cooldown remains configurable. New scan, reminder and clear-water intervals have Norwegian settings text and ship documentation.
+
 ## v0.80.2 - 2026-10-04
 
 ### Changed

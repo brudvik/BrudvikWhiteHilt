@@ -21,6 +21,33 @@ public static class ShipAssistPatches
         ShipMooring.Attach(__instance);
     }
 
+    /// <summary>Restores authoritative controls and checks ownership before the ship's physics update.</summary>
+    /// <param name="__instance">The ship.</param>
+    [HarmonyPatch(typeof(Ship), nameof(Ship.CustomFixedUpdate))]
+    [HarmonyPrefix]
+    public static void ShipPhysics(Ship __instance)
+    {
+        __instance.GetComponent<ShipAssist>()?.PreparePhysics();
+    }
+
+    /// <summary>Delays helm ownership while a vanilla cargo open request is being handled.</summary>
+    /// <param name="__instance">The container sharing the ship's network object.</param>
+    [HarmonyPatch(typeof(Container), nameof(Container.RPC_RequestOpen))]
+    [HarmonyPrefix]
+    public static void ContainerOwnershipRequest(Container __instance)
+    {
+        __instance.m_nview?.GetComponent<ShipAssist>()?.ReserveContainerOwnership();
+    }
+
+    /// <summary>Delays helm ownership while a vanilla cargo stack request is being handled.</summary>
+    /// <param name="__instance">The container sharing the ship's network object.</param>
+    [HarmonyPatch(typeof(Container), nameof(Container.RPC_RequestStack))]
+    [HarmonyPrefix]
+    public static void ContainerStackOwnershipRequest(Container __instance)
+    {
+        ContainerOwnershipRequest(__instance);
+    }
+
     /// <summary>
     /// Thins the fog near a White Hilt Ship with the Mast Wisp, after the game has set it.
     /// </summary>

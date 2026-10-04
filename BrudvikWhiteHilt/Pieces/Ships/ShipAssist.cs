@@ -38,6 +38,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private static readonly int AutopilotKey = "whitehilt_autopilot".GetStableHashCode();
     private static readonly int CourseKey = "whitehilt_autopilot_course".GetStableHashCode();
+    private static readonly int ContainerGraceKey = "whitehilt_ship_container_grace".GetStableHashCode();
     private static int obstacleMask;
 
     private ZNetView nview;
@@ -47,6 +48,16 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private bool wasControlled;
     private float nextCheck;
     private float nextPush;
+    private Container[] containers;
+    private bool wasOwner;
+    private float nextOwnershipCheck;
+    private float nextDiagnostic;
+    private float revisionSeenAt;
+    private float peakRevisionGap;
+    private float peakFrameTime;
+    private uint diagnosticRevision;
+    private bool diagnosticStarted;
+    private long diagnosticOwner;
 
     /// <summary>
     /// True while the ship holds its course when nobody is at the helm.
@@ -169,6 +180,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         ship = GetComponent<Ship>();
         body = GetComponent<Rigidbody>();
         upgrades = GetComponent<WhiteHiltShipUpgrades>();
+        containers = GetComponentsInChildren<Container>(true);
         if (nview == null || nview.GetZDO() == null)
         {
             return;
@@ -178,6 +190,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         nview.Register(ShallowRpc, RPC_Shallow);
         nview.Register<Vector3>(PushRpc, RPC_Push);
         nview.Register(HaltRpc, RPC_Halt);
+        wasOwner = nview.IsOwner();
     }
 
     private void FixedUpdate()
@@ -218,6 +231,149 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
                 nview.InvokeRPC(ZNetView.Everybody, ShallowRpc);
             }
         }
+    }
+
+    /// <summary>Restores transferred controls and checks helm ownership before vanilla ship physics reads or writes them.</summary>
+    public void PreparePhysics()
+    {
+        UpdateOwnerControls();
+        UpdateHelmOwnership();
+    }
+
+    /// <summary>Reserves ship ownership while a container open request is in flight. Called on the current owner.</summary>
+    public void ReserveContainerOwnership()
+    {
+        if (upgrades != null && nview != null && nview.IsValid() && nview.IsOwner())
+        {
+            nview.GetZDO().Set(ContainerGraceKey, ZNet.instance.GetTime().AddSeconds(ShipSettings.ContainerOwnershipGrace.Value).Ticks);
+        }
+    }
+
+    private bool ContainersInUse()
+    {
+        foreach (Container container in containers)
+        {
+            if (container != null && container.IsInUse())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void UpdateOwnerControls()
+    {
+        if (upgrades == null || nview == null || !nview.IsValid() || ship == null)
+        {
+            return;
+        }
+
+        bool owner = nview.IsOwner();
+        if (owner && !wasOwner)
+        {
+            ZDO zdo = nview.GetZDO();
+            ship.m_speed = (Ship.Speed)zdo.GetInt(ZDOVars.s_forward);
+            ship.m_rudderValue = zdo.GetFloat(ZDOVars.s_rudder);
+            nextOwnershipCheck = Time.time + ShipSettings.HelmOwnershipInterval.Value;
+        }
+
+        wasOwner = owner;
+    }
+
+    private void UpdateHelmOwnership()
+    {
+        if (upgrades == null || !ShipSettings.HelmOwnership.Value || ship == null || nview == null || !nview.IsValid()
+            || !nview.IsOwner() || body == null || Time.time < nextOwnershipCheck)
+        {
+            return;
+        }
+
+        nextOwnershipCheck = Time.time + ShipSettings.HelmOwnershipInterval.Value;
+        ZDO zdo = nview.GetZDO();
+        if (!ship.HaveControllingPlayer() || ContainersInUse() || zdo.GetLong(ContainerGraceKey) > ZNet.instance.GetTime().Ticks)
+        {
+            return;
+        }
+
+        long user = ship.m_shipControlls.GetUser();
+        Player helmsman = ship.m_players.Find(player => player != null && player.GetPlayerID() == user);
+        long owner = helmsman != null ? helmsman.GetOwner() : 0L;
+        if (owner == 0L || owner == zdo.GetOwner())
+        {
+            return;
+        }
+
+        foreach (Container container in containers)
+        {
+            if (container != null && container.GetInventory() != null)
+            {
+                container.Load();
+                container.Save();
+            }
+        }
+
+        zdo.SetPosition(body.position);
+        zdo.SetRotation(body.rotation);
+        zdo.Set(ZDOVars.s_velHash, body.linearVelocity);
+        ZSyncTransform sync = GetComponent<ZSyncTransform>();
+        if (sync != null && sync.m_syncBodyVelocity)
+        {
+            zdo.Set(ZDOVars.s_bodyVelHash, body.linearVelocity);
+            zdo.Set(ZDOVars.s_bodyAVelHash, body.angularVelocity);
+        }
+
+        zdo.Set(ZDOVars.s_forward, (int)ship.m_speed);
+        zdo.Set(ZDOVars.s_rudder, ship.m_rudderValue);
+        ZDOMan.instance.ForceSendZDO(owner, zdo.m_uid);
+        zdo.SetOwner(owner);
+        if (ShipSettings.ShipDiagnostics.Value)
+        {
+            Jotunn.Logger.LogInfo($"Ship diagnostics: {zdo.m_uid} helm ownership -> {owner}");
+        }
+    }
+
+    private void Update()
+    {
+        if (!ShipSettings.ShipDiagnostics.Value || upgrades == null || ship == null || nview == null || !nview.IsValid()
+            || Player.m_localPlayer == null || !ship.IsPlayerInBoat(Player.m_localPlayer))
+        {
+            diagnosticStarted = false;
+            return;
+        }
+
+        ZDO zdo = nview.GetZDO();
+        float now = Time.unscaledTime;
+        if (!diagnosticStarted)
+        {
+            diagnosticStarted = true;
+            diagnosticRevision = zdo.DataRevision;
+            diagnosticOwner = zdo.GetOwner();
+            revisionSeenAt = now;
+            peakRevisionGap = 0f;
+            peakFrameTime = 0f;
+            nextDiagnostic = now;
+        }
+
+        peakFrameTime = Mathf.Max(peakFrameTime, Time.unscaledDeltaTime);
+        if (diagnosticRevision != zdo.DataRevision)
+        {
+            peakRevisionGap = Mathf.Max(peakRevisionGap, now - revisionSeenAt);
+            revisionSeenAt = now;
+            diagnosticRevision = zdo.DataRevision;
+        }
+
+        long owner = zdo.GetOwner();
+        if (now < nextDiagnostic && owner == diagnosticOwner)
+        {
+            return;
+        }
+
+        Jotunn.Logger.LogInfo($"Ship diagnostics: {zdo.m_uid} owner={owner} previousOwner={diagnosticOwner} localOwner={nview.IsOwner()} helm={ship.m_shipControlls.GetUser()} aboard={ship.m_players.Count} containersInUse={ContainersInUse()} revisionAge={now - revisionSeenAt:F2}s peakRevisionGap={peakRevisionGap:F2}s peakFrame={peakFrameTime * 1000f:F1}ms");
+        diagnosticOwner = owner;
+        nextDiagnostic = now + ShipSettings.ShipDiagnosticsInterval.Value;
+        peakRevisionGap = 0f;
+        peakFrameTime = 0f;
     }
 
     /// <summary>

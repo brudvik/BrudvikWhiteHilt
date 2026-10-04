@@ -19,6 +19,13 @@ public static class ShipSounding
 
     private static float nextWarning;
     private static int rockMask;
+    private static Ship soundedShip;
+    private static float nextScan;
+    private static float depth;
+    private static string danger;
+    private static bool warnedEncounter;
+    private static float clearSince = -1f;
+    private static float lastWarning;
 
     /// <summary>
     /// Sounds the water under and ahead of the ship and warns when it is dangerous.
@@ -40,15 +47,22 @@ public static class ShipSounding
             return null;
         }
 
-        string danger = warn && speed >= ShipSettings.ShoalMinSpeed.Value ? DangerAhead(ship, speed) : null;
-        if (danger != null && Time.time >= nextWarning)
+        if (ship != soundedShip)
         {
-            nextWarning = Time.time + ShipSettings.ShoalCooldown.Value;
-            Player.m_localPlayer?.Message(MessageHud.MessageType.Center, danger);
-            if (ShipSettings.ShoalBell.Value)
-            {
-                ShipBell.Ring(ship.transform.position);
-            }
+            soundedShip = ship;
+            nextScan = 0f;
+            danger = null;
+            warnedEncounter = false;
+            clearSince = -1f;
+        }
+
+        bool eligible = warn && speed >= ShipSettings.ShoalMinSpeed.Value;
+        if (Time.time >= nextScan)
+        {
+            nextScan = Time.time + ShipSettings.SoundingInterval.Value;
+            depth = showDepth ? Mathf.Max(0f, Depth(ship, ship.transform.position)) : 0f;
+            danger = eligible ? DangerAhead(ship, speed) : null;
+            UpdateWarning(ship, danger, eligible);
         }
 
         if (!showDepth)
@@ -56,8 +70,47 @@ public static class ShipSounding
             return null;
         }
 
-        string line = string.Format(Localization.instance.Localize("$whitehilt_shiphud_depth"), Mathf.Max(0f, Depth(ship, ship.transform.position)).ToString("0.0"));
-        return danger != null ? $"<color={DangerColour}>{line}</color>" : line;
+        string line = string.Format(Localization.instance.Localize("$whitehilt_shiphud_depth"), depth.ToString("0.0"));
+        return eligible && danger != null ? $"<color={DangerColour}>{line}</color>" : line;
+    }
+
+    private static void UpdateWarning(Ship ship, string currentDanger, bool eligible)
+    {
+        if (!eligible)
+        {
+            clearSince = -1f;
+            return;
+        }
+
+        if (currentDanger == null)
+        {
+            if (clearSince < 0f)
+            {
+                clearSince = Time.time;
+            }
+
+            if (Time.time - clearSince >= ShipSettings.ShoalClearSeconds.Value)
+            {
+                warnedEncounter = false;
+            }
+
+            return;
+        }
+
+        clearSince = -1f;
+        if (Time.time < nextWarning || (warnedEncounter && Time.time - lastWarning < ShipSettings.ShoalRepeatSeconds.Value))
+        {
+            return;
+        }
+
+        warnedEncounter = true;
+        lastWarning = Time.time;
+        nextWarning = Time.time + ShipSettings.ShoalCooldown.Value;
+        Player.m_localPlayer?.Message(MessageHud.MessageType.Center, currentDanger);
+        if (ShipSettings.ShoalBell.Value)
+        {
+            ShipBell.Ring(ship.transform.position);
+        }
     }
 
     /// <summary>

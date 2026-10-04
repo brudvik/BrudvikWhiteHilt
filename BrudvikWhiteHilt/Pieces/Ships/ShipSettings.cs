@@ -178,6 +178,30 @@ public static class ShipSettings
     /// <summary>Seconds before the warning can come again.</summary>
     public static ConfigEntry<float> ShoalCooldown { get; private set; }
 
+    /// <summary>Seconds between depth and obstacle scans.</summary>
+    public static ConfigEntry<float> SoundingInterval { get; private set; }
+
+    /// <summary>Seconds between reminders of continuous danger.</summary>
+    public static ConfigEntry<float> ShoalRepeatSeconds { get; private set; }
+
+    /// <summary>Seconds of clear water before another danger counts as a new encounter.</summary>
+    public static ConfigEntry<float> ShoalClearSeconds { get; private set; }
+
+    /// <summary>Whether the White Hilt Ship prefers its helmsman as network owner when its containers are idle.</summary>
+    public static ConfigEntry<bool> HelmOwnership { get; private set; }
+
+    /// <summary>Seconds between checks of the helmsman's network ownership.</summary>
+    public static ConfigEntry<float> HelmOwnershipInterval { get; private set; }
+
+    /// <summary>Seconds ownership is reserved for a container open request.</summary>
+    public static ConfigEntry<float> ContainerOwnershipGrace { get; private set; }
+
+    /// <summary>Whether this client logs White Hilt Ship ownership and update timing.</summary>
+    public static ConfigEntry<bool> ShipDiagnostics { get; private set; }
+
+    /// <summary>Seconds between diagnostic samples.</summary>
+    public static ConfigEntry<float> ShipDiagnosticsInterval { get; private set; }
+
     /// <summary>Whether a fall from a moving ship is called out to those aboard.</summary>
     public static ConfigEntry<bool> ManOverboard { get; private set; }
 
@@ -326,7 +350,23 @@ public static class ShipSettings
         ShoalMinSpeed = WhiteHiltConfig.BindLocal(Section, "ShoalMinSpeed", 2f,
             "Below this speed, in m/s, there is no warning, so it stays quiet while you lay to.", new AcceptableValueRange<float>(0f, 20f));
         ShoalCooldown = WhiteHiltConfig.BindLocal(Section, "ShoalCooldown", 8f,
-            "Seconds before the shoal warning can come again.", new AcceptableValueRange<float>(1f, 120f));
+            "Minimum seconds between warnings, also for a new danger after clear water.", new AcceptableValueRange<float>(1f, 120f));
+        SoundingInterval = WhiteHiltConfig.BindLocal(Section, "SoundingInterval", 1f,
+            "Seconds between depth and obstacle scans; the read-out uses the latest result between scans.", new AcceptableValueRange<float>(0.2f, 5f));
+        ShoalRepeatSeconds = WhiteHiltConfig.BindLocal(Section, "ShoalRepeatSeconds", 60f,
+            "Seconds between reminders while danger persists, for example when sailing along shallow shores.", new AcceptableValueRange<float>(8f, 600f));
+        ShoalClearSeconds = WhiteHiltConfig.BindLocal(Section, "ShoalClearSeconds", 5f,
+            "Seconds of clear water at warning speed before the next danger counts as a new encounter.", new AcceptableValueRange<float>(0f, 60f));
+        HelmOwnership = WhiteHiltConfig.BindAdminOnly(Section, "HelmOwnership", true,
+            "Prefer the White Hilt Ship's helmsman as network owner. Wait while either container is in use or opening; sailing speed is unchanged.");
+        HelmOwnershipInterval = WhiteHiltConfig.BindAdminOnly(Section, "HelmOwnershipInterval", 0.5f,
+            "Seconds between checks for transferring White Hilt Ship ownership to its helmsman.", new AcceptableValueRange<float>(0.1f, 5f));
+        ContainerOwnershipGrace = WhiteHiltConfig.BindAdminOnly(Section, "ContainerOwnershipGrace", 2f,
+            "Seconds after a container open request before helm ownership may resume. An open container keeps ownership until closed.", new AcceptableValueRange<float>(1f, 30f));
+        ShipDiagnostics = WhiteHiltConfig.BindLocal(Section, "ShipDiagnostics", false,
+            "Log White Hilt Ship owner, helmsman, container use, ZDO revision timing and peak frame time on this client while aboard.");
+        ShipDiagnosticsInterval = WhiteHiltConfig.BindLocal(Section, "ShipDiagnosticsInterval", 5f,
+            "Seconds between local ship diagnostic samples. ZDO revision timing includes inventory and control changes, not only movement.", new AcceptableValueRange<float>(1f, 60f));
         ManOverboard = WhiteHiltConfig.BindAdminOnly(Section, "ManOverboard", true,
             "When someone falls from a moving ship, everyone aboard is told, with the bell, a pin on the map and an arrow on the minimap toward them.");
         OverboardMinSpeed = WhiteHiltConfig.BindAdminOnly(Section, "OverboardMinSpeed", 2f,
