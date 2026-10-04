@@ -54,7 +54,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// Crafting requirements. Only materials up to and including the Swamp.
+    /// Crafting requirements, made at the Shipwright's Bench. Only materials up to and including the Swamp.
     /// </summary>
     protected abstract RequirementConfig[] Requirements { get; }
 
@@ -119,7 +119,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
     }
 
     /// <summary>
-    /// Adds the upgrade item and its workbench recipe to the game.
+    /// Adds the upgrade item and its Shipwright's Bench recipe to the game.
     /// </summary>
     public void Add()
     {
@@ -129,7 +129,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
             {
                 Name = Translations.Token(NameKey),
                 Description = Translations.Token($"{NameKey}_description"),
-                CraftingStation = CraftingStations.Workbench,
+                CraftingStation = Pieces.Ships.ShipwrightBench.StationPrefabName,
                 Requirements = Requirements
             });
 

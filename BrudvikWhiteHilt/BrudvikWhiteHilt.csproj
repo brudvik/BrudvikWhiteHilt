@@ -751,6 +751,7 @@
     <Compile Include="Pieces\Ships\ShipSounding.cs" />
     <Compile Include="Pieces\Ships\ManOverboard.cs" />
     <Compile Include="Pieces\Ships\MooringPost.cs" />
+    <Compile Include="Pieces\Ships\ShipwrightBench.cs" />
     <Compile Include="Pieces\Ships\MooringPostComponent.cs" />
     <Compile Include="Pieces\Ships\ShipMooring.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />

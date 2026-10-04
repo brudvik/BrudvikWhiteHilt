@@ -30,7 +30,7 @@ public static class VanillaMeshLibrary
     };
 
     // Keys that are models in the White Hilt asset bundle.
-    private static readonly HashSet<string> bundleModels = new() { "cartodesk", "sextant", "mapscroll", "seachart", "amulet" };
+    private static readonly HashSet<string> bundleModels = new() { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "shipanchor", "chains", "fishnet", "rushlight", "paintbucket" };
 
     // Prefabs whose materials can be borrowed by texture name.
     private static readonly string[] materialSources = { "iron_grate" };

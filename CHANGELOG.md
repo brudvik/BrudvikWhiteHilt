@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.8 - 2026-10-04
+
+### Added
+- **Shipwright's Bench**: a workbench of its own for everything that goes on a ship, with an anchor leaning on it, an anchor chain, a coil of rope, a rushlight, a fishing net and a bucket of tar. It needs no roof or walls and does not wear in the rain, so it can stand on the jetty. Built with the Hammer near a Workbench from Fine Wood ×10, Pine Tar ×2, Bronze ×2 and Leather Scraps ×4.
+
+### Changed
+- **Ship upgrades and the Ship Hammer are made at the Shipwright's Bench**, and the Harbour Anchor and the Mooring Post are built near it, instead of at the Workbench.
+- **Ship upgrades use foraged materials**: bog iron for the ironwork, pine tar to seal, sphagnum moss to caulk, peat for the brazier, and cattail, reed and birch bark for the fishing net. See [Ships](docs/ships.md) for each recipe.
+
 ## v0.89.7 - 2026-10-04
 
 ### Fixed

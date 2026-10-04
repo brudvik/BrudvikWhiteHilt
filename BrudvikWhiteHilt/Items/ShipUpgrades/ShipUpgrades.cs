@@ -1,3 +1,9 @@
+using BrudvikWhiteHilt.Items.Foraging.BogIron;
+using BrudvikWhiteHilt.Items.Foraging.Cattail;
+using BrudvikWhiteHilt.Items.Foraging.Peat;
+using BrudvikWhiteHilt.Items.Foraging.Reed;
+using BrudvikWhiteHilt.Items.Foraging.SphagnumMoss;
+using BrudvikWhiteHilt.Items.Roofing;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -37,8 +43,9 @@ public class ShipLantern : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Iron", Amount = 2, Recover = false },
-        new() { Item = "Resin", Amount = 10, Recover = false },
+        new() { Item = BogIron.PrefabName, Amount = 3, Recover = false },
+        new() { Item = "Resin", Amount = 6, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 1, Recover = false },
         new() { Item = "SurtlingCore", Amount = 1, Recover = false }
     };
 
@@ -81,7 +88,8 @@ public class ShipBarrels : WhiteHiltShipUpgradeBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "FineWood", Amount = 10, Recover = false },
-        new() { Item = "Iron", Amount = 4, Recover = false }
+        new() { Item = BogIron.PrefabName, Amount = 4, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 2, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -122,9 +130,10 @@ public class ShipTent : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "TrollHide", Amount = 6, Recover = false },
-        new() { Item = "LeatherScraps", Amount = 10, Recover = false },
-        new() { Item = "Wood", Amount = 6, Recover = false }
+        new() { Item = "TrollHide", Amount = 4, Recover = false },
+        new() { Item = "LeatherScraps", Amount = 6, Recover = false },
+        new() { Item = "Wood", Amount = 6, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 2, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -166,7 +175,8 @@ public class ShipMastWisp : WhiteHiltShipUpgradeBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Guck", Amount = 5, Recover = false },
-        new() { Item = "ElderBark", Amount = 5, Recover = false },
+        new() { Item = "ElderBark", Amount = 3, Recover = false },
+        new() { Item = SphagnumMoss.PrefabName, Amount = 5, Recover = false },
         new() { Item = "SurtlingCore", Amount = 2, Recover = false }
     };
 
@@ -208,9 +218,10 @@ public class ShipFishingNet : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "FineWood", Amount = 4, Recover = false },
-        new() { Item = "LeatherScraps", Amount = 10, Recover = false },
-        new() { Item = "DeerHide", Amount = 4, Recover = false }
+        new() { Item = Cattail.PrefabName, Amount = 8, Recover = false },
+        new() { Item = Reed.PrefabName, Amount = 6, Recover = false },
+        new() { Item = RoofMaterials.BirchBark, Amount = 4, Recover = false },
+        new() { Item = "FineWood", Amount = 4, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -251,8 +262,9 @@ public class ShipDriftAnchor : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Iron", Amount = 4, Recover = false },
-        new() { Item = "Chain", Amount = 2, Recover = false }
+        new() { Item = BogIron.PrefabName, Amount = 6, Recover = false },
+        new() { Item = "Chain", Amount = 2, Recover = false },
+        new() { Item = "Stone", Amount = 6, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -294,9 +306,10 @@ public class ShipBrazier : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "Iron", Amount = 4, Recover = false },
+        new() { Item = BogIron.PrefabName, Amount = 4, Recover = false },
         new() { Item = "Stone", Amount = 10, Recover = false },
-        new() { Item = "SurtlingCore", Amount = 2, Recover = false }
+        new() { Item = Peat.PrefabName, Amount = 10, Recover = false },
+        new() { Item = "SurtlingCore", Amount = 1, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -338,7 +351,9 @@ public class ShipChestUpgrade : WhiteHiltShipUpgradeBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "FineWood", Amount = 10, Recover = false },
-        new() { Item = "Iron", Amount = 2, Recover = false }
+        new() { Item = BogIron.PrefabName, Amount = 2, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 1, Recover = false },
+        new() { Item = SphagnumMoss.PrefabName, Amount = 3, Recover = false }
     };
 
     /// <inheritdoc/>
@@ -379,7 +394,8 @@ public class ShipPortalUpgrade : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
-        new() { Item = "FineWood", Amount = 10, Recover = false },
+        new() { Item = "FineWood", Amount = 8, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 2, Recover = false },
         new() { Item = "Bronze", Amount = 2, Recover = false },
         new() { Item = "SurtlingCore", Amount = 2, Recover = false },
         new() { Item = "GreydwarfEye", Amount = 10, Recover = false }

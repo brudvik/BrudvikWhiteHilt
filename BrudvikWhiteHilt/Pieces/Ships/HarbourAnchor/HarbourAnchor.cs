@@ -74,7 +74,7 @@ public class HarbourAnchor : IWhiteHiltCustomPiece
                 Description = Translations.Token($"{PrefabName}_description"),
                 PieceTable = PieceTables.Hammer,
                 Category = PieceCategories.Misc,
-                CraftingStation = CraftingStations.Workbench,
+                CraftingStation = ShipwrightBench.StationPrefabName,
                 Requirements = new RequirementConfig[]
                 {
                     new() { Item = "Iron", Amount = 2, Recover = true },

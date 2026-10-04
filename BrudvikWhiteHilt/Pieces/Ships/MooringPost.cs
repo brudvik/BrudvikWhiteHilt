@@ -60,6 +60,9 @@ public class MooringPost : DefensePieceBase
     /// <inheritdoc/>
     protected override string Category => PieceCategories.Misc;
 
+    /// <inheritdoc/>
+    protected override string BuildStation => ShipwrightBench.StationPrefabName;
+
     /// <summary>
     /// Adds the mooring to the post.
     /// </summary>

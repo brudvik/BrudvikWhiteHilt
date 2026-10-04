@@ -38,7 +38,7 @@ Console testing: `spawn WhiteHiltSkidbladnir`. Validate waterline and stability,
 
 ### Ship Workshops
 
-Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. They always stand on the floor or deck beneath where you aim, even when you aim at a wall. Use the ordinary Hammer for other furnishings and [wall drawers](chests.md#wall-drawers).
+Craft the **White Hilt Ship Hammer** at the [Shipwright's Bench](#shipwrights-bench) from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. They always stand on the floor or deck beneath where you aim, even when you aim at a wall. Use the ordinary Hammer for other furnishings and [wall drawers](chests.md#wall-drawers).
 
 <img src="images/ship_workbench.png" alt="Ship Workbench" height="140"> <img src="images/ship_forge.png" alt="Ship Forge" height="140"> <img src="images/ship_stonecutter.png" alt="Ship Stonecutter" height="140">
 
@@ -63,19 +63,29 @@ Console prefab names: `WhiteHiltShipHammer`, `piece_whitehilt_shipworkbench`, `p
 
 Recolouring leaves materials without a main texture, including the vanilla water mask, unchanged.
 
-**Ship Upgrades** (crafted at the Workbench, used on the mast like an item on an item stand; use the mast to take the last one off):
+### Shipwright's Bench
+
+<img src="images/shipwright_bench.png" alt="Shipwright's Bench" title="Shipwright's Bench" height="140">
+
+A sturdy workbench with a ship's anchor leaning on one end, an anchor chain, a coil of rope, a rushlight, a fishing net over the tool board and a bucket of tar. Build it with the Hammer under **Crafting**, near a Workbench. It is its own station: the ship upgrades and the Ship Hammer are made here, and the Harbour Anchor and the Mooring Post are built near it. It needs **no roof or walls** and does not wear in the rain, so it can stand out on the jetty.
+
+| Item | Crafting Station | Requirements |
+|------|------------------|--------------|
+| **Shipwright's Bench** (`piece_whitehilt_skipsbyggerbenk`) | Hammer (Workbench) | Fine Wood ×10, Pine Tar ×2, Bronze ×2, Leather Scraps ×4 |
+
+**Ship Upgrades** (crafted at the Shipwright's Bench, used on the mast like an item on an item stand; use the mast to take the last one off). They use what the Swamp and the forests give: bog iron for the ironwork, pine tar to seal, sphagnum moss to caulk, peat for the brazier, and cattail, reed and birch bark for the net:
 
 | Upgrade | Effect | Requirements |
 |---------|--------|--------------|
-| **Ship Lantern** | A lantern on deck that lights up at night, with the vanilla lamp's intensity and three times its range for softer deck lighting and a wider reach around both sides of the ship (`Ships` → `LanternBrightness`, `LanternRange`, each player's own; needs a restart) | Iron ×2, Resin ×10, Surtling Core ×1 |
-| **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
-| **Ship Tent** | A tent on deck; under it you have Shelter and stay dry, but a Kraken tentacle can periodically reach through the side opening and shove sheltered sailors out (see [Kraken](kraken.md#the-fight)) | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
-| **Mast Wisp** | A wisp at the top of the mast that clears the Mistlands mist around the ship and thins ordinary fog for those within 15 m (`Ships` → `MastWispFogLeft`, 0.25 of the fog is left) | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
-| **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes (`Ships` → `FishingNetMinutes`) and puts it in the cargo hold. The Fishing skill of the sailor makes it catch up to twice as often and often two at a time, and raises the skill. Now and then it brings up seaweed, and on the ocean an amber pearl (`FishingNetBycatch`). The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Fine Wood ×4, Leather Scraps ×10, Deer Hide ×4 |
-| **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Iron ×4, Chain ×2 |
-| **Deck Brazier** | An iron brazier on the starboard deck under the tent that burns without fuel. It keeps those near it warm and counts as a fire for resting | Iron ×4, Stone ×10, Surtling Core ×2 |
-| **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Iron ×2 |
-| **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×10, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
+| **Ship Lantern** | A lantern on deck that lights up at night, with the vanilla lamp's intensity and three times its range for softer deck lighting and a wider reach around both sides of the ship (`Ships` → `LanternBrightness`, `LanternRange`, each player's own; needs a restart) | Bog Iron ×3, Resin ×6, Pine Tar ×1, Surtling Core ×1 |
+| **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Bog Iron ×4, Pine Tar ×2 |
+| **Ship Tent** | A tent on deck; under it you have Shelter and stay dry, but a Kraken tentacle can periodically reach through the side opening and shove sheltered sailors out (see [Kraken](kraken.md#the-fight)) | Troll Hide ×4, Leather Scraps ×6, Wood ×6, Pine Tar ×2 |
+| **Mast Wisp** | A wisp at the top of the mast that clears the Mistlands mist around the ship and thins ordinary fog for those within 15 m (`Ships` → `MastWispFogLeft`, 0.25 of the fog is left) | Guck ×5, Ancient Bark ×3, Sphagnum Moss ×5, Surtling Core ×2 |
+| **Fishing Net** | While the ship sails (at least 2 m/s), it catches a fish every 2 minutes (`Ships` → `FishingNetMinutes`) and puts it in the cargo hold. The Fishing skill of the sailor makes it catch up to twice as often and often two at a time, and raises the skill. Now and then it brings up seaweed, and on the ocean an amber pearl (`FishingNetBycatch`). The catch depends on the waters: perch and pike in the Meadows, trollfish in the Black Forest, giant herring in the Swamp, tuna, coral cod and pufferfish on the ocean, and so on | Cattail ×8, Reed ×6, Birch Bark ×4, Fine Wood ×4 |
+| **Drift Anchor** | An anchor over the starboard rail. Lower or raise it at the mast (Shift + E). While it is down, the ship stays where it is and cannot set sail or row | Bog Iron ×6, Chain ×2, Stone ×6 |
+| **Deck Brazier** | An iron brazier on the starboard deck under the tent that burns without fuel. It keeps those near it warm and counts as a fire for resting | Bog Iron ×4, Stone ×10, Peat ×10, Surtling Core ×1 |
+| **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Bog Iron ×2, Pine Tar ×1, Sphagnum Moss ×3 |
+| **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×8, Pine Tar ×2, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
 
 The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it. The drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm (`Ships` → `AutoAnchor`, on by default).
 
@@ -91,13 +101,13 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 - **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard gets *Man overboard: Kjell!*, the ship's bell, a pin on the map and an arrow on the minimap's edge pointing to you. You get a pin and an arrow toward the ship. A ship that sails its route or holds its course stops; a ship someone steers is left to them. It ends when you are out of the water, die, or after 5 minutes.
 - **Lifeline**: standing on the deck of that ship within 25 m of the one in the water, press **E** (*Throw a lifeline to Kjell* under the crosshair). A moment later they are pulled aboard next to you.
 
-**Harbour Anchor:** a standing iron anchor built next to a map table. While one stands near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
+**Harbour Anchor:** a standing iron anchor built next to a map table, within reach of a Shipwright's Bench. While one stands near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
 <img src="images/harbour_anchor.png" alt="Harbour Anchor" title="Harbour Anchor" height="140">
 
 | Item | Use | Crafting Station | Requirements |
 |------|-----|------------------|--------------|
-| **Harbour Anchor** | Shows every ship on the map | Hammer (Workbench) | Iron ×2, Chain ×2, Fine Wood ×4 |
+| **Harbour Anchor** | Shows every ship on the map | Hammer (Shipwright's Bench) | Iron ×2, Chain ×2, Fine Wood ×4 |
 
 **Mooring Post:** a thick post with a coil of rope, for the dock, the shore or shallow water. Use it to moor the nearest ship within 20 m that is not moored yet (`MooringRange`): a rope runs from the post to the ship's nearest end, and the ship lies still where it is, rocking on the waves, also in a storm. It works on every ship: rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods. While it is moored, the helm will not set sail or row; use the post again to cast off. One ship per post. The mooring is kept on the ship, so it holds after you log out, and a ship whose post is torn down is let go.
 
@@ -105,7 +115,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 
 | Item | Use | Crafting Station | Requirements |
 |------|-----|------------------|--------------|
-| **Mooring Post** | Moors the nearest ship | Hammer (Workbench) | Fine Wood ×4, Iron ×1, Leather Scraps ×4 |
+| **Mooring Post** | Moors the nearest ship | Hammer (Shipwright's Bench) | Fine Wood ×4, Iron ×1, Leather Scraps ×4 |
 
 ## Config
 

@@ -65,7 +65,7 @@ public sealed class WhiteHiltShipHammer : IWhiteHiltCustomItem, IWhiteHiltConfig
             {
                 Name = NameToken,
                 Description = Translations.Token(Translations.ItemKey(PrefabName) + "_description"),
-                CraftingStation = CraftingStations.Workbench,
+                CraftingStation = Pieces.Ships.ShipwrightBench.StationPrefabName,
                 PieceTable = TableName,
                 Requirements = new RequirementConfig[]
                 {

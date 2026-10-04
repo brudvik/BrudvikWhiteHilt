@@ -59,6 +59,11 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
     /// </summary>
     protected virtual string Category => PieceCategories.Building;
 
+    /// <summary>
+    /// Crafting station the piece must be built near.
+    /// </summary>
+    protected virtual string BuildStation => CraftingStations.Workbench;
+
     /// <inheritdoc/>
     public virtual bool Enabled => true;
 
@@ -104,7 +109,7 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
                 Description = Translations.Token($"{PrefabName}_description"),
                 PieceTable = PieceTables.Hammer,
                 Category = Category,
-                CraftingStation = CraftingStations.Workbench,
+                CraftingStation = BuildStation,
                 Requirements = Requirements
             };
 

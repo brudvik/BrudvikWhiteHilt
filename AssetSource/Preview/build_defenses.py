@@ -623,6 +623,37 @@ def mooring_post():
 
 MOORING_ROPE_Y = 1.0
 
+def shipwright_bench():
+    """The shipwright's bench: the vanilla workbench with a ship's anchor leaning on its right end, an anchor chain hanging
+    from the front edge, a coil of rope and a rushlight on the top, a fishing net over the tool board and a tar bucket.
+
+    Bundle models (shipanchor, chains, fishnet, rushlight, paintbucket) are 1 m high with their base at y 0.
+    """
+    top = BENCH_TOP
+    parts = [part("piece_workbench", (0, 0, 0))]
+    parts.append(part("shipanchor", (1.78, 0, 0.12), (0, 0, 9), (1.15, 1.15, 1.15)))
+    parts.append(part("chains", (1.15, top - 0.78, 0.68), (0, 0, 0), (0.78, 0.78, 0.78)))
+    parts.append(part("fishnet", (0.1, 1.0, -0.58), (6, 0, 0), (0.42, 0.5, 0.42)))
+    parts.append(part("rushlight", BENCH_LIGHT, (0, 0, 0), (0.5, 0.5, 0.5)))
+    parts.append(part("paintbucket", (-1.3, 0, 0.78), (0, 25, 0), (0.3, 0.3, 0.3), tint=[0.25, 0.17, 0.1]))
+    turns, segments, radius = 4, 24, 0.17
+    for turn in range(turns):
+        y = top + 0.03 + turn * 0.045
+        r = radius - turn * 0.012
+        for i in range(segments):
+            a0 = 2 * math.pi * (i - 0.25) / segments + turn * 0.4
+            a1 = 2 * math.pi * (i + 1.25) / segments + turn * 0.4
+            parts.append(log((-0.6 + math.sin(a0) * r, y, 0.3 + math.cos(a0) * r),
+                             (-0.6 + math.sin(a1) * r, y, 0.3 + math.cos(a1) * r), 0.024, tint=[0.8, 0.66, 0.45], detail=True))
+    colliders = [box((0, 0.5, 0), (3.0, 1.0, 1.2))]
+    return parts, colliders
+
+
+# The workbench's top, and where the rushlight stands (the mod lights a flame at its tip).
+BENCH_TOP = 1.01
+BENCH_LIGHT = (-1.3, 1.01, 0.38)
+
+
 
 def navigation_pieces():
     table_parts, table_colliders, table_groups = chart_table()
@@ -642,6 +673,9 @@ def navigation_pieces():
         {"name": "stifinner_rubin_visning", "parts": [piece("stifinner_rubin", (0, 0.3, 0))],
          "views": views(("front", 180, 5), ("side", 120, 10), ("angle", -150, 30))},
         defence("fortoyningspale", "wood_pole2", *mooring_post(), [], views=views(("front", 180, 15), ("side", 90, 15), ("top", -30, 60))),
+        defence("skipsbyggerbenk", "piece_workbench", *shipwright_bench(), [],
+                keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
+                views=views(("front", 180, 20), ("side", 130, 20), ("back", -30, 30))),
     ]
     for ship, (position, rotation) in SHIP_MOUNTS.items():
         focus = [position[0], position[1] + 0.6, position[2]]
