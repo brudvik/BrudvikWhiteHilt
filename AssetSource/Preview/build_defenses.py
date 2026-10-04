@@ -623,6 +623,44 @@ def mooring_post():
 
 MOORING_ROPE_Y = 1.0
 
+def ship_setting():
+    """A ship setting: 22 raised stones in the outline of a ship, 12 m long and 4 m wide, the tallest at the stems.
+
+    Each stone is the vanilla highstone (4.4 m wide, 6.6 m high, 2.3 m deep, base 0.86 m below its origin), turned so its
+    broad side follows the outline. The stems stand along +z and -z.
+    """
+    count, length, width = 22, 6.0, 2.0
+    parts, colliders = [], []
+    rng = random.Random(1123)
+    for i in range(count):
+        a = 2 * math.pi * i / count
+        x, z = math.sin(a) * width, math.cos(a) * length
+        # Ships narrow to a point at the stems: pull the sides in near the ends.
+        x *= abs(math.sin(a)) ** 0.4
+        stem = abs(math.cos(a))
+        height = 0.65 + 1.1 * stem ** 12
+        scale = height / 6.6
+        tangent = math.degrees(math.atan2(math.cos(a) * width, -math.sin(a) * length))
+        yaw = tangent + rng.uniform(-8, 8)
+        parts.append(part("highstone", (x, 0.86 * scale - 0.05, z), (0, yaw, rng.uniform(-3, 3)), (scale, scale, scale)))
+        colliders.append(box((x, height / 2, z), (4.4 * scale * 0.8, height, 2.3 * scale * 0.8), (0, yaw, 0)))
+    return parts, colliders
+
+
+def stone_ring():
+    """A ring of ten low stones, 3.6 m across, for a fire place or a thing site."""
+    count, radius = 10, 1.8
+    parts, colliders = [], []
+    rng = random.Random(2207)
+    for i in range(count):
+        a = 2 * math.pi * i / count
+        x, z = math.sin(a) * radius, math.cos(a) * radius
+        size = rng.uniform(0.8, 1.0)
+        parts.append(part("rock", (x, 0.16 * size, z), (0, rng.uniform(0, 360), 0), (size, size, size)))
+        colliders.append(box((x, 0.3 * size, z), (1.0 * size, 0.6 * size, 0.8 * size)))
+    return parts, colliders
+
+
 def hnefatafl():
     """A hnefatafl board on a table: an 11 x 11 grid on a wooden board, set up for a game. 24 dark attackers stand in fives
     along the edges, 12 light defenders round the king, an amber, in the middle. Rock_7 (1 m across, base 0.19 m below its
@@ -726,6 +764,10 @@ def navigation_pieces():
                 views=views(("front", 180, 10), ("side", 90, 10), ("angle", -150, 20))),
         defence("hnefatafl", "wood_pole2", *hnefatafl(), [],
                 views=views(("angle", 160, 45), ("side", 90, 20), ("top", 180, 85))),
+        defence("skipssetning", "wood_pole2", *ship_setting(), [],
+                views=views(("angle", 150, 30), ("side", 90, 12), ("top", 180, 80))),
+        defence("steinring", "wood_pole2", *stone_ring(), [],
+                views=views(("angle", 160, 35), ("side", 90, 15), ("top", 180, 80))),
         defence("skipsbyggerbenk", "piece_workbench", *shipwright_bench(), [],
                 keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                 views=views(("front", 180, 20), ("side", 130, 20), ("back", -30, 30))),

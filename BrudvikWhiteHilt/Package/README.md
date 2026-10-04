@@ -89,7 +89,7 @@ Longer and angled beams and poles, iron grates in more sizes, White Hilt banners
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/memorial_stone.png" alt="Memorial Stone" height="120">
 
-More for the Stonecutter: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, and more to come.
+More for the Stonecutter: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings and stone rings, and more to come.
 
 ### 🏠 [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
 

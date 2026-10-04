@@ -33,3 +33,14 @@ A small bowl carved out of soapstone with a wick burning in resin, as the Norse 
 | Piece | Crafting Station | Requirements |
 |-------|------------------|--------------|
 | **Hnefatafl Board** (`piece_whitehilt_hnefatafl`) | Hammer (Furniture), near a Stonecutter | Wood ×2, Stone ×6, Amber ×1 |
+
+## Ship Setting and Stone Ring
+
+<img src="images/ship_setting.png" alt="Ship Setting" title="Ship Setting" height="140"> <img src="images/stone_ring.png" alt="Stone Ring" title="Stone Ring" height="140">
+
+The **Ship Setting** is 22 raised stones in the outline of a ship, 12 m long and 4 m wide, rising to 1.75 m at the stems, as the Norse set them round their graves. The **Stone Ring** is ten low stones in a ring 3.6 m across, for a fire place or a thing site. Each is one piece, placed whole, and is stone like the Memorial Stone.
+
+| Piece | Crafting Station | Requirements |
+|-------|------------------|--------------|
+| **Ship Setting** (`piece_whitehilt_skipssetning`) | Hammer, near a Stonecutter | Stone ×60 |
+| **Stone Ring** (`piece_whitehilt_steinring`) | Hammer, near a Stonecutter | Stone ×20 |
