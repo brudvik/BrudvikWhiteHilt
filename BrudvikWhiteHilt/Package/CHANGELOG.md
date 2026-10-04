@@ -2,6 +2,66 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.83.0 - 2026-10-04
+
+### Added
+- **Root Dowser (Rotsøker)**: craft at Workbench level 2 from Bone Fragments ×10, Wood ×5, Resin ×5 and Greydwarf Eye ×2. Worn in an accessory slot, it finds the nearest loaded, unpicked Madder Root or Roseroot plant within 30 m with green, higher-pitched Wishbone-style pulses that speed up nearby. Within 3 m the nearest plant receives a faint local green light. Picked plants stop signalling until they regrow; loose items and random bonus roots are ignored. Adds configurable target items, search distance, scan and pulse intervals, sound pitch and glow settings with Norwegian text. Normal content/recipe settings apply; no extra bronze or Bonemass requirement. In-game lighting, pulse appearance and simultaneous accessories still require testing.
+
+## v0.82.0 - 2026-10-04
+
+### Added
+- **Kraken tent sweep**: one existing tentacle periodically reaches horizontally through the side opening beneath an installed White Hilt Ship tent, aiming at a sheltered sailor. Collision checks try the targeted height and slightly lower/higher openings, skipping blocked paths. A two-second warning precedes the visible three-second reach and withdrawal. Players still in the swept lane receive light blunt damage and a strong shove toward the opposite opening; moving away avoids the hit. Ship invulnerability is unchanged. Only the tentacle's network owner delivers hits, with saved per-player hit stamps preventing duplicates after ownership changes. Adds server-synced timing, radius, damage, knockback and range settings with Norwegian text. Compilation and 32 isolated production-component checks passed; visual clearance, actual knockback and multiplayer require in-game testing. Update server and clients together.
+
+## v0.81.0 - 2026-10-04
+
+### Added
+- **Ship lantern switch and Kraken blackout**: interact with the installed lantern to light it or put it out. The choice is saved on the ship and synchronized through its owner; untouched lanterns retain automatic night lighting. A lit lantern flickers before Kraken's tentacles appear, then goes out and cannot be relit during the encounter. After death or retreat it stays off until manually relit. Only the target ship within the configured range is affected, independently of ship holding/lifting. Adds server-synced warning, flicker and range settings with Norwegian text. Compilation and 30 isolated production-method encounter/lantern checks passed; the interaction target, warning visuals and multiplayer still need in-game testing. Update server and clients together.
+
+## v0.80.6 - 2026-10-04
+
+### Changed
+- **Softer, wider ship lantern**: reduce White Hilt Ship lantern intensity from 2.5 to 1 times the vanilla lamp, and increase its range from 2 to 3 times vanilla, reaching farther around both sides without the former intense deck lighting. Existing default values migrate once; other custom values are preserved. Settings remain local and require a restart. Brazier, mast wisp and portal lighting are unchanged; the final balance on the white hull and water requires in-game testing.
+
+## v0.80.5 - 2026-10-04
+
+### Changed
+- **Taller Caraway and low-flower clearance**: lengthen Caraway's main stem and increase its base height from 0.54 to 0.74 m without stretching its flower heads. Caraway, Yarrow, Bog Bean and Henbane now have a configurable 0.1 m ground clearance, lifting their visuals and pick colliders together above the saved terrain point. Their pick targets follow the visible model. Mountain plants retain their existing 0.2 m default; other plants, dropped item fitting, saved positions, yields and regrowth are unchanged. Existing plants update when loaded again. Actual terrain and grass visibility still require in-game testing.
+
+## v0.80.4 - 2026-10-04
+
+### Changed
+- **Taller Yarrow**: lengthen the three flowering stems and increase the growing plant's base height from 0.46 to 0.72 m so the white flower heads stand higher above Plains grass. Leaves and flower heads retain their source dimensions rather than being stretched. Existing plants use the new look when loaded again; saved positions, yield, regrowth and recipes are unchanged.
+
+## v0.80.3 - 2026-10-04
+
+### Fixed
+- **White Hilt Ship helm ownership**: prefer the helmsman's client for manual sailing physics when both cargo containers are idle. Container open/stack requests reserve ownership, open inventories block handoff, and both inventories plus current motion are saved before transferring back. The new owner restores received speed and rudder before vanilla physics updates them. Vanilla ships, autopilot ownership, sail force and speed are unchanged. Includes server-synced ownership settings and optional local ownership/frame/ZDO-revision diagnostics. Compilation and 44 isolated production-method checks passed; the reported multiplayer lag was not reproduced and in-game smoothness and inventory handoff still require testing. Server and clients should update together.
+
+### Changed
+- **Quieter, lighter sounding**: depth and obstacle scans run once per second by default instead of five times per second. Persistent shallow-water danger gives a reminder every 60 seconds rather than repeating on the eight-second cooldown. Five seconds of clear water at warning speed rearm a new encounter; short gaps or stopping do not. The existing minimum warning cooldown remains configurable. New scan, reminder and clear-water intervals have Norwegian settings text and ship documentation.
+
+## v0.80.2 - 2026-10-04
+
+### Changed
+- **Bestiary illustrations**: replace the full-colour trophy pictures in Svartboka with indistinct monochrome ink sketches on softly worn, textured paper. Coarse, smoothed silhouettes and sparse hatching hide fine details, leaving the real appearance for the encounter. Trophy and inventory icons remain unchanged. Sketches are generated once per source icon while reading and released with the panel; no asset bundle rebuild is needed. Compilation and eight isolated production-pixel checks passed; actual monster sketches and HUD scaling still require in-game testing.
+
+## v0.80.1 - 2026-10-04
+
+### Fixed
+- **Dropped forageable size**: Rock Lichen and the other procedural forageable items now fit the longest side of the original item rather than its height, preventing flat or wide models from becoming oversized when dropped. Hidden equip models remain excluded, as in the earlier Chanterelle fix. Growing plants keep their existing sizes.
+
+## v0.80.0 - 2026-10-04
+
+### Added
+- **Black Bestiary / Svartboka**: a buildable book on the guestbook stand, with up to nine browsable, illustrated pages. Each describes a black beast's dangers, biome, guardian, distinct material counter, gathering places and actual registered crafting recipe, including server overrides. Available under Furniture from Meadows ingredients, without requiring a trophy or kill first. Pages unlock per reader only after discovering a biome where the beast lives; Meadows-only characters see a foreboding warning without monster spoilers. New discoveries are saved with stable biome identities, independent of language; discovering Mountains and Plains does not duplicate the Dragon's page.
+- **Material weaknesses**: six special arrows (lingonberry Troll, peat Ember, crowberry Rime, juniper Seid, sweet-gale Bog Venom and rosehip/kraken-ink Storm), and three temporary weapon treatments (rock-lichen Stonebreaker for pickaxes, henbane Berserker for blunt weapons and woad Carapace Whetstone for slashing weapons). Each grants a default 50% extra material-damage component only against its matching black beast. Existing resistances, ordinary creatures and Kraken are unchanged. The bonus follows the serialized attack, is resolved once on the target owner, and respects armour rather than using true damage.
+- **Counter settings**: server-synced per-counter bonus, output, arrow pierce/element damage and treatment attack count. Treatments last 30 eligible attacks by default (misses count), apply only to the weapon held when used, and replace the previous material treatment. Mining/woodcutting also use the corresponding treatment. Recipes and content toggles use the existing progression settings; all default recipes are ingredient-gated, with no extra tier materials. Server and clients must update together. In-game combat, book layout, icons and multiplayer still require testing.
+
+## v0.79.1 - 2026-10-04
+
+### Changed
+- **Odin near black beasts**: within 40 m of a living black beast, retain 80% of Odin's instant healing, passive healing and regeneration bonus (+1.6 HP/s, 1.8x regeneration, 80%-of-maximum-health heal on drink at default settings). Maximum health, fall protection, duration and Freya remain unchanged. Includes horn-called beasts and beasts at sea; excludes ordinary starred creatures. Multiple beasts do not stack, and only the strongest healing attenuation applies near Kraken. Full strength returns outside range or when the beast dies. Range and retained share are server-configurable in `[Difficulty.Beasts]`.
+
 ## v0.79.0 - 2026-10-04
 
 ### Added

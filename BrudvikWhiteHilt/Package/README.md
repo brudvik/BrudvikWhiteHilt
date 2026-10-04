@@ -105,7 +105,7 @@ A free build camera, precise rotation and nudging, undo, area repair, photos and
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
 
-Wild herbs, berries, lichens and dyes from the Meadows to the Plains, lox milk, the Stone Pot with its extensions, dishes, meads and ales, and cured ham, sausage, stockfish and rakfisk from the drying rack and the fermenter.
+Wild herbs, berries, lichens and dyes from the Meadows to the Plains, the Root Dowser for finding root plants, lox milk, the Stone Pot with its extensions, dishes, meads and ales, and cured ham, sausage, stockfish and rakfisk from the drying rack and the fermenter.
 
 ### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
 
@@ -146,6 +146,10 @@ Buy a treasure map from Hildir, match its scrap of land against your own map and
 ### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
 
 A world that grows harder as you progress: up to 5 stars, black beasts, the rare blood moon and a black-trimmed horn to call a biome's beast.
+
+### 📖 [Black Bestiary & material counters](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/bestiary.md)
+
+A buildable field guide to the nine black beasts and their distinct material weaknesses, with special arrows, weapon treatments and live crafting recipes.
 
 ### 🐙 [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
