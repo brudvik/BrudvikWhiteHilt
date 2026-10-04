@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Memorial Stone**: a 2.5 m raised stone, a bauta, built near a Stonecutter from Stone ×20. Use it to carve an inscription of your own on its face. See the new [Stonework](docs/stonework.md) page.
+- **Soapstone Lamp**: a small soapstone bowl with a wick in resin, built near a Stonecutter. A soft light for tables and shelves that burns resin three times as long as a torch.
 - **Soapstone Cauldron**: a fourth Stone Pot extension, carved out of soapstone near a Stonecutter. With the Herb Tray and the Smoke Oven it raises the pot to level 4, for three new Plains dishes: Fish Soup, Juniper Lox Pot and Cloudberry Porridge.
 
 ### Changed

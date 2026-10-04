@@ -13,3 +13,13 @@ A tall raised stone, a *bauta*, about 2.5 m high, like the runestones raised for
 | Piece | Crafting Station | Requirements |
 |-------|------------------|--------------|
 | **Memorial Stone** (`piece_whitehilt_bautastein`) | Hammer, near a Stonecutter | Stone ×20 |
+
+## Soapstone Lamp
+
+<img src="images/soapstone_lamp.png" alt="Soapstone Lamp" title="Soapstone Lamp" height="140">
+
+A small bowl carved out of soapstone with a wick burning in resin, as the Norse lit their houses. It gives a soft, low light, smaller and cosier than a torch, and stands on tables, shelves and the floor. Feed it **Resin**; each lasts three times as long as in a torch. Surt's Brazier keeps it lit like any other torch.
+
+| Piece | Crafting Station | Requirements |
+|-------|------------------|--------------|
+| **Soapstone Lamp** (`piece_whitehilt_soapstonelamp`) | Hammer (Furniture), near a Stonecutter | Soapstone ×2, Resin ×2 |
