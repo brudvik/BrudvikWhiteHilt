@@ -43,9 +43,9 @@ Items that cannot be obtained in normal play (creature attacks, test items, unus
 
 <img src="images/wall_drawer.png" alt="Wall drawer" height="140">
 
-Every one of the fourteen chests above also has a **Wall drawer** variant in the ordinary Hammer's **Chests** menu. Each costs Wood ×10 (recoverable) and occupies about **0.7 × 0.3 × 0.3 m**, including its grip. The category icon, restocking, hover information, contents panel, progress indicators, learning and collection behavior are the same as its chest. Food and Weapon drawers retain 10 rows; every other drawer retains 8 rows. All retain 8 columns.
+Every one of the fourteen chests above also has a **Wall drawer** variant in the ordinary Hammer's **Chests** menu. Its build icon shows the chest's category icon with a drawer in front, so drawers and chests are easy to tell apart. Each costs Wood ×10 (recoverable) and occupies about **0.7 × 0.3 × 0.22 m**, including its grip. The category icon, restocking, hover information, contents panel, progress indicators, learning and collection behavior are the same as its chest. Food and Weapon drawers retain 10 rows; every other drawer retains 8 rows. All retain 8 columns.
 
-Place the back against a vertical **player-built wooden or stone wall**, facing away from it. Drawers work in ordinary bases as well as on Skidbladnir's hull walls and player-built walls aboard it. Terrain, natural rocks, ruined unbuilt walls, floors, roofs and another drawer are not valid supports. Existing chest inventories are unchanged; drawers have independent saved inventories and use the same per-category Include/Exclude and mode settings.
+Place the back against a vertical **player-built wooden or stone wall**, facing away from it. While placing, the drawer turns square to the wall and sits flat against it. Drawers work in ordinary bases as well as on Skidbladnir's hull walls and player-built walls aboard it. Terrain, natural rocks, ruined unbuilt walls, floors, roofs and another drawer are not valid supports. Existing chest inventories are unchanged; drawers have independent saved inventories and use the same per-category Include/Exclude and mode settings.
 
 | Category | Drawer prefab |
 |---|---|

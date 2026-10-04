@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.88.2 - 2026-10-04
+
+### Changed
+- **Wall drawers have their own build icons**: the chest's category icon with the drawer in front, so they are easy to tell from the chests in the Hammer menu.
+- **Wall drawers sit closer to the wall**: they are shallower (0.22 m instead of 0.3 m), and while placing they turn square to the wall and move flat against it, so no corner sticks out when your aim is a little off.
+
 ## v0.88.1 - 2026-10-04
 
 ### Changed

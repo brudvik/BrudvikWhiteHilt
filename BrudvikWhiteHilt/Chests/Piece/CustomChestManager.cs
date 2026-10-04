@@ -100,6 +100,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
                 Rows = source.Rows,
                 Columns = source.Columns
             });
+            var icon = WallDrawer.ComposeIcon(drawer.PiecePrefab, source.Piece.m_icon);
+            if (icon != null) drawer.Piece.m_icon = icon;
             return drawer;
         }
 

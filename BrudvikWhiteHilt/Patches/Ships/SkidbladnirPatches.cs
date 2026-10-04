@@ -18,8 +18,10 @@ public static class SkidbladnirPatches
     public static void DrawerPlacement(Player __instance)
     {
         GameObject ghost = __instance.m_placementGhost;
-        if (ghost == null || !ghost.activeSelf || __instance.m_placementStatus != Player.PlacementStatus.Valid) return;
+        if (ghost == null || !ghost.activeSelf) return;
         var drawer = ghost.GetComponent<global::BrudvikWhiteHilt.Chests.Piece.WallDrawer>();
+        if (drawer != null) drawer.SnapToWall();
+        if (__instance.m_placementStatus != Player.PlacementStatus.Valid) return;
         var workshop = ghost.GetComponent<ShipWorkshop>();
         if ((drawer == null || drawer.HasWall()) && (workshop == null || workshop.CanPlace())) return;
         __instance.m_placementStatus = Player.PlacementStatus.Invalid;
