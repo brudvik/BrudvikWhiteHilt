@@ -76,8 +76,12 @@ public class RootDowsingEffect : StatusEffect
             if (found != target)
             {
                 ClearGlow();
+                if (!IsAvailable(target) || found == null)
+                {
+                    pingTimer = 0f;
+                }
+
                 target = found;
-                pingTimer = 0f;
             }
         }
 

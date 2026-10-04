@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.86.2 - 2026-10-04
+
+### Fixed
+- **Root Dowser pulse interruptions**: preserve time toward the next pulse when switching between available roots, preventing repeated nearest-target changes from postponing every signal. Pulses continue to speed up on approach and slow down on retreat using the existing settings. Offline target-switching and approach/retreat checks pass; the reported in-game audio behavior still requires verification.
+
 ## v0.86.1 - 2026-10-04
 
 ### Fixed

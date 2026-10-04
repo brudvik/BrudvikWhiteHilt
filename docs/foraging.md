@@ -16,6 +16,8 @@ Wear it in an accessory slot to find the nearest unpicked **Madder Root** or **R
 
 Only loaded plants whose main drop is a configured item are tracked. Loose drops, random bonus roots from Cloudberry bushes and unrelated plants are ignored. No permanent map pins are added, and the vanilla Wishbone and Stone Dowser are unchanged.
 
+Switching to another available root preserves the pulse timer, so moving among several plants does not continually postpone the next signal. Losing the target resets the timer.
+
 Server-synced settings under `[Gear.WhiteHiltRootDowser]`:
 
 | Key | Default | Meaning |
