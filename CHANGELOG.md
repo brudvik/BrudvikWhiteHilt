@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.88.0 - 2026-10-04
+
+### Added
+- **Skidbladnir details**: a rudder on the sternpost that turns with the helm. The White Hilt logo on the main course, readable from both sides. With the Ship Lantern upgrade, two stern lanterns and three lamps in the lower room light and switch together with the deck lantern. A railing around the stair opening replaces the handrails that rose out of the deck, and plank lining along the lower room's sides puts wall drawers on a visible wall. The hull and new woodwork are about a third brighter, so the ship no longer looks almost black at night. Its wake, bow waves, splashes and wake sounds now follow Skidbladnir's waterline instead of the longship's.
+- **Skidbladnir seats**: the longship's stools and holdfasts were switched off together with its hull. Now five stools stand on the quarterdeck, by the helm and on the forecastle, with holdfasts at the main mast and the bow, so you can sit or hold on instead of being thrown off.
+
+### Fixed
+- **Skidbladnir looked black and see-through**: the ship export mirrored the model without reversing triangle winding, so the hull, decks, stairs and mast ladder were rendered inside out (only their far, unlit inner faces showed, and the main deck and the stairs down appeared to be missing). Faces now point outward and the whole structure is two-sided, so the hull is also solid from inside the lower room.
+- **Skidbladnir boarding ladder did nothing**: its lower stop was above a swimmer's feet, so Use from the water only lifted you to the surface. The ladder now hangs outside the hull bulge amidships at a gap in the port rail, and Use from the water climbs straight to the deck. Live boarding still needs an in-game check.
+- **Skidbladnir walking surfaces now follow the model**: the old hand-placed stern and bow decks were flat boxes up to a metre away from the visible decks, the stairs ran into the quarterdeck and an invisible bow deck, and the lower room had no end walls. The quarterdeck, the sloping poop deck and the forecastle now have colliders measured from the model. New stairs lead up to the quarterdeck, the poop deck and the forecastle, and the stair down to the lower deck now lies in the open waist. Ramps under every stair keep them climbable. Walls follow the balustrades, and new railings line the waist and the open deck edges. Bulkheads close the lower room, and its floor reaches the hull. New woodwork uses the hull's own wood texture instead of a flat light brown. Furnishings already placed aboard keep their saved positions, so move any that now stand in the new stairs.
+- **Skidbladnir fittings placed on the decks they belong to**: the portal and Navigator's Table on the quarterdeck, the sea chest on the poop deck, tilted to the slope. The cargo hatch and barrels are rearranged around the new stairs, and the brazier no longer stands inside the tent. The lantern hangs at head height, the helm sits on the deck, and the drift anchor hangs at the bow instead of in the air beside the hull.
+
+### Removed
+- **Skidbladnir's loose sail sheets**, which stuck out three metres from the hull and ended in mid-air once the sails were furled, and the longship's water mask, which did not fit the new hull.
+
 ## v0.87.0 - 2026-10-04
 
 ### Added

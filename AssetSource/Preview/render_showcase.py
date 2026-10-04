@@ -60,7 +60,11 @@ def main(only):
                 if name not in converted:
                     compose_preview.write_mesh(name, *compose_preview.load_obj(name))
                     converted.add(name)
-                parts.append({"mesh": f"preview_{name}", "position": model["pivot"]})
+                if model.get("rudder") and "rudder" in manifest:
+                    parts.append({"mesh": f"preview_{name}", "position": manifest["rudder"]["hinge"],
+                                  "rotation": [manifest["rudder"]["tilt"], 0, 0]})
+                else:
+                    parts.append({"mesh": f"preview_{name}", "position": model["pivot"]})
         else:
             sys.exit(f"{entry['image']}: needs 'piece', 'models', 'compose' or 'manifest'")
         pieces.append({"name": entry["image"], "parts": parts, "views": [view or spec["defaultView"]]})

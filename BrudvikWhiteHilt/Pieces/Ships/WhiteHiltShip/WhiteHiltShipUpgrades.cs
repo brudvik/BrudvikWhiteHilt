@@ -85,7 +85,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private ZNetView nview;
     private Container container;
     private GameObject lantern;
-    private GameObject lanternLight;
+    private GameObject[] lanternLights = System.Array.Empty<GameObject>();
     private GameObject[] barrels = new GameObject[0];
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
@@ -342,7 +342,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         Transform customize = transform.Find("ship/visual/Customize");
         Transform storage = customize?.Find("storage");
         lantern = customize?.Find("TraderLamp")?.gameObject;
-        lanternLight = lantern != null ? lantern.GetComponentInChildren<Light>(true)?.gameObject : null;
+        lanternLights = lantern != null ? lantern.GetComponentsInChildren<Light>(true).Select(light => light.gameObject).ToArray() : lanternLights;
         barrels = storage != null ? storage.Cast<Transform>().Where(child => !child.name.StartsWith("Shield")).Select(child => child.gameObject).ToArray() : barrels;
         tent = customize != null ? customize.Cast<Transform>().Where(IsTentPart).Select(child => child.gameObject).ToArray() : tent;
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
@@ -441,7 +441,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     {
         if (!Has(ShipLantern.Bit))
         {
-            SetActive(lanternLight, false);
+            SetLanternLights(false);
             return;
         }
         int threat = LanternThreat();
@@ -451,7 +451,13 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
         bool flickerOn = threat != 1 || (long)(ZNet.instance.GetTime().TimeOfDay.TotalSeconds
             / ShipSettings.LanternFlickerSeconds.Value) % 2 == 0;
-        SetActive(lanternLight, threat != 2 && IsLanternOn && flickerOn);
+        SetLanternLights(threat != 2 && IsLanternOn && flickerOn);
+    }
+
+    private void SetLanternLights(bool on)
+    {
+        foreach (GameObject light in lanternLights)
+            SetActive(light, on);
     }
 
     private void RPC_ToggleLantern(long sender)

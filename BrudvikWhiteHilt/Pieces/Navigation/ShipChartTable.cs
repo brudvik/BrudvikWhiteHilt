@@ -75,8 +75,9 @@ public class ShipChartTable : MonoBehaviour
         table.transform.localRotation = Quaternion.Euler(DefenseModelBuilder.ToVector(placement.rotation, Vector3.zero));
         if (shipPrefab.GetComponent<global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirShip>() != null)
         {
-            table.transform.localPosition = global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirModel.At(-1.1f, 4.54f, -6f);
-            table.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            table.transform.localPosition = global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirModel.At(1.45f, 3.24f, -3.7f);
+            table.transform.localRotation = global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirModel.QuarterdeckTilt
+                * Quaternion.Euler(0f, -90f, 0f);
         }
 
         Dictionary<string, Transform> groups = new();

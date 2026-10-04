@@ -90,7 +90,34 @@ internal static class SkidbladnirModel
 {
     internal static Vector3 At(float sideways, float height, float length) =>
         new(sideways, height + SkidbladnirSettings.WaterlineOffset.Value, length);
-    internal static Vector3 PortalPosition => At(1.75f, 2.5f, 2.7f);
+    internal static Vector3 PortalPosition => At(1.35f, 3.06f, -1.6f);
+    // Slopes of the source model's quarterdeck and poop deck, both rising towards the stern.
+    internal static readonly Quaternion QuarterdeckTilt = Quaternion.Euler(5.06f, 0f, 0f);
+    private static readonly Quaternion PoopTilt = Quaternion.Euler(14.45f, 0f, 0f);
+    // Two stern lanterns on their posts and three lamps under the lower deck's ceiling beams, lit with the ship lantern.
+    private static readonly Vector3[] ExtraLamps =
+    {
+        new(1.85f, 6.45f, -7.55f), new(-1.85f, 6.45f, -7.55f), new(-1.2f, 2.18f, 2f), new(0.9f, 2.18f, -3f), new(-1f, 2.18f, 7f)
+    };
+    // The longship's water effects follow its waterline, about z -7 to 10.4 with a half-beam of 2.5 m;
+    // Skidbladnir's runs from z -6.2 to 8.3 with a half-beam of 2.4 m.
+    private const float LongshipWaterlineCentre = 1.7f;
+    private const float WaterlineCentre = 1.05f;
+    private const float WaterlineLengthRatio = 0.83f;
+    private const float WaterlineBeamRatio = 0.96f;
+    private const float RudderWakeZ = -6.6f;
+    // The longship's stools (their base is 9 cm below the box), placed on the measured decks: two by the port rail of the
+    // quarterdeck, one by the helm and two facing each other on the forecastle. The fifth is a copy.
+    private static readonly (string name, Vector3 at, float yaw)[] Seats =
+    {
+        ("sit_box", new(-1.95f, 2.913f, -1f), 90f), ("sit_box (1)", new(-1.95f, 2.992f, -1.9f), 90f),
+        ("sit_box (2)", new(-1.6f, 4.443f, -6f), 0f), ("sit_box (3)", new(-1.5f, 3.38f, 8.3f), 90f),
+        ("sit_box (5)", new(1.5f, 3.38f, 8.3f), -90f)
+    };
+    // The longship's mast holdfast keeps its offset from the mast; its bow holdfast moves to the forecastle's front rail.
+    private static readonly Vector3 MastHoldfast = new(0f, 2.662f, 0.63f);
+    private static readonly Vector3 BowHoldfast = new(0f, 3.3f, 10.75f);
+    private static readonly Vector3 BowHoldfastStand = new(0f, 3.84f, 10.35f);
 
     internal static void Build(GameObject prefab)
     {
@@ -107,8 +134,8 @@ internal static class SkidbladnirModel
                 || renderer.GetComponentInParent<ShipChest>() != null || renderer.GetComponentInParent<ShipPortal>() != null
                 || renderer.transform.IsChildOf(root.Find(WhiteHiltShipUpgrades.BrazierName));
             bool wisp = renderer.GetComponentsInParent<Transform>(true).Any(parent => parent.name == WhiteHiltShipUpgrades.MastWispName);
-            bool mask = renderer.sharedMaterial != null && renderer.sharedMaterial.name.ToLowerInvariant().Contains("watermask");
-            if (!upgrade && !wisp && !mask) renderer.enabled = false;
+            // Includes the longship's water mask: it does not fit this hull, whose lower floor already covers the water inside.
+            if (!upgrade && !wisp) renderer.enabled = false;
         }
         Transform geometry = new GameObject("SkidbladnirStructure").transform;
         geometry.SetParent(root, false);
@@ -119,7 +146,18 @@ internal static class SkidbladnirModel
         {
             foreach (Part part in assets.parts)
             {
-                GameObject model = VisualHelper.CreateModel(geometry, ForagingAssets.LoadMesh(part.mesh), ForagingAssets.LoadTexture(part.texture),
+                Transform parent = geometry;
+                if (part.rudder && assets.rudder != null)
+                {
+                    Transform hinge = new GameObject("SkidbladnirRudderHinge").transform;
+                    hinge.SetParent(geometry, false);
+                    hinge.localPosition = ToVector(assets.rudder.hinge);
+                    hinge.localRotation = Quaternion.Euler(assets.rudder.tilt, 0f, 0f);
+                    parent = new GameObject("SkidbladnirRudder").transform;
+                    parent.SetParent(hinge, false);
+                    ship.m_rudderObject = parent.gameObject;
+                }
+                GameObject model = VisualHelper.CreateModel(parent, ForagingAssets.LoadMesh(part.mesh), ForagingAssets.LoadTexture(part.texture),
                     template, ToVector(part.pivot), Quaternion.identity, 1f);
                 if (part.sail) sails.Add(model.transform);
             }
@@ -142,7 +180,11 @@ internal static class SkidbladnirModel
         trigger.center = Vector3.zero;
         trigger.size = new Vector3(8f, 24f, 23f);
         foreach (Block block in assets.colliders)
-            AddBox(geometry, block.name, ToVector(block.centre), ToVector(block.size));
+        {
+            Transform box = AddBox(geometry, block.name, ToVector(block.centre), ToVector(block.size));
+            if (block.forward != null) box.localRotation = Quaternion.LookRotation(ToVector(block.forward), ToVector(block.up));
+            if (block.name == "ColliderMainMast") box.gameObject.AddComponent<ShipMastHover>();
+        }
         foreach (Prism prism in assets.prisms)
         {
             Vector3[] vertices = Enumerable.Range(0, 6).Select(index => new Vector3(prism.vertices[index * 3],
@@ -166,30 +208,25 @@ internal static class SkidbladnirModel
         prefab.GetComponent<Rigidbody>().centerOfMass = new Vector3(0f, -0.5f, 2f);
         ship.m_hasSail = false;
         ship.m_shipControlls.transform.position = root.TransformPoint(At(0.6f, 4.7f, -6.8f));
-        ship.m_shipControlls.m_attachPoint.position = root.TransformPoint(At(0.6f, 4.56f, -6.3f));
-        ship.m_controlGuiPos.position = root.TransformPoint(At(0.6f, 5.5f, -6.8f));
+        ship.m_shipControlls.m_attachPoint.position = root.TransformPoint(At(0.6f, 4.61f, -6.3f));
+        ship.m_controlGuiPos.position = root.TransformPoint(At(0.6f, 5.8f, -6.8f));
         foreach (Collider control in ship.m_shipControlls.GetComponentsInChildren<Collider>(true)) control.enabled = true;
-        AddPlank(geometry, "Helm", new Vector3(0.6f, 4.9f, -6.8f), new Vector3(1.2f, 0.12f, 0.45f), template, false);
-        Move(root, WhiteHiltShipUpgrades.ChestName, At(1.4f, 4.54f, -6f));
-        Move(root, WhiteHiltShipUpgrades.BrazierName, At(-1.65f, 2.5f, 4.8f));
-        Move(root, WhiteHiltShipUpgrades.AnchorName, At(3.55f, 2.5f, 6.4f));
+        AddPlank(geometry, "Helm", new Vector3(0.6f, 5.05f, -6.8f), new Vector3(1.2f, 0.12f, 0.45f), template, false);
+        Move(root, WhiteHiltShipUpgrades.ChestName, At(1.6f, 4.38f, -5.4f), PoopTilt);
+        Move(root, WhiteHiltShipUpgrades.BrazierName, At(-1.65f, 2.5f, 5.85f));
+        Move(root, WhiteHiltShipUpgrades.AnchorName, At(3.05f, 3.6f, 8.6f));
         Move(root, WhiteHiltShipUpgrades.MastWispName, At(0f, 21.15f, 0.63f));
-        Move(root, ShipPortal.ObjectName, PortalPosition);
-        Move(root, "TraderLamp", At(0f, 3.2f, 0.63f));
-        Move(root, "piece_chest", At(0f, 2.5f, 6.6f));
+        Move(root, ShipPortal.ObjectName, PortalPosition, QuarterdeckTilt);
+        Move(root, "TraderLamp", At(0f, 4.8f, 0.93f));
+        AddLamps(root);
+        FitWaterEffects(root);
+        PlaceSeats(root);
+        Move(root, "piece_chest", At(0.1f, 2.5f, 5.3f));
         Container hold = prefab.GetComponentsInChildren<Container>(true).First(container => container.GetComponent<ShipChest>() == null);
-        hold.transform.position = root.TransformPoint(At(0f, 2.5f, 6.6f));
+        hold.transform.position = root.TransformPoint(At(0.1f, 2.5f, 5.3f));
         foreach (Renderer renderer in hold.GetComponentsInChildren<Renderer>(true)) renderer.enabled = false;
-        AddPlank(geometry, "CargoHatch", new Vector3(0f, 2.52f, 6.6f), new Vector3(1.4f, 0.04f, 1.4f), template, false);
+        AddPlank(geometry, "CargoHatch", new Vector3(0.1f, 2.52f, 5.3f), new Vector3(1.4f, 0.04f, 1.4f), template, false);
         RelocateUpgrades(root);
-        AddBox(geometry, "SternDeck", new Vector3(0f, 4.44f, -6f), new Vector3(5.2f, 0.2f, 3.1f));
-        AddBox(geometry, "BowDeck", new Vector3(0f, 4.44f, 11.4f), new Vector3(3.8f, 0.2f, 4.2f));
-        for (int side = -1; side <= 1; side += 2)
-        {
-            AddBox(geometry, "LowerFloorMargin", new Vector3(side * 2.85f, -0.66f, 2f), new Vector3(0.5f, 0.12f, 11f));
-            AddBox(geometry, "LowerHullWall", new Vector3(side * 3.1f, 0.95f, 2f), new Vector3(0.2f, 3.1f, 11f));
-            AddBox(geometry, "DeckRail", new Vector3(side * 3.25f, 2.85f, 2f), new Vector3(0.15f, 0.7f, 11f));
-        }
         for (int segment = 0; segment < 16; segment++)
         {
             float angle = (segment + 0.5f) * Mathf.PI * 2f / 16f;
@@ -197,31 +234,29 @@ internal static class SkidbladnirModel
                 0.63f + Mathf.Sin(angle) * 1.45f), new Vector3(0.6f, 1.1f, 0.08f));
             rail.localRotation = Quaternion.Euler(0f, -angle * Mathf.Rad2Deg, 0f);
         }
-        for (int step = 0; step < 10; step++)
-        {
-            float height = 2.5f + 2.04f * (step + 1) / 10f;
-            AddPlank(geometry, "SternStair", new Vector3(0f, height - 0.06f, -3.4f - 2.4f * (step + 0.5f) / 10f),
-                new Vector3(1.2f, 0.12f, 0.24f), template);
-            AddPlank(geometry, "BowStair", new Vector3(1.3f, height - 0.06f, 6.8f + 2.6f * (step + 0.5f) / 10f),
-                new Vector3(1.2f, 0.12f, 0.26f), template);
-        }
-        Transform mast = AddBox(geometry, "UpgradeMast", new Vector3(0f, 1.75f, 0.63f), new Vector3(0.4f, 2f, 0.4f));
-        mast.gameObject.AddComponent<ShipMastHover>();
         Transform ladder = AddBox(geometry, "MastLadderInteraction", new Vector3(0.55f, 10.6f, 0.63f), new Vector3(0.75f, 16.4f, 0.12f));
         ladder.gameObject.AddComponent<global::BrudvikWhiteHilt.Pieces.Defenses.DefenseLadder>().m_stops = new[]
         {
-            At(0.55f, 2.55f, 0.63f), At(-0.55f, 11.85f, 0.63f), At(-0.7f, 18.85f, 0.63f)
+            At(0.55f, 2.55f, 1.0f), At(-0.55f, 11.85f, 0.63f), At(-0.7f, 18.85f, 0.63f)
         };
-        Transform boarding = AddBox(geometry, "BoardingLadder", new Vector3(-3.3f, 1f, -1.5f), new Vector3(0.25f, 3f, 0.7f));
+        // Amidships at the gap in the port rail; the hull bulges to 3.5 m at the waterline, so the ladder hangs outside it.
+        Transform boarding = AddBox(geometry, "BoardingLadder", new Vector3(-3.78f, 0.95f, 1.9f), new Vector3(0.3f, 4.9f, 0.8f));
         for (int side = -1; side <= 1; side += 2)
-            AddPlank(geometry, "BoardingLadderRail", new Vector3(-3.4f, 1f, -1.5f + side * 0.32f),
-                new Vector3(0.08f, 3f, 0.08f), template, false);
-        for (int rung = 0; rung < 10; rung++)
-            AddPlank(geometry, "BoardingLadderRung", new Vector3(-3.4f, -0.35f + rung * 0.3f, -1.5f),
+        {
+            AddPlank(geometry, "BoardingLadderRail", new Vector3(-3.78f, 0.95f, 1.9f + side * 0.32f),
+                new Vector3(0.08f, 4.9f, 0.08f), template, false);
+            AddPlank(geometry, "BoardingLadderHook", new Vector3(-3.265f, 2.65f, 1.9f + side * 0.32f),
+                new Vector3(1.03f, 0.08f, 0.08f), template, false);
+            AddPlank(geometry, "BoardingLadderBracket", new Vector3(-3.44f, -0.7f, 1.9f + side * 0.32f),
+                new Vector3(0.68f, 0.08f, 0.08f), template, false);
+        }
+        for (int rung = 0; rung < 14; rung++)
+            AddPlank(geometry, "BoardingLadderRung", new Vector3(-3.78f, -1.3f + rung * 0.3f, 1.9f),
                 new Vector3(0.08f, 0.06f, 0.7f), template, false);
+        // The lower stop lies below a swimmer's feet, so Use from the water climbs straight to the deck.
         boarding.gameObject.AddComponent<global::BrudvikWhiteHilt.Pieces.Defenses.DefenseLadder>().m_stops = new[]
         {
-            At(-3.6f, -1.1f, -1.5f), At(-2.8f, 2.55f, -1.5f)
+            At(-4.3f, -2.8f, 1.9f), At(-2.2f, 2.55f, 1.9f)
         };
         if (!VisualHelper.IsHeadless)
         {
@@ -247,19 +282,93 @@ internal static class SkidbladnirModel
 
     private static Vector3 ToVector(float[] values) => new(values[0], values[1], values[2]);
 
-    private static void Move(Transform root, string name, Vector3 position)
+    private static void PlaceSeats(Transform root)
+    {
+        Transform interactive = root.Find("interactive");
+        Transform template = interactive?.Find("sit_box (3)");
+        if (template == null) return;
+        UnityEngine.Object.Instantiate(template.gameObject, interactive).name = "sit_box (5)";
+        foreach (var seat in Seats)
+        {
+            Transform target = interactive.Find(seat.name);
+            if (target == null) continue;
+            target.localPosition = At(seat.at.x, seat.at.y, seat.at.z);
+            target.localRotation = Quaternion.Euler(0f, seat.yaw, 0f);
+            Enable(target);
+        }
+        Transform mast = interactive.Find("mast");
+        if (mast != null)
+        {
+            mast.localPosition = At(MastHoldfast.x, MastHoldfast.y, MastHoldfast.z);
+            Enable(mast);
+        }
+        Transform bow = interactive.Find("front");
+        if (bow != null)
+        {
+            bow.localPosition = At(BowHoldfast.x, BowHoldfast.y, BowHoldfast.z);
+            Transform stand = bow.Find("attachpoint");
+            if (stand != null) stand.SetPositionAndRotation(root.TransformPoint(At(BowHoldfastStand.x, BowHoldfastStand.y, BowHoldfastStand.z)), root.rotation);
+            Enable(bow);
+        }
+    }
+
+    private static void Enable(Transform target)
+    {
+        foreach (Collider collider in target.GetComponentsInChildren<Collider>(true)) collider.enabled = true;
+        foreach (Renderer renderer in target.GetComponentsInChildren<Renderer>(true)) renderer.enabled = true;
+    }
+
+    private static void AddLamps(Transform root)
+    {
+        Transform lamp = root.Find("ship/visual/Customize/TraderLamp");
+        if (lamp == null || VisualHelper.IsHeadless) return;
+        // Copies hang under the main lamp so the lantern upgrade shows, lights and switches them all together.
+        List<GameObject> copies = ExtraLamps.Select(spot =>
+        {
+            GameObject copy = UnityEngine.Object.Instantiate(lamp.gameObject, lamp.parent);
+            copy.name = "SkidbladnirLamp";
+            copy.transform.position = root.TransformPoint(At(spot.x, spot.y, spot.z));
+            return copy;
+        }).ToList();
+        foreach (GameObject copy in copies) copy.transform.SetParent(lamp, true);
+    }
+
+    private static void FitWaterEffects(Transform root)
+    {
+        foreach (string name in new[] { "watereffects", "ashdamageeffects" })
+        {
+            Transform effects = root.Find(name);
+            if (effects == null) continue;
+            Transform surface = effects.Find("WaterSurface");
+            foreach (Transform child in effects.GetComponentsInChildren<Transform>(true))
+            {
+                if (child == effects || (surface != null && child != surface && child.IsChildOf(surface))) continue;
+                Vector3 position = child.localPosition;
+                if (Mathf.Approximately(position.x, 0f) && Mathf.Approximately(position.z, 0f) && child != surface) continue;
+                child.localPosition = new Vector3(position.x * WaterlineBeamRatio, position.y,
+                    (position.z - LongshipWaterlineCentre) * WaterlineLengthRatio + WaterlineCentre);
+            }
+            if (surface != null)
+                surface.localScale = Vector3.Scale(surface.localScale, new Vector3(WaterlineBeamRatio, 1f, WaterlineLengthRatio));
+        }
+        Transform rudder = root.Find("watereffects/SpeedWake/rudder");
+        if (rudder != null) rudder.localPosition = new Vector3(0f, rudder.localPosition.y, RudderWakeZ);
+    }
+
+    private static void Move(Transform root, string name, Vector3 position, Quaternion? tilt = null)
     {
         Transform target = root.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == name);
         if (target == null) return;
         if (name != "TraderLamp") target.SetParent(root, true);
         target.position = root.TransformPoint(position);
+        if (tilt.HasValue) target.localRotation = tilt.Value * target.localRotation;
     }
 
     private static void RelocateUpgrades(Transform root)
     {
         Transform customize = root.Find("ship/visual/Customize");
         Transform storage = customize.Find("storage");
-        if (storage != null) FitGroup(root, storage, At(1.8f, 2.5f, 5.7f), new Vector2(1.6f, 1.6f));
+        if (storage != null) FitGroup(root, storage, At(1.85f, 2.5f, 6.85f), new Vector2(1.3f, 1.4f));
         Transform[] parts = customize.Cast<Transform>().Where(child => child.name.StartsWith("ShipTen")
             && child.name != "ShipTentLeft" && child.name != "ShipTentRight").ToArray();
         if (parts.Length == 0) return;
@@ -268,10 +377,10 @@ internal static class SkidbladnirModel
         foreach (Transform part in parts) part.SetParent(tent, true);
         Transform colliders = root.Find(ShipTentColliders.ObjectName);
         if (colliders != null) colliders.SetParent(tent, true);
-        FitGroup(root, tent, At(-1.65f, 2.5f, 4.2f), new Vector2(2.4f, 2.4f));
+        FitGroup(root, tent, At(-1.65f, 2.5f, 4.2f), new Vector2(2.0f, 2.2f));
         WhiteHiltShipUpgrades upgrades = root.GetComponent<WhiteHiltShipUpgrades>();
         upgrades.m_tentCenter = At(-1.65f, 3.5f, 4.2f);
-        upgrades.m_tentSize = new Vector3(2.4f, 2.4f, 2.4f);
+        upgrades.m_tentSize = new Vector3(2.0f, 2.4f, 2.2f);
     }
 
     private static void FitGroup(Transform root, Transform group, Vector3 position, Vector2 footprint)
@@ -316,6 +425,16 @@ internal static class SkidbladnirModel
         public Block[] colliders { get; set; }
         /// <summary>Convex platform slabs preserving the ladder openings.</summary>
         public Prism[] prisms { get; set; }
+        /// <summary>Hinge of the turning rudder.</summary>
+        public Rudder rudder { get; set; }
+    }
+    /// <summary>Where the rudder hangs on the sternpost.</summary>
+    public class Rudder
+    {
+        /// <summary>Lowest hinge point in model metres.</summary>
+        public float[] hinge { get; set; }
+        /// <summary>Lean of the sternpost in degrees; negative tips the top aft.</summary>
+        public float tilt { get; set; }
     }
     /// <summary>One material group in the asset bundle.</summary>
     public class Part
@@ -326,6 +445,8 @@ internal static class SkidbladnirModel
         public string texture { get; set; }
         /// <summary>Whether this group contains sails.</summary>
         public bool sail { get; set; }
+        /// <summary>Whether this group is the rudder, modelled upright around its hinge.</summary>
+        public bool rudder { get; set; }
         /// <summary>Local model pivot in source metres.</summary>
         public float[] pivot { get; set; }
     }
@@ -338,6 +459,10 @@ internal static class SkidbladnirModel
         public float[] centre { get; set; }
         /// <summary>Box dimensions in metres.</summary>
         public float[] size { get; set; }
+        /// <summary>Ship-space direction of the box's local forward axis, or null when axis-aligned.</summary>
+        public float[] forward { get; set; }
+        /// <summary>Ship-space direction of the box's local up axis.</summary>
+        public float[] up { get; set; }
     }
     /// <summary>A convex platform slab.</summary>
     public class Prism
