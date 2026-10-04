@@ -120,6 +120,15 @@ public static class DiscoveryCatalog
         Translations.AddEnglish("whitehilt_disc_found", "{0} found");
         Translations.AddEnglish("whitehilt_disc_unlimited", "Unlimited in chests");
         Translations.AddEnglish("whitehilt_disc_current_biome", "Found in this biome");
+        Translations.AddEnglish("whitehilt_disc_show_all", "Show all");
+        Translations.AddEnglish("whitehilt_disc_show_all_hint", "Show every kind found on the map");
+        Translations.AddEnglish("whitehilt_disc_hide_all", "Hide all");
+        Translations.AddEnglish("whitehilt_disc_hide_all_hint", "Hide every kind from the map");
+        Translations.AddEnglish("whitehilt_disc_hide_unlimited", "Hide unlimited: {0}");
+        Translations.AddEnglish("whitehilt_disc_hide_unlimited_hint", "Keeps everything you have unlimited in chests off the map, also what becomes unlimited later");
+        Translations.AddEnglish("whitehilt_disc_hidden_unlimited", "Hidden: unlimited items are hidden");
+        Translations.AddEnglish("whitehilt_disc_on", "on");
+        Translations.AddEnglish("whitehilt_disc_off", "off");
     }
 
     internal static Dictionary<string, Heightmap.Biome> GetLocationBiomes()

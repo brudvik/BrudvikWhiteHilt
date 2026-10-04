@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.5 - 2026-10-04
+
+### Added
+- **Quick buttons in Munin's memory**: **Show all** and **Hide all** switch every kind on the map on or off at once, and **Hide unlimited** keeps everything you have unlimited in chests off the map, also what becomes unlimited later, so the map shows only what you still need. Icons hidden that way fade and keep their own choice for when the switch is turned off.
+
 ## v0.89.4 - 2026-10-04
 
 ### Changed

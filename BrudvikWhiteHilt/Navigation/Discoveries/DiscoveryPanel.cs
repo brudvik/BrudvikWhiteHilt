@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Navigation.Discoveries;
 /// <summary>
 /// The panel under the bottom-left corner of the large map where the player picks which discoveries to show. Its header
 /// stays under the map and the list opens upwards over it. It lists only kinds that have been found, by group, as icons
-/// on light discs, with coloured rims and checkmarks while switched on. It shows while Munin's Perch shares discoveries; below the Exploration level it
+/// on light discs, with coloured rims and checkmarks while switched on, and quick buttons to show or hide everything and
+/// to keep what is unlimited in chests off the map. It shows while Munin's Perch shares discoveries; below the Exploration level it
 /// only says what level is needed.
 /// </summary>
 public static class DiscoveryPanel
@@ -23,6 +24,7 @@ public static class DiscoveryPanel
     private const float HeaderHeight = 30f;
     private const float GroupHeight = 24f;
     private const float FooterHeight = 72f;
+    private const float QuickHeight = 28f;
     private const float Width = Padding * 2f + Columns * IconSize + (Columns - 1) * Gap;
     private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
@@ -37,6 +39,7 @@ public static class DiscoveryPanel
     private static GameObject panel;
     private static RectTransform content;
     private static Text footer;
+    private static Text hideUnlimitedLabel;
     private static string footerDefault = string.Empty;
     private static bool expanded;
     private static bool builtExpanded;
@@ -45,6 +48,23 @@ public static class DiscoveryPanel
     private static int paintedFilter = -1;
     private static ZoneSystem builtLocationsFor;
     private static Dictionary<string, Heightmap.Biome> locationBiomes = new();
+
+    /// <summary>
+    /// True if the kind is an item the local player has unlimited in chests.
+    /// </summary>
+    /// <param name="key">Kind key.</param>
+    /// <returns>True if unlimited.</returns>
+    internal static bool IsUnlimited(string key)
+    {
+        if (Chests == null || ObjectDB.instance == null || !key.StartsWith(DiscoveryCatalog.ItemPrefix, System.StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        string name = key.Substring(DiscoveryCatalog.ItemPrefix.Length);
+        ItemDrop item = ObjectDB.instance.GetItemPrefab(name)?.GetComponent<ItemDrop>();
+        return item != null && Chests.GetUnlimitedChest(name, item.m_itemData.m_shared) != null;
+    }
 
     /// <summary>
     /// The panel while it shows on the large map, else null; the overview lines up to its right.
@@ -115,6 +135,7 @@ public static class DiscoveryPanel
         builtLocked = locked;
         paintedFilter = -1;
         toggles.Clear();
+        hideUnlimitedLabel = null;
         foreach (Transform child in content)
         {
             Object.Destroy(child.gameObject);
@@ -148,12 +169,54 @@ public static class DiscoveryPanel
             footer = null;
         }
 
+        if (!locked && expanded)
+        {
+            y = AddQuickButtons(y);
+        }
+
         GameObject headerButton = CreateButton(Padding, y, Width - Padding * 2f, HeaderHeight, () => expanded = !expanded);
         CreateLabel(headerButton.transform, header, 18, GUIManager.Instance.ValheimOrange, TextAnchor.MiddleCenter);
         headerButton.GetComponent<Button>().interactable = !locked;
         y += HeaderHeight;
 
         ((RectTransform)panel.transform).sizeDelta = new Vector2(Width, y + Padding);
+    }
+
+    // Show all and Hide all side by side, and the switch for unlimited items below them.
+    private static float AddQuickButtons(float y)
+    {
+        float inner = Width - Padding * 2f;
+        float half = (inner - Gap) / 2f;
+        AddQuickButton(Padding, y, half, "$whitehilt_disc_show_all", "$whitehilt_disc_show_all_hint",
+            () => DiscoveryFilter.Set(DiscoveryOverlay.Kinds.Select(kind => kind.Key), true));
+        AddQuickButton(Padding + half + Gap, y, half, "$whitehilt_disc_hide_all", "$whitehilt_disc_hide_all_hint",
+            () => DiscoveryFilter.Set(DiscoveryOverlay.Kinds.Select(kind => kind.Key), false));
+        y += QuickHeight + Gap;
+        hideUnlimitedLabel = AddQuickButton(Padding, y, inner, string.Empty, "$whitehilt_disc_hide_unlimited_hint", DiscoveryFilter.ToggleHideUnlimited);
+        return y + QuickHeight + Gap;
+    }
+
+    private static Text AddQuickButton(float x, float y, float width, string label, string hint, UnityEngine.Events.UnityAction onClick)
+    {
+        GameObject button = GUIManager.Instance.CreateButton(Localization.instance.Localize(label), content, Vector2.zero, Vector2.zero, Vector2.zero, width, QuickHeight);
+        Place((RectTransform)button.transform, x, y, width, QuickHeight);
+        button.GetComponent<Button>().onClick.AddListener(onClick);
+        Text text = button.GetComponentInChildren<Text>();
+        if (text != null)
+        {
+            text.fontSize = 14;
+            text.resizeTextForBestFit = false;
+        }
+
+        string hintText = Localization.instance.Localize(hint);
+        EventTrigger trigger = button.AddComponent<EventTrigger>();
+        EventTrigger.Entry enter = new() { eventID = EventTriggerType.PointerEnter };
+        enter.callback.AddListener(_ => SetFooter(hintText));
+        EventTrigger.Entry exit = new() { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener(_ => SetFooter(footerDefault));
+        trigger.triggers.Add(enter);
+        trigger.triggers.Add(exit);
+        return text;
     }
 
     private static float AddGroup(DiscoveryGroup group, List<DiscoveryKind> kinds, float y)
@@ -219,7 +282,7 @@ public static class DiscoveryPanel
             badge.color = unlimitedGold;
             badge.raycastTarget = false;
             badgeBack.gameObject.SetActive(false);
-            KindToggle toggle = new() { Key = key, Rim = back, Background = inner, UnlimitedBadge = badgeBack.gameObject,
+            KindToggle toggle = new() { Key = key, Rim = back, Background = inner, Icon = icon, UnlimitedBadge = badgeBack.gameObject,
                 Check = check.gameObject, Colour = DiscoveryOverlay.GroupColour(group) };
             string hover = $"{DiscoveryCatalog.GetLabel(key)}\n{string.Format(Localization.instance.Localize("$whitehilt_disc_found"), kind.Total)}";
             AddHover(button, hover, toggle);
@@ -248,8 +311,7 @@ public static class DiscoveryPanel
             {
                 string name = toggle.Key.Substring(DiscoveryCatalog.ItemPrefix.Length);
                 inBiome = items != null && items.Contains(name);
-                ItemDrop item = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(name)?.GetComponent<ItemDrop>() : null;
-                unlimited = item != null && Chests?.GetUnlimitedChest(name, item.m_itemData.m_shared) != null;
+                unlimited = IsUnlimited(toggle.Key);
             }
             else
             {
@@ -280,6 +342,11 @@ public static class DiscoveryPanel
             text += "\n" + Localization.instance.Localize("$whitehilt_disc_current_biome");
         }
 
+        if (DiscoveryFilter.IsHiddenAsUnlimited(toggle.Key))
+        {
+            text += "\n" + Localization.instance.Localize("$whitehilt_disc_hidden_unlimited");
+        }
+
         return text;
     }
 
@@ -290,6 +357,14 @@ public static class DiscoveryPanel
         {
             PaintToggle(toggle);
         }
+
+        if (hideUnlimitedLabel != null)
+        {
+            bool hide = DiscoveryFilter.HideUnlimited;
+            hideUnlimitedLabel.text = string.Format(Localization.instance.Localize("$whitehilt_disc_hide_unlimited"),
+                Localization.instance.Localize(hide ? "$whitehilt_disc_on" : "$whitehilt_disc_off"));
+            hideUnlimitedLabel.color = hide ? GUIManager.Instance.ValheimOrange : Color.white;
+        }
     }
 
     private static void PaintToggle(KindToggle toggle)
@@ -298,6 +373,9 @@ public static class DiscoveryPanel
         Color rim = on ? toggle.Colour : offRim;
         toggle.Rim.color = toggle.Hovered ? Color.Lerp(rim, Color.white, 0.65f) : rim;
         toggle.Check.SetActive(on);
+
+        // Switched on but hidden as unlimited: faded, so it is clear why it is not on the map.
+        toggle.Icon.color = DiscoveryFilter.IsHiddenAsUnlimited(toggle.Key) ? new Color(1f, 1f, 1f, 0.35f) : Color.white;
     }
 
     private static Image CreateDisc(Transform parent, string name, Color colour)
@@ -403,6 +481,7 @@ public static class DiscoveryPanel
         public string Key;
         public Image Rim;
         public Image Background;
+        public Image Icon;
         public GameObject UnlimitedBadge;
         public GameObject Check;
         public Color Colour;
