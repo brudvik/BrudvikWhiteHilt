@@ -622,6 +622,10 @@
     <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
     <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
     <Compile Include="Pieces\Cooking\StonePot\SmokeOven.cs" />
+    <Compile Include="Pieces\Cooking\StonePot\SoapstoneCauldron.cs" />
+    <Compile Include="Items\Food\FishSoup\FishSoup.cs" />
+    <Compile Include="Items\Food\JuniperLoxPot\JuniperLoxPot.cs" />
+    <Compile Include="Items\Food\CloudberryPorridge\CloudberryPorridge.cs" />
     <Compile Include="Pieces\Cooking\DryingRack.cs" />
     <Compile Include="Pieces\Textiles\Loom.cs" />
     <Compile Include="Items\Textiles\LinenCloth.cs" />

@@ -4,6 +4,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## v0.90.0 - 2026-10-04
 
+### Added
+- **Soapstone Cauldron**: a fourth Stone Pot extension, carved out of soapstone near a Stonecutter. With the Herb Tray and the Smoke Oven it raises the pot to level 4, for three new Plains dishes: Fish Soup, Juniper Lox Pot and Cloudberry Porridge.
+
 ### Changed
 - **The Whetstone is made at the Stonecutter** instead of the Workbench, where stone is worked.
 
