@@ -301,6 +301,8 @@
   "piece_whitehilt_bautastein_description": "En høy reist stein til minne om de døde eller en stor bragd. Bruk den for å hogge inn din egen innskrift på forsiden.",
   "piece_whitehilt_soapstonelamp": "Klebersteinslampe",
   "piece_whitehilt_soapstonelamp_description": "En liten skål hogd ut av kleberstein, med en veke som brenner i harpiks. Et mykt, lunt lys til bord og hyller; fyll på med harpiks.",
+  "piece_whitehilt_hnefatafl": "Hnefataflbrett",
+  "piece_whitehilt_hnefatafl_description": "Kongens bord, satt opp til spill: mørke steiner beleirer de lyse rundt en ravkonge. Sett det på et bord for et lunere hjem.",
   "msg_whitehilt_needmaptable": "Benken må stå innen {0} m fra et kartbord",
   "item_whitehiltcharttable": "Navigatørbord",
   "item_whitehiltcharttable_description": "Et lite plankebord med sjøkart, sekstant og kartruller. Bruk det på roret til en karve, et langskip, en drakkar eller Hvithjalt-skipet for å sette det på dekk; på Hvithjalt-skipet tar masta imot det også. Om bord avdekker kartet mer rundt deg, opptil {0} m etter hvert som utforskingsferdigheten øker.",

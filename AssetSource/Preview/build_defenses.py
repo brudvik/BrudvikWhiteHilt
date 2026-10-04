@@ -623,6 +623,41 @@ def mooring_post():
 
 MOORING_ROPE_Y = 1.0
 
+def hnefatafl():
+    """A hnefatafl board on a table: an 11 x 11 grid on a wooden board, set up for a game. 24 dark attackers stand in fives
+    along the edges, 12 light defenders round the king, an amber, in the middle. Rock_7 (1 m across, base 0.19 m below its
+    origin) makes the pieces; wood_beam the board.
+    """
+    cells, cell = 11, 0.055
+    half = cells * cell / 2
+    top = 0.04
+    parts = [part("wood_beam", (0, top / 2, 0), scale=(0.33, top / 0.4, 1.65), tint=[0.72, 0.55, 0.38])]
+    for i in range(cells + 1):
+        offset = -half + i * cell
+        parts.append(log((-half, top + 0.001, offset), (half, top + 0.001, offset), 0.0025, tint=[0.2, 0.14, 0.1], detail=True))
+        parts.append(log((offset, top + 0.001, -half), (offset, top + 0.001, half), 0.0025, tint=[0.2, 0.14, 0.1], detail=True))
+
+    def square(row, col):
+        return (-half + (col + 0.5) * cell, -half + (row + 0.5) * cell)
+
+    attackers = []
+    for k in range(3, 8):
+        attackers += [(0, k), (10, k), (k, 0), (k, 10)]
+    attackers += [(1, 5), (9, 5), (5, 1), (5, 9)]
+    defenders = [(5, 3), (5, 4), (5, 6), (5, 7), (3, 5), (4, 5), (6, 5), (7, 5), (4, 4), (4, 6), (6, 4), (6, 6)]
+    size = 0.034
+    for i, (row, col) in enumerate(attackers):
+        x, z = square(row, col)
+        parts.append(part("Rock_7", (x, top + 0.19 * size, z), (0, i * 47 % 360, 0), (size, size, size), tint=[0.3, 0.26, 0.24], detail=True))
+    for i, (row, col) in enumerate(defenders):
+        x, z = square(row, col)
+        parts.append(part("Rock_7", (x, top + 0.19 * size, z), (0, i * 61 % 360, 0), (size, size, size), tint=[1.0, 0.96, 0.86], detail=True))
+    x, z = square(5, 5)
+    parts.append(part("gem_amber", (x - 0.007, top + 0.036, z), (-90, 0, 0), (0.17, 0.17, 0.17)))
+    colliders = [box((0, 0.03, 0), (0.68, 0.06, 0.68))]
+    return parts, colliders
+
+
 def memorial_stone():
     """A raised memorial stone: the vanilla highstone at 2.5 m, its flatter face towards +z, where the inscription goes.
 
@@ -689,6 +724,8 @@ def navigation_pieces():
         defence("fortoyningspale", "wood_pole2", *mooring_post(), [], views=views(("front", 180, 15), ("side", 90, 15), ("top", -30, 60))),
         defence("bautastein", "sign", *memorial_stone(), [], keep=["Canvas"],
                 views=views(("front", 180, 10), ("side", 90, 10), ("angle", -150, 20))),
+        defence("hnefatafl", "wood_pole2", *hnefatafl(), [],
+                views=views(("angle", 160, 45), ("side", 90, 20), ("top", 180, 85))),
         defence("skipsbyggerbenk", "piece_workbench", *shipwright_bench(), [],
                 keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                 views=views(("front", 180, 20), ("side", 130, 20), ("back", -30, 30))),

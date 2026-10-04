@@ -23,3 +23,13 @@ A small bowl carved out of soapstone with a wick burning in resin, as the Norse 
 | Piece | Crafting Station | Requirements |
 |-------|------------------|--------------|
 | **Soapstone Lamp** (`piece_whitehilt_soapstonelamp`) | Hammer (Furniture), near a Stonecutter | Soapstone ×2, Resin ×2 |
+
+## Hnefatafl Board
+
+<img src="images/hnefatafl.png" alt="Hnefatafl Board" title="Hnefatafl Board" height="140">
+
+*Hnefatafl*, the king's table, the board game of the Norse, set up for a game on an 11 × 11 board: 24 dark stones besiege 12 light ones round an amber king. Put it on a table: it gives **+1 comfort**. It is for show; the pieces do not move.
+
+| Piece | Crafting Station | Requirements |
+|-------|------------------|--------------|
+| **Hnefatafl Board** (`piece_whitehilt_hnefatafl`) | Hammer (Furniture), near a Stonecutter | Wood ×2, Stone ×6, Amber ×1 |
