@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Extensions;
+﻿using BrudvikWhiteHilt.Difficulty.Beasts;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Kraken;
 using UnityEngine;
@@ -58,7 +59,7 @@ public class GiftOfOdinEffect : SE_Stats
 
         // The food update adds the bonus from now on; raise it at once so the heal below fills it.
         character.SetMaxHealth(character.GetMaxHealth() + BonusMaxHealth * KrakenBody.PotionFactor(character, KrakenSettings.OdinBonusShare.Value));
-        character.Heal(character.GetMaxHealth() * KrakenBody.PotionFactor(character, KrakenSettings.OdinHealingShare.Value));
+        character.Heal(character.GetMaxHealth() * HealingFactor(character));
     }
 
     /// <summary>
@@ -78,7 +79,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <param name="regenMultiplier"></param>
     public override void ModifyHealthRegen(ref float regenMultiplier)
     {
-        regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value * KrakenBody.PotionFactor(m_character, KrakenSettings.OdinHealingShare.Value);
+        regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value * HealingFactor(m_character);
     }
 
     /// <summary>
@@ -89,7 +90,13 @@ public class GiftOfOdinEffect : SE_Stats
     {
         base.UpdateStatusEffect(dt);
         m_character.Heal(PotionSettings.Odin.HealPerSecond.Value * dt
-            * KrakenBody.PotionFactor(m_character, KrakenSettings.OdinHealingShare.Value), showText: false);
+            * HealingFactor(m_character), showText: false);
+    }
+
+    private static float HealingFactor(Character character)
+    {
+        return Mathf.Min(KrakenBody.PotionFactor(character, KrakenSettings.OdinHealingShare.Value),
+            BeastBehaviour.OdinHealingFactor(character));
     }
 
 }

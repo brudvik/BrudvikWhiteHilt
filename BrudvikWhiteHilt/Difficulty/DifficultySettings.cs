@@ -169,6 +169,12 @@ public static class DifficultySettings
     /// <summary>Two beasts in one night are at least this far apart.</summary>
     public static ConfigEntry<float> BeastSpacing { get; private set; }
 
+    /// <summary>Range within which a living black beast tempers Odin's healing.</summary>
+    public static ConfigEntry<float> OdinHealingRange { get; private set; }
+
+    /// <summary>Share of Odin's healing bonuses retained near a black beast.</summary>
+    public static ConfigEntry<float> OdinHealingShare { get; private set; }
+
     /// <summary>Whether blood moons happen.</summary>
     public static ConfigEntry<bool> BloodMoonEnabled { get; private set; }
 
@@ -262,6 +268,8 @@ public static class DifficultySettings
         SpawnDistanceMin = WhiteHiltConfig.BindAdminOnly(BeastsSection, "SpawnDistanceMin", 50f, "Nearest distance a beast appears from the player.", new AcceptableValueRange<float>(20f, 100f));
         SpawnDistanceMax = WhiteHiltConfig.BindAdminOnly(BeastsSection, "SpawnDistanceMax", 70f, "Farthest distance a beast appears from the player.", new AcceptableValueRange<float>(20f, 100f));
         BeastSpacing = WhiteHiltConfig.BindAdminOnly(BeastsSection, "Spacing", 150f, "Two beasts in one night appear at least this far apart.", new AcceptableValueRange<float>(0f, 1000f));
+        OdinHealingRange = WhiteHiltConfig.BindAdminOnly(BeastsSection, "OdinHealingRange", 40f, "Range in metres where a living black beast tempers Odin's healing. 0 disables attenuation.", new AcceptableValueRange<float>(0f, 200f));
+        OdinHealingShare = WhiteHiltConfig.BindAdminOnly(BeastsSection, "OdinHealingShare", 0.8f, "Share of Odin's instant healing, passive healing and regeneration bonus retained near black beasts. Multiple beasts do not stack; the strongest attenuation applies near Kraken. 1 keeps full power.", share);
         foreach (BeastDefinition beast in BeastDefinition.All)
         {
             beastEnabled[beast.Key] = WhiteHiltConfig.BindAdminOnly(BeastsSection, beast.Key, true, $"{beast.EnglishName} ({beast.BaseCreature}).");

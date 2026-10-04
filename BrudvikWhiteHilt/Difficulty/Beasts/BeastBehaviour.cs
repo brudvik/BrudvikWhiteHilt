@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Difficulty.Beasts;
@@ -11,15 +12,47 @@ public class BeastBehaviour : MonoBehaviour
     private const float QuietRange = 40f;
     private const string DespawnEffect = "vfx_odin_despawn";
 
+    private static readonly HashSet<BeastBehaviour> instances = new();
+
     private ZNetView nview;
     private Character character;
     private float nextCheck;
+
+    /// <summary>Returns Odin's retained healing share near a living black beast.</summary>
+    /// <param name="target">The character benefiting from Odin.</param>
+    /// <returns>The configured share within range, or full strength otherwise.</returns>
+    public static float OdinHealingFactor(Character target)
+    {
+        float range = DifficultySettings.OdinHealingRange.Value;
+        if (target == null || range <= 0f)
+        {
+            return 1f;
+        }
+
+        foreach (BeastBehaviour beast in instances)
+        {
+            if (beast != null && beast.nview != null && beast.nview.IsValid()
+                && beast.character != null && !beast.character.IsDead()
+                && (target.transform.position - beast.transform.position).sqrMagnitude < range * range)
+            {
+                return Mathf.Clamp01(DifficultySettings.OdinHealingShare.Value);
+            }
+        }
+
+        return 1f;
+    }
 
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
         character = GetComponent<Character>();
         nextCheck = Time.time + CheckInterval;
+        instances.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        instances.Remove(this);
     }
 
     private void Update()

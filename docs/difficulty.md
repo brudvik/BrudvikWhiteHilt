@@ -39,6 +39,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 - Where two beasts share a biome, one of them comes at random.
 - By day it sinks into the ground when no one is near.
 - It always drops its black trophy, which can be bound to a White Hilt weapon or shield at the Binding Stone ([Smithing](smithing.md#-binding-and-rune-etching)).
+- Within 40 m of a living beast, [Gift of Odin](potions.md#near-black-beasts) retains 80% of its healing bonuses: +1.6 HP/s, 1.8x health regeneration and an 80%-of-maximum-health heal when drunk. Maximum HP, fall protection, duration and Freya are unchanged. Multiple beasts do not stack, and Kraken's stronger healing attenuation takes precedence. Full strength returns outside range or when the beast dies. Server settings in `[Difficulty.Beasts]`: `OdinHealingRange` (40 m; 0 disables attenuation), `OdinHealingShare` (0.8; 1 keeps full power).
 
 | Beast | Biome | Needs | Health (base ×) |
 |-------|-------|-------|-----------------|

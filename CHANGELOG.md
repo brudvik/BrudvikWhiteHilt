@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.79.1 - 2026-10-04
+
+### Changed
+- **Odin near black beasts**: within 40 m of a living black beast, retain 80% of Odin's instant healing, passive healing and regeneration bonus (+1.6 HP/s, 1.8x regeneration, 80%-of-maximum-health heal on drink at default settings). Maximum health, fall protection, duration and Freya remain unchanged. Includes horn-called beasts and beasts at sea; excludes ordinary starred creatures. Multiple beasts do not stack, and only the strongest healing attenuation applies near Kraken. Full strength returns outside range or when the beast dies. Range and retained share are server-configurable in `[Difficulty.Beasts]`.
+
 ## v0.79.0 - 2026-10-04
 
 ### Added

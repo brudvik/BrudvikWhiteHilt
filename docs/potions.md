@@ -46,6 +46,14 @@ Within 80 m of a living, non-retreating [Kraken](kraken.md), Odin and Freya reta
 
 These are defaults, before other effects. The status effects and their durations remain intact. Full strength returns outside range, or when Kraken dies or retreats, including for players overboard. The range and retained shares are server settings in `[Kraken]`: `PotionRange`, `OdinBonusShare`, `OdinHealingShare`, `FreyaShare`. Range 0 disables the attenuation; a share of 1 retains full strength for that benefit. Other potions are unchanged.
 
+### Near black beasts
+
+Within 40 m of a living [black beast](difficulty.md), Odin retains 80% of its healing bonuses: +1.6 HP/s, 1.8x health regeneration, and healing for 80% of maximum HP when drunk. Its +50 maximum HP, 50% fall-damage reduction and duration remain unchanged. Freya and other potions are unchanged.
+
+Full healing strength returns when the beast dies or you leave its range. This includes horn-called beasts and beasts at sea, but not ordinary starred creatures. Multiple beasts do not stack; near both a beast and Kraken, only the strongest healing attenuation applies. These are defaults, before other effects.
+
+Server settings in `[Difficulty.Beasts]`: `OdinHealingRange` (default 40 m; 0 disables attenuation) and `OdinHealingShare` (default 0.8; 1 retains full healing strength).
+
 ### Emergency Draught (2 minutes)
 
 | Potion | Effect | Mead Base Requirements |
