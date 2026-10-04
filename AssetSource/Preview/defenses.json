@@ -17996,6 +17996,60 @@
    ]
   },
   {
+   "name": "bautastein",
+   "base": "sign",
+   "parts": [
+    {
+     "mesh": "highstone",
+     "position": [
+      0,
+      0.3,
+      0
+     ],
+     "scale": [
+      0.3,
+      0.38,
+      0.3
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0.03,
+      1.2,
+      0.12
+     ],
+     "size": [
+      1.5,
+      2.4,
+      0.6
+     ]
+    }
+   ],
+   "snapPoints": [],
+   "keep": [
+    "Canvas"
+   ],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 10
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 10
+    },
+    {
+     "label": "angle",
+     "yaw": -150,
+     "pitch": 20
+    }
+   ]
+  },
+  {
    "name": "skipsbyggerbenk",
    "base": "piece_workbench",
    "parts": [

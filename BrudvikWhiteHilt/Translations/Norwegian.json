@@ -297,6 +297,8 @@
   "piece_whitehilt_kartmakerbenk_description": "En skrivepult med sjøkart, sekstant og kartruller. Sett den innen {0} m fra et kartbord for å lage navigasjonsutstyr.",
   "piece_whitehilt_skipsbyggerbenk": "Skipsbyggerbenk",
   "piece_whitehilt_skipsbyggerbenk_description": "En solid benk med anker, tau, garn og en bøtte tjære. Her lager du skipsoppgraderinger og skipshammeren. Den trenger ikke tak, så den kan stå ute på brygga.",
+  "piece_whitehilt_bautastein": "Bautastein",
+  "piece_whitehilt_bautastein_description": "En høy reist stein til minne om de døde eller en stor bragd. Bruk den for å hogge inn din egen innskrift på forsiden.",
   "msg_whitehilt_needmaptable": "Benken må stå innen {0} m fra et kartbord",
   "item_whitehiltcharttable": "Navigatørbord",
   "item_whitehiltcharttable_description": "Et lite plankebord med sjøkart, sekstant og kartruller. Bruk det på roret til en karve, et langskip, en drakkar eller Hvithjalt-skipet for å sette det på dekk; på Hvithjalt-skipet tar masta imot det også. Om bord avdekker kartet mer rundt deg, opptil {0} m etter hvert som utforskingsferdigheten øker.",

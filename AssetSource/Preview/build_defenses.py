@@ -623,6 +623,20 @@ def mooring_post():
 
 MOORING_ROPE_Y = 1.0
 
+def memorial_stone():
+    """A raised memorial stone: the vanilla highstone at 2.5 m, its flatter face towards +z, where the inscription goes.
+
+    highstone is 4.4 m wide, 6.6 m high and 2.3 m deep with its base 0.86 m below its origin.
+    """
+    parts = [part("highstone", (0, 0.3, 0), scale=(0.3, 0.38, 0.3))]
+    colliders = [box((0.03, 1.2, 0.12), (1.5, 2.4, 0.6))]
+    return parts, colliders
+
+
+# Where the inscription hangs on the memorial stone's face (the mod moves the sign's canvas there).
+MEMORIAL_TEXT = (0.0, 1.45, 0.5)
+
+
 def shipwright_bench():
     """The shipwright's bench: the vanilla workbench with a ship's anchor leaning on its right end, an anchor chain hanging
     from the front edge, a coil of rope and a rushlight on the top, a fishing net over the tool board and a tar bucket.
@@ -673,6 +687,8 @@ def navigation_pieces():
         {"name": "stifinner_rubin_visning", "parts": [piece("stifinner_rubin", (0, 0.3, 0))],
          "views": views(("front", 180, 5), ("side", 120, 10), ("angle", -150, 30))},
         defence("fortoyningspale", "wood_pole2", *mooring_post(), [], views=views(("front", 180, 15), ("side", 90, 15), ("top", -30, 60))),
+        defence("bautastein", "sign", *memorial_stone(), [], keep=["Canvas"],
+                views=views(("front", 180, 10), ("side", 90, 10), ("angle", -150, 20))),
         defence("skipsbyggerbenk", "piece_workbench", *shipwright_bench(), [],
                 keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                 views=views(("front", 180, 20), ("side", 130, 20), ("back", -30, 30))),

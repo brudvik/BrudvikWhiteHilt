@@ -85,6 +85,12 @@ A clock with the weather on the HUD, muffled weather indoors, and dropped items 
 
 Longer and angled beams and poles, iron grates in more sizes, White Hilt banners, and the logo in the main menu and loading screen.
 
+### 🪨 [Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/memorial_stone.png" alt="Memorial Stone" height="120">
+
+More for the Stonecutter: memorial stones with your own inscription, and more to come.
+
 ### 🏠 [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/roof_turf.png" alt="Turf roof" height="120">
