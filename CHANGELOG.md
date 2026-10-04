@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.7 - 2026-10-04
+
+### Fixed
+- **The chart table's route buttons are no longer covered**: when the map is opened from a ship's chart table to plan a route, the Munin's memory and overview panels under the map are hidden, so the route panel's buttons can be clicked. They come back on the ordinary map.
+
 ## v0.89.6 - 2026-10-04
 
 ### Added

@@ -60,7 +60,9 @@ public static class OverviewPanel
     public static void Update(Minimap map)
     {
         Player player = Player.m_localPlayer;
-        bool visible = map.m_mode == Minimap.MapMode.Large && player != null && OverviewSettings.Overview.Value && GUIManager.CustomGUIFront != null;
+        // The chart table's route panel takes the space under the map while a route is planned.
+        bool visible = map.m_mode == Minimap.MapMode.Large && player != null && OverviewSettings.Overview.Value && GUIManager.CustomGUIFront != null
+            && !Pieces.Navigation.ShipRoutePlanner.Planning;
         if (!visible)
         {
             if (panel != null && panel.activeSelf)

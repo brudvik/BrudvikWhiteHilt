@@ -77,8 +77,9 @@ public static class DiscoveryPanel
     /// <param name="map">The map.</param>
     public static void Update(Minimap map)
     {
+        // The chart table's route panel takes the space under the map while a route is planned.
         bool visible = map.m_mode == Minimap.MapMode.Large && Player.m_localPlayer != null && DiscoveryOverlay.Kinds.Count > 0
-            && GUIManager.CustomGUIFront != null;
+            && GUIManager.CustomGUIFront != null && !Pieces.Navigation.ShipRoutePlanner.Planning;
         if (!visible)
         {
             if (panel != null && panel.activeSelf)
