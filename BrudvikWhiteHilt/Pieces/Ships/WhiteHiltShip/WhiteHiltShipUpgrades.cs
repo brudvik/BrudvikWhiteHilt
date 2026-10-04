@@ -61,6 +61,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private const string TakeRpc = "WhiteHiltShipTakeUpgrade";
     private static readonly int AnchorZdoKey = "whitehilt_ship_anchored".GetStableHashCode();
     private const string AnchorRpc = "WhiteHiltShipToggleAnchor";
+    private static readonly int LanternZdoKey = "whitehilt_ship_lantern".GetStableHashCode();
+    private const string LanternRpc = "WhiteHiltShipToggleLantern";
     private static float MinFishingSpeed => ShipSettings.FishingNetMinSpeed.Value;
 
     // At Fishing 100 the net catches twice as often, and half the catches are two fish (defaults).
@@ -111,6 +113,34 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     /// True while the ship has the anchor upgrade and the anchor is lowered.
     /// </summary>
     public bool IsAnchored => Has(ShipDriftAnchor.Bit) && nview.GetZDO().GetBool(AnchorZdoKey);
+
+    /// <summary>Whether the lantern is switched on, with automatic night lighting until first used.</summary>
+    public bool IsLanternOn => nview != null && nview.IsValid()
+        && Has(ShipLantern.Bit) && nview.GetZDO().GetInt(LanternZdoKey, -1) switch
+        {
+            0 => false,
+            1 => true,
+            _ => EnvMan.IsNight()
+        };
+
+    /// <summary>Whether the targeted ship's lantern is suppressed by a living, attacking Kraken.</summary>
+    public bool IsLanternBlocked => LanternThreat() == 2;
+
+    /// <summary>Requests a persistent, owner-synchronized lantern toggle.</summary>
+    /// <param name="user">The interacting sailor.</param>
+    /// <returns>True if the request was sent.</returns>
+    public bool ToggleLantern(Humanoid user)
+    {
+        if (nview == null || !nview.IsValid() || !Has(ShipLantern.Bit))
+            return false;
+        if (IsLanternBlocked)
+        {
+            user.Message(MessageHud.MessageType.Center, "$whitehilt_ship_lantern_blocked");
+            return false;
+        }
+        nview.InvokeRPC(LanternRpc);
+        return true;
+    }
 
     /// <summary>
     /// Returns the upgraded ship with a tent over the given point, if any.
@@ -330,6 +360,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         nview.Register<int>(AddRpc, RPC_Add);
         nview.Register<int>(TakeRpc, RPC_Take);
         nview.Register(AnchorRpc, RPC_ToggleAnchor);
+        nview.Register(LanternRpc, RPC_ToggleLantern);
         WearNTear wearNTear = GetComponent<WearNTear>();
         if (wearNTear != null)
         {
@@ -388,15 +419,44 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         UpdateAutoAnchor(Time.deltaTime);
         UpdateAnchor();
         UpdateFishingNet(Time.deltaTime);
+        UpdateLantern();
 
-        // The hold and the lantern are checked once a second; the hold only after the container has loaded its cargo.
         holdCheckTimer -= Time.deltaTime;
         if (holdCheckTimer <= 0f)
         {
             holdCheckTimer = 1f;
             UpdateHoldSize();
-            SetActive(lanternLight, EnvMan.IsNight());
         }
+    }
+
+    private int LanternThreat()
+    {
+        return global::BrudvikWhiteHilt.Kraken.KrakenBody.LanternThreat(ship,
+            ShipSettings.LanternKrakenRange.Value, ShipSettings.LanternWarningSeconds.Value);
+    }
+
+    private void UpdateLantern()
+    {
+        if (!Has(ShipLantern.Bit))
+        {
+            SetActive(lanternLight, false);
+            return;
+        }
+        int threat = LanternThreat();
+        if (threat == 2 && nview.IsOwner() && nview.GetZDO().GetInt(LanternZdoKey, -1) != 0)
+        {
+            nview.GetZDO().Set(LanternZdoKey, 0);
+        }
+        bool flickerOn = threat != 1 || (long)(ZNet.instance.GetTime().TimeOfDay.TotalSeconds
+            / ShipSettings.LanternFlickerSeconds.Value) % 2 == 0;
+        SetActive(lanternLight, threat != 2 && IsLanternOn && flickerOn);
+    }
+
+    private void RPC_ToggleLantern(long sender)
+    {
+        if (!nview.IsOwner() || !Has(ShipLantern.Bit) || IsLanternBlocked)
+            return;
+        nview.GetZDO().Set(LanternZdoKey, IsLanternOn ? 0 : 1);
     }
 
     private void UpdateHoldSize()

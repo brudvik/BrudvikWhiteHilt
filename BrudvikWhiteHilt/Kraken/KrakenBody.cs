@@ -55,6 +55,32 @@ public class KrakenBody : MonoBehaviour
     /// <summary>Whether the Kraken is sinking back into the deep.</summary>
     public bool IsRetreating => nview != null && nview.IsValid() && nview.GetZDO().GetLong(RetreatKey) != 0L;
 
+    /// <summary>Returns the targeted ship's lantern threat independently of the ship-holding setting.</summary>
+    /// <param name="ship">The ship carrying the lantern.</param>
+    /// <param name="range">Maximum encounter distance in metres.</param>
+    /// <param name="warningSeconds">Warning duration before the tentacles appear.</param>
+    /// <returns>Zero outside an encounter, one during the warning, or two during the attack.</returns>
+    public static int LanternThreat(Ship ship, float range, float warningSeconds)
+    {
+        if (ship == null || ship.m_nview == null || !ship.m_nview.IsValid())
+            return 0;
+        int threat = 0;
+        foreach (KrakenBody kraken in instances)
+        {
+            if (kraken == null || kraken.nview == null || !kraken.nview.IsValid()
+                || kraken.character == null || kraken.character.IsDead() || kraken.IsRetreating
+                || kraken.nview.GetZDO().GetZDOID(ShipKey) != ship.m_nview.GetZDO().m_uid
+                || Vector3.Distance(kraken.transform.position, ship.transform.position) > range)
+                continue;
+            if (kraken.nview.GetZDO().GetLong(StartKey) == 0L)
+                continue;
+            float elapsed = kraken.Seconds(StartKey);
+            int phase = elapsed >= TentacleDelay ? 2 : elapsed >= TentacleDelay - Mathf.Clamp(warningSeconds, 0f, TentacleDelay) ? 1 : 0;
+            threat = Mathf.Max(threat, phase);
+        }
+        return threat;
+    }
+
     /// <summary>
     /// Whether a living Kraken holds this ship.
     /// </summary>

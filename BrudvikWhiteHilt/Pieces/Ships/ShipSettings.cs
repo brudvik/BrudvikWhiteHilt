@@ -226,11 +226,36 @@ public static class ShipSettings
     /// <summary>Metres from a Mooring Post within which a ship can be moored.</summary>
     public static ConfigEntry<float> MooringRange { get; private set; }
 
+    /// <summary>Local lantern intensity relative to the vanilla lamp; applied after a restart.</summary>
+    public static ConfigEntry<float> LanternBrightness { get; private set; }
+
+    /// <summary>Local lantern range relative to the vanilla lamp; applied after a restart.</summary>
+    public static ConfigEntry<float> LanternRange { get; private set; }
+
+    /// <summary>Seconds the lantern flickers before the Kraken's tentacles appear.</summary>
+    public static ConfigEntry<float> LanternWarningSeconds { get; private set; }
+
+    /// <summary>Seconds between synchronized lantern flicker changes.</summary>
+    public static ConfigEntry<float> LanternFlickerSeconds { get; private set; }
+
+    /// <summary>Metres from the targeted ship within which Kraken suppresses its lantern.</summary>
+    public static ConfigEntry<float> LanternKrakenRange { get; private set; }
+
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
     /// </summary>
     public static void Initialize()
     {
+        LanternBrightness = WhiteHiltConfig.BindLocal(Section, "LanternBrightness", 1f,
+            "How many times brighter the Ship Lantern shines than the vanilla lamp. Needs a restart.");
+        LanternRange = WhiteHiltConfig.BindLocal(Section, "LanternRange", 3f,
+            "How many times further the Ship Lantern reaches than the vanilla lamp. Needs a restart.");
+        LanternWarningSeconds = WhiteHiltConfig.BindAdminOnly(Section, "LanternWarningSeconds", 3f,
+            "Seconds the lantern flickers before Kraken's tentacles appear, capped at their spawn delay.", new AcceptableValueRange<float>(0f, 7f));
+        LanternFlickerSeconds = WhiteHiltConfig.BindAdminOnly(Section, "LanternFlickerSeconds", 0.18f,
+            "Seconds between lantern flicker changes during the Kraken warning.", new AcceptableValueRange<float>(0.05f, 1f));
+        LanternKrakenRange = WhiteHiltConfig.BindAdminOnly(Section, "LanternKrakenRange", 60f,
+            "Metres from the ship Kraken targeted within which its lantern flickers and goes out. Other ships are unaffected.", new AcceptableValueRange<float>(1f, 200f));
         KeyHoldCourse = WhiteHiltConfig.BindLocal(KeySection, "HoldCourse", new KeyboardShortcut(KeyCode.H),
             "At the helm: the ship holds its course when you let go of the helm, and stops before shallow water.");
         ShowShipHud = WhiteHiltConfig.BindLocal(Section, "ShowSpeedAndHeading", true,

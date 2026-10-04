@@ -754,6 +754,7 @@
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortal.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortalArrival.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipLanternHover.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgradeSetup.cs" />

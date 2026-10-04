@@ -40,6 +40,8 @@ A horn-called Kraken does not retreat merely because it is daytime. Its normal `
 4. **Kill the Kraken** to free the ship. Its tentacles die with it, and the dead Kraken sinks into the deep.
 5. It gives up after 5 minutes, at dawn, or when no one is near, and sinks back with its tentacles, without loot.
 
+On Kraken's target [White Hilt Ship](ships.md), a lit Ship Lantern flickers before the tentacles appear, then goes out for the encounter. It cannot be lit while the living Kraken remains within the configured lantern encounter range. After death or retreat it stays off until a sailor uses the lantern to light it again. Other ships, the brazier and mast wisp are unaffected. The warning timing and flicker cadence are server-synced settings under `[Ships]`; this works even with ship holding/lifting disabled.
+
 | | Health | Attack |
 |---|---|---|
 | **Kraken** | 8000 | Slam, 140 blunt, reaches about 13 m |

@@ -29,7 +29,7 @@ public class ShipLantern : WhiteHiltShipUpgradeBase
     protected override string FullName => "Ship Lantern";
 
     /// <inheritdoc/>
-    protected override string Description => "A lantern for the White Hilt Ship. Use it on the mast; it lights the deck when night falls.";
+    protected override string Description => "A lantern for the White Hilt Ship. Install it on the mast; use the lantern to light it or put it out. It flickers before Kraken attacks and stays dark during the fight.";
 
     /// <inheritdoc/>
     protected override string CopyFrom => "Lantern";

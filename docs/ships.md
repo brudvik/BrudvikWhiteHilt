@@ -23,7 +23,7 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 
 | Upgrade | Effect | Requirements |
 |---------|--------|--------------|
-| **Ship Lantern** | A lantern on deck that lights up at night, 2.5 times as bright and twice as far as the vanilla lamp (`Ships` → `LanternBrightness`, `LanternRange`, each player's own) | Iron ×2, Resin ×10, Surtling Core ×1 |
+| **Ship Lantern** | A lantern on deck that lights up at night, with the vanilla lamp's intensity and three times its range for softer deck lighting and a wider reach around both sides of the ship (`Ships` → `LanternBrightness`, `LanternRange`, each player's own; needs a restart) | Iron ×2, Resin ×10, Surtling Core ×1 |
 | **Cargo Barrels** | Barrels and crates on deck; the cargo hold grows from 6 × 3 to 8 × 4 | Fine Wood ×10, Iron ×4 |
 | **Ship Tent** | A tent on deck; under it you have Shelter and stay dry | Troll Hide ×6, Leather Scraps ×10, Wood ×6 |
 | **Mast Wisp** | A wisp at the top of the mast that clears the Mistlands mist around the ship and thins ordinary fog for those within 15 m (`Ships` → `MastWispFogLeft`, 0.25 of the fog is left) | Guck ×5, Ancient Bark ×5, Surtling Core ×2 |
@@ -34,6 +34,8 @@ The ship is indestructible, immune to all damage types, Ashlands-ready, and has 
 | **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×10, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
 
 The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it. The drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm (`Ships` → `AutoAnchor`, on by default).
+
+**Lantern switch:** look at the installed lantern and press **Use** (E by default) to light it or put it out. The choice is saved on the ship and shared with everyone aboard, including after reloading or ownership changes. Until first used, the lantern retains automatic night lighting. Manual on also works during daytime. During a Kraken encounter, a lit lantern flickers before the tentacles appear and goes out before they can attack. It cannot be lit during the fight and stays off afterwards; use it again after Kraken dies or retreats. Only Kraken's target ship is affected, within `LanternKrakenRange`, independently of the ship-holding/lifting switches. An already extinguished lantern stays dark during the warning.
 
 **Sailing help** (every ship, also vanilla ones):
 - **Hold course**: press **H** at the helm. When you let go of the helm, the ship keeps the heading it has then, with the sail as it is, so you can walk about the deck. It stops before shallow water or land ahead and tells everyone aboard. Press H at the helm again to switch it off. The key is `Ships.Keys` → `HoldCourse`.
@@ -68,6 +70,9 @@ Section `[Ships]` (admin only, synced from the server):
 | Setting | Default | What it does |
 |---|---|---|
 | `HoldCourse` | true | Ships can hold their course with nobody at the helm |
+| `LanternWarningSeconds` | 3 | Seconds of lantern flicker before Kraken's tentacles appear, capped at their spawn delay (currently 2.5 seconds) |
+| `LanternFlickerSeconds` | 0.18 | Seconds between synchronized light/dark warning beats |
+| `LanternKrakenRange` | 60 | Metres from Kraken's target ship within which the lantern is suppressed |
 | `HelmOwnership` | true | Prefer the White Hilt Ship's helmsman as network owner when both containers are idle; no change to vanilla ships or autopilot ownership |
 | `HelmOwnershipInterval` | 0.5 | Seconds between ownership checks |
 | `ContainerOwnershipGrace` | 2 | Seconds ownership is reserved after cargo open/stack or sea chest open requests; an open container remains protected after this timeout |
@@ -112,6 +117,8 @@ Each player's own settings in `[Ships]`:
 
 | Setting | Default | What it does |
 |---|---|---|
+| `LanternBrightness` | 1 | Lantern intensity relative to the vanilla lamp; previously 2.5. Needs a restart |
+| `LanternRange` | 3 | Lantern range relative to the vanilla lamp; previously 2. Reaches around both sides. Needs a restart |
 | `RouteCameraSweep` | true | The camera swings around the ship when it sets off on a route |
 | `RouteCameraSweepHideHud` | true | The HUD is hidden during the sweep |
 | `RouteCameraSweepSeconds` | 10 | Seconds the whole sweep takes |
@@ -134,6 +141,8 @@ Each player's own settings in `[Ships]`:
 | `ShoalClearSeconds` | 5 | Seconds of clear water at warning speed before another danger counts as new |
 | `ShipDiagnostics` | false | Log White Hilt Ship ownership and update timing locally while aboard |
 | `ShipDiagnosticsInterval` | 5 | Seconds between diagnostic samples; ownership changes also trigger a sample |
+
+Previous lantern defaults migrate once to the softer, wider lighting; other custom values are kept. The lantern remains a point light, not a directional searchlight. The brazier, mast wisp and portal lighting are unchanged. Check the final balance on the white hull and surrounding water, the lantern's interaction target and synchronized warning in game. Server and clients should update together.
 
 ### Multiplayer diagnostics
 

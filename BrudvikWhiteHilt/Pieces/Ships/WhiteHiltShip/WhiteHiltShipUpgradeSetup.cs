@@ -64,6 +64,7 @@ public static class WhiteHiltShipUpgradeSetup
         MeasureTent(ship.transform, upgrades);
         AddChest(ship.transform, container);
         Transform portal = AddPortal(ship.transform);
+        AddLanternInteraction(ship.transform);
 
         if (!VisualHelper.IsHeadless)
         {
@@ -94,7 +95,7 @@ public static class WhiteHiltShipUpgradeSetup
                 Jotunn.Logger.LogWarning($"White Hilt Ship: the drift anchor has no look: {ex.Message}");
             }
 
-            BrightenLantern(ship.transform);
+            ConfigureLantern(ship.transform);
 
             try
             {
@@ -224,8 +225,31 @@ public static class WhiteHiltShipUpgradeSetup
         container.m_rootObjectOverride = root.GetComponent<ZNetView>();
     }
 
-    // The vanilla trader lamp is dim for a whole deck; its flicker keeps whatever intensity the light starts with.
-    private static void BrightenLantern(Transform root)
+    private static void AddLanternInteraction(Transform root)
+    {
+        Transform lamp = root.Find("ship/visual/Customize/TraderLamp");
+        if (lamp == null)
+            return;
+        Bounds[] meshes = lamp.GetComponentsInChildren<MeshFilter>(true)
+            .Where(filter => filter.sharedMesh != null)
+            .Select(filter => RootBounds(lamp, filter)).ToArray();
+        if (meshes.Length == 0)
+        {
+            Jotunn.Logger.LogWarning("White Hilt Ship: no lantern mesh found for interaction");
+            return;
+        }
+        Bounds bounds = meshes[0];
+        foreach (Bounds mesh in meshes.Skip(1))
+            bounds.Encapsulate(mesh);
+        GameObject target = new("WhiteHiltLanternSwitch") { layer = CrateLayer(root) };
+        target.transform.SetParent(lamp, false);
+        BoxCollider collider = target.AddComponent<BoxCollider>();
+        collider.center = bounds.center;
+        collider.size = bounds.size;
+        target.AddComponent<ShipLanternHover>();
+    }
+
+    private static void ConfigureLantern(Transform root)
     {
         Light light = root.Find("ship/visual/Customize/TraderLamp")?.GetComponentInChildren<Light>(true);
         if (light == null)
@@ -234,10 +258,8 @@ public static class WhiteHiltShipUpgradeSetup
             return;
         }
 
-        float brightness = WhiteHiltConfig.BindLocal("Ships", "LanternBrightness", 2.5f,
-            "How many times brighter the Ship Lantern shines than the vanilla lamp. Needs a restart.").Value;
-        float reach = WhiteHiltConfig.BindLocal("Ships", "LanternRange", 2f,
-            "How many times further the Ship Lantern reaches than the vanilla lamp. Needs a restart.").Value;
+        float brightness = ShipSettings.LanternBrightness.Value;
+        float reach = ShipSettings.LanternRange.Value;
         light.intensity *= Mathf.Max(0f, brightness);
         light.range *= Mathf.Max(0.1f, reach);
     }

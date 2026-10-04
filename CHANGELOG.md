@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.81.0 - 2026-10-04
+
+### Added
+- **Ship lantern switch and Kraken blackout**: interact with the installed lantern to light it or put it out. The choice is saved on the ship and synchronized through its owner; untouched lanterns retain automatic night lighting. A lit lantern flickers before Kraken's tentacles appear, then goes out and cannot be relit during the encounter. After death or retreat it stays off until manually relit. Only the target ship within the configured range is affected, independently of ship holding/lifting. Adds server-synced warning, flicker and range settings with Norwegian text. Compilation and 30 isolated production-method encounter/lantern checks passed; the interaction target, warning visuals and multiplayer still need in-game testing. Update server and clients together.
+
+## v0.80.6 - 2026-10-04
+
+### Changed
+- **Softer, wider ship lantern**: reduce White Hilt Ship lantern intensity from 2.5 to 1 times the vanilla lamp, and increase its range from 2 to 3 times vanilla, reaching farther around both sides without the former intense deck lighting. Existing default values migrate once; other custom values are preserved. Settings remain local and require a restart. Brazier, mast wisp and portal lighting are unchanged; the final balance on the white hull and water requires in-game testing.
+
 ## v0.80.5 - 2026-10-04
 
 ### Changed
