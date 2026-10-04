@@ -1,0 +1,84 @@
+{
+ "pieces": [
+  {
+   "name": "slatefloor",
+   "parts": [
+    {
+     "mesh": "preview_slatefloor",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "angle",
+     "yaw": 150,
+     "pitch": 35
+    }
+   ]
+  },
+  {
+   "name": "slatefloor1x1",
+   "parts": [
+    {
+     "mesh": "preview_slatefloor1x1",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "angle",
+     "yaw": 150,
+     "pitch": 35
+    }
+   ]
+  },
+  {
+   "name": "slatesteps",
+   "parts": [
+    {
+     "mesh": "preview_slatesteps",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "angle",
+     "yaw": 150,
+     "pitch": 35
+    }
+   ]
+  },
+  {
+   "name": "slatepath",
+   "parts": [
+    {
+     "mesh": "preview_slatepath",
+     "position": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "views": [
+    {
+     "label": "angle",
+     "yaw": 150,
+     "pitch": 35
+    }
+   ]
+  }
+ ]
+}

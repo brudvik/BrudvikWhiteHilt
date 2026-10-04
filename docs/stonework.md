@@ -44,3 +44,18 @@ The **Ship Setting** is 22 raised stones in the outline of a ship, 12 m long and
 |-------|------------------|--------------|
 | **Ship Setting** (`piece_whitehilt_skipssetning`) | Hammer, near a Stonecutter | Stone ×60 |
 | **Stone Ring** (`piece_whitehilt_steinring`) | Hammer, near a Stonecutter | Stone ×20 |
+
+## Slate floors, steps and paths
+
+<img src="images/slate_floors.png" alt="Slate floor, steps and path" title="Slate floor, steps and path" height="140">
+
+Thin slabs of slate in the same stone as the [slate roof](roofs.md), for floors, steps and garden paths. They snap and collide like the wooden floor and stair they are built on, but they are **stone**: they want the ground or other stone under them, as the vanilla stone pieces do, and do not wear in the rain. The slates keep their size on every slab.
+
+| Piece | Use | Crafting Station | Requirements |
+|-------|-----|------------------|--------------|
+| **Slate Floor** (`piece_whitehilt_slatefloor`) | A 2 × 2 m floor of slate slabs | Hammer, near a Stonecutter | Slate ×4 |
+| **Slate Floor 1 × 1** (`piece_whitehilt_slatefloor1x1`) | A 1 × 1 m slab to fill in | Hammer, near a Stonecutter | Slate ×1 |
+| **Slate Steps** (`piece_whitehilt_slatesteps`) | Four broad steps rising 1 m over 2 m, like the wooden stair | Hammer, near a Stonecutter | Slate ×6 |
+| **Slate Path** (`piece_whitehilt_slatepath`) | Four loose flagstones in 2 × 2 m, laid end to end for a path | Hammer, near a Stonecutter | Slate ×3 |
+
+Slate comes from slate outcrops in the Mountains (see [Roofs](roofs.md)).

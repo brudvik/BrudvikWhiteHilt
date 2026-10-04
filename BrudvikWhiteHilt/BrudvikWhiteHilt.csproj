@@ -760,6 +760,7 @@
     <Compile Include="Pieces\Stonework\HnefataflBoard.cs" />
     <Compile Include="Pieces\Stonework\MemorialStone.cs" />
     <Compile Include="Pieces\Stonework\ShipSetting.cs" />
+    <Compile Include="Pieces\Stonework\SlatePieces.cs" />
     <Compile Include="Pieces\Stonework\StoneRing.cs" />
     <Compile Include="Pieces\Stonework\StoneworkPieceBase.cs" />
     <Compile Include="Pieces\Ships\MooringPostComponent.cs" />

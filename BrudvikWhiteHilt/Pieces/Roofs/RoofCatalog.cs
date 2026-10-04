@@ -287,6 +287,15 @@ public static class RoofCatalog
         return model;
     }
 
+    /// <summary>
+    /// The slate roof's covering material, for other slate pieces.
+    /// </summary>
+    /// <returns>The material.</returns>
+    internal static Material SlateMaterial()
+    {
+        return GetMaterials(RoofCovering.Slate)[0];
+    }
+
     // Covering, underside, edge and trim: copies of the vanilla wall material with the roof textures.
     private static Material[] GetMaterials(RoofCovering covering)
     {
