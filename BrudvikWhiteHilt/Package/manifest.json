@@ -1,7 +1,7 @@
 ﻿{
   "name": "BrudvikWhiteHilt",
   "description": "Adds custom indestructible items and potions to Valheim",
-  "version_number": "0.83.1",
+  "version_number": "0.84.0",
   "website_url": "",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2350",

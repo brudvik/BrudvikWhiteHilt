@@ -80,7 +80,8 @@ public class DefenseLadder : MonoBehaviour, Hoverable, Interactable
         if (body != null)
         {
             body.position = target.Value;
-            body.linearVelocity = Vector3.zero;
+            Rigidbody shipBody = GetComponentInParent<Ship>()?.GetComponent<Rigidbody>();
+            body.linearVelocity = shipBody != null ? shipBody.GetPointVelocity(target.Value) : Vector3.zero;
         }
 
         return true;

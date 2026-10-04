@@ -23,7 +23,8 @@ public class ShipChartTable : MonoBehaviour
         ("Karve", "Karve"),
         ("VikingShip", "VikingShip"),
         ("VikingShip_Ashlands", "VikingShip_Ashlands"),
-        ("WhiteHiltShip", "VikingShip")
+        ("WhiteHiltShip", "VikingShip"),
+        ("WhiteHiltSkidbladnir", "VikingShip")
     };
 
     private const string VisualName = "WhiteHiltChartTable";
@@ -72,6 +73,11 @@ public class ShipChartTable : MonoBehaviour
         table.transform.SetParent(shipPrefab.transform, false);
         table.transform.localPosition = DefenseModelBuilder.ToVector(placement.position, Vector3.zero);
         table.transform.localRotation = Quaternion.Euler(DefenseModelBuilder.ToVector(placement.rotation, Vector3.zero));
+        if (shipPrefab.GetComponent<global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirShip>() != null)
+        {
+            table.transform.localPosition = global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirModel.At(-1.1f, 4.54f, -6f);
+            table.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        }
 
         Dictionary<string, Transform> groups = new();
         for (int i = 1; i <= SkillScrolls.Count; i++)

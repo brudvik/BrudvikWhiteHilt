@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.84.0 - 2026-10-04
+
+### Added
+- **Skidbladnir**: Freyr's indestructible sailing home (`WhiteHiltSkidbladnir`), with an empty lower deck for player-built furnishings and stations, stairs, boarding ladder and a mast-top lookout. Supports the existing nine ship upgrades, Navigator's Table, routes and its own deck-portal arrival point. Persistent ship-local furniture attachments preserve independent inventories and survive parent-ship unloading; dismantling requires first removing furnishings. Horizontal speed is capped at at most half the White Hilt Ship's calculated ideal full-sail speed. Adds server-synced building, waterline, speed, furniture-position update and sail-animation settings with Norwegian text. Model by 3ddans, CC BY 4.0, with a reproducible separate ship export. Live sailing, stations, shelter, reloading and multiplayer still require validation in a backup world; update server and clients together.
+- Compilation, bundle export, Norwegian config coverage and 314 isolated Unity production-code/geometry checks passed. These checks use controlled network stand-ins and do not replace live multiplayer testing.
+
 ## v0.83.1 - 2026-10-04
 
 ### Fixed

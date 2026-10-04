@@ -118,6 +118,7 @@ Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildCreatures.cs') $editorScripts -Fo
 if (-not $UnityOnly) {
     Convert-Models
     Export-Creatures
+    & (Join-Path $PSScriptRoot 'build_skidbladnir.ps1') -BlenderPath $BlenderPath
 }
 
 Write-Host "Building asset bundle (log: $logFile)"

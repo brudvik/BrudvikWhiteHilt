@@ -52,8 +52,17 @@ def main(only):
             compose_preview.main(HERE / entry["compose"], render=False)
             name = json.loads((HERE / entry["compose"]).read_text(encoding="utf-8"))["name"]
             parts = json.loads((PREVIEW / f"{name}_layout.json").read_text())["pieces"][0]["parts"]
+        elif "manifest" in entry:
+            manifest = json.loads((HERE / entry["manifest"]).read_text(encoding="utf-8"))
+            parts = []
+            for model in manifest["parts"]:
+                name = model["mesh"]
+                if name not in converted:
+                    compose_preview.write_mesh(name, *compose_preview.load_obj(name))
+                    converted.add(name)
+                parts.append({"mesh": f"preview_{name}", "position": model["pivot"]})
         else:
-            sys.exit(f"{entry['image']}: needs 'piece', 'models' or 'compose'")
+            sys.exit(f"{entry['image']}: needs 'piece', 'models', 'compose' or 'manifest'")
         pieces.append({"name": entry["image"], "parts": parts, "views": [view or spec["defaultView"]]})
 
     layout = PREVIEW / "showcase_layout.json"

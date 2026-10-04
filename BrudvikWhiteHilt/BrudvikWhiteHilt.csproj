@@ -750,6 +750,9 @@
     <Compile Include="Pieces\Ships\MooringPostComponent.cs" />
     <Compile Include="Pieces\Ships\ShipMooring.cs" />
     <Compile Include="Pieces\Ships\ShipSettings.cs" />
+    <Compile Include="Pieces\Ships\Skidbladnir\Skidbladnir.cs" />
+    <Compile Include="Pieces\Ships\Skidbladnir\SkidbladnirShip.cs" />
+    <Compile Include="Patches\Ships\SkidbladnirPatches.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipTentColliders.cs" />
     <Compile Include="Pieces\Navigation\ShipChartTableHover.cs" />
@@ -793,6 +796,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="..\AssetSource\Ships\sailing_ship.assets.json">
+      <LogicalName>BrudvikWhiteHilt.Skidbladnir.assets.json</LogicalName>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,68 @@
+{
+  "status": "layout concept only; not a game prefab",
+  "coordinates": "source glTF: x across, y up, positive z toward bow; one unit assumed one metre",
+  "source": {
+    "title": "Sailing Ship",
+    "author": "3ddans",
+    "license": "CC-BY-4.0",
+    "url": "https://sketchfab.com/3d-models/sailing-ship-258e45faec8e406a826960a6d0277d0a"
+  },
+  "constraints": {
+    "indestructibleHull": true,
+    "maximumReferenceSpeedShare": 0.5,
+    "furnitureIsIllustrativeAndPlayerPlaced": true,
+    "buildWhileAnchoredInitially": true,
+    "waterlineAndMultiplayerUnverified": true
+  },
+  "room": {
+    "centreZ": 2.0,
+    "length": 11.0,
+    "width": 5.2,
+    "floorTop": -0.6,
+    "floorThickness": 0.12,
+    "mainDeckTop": 2.5,
+    "mainDeckThickness": 0.2,
+    "mainDeckWidth": 6.4,
+    "aisleWidth": 1.4
+  },
+  "stairs": {
+    "centreX": 1.7,
+    "bottomZ": -2.9,
+    "width": 1.2,
+    "run": 3.6,
+    "steps": 14,
+    "handrailHeight": 0.9
+  },
+  "lookout": {
+    "mastZ": 0.63,
+    "floorTop": 18.8,
+    "diameter": 3.0,
+    "railHeight": 1.1,
+    "ladderX": 0.55,
+    "ladderWidth": 0.65,
+    "rungSpacing": 0.3,
+    "openingWidth": 0.8
+  },
+  "furniture": [
+    { "name": "Workbench", "mesh": "piece_workbench", "position": [-1.75, -0.6, 2.8], "yaw": 90 },
+    { "name": "ChartDesk", "mesh": "cartodesk", "position": [1.75, -0.6, 5.5], "yaw": -90 },
+    { "name": "StorageChest", "box": [1.2, 0.75, 0.65], "position": [-1.9, -0.6, 5.7] },
+    { "name": "Table", "box": [1.3, 0.8, 0.8], "position": [-1.75, -0.6, -1.5] }
+  ],
+  "upgrades": [
+    { "id": "lantern", "position": [0, 3.2, 0.63] },
+    { "id": "cargo_barrels", "position": [1.8, 2.5, 5.7] },
+    { "id": "tent", "position": [-1.65, 2.5, 4.2] },
+    { "id": "mast_wisp", "position": [0, 21.15, 0.63] },
+    { "id": "fishing_net", "position": [3.5, 2.5, 4.0] },
+    { "id": "drift_anchor", "position": [3.55, 2.5, 6.4] },
+    { "id": "brazier", "position": [-1.65, 2.5, 4.8] },
+    { "id": "sea_chest", "position": [1.4, 4.54, -6.0] },
+    { "id": "ship_portal", "position": [1.75, 2.5, 2.7] }
+  ],
+  "navigatorTable": { "position": [-1.1, 4.54, -6.0], "yaw": 180 },
+  "crew": [
+    { "name": "UnderdeckCrew", "position": [0.1, -0.6, 3.7], "yaw": 180 },
+    { "name": "LookoutCrew", "position": [-0.7, 18.8, 0.65], "yaw": 90 }
+  ]
+}

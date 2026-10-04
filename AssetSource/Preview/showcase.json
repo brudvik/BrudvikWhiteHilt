@@ -2,6 +2,7 @@
   "comment": "Images for docs/. Each entry is rendered by render_showcase.py into docs/images/<image>.png. Source: 'piece' (a piece in defenses.json), 'models' (bundle models at their own origin, as the mod converts them) or 'compose' (a compose_preview.py spec). 'view' is yaw/pitch/zoom as in PreviewRender.",
   "defaultView": { "yaw": 150, "pitch": 20 },
   "images": [
+    { "image": "skidbladnir", "manifest": "../Ships/sailing_ship.assets.json", "view": { "yaw": 140, "pitch": 18 } },
     { "image": "collection_post", "compose": "collectionpost.preview.json", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "palisade_rampart", "piece": "skansevegg", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "rampart_corner", "piece": "skansehjorne", "view": { "yaw": 140, "pitch": 30 } },

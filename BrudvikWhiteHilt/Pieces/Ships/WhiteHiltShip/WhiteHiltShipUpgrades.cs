@@ -413,7 +413,9 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
 
         if (ship != null)
         {
-            ship.m_sailForceFactor = ShipSettings.SailForce.Value;
+            ship.m_sailForceFactor = ShipSettings.SailForce.Value
+                * (GetComponent<global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirShip>() != null
+                    ? global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirSettings.SpeedShare.Value : 1f);
         }
 
         UpdateAutoAnchor(Time.deltaTime);

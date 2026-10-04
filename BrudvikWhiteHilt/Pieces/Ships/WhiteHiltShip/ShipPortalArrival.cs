@@ -68,7 +68,9 @@ public static class ShipPortalArrival
         }
 
         pendingShip = ZDOID.None;
-        Vector3 deck = ship.transform.TransformPoint(ShipPortal.DeckPosition) + Vector3.up * AboveDeck;
+        Vector3 portal = ship.GetComponent<ShipPortal>() != null ? ship.GetComponent<ShipPortal>().transform.position
+            : ship.GetComponentInChildren<ShipPortal>(true)?.transform.position ?? ship.transform.TransformPoint(ShipPortal.DeckPosition);
+        Vector3 deck = portal + Vector3.up * AboveDeck;
         player.transform.position = deck;
         Rigidbody body = player.GetComponent<Rigidbody>();
         if (body != null)

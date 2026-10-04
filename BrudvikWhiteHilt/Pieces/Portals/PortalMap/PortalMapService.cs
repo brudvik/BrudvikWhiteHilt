@@ -157,7 +157,9 @@ public class PortalMapService : MonoBehaviour
 
     private static Vector3 ShipPortalPosition(ZDO zdo)
     {
-        return zdo.GetPosition() + zdo.GetRotation() * ShipPortal.DeckPosition;
+        Vector3 local = zdo.GetPrefab() == global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.Skidbladnir.PrefabName.GetStableHashCode()
+            ? global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.SkidbladnirModel.PortalPosition : ShipPortal.DeckPosition;
+        return zdo.GetPosition() + zdo.GetRotation() * local;
     }
 
     private void BeginScan()

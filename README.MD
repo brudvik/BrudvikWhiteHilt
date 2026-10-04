@@ -33,7 +33,7 @@ Eighteen meads named after the Norse gods, from endless stamina to permanent ski
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/harbour_anchor.png" alt="Harbour Anchor" height="120">
 
-The indestructible White Hilt Ship with nine deck upgrades, sailing help for every ship (sounding line, man overboard and lifeline), the Mooring Post, and the Harbour Anchor that shows all ships on the map.
+The indestructible White Hilt Ship and Skidbladnir, Freyr's slower sailing home with a furnishable lower deck and mast lookout; nine shared upgrades, sailing help, mooring and harbour anchors.
 
 ### 🏰 [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 
@@ -184,6 +184,7 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 
 ## Credits
 
+- Skidbladnir model: ["Sailing Ship"](https://sketchfab.com/3d-models/sailing-ship-258e45faec8e406a826960a6d0277d0a) by [3ddans](https://sketchfab.com/3ddans), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Central deck opened and rebuilt, lower floor, stairs and mast lookout added, sails separated, converted to metre-scale OBJ and made double-sided where needed for Valheim.
 - Chanterelle model: ["Chanterelle"](https://sketchfab.com/3d-models/chanterelle-136f5f6bac124b8bb7738945f12243b5) by [Zacxophone](https://sketchfab.com/Zacxophone), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Porcini model: ["Boletus Mushroom"](https://sketchfab.com/3d-models/boletus-mushroom-1b9dde383cb84944b3ffc17d4cb29ebc) by [Jonny Crabb](https://sketchfab.com/JonnyCrabb), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Stone Pot model: ["Stone Bowl"](https://sketchfab.com/3d-models/stone-bowl-1469a70e3ea54ff1ab1d442749d94b48) by [rickmaolly](https://sketchfab.com/rickmaolly), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.

@@ -4,11 +4,26 @@
 
 ## ⛵ SHIPS
 
-The ship is indestructible, immune to all damage types, Ashlands-ready, and has permanent tailwind enabled.
+Both White Hilt ships are indestructible, immune to all damage types and Ashlands-ready. Tailwind is enabled by default.
+
+<img src="images/skidbladnir.png" alt="Skidbladnir" title="Skidbladnir" height="140">
 
 | Item | Description | Requirements (Hammer) |
 |------|-------------|----------------------|
 | **White Hilt Ship** | The Indestructible Ship of Dyrnwyn | Fine Wood ×20, Iron Nails ×100, Bronze Nails ×100, Deer Hide ×15, Leather Scraps ×15 |
+| **Skidbladnir** | Freyr's sailing home: an empty lower deck, three masts and a high lookout | Fine Wood ×100, Iron Nails ×200, Ancient Bark ×50, Deer Hide ×40 |
+
+### Skidbladnir
+
+Named for Freyr's ship, Skidbladnir is a separate Hammer piece (`WhiteHiltSkidbladnir`), not a replacement for the White Hilt Ship. The central lower room is about 11 × 5.2 m with 2.9 m headroom. It ships empty: build workbenches, furniture and storage yourself with the ordinary Hammer. Normal materials, station, access and placement rules still apply. Terrain tools, plants and other vehicles cannot be attached.
+
+Build while the ship lies still. If the Drift Anchor upgrade is installed, lower it first. Furnishings retain their own inventories, damage and removal behavior, but use the ship as a foundation and move with it. Their ship-local placement is saved for reloading; disabling new building does not detach existing furnishings. Remove the furnishings before dismantling the ship. Group moving/copying, beds and interactions supplied by other mods require separate in-game checks.
+
+Use the port-side boarding ladder to get aboard, the stairs to reach the lower deck and raised decks, and the mast ladder to reach the intermediate platform and top lookout. Ladder Use climbs to the next stop; alternate Use descends, like the White Hilt watchtowers. Skidbladnir supports all nine upgrades below, the Navigator's Table, routes and deck-portal arrival at their own positions. The main cargo hold is at the forward hatch.
+
+Horizontal speed is capped at half the White Hilt Ship's calculated ideal full-sail terminal speed on flat water with tailwind, using its configured sail force and drag. The cap also applies to rowing and autopilot; vertical wave and Kraken movement is retained. It is not a comparison with another ship's instantaneous speed. Sail force is reduced as well, and the separate sails furl visibly. Geometry and sailing balance can be adjusted after testing.
+
+Console testing: `spawn WhiteHiltSkidbladnir`. Validate waterline and stability, all deck and ladder clearances, station use and shelter, every upgrade, furnishing inventories after sailing/reloading, and multiplayer ownership and sector crossings. Offline builds and geometry checks do not establish that these work correctly in a live world. Test in a backup world first; server and clients must update together.
 
 **Ship Features:**
 - Immune to fire, blunt, slash, pierce, chop, pickaxe, spirit, frost, lightning, and poison damage
@@ -66,6 +81,17 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 | **Mooring Post** | Moors the nearest ship | Hammer (Workbench) | Fine Wood ×4, Iron ×1, Leather Scraps ×4 |
 
 ## Config
+
+Section `[Ships.Skidbladnir]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `WaterlineOffset` | 1.2 | Model height above the buoyancy plane in metres; restart required. Changing it requires repositioning existing furnishings |
+| `SpeedShare` | 0.5 | Share of the existing ship's ideal full-sail reference speed; range 0.1 to 0.5 |
+| `Building` | true | Allow new ordinary Hammer pieces aboard; saved furnishings remain attached when off |
+| `BuildMaxSpeed` | 0.25 | Maximum horizontal speed in m/s for Hammer placement; an installed Drift Anchor must also be down |
+| `FurnitureSyncSeconds` | 1 | Seconds between ownership-side saved world-position updates for furnishings; range 0.1 to 5 |
+| `SailSeconds` | 2 | Seconds to deploy or furl the sails; range 0.5 to 10 |
 
 Section `[Ships]` (admin only, synced from the server):
 
