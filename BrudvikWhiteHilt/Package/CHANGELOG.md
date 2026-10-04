@@ -2,6 +2,20 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.90.0 - 2026-10-04
+
+### Added
+- **Memorial Stone**: a 2.5 m raised stone, a bauta, built near a Stonecutter from Stone ×20. Use it to carve an inscription of your own on its face. See the new [Stonework](docs/stonework.md) page.
+- **Soapstone Lamp**: a small soapstone bowl with a wick in resin, built near a Stonecutter. A soft light for tables and shelves that burns resin three times as long as a torch.
+- **Hnefatafl Board**: the Norse board game set up on an 11 × 11 board, with dark and light stones and an amber king. Furniture for the table that gives +1 comfort, built near a Stonecutter.
+- **Ship Setting and Stone Ring**: 22 raised stones in the outline of a 12 m ship, tallest at the stems, and a ring of ten low stones for a fire place or thing site. Each is one stone piece built near a Stonecutter.
+- **Slate floors, steps and paths**: thin slate slabs in the stone of the slate roof, as a 2 × 2 m and a 1 × 1 m floor, broad steps rising 1 m over 2 m, and loose flagstones for a path. They snap like the wooden floor and stair but are stone. Built near a Stonecutter from Slate.
+- **Dry stone walls**: field stones stacked without mortar, as a 2 m and a 1 m wall, a corner, and a low field wall. They snap end to end, built near a Stonecutter from Stone.
+- **Soapstone Cauldron**: a fourth Stone Pot extension, carved out of soapstone near a Stonecutter. With the Herb Tray and the Smoke Oven it raises the pot to level 4, for three new Plains dishes: Fish Soup, Juniper Lox Pot and Cloudberry Porridge.
+
+### Changed
+- **The Whetstone is made at the Stonecutter** instead of the Workbench, where stone is worked.
+
 ## v0.89.8 - 2026-10-04
 
 ### Added
