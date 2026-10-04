@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.6 - 2026-10-04
+
+### Added
+- **Gathering progress shows where an item goes**: under each item stands the chest it belongs in, larger, with that chest's sign and in its glow colour, and every chest when it belongs in several. Click an item and those chests and wall drawers within 100 m pulse with light and sparkle for 20 seconds, so you can find the right one.
+
 ## v0.89.5 - 2026-10-04
 
 ### Added
