@@ -55,8 +55,11 @@ public class Caraway : ForageableBase
     protected override float ExtraDropChance => 0.2f;
 
     /// <inheritdoc/>
+    protected override float DefaultGroundClearance => 0.1f;
+
+    /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
-        ReplacePlantMesh(visualRoot, "caraway", 0.54f);
+        ReplacePlantMesh(visualRoot, "caraway", 0.74f);
     }
 }

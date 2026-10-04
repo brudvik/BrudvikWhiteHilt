@@ -763,7 +763,7 @@ def build_yarrow(geo, rng, np):
                 geo.leaf(rachis[j], (side * sign + heading * 0.3), (0, 0, 1), 0.02, 0.005, "leaf", profile="linear", segments=2, fold=0.2, droop=0.1)
     for k in range(3):
         lean = (rng.normal(0, 0.12), rng.normal(0, 0.12), 1.0)
-        stem = curve((rng.normal(0, 0.015), rng.normal(0, 0.015), 0), lean, rng.uniform(0.38, 0.5), 0.1, 6)
+        stem = curve((rng.normal(0, 0.015), rng.normal(0, 0.015), 0), lean, rng.uniform(0.62, 0.78), 0.1, 6)
         geo.tube(stem, [0.0035] * 7, "stem", segments=4)
         for i in (2, 4):
             heading = (stem[i] - stem[i - 1]).normalized()
@@ -788,7 +788,7 @@ def build_caraway(geo, rng, np):
             for sign in (-1, 1):
                 for n in range(2):
                     geo.leaf(rachis[j], (side * sign + heading * (0.2 + n * 0.5)), (0, 0, 1), 0.016, 0.003, "leaf", profile="linear", segments=2, fold=0.0, droop=0.1)
-    stem = curve((0, 0, 0), (0.03, 0.0, 1.0), 0.45, 0.05, 6)
+    stem = curve((0, 0, 0), (0.03, 0.0, 1.0), 0.65, 0.05, 6)
     geo.tube(stem, [0.004] * 7, "stem", segments=4)
     branches = [stem]
     for i, angle in ((3, 0.5), (4, 2.6), (5, 4.4)):

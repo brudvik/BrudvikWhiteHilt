@@ -55,6 +55,9 @@ public class Henbane : ForageableBase
     protected override float ExtraDropChance => 0.1f;
 
     /// <inheritdoc/>
+    protected override float DefaultGroundClearance => 0.1f;
+
+    /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
         ReplacePlantMesh(visualRoot, "henbane", 0.6f);

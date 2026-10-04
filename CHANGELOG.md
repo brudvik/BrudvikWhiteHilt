@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.80.5 - 2026-10-04
+
+### Changed
+- **Taller Caraway and low-flower clearance**: lengthen Caraway's main stem and increase its base height from 0.54 to 0.74 m without stretching its flower heads. Caraway, Yarrow, Bog Bean and Henbane now have a configurable 0.1 m ground clearance, lifting their visuals and pick colliders together above the saved terrain point. Their pick targets follow the visible model. Mountain plants retain their existing 0.2 m default; other plants, dropped item fitting, saved positions, yields and regrowth are unchanged. Existing plants update when loaded again. Actual terrain and grass visibility still require in-game testing.
+
+## v0.80.4 - 2026-10-04
+
+### Changed
+- **Taller Yarrow**: lengthen the three flowering stems and increase the growing plant's base height from 0.46 to 0.72 m so the white flower heads stand higher above Plains grass. Leaves and flower heads retain their source dimensions rather than being stretched. Existing plants use the new look when loaded again; saved positions, yield, regrowth and recipes are unchanged.
+
 ## v0.80.3 - 2026-10-04
 
 ### Fixed

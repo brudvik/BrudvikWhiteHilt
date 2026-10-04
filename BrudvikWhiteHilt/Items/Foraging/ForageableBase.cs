@@ -99,6 +99,11 @@ public abstract class ForageableBase
     protected virtual float CreatureDropChance => 0.2f;
 
     /// <summary>
+    /// Default lift of the plant and its pick colliders above the saved terrain point, in metres.
+    /// </summary>
+    protected virtual float DefaultGroundClearance => (Vegetation.Biome & Heightmap.Biome.Mountain) != 0 ? 0.2f : 0f;
+
+    /// <summary>
     /// Prefab name of the pickable plant.
     /// </summary>
     public string PickableName => $"Pickable_{BaseName}";
@@ -130,9 +135,9 @@ public abstract class ForageableBase
             $"How many {FullName} one plant gives. 0 = the same as the vanilla {CopyPickableFrom}. Applies to plants loaded after the change.",
             new AcceptableValueRange<int>(0, 20));
 
-        if ((Vegetation.Biome & Heightmap.Biome.Mountain) != 0)
+        if (DefaultGroundClearance > 0f)
         {
-            groundClearance = WhiteHiltConfig.BindAdminOnly(section, "GroundClearance", 0.2f,
+            groundClearance = WhiteHiltConfig.BindAdminOnly(section, "GroundClearance", DefaultGroundClearance,
                 "Lift the plant and its pick colliders above the terrain, in metres. Applies to plants loaded after the change, including existing plants.",
                 new AcceptableValueRange<float>(0f, 1f));
             minimumPickHeight = WhiteHiltConfig.BindAdminOnly(section, "MinimumPickHeight", 0.4f,

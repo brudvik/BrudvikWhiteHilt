@@ -53,6 +53,9 @@ public class BogBean : ForageableBase
     protected override string ExtraDropFrom => "Pickable_SeedTurnip";
 
     /// <inheritdoc/>
+    protected override float DefaultGroundClearance => 0.1f;
+
+    /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
         ReplacePlantMesh(visualRoot, "bogbean", 0.4f);
