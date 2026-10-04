@@ -53,6 +53,8 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 | **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |
 | **Black Bonemaw** | Ashlands sea, on a ship | Fader | 1100 × 6.75 |
 
+Each black beast has its own **material counter**, made with gathered ingredients: six special arrows and three weapon treatments. Build the **Black Bestiary / Svartboka** with Meadows materials to browse their dangers, counters and current recipes; each reader unlocks pages only by discovering the corresponding biomes, not by killing bosses. Meadows-only readers see a warning without monster spoilers. These preparations add a default 50% material-damage component only against their matching beast; ordinary resistance profiles are unchanged. See [Black Bestiary & material counters](bestiary.md).
+
 **Blood moon**
 
 A rare night, at most one in every 6 nights and only after a boss is defeated. The chance is 2% to 6% per night, depending on the pressure.

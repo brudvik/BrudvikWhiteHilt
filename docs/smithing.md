@@ -82,6 +82,8 @@ The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast
 
 ## 🪨 WHETSTONE AND WEAPON OILS
 
+The [Black Bestiary](bestiary.md) also describes three material-specific treatments for black beasts: Stonebreaker (rock lichen, pickaxe), Berserker (henbane, blunt) and Carapace Whetstone (woad, slash). They affect only their matching beast and the weapon held when applied, unlike the ordinary coatings below.
+
 Use one from the inventory and the weapon in hand hits harder for a number of hits (shown on the effect icon); woodcutting and mining do not use them up. Any weapon can take them, not only White Hilt gear.
 
 <img src="images/whetstone.png" alt="Whetstone" title="Whetstone" height="140"> <img src="images/weapon_oil.png" alt="Weapon oil" title="Weapon oil" height="140">

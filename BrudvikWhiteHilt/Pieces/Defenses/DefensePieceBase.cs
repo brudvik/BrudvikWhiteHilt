@@ -28,6 +28,9 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
     /// </summary>
     protected abstract string LayoutName { get; }
 
+    /// <summary>Visual layout to reuse when a distinct piece shares another piece's construction.</summary>
+    protected virtual string VisualLayoutName => LayoutName;
+
     /// <summary>
     /// Name shown to players, in English. Other languages come from the embedded translation files.
     /// </summary>
@@ -94,7 +97,7 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
         try
         {
             DefenseLayout layout = DefenseLayout.Load();
-            DefensePieceData data = layout.Get(LayoutName);
+            DefensePieceData data = layout.Get(VisualLayoutName);
             PieceConfig pieceConfig = new()
             {
                 Name = Translations.Token(PrefabName),

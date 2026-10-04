@@ -67,6 +67,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bestiary\BeastCounter.cs" />
+    <Compile Include="Bestiary\BeastCounterItem.cs" />
+    <Compile Include="Bestiary\BeastCounterCoating.cs" />
+    <Compile Include="Bestiary\BeastBookSettings.cs" />
+    <Compile Include="Bestiary\BeastBookStand.cs" />
+    <Compile Include="Bestiary\BeastBookPiece.cs" />
+    <Compile Include="Bestiary\BeastBookPanel.cs" />
+    <Compile Include="Patches\Difficulty\BeastCounterPatches.cs" />
     <Compile Include="Items\Summoning\SummoningHornService.cs" />
     <Compile Include="Kraken\KrakenAppearance.cs" />
     <Compile Include="Items\Summoning\SummoningHorn.cs" />

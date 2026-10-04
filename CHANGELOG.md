@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.80.0 - 2026-10-04
+
+### Added
+- **Black Bestiary / Svartboka**: a buildable book on the guestbook stand, with up to nine browsable, illustrated pages. Each describes a black beast's dangers, biome, guardian, distinct material counter, gathering places and actual registered crafting recipe, including server overrides. Available under Furniture from Meadows ingredients, without requiring a trophy or kill first. Pages unlock per reader only after discovering a biome where the beast lives; Meadows-only characters see a foreboding warning without monster spoilers. New discoveries are saved with stable biome identities, independent of language; discovering Mountains and Plains does not duplicate the Dragon's page.
+- **Material weaknesses**: six special arrows (lingonberry Troll, peat Ember, crowberry Rime, juniper Seid, sweet-gale Bog Venom and rosehip/kraken-ink Storm), and three temporary weapon treatments (rock-lichen Stonebreaker for pickaxes, henbane Berserker for blunt weapons and woad Carapace Whetstone for slashing weapons). Each grants a default 50% extra material-damage component only against its matching black beast. Existing resistances, ordinary creatures and Kraken are unchanged. The bonus follows the serialized attack, is resolved once on the target owner, and respects armour rather than using true damage.
+- **Counter settings**: server-synced per-counter bonus, output, arrow pierce/element damage and treatment attack count. Treatments last 30 eligible attacks by default (misses count), apply only to the weapon held when used, and replace the previous material treatment. Mining/woodcutting also use the corresponding treatment. Recipes and content toggles use the existing progression settings; all default recipes are ingredient-gated, with no extra tier materials. Server and clients must update together. In-game combat, book layout, icons and multiplayer still require testing.
+
 ## v0.79.1 - 2026-10-04
 
 ### Changed

@@ -104,6 +104,8 @@ The plants spawn as new land is generated. Land generated before a plant came ge
 
 ## Config
 
+Foraged ingredients also make the [Black Bestiary's material counters](bestiary.md): lingonberries, peat, rock lichen, henbane, crowberries, woad, juniper, sweet gale and rosehips each have a distinct black beast to prepare for. The buildable book shows their gathering places and actual crafting recipes.
+
 Admin only, synced from the server. The spawn, drop and Stone Pot food settings are listed in [Progression](progression.md).
 
 Section `[Curing]`:
