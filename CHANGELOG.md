@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.86.0 - 2026-10-04
+
+### Added
+- **Wall drawers** for all fourteen restocking chest categories, usable on player-built wooden and stone walls both ashore and aboard Skidbladnir. Independent prefabs keep the original inventory dimensions, category icons, hover/progress UI and restocking behavior. Original chest inventories are unchanged. New models, Norwegian text and feature documentation included. Live crafting, wall placement and multiplayer persistence still require backup-world testing.
+
 ## v0.85.0 - 2026-10-04
 
 ### Added

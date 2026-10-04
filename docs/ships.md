@@ -27,7 +27,7 @@ Console testing: `spawn WhiteHiltSkidbladnir`. Validate waterline and stability,
 
 ### Ship Workshops
 
-Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. Use the ordinary Hammer for other furnishings.
+Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. Use the ordinary Hammer for other furnishings and [wall drawers](chests.md#wall-drawers).
 
 <img src="images/ship_workbench.png" alt="Ship Workbench" height="140"> <img src="images/ship_forge.png" alt="Ship Forge" height="140"> <img src="images/ship_stonecutter.png" alt="Ship Stonecutter" height="140">
 

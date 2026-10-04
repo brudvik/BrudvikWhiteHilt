@@ -74,6 +74,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
             // Apply the properties to the custom piece
             piece.ApplyProperties();
+            if (model.Name.EndsWith("Drawer", System.StringComparison.Ordinal)) WallDrawer.Configure(piece.PiecePrefab);
 
             // Add the custom piece to the PieceManager
             pieceManager.AddPiece(piece);
@@ -81,6 +82,25 @@ namespace BrudvikWhiteHilt.Chests.Piece
             // Log the initiation of the custom chest piece
             Jotunn.Logger.LogInfo($"{model.Name} chest piece is initiated");
             return piece; 
+        }
+
+        /// <summary>Registers a wall-mounted variant with the source chest's category and inventory dimensions.</summary>
+        /// <param name="source">The original chest descriptor.</param>
+        /// <returns>The independent drawer descriptor.</returns>
+        public CustomPieceExtended AddWallDrawer(CustomPieceExtended source)
+        {
+            var drawer = AddCustomChest(new CustomChestModel
+            {
+                Name = source.PrefabName + "Drawer",
+                DisplayName = source.Tooltip + " ($whitehilt_wall_drawer)",
+                Description = source.CustomPieceConfig.Description + "\n$whitehilt_wall_drawer_description",
+                Icon = source.Icon,
+                Color = source.Color,
+                Category = source.CustomPieceConfig.ItemCategory,
+                Rows = source.Rows,
+                Columns = source.Columns
+            });
+            return drawer;
         }
 
         // The icons are licensed and not in the public source; a chest must register without them, or placed ones vanish.

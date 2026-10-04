@@ -67,7 +67,7 @@ Surt's Brazier for fires without fuel, the Rushlight, crafting and building from
 
 ### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-Fourteen chests that sort and refill their items, in Full, Linear or Discovered mode (formerly BrudvikStackedChest), with a workbench Collection Post that gathers and sorts nearby drops. Carts and ship holds keep unlimited items full too.
+Fourteen restocking chests and matching compact wall drawers, in Full, Linear or Discovered mode (formerly BrudvikStackedChest), with a Collection Post that gathers nearby drops. Carts and ship holds keep unlimited items full too.
 
 ### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
 

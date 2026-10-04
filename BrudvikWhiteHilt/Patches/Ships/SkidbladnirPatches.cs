@@ -11,16 +11,17 @@ public static class SkidbladnirPatches
 {
     private static SkidbladnirShip placing;
 
-    /// <summary>Rejects off-ship workshops before the placement transaction.</summary>
+    /// <summary>Rejects unsupported drawers and off-ship workshops before the placement transaction.</summary>
     /// <param name="__instance">Building player.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.UpdatePlacementGhost))]
     [HarmonyPostfix]
-    public static void WorkshopPlacement(Player __instance)
+    public static void DrawerPlacement(Player __instance)
     {
         GameObject ghost = __instance.m_placementGhost;
         if (ghost == null || !ghost.activeSelf || __instance.m_placementStatus != Player.PlacementStatus.Valid) return;
+        var drawer = ghost.GetComponent<global::BrudvikWhiteHilt.Chests.Piece.WallDrawer>();
         var workshop = ghost.GetComponent<ShipWorkshop>();
-        if (workshop == null || workshop.CanPlace()) return;
+        if ((drawer == null || drawer.HasWall()) && (workshop == null || workshop.CanPlace())) return;
         __instance.m_placementStatus = Player.PlacementStatus.Invalid;
         ghost.GetComponent<Piece>().SetInvalidPlacementHeightlight(true);
     }

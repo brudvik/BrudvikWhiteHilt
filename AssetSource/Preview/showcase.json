@@ -6,6 +6,7 @@
     { "image": "ship_workbench", "models": ["shipworkbench"], "view": { "yaw": 150, "pitch": 35 } },
     { "image": "ship_forge", "compose": "shipforge.preview.json", "view": { "yaw": 150, "pitch": 35 } },
     { "image": "ship_stonecutter", "models": ["shipstonecutter"], "view": { "yaw": 150, "pitch": 35 } },
+    { "image": "wall_drawer", "models": ["walldrawer"], "view": { "yaw": 150, "pitch": 20 } },
     { "image": "collection_post", "compose": "collectionpost.preview.json", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "palisade_rampart", "piece": "skansevegg", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "rampart_corner", "piece": "skansehjorne", "view": { "yaw": 140, "pitch": 30 } },

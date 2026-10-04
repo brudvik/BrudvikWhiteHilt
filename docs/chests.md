@@ -39,6 +39,33 @@ The contents of every chest are worked out when a world loads. Every item in the
 
 Items that cannot be obtained in normal play (creature attacks, test items, unused variants) are left out. `DumpItemLists` writes every chest's list to the BepInEx log.
 
+### Wall Drawers
+
+<img src="images/wall_drawer.png" alt="Wall drawer" height="140">
+
+Every one of the fourteen chests above also has a **Wall drawer** variant in the ordinary Hammer's **Chests** menu. Each costs Wood ×10 (recoverable) and occupies about **0.7 × 0.3 × 0.3 m**, including its grip. The category icon, restocking, hover information, contents panel, progress indicators, learning and collection behavior are the same as its chest. Food and Weapon drawers retain 10 rows; every other drawer retains 8 rows. All retain 8 columns.
+
+Place the back against a vertical **player-built wooden or stone wall**, facing away from it. Drawers work in ordinary bases as well as on Skidbladnir's hull walls and player-built walls aboard it. Terrain, natural rocks, ruined unbuilt walls, floors, roofs and another drawer are not valid supports. Existing chest inventories are unchanged; drawers have independent saved inventories and use the same per-category Include/Exclude and mode settings.
+
+| Category | Drawer prefab |
+|---|---|
+| Wood | `BSWoodChestDrawer` |
+| Stone | `BSStoneChestDrawer` |
+| Metal | `BSMetalChestDrawer` |
+| Food | `BSFoodChestDrawer` |
+| Material | `BSMaterialChestDrawer` |
+| Animal | `BSAnimalChestDrawer` |
+| Seed | `BSSeedChestDrawer` |
+| Trophy | `BSTrophyChestDrawer` |
+| Treasure | `BSTreasureChestDrawer` |
+| Tools | `BSToolsChestDrawer` |
+| Armor | `BSArmorChestDrawer` |
+| Weapon | `BSWeaponChestDrawer` |
+| Potion | `BSPotionChestDrawer` |
+| Everlasting | `BSEmptyChestDrawer` |
+
+Test placement, opening, hover indicators, restocking and saved contents in a backup world before using drawers in an existing base; ship attachments also need sailing/reload and multiplayer checks.
+
 ### Collection Post
 
 <img src="images/collection_post.png" alt="Collection Post" title="Collection Post" height="140">

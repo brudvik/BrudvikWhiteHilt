@@ -1,6 +1,6 @@
 """Blender: --background --python make_ship_workshop_models.py.
 
-Creates compact ship workshop frames. Forge's existing anvil is added at runtime.
+Creates compact ship workshop frames and a wall drawer. Forge's existing anvil is added at runtime.
 """
 import math
 import pathlib
@@ -85,33 +85,42 @@ def export(name):
 
 
 def main():
-    for name in ('shipworkbench', 'shipforge', 'shipstonecutter'):
+    for name in ('shipworkbench', 'shipforge', 'shipstonecutter', 'walldrawer'):
         bpy.ops.wm.read_factory_settings(use_empty=True)
         wood = material('Dark oak', (0.24, 0.17, 0.10))
         pale = material('White Hilt worktop', (0.73, 0.72, 0.63))
         iron = material('Forged iron', (0.16, 0.20, 0.23))
         stone = material('Slate', (0.42, 0.47, 0.46))
-        frame(wood, iron, pale)
-        if name == 'shipworkbench':
-            mallet(wood, iron)
-            box('Saw blade', (-0.17, 0.03, 0.87), (0.44, 0.1, 0.02), iron, 0.002)
-            box('Saw grip', (-0.41, 0.03, 0.9), (0.09, 0.14, 0.055), wood)
-            for tooth in range(14):
-                box('Saw tooth', (-0.37 + tooth * 0.031, -0.028, 0.87), (0.018, 0.025, 0.022), iron, 0)
-            box('Planed board', (0.09, 0.2, 0.88), (0.5, 0.09, 0.045), wood)
-        elif name == 'shipforge':
-            mallet(wood, iron)
-            for sideways in (-0.03, 0.04):
-                rod('Tongs', (sideways + 0.28, 0.2, 0.87), (sideways + 0.02, 0.1, 0.87), 0.008, iron)
-            box('Metal billet', (0.34, 0.07, 0.89), (0.2, 0.075, 0.06), iron)
+        if name == 'walldrawer':
+            box('Drawer shell', (0, 0, 0.15), (0.7, 0.34, 0.3), wood)
+            box('Drawer front', (0, -0.165, 0.15), (0.7, 0.035, 0.3), pale)
+            for sideways in (-0.3, 0.3):
+                box('Corner strap', (sideways, -0.19, 0.15), (0.045, 0.015, 0.26), iron, 0.002)
+            for sideways in (-0.055, 0.055):
+                rod('Handle mount', (sideways, -0.185, 0.05), (sideways, -0.225, 0.05), 0.009, iron)
+            rod('Drawer handle', (-0.055, -0.225, 0.05), (0.055, -0.225, 0.05), 0.011, iron)
         else:
-            mallet(wood, wood)
-            block = box('Working stone', (-0.24, 0.04, 0.925), (0.4, 0.3, 0.15), stone, 0.025)
-            block.rotation_euler.z = 0.12
-            for depth in (-0.01, 0.09):
-                rod('Chisel', (0.03, depth, 0.874), (0.27, depth, 0.874), 0.01, iron)
-            for chip in range(4):
-                box('Stone chip', (-0.4 + chip * 0.11, -0.18, 0.87), (0.045, 0.035, 0.03), stone, 0.008)
+            frame(wood, iron, pale)
+            if name == 'shipworkbench':
+                mallet(wood, iron)
+                box('Saw blade', (-0.17, 0.03, 0.87), (0.44, 0.1, 0.02), iron, 0.002)
+                box('Saw grip', (-0.41, 0.03, 0.9), (0.09, 0.14, 0.055), wood)
+                for tooth in range(14):
+                    box('Saw tooth', (-0.37 + tooth * 0.031, -0.028, 0.87), (0.018, 0.025, 0.022), iron, 0)
+                box('Planed board', (0.09, 0.2, 0.88), (0.5, 0.09, 0.045), wood)
+            elif name == 'shipforge':
+                mallet(wood, iron)
+                for sideways in (-0.03, 0.04):
+                    rod('Tongs', (sideways + 0.28, 0.2, 0.87), (sideways + 0.02, 0.1, 0.87), 0.008, iron)
+                box('Metal billet', (0.34, 0.07, 0.89), (0.2, 0.075, 0.06), iron)
+            else:
+                mallet(wood, wood)
+                block = box('Working stone', (-0.24, 0.04, 0.925), (0.4, 0.3, 0.15), stone, 0.025)
+                block.rotation_euler.z = 0.12
+                for depth in (-0.01, 0.09):
+                    rod('Chisel', (0.03, depth, 0.874), (0.27, depth, 0.874), 0.01, iron)
+                for chip in range(4):
+                    box('Stone chip', (-0.4 + chip * 0.11, -0.18, 0.87), (0.045, 0.035, 0.03), stone, 0.008)
         export(name)
 
 

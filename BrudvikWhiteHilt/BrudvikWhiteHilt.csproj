@@ -137,6 +137,7 @@
     <Compile Include="Chests\Piece\ChestLearnUi.cs" />
     <Compile Include="Chests\Piece\ChestProgressUi.cs" />
     <Compile Include="Chests\Piece\CustomChestManager.cs" />
+    <Compile Include="Chests\Piece\WallDrawer.cs" />
     <Compile Include="Chests\Piece\CustomPieceConfigExtended.cs" />
     <Compile Include="Chests\Piece\CustomPieceExtended.cs" />
     <Compile Include="Chests\Piece\GatheringPanel.cs" />

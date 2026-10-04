@@ -1009,6 +1009,8 @@
   "piece_whitehilt_shipforge_description": "En liten smie for skipet. Fungerer som en vanlig smie, men kan bare bygges om bord på Skidbladnir.",
   "piece_whitehilt_shipstonecutter": "Skipssteinhogger",
   "piece_whitehilt_shipstonecutter_description": "En liten steinhogger for skipet. Fungerer som en vanlig steinhogger, men kan bare bygges om bord på Skidbladnir.",
+  "whitehilt_wall_drawer": "Veggskuff",
+  "whitehilt_wall_drawer_description": "En grunn skuff for spillerbygde tre- og steinvegger, på land eller om bord. Samme lager, ikon og etterfylling som kista.",
   "whitehilt_cfgsec_ships_skidbladnir": "Skidbladnir",
   "whitehilt_cfg_ships_skidbladnir_waterlineoffset": "Høyde over vannplanet",
   "whitehilt_cfg_ships_skidbladnir_waterlineoffset_desc": "Skipsmodellens høyde over flyteplanet, i meter. Krever omstart. Eksisterende innredning må flyttes dersom høyden endres.",

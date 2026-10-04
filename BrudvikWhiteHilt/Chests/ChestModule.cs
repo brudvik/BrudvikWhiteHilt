@@ -469,7 +469,7 @@ namespace BrudvikWhiteHilt.Chests
 
             foreach (var piece in customPieces)
             {
-                if (container.name.Contains(piece.PrefabName)) return piece;
+                if (global::Utils.GetPrefabName(container.gameObject) == piece.PrefabName) return piece;
             }
             return null;
         }
@@ -649,6 +649,20 @@ namespace BrudvikWhiteHilt.Chests
                     Color = SharedUtils.ColorFromRGB(45, 45, 79, 0.8f)
                 }
             ));
+
+            global::BrudvikWhiteHilt.Helpers.Translations.AddEnglish("whitehilt_wall_drawer", "Wall drawer");
+            global::BrudvikWhiteHilt.Helpers.Translations.AddEnglish("whitehilt_wall_drawer_description", "A compact drawer for a player-built wooden or stone wall. Shares the corresponding chest's storage rules.");
+            foreach (var source in customPieces.ToArray())
+            {
+                try
+                {
+                    customPieces.Add(customChestManager.AddWallDrawer(source));
+                }
+                catch (Exception error)
+                {
+                    Jotunn.Logger.LogError($"Wall drawer for {source.PrefabName} failed: {error}");
+                }
+            }
 
             // Unregister the callback to prevent duplicate items
             PrefabManager.OnPrefabsRegistered -= AddClonedItems;
