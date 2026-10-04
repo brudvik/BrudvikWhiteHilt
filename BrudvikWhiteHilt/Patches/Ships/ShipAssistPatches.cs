@@ -30,6 +30,16 @@ public static class ShipAssistPatches
         __instance.GetComponent<ShipAssist>()?.PreparePhysics();
     }
 
+    /// <summary>Replaces vanilla's position jumps on White Hilt ships another player owns.</summary>
+    /// <param name="__instance">Network transform about to follow its owner.</param>
+    /// <returns>False when the ship was smoothed instead.</returns>
+    [HarmonyPatch(typeof(ZSyncTransform), nameof(ZSyncTransform.ClientSync))]
+    [HarmonyPrefix]
+    public static bool PassengerSync(ZSyncTransform __instance)
+    {
+        return !Pieces.Ships.WhiteHiltShip.ShipPassengerSync.TryStep(__instance);
+    }
+
     /// <summary>Delays helm ownership while a vanilla cargo open request is being handled.</summary>
     /// <param name="__instance">The container sharing the ship's network object.</param>
     [HarmonyPatch(typeof(Container), nameof(Container.RPC_RequestOpen))]

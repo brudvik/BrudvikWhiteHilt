@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships.Skidbladnir;
@@ -14,6 +15,8 @@ public class SkidbladnirShip : MonoBehaviour
     public Transform[] m_sails = Array.Empty<Transform>();
     /// <summary>Visual fishing net switched with its existing upgrade bit.</summary>
     public GameObject m_fishingNet;
+
+    private static readonly List<SkidbladnirShip> instances = new();
 
     private Ship ship;
     private Rigidbody body;
@@ -48,6 +51,17 @@ public class SkidbladnirShip : MonoBehaviour
         return (low + high) / 2f;
     }
 
+    /// <summary>Finds the loaded sailing home whose lower deck contains a point.</summary>
+    /// <param name="point">World position, e.g. a player's eye.</param>
+    /// <returns>The ship, or null when the point is not below any deck.</returns>
+    public static SkidbladnirShip BelowDeck(Vector3 point)
+    {
+        foreach (SkidbladnirShip candidate in instances)
+            if (candidate != null && SkidbladnirModel.LowerDeck.Contains(candidate.transform.InverseTransformPoint(point)))
+                return candidate;
+        return null;
+    }
+
     /// <summary>Caps horizontal motion without interfering with waves or Kraken lift.</summary>
     public void LimitSpeed()
     {
@@ -69,6 +83,10 @@ public class SkidbladnirShip : MonoBehaviour
         body = GetComponent<Rigidbody>();
         upgrades = GetComponent<WhiteHiltShipUpgrades>();
     }
+
+    private void OnEnable() => instances.Add(this);
+
+    private void OnDisable() => instances.Remove(this);
 
     private void Update()
     {
@@ -111,6 +129,7 @@ public class ShipFurniture : MonoBehaviour
         data.Set(RotationKey, (Quaternion.Inverse(ship.transform.rotation) * transform.rotation).eulerAngles);
         Apply(ship.transform, data);
         SaveWorldPosition();
+        enabled = true;
     }
 
     /// <summary>Finds a ship actually supporting a proposed building position.</summary>
@@ -161,6 +180,8 @@ public class ShipFurniture : MonoBehaviour
     private void Awake()
     {
         view = GetComponent<ZNetView>();
+        // Added to every building piece; only furnishings need the per-frame update.
+        enabled = IsAttached;
     }
 
     private void LateUpdate()
@@ -192,11 +213,7 @@ public class ShipFurniture : MonoBehaviour
         Rigidbody body = GetComponent<Rigidbody>();
         if (body != null) body.isKinematic = true;
         WearNTear wear = GetComponent<WearNTear>();
-        if (wear != null)
-        {
-            wear.m_noRoofWear = false;
-            wear.m_noSupportWear = true;
-        }
+        if (wear != null) wear.m_noSupportWear = true;
     }
 
     private void SaveWorldPosition()

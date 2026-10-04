@@ -35,6 +35,17 @@ public static class ShipAnchorPatch
     }
 
     /// <summary>
+    /// Keeps an anchored White Hilt Ship where it lies after each physics step.
+    /// </summary>
+    /// <param name="__instance">The ship.</param>
+    [HarmonyPatch(typeof(Ship), nameof(Ship.CustomFixedUpdate))]
+    [HarmonyPostfix]
+    private static void HoldAnchored(Ship __instance)
+    {
+        __instance.GetComponent<WhiteHiltShipUpgrades>()?.HoldAnchor();
+    }
+
+    /// <summary>
     /// Stops the helmsman from setting sail or rowing while any ship is moored to a Mooring Post.
     /// </summary>
     /// <param name="__instance">The ship.</param>

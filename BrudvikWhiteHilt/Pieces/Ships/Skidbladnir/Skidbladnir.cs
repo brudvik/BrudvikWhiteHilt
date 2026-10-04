@@ -67,6 +67,8 @@ public static class SkidbladnirSettings
     public static ConfigEntry<float> FurnitureSyncSeconds { get; private set; }
     /// <summary>Seconds to deploy or furl the individual sails.</summary>
     public static ConfigEntry<float> SailSeconds { get; private set; }
+    /// <summary>Furthest camera distance below deck, in metres; 0 keeps the vanilla camera. Local.</summary>
+    public static ConfigEntry<float> LowerDeckCameraDistance { get; private set; }
 
     /// <summary>Binds the sailing home's adjustable rules.</summary>
     public static void Initialize()
@@ -83,6 +85,9 @@ public static class SkidbladnirSettings
             "Seconds between saved world-position updates for attached furniture.", new AcceptableValueRange<float>(0.1f, 5f));
         SailSeconds = WhiteHiltConfig.BindAdminOnly("Ships.Skidbladnir", "SailSeconds", 2f,
             "Seconds to deploy or furl the sails.", new AcceptableValueRange<float>(0.5f, 10f));
+        LowerDeckCameraDistance = WhiteHiltConfig.BindLocal("Ships.Skidbladnir", "LowerDeckCameraDistance", 2f,
+            "Below deck the camera comes in to this distance, in metres, and stays inside the hull. 0 keeps the vanilla camera.",
+            new AcceptableValueRange<float>(0f, 8f));
     }
 }
 
@@ -91,6 +96,12 @@ internal static class SkidbladnirModel
     internal static Vector3 At(float sideways, float height, float length) =>
         new(sideways, height + SkidbladnirSettings.WaterlineOffset.Value, length);
     internal static Vector3 PortalPosition => At(1.35f, 3.06f, -1.6f);
+    // The lower room between its floor, side walls, bulkheads and the waist deck above.
+    internal static Bounds LowerDeck => new(At(0f, 0.85f, 2f), new Vector3(5.68f, 2.9f, 11.1f));
+    private static readonly string[] UpgradeObjects =
+    {
+        WhiteHiltShipUpgrades.BrazierName, WhiteHiltShipUpgrades.AnchorName, WhiteHiltShipUpgrades.MastWispName, ShipTentColliders.ObjectName
+    };
     // Slopes of the source model's quarterdeck and poop deck, both rising towards the stern.
     internal static readonly Quaternion QuarterdeckTilt = Quaternion.Euler(5.06f, 0f, 0f);
     private static readonly Quaternion PoopTilt = Quaternion.Euler(14.45f, 0f, 0f);
@@ -130,12 +141,8 @@ internal static class SkidbladnirModel
         Assets assets = SimpleJson.SimpleJson.DeserializeObject<Assets>(reader.ReadToEnd());
         foreach (Renderer renderer in prefab.GetComponentsInChildren<Renderer>(true))
         {
-            bool upgrade = renderer.transform.IsChildOf(root.Find("ship/visual/Customize"))
-                || renderer.GetComponentInParent<ShipChest>() != null || renderer.GetComponentInParent<ShipPortal>() != null
-                || renderer.transform.IsChildOf(root.Find(WhiteHiltShipUpgrades.BrazierName));
-            bool wisp = renderer.GetComponentsInParent<Transform>(true).Any(parent => parent.name == WhiteHiltShipUpgrades.MastWispName);
             // Includes the longship's water mask: it does not fit this hull, whose lower floor already covers the water inside.
-            if (!upgrade && !wisp) renderer.enabled = false;
+            if (!IsUpgradePart(root, renderer.transform)) renderer.enabled = false;
         }
         Transform geometry = new GameObject("SkidbladnirStructure").transform;
         geometry.SetParent(root, false);
@@ -165,11 +172,7 @@ internal static class SkidbladnirModel
         behaviour.m_sails = sails.ToArray();
         foreach (Collider collider in prefab.GetComponentsInChildren<Collider>(true))
         {
-            bool upgrade = collider.transform.IsChildOf(root.Find("ship/visual/Customize"))
-                || collider.GetComponentInParent<ShipChest>() != null || collider.GetComponentInParent<ShipPortal>() != null
-                || collider.GetComponentInParent<Container>() != null
-                || collider.GetComponentsInParent<Transform>(true).Any(parent => parent.name == ShipTentColliders.ObjectName);
-            if (!upgrade && collider != ship.m_floatCollider && !collider.isTrigger)
+            if (!IsUpgradePart(root, collider.transform) && collider != ship.m_floatCollider && !collider.isTrigger)
                 collider.enabled = false;
         }
         Transform onboard = root.Find("OnboardTrigger");
@@ -263,6 +266,8 @@ internal static class SkidbladnirModel
             GameObject net = new("SkidbladnirFishingNet");
             net.transform.SetParent(root, false);
             net.transform.localPosition = At(3.5f, 1.7f, 4f);
+            // The net's length is its local x; turned a quarter it hangs along the hull.
+            net.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
             Mesh mesh = ForagingAssets.LoadMesh("fishnet");
             VisualHelper.CreateModel(net.transform, mesh, ForagingAssets.LoadTexture("fishnet_albedo"), template,
                 Vector3.zero, Quaternion.identity, 1.5f / mesh.bounds.size.y);
@@ -281,6 +286,13 @@ internal static class SkidbladnirModel
     }
 
     private static Vector3 ToVector(float[] values) => new(values[0], values[1], values[2]);
+
+    // The prefab sits in Jotunn's inactive container, so parent lookups must include inactive objects.
+    private static bool IsUpgradePart(Transform root, Transform part) =>
+        part.IsChildOf(root.Find("ship/visual/Customize"))
+        || part.GetComponentInParent<ShipChest>(true) != null || part.GetComponentInParent<ShipPortal>(true) != null
+        || part.GetComponentInParent<Container>(true) != null
+        || part.GetComponentsInParent<Transform>(true).Any(parent => UpgradeObjects.Contains(parent.name));
 
     private static void PlaceSeats(Transform root)
     {
@@ -367,8 +379,19 @@ internal static class SkidbladnirModel
     private static void RelocateUpgrades(Transform root)
     {
         Transform customize = root.Find("ship/visual/Customize");
+        // The longship's trader dressing is switched off as a whole; the upgrades switch the lantern, barrels and tent.
+        customize.gameObject.SetActive(true);
+        Transform lantern = customize.Find("TraderLamp");
+        if (lantern != null) lantern.gameObject.SetActive(false);
         Transform storage = customize.Find("storage");
-        if (storage != null) FitGroup(root, storage, At(1.85f, 2.5f, 6.85f), new Vector2(1.3f, 1.4f));
+        if (storage != null)
+        {
+            // The rail shields would stretch the fitted group along the whole hull.
+            foreach (Transform shield in storage.Cast<Transform>().Where(child => child.name.StartsWith("Shield")).ToArray())
+                UnityEngine.Object.DestroyImmediate(shield.gameObject);
+            FitGroup(root, storage, At(1.85f, 2.5f, 6.85f), new Vector2(1.3f, 1.4f));
+            foreach (Transform barrel in storage) barrel.gameObject.SetActive(false);
+        }
         Transform[] parts = customize.Cast<Transform>().Where(child => child.name.StartsWith("ShipTen")
             && child.name != "ShipTentLeft" && child.name != "ShipTentRight").ToArray();
         if (parts.Length == 0) return;
@@ -376,8 +399,14 @@ internal static class SkidbladnirModel
         tent.SetParent(customize, false);
         foreach (Transform part in parts) part.SetParent(tent, true);
         Transform colliders = root.Find(ShipTentColliders.ObjectName);
-        if (colliders != null) colliders.SetParent(tent, true);
+        if (colliders != null)
+        {
+            // Switched with the tent group from here on.
+            colliders.SetParent(tent, true);
+            colliders.gameObject.SetActive(true);
+        }
         FitGroup(root, tent, At(-1.65f, 2.5f, 4.2f), new Vector2(2.0f, 2.2f));
+        tent.gameObject.SetActive(false);
         WhiteHiltShipUpgrades upgrades = root.GetComponent<WhiteHiltShipUpgrades>();
         upgrades.m_tentCenter = At(-1.65f, 3.5f, 4.2f);
         upgrades.m_tentSize = new Vector3(2.0f, 2.4f, 2.2f);

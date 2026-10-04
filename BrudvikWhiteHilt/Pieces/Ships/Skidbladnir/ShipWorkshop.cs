@@ -95,8 +95,9 @@ public abstract class ShipWorkshopBase : IWhiteHiltCustomPiece
             BoxCollider box = visual.AddComponent<BoxCollider>();
             box.center = new Vector3(0, 0.425f, 0);
             box.size = new Vector3(1.1f, 0.85f, 0.62f);
-            station.m_connectionPoint.localPosition = new Vector3(0, 0.85f, 0);
-            station.m_roofCheckPoint.localPosition = new Vector3(0, 1.2f, 0);
+            // The vanilla stonecutter has no connection point.
+            if (station.m_connectionPoint != null) station.m_connectionPoint.localPosition = new Vector3(0, 0.85f, 0);
+            if (station.m_roofCheckPoint != null) station.m_roofCheckPoint.localPosition = new Vector3(0, 1.2f, 0);
             if (!VisualHelper.IsHeadless)
             {
                 AddModel(visual.transform, model, 1.1f, Vector3.zero, template, true);

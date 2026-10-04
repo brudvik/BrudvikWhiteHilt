@@ -202,6 +202,15 @@ public static class ShipSettings
     /// <summary>Seconds between diagnostic samples.</summary>
     public static ConfigEntry<float> ShipDiagnosticsInterval { get; private set; }
 
+    /// <summary>Whether this client smooths White Hilt ships another player owns.</summary>
+    public static ConfigEntry<bool> PassengerSmoothing { get; private set; }
+
+    /// <summary>Seconds over which this client's view of such a ship catches up with its owner.</summary>
+    public static ConfigEntry<float> PassengerSmoothSeconds { get; private set; }
+
+    /// <summary>Metres of disagreement beyond which the ship jumps to its owner's position.</summary>
+    public static ConfigEntry<float> PassengerSnapDistance { get; private set; }
+
     /// <summary>Whether a fall from a moving ship is called out to those aboard.</summary>
     public static ConfigEntry<bool> ManOverboard { get; private set; }
 
@@ -392,6 +401,13 @@ public static class ShipSettings
             "Log White Hilt Ship owner, helmsman, container use, ZDO revision timing and peak frame time on this client while aboard.");
         ShipDiagnosticsInterval = WhiteHiltConfig.BindLocal(Section, "ShipDiagnosticsInterval", 5f,
             "Seconds between local ship diagnostic samples. ZDO revision timing includes inventory and control changes, not only movement.", new AcceptableValueRange<float>(1f, 60f));
+        PassengerSmoothing = WhiteHiltConfig.BindLocal(Section, "PassengerSmoothing", true,
+            "Aboard a White Hilt Ship or Skidbladnir someone else sails, move it smoothly toward the helmsman's position instead of in small jumps, so it does not shake and you do not slide while walking.");
+        PassengerSmoothSeconds = WhiteHiltConfig.BindLocal(Section, "PassengerSmoothSeconds", 0.3f,
+            "Seconds over which your view of a ship someone else sails catches up with the helmsman's. Longer is calmer but lags a little more.",
+            new AcceptableValueRange<float>(0.05f, 2f));
+        PassengerSnapDistance = WhiteHiltConfig.BindLocal(Section, "PassengerSnapDistance", 5f,
+            "If your view of a ship someone else sails is this many metres off, it jumps there at once.", new AcceptableValueRange<float>(1f, 50f));
         ManOverboard = WhiteHiltConfig.BindAdminOnly(Section, "ManOverboard", true,
             "When someone falls from a moving ship, everyone aboard is told, with the bell, a pin on the map and an arrow on the minimap toward them.");
         OverboardMinSpeed = WhiteHiltConfig.BindAdminOnly(Section, "OverboardMinSpeed", 2f,

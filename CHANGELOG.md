@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.88.1 - 2026-10-04
+
+### Changed
+- **Skidbladnir camera below deck**: the camera comes in to 2 m and stays inside the hull while you are in the lower room, so you see it at once instead of looking down on the deck from outside (`[Ships.Skidbladnir] LowerDeckCameraDistance`, each player's own, 0 keeps the vanilla camera).
+- **Smoother ride for passengers**: on a White Hilt Ship or Skidbladnir someone else sails, your client now steers the ship by velocity toward the helmsman's extrapolated position and heading instead of vanilla's small jumps toward each network update. In an offline simulation with 50–150 ms latency, the largest per-step jolt fell to about a third and walking passengers no longer slide on deck. Not yet tested in multiplayer (`[Ships] PassengerSmoothing`, `PassengerSmoothSeconds`, `PassengerSnapDistance`, each player's own).
+
+### Fixed
+- **Skidbladnir upgrades were invisible**: only the deck brazier and the mast wisp showed. The lantern, barrels and tent stayed hidden with the longship's switched-off trader dressing, and the anchor, sea chest and deck portal lost their models when the longship's hull was hidden. All nine now show; the rail shields no longer shrink the barrels, the tent can be stood on, and the fishing net hangs along the hull instead of across it.
+- **No storage on Skidbladnir**: the cargo hatch and the sea chest had their colliders switched off, so they could not be opened. The brazier blocks players again too.
+- **Ship Stonecutter missing from the Ship Hammer**: it failed to load because the vanilla stonecutter has no extension connection point.
+- **Ship Hammer pieces floated above the lower deck**: the build ray started from the camera outside the hull and hit the deck above. With the camera inside the room, workshops land on the floor.
+- **Drift Anchor did not hold**: an anchored White Hilt Ship or Skidbladnir now also has its drift and turn stopped after every physics step, besides the rigidbody constraints. The anchor is still weighed when someone takes the helm (`AutoAnchor`).
+- **Furnishings below Skidbladnir's deck weathered in the rain**: vanilla's roof check ignores ships, and furnishings aboard were also made to take rain wear even when their vanilla piece does not (crafting stations). The decks now count as a roof for pieces below them, and each piece keeps its own rule.
+- **Every building piece in the world ran a per-frame ship check**: it now only runs on furnishings attached to Skidbladnir.
+
 ## v0.88.0 - 2026-10-04
 
 ### Added

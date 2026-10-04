@@ -757,6 +757,7 @@
     <Compile Include="Pieces\Ships\Skidbladnir\ShipWorkshop.cs" />
     <Compile Include="Items\Tools\WhiteHiltShipHammer.cs" />
     <Compile Include="Patches\Ships\SkidbladnirPatches.cs" />
+    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPassengerSync.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
     <Compile Include="Pieces\Ships\WhiteHiltShip\ShipTentColliders.cs" />
     <Compile Include="Pieces\Navigation\ShipChartTableHover.cs" />

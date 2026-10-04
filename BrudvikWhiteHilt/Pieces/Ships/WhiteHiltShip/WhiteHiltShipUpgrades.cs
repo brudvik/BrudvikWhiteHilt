@@ -330,6 +330,27 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stops the drift and the turn of an anchored ship after vanilla's physics step, leaving the bobbing. Only on the
+    /// ship's owner, on top of the rigidbody constraints.
+    /// </summary>
+    public void HoldAnchor()
+    {
+        if (body == null || nview == null || !nview.IsValid() || !nview.IsOwner() || !IsAnchored)
+        {
+            return;
+        }
+
+        if ((body.constraints & AnchoredConstraints) != AnchoredConstraints)
+        {
+            body.constraints |= AnchoredConstraints;
+        }
+
+        body.linearVelocity = new Vector3(0f, body.linearVelocity.y, 0f);
+        Vector3 spin = body.angularVelocity;
+        body.angularVelocity = new Vector3(spin.x, 0f, spin.z);
+    }
+
     private void Awake()
     {
         nview = GetComponent<ZNetView>();

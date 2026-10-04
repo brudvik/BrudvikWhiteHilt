@@ -147,6 +147,52 @@ public static class SkidbladnirPatches
     [HarmonyPostfix]
     public static void PhysicsStep(Ship __instance) => __instance.GetComponent<SkidbladnirShip>()?.LimitSpeed();
 
+    /// <summary>Lets the ship's decks count as a roof for furnishings below them; vanilla's roof ray skips ships.</summary>
+    /// <param name="obj">Piece being checked.</param>
+    /// <param name="position">Start of the roof ray.</param>
+    /// <param name="roofObject">The roof found.</param>
+    /// <param name="heightOffset">Height of the ray's start above the position.</param>
+    /// <param name="__result">Whether a roof was found.</param>
+    [HarmonyPatch(typeof(WearNTear), nameof(WearNTear.RoofCheck))]
+    [HarmonyPostfix]
+    public static void ShipRoof(Transform obj, Vector3 position, ref GameObject roofObject, float heightOffset, ref bool __result)
+    {
+        if (__result || obj == null || !(obj.GetComponent<ShipFurniture>()?.IsAttached ?? false)) return;
+        // Vanilla's own ray: a 0.1 m sphere straight up for 100 m.
+        if (Physics.SphereCast(position + Vector3.up * heightOffset, 0.1f, Vector3.up, out RaycastHit hit, 100f,
+            LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SkidbladnirShip>() != null)
+        {
+            roofObject = hit.collider.gameObject;
+            __result = true;
+        }
+    }
+
+    /// <summary>Brings the camera in below deck and keeps it inside the hull, which vanilla's camera passes through.</summary>
+    /// <param name="__instance">The game camera.</param>
+    /// <param name="pos">Camera position chosen by vanilla.</param>
+    [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.GetCameraPosition))]
+    [HarmonyPostfix]
+    public static void LowerDeckCamera(GameCamera __instance, ref Vector3 pos)
+    {
+        float reach = SkidbladnirSettings.LowerDeckCameraDistance.Value;
+        Player player = Player.m_localPlayer;
+        if (reach <= 0f || player == null || player.InIntro()) return;
+        SkidbladnirShip ship = SkidbladnirShip.BelowDeck(player.m_eye.position);
+        if (ship == null) return;
+        Vector3 eye = __instance.GetOffsetedEyePos();
+        Vector3 offset = pos - eye;
+        float distance = Mathf.Min(offset.magnitude, reach);
+        if (distance < 0.01f) return;
+        Vector3 direction = offset.normalized;
+        foreach (RaycastHit hit in Physics.SphereCastAll(eye, __instance.m_raycastWidth, direction, distance,
+            LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore))
+        {
+            if (hit.distance > 0f && hit.collider.GetComponentInParent<SkidbladnirShip>() == ship)
+                distance = Mathf.Min(distance, hit.distance);
+        }
+        pos = eye + direction * distance;
+    }
+
     private static bool Allowed(Piece piece) => piece != null && !piece.m_groundPiece && !piece.m_groundOnly
         && !piece.m_waterPiece && !piece.m_cultivatedGroundOnly && piece.GetComponent<Ship>() == null
         && piece.GetComponent<Vagon>() == null && piece.GetComponent<Plant>() == null

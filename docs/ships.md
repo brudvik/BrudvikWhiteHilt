@@ -19,6 +19,10 @@ Named for Freyr's ship, Skidbladnir is a separate Hammer piece (`WhiteHiltSkidbl
 
 Build while the ship lies still. If the Drift Anchor upgrade is installed, lower it first. Furnishings retain their own inventories, damage and removal behavior, but use the ship as a foundation and move with it. Their ship-local placement is saved for reloading; disabling new building does not detach existing furnishings. Remove the furnishings before dismantling the ship. Group moving/copying, beds and interactions supplied by other mods require separate in-game checks.
 
+Below deck the camera comes in to 2 m behind you and stays inside the hull, so you see the lower room at once and the build ghost lands on its floor (`LowerDeckCameraDistance`, each player's own; 0 keeps the vanilla camera, which passes through the hull). Back on deck, your own zoom returns.
+
+Storage aboard: the cargo hatch in the waist opens the cargo hold (6 × 3, 8 × 4 with the Cargo Barrels), and the Sea Chest upgrade adds a chest on the poop deck. Chests and wall drawers built below deck work as on land. The decks above count as a roof for furnishings below them, so they keep dry; furnishings out in the open weather like on land.
+
 Use the port-side boarding ladder amidships, at the gap in the rail, to get aboard: Use climbs straight from the water to the deck, and alternate Use from the deck drops you into the water beside it. The deck has three levels, following the model:
 - **Waist** (main deck): the stairs down to the lower deck start at the starboard opening just forward of the main mast and descend towards the bow. The cargo hatch, tent, brazier and cargo barrels are here; a short stair at the bow leads up to the forecastle.
 - **Quarterdeck**: three steps lead up on the starboard side of the main mast. The deck portal and the Navigator's Table are here, and a stair on the port side leads up to the poop deck.
@@ -105,7 +109,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 
 ## Config
 
-Section `[Ships.Skidbladnir]` (admin only, synced from the server):
+Section `[Ships.Skidbladnir]` (admin only, synced from the server, except `LowerDeckCameraDistance`):
 
 | Setting | Default | What it does |
 |---|---|---|
@@ -115,6 +119,7 @@ Section `[Ships.Skidbladnir]` (admin only, synced from the server):
 | `BuildMaxSpeed` | 0.25 | Maximum horizontal speed in m/s for Hammer placement; an installed Drift Anchor must also be down |
 | `FurnitureSyncSeconds` | 1 | Seconds between ownership-side saved world-position updates for furnishings; range 0.1 to 5 |
 | `SailSeconds` | 2 | Seconds to deploy or furl the sails; range 0.5 to 10 |
+| `LowerDeckCameraDistance` | 2 | Each player's own: below deck the camera comes in to this distance in metres and stays inside the hull; 0 keeps the vanilla camera; range 0 to 8 |
 
 Section `[Ships]` (admin only, synced from the server):
 
@@ -192,10 +197,15 @@ Each player's own settings in `[Ships]`:
 | `ShoalClearSeconds` | 5 | Seconds of clear water at warning speed before another danger counts as new |
 | `ShipDiagnostics` | false | Log White Hilt Ship ownership and update timing locally while aboard |
 | `ShipDiagnosticsInterval` | 5 | Seconds between diagnostic samples; ownership changes also trigger a sample |
+| `PassengerSmoothing` | true | Aboard a White Hilt Ship or Skidbladnir someone else sails, the ship moves smoothly toward the helmsman's position instead of in small jumps |
+| `PassengerSmoothSeconds` | 0.3 | Seconds your view of that ship takes to catch up with the helmsman's; longer is calmer but lags more |
+| `PassengerSnapDistance` | 5 | Metres off at which the ship jumps to the helmsman's position at once |
 
 Previous lantern defaults migrate once to the softer, wider lighting; other custom values are kept. The lantern remains a point light, not a directional searchlight. The brazier, mast wisp and portal lighting are unchanged. Check the final balance on the white hull and surrounding water, the lantern's interaction target and synchronized warning in game. Server and clients should update together.
 
 ### Multiplayer diagnostics
+
+Only the ship's network owner (normally the helmsman) simulates it; everyone else follows the owner's updates. Vanilla moves the ship in small jumps toward each update, which passengers feel as shaking and sliding at speed. On White Hilt ships, passengers' clients instead steer the ship by velocity toward the owner's extrapolated position and heading (`PassengerSmoothing`), so it moves evenly and carries walking passengers along. Other ships keep vanilla behaviour.
 
 Enable `[Ships] ShipDiagnostics` on the helmsman's client and on a passenger's client to compare `Ship diagnostics` entries in the BepInEx log. Samples include network owner, previous owner, helmsman player ID, passengers, container use, time since the last observed ZDO revision, largest observed revision gap and peak frame time. Owner peer IDs and helmsman player IDs are different identifiers. Revision timing includes inventory and control changes and is not a direct network-ping or movement-packet measurement.
 

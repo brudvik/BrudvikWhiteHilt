@@ -50,6 +50,7 @@ public static class WhiteHiltShipUpgradeSetup
     public static void Prepare(GameObject ship)
     {
         WhiteHiltShipUpgrades upgrades = ship.AddComponent<WhiteHiltShipUpgrades>();
+        ship.AddComponent<ShipPassengerSync>();
 
         Container container = ship.GetComponentInChildren<Container>(true) ?? throw new InvalidOperationException("the ship has no cargo hold");
         container.m_width = WhiteHiltShipUpgrades.LargeHold.x;
