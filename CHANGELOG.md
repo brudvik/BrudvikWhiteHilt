@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.86.1 - 2026-10-04
+
+### Fixed
+- **Bog Iron and Peat ground clearance**: enable configurable 0.1 m clearance, lifting their visuals and pick colliders together and fitting a pick target to the visible model. Existing occurrences update when loaded again; saved positions, spawning, yields and regrowth are unchanged. This reduces burial by small terrain differences but does not compensate for large terrain raising or make underwater Bog Iron visible above water. Live terrain visibility still requires in-game testing.
+
 ## v0.86.0 - 2026-10-04
 
 ### Added

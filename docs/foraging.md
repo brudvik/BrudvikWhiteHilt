@@ -42,7 +42,9 @@ Dropped procedural ingredients, including Rock Lichen, fit the longest side of t
 
 Yarrow has longer flowering stems and a base height of 0.72 m before natural spawn-size variation, keeping its white flower heads higher above Plains grass. Existing plants get the updated look after the area reloads or the game restarts; their saved positions, yield and regrowth are unchanged.
 
-Caraway likewise has a longer main stem and a base height of 0.74 m rather than 0.54 m. Caraway, Yarrow, Bog Bean and Henbane have 0.1 m of configurable ground clearance to help keep these low flowers above the terrain; their models and pick colliders move together. Moss, lichen and creeping plants keep their existing placement.
+Caraway likewise has a longer main stem and a base height of 0.74 m rather than 0.54 m. Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat have 0.1 m of configurable ground clearance to help keep these low models above the terrain; their models and pick colliders move together. Moss, lichen and creeping plants keep their existing placement.
+
+Bog Iron and Peat also have a model-aligned pick target. Existing occurrences get the clearance when their area reloads or the game restarts, without changing their saved positions, yield or regrowth. The clearance reduces burial by small terrain differences, but does not compensate for large terrain raising. Bog Iron in shallow water can still be underwater.
 
 The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
@@ -162,11 +164,11 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group |
 | `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
 | `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |
-| `GroundClearance` | 0.2 in the Mountains; 0.1 for Caraway, Yarrow, Bog Bean and Henbane | Lift the plant and its pick colliders above the saved terrain point, in metres; available for these plants |
+| `GroundClearance` | 0.2 in the Mountains; 0.1 for Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat | Lift the plant and its pick colliders above the saved terrain point, in metres; available for these plants |
 | `MinimumPickHeight` | 0.4 | Minimum height of the model-aligned pick target, in metres; available for the same plants |
 | `FuelValue` | 2 | Peat only: how much wood one brick is worth in a wood fire |
 
-Mountain plants and the four flowers listed above have a pick target fitted to their visible model, with extra height for low moss and lichen. The two placement settings apply to plants loaded after a change, including plants already saved in the world. Leave the area until it unloads and return, or restart the game. Their saved positions, picking yield and regrowth are unchanged.
+Mountain plants and the six forageables listed above have a pick target fitted to their visible model, with extra height for low moss and lichen. The two placement settings apply to plants loaded after a change, including plants already saved in the world. Leave the area until it unloads and return, or restart the game. Their saved positions, picking yield and regrowth are unchanged.
 
 | Forageable | Group size |
 |---|---|

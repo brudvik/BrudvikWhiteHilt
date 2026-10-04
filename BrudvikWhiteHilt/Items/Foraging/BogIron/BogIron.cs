@@ -55,6 +55,9 @@ public class BogIron : ForageableBase
     protected override string ExtraDropFrom => null;
 
     /// <inheritdoc/>
+    protected override float DefaultGroundClearance => 0.1f;
+
+    /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
         ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "bogironlump" : "bogiron", 0.1f);

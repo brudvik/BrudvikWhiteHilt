@@ -72,6 +72,9 @@ public class Peat : ForageableBase
     protected override string ExtraDropFrom => null;
 
     /// <inheritdoc/>
+    protected override float DefaultGroundClearance => 0.1f;
+
+    /// <inheritdoc/>
     protected override void ApplyVisual(GameObject visualRoot)
     {
         ReplacePlantMesh(visualRoot, IsItem(visualRoot) ? "peatbrick" : "peatstack", 0.12f);
