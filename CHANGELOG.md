@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.2 - 2026-10-04
+
+### Changed
+- **Skidbladnir's tent ends before the forecastle stair**: it reached over the foot of the stair, so you could not get past it to the bow. It keeps the longship's width and height but is shorter, between the boarding ladder's gap and the stair.
+
+### Fixed
+- **Furnishings on Skidbladnir can be used**: workbenches, ship workshops, chests and wall drawers built on the ship only showed the ship's own text, and Use went to the ship.
+- **Ship workshops stand on the floor**: aiming at a wall or post hung the Ship Workbench, Forge or Stonecutter in mid-air there. They now drop onto the floor or deck beneath.
+
 ## v0.89.1 - 2026-10-04
 
 ### Changed

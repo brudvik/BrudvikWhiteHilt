@@ -24,7 +24,7 @@ Below deck the camera comes in to 2 m behind you and stays inside the hull, so y
 Storage aboard: the cargo hatch in the waist opens the cargo hold (6 × 3, 8 × 4 with the Cargo Barrels), and the Sea Chest upgrade adds a chest on the poop deck. Chests and wall drawers built below deck work as on land. The decks above count as a roof for furnishings below them, so they keep dry; furnishings out in the open weather like on land.
 
 Use the port-side boarding ladder amidships, at the gap in the rail, to get aboard: Use climbs straight from the water to the deck, and alternate Use from the deck drops you into the water beside it. The deck has three levels, following the model:
-- **Waist** (main deck): the stairs down to the lower deck start at the starboard opening just forward of the main mast and descend towards the bow. The cargo hatch, tent, brazier and cargo barrels are here; a short stair at the bow leads up to the forecastle. The tent is as large as the longship's: it spans the whole beam from the boarding ladder's gap towards the forecastle stair, high enough to walk under, and the cargo barrels stand along the port rail beneath it.
+- **Waist** (main deck): the stairs down to the lower deck start at the starboard opening just forward of the main mast and descend towards the bow. The cargo hatch, tent, brazier and cargo barrels are here; a short stair at the bow leads up to the forecastle. The tent is as wide and high as the longship's, but shorter: it spans the whole beam from the boarding ladder's gap to just before the forecastle stair, so you can walk under it and on up to the bow, and the cargo barrels stand along the port rail beneath it.
 - **Quarterdeck**: three steps lead up on the starboard side of the main mast. The deck portal and the Navigator's Table are here, and a stair on the port side leads up to the poop deck.
 - **Poop deck**: the helm, the sea chest and the mizzen mast.
 
@@ -38,7 +38,7 @@ Console testing: `spawn WhiteHiltSkidbladnir`. Validate waterline and stability,
 
 ### Ship Workshops
 
-Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. Use the ordinary Hammer for other furnishings and [wall drawers](chests.md#wall-drawers).
+Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. They always stand on the floor or deck beneath where you aim, even when you aim at a wall. Use the ordinary Hammer for other furnishings and [wall drawers](chests.md#wall-drawers).
 
 <img src="images/ship_workbench.png" alt="Ship Workbench" height="140"> <img src="images/ship_forge.png" alt="Ship Forge" height="140"> <img src="images/ship_stonecutter.png" alt="Ship Stonecutter" height="140">
 

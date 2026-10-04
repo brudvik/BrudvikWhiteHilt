@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Pieces.Ships.Skidbladnir;
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.Ships;
@@ -9,7 +10,30 @@ namespace BrudvikWhiteHilt.Patches.Ships;
 [HarmonyPatch]
 public static class SkidbladnirPatches
 {
+    private static readonly RaycastHit[] hoverHits = new RaycastHit[32];
+    private static readonly IComparer<RaycastHit> ByDistance = Comparer<RaycastHit>.Create((left, right) => left.distance.CompareTo(right.distance));
     private static SkidbladnirShip placing;
+
+    /// <summary>Lets furnishings be used: vanilla hands any hit on a collider under the ship's rigidbody to the ship itself.</summary>
+    /// <param name="__instance">Looking player.</param>
+    /// <param name="hover">Object chosen by vanilla.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.FindHoverObject))]
+    [HarmonyPostfix]
+    public static void FurnitureHover(Player __instance, ref GameObject hover)
+    {
+        if (hover == null || hover.GetComponent<SkidbladnirShip>() == null || GameCamera.instance == null) return;
+        Transform camera = GameCamera.instance.transform;
+        // Vanilla's own ray; its first hit outside the player's body decided the hover.
+        int count = Physics.RaycastNonAlloc(camera.position, camera.forward, hoverHits, 50f, __instance.m_interactMask);
+        Array.Sort(hoverHits, 0, count, ByDistance);
+        for (int i = 0; i < count; i++)
+        {
+            Collider collider = hoverHits[i].collider;
+            if (collider.attachedRigidbody != null && collider.attachedRigidbody.gameObject == __instance.gameObject) continue;
+            if (collider.GetComponentInParent<ShipFurniture>() is ShipFurniture furniture && furniture.IsAttached) hover = collider.gameObject;
+            return;
+        }
+    }
 
     /// <summary>Rejects unsupported drawers and off-ship workshops before the placement transaction.</summary>
     /// <param name="__instance">Building player.</param>
@@ -21,8 +45,9 @@ public static class SkidbladnirPatches
         if (ghost == null || !ghost.activeSelf) return;
         var drawer = ghost.GetComponent<global::BrudvikWhiteHilt.Chests.Piece.WallDrawer>();
         if (drawer != null) drawer.SnapToWall();
-        if (__instance.m_placementStatus != Player.PlacementStatus.Valid) return;
         var workshop = ghost.GetComponent<ShipWorkshop>();
+        if (workshop != null) workshop.SettleOnFloor();
+        if (__instance.m_placementStatus != Player.PlacementStatus.Valid) return;
         if ((drawer == null || drawer.HasWall()) && (workshop == null || workshop.CanPlace())) return;
         __instance.m_placementStatus = Player.PlacementStatus.Invalid;
         ghost.GetComponent<Piece>().SetInvalidPlacementHeightlight(true);

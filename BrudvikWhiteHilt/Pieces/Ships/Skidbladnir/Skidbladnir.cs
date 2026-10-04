@@ -399,6 +399,8 @@ internal static class SkidbladnirModel
         if (parts.Length == 0) return;
         Transform tent = new GameObject("ShipTen2_Skidbladnir").transform;
         tent.SetParent(customize, false);
+        // Aligned with the ship, so its length can be scaled along the ridge alone.
+        tent.rotation = root.rotation;
         foreach (Transform part in parts) part.SetParent(tent, true);
         Transform colliders = root.Find(ShipTentColliders.ObjectName);
         if (colliders != null)
@@ -407,15 +409,15 @@ internal static class SkidbladnirModel
             colliders.SetParent(tent, true);
             colliders.gameObject.SetActive(true);
         }
-        // Longship size across the waist, from the boarding ladder's gap (z 2.4) towards the forecastle stair.
-        FitGroup(root, tent, At(0f, 2.5f, 4.675f), new Vector2(6.4f, 4.6f));
+        // Longship width and height, shortened to fit between the boarding ladder's gap (z 2.4) and the foot of the forecastle stair (z 5.9).
+        FitGroup(root, tent, At(0f, 2.5f, 4.1f), new Vector2(6.4f, 3.4f), true);
         tent.gameObject.SetActive(false);
         WhiteHiltShipUpgrades upgrades = root.GetComponent<WhiteHiltShipUpgrades>();
-        upgrades.m_tentCenter = At(0f, 3.7f, 4.675f);
-        upgrades.m_tentSize = new Vector3(5.4f, 2.4f, 4.45f);
+        upgrades.m_tentCenter = At(0f, 3.7f, 4.1f);
+        upgrades.m_tentSize = new Vector3(5.4f, 2.4f, 3.25f);
     }
 
-    private static void FitGroup(Transform root, Transform group, Vector3 position, Vector2 footprint)
+    private static void FitGroup(Transform root, Transform group, Vector3 position, Vector2 footprint, bool squashLength = false)
     {
         Vector3[] points = group.GetComponentsInChildren<MeshFilter>(true).Where(filter => filter.sharedMesh != null)
             .SelectMany(filter => Enumerable.Range(0, 8).Select(corner => filter.transform.TransformPoint(filter.sharedMesh.bounds.center
@@ -425,10 +427,13 @@ internal static class SkidbladnirModel
         if (points.Length == 0) return;
         Bounds bounds = new(points[0], Vector3.zero);
         foreach (Vector3 point in points) bounds.Encapsulate(point);
-        float scale = Mathf.Min(1f, Mathf.Min(footprint.x / bounds.size.x, footprint.y / bounds.size.z));
+        float scale = Mathf.Min(1f, footprint.x / bounds.size.x);
+        if (!squashLength) scale = Mathf.Min(scale, footprint.y / bounds.size.z);
+        // Squashing scales the group's own z, which the caller has aligned with the ship's length.
+        float length = squashLength ? Mathf.Min(1f, footprint.y / (bounds.size.z * scale)) : 1f;
         Vector3 basePoint = new(bounds.center.x, bounds.min.y, bounds.center.z);
         Vector3 localBase = group.InverseTransformPoint(root.TransformPoint(basePoint));
-        group.localScale *= scale;
+        group.localScale = Vector3.Scale(group.localScale * scale, new Vector3(1f, 1f, length));
         group.position += root.TransformPoint(position) - group.TransformPoint(localBase);
     }
 

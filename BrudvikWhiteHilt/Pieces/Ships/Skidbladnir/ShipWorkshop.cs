@@ -13,9 +13,29 @@ namespace BrudvikWhiteHilt.Pieces.Ships.Skidbladnir;
 /// <summary>Marker restricting a compact vanilla-equivalent workshop to Skidbladnir.</summary>
 public sealed class ShipWorkshop : MonoBehaviour
 {
+    // The ray starts a little inside the ghost, so a ghost sunk into a slope still finds its floor.
+    private const float Lift = 0.3f;
+    // More than the lower deck's headroom.
+    private const float FloorSearch = 3f;
+
     /// <summary>Tests the ship's still-building rule at this workshop's position.</summary>
     /// <returns>True only aboard an available sailing home.</returns>
     public bool CanPlace() => ShipFurniture.Below(transform.position)?.CanBuild ?? false;
+
+    /// <summary>Lowers the placement ghost onto the surface beneath it, so aiming at a wall cannot hang it there.</summary>
+    public void SettleOnFloor()
+    {
+        Vector3 up = transform.up;
+        RaycastHit[] hits = Physics.RaycastAll(transform.position + up * Lift, -up, Lift + FloorSearch,
+            LayerMask.GetMask("vehicle", "piece", "piece_nonsolid"), QueryTriggerInteraction.Ignore);
+        Array.Sort(hits, (left, right) => left.distance.CompareTo(right.distance));
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.transform.IsChildOf(transform)) continue;
+            transform.position -= up * (hit.distance - Lift);
+            return;
+        }
+    }
 }
 
 /// <summary>Registers compact ship stations without changing vanilla recipe station identifiers.</summary>
