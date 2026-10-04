@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.89.5 - 2026-10-04
+
+### Added
+- **Quick buttons in Munin's memory**: **Show all** and **Hide all** switch every kind on the map on or off at once, and **Hide unlimited** keeps everything you have unlimited in chests off the map, also what becomes unlimited later, so the map shows only what you still need. Icons hidden that way fade and keep their own choice for when the switch is turned off.
+
+## v0.89.4 - 2026-10-04
+
+### Changed
+- **Bog Iron and Peat are easier to see**: bog iron lumps are about twice as large and peat stacks about 2.5 times as tall, so they show above the Swamp's grass. New bog iron grows at most ankle-deep in water, where the murky water no longer hides it; lumps already placed deeper stay.
+- **Small plants stand out more**: Sphagnum Moss is twice as tall, Iceland Moss and Madder about 1.6 times, so they no longer vanish in the Swamp's and Plains' grass or among mountain stones. New Reed grows at most 0.5 m deep in water instead of 0.8 m, so more than its tip shows.
+
+### Fixed
+- **Bog Iron, Peat and other finds in old land lie on the ground**: land generated before they came was filled using the height of the biome at each spot, not the terrain the game actually builds, which blends neighbouring biomes. Near biome borders, above all at the edges of the Swamp, they lay buried and could only be found by digging. Old land is now filled at the real ground height, and plants, slate outcrops and spider nests placed by earlier versions move onto the ground when their area loads.
+- **Discovery markers point at something to pick**: a marker showed the middle of all finds of its kind in the square, which could lie between two groups with nothing there. It now sits on the find nearest that middle, an unpicked one when the square has any.
+
 ## v0.89.3 - 2026-10-04
 
 ### Added
