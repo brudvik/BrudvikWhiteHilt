@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.80.2 - 2026-10-04
+
+### Changed
+- **Bestiary illustrations**: replace the full-colour trophy pictures in Svartboka with indistinct monochrome ink sketches on softly worn, textured paper. Coarse, smoothed silhouettes and sparse hatching hide fine details, leaving the real appearance for the encounter. Trophy and inventory icons remain unchanged. Sketches are generated once per source icon while reading and released with the panel; no asset bundle rebuild is needed. Compilation and eight isolated production-pixel checks passed; actual monster sketches and HUD scaling still require in-game testing.
+
 ## v0.80.1 - 2026-10-04
 
 ### Fixed

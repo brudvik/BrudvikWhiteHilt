@@ -2,17 +2,20 @@ using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BrudvikWhiteHilt.Bestiary;
 
-/// <summary>A paged field guide with live recipes and the black beasts' trophy illustrations.</summary>
+/// <summary>A paged field guide with live recipes and indistinct ink sketches of the black beasts.</summary>
 public sealed class BeastBookPanel : MonoBehaviour
 {
     private const float Width = 720f;
     private const float Height = 690f;
+    private const int SketchSize = 96;
+    private const int StudySize = 32;
     private static BeastBookPanel instance;
     private static int closedFrame = -1;
 
@@ -27,6 +30,7 @@ public sealed class BeastBookPanel : MonoBehaviour
     private BeastCounter[] pages = Array.Empty<BeastCounter>();
     private int page;
     private float nextRefresh;
+    private readonly Dictionary<Sprite, Sprite> sketches = new();
 
     /// <summary>Whether the guide currently owns input.</summary>
     public static bool IsOpen => instance != null && instance.gameObject.activeSelf;
@@ -134,6 +138,15 @@ public sealed class BeastBookPanel : MonoBehaviour
 
     private void OnDestroy()
     {
+        foreach (Sprite sketch in sketches.Values)
+        {
+            if (sketch != null)
+            {
+                Destroy(sketch.texture);
+                Destroy(sketch);
+            }
+        }
+        sketches.Clear();
         if (instance == this)
         {
             instance = null;
@@ -181,8 +194,118 @@ public sealed class BeastBookPanel : MonoBehaviour
         previous.interactable = page > 0;
         next.interactable = page < pages.Length - 1;
         ItemDrop trophy = ObjectDB.instance?.GetItemPrefab(counter.Beast.TrophyName)?.GetComponent<ItemDrop>();
-        illustration.sprite = trophy?.m_itemData.m_shared.m_icons.FirstOrDefault();
+        illustration.sprite = Sketch(trophy?.m_itemData.m_shared.m_icons.FirstOrDefault());
         illustration.enabled = illustration.sprite != null;
+    }
+
+    private Sprite Sketch(Sprite source)
+    {
+        if (source == null || VisualHelper.IsHeadless)
+        {
+            return null;
+        }
+        if (sketches.TryGetValue(source, out Sprite cached))
+        {
+            return cached;
+        }
+        Sprite sketch = null;
+        Texture2D texture = null;
+        try
+        {
+            Color32[] study = VisualHelper.ReadPixels(source.texture, StudySize, StudySize, source.textureRect);
+            texture = new Texture2D(SketchSize, SketchSize, TextureFormat.RGBA32, false)
+            {
+                name = "Bestiary ink sketch",
+                wrapMode = TextureWrapMode.Clamp,
+                filterMode = FilterMode.Bilinear
+            };
+            texture.SetPixels32(PaintSketch(study));
+            texture.Apply(false, true);
+            sketch = Sprite.Create(texture, new Rect(0f, 0f, SketchSize, SketchSize), new Vector2(0.5f, 0.5f));
+        }
+        catch (Exception exception)
+        {
+            if (texture != null)
+            {
+                Destroy(texture);
+            }
+            Jotunn.Logger.LogWarning("Bestiary sketch unavailable: " + exception.Message);
+        }
+        sketches[source] = sketch;
+        return sketch;
+    }
+
+    private static Color32[] PaintSketch(Color32[] study)
+    {
+        float[] coverage = new float[StudySize * StudySize];
+        float[] tone = new float[coverage.Length];
+        for (int studyY = 0; studyY < StudySize; studyY++)
+        {
+            for (int studyX = 0; studyX < StudySize; studyX++)
+            {
+                float alpha = 0f;
+                float light = 0f;
+                for (int offsetY = -1; offsetY <= 1; offsetY++)
+                {
+                    for (int offsetX = -1; offsetX <= 1; offsetX++)
+                    {
+                        Color32 sample = study[Mathf.Clamp(studyY + offsetY, 0, StudySize - 1) * StudySize
+                            + Mathf.Clamp(studyX + offsetX, 0, StudySize - 1)];
+                        float weight = sample.a / 255f;
+                        alpha += weight;
+                        light += (sample.r * 0.299f + sample.g * 0.587f + sample.b * 0.114f) / 255f * weight;
+                    }
+                }
+                int index = studyY * StudySize + studyX;
+                coverage[index] = alpha / 9f;
+                tone[index] = alpha > 0f ? light / alpha : 1f;
+            }
+        }
+        Color32[] pixels = new Color32[SketchSize * SketchSize];
+        for (int pixelY = 0; pixelY < SketchSize; pixelY++)
+        {
+            for (int pixelX = 0; pixelX < SketchSize; pixelX++)
+            {
+                float grain = ((pixelX * 73 + pixelY * 151 + pixelX * pixelY * 17) % 101) / 100f;
+                float studyX = (pixelX - 7f) * (StudySize - 1) / (SketchSize - 15f);
+                float studyY = (pixelY - 7f) * (StudySize - 1) / (SketchSize - 15f);
+                float alpha = SampleStudy(coverage, studyX, studyY);
+                float contour = Mathf.Abs(alpha - SampleStudy(coverage, studyX + 1f, studyY))
+                    + Mathf.Abs(alpha - SampleStudy(coverage, studyX, studyY + 1f));
+                float shade = alpha * (0.35f + 0.65f * (1f - SampleStudy(tone, studyX, studyY)));
+                float hatch = (pixelX + pixelY + (int)(grain * 2f)) % 7 == 0 ? 0.32f : 0f;
+                if (shade > 0.65f && (pixelX - pixelY + SketchSize) % 11 == 0)
+                {
+                    hatch += 0.16f;
+                }
+                float ink = Mathf.Clamp01(contour * 1.25f + shade * (0.12f + hatch));
+                if (pixelX < 7 || pixelY < 7 || pixelX >= SketchSize - 7 || pixelY >= SketchSize - 7)
+                {
+                    ink = 0f;
+                }
+                float paper = 0.96f + grain * 0.04f;
+                int edge = Mathf.Min(Mathf.Min(pixelX, pixelY), Mathf.Min(SketchSize - 1 - pixelX, SketchSize - 1 - pixelY));
+                pixels[pixelY * SketchSize + pixelX] = new Color32(
+                    (byte)Mathf.Lerp(226f * paper, 65f, ink),
+                    (byte)Mathf.Lerp(216f * paper, 57f, ink),
+                    (byte)Mathf.Lerp(190f * paper, 45f, ink),
+                    (byte)(edge == 0 ? 0 : edge == 1 ? 120 + grain * 80f : 255));
+            }
+        }
+        return pixels;
+    }
+
+    private static float SampleStudy(float[] values, float positionX, float positionY)
+    {
+        float clampedX = Mathf.Clamp(positionX, 0f, StudySize - 1f);
+        float clampedY = Mathf.Clamp(positionY, 0f, StudySize - 1f);
+        int left = (int)clampedX;
+        int bottom = (int)clampedY;
+        int right = Mathf.Min(left + 1, StudySize - 1);
+        int top = Mathf.Min(bottom + 1, StudySize - 1);
+        return Mathf.Lerp(
+            Mathf.Lerp(values[bottom * StudySize + left], values[bottom * StudySize + right], clampedX - left),
+            Mathf.Lerp(values[top * StudySize + left], values[top * StudySize + right], clampedX - left), clampedY - bottom);
     }
 
     private void Fit()
@@ -211,7 +334,7 @@ public sealed class BeastBookPanel : MonoBehaviour
         RectTransform imageRect = (RectTransform)image.transform;
         imageRect.anchorMin = imageRect.anchorMax = top;
         imageRect.anchoredPosition = new Vector2(-Width / 2f + 72f, -86f);
-        imageRect.sizeDelta = new Vector2(70f, 70f);
+        imageRect.sizeDelta = new Vector2(80f, 80f);
         book.illustration = image.GetComponent<Image>();
         book.illustration.preserveAspect = true;
         book.illustration.raycastTarget = false;

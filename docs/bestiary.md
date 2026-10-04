@@ -19,7 +19,7 @@ Pages unlock only when **the reader discovers a biome where that beast lives**, 
 
 The Dragon has one page even after visiting both Mountains and Plains. Discovering a biome reveals knowledge, not an early encounter: the beasts retain their existing guardian-boss spawn requirements.
 
-Each page shows the beast's black trophy, its biome and guardian boss, dangerous attacks, its unique material counter, where to gather the materials and how to craft the counter. The recipe is read from the game's registered recipe, so server recipe overrides, station level, output and disabled/locked status are reflected in the book. Long pages scroll. The book closes on Escape, death, destruction, or moving beyond the configured reading distance.
+Each page shows an indistinct **ink sketch on textured paper**, its biome and guardian boss, dangerous attacks, its unique material counter, where to gather the materials and how to craft the counter. The illustration suggests the creature's shape through soft outlines and sparse hatching rather than showing a full-colour trophy: fine details stay hidden until the encounter. Trophy and inventory icons are unchanged. The recipe is read from the game's registered recipe, so server recipe overrides, station level, output and disabled/locked status are reflected in the book. Long pages scroll. The book closes on Escape, death, destruction, or moving beyond the configured reading distance.
 
 | Piece | Station | Requirements |
 |---|---|---|
@@ -88,4 +88,4 @@ The existing `[Content]` and `[Recipes]` settings control each item and `piece_w
 
 ## Testing
 
-Build and offline behavior checks do not replace in-game testing. Verify all nine counters against their matching and nonmatching beasts, shot-then-weapon-switch behavior, treatment charges and weapon restrictions, paging and scrolling at different HUD scales, Escape/input release and dedicated-server ownership. No asset bundle rebuild is needed: existing vanilla arrows, oil-flask/whetstone models, guestbook stand and trophy icons are reused.
+Build and offline behavior checks do not replace in-game testing. Verify all nine counters against their matching and nonmatching beasts, shot-then-weapon-switch behavior, treatment charges and weapon restrictions, sketch readability, paging and scrolling at different HUD scales, Escape/input release and dedicated-server ownership. No asset bundle rebuild is needed: existing vanilla arrows, oil-flask/whetstone models and guestbook stand are reused; trophy icons are processed into cached paper sketches only for the book.
