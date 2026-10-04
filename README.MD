@@ -33,7 +33,7 @@ Eighteen meads named after the Norse gods, from endless stamina to permanent ski
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/harbour_anchor.png" alt="Harbour Anchor" height="120">
 
-The indestructible White Hilt Ship and Skidbladnir, Freyr's slower sailing home with a furnishable lower deck and mast lookout; nine shared upgrades, sailing help, mooring and harbour anchors.
+The indestructible White Hilt Ship and Skidbladnir, Freyr's slower sailing home with a furnishable lower deck, mast lookout and compact ship workshops; nine shared upgrades, sailing help, mooring and harbour anchors.
 
 ### 🏰 [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 

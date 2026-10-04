@@ -3,6 +3,9 @@
   "defaultView": { "yaw": 150, "pitch": 20 },
   "images": [
     { "image": "skidbladnir", "manifest": "../Ships/sailing_ship.assets.json", "view": { "yaw": 140, "pitch": 18 } },
+    { "image": "ship_workbench", "models": ["shipworkbench"], "view": { "yaw": 150, "pitch": 35 } },
+    { "image": "ship_forge", "compose": "shipforge.preview.json", "view": { "yaw": 150, "pitch": 35 } },
+    { "image": "ship_stonecutter", "models": ["shipstonecutter"], "view": { "yaw": 150, "pitch": 35 } },
     { "image": "collection_post", "compose": "collectionpost.preview.json", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "palisade_rampart", "piece": "skansevegg", "view": { "yaw": 140, "pitch": 25 } },
     { "image": "rampart_corner", "piece": "skansehjorne", "view": { "yaw": 140, "pitch": 30 } },

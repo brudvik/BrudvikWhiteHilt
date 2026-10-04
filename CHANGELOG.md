@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.85.0 - 2026-10-04
+
+### Added
+- **Ship workshops**: an everlasting White Hilt Ship Hammer with a separate build menu for a compact Workbench, Forge and Stonecutter, restricted to stationary Skidbladnir. Preserves vanilla recipes, extensions, shelter rules and building costs; uses small original Blender tables/tools and the existing Repair Anvil model for the forge.
+
 ## v0.84.0 - 2026-10-04
 
 ### Added

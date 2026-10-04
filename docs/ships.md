@@ -25,6 +25,22 @@ Horizontal speed is capped at half the White Hilt Ship's calculated ideal full-s
 
 Console testing: `spawn WhiteHiltSkidbladnir`. Validate waterline and stability, all deck and ladder clearances, station use and shelter, every upgrade, furnishing inventories after sailing/reloading, and multiplayer ownership and sector crossings. Offline builds and geometry checks do not establish that these work correctly in a live world. Test in a backup world first; server and clients must update together.
 
+### Ship Workshops
+
+Craft the **White Hilt Ship Hammer** at a Workbench from Wood ×3, Iron ×2 and Resin ×2. Its separate build menu contains three compact stations plus repair/removal; they do not clutter the ordinary Hammer. The stations can only be placed aboard **Skidbladnir**, while it is still and its installed Drift Anchor is down. Use the ordinary Hammer for other furnishings.
+
+<img src="images/ship_workbench.png" alt="Ship Workbench" height="140"> <img src="images/ship_forge.png" alt="Ship Forge" height="140"> <img src="images/ship_stonecutter.png" alt="Ship Stonecutter" height="140">
+
+| Piece | Footprint | Requirements (Ship Hammer) |
+|---|---|---|
+| **Ship Workbench** | 1.1 × 0.62 m | Wood ×10 |
+| **Ship Forge** | 1.1 × 0.62 m | Wood ×10, Stone ×4, Coal ×4, Copper ×6 |
+| **Ship Stonecutter** | 1.1 × 0.62 m | Wood ×10, Iron ×2, Stone ×4 |
+
+These clone the original crafting stations: the same recipes, station levels, nearby extensions, repair capability, build range, shelter/fire requirements and material recovery apply. Ingredients gate them naturally; no extra progression-tier materials are added. No upgrades are pre-installed. For the stonecutter, the original nearby Workbench building requirement remains applicable.
+
+Console prefab names: `WhiteHiltShipHammer`, `piece_whitehilt_shipworkbench`, `piece_whitehilt_shipforge`, `piece_whitehilt_shipstonecutter`. Their ordinary Recipes/Content/Tiers settings apply. Actual crafting, extension connections and shelter checks aboard a moving ship still need live-world validation.
+
 **Ship Features:**
 - Immune to fire, blunt, slash, pierce, chop, pickaxe, spirit, frost, lightning, and poison damage
 - Ashlands damage immune and resistant

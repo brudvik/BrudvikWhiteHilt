@@ -1,0 +1,7 @@
+{
+  "name": "shipforge",
+  "base": { "mesh": "shipforge", "size": 1.1 },
+  "props": [
+    { "mesh": "repairanvil", "base": [-0.267380, 0.909091, 0.021390], "height": 0.385027, "yaw": 0 }
+  ]
+}

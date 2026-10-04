@@ -11,6 +11,20 @@ public static class SkidbladnirPatches
 {
     private static SkidbladnirShip placing;
 
+    /// <summary>Rejects off-ship workshops before the placement transaction.</summary>
+    /// <param name="__instance">Building player.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.UpdatePlacementGhost))]
+    [HarmonyPostfix]
+    public static void WorkshopPlacement(Player __instance)
+    {
+        GameObject ghost = __instance.m_placementGhost;
+        if (ghost == null || !ghost.activeSelf || __instance.m_placementStatus != Player.PlacementStatus.Valid) return;
+        var workshop = ghost.GetComponent<ShipWorkshop>();
+        if (workshop == null || workshop.CanPlace()) return;
+        __instance.m_placementStatus = Player.PlacementStatus.Invalid;
+        ghost.GetComponent<Piece>().SetInvalidPlacementHeightlight(true);
+    }
+
     /// <summary>Preserves independent furniture views when the ship is unloaded or the world closes.</summary>
     /// <param name="__instance">View being removed from the scene.</param>
     [HarmonyPatch(typeof(ZNetView), nameof(ZNetView.ResetZDO))]
