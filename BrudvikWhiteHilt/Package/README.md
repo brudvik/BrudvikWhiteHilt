@@ -1,194 +1,271 @@
-# BrudvikWhiteHilt
+<!-- Generated from README.MD by build_thunderstore_readme.ps1 when the package is built. Edit README.MD instead. -->
 
-![Brudvik White Hilt](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/BrudvikWhiteHilt/Package/icon.png)
+![White Hilt](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/BrudvikWhiteHilt/Package/icon.png)
 
-## Overview
+# Brudvik White Hilt
 
-BrudvikWhiteHilt is a mod for Valheim that enhances the overall game by adding custom items that makes life easy and enjoyable. Note: I made this mod as a proof of concept, and because to me - after completing Valheim a few times, it's all about building and fending off attackers. Thus I enjoy the easy ways without much hassle. The restocking chests of my former mod BrudvikStackedChest are now included.
+**Viking life, deepened.**
+Ships and sea routes, stonework and turf roofs, foraging and feasts, forts, beasts and a hundred small comforts for Valheim.
 
-All items are named after **Dyrnwyn** - a legendary white-hilted sword from Welsh mythology that would blaze with fire when drawn by a worthy man.
+[![Latest release](https://img.shields.io/github/v/release/brudvik/BrudvikWhiteHilt?style=flat-square&color=d4a72c&label=release)](https://github.com/brudvik/BrudvikWhiteHilt/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/brudvik/BrudvikWhiteHilt/total?style=flat-square&color=4a6b7c)](https://github.com/brudvik/BrudvikWhiteHilt/releases)
+![Valheim mod](https://img.shields.io/badge/Valheim-mod-3a5568?style=flat-square)
+![BepInEx 5.4](https://img.shields.io/badge/BepInEx-5.4-6e4a2e?style=flat-square)
+![Jötunn 2.30](https://img.shields.io/badge/J%C3%B6tunn-2.30-6e4a2e?style=flat-square)
+![Everyone needs the mod in multiplayer](https://img.shields.io/badge/multiplayer-everyone%20needs%20it-555?style=flat-square)
+[![License](https://img.shields.io/github/license/brudvik/BrudvikWhiteHilt?style=flat-square&color=555)](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/LICENSE)
 
-## Installation (manual)
+[Install](#-installation) ·
+[Features](#-features) ·
+[Documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) ·
+[Changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) ·
+[Releases](https://github.com/brudvik/BrudvikWhiteHilt/releases) ·
+[Report an issue](https://github.com/brudvik/BrudvikWhiteHilt/issues)
 
-1. Download the latest release of the mod from the [releases page](https://github.com/brudvik/BrudvikWhiteHilt/releases).
-2. Extract the contents of the zip file.
-3. Copy the `BrudvikWhiteHilt.dll` file into the `BepInEx/plugins` folder of your game directory.
-4. Launch the game.
+![The palisade fort, the White Hilt uniform, Skidbladnir, the Shipwright's Bench and the White Hilt Portal](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/banner.png)
 
-## Features
+White Hilt grew out of many playthroughs where the best part of Valheim was building a home and defending it. It adds what a Viking farm, a ship and a long winter would need, in the game's own look, and it explains itself: every piece has a page with its recipes and settings, and everything can be switched off or tuned in an in-game settings window.
 
-Every feature has its own page under [docs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs) with all items, recipes and settings.
+Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-### ⚔️ [White Hilt gear](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)
+## ✨ New in 0.90.0
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt Sword" height="120">
+- **[Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)**: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings, slate floors and steps, and dry stone walls, all from the Stonecutter.
+- **[Soapstone Cauldron](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)**: Stone Pot level 4, with fish soup, juniper lox pot and cloudberry porridge.
+- **[Shipwright's Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#shipwrights-bench)**: its own station for ship upgrades, standing out on the jetty, with recipes from bog iron, pine tar and moss.
+- **[Gathering progress](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md#gathering-progress)** shows which chest an item belongs in and lights it up.
 
-Indestructible weapons, shields, armour, tools and ammunition with their own models that are upgraded biome by biome, the Megingjord upgrade and the Belt Pouch.
+See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
-### 🧪 [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
+## 📥 Installation
 
-Eighteen meads named after the Norse gods, from endless stamina to permanent skills and recipes.
+**With a mod manager** (r2modman or Thunderstore Mod Manager): install *BrudvikWhiteHilt*; BepInEx and Jötunn come along.
 
-### ⛵ [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)
+**By hand:**
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/harbour_anchor.png" alt="Harbour Anchor" height="120">
+1. Install [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) and [Jötunn](https://thunderstore.io/c/valheim/p/ValheimModding/Jotunn/).
+2. Download `BrudvikWhiteHilt.dll.zip` from the [latest release](https://github.com/brudvik/BrudvikWhiteHilt/releases/latest).
+3. Copy `plugins/BrudvikWhiteHilt.dll` into `BepInEx/plugins` in your Valheim folder, and start the game.
 
-The indestructible White Hilt Ship and Skidbladnir, Freyr's slower sailing home with a furnishable lower deck, mast lookout and compact ship workshops; nine shared upgrades, sailing help, mooring and harbour anchors.
+On a server, the server and every player need the mod. The server's settings are synced to everyone.
 
-### 🏰 [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
+## 🧭 Features
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="A palisade fort" height="120">
+Every feature has its own page in the [documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) with all items, recipes and settings.
 
-A palisade fort for the early game: ramparts, a gatehouse and watchtowers joined into one walkway, moats round it and a drawbridge.
+### 🏠 Home & building
 
-### 🧭 [Navigation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/navigation.md)
+#### [Around the base](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigator's Table" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Around the base" height="120">
 
-The Exploration skill, the Cartographer's Desk, the Navigator's Table with route sailing, the Pathfinder's Amulet, the Pathfinder's Ruby Amulet that leads you to a target you set on the map, a weather forecast and an overview of how much of each biome you have uncovered, the Stone Dowser that leads to rock clearings, Munin's Perch that shows found caves, settlements, berries, resources and landmarks on the map, other players shown on the map as portraits of their Vikings with a ring showing which way they are heading, a compass on the map and a camera-following HUD compass above the clock with known world markers, and built areas, fields, pastures and wards drawn on the map.
+Fires without fuel, crafting from nearby chests, a guestbook, a waste well and self-closing doors.
 
-### ⚒️ [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
+#### [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Repair Anvil" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="Defences" height="120">
 
-The Chain Bench for making chains at the forge, the Repair Anvil that repairs all your gear at once, and the Binding Stone and Rune Etching Table that bind black beast trophies and etch runes into White Hilt weapons and shields, and whetstones and weapon oils.
+A palisade fort with ramparts, gatehouse and watchtowers, moats and a drawbridge.
 
-### 🌀 [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
+#### [Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_portal.png" alt="White Hilt Portal" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/memorial_stone.png" alt="Stonework" height="120">
 
-Runes that let portals carry metal, a portal network with a travel map and the Home Stone, the Valkyrie Stone, the Portal Astrolabe, and travel effects with a rune ring, a flash and a camera swing.
+Memorial stones, soapstone lamps, hnefatafl, ship settings, slate floors and dry stone walls.
 
-### 🔥 [Around the base](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)
+#### [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Waste Well" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/roof_turf.png" alt="Roofs" height="120">
 
-Surt's Brazier for fires without fuel, the Rushlight, crafting and building from nearby chests, a search that finds what lies in your chests, a guestbook that records visits, building and raids, a crafting panel that shows what you have and crafts several at once, the Waste Well, the Trophy Altar for copying trophies, and doors, gates and windows that close on their own.
+Turf, reed, straw, tarred shingles and slate in every shape, with smoke holes and dragon gables.
 
-### 📦 [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
+#### [Painting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/painting.md)
 
-Fourteen restocking chests and matching compact wall drawers, in Full, Linear or Discovered mode (formerly BrudvikStackedChest), with a Collection Post that gathers nearby drops and sorts what you put in its basket. Carts and ship holds keep unlimited items full too.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Painting" height="120">
 
-### ⏳ [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
+Paint or stain any piece in a colour mixed from dyes, and dye banners, sails and capes.
 
-Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven, beehive, fire, egg and breeding animal, with labels, an overview and messages.
+#### [Beams, poles & banners](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md)
 
-### 🎒 [Backpack](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/backpack.md)
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_banners.png" alt="Beams, poles & banners" height="120">
 
-An extra row, two hotbars, and slots for equipment, food, potions, accessories, shield, ammo and coins.
+Longer and angled beams and poles, iron grates in more sizes and White Hilt banners.
 
-### 🕰️ [Clock, sound & floating items](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
+#### [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
-A clock with the weather on the HUD, muffled weather indoors, and dropped items that float.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_build_tools.png" alt="Build camera & toolbar" height="120">
 
-### 🪵 [Beams, poles & banners](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md)
+A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.
 
-Longer and angled beams and poles, iron grates in more sizes, White Hilt banners, and the logo in the main menu and loading screen.
+### ⛵ Sea & travel
 
-### 🪨 [Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)
+#### [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/memorial_stone.png" alt="Memorial Stone" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/skidbladnir.png" alt="Ships" height="120">
 
-More for the Stonecutter: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings and stone rings, slate floors, steps and paths, and dry stone walls round the farm.
+The White Hilt Ship and Skidbladnir, ship upgrades, sailing help, mooring and the Shipwright's Bench.
 
-### 🏠 [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
+#### [Navigation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/navigation.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/roof_turf.png" alt="Turf roof" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/navigators_table.png" alt="Navigation" height="120">
 
-Viking roofs of turf, reed, straw, tarred shingles and slate in every shape and pitch, with smoke holes, dragon gables, roseroot on the turf and the materials to make them.
+Route sailing, weather forecasts, pathfinder amulets, a compass and discoveries on the map.
 
-### 🎨 [Painting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/painting.md)
+#### [Portals & travel](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/paint_bench.png" alt="Paint Bench" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_portal.png" alt="Portals & travel" height="120">
 
-The Paint Bench and brush: paint or stain any building piece in a colour mixed from dyes, and dye banners, sails and capes, with a loom for linen.
+Runes that let portals carry metal, a portal network with a travel map, and the Home and Valkyrie Stones.
 
-### 🏗️ [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
+#### [Treasure maps](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/treasure.md)
 
-A free build camera, precise rotation and nudging, undo, area repair, photos and films, groups and blueprints, and terrain and field tools for the White Hilt hoe and cultivator, moats included.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure maps" height="120">
 
-### 🍄 [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)
+Buy a map from Hildir, match its scrap of land to your own map and dig up the chest.
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Stone Pot" height="120">
+### 🍄 Farm & food
 
-Wild herbs, berries, lichens and dyes from the Meadows to the Plains, the Root Dowser for finding root plants, lox milk, the Stone Pot with its extensions, dishes, meads and ales, and cured ham, sausage, stockfish and rakfisk from the drying rack and the fermenter.
+#### [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)
 
-### 🌱 [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/stone_pot.png" alt="Foraging & food" height="120">
+
+Wild herbs, berries and lichens, the Stone Pot and its extensions, meads, ales and cured food.
+
+#### [Planting](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/planting.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_planting.png" alt="Planting" height="120">
 
 Plant berry bushes, mushrooms, flowers, debris and saplings with the cultivator.
 
-### 🐗 [Animal husbandry](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/husbandry.md)
+#### [Animal husbandry](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/husbandry.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/feeding_trough.png" alt="Feeding Trough" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/feeding_trough.png" alt="Animal husbandry" height="120">
 
-The Feeding Trough, favourite foods, the Animal Husbandry skill, the Tether Post, the Grooming Comb and produce.
+The Feeding Trough, favourite foods, the Tether Post, the Grooming Comb and a husbandry skill.
 
-### 🎣 [Fishing nets](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/fishing.md)
+#### [Fishing nets](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/fishing.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/net_winch.png" alt="Net Winch" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/net_winch.png" alt="Fishing nets" height="120">
 
-A Net Winch with a fish barrel on the shore and Shore Nets set out in the water, which fill the barrel with fish, with bait and mending.
+A net winch with a fish barrel on the shore and shore nets that fill it with fish.
 
-### 📖 [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
+#### [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
 
-Milestones at levels 25 to 100 for gathering, cooking, farming, fishing, blocking, husbandry and exploration, a new Foraging skill, food and crops with stars, the Compost Bin and configurable skill loss on death.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog" height="120">
 
-### 📜 [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md)
+Raise a puppy from the Bog Witch into a companion that follows, fights, learns tricks and grows old.
 
-Each character's saga of its deeds, from slain bosses and black beasts to treasures and new lands, with renown that gives carry weight and stamina.
+### ⚔️ Gear & crafting
 
-### 🐕 [Dog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/dog.md)
+#### [White Hilt gear](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/dog_house.png" alt="Dog House" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt gear" height="120">
 
-Buy a puppy from the Bog Witch and raise it into a companion that follows, fights, learns tricks, grows old and has litters.
+Indestructible weapons, shields, armour and tools, upgraded biome by biome.
 
-### 🗺️ [Treasure maps](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/treasure.md)
+#### [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/treasure_chest.png" alt="Treasure Chest" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/potions.png" alt="Potions" height="120">
 
-Buy a treasure map from Hildir, match its scrap of land against your own map and dig up a chest with a black beast trophy, or follow a treasure hunt from map to map.
+Eighteen meads named after the Norse gods, from endless stamina to permanent skills.
 
-### 🌑 [Difficulty, beasts & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
+#### [Smithing](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md)
 
-A world that grows harder as you progress: up to 5 stars, black beasts, the rare blood moon and a black-trimmed horn to call a biome's beast.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Smithing" height="120">
 
-### 📖 [Black Bestiary & material counters](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/bestiary.md)
+The Repair Anvil, the Chain Bench, rune etching, whetstones and weapon oils.
 
-A buildable field guide to the nine black beasts and their distinct material weaknesses, with special arrows, weapon treatments and live crafting recipes.
+#### [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 
-### 🐙 [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/collection_post.png" alt="Restocking chests" height="120">
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken" height="120">
+Fourteen chests that keep themselves stocked, wall drawers and a Collection Post that sorts.
 
-Octopuses in the deep, and a brutal Kraken that grips and lifts ships, becomes enraged and tempers Odin and Freya, naturally or called by the Horn of the Deep.
+### 🐉 Beasts & challenge
 
-### 🕷️ [Lindorm, giant spiders & Desert Dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
+#### [Lindorm, spiders & dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Giant Spider" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Lindorm, spiders & dragons" height="120">
 
-A great worm that breaks out of the forest floor at night, poisonous giant spiders around nests in the Black Forest, and dragons that breathe fire and leave burning ground over the Plains once Moder is slain.
+A great worm in the forest at night, giant spiders round their nests and fire-breathing dragons.
 
-### ⚙️ [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
+#### [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
-An in-game settings window (the Settings button in the inventory, or F7) for every setting, synced to all players when an admin saves; full or linear progression; per-item switches and recipes.
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/kraken.png" alt="Kraken & octopus" height="120">
 
-## Compilation
+Octopuses in the deep, and a brutal Kraken that grips and lifts ships.
 
-Please notice that it won't be possible to compile this `mod` out of the box. Make sure you read up on [Valheim Mod Development](https://github.com/Valheim-Modding/JotunnModStub).
-There's also a directory removed from the source. The `Assets` folder is not part of the public source. The icon's I've bought from [Graphicriver.net](https://graphicriver.net/item/rpg-potion-icons/24972053) and
-the license only allows it to be shipped in the pre-built mod file. If you want to make a similar `mod` you would need to buy a license from there.
-The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) on Graphicriver under the same terms; without them the chests use the vanilla chest icon.
+#### [Difficulty & blood moon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_difficulty.png" alt="Difficulty & blood moon" height="120">
+
+A world that grows harder as you progress: up to 5 stars, black beasts and the rare blood moon.
+
+#### [Black Bestiary](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/bestiary.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_bestiary.png" alt="Black Bestiary" height="120">
+
+A field guide to the nine black beasts, with the arrows and weapon treatments that exploit their weaknesses.
+
+### 🎒 Quality of life
+
+#### [Backpack](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/backpack.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_backpack.png" alt="Backpack" height="120">
+
+An extra row, two hotbars, and slots for equipment, food, potions, ammo and coins.
+
+#### [Production timers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/production.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_production.png" alt="Production timers" height="120">
+
+Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven and hive.
+
+#### [Clock, sound & floating items](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="Clock, sound & floating items" height="120">
+
+A clock with the weather, muffled weather indoors and dropped items that float.
+
+#### [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_skills.png" alt="Skills & milestones" height="120">
+
+Milestones from level 25 to 100, a new Foraging skill, starred food and crops and the Compost Bin.
+
+#### [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_saga.png" alt="Saga" height="120">
+
+Each character's saga of its deeds, with renown that gives carry weight and stamina.
+
+#### [Settings & progression](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_settings.png" alt="Settings & progression" height="120">
+
+An in-game settings window (F7), full or linear progression, and per-item switches.
+
+## 📚 Documentation
+
+The [documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting.
+
+## 🐞 Known issues
+
+No known issues at the moment. Please report anything odd on the [issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues).
+
+## 🛠️ Building from source
+
+The mod does not compile out of the box; read up on [Valheim mod development](https://github.com/Valheim-Modding/JotunnModStub) first.
+
+The `Assets` folder is not part of the public source. The potion icons are bought from [Graphicriver](https://graphicriver.net/item/rpg-potion-icons/24972053), and the licence only allows shipping them in the pre-built mod. The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) under the same terms; without them the chests use the vanilla chest icon. To make a similar mod you would need your own licence.
 
 The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
 
-The defences and the navigation pieces are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
+The defences, the navigation pieces and the stonework are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
-## Changelog
+The Thunderstore package gets a plain markdown version of this README (`BrudvikWhiteHilt/Package/README.md`), written by `build_thunderstore_readme.ps1` on every Release build; edit this file, not that one.
 
-See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md).
-
-## Credits
+## 🙏 Credits
 
 - Skidbladnir model: ["Sailing Ship"](https://sketchfab.com/3d-models/sailing-ship-258e45faec8e406a826960a6d0277d0a) by [3ddans](https://sketchfab.com/3ddans), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Central deck opened and rebuilt, lower floor, stairs and mast lookout added, sails separated, converted to metre-scale OBJ and made double-sided where needed for Valheim.
 - Chanterelle model: ["Chanterelle"](https://sketchfab.com/3d-models/chanterelle-136f5f6bac124b8bb7738945f12243b5) by [Zacxophone](https://sketchfab.com/Zacxophone), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
@@ -261,9 +338,6 @@ See [CHANGELOG.md](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANG
 - Lindorm model: ["Worm Monster"](https://sketchfab.com/3d-models/5563066315694125b741901681d387c5) by [CR!STALLL](https://sketchfab.com/CR1STALLL), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with six of its animations and rescaled for Valheim.
 - Giant Spider model: ["Wolf Spider (Rigged) - (Rabidosa rabida)"](https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe) by [Dreaming In Alternation 27](https://sketchfab.com/DreamingInAlternation27), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, idle, bite, hit and death animations added, and rescaled for Valheim.
 - Desert Dragon model: ["Red Dragon"](https://sketchfab.com/3d-models/red-dragon-d53fe00255334386a0fd1f4ac2858cab) by [absol](https://sketchfab.com/absol_cg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, a fire-breathing animation added, recoloured in game and rescaled for Valheim.
+- README icons: [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), set on round badges.
 
-## Known issues
-
-- No known issues at this time. Please report any issues on the [GitHub issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues).
-
-You can find the GitHub repository at: [https://github.com/brudvik/BrudvikWhiteHilt](https://github.com/brudvik/BrudvikWhiteHilt)
+Made for Valheim by Kjell Arne Brudvik · [github.com/brudvik/BrudvikWhiteHilt](https://github.com/brudvik/BrudvikWhiteHilt)
