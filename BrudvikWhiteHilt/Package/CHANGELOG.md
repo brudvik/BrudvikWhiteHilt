@@ -2,6 +2,23 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.95.0 - 2026-10-05
+
+### Added
+- **White Hilt Necromancer's Staff** (Mistlands, Galdr Table): a skull on the dark scepter with a green flame, raising skeletons like the Dead Raiser. Held at a fallen friend's grave within 10 minutes of the death, it offers to wake them there; if they agree you stand still while a green flame rises from the grave, pay half your health, all your stamina and 60 eitr with a while of Death's Price, and they are brought to the grave with their gear and the skills they lost.
+- **Find the chest for an item**: with the inventory open, point at an item in your own inventory and the chests and wall drawers it belongs in light up nearby (within 30 m, setting `FindRange`), while its tooltip names the chest.
+
+### Changed
+- **Wall drawers and the ship workbench, forge and stonecutter** have Valheim's own wood, iron and stone instead of flat white and black: light pine tops and fronts, plank frames and dark iron fittings, like the other chests and workbenches.
+- The Staff of Lightning burns white-blue instead of green; green now belongs to the Necromancer's Staff.
+
+### Fixed
+- **Skidbladnir's lower room stays dry in waves**: the sea no longer shows inside it, neither from within the room nor looking down the stairs from the deck.
+- **Building on Skidbladnir**: pieces set on the ship's walls, high up, or on other pieces now stay fixed to the ship. Before, they could be left standing still in the world while the ship rocked under them, so they seemed to bob with the waves.
+- **Memorial Stone**: the inscription lies on the stone's face and follows its curve, instead of hanging in front of it; the letters are smaller, wrap to fit the face and look cut into the stone.
+- **Gathering progress** could leave out a biome you had been in, such as the Plains: the game keeps the biomes you found as translated sector names, which may differ from the biome's own (world variants, another language), and the panel looked for the biome's name in them. It now knows every biome you enter by its identity, as the bestiary does, and matches the names saved before against this world's sectors as well. A biome still missing appears the next time you are in it.
+- **Workbenches and building said materials were missing** while they lay in the chests around, even in unlimited chests, most often for other players on a server: only chests handed over to you counted, and other players seldom hold them. Every chest you may use now counts for what is shown; the chests are handed over when something is crafted or built, and if one is still on its way you are told to try again in a moment instead of the materials being called missing.
+
 ## v0.94.1 - 2026-10-05
 
 ### Changed
