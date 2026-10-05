@@ -36,13 +36,15 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.93.0
+## ✨ New in 0.94.0
+
+- **[Defending the walls](docs/defences.md#-defending-the-walls)**: an oil cauldron to pour boiling pitch or stones from the gate, and an alarm bell that shuts the whole base and rings by itself when a raid comes.
+- **[Harbour Crane](docs/base.md#harbour-crane)**: load and unload the ship alongside straight from the chests; the crane swings out and lowers its hook into the hold.
+- **[Black marble and grausten](docs/defences.md#black-marble-and-grausten)**: every stone defence for the Mistlands and the Ashlands.
+
+### Also new in 0.93.0
 
 - **[Working the gate](docs/defences.md#-working-the-gate)**: a gate rope and a windlass house to open and close the gate, drawbridge and portcullis from inside the walls, and a gate horn to call your own gate open from outside.
-
-### Also new in 0.92.0
-
-- **[Stone defences](docs/defences.md#-stone-defences)**: the palisade fort in stone, with a corner bastion, a gatehouse with a portcullis, three towers and dragon's teeth. Taller than the palisade and far harder for a troll to break.
 
 See the [changelog](CHANGELOG.md) for everything else.
 

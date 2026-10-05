@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.94.0 - 2026-10-05
 
 ### Added
 - **Oil Cauldron**: an iron cauldron on a tipping frame over a hearth, for the walk over a gate. Fill it with Resin or Tar for boiling pitch, which must heat a while, or with Stone; tip it and it pours down in front of the wall, burning or striking whatever stands below.
