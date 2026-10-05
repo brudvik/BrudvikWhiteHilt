@@ -28,16 +28,14 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.91.0
+## ✨ New in 0.92.0
+
+- **[Stone defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md#-stone-defences)**: the palisade fort in stone, with a corner bastion, a gatehouse with a portcullis, three towers and dragon's teeth. Taller than the palisade and far harder for a troll to break.
+- Building and crafting from chests is now safe when several players use the same chests.
+
+### Also new in 0.91.0
 
 - **[Quartermaster's Table](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)**: everything in the chests around it as one store. Take a stack with a click, load a cart or ship, pack your own kits or what a blueprint needs, and get a warning when stock runs low.
-
-### Also new in 0.90.0
-
-- **[Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)**: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings, slate floors and steps, and dry stone walls, all from the Stonecutter.
-- **[Soapstone Cauldron](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)**: Stone Pot level 4, with fish soup, juniper lox pot and cloudberry porridge.
-- **[Shipwright's Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#shipwrights-bench)**: its own station for ship upgrades, standing out on the jetty, with recipes from bog iron, pine tar and moss.
-- **[Gathering progress](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md#gathering-progress)** shows which chest an item belongs in and lights it up.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -69,7 +67,7 @@ Fires without fuel, crafting from nearby chests, a quartermaster's table, a gues
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/fort_overview.png" alt="Defences" height="120">
 
-A palisade fort with ramparts, gatehouse and watchtowers, moats and a drawbridge.
+Palisade and stone forts with ramparts, gatehouses and towers, moats and drawbridges.
 
 #### [Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)
 
@@ -266,6 +264,8 @@ The `Assets` folder is not part of the public source. The potion icons are bough
 The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
 
 The defences, the navigation pieces and the stonework are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
+
+`BrudvikWhiteHilt.Tests` holds tests for what runs without the game: reading and writing blueprints, pack lists and other saved data, and checks that every English text has a Norwegian one and every piece is in `defenses.json`. They load the built mod, so build it first (the solution does), then run `dotnet test BrudvikWhiteHilt.Tests`.
 
 The Thunderstore package gets a plain markdown version of this README (`BrudvikWhiteHilt/Package/README.md`), written by `build_thunderstore_readme.ps1` on every Release build; edit this file, not that one.
 
