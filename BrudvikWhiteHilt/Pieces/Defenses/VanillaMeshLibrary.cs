@@ -36,7 +36,7 @@ public static class VanillaMeshLibrary
     public const string SlateTexture = "roof_slate_albedo";
 
     // Prefabs whose materials can be borrowed by texture name.
-    private static readonly string[] materialSources = { "iron_grate" };
+    private static readonly string[] materialSources = { "iron_grate", "blackmarble_1x1", "Piece_grausten_floor_2x2" };
 
     private static readonly Dictionary<string, List<MeshSource>> meshes = new();
     private static readonly Dictionary<string, Material> textureMaterials = new();

@@ -357,6 +357,62 @@ public static class QuartermasterStore
         return returned;
     }
 
+    /// <summary>
+    /// Puts every stack in a cart or ship hold back into the chests around, the same way the Collection Post sorts.
+    /// Gear and items with stars or their own data stay in the hold. Only chests handed over to the player are used.
+    /// </summary>
+    /// <param name="cargo">The cart or ship hold, handed over to the player.</param>
+    /// <param name="containers">The chests to put into, without the cargo.</param>
+    /// <param name="site">The site's position, for the nearest-chest order.</param>
+    /// <returns>How many items were moved.</returns>
+    public static int Unload(Container cargo, List<Container> containers, Vector3 site)
+    {
+        if (Module == null || cargo == null || !cargo.m_nview.IsValid() || !cargo.m_nview.IsOwner())
+        {
+            return 0;
+        }
+
+        Inventory inventory = cargo.GetInventory();
+        int moved = 0;
+        foreach (ItemDrop.ItemData item in inventory.GetAllItems().ToList())
+        {
+            if (!IsOffered(item))
+            {
+                continue;
+            }
+
+            foreach (Container chest in Receivers(containers, item, site))
+            {
+                if (chest == null || !chest.m_nview.IsValid() || !chest.m_nview.IsOwner())
+                {
+                    continue;
+                }
+
+                int accepted = Module.DepositCollected(chest, item);
+                if (accepted <= 0)
+                {
+                    continue;
+                }
+
+                if (NearbyContainers.ShowTakenChests)
+                {
+                    ContainerPulse.Play(chest);
+                }
+
+                moved += accepted;
+                int left = item.m_stack - accepted;
+                inventory.RemoveItem(item, accepted);
+                if (left <= 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        cargo.Save();
+        return moved;
+    }
+
     // Only ordinary stacks: no gear, no skill stars or names, nothing the chest config keeps out.
     private static bool IsOffered(ItemDrop.ItemData item)
     {

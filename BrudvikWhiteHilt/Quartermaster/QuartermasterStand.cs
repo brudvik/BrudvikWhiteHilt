@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Quartermaster;
 /// the range as a ring on the ground while it is looked at. It keeps the list of items to watch, shared by everyone
 /// who uses it, and warns with its hover text and a red glow when one of them runs low.
 /// </summary>
-public class QuartermasterStand : MonoBehaviour, Interactable, Hoverable
+public class QuartermasterStand : QuartermasterSite, Interactable, Hoverable
 {
     /// <summary>Name of the child that draws the range ring.</summary>
     public const string AreaMarkerName = "QuartermasterArea";
@@ -21,10 +21,8 @@ public class QuartermasterStand : MonoBehaviour, Interactable, Hoverable
     private const float WatchDistance = 40f;
     private const int ShownLowLines = 4;
 
-    private static readonly int watchKey = "whitehilt_qm_watch".GetStableHashCode();
     private static readonly Color warningColor = new(1f, 0.25f, 0.15f);
 
-    private ZNetView nview;
     private Piece piece;
     private GameObject areaMarker;
     private CircleProjector circle;
@@ -92,41 +90,10 @@ public class QuartermasterStand : MonoBehaviour, Interactable, Hoverable
         return Localization.instance.Localize($"{GetHoverName()}\n{chests}{warnings}\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_qm_open");
     }
 
-    /// <summary>
-    /// The watched items, each with the amount below which it is low.
-    /// </summary>
-    /// <returns>Threshold per item prefab name.</returns>
-    public List<KeyValuePair<string, int>> GetWatches()
+    /// <inheritdoc/>
+    protected override void OnWatchesChanged()
     {
-        return nview != null && nview.IsValid() ? StockWatch.Parse(nview.GetZDO().GetString(watchKey)) : new List<KeyValuePair<string, int>>();
-    }
-
-    /// <summary>
-    /// Stores the watched items on the table, for everyone.
-    /// </summary>
-    /// <param name="watches">Threshold per item prefab name.</param>
-    public void SetWatches(IEnumerable<KeyValuePair<string, int>> watches)
-    {
-        if (nview == null || !nview.IsValid())
-        {
-            return;
-        }
-
-        // Like a sign's text: the table's own data, so whoever changes it takes it over.
-        nview.ClaimOwnership();
-        nview.GetZDO().Set(watchKey, StockWatch.Format(watches));
         watchedAt = float.NegativeInfinity;
-    }
-
-    /// <summary>
-    /// Translated name of an item prefab.
-    /// </summary>
-    /// <param name="prefab">The item prefab name.</param>
-    /// <returns>The name, or the prefab name for unknown items.</returns>
-    public static string ItemName(string prefab)
-    {
-        ItemDrop item = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(prefab)?.GetComponent<ItemDrop>() : null;
-        return item != null ? Localization.instance.Localize(item.m_itemData.m_shared.m_name) : prefab;
     }
 
     /// <inheritdoc/>
@@ -141,9 +108,10 @@ public class QuartermasterStand : MonoBehaviour, Interactable, Hoverable
         return 0f;
     }
 
-    private void Awake()
+    /// <inheritdoc/>
+    protected override void Awake()
     {
-        nview = GetComponent<ZNetView>();
+        base.Awake();
         piece = GetComponent<Piece>();
         Transform marker = transform.Find(AreaMarkerName);
         if (marker != null)

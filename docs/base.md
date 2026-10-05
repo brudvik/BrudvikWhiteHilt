@@ -57,6 +57,16 @@ A counter with a ledger and a tally board, with a chest at one end and crates at
 - It needs no workbench and stands on its own, so it also works at an outpost. The same chests are used as for crafting from chests: private chests of others, chests inside someone else's ward and chests another player has open are skipped, and `ChestCrafting` `ExcludedContainers` and `ExcludedItems` apply.
 - **In multiplayer**, every chest, cart and ship hold a click touches is first handed over to you with its newest contents, like the Collection Post does, so two players using the same chests never overwrite each other. The window says *Waiting for the chests...* meanwhile, usually for a moment. A chest that is not handed over within three seconds, for instance because someone has it open, is left out.
 
+### Harbour Crane
+
+<img src="images/harbour_crane.png" alt="Harbour Crane" title="Harbour Crane" height="140">
+
+A wooden crane on a stone base for the quay. Use it and the same store opens, with the ship alongside (within 15 m) already chosen to load into. **Unload** puts everything in the ship's hold back into the right chests, sorted like the Collection Post does; the same button appears at the table whenever a cart or ship is chosen. Each time something goes into or out of the hold, the crane swings its jib out over the ship, luffs it up to reach the hold, lowers its hook to it, raises it and swings back. Every player sees it, and the hook goes down to the hold however high the ship stands, so it also serves Skidbladnir.
+
+| Piece | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Harbour Crane** | Loads and unloads the ship alongside from the chests around | Hammer (Workbench) | Core Wood ×10, Wood ×20, Stone ×20, Leather Scraps ×6 |
+
 | Piece | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
 | **Quartermaster's Table** | Opens the store of the chests around it | None | Wood ×20, Stone ×8, Leather Scraps ×4, Flint ×4 |

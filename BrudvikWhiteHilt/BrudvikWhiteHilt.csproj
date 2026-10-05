@@ -658,6 +658,12 @@
     <Compile Include="Pieces\Defenses\DefensePieceBase.cs" />
     <Compile Include="Pieces\Defenses\DefensePieces.cs" />
     <Compile Include="Pieces\Defenses\StoneDefensePieces.cs" />
+    <Compile Include="Pieces\Defenses\StoneVariantPieces.cs" />
+    <Compile Include="Pieces\Defenses\Siege\AlarmBell.cs" />
+    <Compile Include="Pieces\Defenses\Siege\OilCauldron.cs" />
+    <Compile Include="Pieces\Defenses\Siege\SiegeSettings.cs" />
+    <Compile Include="Pieces\Storage\HarbourCrane.cs" />
+    <Compile Include="Quartermaster\QuartermasterSite.cs" />
     <Compile Include="Pieces\Defenses\GateControl\GateHorn.cs" />
     <Compile Include="Pieces\Defenses\GateControl\GateMechanisms.cs" />
     <Compile Include="Pieces\Defenses\GateControl\GateRope.cs" />

@@ -2,6 +2,19 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Oil Cauldron**: an iron cauldron on a tipping frame over a hearth, for the walk over a gate. Fill it with Resin or Tar for boiling pitch, which must heat a while, or with Stone; tip it and it pours down in front of the wall, burning or striking whatever stands below.
+- **Alarm Bell**: ring it and every gate, drawbridge, portcullis and door around it shuts, and every player near hears it and gets a mark on the map. It rings by itself when a guestbook nearby notes a raid.
+- **Harbour Crane**: opens the Quartermaster's store with the ship alongside chosen, to load it from the chests or unload it into them. The crane swings out over the ship, luffs to reach the hold and lowers its hook into it, high ship or not.
+- **Unload button** at the Quartermaster's Table and the crane: puts everything in the chosen cart or ship hold back into the right chests.
+- **Stone defences in black marble and grausten**: every stone piece also in black marble for the Mistlands and grausten for the Ashlands, costing half as much of that stone, with 1.5 and 2 times the health; grausten takes only a quarter of blunt damage and has iron spikes on its merlons.
+
+### Changed
+- **Stone towers and the gatehouse are lighter to draw**: about a quarter to a third fewer triangles (arrow slits as plain beams, taller corner stones, wider spaced corbels), looking the same.
+- A Windlass House no one is near no longer looks for gates.
+
 ## v0.93.0 - 2026-10-05
 
 ### Added

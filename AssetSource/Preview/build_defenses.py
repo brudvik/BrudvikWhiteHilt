@@ -928,6 +928,8 @@ def main():
     pieces += stone_pieces()
     from build_gate_controls import gate_control_pieces
     pieces += gate_control_pieces()
+    from build_defence_extras import extra_pieces
+    pieces += extra_pieces()
     OUT.write_text(json.dumps({"pieces": pieces}, indent=1), encoding="utf-8")
     print(f"wrote {OUT} with {len(pieces)} pieces")
 

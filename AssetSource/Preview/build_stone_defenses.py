@@ -20,6 +20,7 @@ Vanilla mesh facts used below (from export_vanilla.py):
   iron_grate      2 m wide, 3 m tall (y -1..2), 12 cm thick
 """
 
+import contextlib
 import math
 import random
 
@@ -36,6 +37,30 @@ QUOIN_TINT = [1.08, 1.04, 0.98]
 COURSE_TINT = [1.05, 1.02, 0.96]
 DAMP_TINT = [0.72, 0.75, 0.68]  # the lowest courses, darkened by the wet ground
 MOSS_TINTS = [[0.36, 0.5, 0.22], [0.45, 0.56, 0.27]]
+
+# The stones the defences can be built of. Each changes the blocks' texture and the weathering: what darkens the
+# lowest courses, what grows on the ledges, the rubble at the foot, and for grausten iron spikes on the merlons.
+MATERIALS = {
+    "stein": {"texture": None, "damp": DAMP_TINT, "moss": MOSS_TINTS, "rubble": [0.7, 0.7, 0.68], "spikes": False, "shade": 1.0},
+    "marmor": {"texture": "marble_d", "damp": [0.78, 0.84, 0.8], "moss": [[0.3, 0.46, 0.32], [0.4, 0.54, 0.38]],
+               "rubble": [0.48, 0.5, 0.5], "spikes": False, "shade": 1.0},
+    "grausten": {"texture": "Grausten_d", "damp": [0.62, 0.56, 0.52], "moss": [[0.16, 0.15, 0.15], [0.28, 0.25, 0.23]],
+                 "rubble": [0.32, 0.3, 0.29], "spikes": True, "shade": 0.62},
+}
+STONE = dict(MATERIALS["stein"])
+
+
+@contextlib.contextmanager
+def material(name):
+    """Builds what is laid out inside the block of the given stone."""
+    saved = dict(STONE)
+    STONE.clear()
+    STONE.update(MATERIALS[name])
+    try:
+        yield
+    finally:
+        STONE.clear()
+        STONE.update(saved)
 PARAPET = 1.0  # breast height of the parapet above a walk
 MERLON = 0.7  # merlon height above the parapet
 
@@ -47,12 +72,18 @@ def shade(rng, low=0.82, high=1.0):
     """One of a few stone shades within the range: every distinct tint is a material of its own in the game."""
     choices = [s for s in SHADES if low - 0.03 <= s <= high + 0.03] or [min(SHADES, key=lambda s: abs(s - (low + high) / 2))]
     s = rng.choice(choices)
-    return [s, s, round(s * 0.98, 3)]
+    if STONE["shade"] == 1.0:
+        return [s, s, round(s * 0.98, 3)]
+    # A darker stone, a little warm, as grausten is.
+    s *= STONE["shade"]
+    return [round(s, 3), round(s * 0.97, 3), round(s * 0.93, 3)]
 
 
 def block(x0, x1, y0, y1, z0, z1, mesh="stone_wall_1x1", tint=None, **extra):
-    """One block mesh stretched over a box."""
+    """One block mesh stretched over a box, in the stone being built of."""
     nx, ny, nz = BLOCKS[mesh]
+    if STONE["texture"] and tint != SLIT_TINT:
+        extra.setdefault("texture", STONE["texture"])
     centre = ((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2)
     return part(mesh, centre, scale=((x1 - x0) / nx, (y1 - y0) / ny, (z1 - z0) / nz), tint=tint, **extra)
 
@@ -74,7 +105,7 @@ def masonry(x0, x1, y0, y1, z0, z1, rng, damp=None):
             bottom = y0 + h * j / rows
             wet = bottom < (0.7 if damp is None else damp) and rng.random() < 0.5
             parts.append(block(x0 + w * i / cols, x0 + w * (i + 1) / cols, bottom, y0 + h * (j + 1) / rows, z0, z1, mesh,
-                               tint=DAMP_TINT if wet else shade(rng)))
+                               tint=STONE["damp"] if wet else shade(rng)))
     return parts
 
 
@@ -145,7 +176,7 @@ def moss(x0, x1, y, z0, z1, rng, count):
         width = rng.uniform(0.3, 0.7)
         parts.append(part("rock", (rng.uniform(x0 + width / 2, max(x0 + width / 2, x1 - width / 2)), y - 0.01,
                                    rng.uniform(z0, z1)), (0, rng.uniform(0, 360), 0),
-                          (width, rng.uniform(0.12, 0.22), min(z1 - z0, width) * 0.9 + 0.08), tint=rng.choice(MOSS_TINTS), detail=True))
+                          (width, rng.uniform(0.12, 0.22), min(z1 - z0, width) * 0.9 + 0.08), tint=rng.choice(STONE["moss"]), detail=True))
     return parts
 
 
@@ -155,13 +186,14 @@ def face_moss(x0, x1, y0, y1, z, rng, count):
     for _ in range(count):
         width, height = rng.uniform(0.3, 0.8), rng.uniform(0.2, 0.5)
         parts.append(part("rock", (rng.uniform(x0 + width / 2, max(x0 + width / 2, x1 - width / 2)), rng.uniform(y0, y1 - height), z + 0.02),
-                          (0, rng.uniform(-10, 10), rng.uniform(-20, 20)), (width, height / 0.7, 0.05), tint=rng.choice(MOSS_TINTS), detail=True))
+                          (0, rng.uniform(-10, 10), rng.uniform(-20, 20)), (width, height / 0.7, 0.05), tint=rng.choice(STONE["moss"]), detail=True))
     return parts
 
 
 def slit(x, y, z, height=0.55):
-    """An arrow slit: a dark sliver just proud of a face that looks towards +z."""
-    return block(x - 0.05, x + 0.05, y - height / 2, y + height / 2, z, z + 0.02, tint=SLIT_TINT, detail=True)
+    """An arrow slit: a dark sliver just proud of a face that looks towards +z. Being nearly black, it is a plain beam,
+    a tenth of the triangles of a stone block."""
+    return part("wood_beam", (x, y, z + 0.01), scale=(0.05, height / 0.4, 0.05), tint=SLIT_TINT, detail=True)
 
 
 def rubble(x0, x1, z, rng, count):
@@ -170,7 +202,7 @@ def rubble(x0, x1, z, rng, count):
     for _ in range(count):
         size = rng.uniform(0.45, 0.8)
         parts.append(part("rock", (rng.uniform(x0, x1), -0.1, z + rng.uniform(0.05, 0.35)), (0, rng.uniform(0, 360), 0),
-                          (size, size * 0.7, size), tint=[0.7, 0.7, 0.68], detail=True))
+                          (size, size * 0.7, size), tint=STONE["rubble"], detail=True))
     return parts
 
 
@@ -182,6 +214,10 @@ def crenels(x0, x1, y, z0, z1, rng, merlons):
         parts.append(block(a, b, y, y + MERLON, z0, z1, tint=shade(rng, 0.9, 1.05)))
         if b - a > 0.6:
             parts.append(slit(x, y + 0.3, z1, 0.4))
+        if STONE["spikes"]:
+            for dx in (-0.2, 0.2):
+                parts.append(part("stake", (x + dx, y + MERLON - 0.05, (z0 + z1) / 2), (rng.uniform(-6, 6), 0, rng.uniform(-6, 6)),
+                                  (0.25, 0.14, 0.25), tint=[0.22, 0.2, 0.2], detail=True))
     # A coping stone along the parapet top, with moss in the embrasures and on some merlons.
     parts.append(block(x0, x1, y - 0.06, y + 0.04, z0 - 0.03, z1 + 0.03, tint=COURSE_TINT, detail=True))
     parts += moss(x0, x1, y + 0.04, z0, z1, rng, max(1, round((x1 - x0) / 1.5)))
@@ -334,9 +370,10 @@ def stairs():
 
 
 def quoins(h, y0, y1, rng):
-    """Dressed corner stones at the four corners, standing a little proud of both faces, long and short in turn."""
+    """Dressed corner stones at the four corners, standing a little proud of both faces, long and short in turn. They
+    are a metre high, so a tall tower does not need many, and are left out at a distance."""
     parts = []
-    course = 0.5
+    course = 1.0
     y = y0
     i = 0
     while y < y1 - 0.05:
@@ -347,7 +384,7 @@ def quoins(h, y0, y1, rng):
                 lx, lz = (0.62, 0.42) if long_x else (0.42, 0.62)
                 x0, x1 = sorted((sx * (h + 0.04), sx * (h + 0.04 - lx)))
                 z0, z1 = sorted((sz * (h + 0.04), sz * (h + 0.04 - lz)))
-                parts.append(block(x0, x1, y, top, z0, z1, tint=QUOIN_TINT))
+                parts.append(block(x0, x1, y, top, z0, z1, tint=QUOIN_TINT, detail=True))
         y = top
         i += 1
     return parts
@@ -395,7 +432,7 @@ def stone_tower(n, levels, seed, roofed):
         x = -h + 0.25
         while x < h - 0.1:
             side.append(block(x - 0.14, x + 0.14, top - 0.4, top, h - 0.05, h + 0.25, tint=shade(rng, 0.85, 0.95), detail=True))
-            x += 0.5
+            x += 0.7
         side += masonry(-h - 0.25, h + 0.25, top, top + PARAPET, h - 0.15, h + 0.25, rng)
         count = {2: 2, 3: 2, 4: 3}[n]
         spots = [-h - 0.25 + (2 * h + 0.5) * (k + 0.5) / count for k in range(count)]
@@ -549,7 +586,7 @@ def dragons_teeth():
             moved["position"] = r3((moved["position"][0] + x, moved["position"][1], moved["position"][2] + z))
             parts.append(moved)
         size = width * 1.6
-        parts.append(part("rock", (x, -0.05, z), (0, rng.uniform(0, 360), 0), (size, size * 0.35, size), tint=DAMP_TINT, detail=True))
+        parts.append(part("rock", (x, -0.05, z), (0, rng.uniform(0, 360), 0), (size, size * 0.35, size), tint=STONE["damp"], detail=True))
         parts += moss(x - 0.35, x + 0.35, 0.12, z - 0.3, z + 0.3, rng, 1)
     colliders = [box((0, 0.7, 0), (4.4, 1.4, 1.6))]
     snaps = [(-2.2, 0, 0), (2.2, 0, 0)]
@@ -583,26 +620,37 @@ def defence(name, parts, colliders, snaps, base="stone_wall_4x2", **extra):
     return data
 
 
-def stone_pieces():
-    """Every stone defence, and a stone fort put together from them for the preview."""
-    pieces = [defence("steinmur", *stone_wall(), views=views(("outside", 160, 12), ("inside", -20, 25), ("side", 90, 8)))]
-    pieces.append(defence("steinmur_slett", *stone_wall(buttress=False), views=views(("outside", 160, 12), ("inside", -20, 25), ("side", 90, 8))))
-    pieces.append(defence("steinhjorne", *corner90(), views=views(("outside", 135, 15), ("inside", -45, 25), ("top", -45, 60))))
-    pieces.append(defence("steinhjorne45", *corner45(), views=views(("outside", 160, 15), ("inside", -20, 30), ("top", -20, 65))))
+def stone_pieces(stone="stein"):
+    """Every stone defence of one stone, and for plain stone a fort put together from them for the preview. Pieces of
+    another stone than plain stone have its name after theirs, e.g. steinmur_marmor."""
+    with material(stone):
+        return _stone_pieces("" if stone == "stein" else "_" + stone, stone == "stein")
+
+
+def _stone_pieces(suffix, overview):
+    def defence_(name, *args, **extra):
+        return defence(name + suffix, *args, **extra)
+
+    pieces = [defence_("steinmur", *stone_wall(), views=views(("outside", 160, 12), ("inside", -20, 25), ("side", 90, 8)))]
+    pieces.append(defence_("steinmur_slett", *stone_wall(buttress=False), views=views(("outside", 160, 12), ("inside", -20, 25), ("side", 90, 8))))
+    pieces.append(defence_("steinhjorne", *corner90(), views=views(("outside", 135, 15), ("inside", -45, 25), ("top", -45, 60))))
+    pieces.append(defence_("steinhjorne45", *corner45(), views=views(("outside", 160, 15), ("inside", -20, 30), ("top", -20, 65))))
     gate_parts, gate_colliders, gate_snaps, gate_groups, gate_ladders = gatehouse()
-    pieces.append(defence("steinport", gate_parts, gate_colliders, gate_snaps, base="wood_gate", groups=gate_groups, ladders=gate_ladders,
+    pieces.append(defence_("steinport", gate_parts, gate_colliders, gate_snaps, base="wood_gate", groups=gate_groups, ladders=gate_ladders,
                           keep=["door"], views=views(("outside", 170, 12), ("angle", 135, 20), ("inside", -20, 25))))
-    pieces.append(defence("steintrapp", *stairs(), views=views(("side", 90, 10), ("front", 0, 20), ("angle", -40, 30))))
+    pieces.append(defence_("steintrapp", *stairs(), views=views(("side", 90, 10), ("front", 0, 20), ("angle", -40, 30))))
     for name, n, levels, roofed in (("steintarn_liten", 2, [WALK, 5.6], False), ("steintarn", 3, [WALK, 5.6], False),
                                     ("steintarn_stor", 4, [WALK, 5.6, 8.2], True)):
         parts, colliders, ladders, snaps = stone_tower(n, levels, name, roofed)
-        pieces.append(defence(name, parts, colliders, snaps, ladders=ladders,
+        pieces.append(defence_(name, parts, colliders, snaps, ladders=ladders,
                               views=views(("outside", 150, 12), ("back", -30, 20), ("top", 150, 55))))
-    pieces.append(defence("draketenner", *dragons_teeth(), base="piece_sharpstakes", keep=["HIT AREA"], hitArea=box((0, 0.7, 0), (4.6, 1.4, 1.9)),
+    pieces.append(defence_("draketenner", *dragons_teeth(), base="piece_sharpstakes", keep=["HIT AREA"], hitArea=box((0, 0.7, 0), (4.6, 1.4, 1.9)),
                           views=views(("front", 170, 15), ("side", 90, 10), ("angle", -40, 30))))
     bridge_parts, bridge_colliders, bridge_snaps, bridge_groups = stone_drawbridge()
-    pieces.append(defence("steinvindebro", bridge_parts, bridge_colliders, bridge_snaps, base="wood_gate", groups=bridge_groups, keep=["door"],
+    pieces.append(defence_("steinvindebro", bridge_parts, bridge_colliders, bridge_snaps, base="wood_gate", groups=bridge_groups, keep=["door"],
                           views=views(("outside", 160, 20), ("side", 90, 10), ("top", 180, 60))))
+    if not overview:
+        return pieces
     pieces.append({"name": "steinborg", "parts": [
         piece("steinport"),
         piece("steinmur", (-6.3, 0, 0)),

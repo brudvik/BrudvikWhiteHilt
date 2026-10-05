@@ -117,6 +117,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Pieces.Trophies.TrophyAltarSettings.Initialize();
         Pieces.Defenses.DefenseSettings.Initialize();
         Pieces.Defenses.GateControl.GateMechanisms.Initialize();
+        Pieces.Defenses.Siege.SiegeSettings.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();

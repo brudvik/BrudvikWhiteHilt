@@ -58,7 +58,34 @@ The fronts are not flat: a stepped plinth with rubble at the foot, string course
 - The pieces are on the Black Forest tier, but are built near a Stonecutter, which needs iron, so they come with the Swamp in practice.
 
 
-## ⚙️ WORKING THE GATE
+### Black marble and grausten
+
+Every stone piece also comes in **black marble** for the Mistlands and **grausten** for the Ashlands: the same shapes, ladders, gates and portcullis, built near a Stonecutter of the later stone. Marble is dark with pale veins and grows blue-green moss; grausten is dark and warm grey, sooty instead of mossy, with iron spikes on its merlons.
+
+<img src="images/black_marble_gatehouse.png" alt="Black Marble Gatehouse" title="Black Marble Gatehouse" height="140"> <img src="images/grausten_gatehouse.png" alt="Grausten Gatehouse" title="Grausten Gatehouse" height="140">
+
+| | Stone | Black marble | Grausten |
+|---|---|---|---|
+| Tier | Black Forest | Mistlands | Ashlands |
+| Cost | Stone as listed | Half as much Black Marble in place of the Stone | Half as much Grausten in place of the Stone |
+| Health | as listed | 1.5 times | 2 times |
+| Blunt damage (trolls) | half | half | a quarter |
+
+The names follow the stone: *Black Marble Rampart*, *Grausten Gatehouse*, *Small Grausten Tower* and so on.
+
+## 🔥 DEFENDING THE WALLS
+
+<img src="images/oil_cauldron.png" alt="Oil Cauldron" title="Oil Cauldron" height="140"> <img src="images/alarm_bell.png" alt="Alarm Bell" title="Alarm Bell" height="140">
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Oil Cauldron** | An iron cauldron on a tipping frame over a small hearth, with a chute out over the parapet. Set it on the walk over a gate, chute outwards | Hammer (Workbench) | Stone ×10, Iron ×4, Wood ×6 |
+| **Alarm Bell** | A bell under a small roof on two posts, with a rope to ring it | Hammer (Workbench) | Wood ×8, Bronze ×4, Stone ×6 |
+
+- **Filling the cauldron**: use Resin ×5 or Tar ×2 on it for boiling pitch, or Stone ×10 for stones (put the item in your hotbar and press its number while looking at the cauldron). Pitch must heat for 20 seconds; the embers glow while it does.
+- **Tipping it** (use) pours everything down in front of the wall, 1 to 3 m out and up to 5 m below: pitch does 60 fire damage and sets them burning, stones 80 blunt damage and knock them back. Players and tamed animals are spared. Then fill it again.
+- **Ringing the bell** (use) shuts every gate, drawbridge, portcullis and door within 40 m, where you may, and every player within 150 m hears it, is told and gets a mark on the map for a minute. A guestbook that notes a raid rings the bells within its radius by itself, so the base shuts itself while you are away.
+
 
 Work the gates, drawbridges and portcullises from inside the walls, or call them open from outside with a horn. Every control follows the same rule as a door in a ward: only players who may open it can work it.
 
@@ -82,6 +109,18 @@ Section `[Defences]` (admin only, synced from the server; it was `[Defenses]` be
 |---|---|---|
 | `HealthMultiplier` | 1 | Multiplier on the health of every palisade and stone defence. Placed pieces keep their damage; a repair brings them to the new full health |
 | `DrawbridgeLinkRange` | 12 | A drawbridge follows the nearest gate within this many metres. 0 turns it off |
+
+Section `[Defences.Siege]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `PitchDamage` | 60 | Fire damage of boiling pitch from the Oil Cauldron; it also sets them burning |
+| `StoneDamage` | 80 | Blunt damage of stones from the Oil Cauldron |
+| `HeatSeconds` | 20 | Seconds pitch must heat before it can be poured |
+| `BellShutRange` | 40 | How far round the Alarm Bell gates, drawbridges, portcullises and doors are shut |
+| `BellAlertRange` | 150 | How far away players are told the bell rings and get a mark on the map |
+| `BellRingsOnRaid` | on | A bell rings by itself when a guestbook near it notes a raid |
+| `CraneShipRange` | 15 | How far from the Harbour Crane a ship may lie for it to load and unload |
 
 Section `[Defences.GateControl]` (admin only, synced from the server):
 

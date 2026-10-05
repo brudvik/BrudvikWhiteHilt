@@ -16,6 +16,9 @@ public class WindlassHouse : MonoBehaviour, Hoverable, Interactable
 {
     private const float FindSeconds = 0.5f;
 
+    // Beyond this, nobody sees the wheel, crank and lever turn, so the house does not look for gates.
+    private const float WatchDistance = 40f;
+
     private Piece piece;
     private ZNetView nview;
     private List<GateMechanism> found = new();
@@ -23,6 +26,10 @@ public class WindlassHouse : MonoBehaviour, Hoverable, Interactable
 
     /// <summary>True once built; the placement ghost has no network view and works nothing.</summary>
     public bool IsPlaced => nview != null && nview.IsValid();
+
+    /// <summary>True while the local player is near enough to see the controls move.</summary>
+    public bool IsWatched => Player.m_localPlayer != null
+        && (Player.m_localPlayer.transform.position - transform.position).sqrMagnitude < WatchDistance * WatchDistance;
 
     /// <summary>The gates, drawbridges and portcullises within reach, nearest first, looked for twice a second.</summary>
     public List<GateMechanism> Nearby()
@@ -218,8 +225,9 @@ public class WindlassControl : MonoBehaviour, Hoverable, Interactable
     // Turns towards the angle of the mechanism's state; the first time it is placed there at once.
     private void Update()
     {
-        if (house == null || !house.IsPlaced)
+        if (house == null || !house.IsPlaced || !house.IsWatched)
         {
+            placed = false;
             return;
         }
 

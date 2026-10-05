@@ -68,6 +68,8 @@ public static class QuartermasterSettings
         Translations.AddEnglish("whitehilt_qm_need", "need {0}, in bag {1}, in store {2}");
         Translations.AddEnglish("whitehilt_qm_unlimited", "unlimited");
         Translations.AddEnglish("whitehilt_qm_close", "Close");
+        Translations.AddEnglish("whitehilt_qm_unload", "Unload {0}");
+        Translations.AddEnglish("whitehilt_qm_unloaded", "Put {0} items back in the chests");
         Translations.AddEnglish("whitehilt_qm_tab_watch", "Stock warnings");
         Translations.AddEnglish("whitehilt_qm_target", "Into: {0}");
         Translations.AddEnglish("whitehilt_qm_target_bag", "your bag");

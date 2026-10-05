@@ -1,4 +1,5 @@
 using Jotunn.Configs;
+using System.Linq;
 using Jotunn.Managers;
 using BrudvikWhiteHilt.Progression;
 using System.Collections.Generic;
@@ -7,19 +8,99 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Defenses;
 
 /// <summary>
+/// The stones the stone defences come in.
+/// </summary>
+public enum StoneVariant
+{
+    /// <summary>Plain stone, from the Black Forest on.</summary>
+    Stone,
+
+    /// <summary>Black marble, for the Mistlands.</summary>
+    BlackMarble,
+
+    /// <summary>Grausten, for the Ashlands.</summary>
+    Grausten
+}
+
+/// <summary>
 /// What makes the stone defences stone: built at the Stonecutter, the stone material, and hard to break. Blunt blows,
-/// which trolls deal, do half damage; fire, frost, poison and spirit none; rain does not wear them.
+/// which trolls deal, do half damage (a quarter in grausten); fire, frost, poison and spirit none; rain does not wear
+/// them. Black marble and grausten are the same pieces in a later stone: stronger, and costing that stone instead.
 /// </summary>
 internal static class StoneDefense
 {
     /// <summary>The station every stone defence is built near.</summary>
     internal static string Station => CraftingStations.Stonecutter;
 
+    /// <summary>The end of the layout name of a variant, e.g. "_marmor".</summary>
+    /// <param name="variant">The stone.</param>
+    /// <returns>The suffix; empty for plain stone.</returns>
+    internal static string Suffix(StoneVariant variant) => variant switch
+    {
+        StoneVariant.BlackMarble => "_marmor",
+        StoneVariant.Grausten => "_grausten",
+        _ => string.Empty
+    };
+
+    /// <summary>The English name of a piece in a variant: "Stone Rampart" becomes "Black Marble Rampart".</summary>
+    /// <param name="variant">The stone.</param>
+    /// <param name="stoneName">The plain stone piece's name.</param>
+    /// <returns>The name.</returns>
+    internal static string Name(StoneVariant variant, string stoneName)
+    {
+        string word = variant switch
+        {
+            StoneVariant.BlackMarble => "Black Marble",
+            StoneVariant.Grausten => "Grausten",
+            _ => "Stone"
+        };
+        return stoneName.Contains("Stone") ? stoneName.Replace("Stone", word) : variant == StoneVariant.Stone ? stoneName : $"{word} {stoneName}";
+    }
+
+    /// <summary>The cost of a piece in a variant: half as much of the later stone in place of Stone, the rest the same.</summary>
+    /// <param name="variant">The stone.</param>
+    /// <param name="stoneCost">The plain stone piece's cost.</param>
+    /// <returns>The cost.</returns>
+    internal static RequirementConfig[] Cost(StoneVariant variant, RequirementConfig[] stoneCost)
+    {
+        if (variant == StoneVariant.Stone)
+        {
+            return stoneCost;
+        }
+
+        string item = variant == StoneVariant.BlackMarble ? "BlackMarble" : "Grausten";
+        return stoneCost.Select(requirement => requirement.Item == "Stone"
+            ? new RequirementConfig { Item = item, Amount = Mathf.Max(1, requirement.Amount / 2), Recover = requirement.Recover }
+            : requirement).ToArray();
+    }
+
+    /// <summary>How much more health a variant has than plain stone.</summary>
+    /// <param name="variant">The stone.</param>
+    /// <returns>The factor.</returns>
+    internal static float Strength(StoneVariant variant) => variant switch
+    {
+        StoneVariant.BlackMarble => 1.5f,
+        StoneVariant.Grausten => 2f,
+        _ => 1f
+    };
+
+    /// <summary>The tier a variant comes on.</summary>
+    /// <param name="variant">The stone.</param>
+    /// <param name="stoneTier">The plain stone piece's tier.</param>
+    /// <returns>The tier.</returns>
+    internal static ProgressionTier Tier(StoneVariant variant, ProgressionTier stoneTier) => variant switch
+    {
+        StoneVariant.BlackMarble => ProgressionTier.Mistlands,
+        StoneVariant.Grausten => ProgressionTier.Ashlands,
+        _ => stoneTier
+    };
+
     /// <summary>
     /// Turns a defence prefab into stone, whatever vanilla piece it was cloned from.
     /// </summary>
     /// <param name="prefab">The piece prefab.</param>
-    internal static void Harden(GameObject prefab)
+    /// <param name="variant">The stone; grausten takes only a quarter of blunt damage.</param>
+    internal static void Harden(GameObject prefab, StoneVariant variant = StoneVariant.Stone)
     {
         WearNTear wear = prefab.GetComponent<WearNTear>();
         if (wear == null)
@@ -31,7 +112,7 @@ internal static class StoneDefense
         wear.m_noRoofWear = true;
         wear.m_damages = new HitData.DamageModifiers
         {
-            m_blunt = HitData.DamageModifier.Resistant,
+            m_blunt = variant == StoneVariant.Grausten ? HitData.DamageModifier.VeryResistant : HitData.DamageModifier.Resistant,
             m_slash = HitData.DamageModifier.Resistant,
             m_pierce = HitData.DamageModifier.VeryResistant,
             m_chop = HitData.DamageModifier.Resistant,
@@ -59,13 +140,16 @@ public abstract class StoneDefensePieceBase : DefensePieceBase
     /// <inheritdoc/>
     protected override string BuildStation => StoneDefense.Station;
 
+    /// <summary>The stone the piece is built of; the black marble and grausten subclasses set it.</summary>
+    protected virtual StoneVariant Variant => StoneVariant.Stone;
+
     /// <inheritdoc/>
-    public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
+    public override ProgressionTier DefaultTier => StoneDefense.Tier(Variant, ProgressionTier.BlackForest);
 
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
-        StoneDefense.Harden(prefab);
+        StoneDefense.Harden(prefab, Variant);
     }
 }
 
@@ -81,22 +165,22 @@ public class StoneRampart : StoneDefensePieceBase
     public StoneRampart(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steinmur";
+    protected override string LayoutName => "steinmur" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Rampart";
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Rampart");
 
     /// <inheritdoc/>
     protected override string Description => "Four metres of thick stone wall with a buttress in front. Its walk runs along the top, three metres up, behind merlons with arrow slits.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 40, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(4000f);
+    protected override float Health => DefenseSettings.Scale(4000f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -111,22 +195,22 @@ public class StoneRampartPlain : StoneDefensePieceBase
     public StoneRampartPlain(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steinmur_slett";
+    protected override string LayoutName => "steinmur_slett" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Plain Stone Rampart";
+    protected override string FullName => StoneDefense.Name(Variant, "Plain Stone Rampart");
 
     /// <inheritdoc/>
     protected override string Description => "The stone rampart without a buttress, to alternate with it along a long wall.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 36, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(4000f);
+    protected override float Health => DefenseSettings.Scale(4000f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -141,22 +225,22 @@ public class StoneCorner : StoneDefensePieceBase
     public StoneCorner(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steinhjorne";
+    protected override string LayoutName => "steinhjorne" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Corner Bastion";
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Corner Bastion");
 
     /// <inheritdoc/>
     protected override string Description => "Two stone walls meeting at a right angle, with a round bastion standing out over the corner. Its top joins the wall walks.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 50, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(3500f);
+    protected override float Health => DefenseSettings.Scale(3500f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -171,22 +255,22 @@ public class StoneCorner45 : StoneDefensePieceBase
     public StoneCorner45(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steinhjorne45";
+    protected override string LayoutName => "steinhjorne45" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Corner 45";
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Corner 45");
 
     /// <inheritdoc/>
     protected override string Description => "Two stone walls meeting at 45 degrees, with a buttress over the joint, to turn a wall gently.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 40, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(3500f);
+    protected override float Health => DefenseSettings.Scale(3500f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -201,22 +285,22 @@ public class StoneStairs : StoneDefensePieceBase
     public StoneStairs(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steintrapp";
+    protected override string LayoutName => "steintrapp" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Rampart Stairs";
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Rampart Stairs");
 
     /// <inheritdoc/>
     protected override string Description => "Twelve solid stone steps with a cheek wall, from the ground up to the stone wall walk.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 30, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(2000f);
+    protected override float Health => DefenseSettings.Scale(2000f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -231,35 +315,41 @@ public class StoneGatehouse : PalisadeGatehouse
     /// <param name="instance">The piece manager.</param>
     public StoneGatehouse(PieceManager instance) : base(instance) { }
 
-    /// <inheritdoc/>
-    protected override string LayoutName => "steinport";
+    /// <summary>The stone the piece is built of; the black marble and grausten subclasses set it.</summary>
+    protected virtual StoneVariant Variant => StoneVariant.Stone;
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Gatehouse";
+    public override ProgressionTier DefaultTier => StoneDefense.Tier(Variant, ProgressionTier.BlackForest);
+
+    /// <inheritdoc/>
+    protected override string LayoutName => "steinport" + StoneDefense.Suffix(Variant);
+
+    /// <inheritdoc/>
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Gatehouse");
 
     /// <inheritdoc/>
     protected override string Description => "A double gate under a stone arch between two round-fronted towers, with a portcullis and machicolations over it. Work the portcullis with a Gate Rope or a Windlass House. Ladders in the towers lead from the wall walks to the walk over the gate and to the tower tops.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 120, Recover = true },
         new() { Item = "RoundLog", Amount = 20, Recover = true },
         new() { Item = "Wood", Amount = 20, Recover = true },
         new() { Item = "Iron", Amount = 10, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
     protected override string BuildStation => StoneDefense.Station;
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(10000f);
+    protected override float Health => DefenseSettings.Scale(10000f * StoneDefense.Strength(Variant));
 
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
         base.CustomizePrefab(prefab, data, groups);
-        StoneDefense.Harden(prefab);
+        StoneDefense.Harden(prefab, Variant);
         if (groups.TryGetValue("portcullis", out Transform grate))
         {
             prefab.AddComponent<GateControl.PortcullisDriver>().m_grate = grate;
@@ -282,36 +372,42 @@ public class StoneDrawbridge : Drawbridge
     /// <param name="instance">The piece manager.</param>
     public StoneDrawbridge(PieceManager instance) : base(instance) { }
 
-    /// <inheritdoc/>
-    protected override string LayoutName => "steinvindebro";
+    /// <summary>The stone the piece is built of; the black marble and grausten subclasses set it.</summary>
+    protected virtual StoneVariant Variant => StoneVariant.Stone;
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Drawbridge";
+    public override ProgressionTier DefaultTier => StoneDefense.Tier(Variant, ProgressionTier.Swamp);
+
+    /// <inheritdoc/>
+    protected override string LayoutName => "steinvindebro" + StoneDefense.Suffix(Variant);
+
+    /// <inheritdoc/>
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Drawbridge");
 
     /// <inheritdoc/>
     protected override string Description => "A deck nine metres long hinged between two stone piers, with chains to the crenellated lintel. Open it to lower it and close it to raise it; it follows the nearest gate.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 30, Recover = true },
         new() { Item = "RoundLog", Amount = 10, Recover = true },
         new() { Item = "Wood", Amount = 20, Recover = true },
         new() { Item = "Iron", Amount = 4, Recover = true },
         new() { Item = "Chain", Amount = 2, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
     protected override string BuildStation => StoneDefense.Station;
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(6000f);
+    protected override float Health => DefenseSettings.Scale(6000f * StoneDefense.Strength(Variant));
 
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
         base.CustomizePrefab(prefab, data, groups);
-        StoneDefense.Harden(prefab);
+        StoneDefense.Harden(prefab, Variant);
     }
 }
 
@@ -326,32 +422,38 @@ public class DragonsTeeth : ChevalDeFrise
     /// <param name="instance">The piece manager.</param>
     public DragonsTeeth(PieceManager instance) : base(instance) { }
 
-    /// <inheritdoc/>
-    protected override string LayoutName => "draketenner";
+    /// <summary>The stone the piece is built of; the black marble and grausten subclasses set it.</summary>
+    protected virtual StoneVariant Variant => StoneVariant.Stone;
 
     /// <inheritdoc/>
-    protected override string FullName => "Dragon's Teeth";
+    public override ProgressionTier DefaultTier => StoneDefense.Tier(Variant, ProgressionTier.BlackForest);
+
+    /// <inheritdoc/>
+    protected override string LayoutName => "draketenner" + StoneDefense.Suffix(Variant);
+
+    /// <inheritdoc/>
+    protected override string FullName => StoneDefense.Name(Variant, "Dragon's Teeth");
 
     /// <inheritdoc/>
     protected override string Description => "Two staggered rows of stone posts with sharp points. Creatures that run into them get hurt, and they stand up to a troll far longer than wood.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 20, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
     protected override string BuildStation => StoneDefense.Station;
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(1500f);
+    protected override float Health => DefenseSettings.Scale(1500f * StoneDefense.Strength(Variant));
 
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
         base.CustomizePrefab(prefab, data, groups);
-        StoneDefense.Harden(prefab);
+        StoneDefense.Harden(prefab, Variant);
     }
 }
 
@@ -369,11 +471,17 @@ public abstract class StoneTowerBase : WatchtowerBase
     /// <inheritdoc/>
     protected override string BuildStation => StoneDefense.Station;
 
+    /// <summary>The stone the piece is built of; the black marble and grausten subclasses set it.</summary>
+    protected virtual StoneVariant Variant => StoneVariant.Stone;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => StoneDefense.Tier(Variant, ProgressionTier.BlackForest);
+
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
         base.CustomizePrefab(prefab, data, groups);
-        StoneDefense.Harden(prefab);
+        StoneDefense.Harden(prefab, Variant);
     }
 }
 
@@ -389,23 +497,23 @@ public class StoneTowerSmall : StoneTowerBase
     public StoneTowerSmall(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steintarn_liten";
+    protected override string LayoutName => "steintarn_liten" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Small Stone Tower";
+    protected override string FullName => StoneDefense.Name(Variant, "Small Stone Tower");
 
     /// <inheritdoc/>
     protected override string Description => "A narrow stone tower. A door at the foot, doorways to the stone wall walks on both sides, and a ladder up to the crenellated top.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 60, Recover = true },
         new() { Item = "Wood", Amount = 10, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(5000f);
+    protected override float Health => DefenseSettings.Scale(5000f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -420,23 +528,23 @@ public class StoneTowerMedium : StoneTowerBase
     public StoneTowerMedium(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steintarn";
+    protected override string LayoutName => "steintarn" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Stone Tower";
+    protected override string FullName => StoneDefense.Name(Variant, "Stone Tower");
 
     /// <inheritdoc/>
     protected override string Description => "A stone tower with dressed corner stones and a parapet on corbels. A door at the foot, doorways to the stone wall walks, and a ladder to the top.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 90, Recover = true },
         new() { Item = "Wood", Amount = 16, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(7500f);
+    protected override float Health => DefenseSettings.Scale(7500f * StoneDefense.Strength(Variant));
 }
 
 /// <summary>
@@ -451,21 +559,21 @@ public class StoneTowerLarge : StoneTowerBase
     public StoneTowerLarge(PieceManager instance) : base(instance) { }
 
     /// <inheritdoc/>
-    protected override string LayoutName => "steintarn_stor";
+    protected override string LayoutName => "steintarn_stor" + StoneDefense.Suffix(Variant);
 
     /// <inheritdoc/>
-    protected override string FullName => "Large Stone Tower";
+    protected override string FullName => StoneDefense.Name(Variant, "Large Stone Tower");
 
     /// <inheritdoc/>
     protected override string Description => "A broad three-storey stone tower under a slate roof. A door at the foot, doorways to the stone wall walks, and a ladder through every floor.";
 
     /// <inheritdoc/>
-    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    protected override RequirementConfig[] Requirements => StoneDefense.Cost(Variant, new RequirementConfig[]
     {
         new() { Item = "Stone", Amount = 130, Recover = true },
         new() { Item = "Wood", Amount = 30, Recover = true }
-    };
+    });
 
     /// <inheritdoc/>
-    protected override float Health => DefenseSettings.Scale(11000f);
+    protected override float Health => DefenseSettings.Scale(11000f * StoneDefense.Strength(Variant));
 }

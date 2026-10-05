@@ -312,6 +312,7 @@ public class GuestbookStand : MonoBehaviour, Interactable, Hoverable
                 raidStarted = Time.time;
                 string list = string.Join(", ", enemies.Select(enemy => Localization.instance.Localize(enemy.Key) + (enemy.Value > 1 ? $" x{enemy.Value}" : string.Empty)));
                 Append(GuestEntryKind.Raid, string.Empty, list);
+                Pieces.Defenses.Siege.AlarmBell.RaidStarted(transform.position, GuestbookSettings.Radius.Value);
             }
         }
         else if (raidStarted >= 0f && Time.time - lastEnemy > GuestbookSettings.RaidQuietSeconds.Value)

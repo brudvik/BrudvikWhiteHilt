@@ -70,7 +70,7 @@ public class QuartermasterPanel : MonoBehaviour
     private readonly List<GameObject> costRows = new();
     private readonly List<GameObject> watchRows = new();
 
-    private QuartermasterStand stand;
+    private QuartermasterSite stand;
     private List<Container> containers = new();
     private List<QuartermasterStore.Entry> entries = new();
     private List<KeyValuePair<string, int>> watches = new();
@@ -104,6 +104,8 @@ public class QuartermasterPanel : MonoBehaviour
     private Text copiesLabel;
     private Text deleteLabel;
     private Text watchHint;
+    private GameObject unloadButton;
+    private Text unloadLabel;
 
     // Something to do once the chests it touches are handed over.
     private sealed class Job
@@ -120,8 +122,8 @@ public class QuartermasterPanel : MonoBehaviour
     /// <summary>
     /// Opens the window for a table.
     /// </summary>
-    /// <param name="stand">The table.</param>
-    public static void Open(QuartermasterStand stand)
+    /// <param name="stand">The table or crane.</param>
+    public static void Open(QuartermasterSite stand)
     {
         if (GUIManager.CustomGUIFront == null || Player.m_localPlayer == null)
         {
@@ -141,6 +143,13 @@ public class QuartermasterPanel : MonoBehaviour
         instance.gameObject.SetActive(true);
         GUIManager.BlockInput(true);
         instance.Refresh();
+        // The crane loads the ship beside it; the table starts with the bag.
+        Container preferred = stand.PreferredTarget(instance.containers);
+        if (preferred != null)
+        {
+            instance.target = preferred;
+            instance.Refresh();
+        }
     }
 
     /// <summary>
@@ -226,6 +235,11 @@ public class QuartermasterPanel : MonoBehaviour
                 RefreshFilters();
                 RefreshStore();
                 RefreshBag();
+                unloadButton.SetActive(target != null);
+                if (target != null)
+                {
+                    unloadLabel.text = string.Format(Localization.instance.Localize("$whitehilt_qm_unload"), Localization.instance.Localize(target.m_name));
+                }
                 break;
             case Page.Pack:
                 RefreshBuilds();
@@ -279,6 +293,10 @@ public class QuartermasterPanel : MonoBehaviour
             else
             {
                 current.Run(ready);
+                if (current.Target != null)
+                {
+                    stand.OnCargoMoved(current.Target);
+                }
             }
         }
 
@@ -448,6 +466,28 @@ public class QuartermasterPanel : MonoBehaviour
         });
     }
 
+    // Puts everything in the chosen cart or ship hold back into the chests, the same way the Collection Post sorts.
+    private void OnUnload()
+    {
+        Container cargo = target;
+        if (cargo == null)
+        {
+            return;
+        }
+
+        Vector3 site = stand.transform.position;
+        List<Container> chests = Sources();
+        List<Container> needed = cargo.GetInventory().GetAllItems().SelectMany(item => QuartermasterStore.Receiving(chests, item)).Distinct().ToList();
+        needed.Add(cargo);
+        Begin(needed, ready =>
+        {
+            int moved = QuartermasterStore.Unload(cargo, ready.Where(container => container != cargo).ToList(), site);
+            Message(moved > 0
+                ? string.Format(Localization.instance.Localize("$whitehilt_qm_unloaded"), moved)
+                : Localization.instance.Localize("$whitehilt_qm_no_room"));
+        });
+    }
+
     // Shift + click: a stack more of the item in the pack list chosen on the pack page.
     private void AddToList(QuartermasterStore.Entry entry)
     {
@@ -471,13 +511,13 @@ public class QuartermasterPanel : MonoBehaviour
         if (index >= 0)
         {
             watches.RemoveAt(index);
-            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_unwatched"), QuartermasterStand.ItemName(prefab)));
+            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_unwatched"), QuartermasterSite.ItemName(prefab)));
         }
         else
         {
             ItemDrop item = ItemOf(prefab);
             watches.Add(new KeyValuePair<string, int>(prefab, Mathf.Max(1, item != null ? item.m_itemData.m_shared.m_maxStackSize : Step)));
-            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_watching"), QuartermasterStand.ItemName(prefab)));
+            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_watching"), QuartermasterSite.ItemName(prefab)));
         }
 
         stand.SetWatches(watches);
@@ -802,7 +842,7 @@ public class QuartermasterPanel : MonoBehaviour
         {
             QuartermasterStore.CountStock(sources, watch.Key, out int have, out bool unlimited);
             string amount = unlimited ? Localization.instance.Localize("$whitehilt_qm_unlimited") : have.ToString();
-            string line = $"<b>{QuartermasterStand.ItemName(watch.Key)}</b>  "
+            string line = $"<b>{QuartermasterSite.ItemName(watch.Key)}</b>  "
                 + string.Format(Localization.instance.Localize("$whitehilt_qm_watch_line"), amount, watch.Value);
             bool isLow = !unlimited && have < watch.Value;
             string prefab = watch.Key;
@@ -1003,9 +1043,11 @@ public class QuartermasterPanel : MonoBehaviour
 
         storeContent = AddGrid(page, y, inner, StoreHeight);
         y += StoreHeight + Gap;
-        Text bagTitle = AddText(page, Localization.instance.Localize("$whitehilt_qm_bag"), 0f, y, inner, 22f, FontSize);
+        Text bagTitle = AddText(page, Localization.instance.Localize("$whitehilt_qm_bag"), 0f, y, inner - 230f, 22f, FontSize);
         bagTitle.color = GUIManager.Instance.ValheimOrange;
         bagTitle.alignment = TextAnchor.MiddleLeft;
+        unloadLabel = AddButton(page, string.Empty, inner - 220f, y - 6f, 220f, OnUnload);
+        unloadButton = unloadLabel.transform.parent.gameObject;
         y += 22f;
         bagContent = AddGrid(page, y, inner, BagHeight);
     }

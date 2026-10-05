@@ -121,6 +121,8 @@ public static class GateMechanisms
 {
     private const string Section = "Defences.GateControl";
 
+    private static int pieceMask;
+
     /// <summary>How far from a Gate Rope a gate, drawbridge or portcullis may be.</summary>
     public static ConfigEntry<float> RopeRange { get; private set; }
 
@@ -179,7 +181,12 @@ public static class GateMechanisms
     public static List<GateMechanism> Around(Vector3 position, float range)
     {
         HashSet<GameObject> pieces = new();
-        foreach (Collider collider in Physics.OverlapSphere(position, range, LayerMask.GetMask("piece", "piece_nonsolid", "Default")))
+        if (pieceMask == 0)
+        {
+            pieceMask = LayerMask.GetMask("piece", "piece_nonsolid", "Default");
+        }
+
+        foreach (Collider collider in Physics.OverlapSphere(position, range, pieceMask))
         {
             ZNetView view = collider.GetComponentInParent<ZNetView>();
             if (view != null && view.IsValid())
