@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.93.0 - 2026-10-05
 
 ### Added
 - **Gate Rope**: a rope on a post that opens and closes the gate, drawbridge or portcullis nearby when pulled; Shift + use chooses which. Put up one for each to work them from inside the walls.

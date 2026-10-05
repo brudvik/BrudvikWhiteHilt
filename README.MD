@@ -36,14 +36,13 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.92.0
+## ✨ New in 0.93.0
+
+- **[Working the gate](docs/defences.md#-working-the-gate)**: a gate rope and a windlass house to open and close the gate, drawbridge and portcullis from inside the walls, and a gate horn to call your own gate open from outside.
+
+### Also new in 0.92.0
 
 - **[Stone defences](docs/defences.md#-stone-defences)**: the palisade fort in stone, with a corner bastion, a gatehouse with a portcullis, three towers and dragon's teeth. Taller than the palisade and far harder for a troll to break.
-- Building and crafting from chests is now safe when several players use the same chests.
-
-### Also new in 0.91.0
-
-- **[Quartermaster's Table](docs/base.md)**: everything in the chests around it as one store. Take a stack with a click, load a cart or ship, pack your own kits or what a blueprint needs, and get a warning when stock runs low.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
