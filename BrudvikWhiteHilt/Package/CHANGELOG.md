@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.93.0 - 2026-10-05
+
+### Added
+- **Gate Rope**: a rope on a post that opens and closes the gate, drawbridge or portcullis nearby when pulled; Shift + use chooses which. Put up one for each to work them from inside the walls.
+- **Windlass House**: a small stone house with the gate machinery: a great wheel for the drawbridge, a crank for the portcullis and a lever for the gate, and Shift + use to shut everything at once. The wheel, crank and lever turn as things open and close.
+- **Gate Horn**: blow it outside the walls and the gate opens for you, raising the portcullis, or closes behind you. Teach it a gate's call at a Gate Rope or Windlass House and it calls only that gate. Only players who may open the gate are answered.
+
+### Changed
+- **The stone gatehouse's portcullis works**: it comes down in front of the gate leaves and blocks the gateway, worked with the new gate controls.
+
 ## v0.92.0 - 2026-10-05
 
 ### Added
