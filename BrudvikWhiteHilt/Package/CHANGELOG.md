@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.94.1 - 2026-10-05
+
+### Changed
+- **Faster start**: the defence layout the mod reads at start is a quarter of its former size (the black marble and grausten pieces are written as what differs from the stone ones), and item and piece icons are kept on disk between starts, made anew only when the mod or the game changes.
+- **Stone defences are lighter to draw**: thin stones (string courses, coping, corbels) are plain boxes in place of the full vanilla block, about half the triangles for walls and stairs and a fifth fewer for towers and the gatehouse, looking the same.
+- **Quartermaster's Table**: packing a list reads the chests once per item rather than once per stack, and the store and bag reuse their slots instead of building them anew at every change.
+
 ## v0.94.0 - 2026-10-05
 
 ### Added
