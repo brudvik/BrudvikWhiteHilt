@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **Signs in blueprints keep their text**: a comma in a sign's text came back as a full stop, and a backslash followed by an n (as in *C:\new*) became a line break when the blueprint was read back.
+
 ## v0.91.0 - 2026-10-05
 
 ### Added

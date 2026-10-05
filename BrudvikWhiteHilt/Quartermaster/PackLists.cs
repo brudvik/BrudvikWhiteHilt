@@ -59,38 +59,49 @@ public static class PackListStore
     /// <returns>The lists.</returns>
     public static List<PackList> LoadAll()
     {
-        List<PackList> lists = new();
         if (!File.Exists(FilePath))
         {
-            return lists;
+            return new List<PackList>();
         }
 
         try
         {
-            PackList current = null;
-            foreach (string raw in File.ReadAllLines(FilePath, Encoding.UTF8))
-            {
-                string line = raw.Trim();
-                if (line.StartsWith("#", StringComparison.Ordinal))
-                {
-                    current = new PackList { Name = line.Substring(1).Trim() };
-                    lists.Add(current);
-                    continue;
-                }
-
-                int separator = line.LastIndexOf('=');
-                if (current == null || separator <= 0
-                    || !int.TryParse(line.Substring(separator + 1).Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int amount))
-                {
-                    continue;
-                }
-
-                current.Add(line.Substring(0, separator).Trim(), amount);
-            }
+            return Parse(File.ReadAllLines(FilePath, Encoding.UTF8));
         }
         catch (Exception ex)
         {
             Jotunn.Logger.LogWarning($"Could not read pack lists from {FilePath}: {ex.Message}");
+            return new List<PackList>();
+        }
+    }
+
+    /// <summary>
+    /// Reads the lists from the file's lines. Items before the first list and broken lines are skipped.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <returns>The lists.</returns>
+    internal static List<PackList> Parse(IEnumerable<string> lines)
+    {
+        List<PackList> lists = new();
+        PackList current = null;
+        foreach (string raw in lines)
+        {
+            string line = raw.Trim();
+            if (line.StartsWith("#", StringComparison.Ordinal))
+            {
+                current = new PackList { Name = line.Substring(1).Trim() };
+                lists.Add(current);
+                continue;
+            }
+
+            int separator = line.LastIndexOf('=');
+            if (current == null || separator <= 0
+                || !int.TryParse(line.Substring(separator + 1).Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int amount))
+            {
+                continue;
+            }
+
+            current.Add(line.Substring(0, separator).Trim(), amount);
         }
 
         return lists;
@@ -101,6 +112,24 @@ public static class PackListStore
     /// </summary>
     /// <param name="lists">The lists.</param>
     public static void SaveAll(IEnumerable<PackList> lists)
+    {
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
+            File.WriteAllText(FilePath, Format(lists), Encoding.UTF8);
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"Could not write pack lists to {FilePath}: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Writes the lists as the file's text.
+    /// </summary>
+    /// <param name="lists">The lists.</param>
+    /// <returns>The text.</returns>
+    internal static string Format(IEnumerable<PackList> lists)
     {
         StringBuilder text = new();
         foreach (PackList list in lists)
@@ -114,14 +143,6 @@ public static class PackListStore
             text.AppendLine();
         }
 
-        try
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
-            File.WriteAllText(FilePath, text.ToString(), Encoding.UTF8);
-        }
-        catch (Exception ex)
-        {
-            Jotunn.Logger.LogWarning($"Could not write pack lists to {FilePath}: {ex.Message}");
-        }
+        return text.ToString();
     }
 }

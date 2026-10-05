@@ -118,6 +118,22 @@ public static class BlueprintStore
     {
         Directory.CreateDirectory(Folder);
         string file = UniqueFile(blueprint.Name, blueprint.File);
+        File.WriteAllText(file, Format(blueprint));
+        if (!string.IsNullOrEmpty(blueprint.File) && !string.Equals(blueprint.File, file, StringComparison.OrdinalIgnoreCase) && File.Exists(blueprint.File))
+        {
+            File.Delete(blueprint.File);
+        }
+
+        blueprint.File = file;
+    }
+
+    /// <summary>
+    /// Writes a blueprint in PlanBuild's .blueprint format.
+    /// </summary>
+    /// <param name="blueprint">The blueprint.</param>
+    /// <returns>The file's text.</returns>
+    internal static string Format(Blueprint blueprint)
+    {
         StringBuilder text = new();
         text.AppendLine("#Name:" + blueprint.Name.Replace('\n', ' '));
         text.AppendLine("#Creator:" + blueprint.Creator.Replace('\n', ' '));
@@ -132,13 +148,7 @@ public static class BlueprintStore
                 Quote(piece.Text), "1", "1", "1"));
         }
 
-        File.WriteAllText(file, text.ToString());
-        if (!string.IsNullOrEmpty(blueprint.File) && !string.Equals(blueprint.File, file, StringComparison.OrdinalIgnoreCase) && File.Exists(blueprint.File))
-        {
-            File.Delete(blueprint.File);
-        }
-
-        blueprint.File = file;
+        return text.ToString();
     }
 
     /// <summary>
@@ -155,10 +165,23 @@ public static class BlueprintStore
 
     private static Blueprint ReadBlueprint(string file)
     {
-        Blueprint blueprint = new() { File = file, Name = Path.GetFileNameWithoutExtension(file) };
+        Blueprint blueprint = ParseBlueprint(File.ReadAllLines(file), Path.GetFileNameWithoutExtension(file));
+        blueprint.File = file;
+        return blueprint;
+    }
+
+    /// <summary>
+    /// Reads a PlanBuild .blueprint file's lines, with or without sections.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <param name="name">The name to use when the file gives none.</param>
+    /// <returns>The blueprint, anchored at its bottom centre.</returns>
+    internal static Blueprint ParseBlueprint(IEnumerable<string> lines, string name)
+    {
+        Blueprint blueprint = new() { Name = name };
         bool sawSection = false;
         bool inPieces = false;
-        foreach (string raw in File.ReadAllLines(file))
+        foreach (string raw in lines)
         {
             string line = raw.Trim();
             if (line.Length == 0)
@@ -188,7 +211,7 @@ public static class BlueprintStore
             // Old PlanBuild files have no sections: every line is a piece.
             if (inPieces || !sawSection)
             {
-                string[] parts = line.Replace(',', '.').Split(';');
+                string[] parts = line.Split(';');
                 if (parts.Length >= 9)
                 {
                     blueprint.Pieces.Add(new PieceSnapshot
@@ -208,10 +231,23 @@ public static class BlueprintStore
 
     private static Blueprint ReadVBuild(string file)
     {
-        Blueprint blueprint = new() { File = file, Name = Path.GetFileNameWithoutExtension(file) };
-        foreach (string raw in File.ReadAllLines(file))
+        Blueprint blueprint = ParseVBuild(File.ReadAllLines(file), Path.GetFileNameWithoutExtension(file));
+        blueprint.File = file;
+        return blueprint;
+    }
+
+    /// <summary>
+    /// Reads a BuildShare .vbuild file's lines.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <param name="name">The blueprint's name.</param>
+    /// <returns>The blueprint, anchored at its bottom centre.</returns>
+    internal static Blueprint ParseVBuild(IEnumerable<string> lines, string name)
+    {
+        Blueprint blueprint = new() { Name = name };
+        foreach (string raw in lines)
         {
-            string[] parts = raw.Trim().Replace(',', '.').Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = raw.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 8)
             {
                 continue;
@@ -246,9 +282,10 @@ public static class BlueprintStore
         return file;
     }
 
+    // Some tools write a decimal comma; only numbers are read this way, so commas in a sign's text stay.
     private static float Parse(string text)
     {
-        return float.TryParse(text.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float value) ? value : 0f;
+        return float.TryParse(text.Trim().Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out float value) ? value : 0f;
     }
 
     private static string Number(float value)
@@ -267,12 +304,28 @@ public static class BlueprintStore
         return "\"" + escaped + "\"";
     }
 
+    // Undoes Quote one escape at a time, so a backslash written before an n stays a backslash and an n.
     private static string Unquote(string text)
     {
         text = text.Trim();
         if (text.Length >= 2 && text[0] == '"' && text[text.Length - 1] == '"')
         {
-            text = text.Substring(1, text.Length - 2).Replace("\\n", "\n").Replace("\\\"", "\"").Replace("\\\\", "\\");
+            StringBuilder plain = new(text.Length);
+            for (int i = 1; i < text.Length - 1; i++)
+            {
+                char c = text[i];
+                if (c == '\\' && i + 1 < text.Length - 1)
+                {
+                    char next = text[++i];
+                    plain.Append(next == 'n' ? '\n' : next);
+                }
+                else
+                {
+                    plain.Append(c);
+                }
+            }
+
+            text = plain.ToString();
         }
 
         return string.IsNullOrEmpty(text) ? null : text;

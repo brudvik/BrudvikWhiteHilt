@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Tests for the parts of the mod that run without the game: parsing and writing files, keys, and checks that the
+    embedded data and translations fit the code. They load the built mod from BrudvikWhiteHilt\bin\<Configuration>,
+    so build the mod first (Visual Studio does, as the solution builds it before the tests).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>10</LangVersion>
+    <IsPackable>false</IsPackable>
+    <ModOutput>$(MSBuildThisFileDirectory)..\BrudvikWhiteHilt\bin\$(Configuration)\</ModOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BrudvikWhiteHilt">
+      <HintPath>$(ModOutput)BrudvikWhiteHilt.dll</HintPath>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>$(ModOutput)assembly_valheim_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ModOutput)UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <!-- Everything the mod needs at run time, including Unity's netstandard 2.1, which .NET Framework does not have. -->
+    <None Include="$(ModOutput)*.dll" Exclude="$(ModOutput)BrudvikWhiteHilt.dll" Visible="false">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <!-- The publicized copy is loaded by its assembly name, so it needs that file name too. -->
+    <None Include="$(ModOutput)assembly_valheim_publicized.dll" Link="assembly_valheim.dll" Visible="false">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
