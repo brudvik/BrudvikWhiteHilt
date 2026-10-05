@@ -6,7 +6,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 
 | Page | What you find there |
 |------|---------------------|
-| [Around the base](base.md) | Surt's Brazier, the Rushlight, crafting and building from nearby chests, chest search, the guestbook, the crafting panel, the Waste Well, the Trophy Altar and self-closing doors |
+| [Around the base](base.md) | Surt's Brazier, the Rushlight, crafting and building from nearby chests, the Quartermaster's Table, chest search, the guestbook, the crafting panel, the Waste Well, the Trophy Altar and self-closing doors |
 | [Defences](defences.md) | The palisade fort: ramparts, gatehouse, watchtowers, stairs, moats and the drawbridge |
 | [Stonework](stonework.md) | Memorial stones, soapstone lamps, the hnefatafl board, ship settings, stone rings, slate floors and dry stone walls |
 | [Roofs](roofs.md) | Turf, reed, straw, shingle and slate roofs, smoke holes, dragon gables and their materials |

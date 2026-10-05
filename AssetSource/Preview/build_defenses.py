@@ -536,6 +536,35 @@ def chart_table():
     return parts, colliders, groups
 
 
+def quartermaster_table():
+    """The quartermaster's table: a long plank counter with a tally board on its back legs, an open ledger and two
+    scrolls on top, a plank chest at the left end and two crates stacked at the right."""
+    top = 0.85
+    board = 1.75
+    parts = [part("wood_floor_1x1", (0, top - 0.08, 0), scale=(2.0, 1, 0.8)),
+             part("wood_floor_1x1", (0, 0.22, 0), scale=(1.8, 0.6, 0.6))]
+    for x in (-0.92, 0.92):
+        parts.append(part("wood_pole", (x, (top - 0.1) / 2, 0.32), scale=(0.2, top - 0.1, 0.2)))
+        parts.append(part("wood_pole", (x, board / 2, -0.33), scale=(0.2, board, 0.2)))
+    parts.append(part("wood_floor_1x1", (0, 1.38, -0.36), (90, 0, 0), (1.84, 0.5, 0.55)))
+    parts.append(log((-0.98, board - 0.05, -0.33), (0.98, board - 0.05, -0.33), 0.04))
+    parts.append(part("seachart", (-0.3, top + 0.005, 0.08), (90, 8, 0), (0.4, 0.4, 0.4)))
+    parts.append(part("mapscroll", (0.45, top, -0.05), (0, 12, 0), (SCROLL_SCALE,) * 3, detail=True))
+    parts.append(part("mapscroll", (0.5, top + SCROLL_SCALE, -0.02), (0, -6, 0), (SCROLL_SCALE,) * 3, detail=True))
+    # A plank chest along z with a darker lid and two iron bands over it.
+    parts.append(part("wood_beam", (-1.48, 0.25, 0), scale=(0.28, 1.25, 2.4)))
+    parts.append(part("wood_beam", (-1.48, 0.56, 0), scale=(0.3, 0.3, 2.5), tint=[0.75, 0.7, 0.65]))
+    for z in (-0.3, 0.3):
+        parts.append(part("wood_beam", (-1.48, 0.33, z), scale=(0.31, 1.65, 0.08), tint=[0.35, 0.35, 0.37]))
+    parts.append(part("wood_beam", (1.42, 0.28, 0.05), scale=(0.28, 1.4, 1.4)))
+    parts.append(part("wood_beam", (1.4, 0.56 + 0.2, 0.02), (0, 14, 0), (0.2, 1.0, 1.0)))
+    colliders = [box((0, top / 2, 0), (2.0, top, 0.8)),
+                 box((0, (top + board) / 2, -0.35), (2.0, board - top, 0.16)),
+                 box((-1.48, 0.33, 0), (0.6, 0.66, 1.0)),
+                 box((1.42, 0.48, 0.05), (0.58, 0.96, 0.58))]
+    return parts, colliders, []
+
+
 def carto_desk():
     """The cartographer's desk: the writing desk with a sea chart, a sextant and map scrolls on top.
 
@@ -867,6 +896,7 @@ def main():
                           keep=["roof_check_pint", "connectionEffectPoint", "PlayerBase", "GuidePoint", "AreaMarker"],
                           views=views(("front", 160, 10), ("side", 90, 10), ("angle", -140, 25))))
     pieces.append(defence("gjestebok", "wood_pole2", *guestbook(), views=views(("front", 180, 20), ("side", 90, 15), ("angle", -140, 30))))
+    pieces.append(defence("forradsbord", "wood_pole2", *quartermaster_table(), views=views(("front", 180, 20), ("side", 90, 15), ("angle", -140, 30))))
     pieces.append({"name": "oversikt", "parts": [
         piece("skanseport"),
         piece("skansevegg", (-6.4, 0, 0)),

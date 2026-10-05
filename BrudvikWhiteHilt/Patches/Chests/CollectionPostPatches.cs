@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Chests;
 using BrudvikWhiteHilt.Chests.Collection;
 using HarmonyLib;
 
@@ -9,9 +10,9 @@ internal static class CollectionPostPatches
     [HarmonyPatch(typeof(Container), "Awake"), HarmonyPostfix]
     private static void Register(Container __instance)
     {
-        if (CollectionPostComponent.Module != null && CollectionPostComponent.Module.IsCollectionChest(__instance)
-            && __instance.m_nview != null && __instance.m_nview.IsValid())
-            __instance.gameObject.AddComponent<CollectionChestLink>();
+        // Every container, not only the White Hilt chests: the Quartermaster's Table also takes from and loads carts,
+        // ship holds and ordinary chests.
+        ContainerHandoff.Attach(__instance);
     }
 
     [HarmonyPatch(typeof(Container), nameof(Container.GetHoverText)), HarmonyPostfix]

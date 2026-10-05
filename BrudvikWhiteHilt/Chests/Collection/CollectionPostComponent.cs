@@ -225,7 +225,7 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         {
             if (priority > heldBack) break;
             if (!canContinue()) { waiting = true; return; }
-            if (!Link(chest).Ready(playerId))
+            if (!ContainerHandoff.Ready(chest, playerId))
             {
                 waiting = true;
                 heldBack = priority;
@@ -251,12 +251,6 @@ internal sealed class CollectionPostComponent : MonoBehaviour
             .ThenBy(entry => entry.Chest.GetInventory().ContainsItemByName(item.m_shared.m_name) ? 0 : 1)
             .ThenBy(entry => (entry.Chest.transform.position - from).sqrMagnitude)
             .ToList();
-
-    private static CollectionChestLink Link(Container chest)
-    {
-        var link = chest.GetComponent<CollectionChestLink>();
-        return link != null ? link : chest.gameObject.AddComponent<CollectionChestLink>();
-    }
 
     private void Announce()
     {

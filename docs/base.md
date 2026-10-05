@@ -41,6 +41,37 @@ The `ChestCrafting` config section sets the range (`Range` for crafting, fuel an
 
 ---
 
+## 🗃️ QUARTERMASTER'S TABLE
+
+A counter with a ledger and a tally board, with a chest at one end and crates at the other. Use it (**E**) to open **the store**: everything that lies in the chests, carts and ship holds within 30 m of the table, as one list. You no longer have to go through chest after chest to gather what you need before you head out.
+
+- **Into your bag, a cart or a ship**: the button at the top right chooses where taken items go: your bag, or a cart or ship hold within the table's range. Load the cart at the storehouse and pull it to the outpost. The chosen cart or ship is not taken from.
+- **Taking**: click an item to take a stack of it. Unlimited items show ∞ and give a full stack each time, as their chest refills. Of items players stored themselves you get at most a stack at a time, and the last one always stays in the chests (`KeepAtLeast`), so the store is never emptied of anything. Gear, items with skill stars and items with their own data, such as a dog's name, are not offered.
+- **Filter and search**: buttons for each chest the items lie in (Wood Chest, Stone Chest, … and *Other* for ordinary chests, carts and ship holds), and a search field.
+- **Putting back**: under the store, the stacks in your bag that a White Hilt chest here takes. Click one to put all of it back, sorted like the [Collection Post](chests.md) does: category chests first, then the Everlasting Chest.
+- **Pack for a build**: the second page lists the piece selected in your hammer, your pack lists and your saved [blueprints](build-tools.md). Choose one and how many copies, and **Pack** takes what is missing, a stack at a time and by the same rules. What the store cannot cover shows in red.
+- **Pack lists**: kits of your own, such as *Outpost: 200 wood, 100 stone, 20 iron*. **New list** starts an empty one: name it at the top and Shift + click items in the store to add a stack of each, then fine-tune with - and + (10 at a time, 1 with Shift). **Save as list** turns the chosen piece or blueprint, times the copies, into a list. The lists are yours, not the world's, and are kept in `BepInEx/config/BrudvikWhiteHilt/packlists.txt`, so they work at every table and in every world.
+- **Stock warnings**: right click an item in the store to watch it. The third page sets the amount below which it counts as low (a stack to begin with). When a watched item runs low, the table glows red and its hover text lists what is low; low items also show their amount in red in the store. Items a chest keeps without limit are never low. The watch list belongs to the table, so everyone who uses it sees the same warnings.
+- The range is measured from the table, not from you, so set it up in the middle of the storehouse. While you place it or look at it, a ring on the ground shows the range. A base can have several tables.
+- It needs no workbench and stands on its own, so it also works at an outpost. The same chests are used as for crafting from chests: private chests of others, chests inside someone else's ward and chests another player has open are skipped, and `ChestCrafting` `ExcludedContainers` and `ExcludedItems` apply.
+- **In multiplayer**, every chest, cart and ship hold a click touches is first handed over to you with its newest contents, like the Collection Post does, so two players using the same chests never overwrite each other. The window says *Waiting for the chests...* meanwhile, usually for a moment. A chest that is not handed over within three seconds, for instance because someone has it open, is left out.
+
+| Piece | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Quartermaster's Table** | Opens the store of the chests around it | None | Wood ×20, Stone ×8, Leather Scraps ×4, Flint ×4 |
+
+| Setting (`Quartermaster`) | Default | Description |
+|---------|---------|-------------|
+| `Enabled` | on | The table opens the store (server) |
+| `Range` | 30 | How far from the table a chest may be, in metres (server) |
+| `IncludeFinite` | on | Also offer items players stored themselves, not only unlimited ones (server) |
+| `KeepAtLeast` | 1 | How many of an item players stored always stay in the chests (server) |
+| `ShowRangeRing` | on | Show the range on the ground while placing or looking at the table (each player) |
+
+The build recipe and progression tier use the usual **Recipes** and **Tiers** entry `piece_whitehilt_forradsbord` (Meadows by default).
+
+---
+
 ## 🔎 SEARCHING THE CHESTS
 
 Press **F9** and type part of an item's name. Every chest, cart and ship hold within 100 m that you may open and that holds a match glows and gets a pin on the map, and the list shows each match with how many there are and in how many chests. The chests keep glowing and their pins stay for 60 seconds after you close the search, so you can walk to them. Only chests in the loaded world are found.

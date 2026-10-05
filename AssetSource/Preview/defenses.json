@@ -14432,6 +14432,348 @@
    ]
   },
   {
+   "name": "forradsbord",
+   "base": "wood_pole2",
+   "parts": [
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      0.77,
+      0
+     ],
+     "scale": [
+      2.0,
+      1,
+      0.8
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      0.22,
+      0
+     ],
+     "scale": [
+      1.8,
+      0.6,
+      0.6
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.92,
+      0.375,
+      0.32
+     ],
+     "scale": [
+      0.2,
+      0.75,
+      0.2
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      -0.92,
+      0.875,
+      -0.33
+     ],
+     "scale": [
+      0.2,
+      1.75,
+      0.2
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.92,
+      0.375,
+      0.32
+     ],
+     "scale": [
+      0.2,
+      0.75,
+      0.2
+     ]
+    },
+    {
+     "mesh": "wood_pole",
+     "position": [
+      0.92,
+      0.875,
+      -0.33
+     ],
+     "scale": [
+      0.2,
+      1.75,
+      0.2
+     ]
+    },
+    {
+     "mesh": "wood_floor_1x1",
+     "position": [
+      0,
+      1.38,
+      -0.36
+     ],
+     "rotation": [
+      90,
+      0,
+      0
+     ],
+     "scale": [
+      1.84,
+      0.5,
+      0.55
+     ]
+    },
+    {
+     "mesh": "stake_support",
+     "position": [
+      0.0,
+      1.7,
+      -0.33
+     ],
+     "rotation": [
+      -0.0,
+      90.0,
+      0
+     ],
+     "scale": [
+      0.364,
+      0.364,
+      0.933
+     ]
+    },
+    {
+     "mesh": "seachart",
+     "position": [
+      -0.3,
+      0.855,
+      0.08
+     ],
+     "rotation": [
+      90,
+      8,
+      0
+     ],
+     "scale": [
+      0.4,
+      0.4,
+      0.4
+     ]
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.45,
+      0.85,
+      -0.05
+     ],
+     "rotation": [
+      0,
+      12,
+      0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "mapscroll",
+     "position": [
+      0.5,
+      0.905,
+      -0.02
+     ],
+     "rotation": [
+      0,
+      -6,
+      0
+     ],
+     "scale": [
+      0.055,
+      0.055,
+      0.055
+     ],
+     "detail": true
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.48,
+      0.25,
+      0
+     ],
+     "scale": [
+      0.28,
+      1.25,
+      2.4
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.48,
+      0.56,
+      0
+     ],
+     "scale": [
+      0.3,
+      0.3,
+      2.5
+     ],
+     "tint": [
+      0.75,
+      0.7,
+      0.65
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.48,
+      0.33,
+      -0.3
+     ],
+     "scale": [
+      0.31,
+      1.65,
+      0.08
+     ],
+     "tint": [
+      0.35,
+      0.35,
+      0.37
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      -1.48,
+      0.33,
+      0.3
+     ],
+     "scale": [
+      0.31,
+      1.65,
+      0.08
+     ],
+     "tint": [
+      0.35,
+      0.35,
+      0.37
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.42,
+      0.28,
+      0.05
+     ],
+     "scale": [
+      0.28,
+      1.4,
+      1.4
+     ]
+    },
+    {
+     "mesh": "wood_beam",
+     "position": [
+      1.4,
+      0.76,
+      0.02
+     ],
+     "rotation": [
+      0,
+      14,
+      0
+     ],
+     "scale": [
+      0.2,
+      1.0,
+      1.0
+     ]
+    }
+   ],
+   "colliders": [
+    {
+     "center": [
+      0,
+      0.425,
+      0
+     ],
+     "size": [
+      2.0,
+      0.85,
+      0.8
+     ]
+    },
+    {
+     "center": [
+      0,
+      1.3,
+      -0.35
+     ],
+     "size": [
+      2.0,
+      0.9,
+      0.16
+     ]
+    },
+    {
+     "center": [
+      -1.48,
+      0.33,
+      0
+     ],
+     "size": [
+      0.6,
+      0.66,
+      1.0
+     ]
+    },
+    {
+     "center": [
+      1.42,
+      0.48,
+      0.05
+     ],
+     "size": [
+      0.58,
+      0.96,
+      0.58
+     ]
+    }
+   ],
+   "snapPoints": [],
+   "views": [
+    {
+     "label": "front",
+     "yaw": 180,
+     "pitch": 20
+    },
+    {
+     "label": "side",
+     "yaw": 90,
+     "pitch": 15
+    },
+    {
+     "label": "angle",
+     "yaw": -140,
+     "pitch": 30
+    }
+   ]
+  },
+  {
    "name": "oversikt",
    "parts": [
     {

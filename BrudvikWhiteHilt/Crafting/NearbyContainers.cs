@@ -186,7 +186,7 @@ public static class NearbyContainers
     /// <returns>The number available.</returns>
     public static int Count(Use use, string name, int quality = -1)
     {
-        if (IsExcludedItem(name))
+        if (IsExcluded(name))
         {
             return 0;
         }
@@ -216,7 +216,7 @@ public static class NearbyContainers
     /// <returns>True if a chest in range refills the item.</returns>
     public static bool IsUnlimitedNearby(Use use, string name)
     {
-        if (Unlimited == null || IsExcludedItem(name))
+        if (Unlimited == null || IsExcluded(name))
         {
             return false;
         }
@@ -244,13 +244,26 @@ public static class NearbyContainers
     /// <returns>How many were taken.</returns>
     public static int Take(Use use, string name, int amount, int quality = -1)
     {
-        if (amount <= 0 || IsExcludedItem(name))
+        return TakeFrom(GetNearby(use).ToList(), name, amount, quality);
+    }
+
+    /// <summary>
+    /// Takes up to <paramref name="amount"/> of an item out of the given containers, in their order.
+    /// </summary>
+    /// <param name="containers">The containers, e.g. from <see cref="Around"/>.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="amount">How many to take.</param>
+    /// <param name="quality">Item quality, or -1 for any.</param>
+    /// <returns>How many were taken.</returns>
+    public static int TakeFrom(IEnumerable<Container> containers, string name, int amount, int quality = -1)
+    {
+        if (amount <= 0 || IsExcluded(name))
         {
             return 0;
         }
 
         int taken = 0;
-        foreach (Container container in GetNearby(use).ToList())
+        foreach (Container container in containers)
         {
             if (container == null || !container.m_nview.IsValid() || Available(container, name, quality) <= 0)
             {
@@ -344,9 +357,29 @@ public static class NearbyContainers
         listTime = Time.time;
         listPosition = position;
         nearby.Clear();
-        all.RemoveWhere(container => container == null);
         float reach = Mathf.Max(range.Value, buildRange.Value);
         float maxDistance = reach * reach;
+        CollectUsable(position, maxDistance, nearby);
+        return nearby;
+    }
+
+    /// <summary>
+    /// The containers the local player may take from within <paramref name="reach"/> of a point, nearest first.
+    /// </summary>
+    /// <param name="position">The centre, e.g. a quartermaster's table.</param>
+    /// <param name="reach">The range in metres.</param>
+    /// <returns>The containers.</returns>
+    public static List<Container> Around(Vector3 position, float reach)
+    {
+        List<(Container Container, float SqrDistance)> found = new();
+        CollectUsable(position, reach * reach, found);
+        return found.Select(entry => entry.Container).ToList();
+    }
+
+    // Adds the containers within range that the local player may use, nearest first.
+    private static void CollectUsable(Vector3 position, float maxDistance, List<(Container Container, float SqrDistance)> found)
+    {
+        all.RemoveWhere(container => container == null);
         long playerId = Game.instance.GetPlayerProfile().GetPlayerID();
         foreach (Container container in all)
         {
@@ -368,14 +401,18 @@ public static class NearbyContainers
                 continue;
             }
 
-            nearby.Add((container, sqrDistance));
+            found.Add((container, sqrDistance));
         }
 
-        nearby.Sort((a, b) => a.SqrDistance.CompareTo(b.SqrDistance));
-        return nearby;
+        found.Sort((a, b) => a.SqrDistance.CompareTo(b.SqrDistance));
     }
 
-    private static bool IsExcludedItem(string name)
+    /// <summary>
+    /// Checks whether an item may never be taken from chests (<c>ExcludedItems</c>).
+    /// </summary>
+    /// <param name="name">Shared item name.</param>
+    /// <returns>True if the item is excluded.</returns>
+    public static bool IsExcluded(string name)
     {
         if (excludedItemSet == null)
         {

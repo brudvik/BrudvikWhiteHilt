@@ -185,6 +185,15 @@ namespace BrudvikWhiteHilt.Chests
 
         internal bool IsCollectionChest(Container container) => !IsDestroyed(container) && FindPiece(container) != null;
 
+        // The name of the White Hilt chest a container is, or null for any other container.
+        internal string? GetChestLabel(Container container)
+        {
+            var piece = FindPiece(container);
+            if (piece == null) return null;
+            var category = piece.CustomPieceConfig.ItemCategory;
+            return category == ChestCategory.None ? Texts.Localize(piece.Tooltip) : GetChestName(category);
+        }
+
         internal IReadOnlyList<string> GetGatherableItems(Heightmap.Biome biome) => biomeCatalog.GetItems(biome);
 
         internal int CollectionPriority(Container container, ItemDrop.ItemData item)

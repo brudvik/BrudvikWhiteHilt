@@ -36,7 +36,11 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.90.0
+## ✨ New in 0.91.0
+
+- **[Quartermaster's Table](docs/base.md)**: everything in the chests around it as one store. Take a stack with a click, load a cart or ship, pack your own kits or what a blueprint needs, and get a warning when stock runs low.
+
+### Also new in 0.90.0
 
 - **[Stonework](docs/stonework.md)**: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings, slate floors and steps, and dry stone walls, all from the Stonecutter.
 - **[Soapstone Cauldron](docs/foraging.md)**: Stone Pot level 4, with fish soup, juniper lox pot and cloudberry porridge.
@@ -65,7 +69,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 
 <table>
 <tr>
-<td align="center" width="33%" valign="top"><a href="docs/base.md"><img src="docs/images/waste_well.png" height="110" alt=""></a><br><b><a href="docs/base.md">Around the base</a></b><br><sub>Fires without fuel, crafting from nearby chests, a guestbook, a waste well and self-closing doors.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/base.md"><img src="docs/images/waste_well.png" height="110" alt=""></a><br><b><a href="docs/base.md">Around the base</a></b><br><sub>Fires without fuel, crafting from nearby chests, a quartermaster's table, a guestbook, a waste well and self-closing doors.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/defences.md"><img src="docs/images/fort_overview.png" height="110" alt=""></a><br><b><a href="docs/defences.md">Defences</a></b><br><sub>A palisade fort with ramparts, gatehouse and watchtowers, moats and a drawbridge.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/stonework.md"><img src="docs/images/memorial_stone.png" height="110" alt=""></a><br><b><a href="docs/stonework.md">Stonework</a></b><br><sub>Memorial stones, soapstone lamps, hnefatafl, ship settings, slate floors and dry stone walls.</sub></td>
 </tr>

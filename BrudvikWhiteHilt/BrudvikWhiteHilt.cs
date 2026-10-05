@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
     public const string PluginName = "BrudvikWhiteHilt";
-    public const string PluginVersion = "0.90.0";
+    public const string PluginVersion = "0.91.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -92,6 +92,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Saga.SagaSettings.Initialize();
         Storage.StorageSearch.Initialize();
         Guestbook.GuestbookSettings.Initialize();
+        Quartermaster.QuartermasterSettings.Initialize();
         Bestiary.BeastBookSettings.Initialize();
         Bestiary.BeastCounter.Initialize();
         Building.Doors.AutoDoorSettings.Initialize();
@@ -144,6 +145,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Navigation.Discoveries.DiscoveryPanel.Chests = chests;
         Chests.Collection.CollectionSettings.Initialize();
         Chests.Collection.CollectionPostComponent.Module = chests;
+        Quartermaster.QuartermasterStore.Module = chests;
         Chests.ChestCensus.RegisterCommand();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.

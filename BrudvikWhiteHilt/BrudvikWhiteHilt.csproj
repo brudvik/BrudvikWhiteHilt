@@ -80,7 +80,7 @@
     <Compile Include="Items\Summoning\SummoningHorn.cs" />
     <Compile Include="Items\Summoning\HornCaller.cs" />
     <Compile Include="Chests\Collection\CollectionSettings.cs" />
-    <Compile Include="Chests\Collection\CollectionChestLink.cs" />
+    <Compile Include="Chests\ContainerHandoff.cs" />
     <Compile Include="Chests\Collection\CollectionPostComponent.cs" />
     <Compile Include="Pieces\Storage\CollectionPost.cs" />
     <Compile Include="Patches\Chests\CollectionPostPatches.cs" />
@@ -644,6 +644,14 @@
     <Compile Include="Guestbook\GuestbookStand.cs" />
     <Compile Include="Pieces\Guestbook\GuestbookPiece.cs" />
     <Compile Include="Patches\Guestbook\GuestbookPatches.cs" />
+    <Compile Include="Quartermaster\PackLists.cs" />
+    <Compile Include="Quartermaster\QuartermasterPanel.cs" />
+    <Compile Include="Quartermaster\StockWatch.cs" />
+    <Compile Include="Quartermaster\QuartermasterSettings.cs" />
+    <Compile Include="Quartermaster\QuartermasterStand.cs" />
+    <Compile Include="Quartermaster\QuartermasterStore.cs" />
+    <Compile Include="Pieces\Storage\QuartermasterTable.cs" />
+    <Compile Include="Patches\Quartermaster\QuartermasterPatches.cs" />
     <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
     <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />
