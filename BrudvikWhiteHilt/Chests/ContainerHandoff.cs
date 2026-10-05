@@ -18,6 +18,7 @@ internal sealed class ContainerHandoff : MonoBehaviour
     private const float DefaultRetrySeconds = 5f;
 
     private ZNetView view;
+    private List<Container> containers;
     private long sequence;
     private bool pending;
     private long revision = -1;
@@ -54,6 +55,23 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return handoff != null ? handoff.Ready(playerId) : container.m_nview.IsOwner() && !container.IsInUse();
     }
 
+    /// <summary>
+    /// Checks, without asking anyone, whether the local player holds a container: owns it with its newest contents,
+    /// and nobody has it open. Only a held container may be changed straight away.
+    /// </summary>
+    /// <param name="container">The container.</param>
+    /// <returns>True if the container is held.</returns>
+    internal static bool Held(Container container)
+    {
+        if (container == null || container.m_nview == null || !container.m_nview.IsValid())
+        {
+            return false;
+        }
+
+        ContainerHandoff handoff = container.m_nview.GetComponent<ContainerHandoff>();
+        return handoff != null ? handoff.Held() : container.m_nview.IsOwner() && !container.IsInUse();
+    }
+
     private void Register(ZNetView nview)
     {
         view = nview;
@@ -61,14 +79,48 @@ internal sealed class ContainerHandoff : MonoBehaviour
         view.Register<long, ZPackage>(ResponseRpc, Response);
     }
 
-    private IEnumerable<Container> Containers()
+    // Looked up once: the build menu asks whether a chest is held for every piece it shows.
+    private List<Container> Containers()
     {
-        return view.GetComponentsInChildren<Container>(true).Where(container => container.m_nview == view);
+        if (containers == null || containers.Any(container => container == null))
+        {
+            containers = view.GetComponentsInChildren<Container>(true).Where(container => container.m_nview == view).ToList();
+        }
+
+        return containers;
     }
 
     private bool InUse()
     {
         return view.GetZDO().GetInt(ZDOVars.s_inUse) != 0 || Containers().Any(container => container.IsInUse());
+    }
+
+    private bool Held()
+    {
+        return view != null && view.IsValid() && !InUse() && Settle() && view.IsOwner();
+    }
+
+    // Loads the contents once the handed-over data has arrived. False while still waiting for it.
+    private bool Settle()
+    {
+        if (!pending)
+        {
+            return true;
+        }
+
+        if (revision < 0 || !view.IsOwner() || view.GetZDO().DataRevision < revision)
+        {
+            return false;
+        }
+
+        foreach (Container container in Containers())
+        {
+            container.Load();
+        }
+
+        pending = false;
+        revision = -1;
+        return true;
     }
 
     private bool Ready(long playerId)
@@ -78,19 +130,17 @@ internal sealed class ContainerHandoff : MonoBehaviour
             return false;
         }
 
+        // Nobody to ask: a container without an owner is simply taken, like vanilla does with objects nobody owns.
+        if (!view.GetZDO().HasOwner())
+        {
+            view.ClaimOwnership();
+            pending = false;
+            revision = -1;
+        }
+
         if (pending)
         {
-            if (revision >= 0 && view.IsOwner() && view.GetZDO().DataRevision >= revision)
-            {
-                foreach (Container container in Containers())
-                {
-                    container.Load();
-                }
-
-                pending = false;
-                revision = -1;
-            }
-            else
+            if (!Settle())
             {
                 float retry = CollectionSettings.OwnershipRetry?.Value ?? DefaultRetrySeconds;
                 if (!view.IsOwner() && Time.time - requestedAt >= retry)
@@ -124,13 +174,13 @@ internal sealed class ContainerHandoff : MonoBehaviour
             return;
         }
 
-        List<Container> containers = Containers().ToList();
+        List<Container> all = Containers();
         ZPackage data = new();
-        bool granted = !InUse() && containers.All(container => container.CheckAccess(playerId));
+        bool granted = !InUse() && all.All(container => container.CheckAccess(playerId));
         data.Write(granted);
         if (granted)
         {
-            foreach (Container container in containers)
+            foreach (Container container in all)
             {
                 container.Load();
                 container.Save();

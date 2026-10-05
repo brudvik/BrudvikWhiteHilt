@@ -1,5 +1,6 @@
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Chests;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using System;
@@ -12,6 +13,10 @@ namespace BrudvikWhiteHilt.Crafting;
 /// <summary>
 /// Lets the local player craft, build, fuel and cook with what lies in the chests around them, as if it were in their
 /// inventory. Only containers the player may open are used (private chests, wards), and never one another player has open.
+/// In multiplayer only chests handed over to the player (<see cref="ContainerHandoff"/>) count and are taken from, so
+/// two players never write the same chest at once. They are asked for when the player gets ready to use them: takes
+/// out the hammer, opens the crafting panel or looks at a smelter, fire or cooking station. Alone or as the host the
+/// player owns every chest, and nothing waits.
 /// </summary>
 public static class NearbyContainers
 {
@@ -41,10 +46,17 @@ public static class NearbyContainers
     // The build menu checks every piece each frame, so counts are reused for a moment; taking from a chest clears them.
     private const float CountLifetime = 0.25f;
 
+    // How often the chests around a player who is about to use them are looked at, and how long before a chest that is
+    // not handed over is asked for again. The wait keeps two busy players from passing chests back and forth.
+    private const float WarmInterval = 0.5f;
+    private const float RequestCooldown = 10f;
+    private const int RequestedLimit = 500;
+
     private static readonly HashSet<Container> all = new();
     private static readonly List<(Container Container, float SqrDistance)> nearby = new();
     private static readonly Dictionary<(string Name, int Quality, bool Building), int> countCache = new();
     private static readonly Dictionary<(string Name, bool Building), bool> unlimitedCache = new();
+    private static readonly Dictionary<Container, float> requested = new();
 
     private static ConfigEntry<bool> enabled;
     private static ConfigEntry<float> range;
@@ -67,6 +79,7 @@ public static class NearbyContainers
     private static float listTime = float.NegativeInfinity;
     private static Vector3 listPosition;
     private static float countTime = float.NegativeInfinity;
+    private static float nextWarm;
 
     /// <summary>
     /// True while the fill-all key (Shift by default) is held: fuel and ore are filled up in one go.
@@ -178,6 +191,43 @@ public static class NearbyContainers
     }
 
     /// <summary>
+    /// Asks for the chests around the local player to be handed over while the player gets ready to use them, so
+    /// they count and can be taken from by the time the player clicks. Call once a frame for the local player.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    public static void Warm(Player player)
+    {
+        if (Time.time < nextWarm)
+        {
+            return;
+        }
+
+        nextWarm = Time.time + WarmInterval;
+        Use? use = UpcomingUse(player);
+        if (use == null || !IsActive(use.Value))
+        {
+            return;
+        }
+
+        if (requested.Count > RequestedLimit)
+        {
+            requested.Clear();
+        }
+
+        long playerId = player.GetPlayerID();
+        foreach (Container container in InRange(use.Value))
+        {
+            if (ContainerHandoff.Held(container) || (requested.TryGetValue(container, out float at) && Time.time - at < RequestCooldown))
+            {
+                continue;
+            }
+
+            requested[container] = Time.time;
+            ContainerHandoff.Ready(container, playerId);
+        }
+    }
+
+    /// <summary>
     /// How many of an item lie in the chests around the local player.
     /// </summary>
     /// <param name="use">What the items are wanted for; building has its own range.</param>
@@ -270,9 +320,12 @@ public static class NearbyContainers
                 continue;
             }
 
-            // Taking ownership is what opening the chest does too; loading first picks up changes of the last second.
-            container.m_nview.ClaimOwnership();
-            container.Load();
+            // Only a chest this player owns is written; it was handed over with its newest contents.
+            if (!container.m_nview.IsOwner())
+            {
+                continue;
+            }
+
             int take = Mathf.Min(amount - taken, Available(container, name, quality));
             if (take <= 0)
             {
@@ -319,12 +372,46 @@ public static class NearbyContainers
         return leaveOne.Value ? Mathf.Max(0, count - 1) : count;
     }
 
-    // The containers in range for a use, nearest first.
+    // The containers in range for a use that the player holds, nearest first: the ones that count and are taken from.
     private static IEnumerable<Container> GetNearby(Use use)
+    {
+        return InRange(use).Where(ContainerHandoff.Held);
+    }
+
+    // The containers in range for a use, nearest first, held or not.
+    private static IEnumerable<Container> InRange(Use use)
     {
         float reach = use == Use.Building ? buildRange.Value : range.Value;
         float maxDistance = reach * reach;
         return RefreshNearby().TakeWhile(entry => entry.SqrDistance <= maxDistance).Select(entry => entry.Container);
+    }
+
+    // What the player is getting ready to do with the chests: building with a build tool out, crafting with the
+    // inventory open, or fuelling or cooking while looking at a station.
+    private static Use? UpcomingUse(Player player)
+    {
+        if (player.InPlaceMode())
+        {
+            return Use.Building;
+        }
+
+        if (InventoryGui.IsVisible())
+        {
+            return Use.Crafting;
+        }
+
+        GameObject hovered = player.GetHoverObject();
+        if (hovered == null)
+        {
+            return null;
+        }
+
+        if (hovered.GetComponentInParent<CookingStation>() != null)
+        {
+            return IsActive(Use.Cooking) ? Use.Cooking : Use.FuelAndOre;
+        }
+
+        return hovered.GetComponentInParent<Smelter>() != null || hovered.GetComponentInParent<Fireplace>() != null ? Use.FuelAndOre : null;
     }
 
     private static void ForgetNearby()

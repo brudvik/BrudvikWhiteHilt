@@ -35,7 +35,8 @@ public static class NearbyContainerPatches
     }
 
     /// <summary>
-    /// Switches the use of chests off and on with the toggle key.
+    /// Switches the use of chests off and on with the toggle key, and asks for the chests around the player to be
+    /// handed over when the player gets ready to use them.
     /// </summary>
     /// <param name="__instance">The player.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.Update))]
@@ -45,6 +46,7 @@ public static class NearbyContainerPatches
         if (__instance == Player.m_localPlayer)
         {
             NearbyContainers.CheckToggleKey(__instance);
+            NearbyContainers.Warm(__instance);
         }
     }
 
