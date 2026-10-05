@@ -13,8 +13,6 @@ namespace BrudvikWhiteHilt.Bestiary;
 /// <summary>A crafted material counter, its recipe and the beast it affects.</summary>
 public sealed class BeastCounter
 {
-    private const string KnownBiomesKey = "whitehilt_bestiary_biomes";
-
     /// <summary>The nine distinct material counters, in book order.</summary>
     public static readonly BeastCounter[] All =
     {
@@ -157,12 +155,7 @@ public sealed class BeastCounter
     /// <param name="biome">Discovered biome, independent of its localized sector name.</param>
     public static void DiscoverBiome(Player player, Heightmap.Biome biome)
     {
-        if (player == null || biome == Heightmap.Biome.None)
-        {
-            return;
-        }
-        Heightmap.Biome known = KnownBiomes(player) | biome;
-        player.m_customData[KnownBiomesKey] = ((int)known).ToString(CultureInfo.InvariantCulture);
+        Helpers.KnownBiomes.Remember(player, biome);
     }
 
     /// <summary>Lists only counters belonging to a biome this character has already discovered.</summary>
@@ -170,7 +163,7 @@ public sealed class BeastCounter
     /// <returns>Discovered pages, in stable book order. A multibiome beast appears once.</returns>
     public static BeastCounter[] Discovered(Player player)
     {
-        Heightmap.Biome known = KnownBiomes(player);
+        Heightmap.Biome known = Helpers.KnownBiomes.Of(player);
         return All.Where(counter => (counter.Beast.Biome & known) != Heightmap.Biome.None).ToArray();
     }
 
@@ -209,33 +202,5 @@ public sealed class BeastCounter
             combat += damage.m_pickaxe;
         }
         hit.m_damage.m_nonPlayer += Mathf.Max(0f, combat) * counter.Bonus;
-    }
-
-    private static Heightmap.Biome KnownBiomes(Player player)
-    {
-        if (player == null)
-        {
-            return Heightmap.Biome.None;
-        }
-        Heightmap.Biome known = Heightmap.Biome.None;
-        if (player.m_customData.TryGetValue(KnownBiomesKey, out string saved)
-            && int.TryParse(saved, NumberStyles.Integer, CultureInfo.InvariantCulture, out int mask))
-        {
-            known = (Heightmap.Biome)mask;
-        }
-        foreach (Heightmap.Biome biome in Enum.GetValues(typeof(Heightmap.Biome)))
-        {
-            if (biome == Heightmap.Biome.None)
-            {
-                continue;
-            }
-            string token = BiomeSector.GetBiomeName(biome);
-            string localized = Localization.instance?.Localize(token);
-            if (player.m_knownBiome.Contains(token) || (localized != null && player.m_knownBiome.Contains(localized)))
-            {
-                known |= biome;
-            }
-        }
-        return known;
     }
 }

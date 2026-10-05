@@ -63,6 +63,7 @@ namespace BrudvikWhiteHilt.Chests
         private BiomeCatalog biomeCatalog = null!;
         private ChestLearnUi learnUi = null!;
         private GatheringPanel gatheringPanel = null!;
+        private ChestFinder chestFinder = null!;
         private readonly SpriteLoader spriteLoader = new(ResourceRoot);
         private Sprite? gatheringIcon;
 
@@ -105,8 +106,10 @@ namespace BrudvikWhiteHilt.Chests
             hoverPanel = new ChestHoverPanel(chestSupply, FindPiece, () => settings.ShowHoverPanel.Value);
             biomeCatalog = new BiomeCatalog(settings);
             learnUi = new ChestLearnUi(FindPiece, () => settings.LearnAll.Value, () => settings.LearnTrophies.Value);
-            gatheringPanel = new GatheringPanel(itemCatalog, biomeCatalog, chestSupply, worldProgress, GetChestName, GetChestLook, HighlightChests,
-                LoadGatheringIcon);
+            gatheringPanel = new GatheringPanel(itemCatalog, biomeCatalog, chestSupply, worldProgress, GetChestName, GetChestLook,
+                categories => HighlightChests(categories, ChestHighlight.Range, null), LoadGatheringIcon);
+            chestFinder = new ChestFinder(itemCatalog, GetChestName, GetChestLook, (categories, reach, seconds) => HighlightChests(categories, reach, seconds),
+                () => settings.FindRange.Value);
 
             WhiteHiltConfig.File.SettingChanged += (_, _) => HandleSettingsChanged();
             SynchronizationManager.OnConfigurationSynchronized += (_, _) => HandleSettingsChanged();
@@ -130,6 +133,7 @@ namespace BrudvikWhiteHilt.Chests
             PlayerPatch.PlayerKnownItemPatched += HandlePlayerKnownItem;
             InventoryGuiPatch.InventoryGridUpdatedPatched += learnUi.HandleGridUpdated;
             InventoryGuiPatch.ItemTooltipPatched += learnUi.HandleItemTooltip;
+            InventoryGuiPatch.ItemTooltipPatched += chestFinder.HandleItemTooltip;
             InventoryGuiPatch.ContainerPanelUpdatedPatched += learnUi.HandleContainerPanelUpdated;
             MessageHudPatch.UnlockMessagePatched += learnUi.HandleUnlockMessage;
             InventoryGuiPatch.InventoryShownPatched += gatheringPanel.HandleInventoryShown;
@@ -147,6 +151,7 @@ namespace BrudvikWhiteHilt.Chests
         {
             hoverPanel?.Update();
             gatheringPanel?.Update();
+            chestFinder?.Update();
         }
 
         /// <inheritdoc/>
@@ -262,6 +267,7 @@ namespace BrudvikWhiteHilt.Chests
         private void HandleSettingsChanged()
         {
             itemCatalog.Invalidate();
+            chestFinder.Reset();
             RegisterDiscoveries(Player.m_localPlayer);
         }
 
@@ -338,21 +344,25 @@ namespace BrudvikWhiteHilt.Chests
         /// <summary>
         /// Makes the loaded chests and wall drawers of the given categories near the local player light up for a while.
         /// </summary>
+        /// <param name="categories">The chest kinds.</param>
+        /// <param name="reach">How far from the player, in metres.</param>
+        /// <param name="seconds">How long they stay lit, or null for the usual while.</param>
         /// <returns>How many light up.</returns>
-        private int HighlightChests(IReadOnlyCollection<ChestCategory> categories)
+        private int HighlightChests(IReadOnlyCollection<ChestCategory> categories, float reach, float? seconds)
         {
             var player = Player.m_localPlayer;
             if (player == null || categories.Count == 0) return 0;
 
             var count = 0;
-            var range = ChestHighlight.Range * ChestHighlight.Range;
+            var range = reach * reach;
             foreach (var container in global::BrudvikWhiteHilt.Crafting.NearbyContainers.Registered())
             {
                 var piece = FindPiece(container);
                 if (piece == null || IsDestroyed(container) || !categories.Contains(piece.CustomPieceConfig.ItemCategory)
                     || (container.transform.position - player.transform.position).sqrMagnitude > range) continue;
 
-                ChestHighlight.Flash(container, ChestEffects.GetGlowColor(piece.Color));
+                if (seconds.HasValue) ChestHighlight.Flash(container, ChestEffects.GetGlowColor(piece.Color), seconds.Value);
+                else ChestHighlight.Flash(container, ChestEffects.GetGlowColor(piece.Color));
                 count++;
             }
             return count;

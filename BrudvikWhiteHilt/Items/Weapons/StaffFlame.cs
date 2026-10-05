@@ -19,18 +19,19 @@ public static class StaffFlame
     /// </summary>
     /// <param name="model">The staff model under the attach child.</param>
     /// <param name="colour">Flame and light colour.</param>
-    public static void Apply(GameObject model, Color colour)
+    /// <param name="tip">Where the flame burns in attach space; by default just above the scepter head.</param>
+    /// <returns>The object shown only while the staff is held, or null if there is no flame.</returns>
+    public static GameObject Apply(GameObject model, Color colour, Vector3? tip = null)
     {
         Transform attach = model.transform.parent;
         DestroyChild(model.transform, "effects");
         DestroyChild(attach, "equiped");
 
-        Transform source = PrefabManager.Instance.GetPrefab("StaffFireball")?.transform.Find("attach/equiped");
-        Transform flames = source?.Find("flames");
+        Transform source = Source(out Transform flames);
         if (flames == null)
         {
             Jotunn.Logger.LogWarning("StaffFireball has no attach/equiped/flames; the staff gets no flame.");
-            return;
+            return null;
         }
 
         // VisEquipment switches on a child named "equiped" only in the hand, like the vanilla staff flames.
@@ -38,7 +39,7 @@ public static class StaffFlame
         equipped.name = "equiped";
         equipped.SetActive(false);
         equipped.transform.localRotation = Quaternion.identity;
-        equipped.transform.localPosition = headTip - flames.localPosition;
+        equipped.transform.localPosition = (tip ?? headTip) - flames.localPosition;
 
         foreach (ParticleSystem particles in equipped.GetComponentsInChildren<ParticleSystem>(true))
         {
@@ -54,6 +55,40 @@ public static class StaffFlame
         light.range = 3f;
         light.intensity = 1.5f;
         light.shadows = LightShadows.None;
+        return equipped;
+    }
+
+    /// <summary>
+    /// A loose flame of the Staff of Embers in a colour, centred on its object, e.g. for a flame in the world.
+    /// </summary>
+    /// <param name="colour">Flame colour.</param>
+    /// <param name="parent">The object to burn on.</param>
+    /// <returns>The flame, or null if the vanilla staff has none.</returns>
+    public static GameObject CreateFlame(Color colour, Transform parent)
+    {
+        Source(out Transform flames);
+        if (flames == null)
+        {
+            return null;
+        }
+
+        GameObject flame = Object.Instantiate(flames.gameObject, parent, false);
+        flame.name = "flame";
+        flame.transform.localPosition = Vector3.zero;
+        flame.transform.localRotation = Quaternion.identity;
+        foreach (ParticleSystem particles in flame.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            Recolor(particles, colour);
+        }
+
+        return flame;
+    }
+
+    private static Transform Source(out Transform flames)
+    {
+        Transform source = PrefabManager.Instance.GetPrefab("StaffFireball")?.transform.Find("attach/equiped");
+        flames = source?.Find("flames");
+        return source;
     }
 
     private static void DestroyChild(Transform parent, string name)

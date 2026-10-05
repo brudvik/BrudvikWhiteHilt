@@ -82,6 +82,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
         public ConfigEntry<bool> ShowHoverPanel { get; }
 
         /// <summary>
+        /// How far away the chests for an item pointed at in the inventory light up; 0 for none.
+        /// </summary>
+        public ConfigEntry<float> FindRange { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ChestSettings"/> class and binds all entries.
         /// <see cref="WhiteHiltConfig.Initialize"/> must have run first.
         /// </summary>
@@ -127,6 +132,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
 
             ShowHoverPanel = Remember("Display", WhiteHiltConfig.BindLocal(Section, "ShowHoverPanel", true,
                 "Show the contents of the chest you look at as item icons below the crosshair."));
+
+            FindRange = WhiteHiltConfig.BindLocal(Section, "FindRange", 30f,
+                "With the inventory open, the chests and wall drawers an item belongs in light up while you point at it in " +
+                "your own inventory, within this many metres; 0 for none. The item's tooltip names the chest either way.",
+                new AcceptableValueRange<float>(0f, 100f));
 
             foreach (ChestCategory category in Enum.GetValues(typeof(ChestCategory)))
             {

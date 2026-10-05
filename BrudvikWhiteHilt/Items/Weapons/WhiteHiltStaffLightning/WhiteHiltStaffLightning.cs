@@ -42,12 +42,12 @@ public class WhiteHiltStaffLightning : WhiteHiltWeaponBase
     protected override string ModelName => "whstaff";
 
     /// <summary>
-    /// Lights a green flame on the scepter head.
+    /// Lights a white-blue flame on the scepter head, the colour of lightning; green belongs to the Necromancer's Staff.
     /// </summary>
     /// <param name="model">The staff model under the attach child.</param>
     protected override void OnModelApplied(GameObject model)
     {
-        StaffFlame.Apply(model, new Color(0.3f, 1f, 0.35f));
+        StaffFlame.Apply(model, new Color(0.7f, 0.85f, 1f));
     }
 
     /// <summary>

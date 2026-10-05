@@ -290,16 +290,13 @@ namespace BrudvikWhiteHilt.Chests.Piece
         }
 
         /// <summary>
-        /// Gets the biomes the player has visited. The game stores them under names of its own; when none of them can
-        /// be recognized, every biome is offered.
+        /// Gets the biomes the player has been in (<see cref="global::BrudvikWhiteHilt.Helpers.KnownBiomes"/>), and the one they stand in. Should none be
+        /// known at all, every biome is offered.
         /// </summary>
         private static List<Biome> GetKnownBiomes(Player player, Biome current)
         {
-            var names = player.m_knownBiome;
-            bool Matches(Biome biome) => names.Any(name => name.IndexOf(biome.ToString(), StringComparison.OrdinalIgnoreCase) >= 0);
-
-            var recognized = BiomeCatalog.Order.Any(Matches);
-            return BiomeCatalog.Order.Where(biome => biome == current || !recognized || Matches(biome)).ToList();
+            var known = global::BrudvikWhiteHilt.Helpers.KnownBiomes.Of(player);
+            return BiomeCatalog.Order.Where(biome => biome == current || known == Biome.None || (known & biome) != 0).ToList();
         }
 
         private void Build(InventoryGui gui)

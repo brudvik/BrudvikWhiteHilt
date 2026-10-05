@@ -77,6 +77,40 @@ public class SkidbladnirShip : MonoBehaviour
         body.linearVelocity = new Vector3(horizontal.x, velocity.y, horizontal.y);
     }
 
+    // The ship's own solid colliders, without furnishings, as a box in the ship's space; made when first asked for.
+    private Bounds? hull;
+
+    /// <summary>Whether a point lies within the ship's hull: inside the box around its own colliders.</summary>
+    /// <param name="point">World position.</param>
+    /// <returns>True inside the hull.</returns>
+    public bool Holds(Vector3 point)
+    {
+        hull ??= MeasureHull();
+        return hull.Value.size != Vector3.zero && hull.Value.Contains(transform.InverseTransformPoint(point));
+    }
+
+    private Bounds MeasureHull()
+    {
+        Bounds? bounds = null;
+        foreach (Collider collider in GetComponentsInChildren<Collider>(true))
+        {
+            if (collider.isTrigger || collider.GetComponentInParent<ShipFurniture>() != null) continue;
+            Bounds local;
+            if (collider is BoxCollider box) local = new Bounds(box.center, box.size);
+            else if (collider is MeshCollider mesh && mesh.sharedMesh != null) local = mesh.sharedMesh.bounds;
+            else continue;
+            Matrix4x4 toShip = transform.worldToLocalMatrix * collider.transform.localToWorldMatrix;
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 point = toShip.MultiplyPoint3x4(local.center + Vector3.Scale(local.extents,
+                    new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1)));
+                if (bounds == null) bounds = new Bounds(point, Vector3.zero);
+                else { Bounds grown = bounds.Value; grown.Encapsulate(point); bounds = grown; }
+            }
+        }
+        return bounds ?? new Bounds(Vector3.zero, Vector3.zero);
+    }
+
     private void Awake()
     {
         ship = GetComponent<Ship>();
@@ -132,7 +166,21 @@ public class ShipFurniture : MonoBehaviour
         enabled = true;
     }
 
-    /// <summary>Finds a ship actually supporting a proposed building position.</summary>
+    /// <summary>
+    /// Finds the ship a proposed piece belongs on: the ship aimed at, if the piece stands within its hull or on it.
+    /// A piece fixed to the ship becomes part of its body, so one beside the hull, on a jetty, would hold it fast.
+    /// </summary>
+    /// <param name="aimed">The ship whose surface the build ray hit, or null.</param>
+    /// <param name="position">World position of the proposed piece.</param>
+    /// <returns>The supporting sailing home, or null.</returns>
+    public static SkidbladnirShip Supporting(SkidbladnirShip aimed, Vector3 position)
+    {
+        if (aimed == null) return null;
+        // On a wall or high up the ray down below misses the ship, but such a piece stands within the hull.
+        return aimed.Holds(position) || Below(position) == aimed ? aimed : null;
+    }
+
+    /// <summary>Finds a ship straight below a proposed building position, before any other piece.</summary>
     /// <param name="position">World position of the proposed piece.</param>
     /// <returns>The supporting sailing home, or null.</returns>
     public static SkidbladnirShip Below(Vector3 position)
@@ -177,12 +225,11 @@ public class ShipFurniture : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        view = GetComponent<ZNetView>();
-        // Added to every building piece; only furnishings need the per-frame update.
-        enabled = IsAttached;
-    }
+    private void Awake() => view = GetComponent<ZNetView>();
+
+    // Added to every building piece; only furnishings need the per-frame update. Decided at Start, when the network
+    // view has surely read its saved data, whatever the order of the piece's components.
+    private void Start() => enabled = enabled && IsAttached;
 
     private void LateUpdate()
     {

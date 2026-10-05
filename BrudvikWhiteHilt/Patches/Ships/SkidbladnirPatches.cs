@@ -14,6 +14,9 @@ public static class SkidbladnirPatches
     private static readonly IComparer<RaycastHit> ByDistance = Comparer<RaycastHit>.Create((left, right) => left.distance.CompareTo(right.distance));
     private static SkidbladnirShip placing;
 
+    // The ship whose surface the latest build ray hit, furnishings on it included; null when it hit anything else.
+    private static SkidbladnirShip aimed;
+
     /// <summary>Lets furnishings be used: vanilla hands any hit on a collider under the ship's rigidbody to the ship itself.</summary>
     /// <param name="__instance">Looking player.</param>
     /// <param name="hover">Object chosen by vanilla.</param>
@@ -87,6 +90,7 @@ public static class SkidbladnirPatches
         ref Piece piece, ref Heightmap heightmap, ref Collider waterSurface)
     {
         // Stations are m_noInWater, which makes vanilla pass water=true; water pieces are excluded by Allowed.
+        aimed = null;
         if (!SkidbladnirSettings.Building.Value || GameCamera.instance == null || __instance.m_placementGhost == null) return;
         Piece selected = __instance.m_placementGhost.GetComponent<Piece>();
         if (!Allowed(selected)) return;
@@ -94,6 +98,7 @@ public static class SkidbladnirPatches
             50f, __instance.m_placeRayMask | LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore)) return;
         SkidbladnirShip ship = hit.collider.GetComponentInParent<SkidbladnirShip>();
         if (ship == null) return;
+        aimed = ship;
         if (!ship.CanBuild || Vector3.Distance(__instance.m_eye.position, hit.point) >= __instance.m_maxPlaceDistance + selected.m_extraPlacementDistance)
         {
             __result = false;
@@ -118,7 +123,7 @@ public static class SkidbladnirPatches
     public static void BeginPlacement(Piece piece, Vector3 pos, out SkidbladnirShip __state)
     {
         __state = placing;
-        placing = SkidbladnirSettings.Building.Value && Allowed(piece) ? ShipFurniture.Below(pos) : null;
+        placing = SkidbladnirSettings.Building.Value && Allowed(piece) ? ShipFurniture.Supporting(aimed, pos) : null;
     }
 
     /// <summary>Clears the transaction even if another placement hook throws.</summary>

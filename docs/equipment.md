@@ -26,8 +26,22 @@ The White Hilt weapons and shields have their own models with white hilts, grips
 | **White Hilt Staff of Fire** | The Indestructible Staff of Fire of Dyrnwyn | Forge (Level 2) | Surtling Core ×10, Ancient Bark ×10, Guck ×5 |
 | **White Hilt Staff of Ice** | The Indestructible Staff of Ice of Dyrnwyn | Forge (Level 2) | Iron ×10, Ancient Bark ×10, Guck ×5 |
 | **White Hilt Staff of Lightning** | The Indestructible Staff of Lightning of Dyrnwyn | Forge (Level 2) | Thunderstone ×5, Ancient Bark ×10, Guck ×5 |
+| **White Hilt Necromancer's Staff** | A skull on the dark scepter, burning green: raises skeletons and wakes fallen friends at their grave | Galdr Table | Yggdrasil Wood ×10, Refined Eitr ×16, Draugr Elite Trophy ×1, Skeleton Trophy ×1 |
 | **White Hilt Tower Shield** | The Indestructible Tower Shield of Dyrnwyn | Forge (Level 2) | Iron ×30, Chain ×10, Banded Shield ×1 |
 | **White Hilt Buckler** | The Indestructible Buckler of Dyrnwyn | Forge (Level 2) | Iron ×15, Chain ×5, Bronze Buckler ×1 |
+
+The staffs burn in their own colours: red for fire, blue for ice, white-blue for lightning and green for the Necromancer's Staff.
+
+### Waking the fallen
+
+The Necromancer's Staff raises skeletons to fight for you, like the Dead Raiser it is made from. Its other gift is for a friend who has fallen: hold it at their gravestone within 10 minutes of the death and use the grave.
+
+- **They are asked** wherever they woke: *"Kari would wake you at your grave, with your gear and the skills you lost. Go?"*
+- **If they agree**, stand still for 4 seconds while a green flame rises from the grave, with a band of green from you to it. Moving away or being hit breaks it, and nothing is paid.
+- **Then you pay**: half your maximum health, all your stamina and 60 eitr, and *Death's Price* for 3 minutes (no health regeneration, half stamina regeneration). The staff then rests for 5 minutes. It never kills you: with too little health it refuses.
+- **They are brought to the grave**, take their gear from it and get back the skills the death took.
+
+You cannot wake yourself, and graves from before this version cannot be woken.
 
 ---
 
@@ -158,6 +172,16 @@ All admin only, synced from the server.
 | `[Gear.Armor] AshlandsArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 8 |
 | `[Gear.Armor] CapeArmorPerBiome` | 2 | Armor a cape gains at each quality from 5 to 8 |
 | `[Gear.Tools] HomeItemsStaminaReduction` | 1.0 | Taken off the stamina use for building, farming and cultivating (1 = no stamina) |
+| `[Necromancy] HealthCostPercent` | 50 | Share of your maximum health a waking takes; the staff refuses rather than kill you |
+| `[Necromancy] EitrCost` | 60 | Eitr a waking takes |
+| `[Necromancy] DrainStamina` | on | A waking empties your stamina |
+| `[Necromancy] WindowMinutes` | 10 | Minutes after a death within which its grave can be woken |
+| `[Necromancy] CooldownMinutes` | 5 | Minutes before the staff can wake someone again |
+| `[Necromancy] PriceMinutes` | 3 | Minutes of Death's Price after a waking |
+| `[Necromancy] ChannelSeconds` | 4 | Seconds you must stand still at the grave |
+| `[Necromancy] RestoreSkills` | on | The woken get back the skills the death took |
+| `[Necromancy] AskFirst` | on | The fallen are asked before they are woken |
+| `[Necromancy] AnswerSeconds` | 30 | Seconds the fallen have to answer |
 | `[Gear.Ammunition] PierceMultiplier` | 2 | Multiplies the pierce damage of arrows and bolts |
 | `[Gear.Ammunition] BonusFireDamage` | 30 | Fire damage added to arrows and bolts |
 | `[Gear.Ammunition] BonusSpiritDamage` | 20 | Spirit damage added to arrows and bolts |

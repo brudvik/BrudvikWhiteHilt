@@ -1,5 +1,8 @@
 using BrudvikWhiteHilt.Crafting;
 using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +21,10 @@ public static class NearbyContainerPatches
 
     // Set while vanilla counts the player's items for a requirement check, so the chests are added to the count.
     private static NearbyContainers.Use? counting;
+
+    // Set while a crafting or a piece is paid for: then only the chests handed over count, the ones that are taken from.
+    // Otherwise every chest the player may use counts, so what is shown is what lies there.
+    private static bool paying;
     private static Sprite chestIcon;
 
     /// <summary>
@@ -48,6 +55,99 @@ public static class NearbyContainerPatches
             NearbyContainers.CheckToggleKey(__instance);
             NearbyContainers.Warm(__instance);
         }
+    }
+
+    /// <summary>
+    /// Before a crafting is done: waits for the chests it needs to be handed over, if the ones held are not enough, and
+    /// then counts only the held ones while vanilla checks and takes the requirements.
+    /// </summary>
+    /// <param name="__instance">The inventory screen.</param>
+    /// <param name="player">The crafting player.</param>
+    /// <param name="__state">Whether paying was already on.</param>
+    /// <returns>False to wait for the chests.</returns>
+    [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.DoCrafting))]
+    [HarmonyPrefix]
+    public static bool BeginCrafting(InventoryGui __instance, Player player, out bool __state)
+    {
+        __state = paying;
+        Recipe recipe = __instance.m_craftRecipe;
+        if (player != Player.m_localPlayer || recipe == null || player.NoCostCheat())
+        {
+            return true;
+        }
+
+        int quality = __instance.m_craftUpgradeItem != null ? __instance.m_craftUpgradeItem.m_quality + 1 : 1;
+        int multiplier = __instance.m_multiCrafting ? Mathf.Max(1, __instance.m_multiCraftAmount) : 1;
+        CraftingStation station = player.GetCurrentCraftingStation();
+        IEnumerable<(string, int)> needs = recipe.m_resources
+            .Where(requirement => requirement.m_resItem != null
+                && (station != null ? station.m_upgrader == requirement.m_upgraderResource : !requirement.m_upgraderResource))
+            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.GetAmount(quality) * multiplier));
+        if (NearbyContainers.WaitForChests(player, NearbyContainers.Use.Crafting, needs))
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+            return false;
+        }
+
+        paying = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Counts every chest again after a crafting.
+    /// </summary>
+    /// <param name="__state">Whether paying was already on.</param>
+    /// <param name="__exception">The original error, if any.</param>
+    /// <returns>The unchanged original error.</returns>
+    [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.DoCrafting))]
+    [HarmonyFinalizer]
+    public static Exception EndCrafting(bool __state, Exception __exception)
+    {
+        paying = __state;
+        return __exception;
+    }
+
+    /// <summary>
+    /// Before a piece is placed: as <see cref="BeginCrafting"/>, for the piece's resources.
+    /// </summary>
+    /// <param name="__instance">The building player.</param>
+    /// <param name="piece">The piece.</param>
+    /// <param name="__state">Whether paying was already on.</param>
+    /// <returns>False to wait for the chests.</returns>
+    [HarmonyPatch(typeof(Player), nameof(Player.TryPlacePiece))]
+    [HarmonyPrefix]
+    public static bool BeginPlacing(Player __instance, Piece piece, out bool __state)
+    {
+        __state = paying;
+        if (__instance != Player.m_localPlayer || piece == null || __instance.NoCostCheat())
+        {
+            return true;
+        }
+
+        IEnumerable<(string, int)> needs = piece.m_resources.Where(requirement => requirement.m_resItem != null)
+            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount));
+        if (NearbyContainers.WaitForChests(__instance, NearbyContainers.Use.Building, needs))
+        {
+            __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+            return false;
+        }
+
+        paying = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Counts every chest again after a piece is placed.
+    /// </summary>
+    /// <param name="__state">Whether paying was already on.</param>
+    /// <param name="__exception">The original error, if any.</param>
+    /// <returns>The unchanged original error.</returns>
+    [HarmonyPatch(typeof(Player), nameof(Player.TryPlacePiece))]
+    [HarmonyFinalizer]
+    public static Exception EndPlacing(bool __state, Exception __exception)
+    {
+        paying = __state;
+        return __exception;
     }
 
     /// <summary>
@@ -138,7 +238,7 @@ public static class NearbyContainerPatches
         string name = req.m_resItem.m_itemData.m_shared.m_name;
         int need = req.GetAmount(quality) * craftMultiplier;
         int own = player.GetInventory().CountItems(name);
-        int inChests = chestsActive && (overlay || own < need) ? NearbyContainers.Count(use, name) : 0;
+        int inChests = chestsActive && (overlay || own < need) ? NearbyContainers.CountAll(use, name) : 0;
         bool fromChests = own < need && own + inChests >= need;
         if (fromChests)
         {
@@ -206,7 +306,7 @@ public static class NearbyContainerPatches
     {
         if (IsCountingFor(__instance))
         {
-            __result += NearbyContainers.Count(counting.Value, name, quality);
+            __result += paying ? NearbyContainers.Count(counting.Value, name, quality) : NearbyContainers.CountAll(counting.Value, name, quality);
         }
     }
 
@@ -222,7 +322,7 @@ public static class NearbyContainerPatches
     {
         if (!__result && IsCountingFor(__instance))
         {
-            __result = NearbyContainers.Count(counting.Value, name) > 0;
+            __result = (paying ? NearbyContainers.Count(counting.Value, name) : NearbyContainers.CountAll(counting.Value, name)) > 0;
         }
     }
 

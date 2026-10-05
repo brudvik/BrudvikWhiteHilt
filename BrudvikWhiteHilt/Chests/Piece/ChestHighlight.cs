@@ -21,6 +21,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
         private Container? container;
         private Light? glow;
         private float until;
+        private float fadeSeconds = FadeSeconds;
         private float nextSparkle;
 
         /// <summary>
@@ -28,14 +29,16 @@ namespace BrudvikWhiteHilt.Chests.Piece
         /// </summary>
         /// <param name="chest">The chest.</param>
         /// <param name="color">The light's colour.</param>
-        public static void Flash(Container chest, Color color)
+        /// <param name="seconds">How long it stays lit; a short time, renewed, keeps it lit while something lasts.</param>
+        public static void Flash(Container chest, Color color, float seconds = Seconds)
         {
             if (!chest.TryGetComponent(out ChestHighlight highlight)) highlight = chest.gameObject.AddComponent<ChestHighlight>();
-            highlight.Begin(chest, color);
+            highlight.Begin(chest, color, seconds);
         }
 
-        private void Begin(Container chest, Color color)
+        private void Begin(Container chest, Color color, float seconds)
         {
+            bool lit = glow != null && Time.time < until;
             container = chest;
             if (glow == null)
             {
@@ -48,8 +51,11 @@ namespace BrudvikWhiteHilt.Chests.Piece
             }
 
             glow.color = color;
-            until = Time.time + Seconds;
-            nextSparkle = 0f;
+            float fade = Mathf.Min(FadeSeconds, seconds / 2f);
+            fadeSeconds = lit ? Mathf.Max(fadeSeconds, fade) : fade;
+            until = lit ? Mathf.Max(until, Time.time + seconds) : Time.time + seconds;
+            // A light kept lit by renewing it sparkles as one that lasts, not at every renewal.
+            if (!lit) nextSparkle = 0f;
         }
 
         private void Update()
@@ -62,7 +68,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             }
 
             var pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 5f);
-            var fade = Mathf.Clamp01((until - Time.time) / FadeSeconds);
+            var fade = Mathf.Clamp01((until - Time.time) / fadeSeconds);
             glow.intensity = (1.5f + 2f * pulse) * fade;
             glow.range = 4f + 2f * pulse;
             if (Time.time < nextSparkle) return;

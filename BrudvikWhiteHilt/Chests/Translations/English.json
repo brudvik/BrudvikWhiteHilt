@@ -61,5 +61,6 @@
   "bsc_gather_waiting": "Waiting for the server",
   "bsc_gather_click_hint": "Click an item to make its chests nearby light up",
   "bsc_gather_highlight": "{0} chests light up: {1}",
-  "bsc_gather_highlight_none": "No {0} within {1} m"
+  "bsc_gather_highlight_none": "No {0} within {1} m",
+  "bsc_tooltip_chest": "Belongs in: {0}"
 }

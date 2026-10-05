@@ -46,7 +46,7 @@ In **Linear** mode, a tier unlocks the first time you obtain its key material. R
 | Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Valkyrie Stone, Portal Astrolabe, Harbour Anchor, Mooring Post, Munin's Perch, Pathfinder's Ruby Amulet, Stone Dowser, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor and uniforms, Arrows, Bolts, Belt Pouch, the wood iron beams and poles · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning, White Hilt Cape · Sleipnir, Baldur, Hel |
-| Mistlands | Eitr | Eitr ×3 | Loki |
+| Mistlands | Eitr | Eitr ×3 | Necromancer's Staff · Loki |
 | Ashlands | Flametal | Flametal ×3 | Surt |
 
 The Gifts of **Hugin** (every skill to 100), **Munin** (every recipe) and **Brokkr** (+25 to every skill) are not available in linear mode: there you learn and find things yourself. A `[Tiers]` setting can still give them a tier.

@@ -71,6 +71,16 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     public abstract bool Enabled { get; }
 
     /// <summary>
+    /// The crafting station the weapon is made at.
+    /// </summary>
+    protected virtual string Station => CraftingStations.Forge;
+
+    /// <summary>
+    /// The level the crafting station must have.
+    /// </summary>
+    protected virtual int StationLevel => 2;
+
+    /// <summary>
     /// Name of the mesh in the White Hilt asset bundle that replaces the vanilla look (texture <c>&lt;name&gt;_albedo</c>),
     /// or null to keep the vanilla look.
     /// </summary>
@@ -116,8 +126,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             {
                 Name = Translations.Token(Translations.ItemKey(BaseName)),
                 Description = Translations.Token($"{Translations.ItemKey(BaseName)}_description"),
-                CraftingStation = CraftingStations.Forge,
-                MinStationLevel = 2,
+                CraftingStation = Station,
+                MinStationLevel = StationLevel,
                 Requirements = Requirements
             };
 

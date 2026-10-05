@@ -156,6 +156,7 @@ Switching to a less generous mode removes the unlimited items the new mode no lo
 - A chest glows brighter the more of its items are unlimited, turns gold when all of them are, and sparkles when it refills or unlocks something.
 - **On the front of a chest** the icon turns grey when it is empty, with a bar for the used slots and, in Linear and Discovered, a gold bar for the unlimited items (`ShowIndicators`).
 - **Looking at a chest** shows its contents as item icons below the crosshair (`ShowHoverPanel`).
+- **Pointing at an item in your inventory** lights up the chests and wall drawers it belongs in within 30 m (`FindRange`), and its tooltip names the chest.
 
 ### Learning items
 
@@ -182,6 +183,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 | Chests | UnlimitedCargo | Carts and ship holds keep unlimited items full (default on) |
 | Chests | ShowIndicators | Icon and bars on the front of chests (default on, per player) |
 | Chests | ShowHoverPanel | Contents as icons when looking at a chest (default on, per player) |
+| Chests | FindRange | Metres within which the chests for an item pointed at in the inventory light up; 0 for none (default 30, per player) |
 | Chests | DumpItemLists | Write every chest's item list to the log (per player) |
 | Chests.&lt;Chest&gt; | Include | Comma-separated prefab names always placed in this chest |
 | Chests.&lt;Chest&gt; | Exclude | Comma-separated prefab names never placed in this chest |

@@ -54,7 +54,7 @@ public static class NearbyContainers
 
     private static readonly HashSet<Container> all = new();
     private static readonly List<(Container Container, float SqrDistance)> nearby = new();
-    private static readonly Dictionary<(string Name, int Quality, bool Building), int> countCache = new();
+    private static readonly Dictionary<(string Name, int Quality, bool Building, bool All), int> countCache = new();
     private static readonly Dictionary<(string Name, bool Building), bool> unlimitedCache = new();
     private static readonly Dictionary<Container, float> requested = new();
 
@@ -103,6 +103,7 @@ public static class NearbyContainers
     {
         Translations.AddEnglish("msg_whitehilt_chests_on", "Using nearby chests");
         Translations.AddEnglish("msg_whitehilt_chests_off", "Not using nearby chests");
+        Translations.AddEnglish("msg_whitehilt_chests_waiting", "Fetching from the chests, try again in a moment");
         Translations.AddEnglish("whitehilt_chests_inventory", "in your inventory");
         Translations.AddEnglish("whitehilt_chests_chests", "in chests");
 
@@ -228,13 +229,34 @@ public static class NearbyContainers
     }
 
     /// <summary>
-    /// How many of an item lie in the chests around the local player.
+    /// How many of an item lie in the chests around the local player that can be taken from right now: the ones handed
+    /// over to the player. What is checked just before it is taken.
     /// </summary>
     /// <param name="use">What the items are wanted for; building has its own range.</param>
     /// <param name="name">Shared item name, e.g. $item_wood.</param>
     /// <param name="quality">Item quality, or -1 for any.</param>
     /// <returns>The number available.</returns>
     public static int Count(Use use, string name, int quality = -1)
+    {
+        return Count(use, name, quality, false);
+    }
+
+    /// <summary>
+    /// How many of an item lie in all the chests around the local player that the player may use, handed over or not:
+    /// what the player has to hand, for showing. Every machine sees the chests' contents, so the number is right; the
+    /// chests are handed over when something is taken (<see cref="WaitForChests"/>). Other players rarely hold the
+    /// chests, and counting only those made a workbench say the materials were missing while they lay right there.
+    /// </summary>
+    /// <param name="use">What the items are wanted for; building has its own range.</param>
+    /// <param name="name">Shared item name, e.g. $item_wood.</param>
+    /// <param name="quality">Item quality, or -1 for any.</param>
+    /// <returns>The number in the chests.</returns>
+    public static int CountAll(Use use, string name, int quality = -1)
+    {
+        return Count(use, name, quality, true);
+    }
+
+    private static int Count(Use use, string name, int quality, bool all)
     {
         if (IsExcluded(name))
         {
@@ -243,23 +265,73 @@ public static class NearbyContainers
 
         ExpireCounts();
         bool building = use == Use.Building;
-        if (countCache.TryGetValue((name, quality, building), out int cached))
+        if (countCache.TryGetValue((name, quality, building, all), out int cached))
         {
             return cached;
         }
 
         int count = 0;
-        foreach (Container container in GetNearby(use))
+        foreach (Container container in all ? InRange(use) : GetNearby(use))
         {
             count += Available(container, name, quality);
         }
 
-        countCache[(name, quality, building)] = count;
+        countCache[(name, quality, building, all)] = count;
         return count;
     }
 
     /// <summary>
-    /// Checks whether a chest around the local player keeps an item without limit, so it never runs out here.
+    /// Asks for the chests a crafting or a piece needs, should the ones handed over not be enough, and tells whether it
+    /// must wait for them. Call just before the requirements are checked and taken.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="use">Crafting or building.</param>
+    /// <param name="requirements">The requirements, with the amount each wants.</param>
+    /// <returns>True if a chest it needs is still being handed over.</returns>
+    public static bool WaitForChests(Player player, Use use, IEnumerable<(string Name, int Amount)> requirements)
+    {
+        if (player == null || !IsActive(use))
+        {
+            return false;
+        }
+
+        bool waiting = false;
+        long playerId = player.GetPlayerID();
+        foreach ((string name, int amount) in requirements)
+        {
+            if (amount <= 0 || IsExcluded(name))
+            {
+                continue;
+            }
+
+            int own = player.GetInventory().CountItems(name);
+            if (own >= amount || own + Count(use, name) >= amount)
+            {
+                continue;
+            }
+
+            foreach (Container container in InRange(use))
+            {
+                if (!ContainerHandoff.Held(container) && Available(container, name, -1) > 0)
+                {
+                    waiting = true;
+                    requested[container] = Time.time;
+                    ContainerHandoff.Ready(container, playerId);
+                }
+            }
+        }
+
+        if (waiting)
+        {
+            countCache.Clear();
+        }
+
+        return waiting;
+    }
+
+    /// <summary>
+    /// Checks whether a chest around the local player keeps an item without limit, so it never runs out here; any chest
+    /// the player may use, handed over or not, as with <see cref="CountAll"/>.
     /// </summary>
     /// <param name="use">What the items are wanted for; building has its own range.</param>
     /// <param name="name">Shared item name.</param>
@@ -278,7 +350,7 @@ public static class NearbyContainers
             return cached;
         }
 
-        bool unlimited = GetNearby(use).Any(container => container.GetInventory().GetAllItems()
+        bool unlimited = InRange(use).Any(container => container.GetInventory().GetAllItems()
             .Any(item => item.m_shared.m_name == name && Unlimited.IsUnlimitedIn(container, item)));
         unlimitedCache[(name, building)] = unlimited;
         return unlimited;
