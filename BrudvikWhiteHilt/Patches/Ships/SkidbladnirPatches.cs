@@ -200,6 +200,15 @@ public static class SkidbladnirPatches
         }
     }
 
+    /// <summary>Hides the sea while the camera is in a Skidbladnir's lower room, where waves would show it.</summary>
+    /// <param name="__instance">The game camera.</param>
+    [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.LateUpdate))]
+    [HarmonyPostfix]
+    public static void LowerDeckWater(GameCamera __instance)
+    {
+        global::BrudvikWhiteHilt.Pieces.Ships.Skidbladnir.LowerDeckWater.Update(__instance.transform.position);
+    }
+
     /// <summary>Brings the camera in below deck and keeps it inside the hull, which vanilla's camera passes through.</summary>
     /// <param name="__instance">The game camera.</param>
     /// <param name="pos">Camera position chosen by vanilla.</param>

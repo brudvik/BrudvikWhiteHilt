@@ -223,6 +223,7 @@ internal static class SkidbladnirModel
         Move(root, "TraderLamp", At(0f, 4.8f, 0.93f));
         AddLamps(root);
         FitWaterEffects(root);
+        if (!VisualHelper.IsHeadless) AddWaterMask(root, geometry);
         PlaceSeats(root);
         Move(root, "piece_chest", At(0.1f, 2.5f, 5.3f));
         Container hold = prefab.GetComponentsInChildren<Container>(true).First(container => container.GetComponent<ShipChest>() == null);
@@ -286,6 +287,40 @@ internal static class SkidbladnirModel
     }
 
     private static Vector3 ToVector(float[] values) => new(values[0], values[1], values[2]);
+
+    // The lower room inside its walls, bulkheads, floor and the waist deck (from the asset's colliders), in the
+    // structure's space: what the water mask fills.
+    private static readonly Bounds LowerRoomInside = new(new Vector3(0f, 0.85f, 2f), new Vector3(5.44f, 2.86f, 10.96f));
+
+    /// <summary>
+    /// Keeps the sea out of the lower room in waves, seen from the deck: a box filling the room, drawn with the
+    /// longship's own water mask material, which hides the water surface behind it. The longship's mask does not fit
+    /// this hull. From inside the room <see cref="LowerDeckWater"/> hides the water instead, as no mask can from within.
+    /// </summary>
+    private static void AddWaterMask(Transform root, Transform geometry)
+    {
+        Material mask = root.GetComponentsInChildren<Renderer>(true)
+            .Where(renderer => renderer.name.IndexOf("mask", StringComparison.OrdinalIgnoreCase) >= 0
+                || (renderer.sharedMaterial?.shader?.name?.IndexOf("mask", StringComparison.OrdinalIgnoreCase) ?? -1) >= 0)
+            .Select(renderer => renderer.sharedMaterial).FirstOrDefault(material => material != null);
+        if (mask == null)
+        {
+            Jotunn.Logger.LogWarning("The longship has no water mask; Skidbladnir's lower room gets none.");
+            return;
+        }
+
+        GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        UnityEngine.Object.DestroyImmediate(box.GetComponent<Collider>());
+        box.name = "SkidbladnirWaterMask";
+        box.layer = root.gameObject.layer;
+        box.transform.SetParent(geometry, false);
+        box.transform.localPosition = LowerRoomInside.center;
+        box.transform.localScale = LowerRoomInside.size;
+        MeshRenderer renderer = box.GetComponent<MeshRenderer>();
+        renderer.sharedMaterial = mask;
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        renderer.receiveShadows = false;
+    }
 
     // The prefab sits in Jotunn's inactive container, so parent lookups must include inactive objects.
     private static bool IsUpgradePart(Transform root, Transform part) =>

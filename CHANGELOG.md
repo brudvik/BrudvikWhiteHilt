@@ -12,6 +12,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - The Staff of Lightning burns white-blue instead of green; green now belongs to the Necromancer's Staff.
 
 ### Fixed
+- **Skidbladnir's lower room stays dry in waves**: the sea no longer shows inside it, neither from within the room nor looking down the stairs from the deck.
 - **Building on Skidbladnir**: pieces set on the ship's walls, high up, or on other pieces now stay fixed to the ship. Before, they could be left standing still in the world while the ship rocked under them, so they seemed to bob with the waves.
 - **Memorial Stone**: the inscription lies on the stone's face and follows its curve, instead of hanging in front of it; the letters are smaller, wrap to fit the face and look cut into the stone.
 - **Gathering progress** could leave out a biome you had been in, such as the Plains: the game keeps the biomes you found as translated sector names, which may differ from the biome's own (world variants, another language), and the panel looked for the biome's name in them. It now knows every biome you enter by its identity, as the bestiary does, and matches the names saved before against this world's sectors as well. A biome still missing appears the next time you are in it.

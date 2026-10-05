@@ -134,6 +134,53 @@ public class SkidbladnirShip : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Hides the sea while the camera is in a Skidbladnir's lower room. Waves lift the water surface above the room's floor,
+/// and a water mask cannot hide water from a camera inside it; from within the closed room the sea is not seen anyway.
+/// </summary>
+public static class LowerDeckWater
+{
+    private static readonly List<MeshRenderer> hidden = new();
+
+    /// <summary>
+    /// Hides or shows the water for where the camera is. Call every frame after the camera has moved.
+    /// </summary>
+    /// <param name="camera">The camera's position.</param>
+    public static void Update(Vector3 camera)
+    {
+        if (SkidbladnirShip.BelowDeck(camera) != null)
+        {
+            // Every frame: the water of an area that loads meanwhile is hidden too.
+            foreach (WaterVolume volume in WaterVolume.Instances)
+            {
+                MeshRenderer surface = volume != null ? volume.m_waterSurface : null;
+                if (surface != null && surface.enabled)
+                {
+                    surface.enabled = false;
+                    hidden.Add(surface);
+                }
+            }
+
+            return;
+        }
+
+        if (hidden.Count == 0)
+        {
+            return;
+        }
+
+        foreach (MeshRenderer surface in hidden)
+        {
+            if (surface != null)
+            {
+                surface.enabled = true;
+            }
+        }
+
+        hidden.Clear();
+    }
+}
+
 /// <summary>Persists a building piece in ship-local coordinates while keeping its ZDO in the current world sector.</summary>
 [DefaultExecutionOrder(1000)]
 public class ShipFurniture : MonoBehaviour
