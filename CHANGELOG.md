@@ -9,6 +9,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Find the chest for an item**: with the inventory open, point at an item in your own inventory and the chests and wall drawers it belongs in light up nearby (within 30 m, setting `FindRange`), while its tooltip names the chest.
 
 ### Changed
+- **Wall drawers and the ship workbench, forge and stonecutter** have Valheim's own wood, iron and stone instead of flat white and black: light pine tops and fronts, plank frames and dark iron fittings, like the other chests and workbenches.
 - The Staff of Lightning burns white-blue instead of green; green now belongs to the Necromancer's Staff.
 
 ### Fixed

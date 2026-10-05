@@ -16,7 +16,12 @@ public static class BuildForagingBundle
     private const string SourceFolder = "Assets/Foraging";
 
     // Models the mod reads on the CPU: merged with Mesh.CombineMeshes (navigation pieces, Pathfinder amulet) or bent (White Hilt Bow).
-    private static readonly string[] CombinedModels = { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "whbow" };
+    // Models the mod reads at run time: combined into one mesh, or (the wall drawer and the ship workshops, made of flat
+    // palette swatches) given surfaces of vanilla wood, iron and stone by Helpers/PaletteSurfaces.
+    private static readonly string[] CombinedModels =
+    {
+        "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "whbow", "walldrawer", "shipworkbench", "shipforge", "shipstonecutter"
+    };
 
     // Tiling roof textures whose one tile covers 2-3 m of roof.
     private static readonly string[] LargeTiles = { "roof_slate_albedo", "roof_straw_albedo", "roof_turf_albedo" };

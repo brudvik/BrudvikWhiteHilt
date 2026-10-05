@@ -46,7 +46,7 @@ public static class VanillaMeshLibrary
     private static readonly Rect stoneBoxUv = Rect.MinMaxRect(0.21f, 0.03f, 0.345f, 0.17f);
 
     // Prefabs whose materials can be borrowed by texture name.
-    private static readonly string[] materialSources = { "iron_grate", "blackmarble_1x1", "Piece_grausten_floor_2x2" };
+    private static readonly string[] materialSources = { "iron_grate", "blackmarble_1x1", "Piece_grausten_floor_2x2", "wood_beam", "stone_wall_1x1", "VikingShip" };
 
     private static readonly Dictionary<string, List<MeshSource>> meshes = new();
     private static readonly Dictionary<string, Material> textureMaterials = new();

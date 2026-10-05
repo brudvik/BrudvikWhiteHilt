@@ -39,6 +39,9 @@
     { "image": "white_hilt_sledge", "models": ["whsledge"] },
     { "image": "white_hilt_crossbow", "models": ["whcrossbow", "whcrossbowstringloaded"] },
     { "image": "white_hilt_staff", "models": ["whstaff"] },
+    { "image": "white_hilt_necromancers_staff", "view": { "yaw": 160, "pitch": 8 }, "parts": [
+        { "mesh": "preview_whstaff", "position": [0, 0.9, 0], "rotation": [-90, 0, 0] },
+        { "mesh": "trophy_skull", "position": [0, 2.0347, -0.0486], "rotation": [-60, 180, 0], "scale": [0.9, 0.9, 0.9] } ] },
     { "image": "white_hilt_tower_shield", "models": ["whtowershield"] },
     { "image": "white_hilt_buckler", "models": ["whbuckler"] },
 

@@ -165,7 +165,7 @@ Switching to a less generous mode removes the unlimited items the new mode no lo
 
 ### Gathering progress
 
-The player screen (Tab) has an extra button next to Skills, Compendium, Trophies and Achievements. It lists what can be gathered in the biome you are in: what trees, rocks, plants and creatures drop and what is found in its dungeons. In Linear mode a bar shows how much the closest chest in the world holds and how much is missing; in Discovered mode whether the item is discovered. The arrows browse the other biomes you have visited.
+The player screen (Tab) has an extra button next to Skills, Compendium, Trophies and Achievements. It lists what can be gathered in the biome you are in: what trees, rocks, plants and creatures drop and what is found in its dungeons. In Linear mode a bar shows how much the closest chest in the world holds and how much is missing; in Discovered mode whether the item is discovered. The arrows browse the other biomes you have visited, known by the biome itself whatever the world or language calls the place; a biome entered before this was recorded shows once you are in it again.
 
 Under each item's name stands the chest it belongs in, with that chest's sign and in the colour it glows (several chests when the item belongs in more than one). **Click an item** to make those chests and wall drawers within 100 m light up and sparkle for 20 seconds, so you can see where to put it; a message says how many light up, or that none are near. Only you see it.
 

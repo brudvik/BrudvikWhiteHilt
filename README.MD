@@ -36,15 +36,17 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.94.0
+## ✨ New in 0.95.0
+
+- **[Necromancer's Staff](docs/equipment.md#waking-the-fallen)**: a skull burning green on the White Hilt scepter. It raises skeletons, and at a fallen friend's grave it wakes them there with their gear and lost skills, at a heavy price in your own life.
+- **[Find an item's chest](docs/chests.md)**: point at an item in your inventory and the chests it belongs in light up nearby; its tooltip names the chest.
+- **Wall drawers and ship workshops** in Valheim's own wood and iron, and Skidbladnir's lower room stays dry in waves.
+
+### Also new in 0.94.0
 
 - **[Defending the walls](docs/defences.md#-defending-the-walls)**: an oil cauldron to pour boiling pitch or stones from the gate, and an alarm bell that shuts the whole base and rings by itself when a raid comes.
 - **[Harbour Crane](docs/base.md#harbour-crane)**: load and unload the ship alongside straight from the chests; the crane swings out and lowers its hook into the hold.
 - **[Black marble and grausten](docs/defences.md#black-marble-and-grausten)**: every stone defence for the Mistlands and the Ashlands.
-
-### Also new in 0.93.0
-
-- **[Working the gate](docs/defences.md#-working-the-gate)**: a gate rope and a windlass house to open and close the gate, drawbridge and portcullis from inside the walls, and a gate horn to call your own gate open from outside.
 
 See the [changelog](CHANGELOG.md) for everything else.
 

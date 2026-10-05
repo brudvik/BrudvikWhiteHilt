@@ -16,6 +16,7 @@ import sys
 from PIL import Image
 
 import compose_preview
+import palette_surfaces
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
@@ -65,8 +66,12 @@ def main(only):
                                   "rotation": [manifest["rudder"]["tilt"], 0, 0]})
                 else:
                     parts.append({"mesh": f"preview_{name}", "position": model["pivot"]})
+        elif "parts" in entry:
+            parts = entry["parts"]
         else:
-            sys.exit(f"{entry['image']}: needs 'piece', 'models', 'compose' or 'manifest'")
+            sys.exit(f"{entry['image']}: needs 'piece', 'models', 'compose', 'manifest' or 'parts'")
+        # The wall drawer and the ship workshops as the mod surfaces them, in vanilla wood, iron and stone.
+        parts = palette_surfaces.surface(parts)
         pieces.append({"name": entry["image"], "parts": parts, "views": [view or spec["defaultView"]]})
 
     layout = PREVIEW / "showcase_layout.json"

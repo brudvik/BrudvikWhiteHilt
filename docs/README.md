@@ -37,10 +37,10 @@ One page per feature: what it does, how to build or craft it, and every setting.
 
 | Page | What you find there |
 |------|---------------------|
-| [White Hilt gear](equipment.md) | Indestructible weapons, shields, armour, tools and ammunition, Megingjord and the Belt Pouch |
+| [White Hilt gear](equipment.md) | Indestructible weapons, shields, armour, tools and ammunition, the Necromancer's Staff, Megingjord and the Belt Pouch |
 | [Potions](potions.md) | The eighteen meads of the gods |
 | [Smithing](smithing.md) | The Chain Bench, the Repair Anvil, binding and rune etching, whetstones and weapon oils |
-| [Restocking chests](chests.md) | The fourteen restocking chests, wall drawers, the Collection Post and gathering progress |
+| [Restocking chests](chests.md) | The fourteen restocking chests, wall drawers, the Collection Post, finding an item's chest and gathering progress |
 
 ## 🐉 Beasts & challenge
 

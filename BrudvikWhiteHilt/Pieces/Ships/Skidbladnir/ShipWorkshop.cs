@@ -5,6 +5,7 @@ using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -138,9 +139,25 @@ public abstract class ShipWorkshopBase : IWhiteHiltCustomPiece
         Mesh mesh = ForagingAssets.LoadMesh(name);
         float scale = dimension / (width ? mesh.bounds.size.x : mesh.bounds.size.y);
         Vector3 pivot = -new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale;
-        VisualHelper.CreateModel(parent, mesh, ForagingAssets.LoadTexture(name + "_albedo"), template,
+        GameObject created = VisualHelper.CreateModel(parent, mesh, ForagingAssets.LoadTexture(name + "_albedo"), template,
             position + pivot, Quaternion.identity, scale);
+        if (Swatches.TryGetValue(name, out (float U, PaletteSurfaces.Surface Surface)[] swatches))
+        {
+            PaletteSurfaces.Apply(created, swatches, Vector3.one * scale);
+        }
     }
+
+    // The flat palette swatches of each workshop model (the repair anvil has a texture of its own): a plank frame, a pine
+    // top, iron fittings and tools, and the stonecutter's stone block.
+    private static readonly Dictionary<string, (float U, PaletteSurfaces.Surface Surface)[]> Swatches = new()
+    {
+        ["shipworkbench"] = new[] { (0.167f, PaletteSurfaces.Frame), (0.5f, PaletteSurfaces.Iron), (0.833f, PaletteSurfaces.Top) },
+        ["shipforge"] = new[] { (0.167f, PaletteSurfaces.Frame), (0.5f, PaletteSurfaces.Iron), (0.833f, PaletteSurfaces.Top) },
+        ["shipstonecutter"] = new[]
+        {
+            (0.125f, PaletteSurfaces.Iron), (0.375f, PaletteSurfaces.Frame), (0.625f, PaletteSurfaces.Stone), (0.875f, PaletteSurfaces.Top)
+        }
+    };
 }
 
 /// <summary>Compact shipboard workbench.</summary>

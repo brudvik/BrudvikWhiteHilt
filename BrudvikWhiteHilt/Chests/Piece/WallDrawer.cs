@@ -124,6 +124,8 @@ public sealed class WallDrawer : MonoBehaviour
 			Vector3 scale = new(0.7f / mesh.bounds.size.x, 0.3f / mesh.bounds.size.y, Depth / mesh.bounds.size.z);
 			model.transform.localScale = scale;
 			model.transform.localPosition = Vector3.Scale(new Vector3(-mesh.bounds.center.x, -mesh.bounds.min.y, -mesh.bounds.min.z), scale);
+			// Iron bands, a pine front and a plank case, as the other chests and workbenches.
+			PaletteSurfaces.Apply(model, new[] { (0.167f, PaletteSurfaces.Iron), (0.5f, PaletteSurfaces.Top), (0.833f, PaletteSurfaces.Frame) }, scale);
 		}
 		catch (Exception exception)
 		{
