@@ -257,6 +257,7 @@ The Thunderstore package has its own, simpler README in `BrudvikWhiteHilt/Packag
 - Lindorm model: ["Worm Monster"](https://sketchfab.com/3d-models/5563066315694125b741901681d387c5) by [CR!STALLL](https://sketchfab.com/CR1STALLL), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with six of its animations and rescaled for Valheim.
 - Giant Spider model: ["Wolf Spider (Rigged) - (Rabidosa rabida)"](https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe) by [Dreaming In Alternation 27](https://sketchfab.com/DreamingInAlternation27), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, idle, bite, hit and death animations added, and rescaled for Valheim.
 - Desert Dragon model: ["Red Dragon"](https://sketchfab.com/3d-models/red-dragon-d53fe00255334386a0fd1f4ac2858cab) by [absol](https://sketchfab.com/absol_cg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, a fire-breathing animation added, recoloured in game and rescaled for Valheim.
+- README icons: [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), set on round badges.
 
 </details>
 
