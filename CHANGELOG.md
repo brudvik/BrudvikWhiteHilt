@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.95.0 - 2026-10-05
 
 ### Added
 - **White Hilt Necromancer's Staff** (Mistlands, Galdr Table): a skull on the dark scepter with a green flame, raising skeletons like the Dead Raiser. Held at a fallen friend's grave within 10 minutes of the death, it offers to wake them there; if they agree you stand still while a green flame rises from the grave, pay half your health, all your stamina and 60 eitr with a while of Death's Price, and they are brought to the grave with their gear and the skills they lost.
