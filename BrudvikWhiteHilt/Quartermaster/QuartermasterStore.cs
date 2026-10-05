@@ -61,16 +61,37 @@ public static class QuartermasterStore
     /// <returns>The entries.</returns>
     public static List<Entry> List(List<Container> containers)
     {
+        Dictionary<(string Name, int Quality), Entry> entries = Collect(containers, null);
+        string other = Localization.instance.Localize("$whitehilt_qm_other");
+        foreach (Entry entry in entries.Values)
+        {
+            entry.Group ??= other;
+        }
+
+        return entries.Values
+            .OrderBy(entry => entry.Group == other ? 1 : 0)
+            .ThenBy(entry => entry.Group, StringComparer.CurrentCultureIgnoreCase)
+            .ThenBy(entry => Localization.instance.Localize(entry.Name), StringComparer.CurrentCultureIgnoreCase)
+            .ThenBy(entry => entry.Quality)
+            .ToList();
+    }
+
+    // The entries of the containers, unsorted and without the group of those in no labelled chest; only of one item
+    // when a name is given.
+    private static Dictionary<(string Name, int Quality), Entry> Collect(List<Container> containers, string name)
+    {
         Dictionary<(string Name, int Quality), Entry> entries = new();
         foreach (Container container in containers)
         {
-            string group = Module?.GetChestLabel(container);
+            string group = null;
             foreach (ItemDrop.ItemData item in container.GetInventory().GetAllItems())
             {
-                if (!IsOffered(item))
+                if ((name != null && item.m_shared.m_name != name) || !IsOffered(item))
                 {
                     continue;
                 }
+
+                group ??= Module?.GetChestLabel(container);
 
                 bool unlimited = IsUnlimitedIn(container, item);
                 if (!unlimited && !QuartermasterSettings.IncludeFinite.Value)
@@ -95,18 +116,7 @@ public static class QuartermasterStore
             }
         }
 
-        string other = Localization.instance.Localize("$whitehilt_qm_other");
-        foreach (Entry entry in entries.Values)
-        {
-            entry.Group ??= other;
-        }
-
-        return entries.Values
-            .OrderBy(entry => entry.Group == other ? 1 : 0)
-            .ThenBy(entry => entry.Group, StringComparer.CurrentCultureIgnoreCase)
-            .ThenBy(entry => Localization.instance.Localize(entry.Name), StringComparer.CurrentCultureIgnoreCase)
-            .ThenBy(entry => entry.Quality)
-            .ToList();
+        return entries;
     }
 
     /// <summary>
@@ -183,6 +193,8 @@ public static class QuartermasterStore
     {
         Inventory inventory = target != null ? target.GetInventory() : player.GetInventory();
         List<Container> sources = containers.Where(container => container != target).ToList();
+        // Read once; what is taken is counted off, rather than the chests read again for every stack.
+        List<Entry> entries = Collect(sources, name).Values.OrderByDescending(entry => entry.Unlimited).ThenBy(entry => entry.Quality).ToList();
         while (true)
         {
             int have = inventory.CountItems(name);
@@ -191,12 +203,14 @@ public static class QuartermasterStore
                 return true;
             }
 
-            Entry entry = List(sources).Where(candidate => candidate.Name == name && Takeable(candidate) > 0)
-                .OrderByDescending(candidate => candidate.Unlimited).ThenBy(candidate => candidate.Quality).FirstOrDefault();
-            if (entry == null || Take(player, sources, entry, need - have, target) <= 0 || inventory.CountItems(name) <= have)
+            Entry entry = entries.FirstOrDefault(candidate => Takeable(candidate) > 0);
+            int taken = entry == null ? 0 : Take(player, sources, entry, need - have, target);
+            if (taken <= 0 || inventory.CountItems(name) <= have)
             {
                 return false;
             }
+
+            entry.Count -= taken;
         }
     }
 

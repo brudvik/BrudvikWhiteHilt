@@ -1,50 +1,54 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\JotunnLib.2.30.2\build\JotunnLib.props" Condition="Exists('..\packages\JotunnLib.2.30.2\build\JotunnLib.props')" />
+<Project>
+
+  <!--
+    The SDK is imported by hand rather than with <Project Sdk="...">, so SolutionDir can be set first: Jotunn's props
+    (imported with the package, inside Sdk.props) read Environment.props and DoPrebuild.props from it, also when the
+    project is built on its own, outside the solution.
+  -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DEAF4438-8089-40ED-8175-398E1261D45B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SolutionDir Condition="'$(SolutionDir)' == '' Or '$(SolutionDir)' == '*Undefined*'">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..'))</SolutionDir>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>10</LangVersion>
     <RootNamespace>BrudvikWhiteHilt</RootNamespace>
     <AssemblyName>BrudvikWhiteHilt</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <!-- Properties\AssemblyInfo.cs holds the version, which publish.ps1 and the release read. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- bin\Debug and bin\Release, as before: publish.ps1 and the tests look there. -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-    <LangVersion>10</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <StartAction>Program</StartAction>
     <StartProgram>$(VALHEIM_INSTALL)\valheim.exe</StartProgram>
     <StartArguments>-console</StartArguments>
     <StartWorkingDirectory>$(VALHEIM_INSTALL)</StartWorkingDirectory>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The package for its props, which add the publicized Valheim assemblies and Unity's; Jotunn.dll itself as a
+         plain reference, as with packages.config, so what it needs (Unity's netstandard 2.1, MonoMod, Newtonsoft) is
+         copied next to the mod too: the tests load the mod from there. -->
+    <PackageReference Include="JotunnLib" Version="2.30.2" GeneratePathProperty="true" ExcludeAssets="compile;runtime" />
+    <Reference Include="Jotunn">
+      <HintPath>$(PkgJotunnLib)\lib\net462\Jotunn.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\0Harmony.dll</HintPath>
@@ -55,857 +59,17 @@
     <Reference Include="BepInEx">
       <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
-    <Reference Include="Jotunn, Version=2.30.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JotunnLib.2.30.2\lib\net462\Jotunn.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Bestiary\BeastCounter.cs" />
-    <Compile Include="Bestiary\BeastCounterItem.cs" />
-    <Compile Include="Bestiary\BeastCounterCoating.cs" />
-    <Compile Include="Bestiary\BeastBookSettings.cs" />
-    <Compile Include="Bestiary\BeastBookStand.cs" />
-    <Compile Include="Bestiary\BeastBookPiece.cs" />
-    <Compile Include="Bestiary\BeastBookPanel.cs" />
-    <Compile Include="Patches\Difficulty\BeastCounterPatches.cs" />
-    <Compile Include="Items\Summoning\SummoningHornService.cs" />
-    <Compile Include="Kraken\KrakenAppearance.cs" />
-    <Compile Include="Items\Summoning\SummoningHorn.cs" />
-    <Compile Include="Items\Summoning\HornCaller.cs" />
-    <Compile Include="Chests\Collection\CollectionSettings.cs" />
-    <Compile Include="Chests\ContainerHandoff.cs" />
-    <Compile Include="Chests\Collection\CollectionPostComponent.cs" />
-    <Compile Include="Pieces\Storage\CollectionPost.cs" />
-    <Compile Include="Patches\Chests\CollectionPostPatches.cs" />
-    <Compile Include="Extensions\Texture2dExtension.cs" />
-    <Compile Include="Helpers\AssetUtilsExtended.cs" />
-    <Compile Include="Helpers\FishTable.cs" />
-    <Compile Include="Helpers\ForagingAssets.cs" />
-    <Compile Include="Helpers\PieceFragments.cs" />
-    <Compile Include="Helpers\CreatureVisual.cs" />
-    <Compile Include="Helpers\SpriteLoader.cs" />
-    <Compile Include="Helpers\StatusEffectHelper.cs" />
-    <Compile Include="Helpers\Translations.cs" />
-    <Compile Include="Helpers\DynamicTexts.cs" />
-    <Compile Include="Settings\ConfigButton.cs" />
-    <Compile Include="Settings\ConfigText.cs" />
-    <Compile Include="Settings\ConfigWindow.cs" />
-    <Compile Include="Patches\Texts\DynamicTextPatch.cs" />
-    <Compile Include="Helpers\VisualHelper.cs" />
-    <Compile Include="Chests\ChestCensus.cs" />
-    <Compile Include="Chests\ChestModule.cs" />
-    <Compile Include="Chests\Commands\ProgressCommand.cs" />
-    <Compile Include="Chests\Configuration\ChestSettings.cs" />
-    <Compile Include="Chests\Constants\ChestCategory.cs" />
-    <Compile Include="Chests\Constants\ChestMode.cs" />
-    <Compile Include="Chests\Constants\DefaultValues.cs" />
-    <Compile Include="Chests\Events\ContainerAwakePatchEvent.cs" />
-    <Compile Include="Chests\Events\ContainerChangedPatchEvent.cs" />
-    <Compile Include="Chests\Events\ContainerCheckForChangesPatchEvent.cs" />
-    <Compile Include="Chests\Events\ContainerDropAllItemsPatchEvent.cs" />
-    <Compile Include="Chests\Events\ContainerHoverTextPatchEvent.cs" />
-    <Compile Include="Chests\Events\ContainerPanelUpdatedPatchEvent.cs" />
-    <Compile Include="Chests\Events\InventoryAddingItemPatchEvent.cs" />
-    <Compile Include="Chests\Events\InventoryGridUpdatedPatchEvent.cs" />
-    <Compile Include="Chests\Events\InventoryGuiPatchEvent.cs" />
-    <Compile Include="Chests\Events\InventoryMoveAllPatchEvent.cs" />
-    <Compile Include="Chests\Events\ItemTooltipPatchEvent.cs" />
-    <Compile Include="Chests\Events\PlayerKnownItemPatchEvent.cs" />
-    <Compile Include="Chests\Events\PlayerSpawnedPatchEvent.cs" />
-    <Compile Include="Chests\Events\UnlockMessagePatchEvent.cs" />
-    <Compile Include="Chests\Extensions\ContainerExtension.cs" />
-    <Compile Include="Chests\Extensions\InventoryExtension.cs" />
-    <Compile Include="Chests\Extensions\Texture2dExtension.cs" />
-    <Compile Include="Chests\Helpers\AssetUtilsExtended.cs" />
-    <Compile Include="Chests\Helpers\BiomeCatalog.cs" />
-    <Compile Include="Chests\Helpers\ChestEffects.cs" />
-    <Compile Include="Chests\Helpers\ChestSupply.cs" />
-    <Compile Include="Chests\Helpers\ItemCatalog.cs" />
-    <Compile Include="Chests\Helpers\ItemSorter.cs" />
-    <Compile Include="Chests\Helpers\SpriteLoader.cs" />
-    <Compile Include="Chests\Helpers\WorldProgress.cs" />
-    <Compile Include="Chests\Models\CustomChestModel.cs" />
-    <Compile Include="Chests\Piece\ChestHighlight.cs" />
-    <Compile Include="Chests\Piece\ChestHoverPanel.cs" />
-    <Compile Include="Chests\Piece\ChestIndicator.cs" />
-    <Compile Include="Chests\Piece\ChestLearnUi.cs" />
-    <Compile Include="Chests\Piece\ChestProgressUi.cs" />
-    <Compile Include="Chests\Piece\CustomChestManager.cs" />
-    <Compile Include="Chests\Piece\WallDrawer.cs" />
-    <Compile Include="Chests\Piece\CustomPieceConfigExtended.cs" />
-    <Compile Include="Chests\Piece\CustomPieceExtended.cs" />
-    <Compile Include="Chests\Piece\GatheringPanel.cs" />
-    <Compile Include="Chests\Utils\SharedUtils.cs" />
-    <Compile Include="Chests\Utils\Texts.cs" />
-    <Compile Include="Patches\Chests\ChestCensusPatch.cs" />
-    <Compile Include="Patches\Chests\ContainerPatch.cs" />
-    <Compile Include="Patches\Chests\InventoryGuiPatch.cs" />
-    <Compile Include="Patches\Chests\InventoryPatch.cs" />
-    <Compile Include="Patches\Chests\MessageHudPatch.cs" />
-    <Compile Include="Patches\Chests\PlayerPatch.cs" />
-    <Compile Include="Helpers\WearNTearHelper.cs" />
-    <Compile Include="Items\Accessories\WhiteHiltAccessoryBase.cs" />
-    <Compile Include="Items\Accessories\WhiteHiltMegingjord\WhiteHiltMegingjord.cs" />
-    <Compile Include="Items\Ammunition\DragonfireArrow.cs" />
-    <Compile Include="Items\Ammunition\WhiteHiltAmmunitionBase.cs" />
-    <Compile Include="Items\Ammunition\WhiteHiltArrows\WhiteHiltArrows.cs" />
-    <Compile Include="Items\Ammunition\WhiteHiltBolts\WhiteHiltBolts.cs" />
-    <Compile Include="Items\Binding\BindingSettings.cs" />
-    <Compile Include="Items\Binding\GearBinding.cs" />
-    <Compile Include="Items\Binding\Infusion.cs" />
-    <Compile Include="Items\GearUpgrades.cs" />
-    <Compile Include="Items\Armors\WhiteHiltArmorBase.cs" />
-    <Compile Include="Items\Armors\WhiteHiltCape\WhiteHiltCape.cs" />
-    <Compile Include="Items\Armors\WhiteHiltChestplate\WhiteHiltChestplate.cs" />
-    <Compile Include="Items\Armors\WhiteHiltGreaves\WhiteHiltGreaves.cs" />
-    <Compile Include="Items\Armors\WhiteHiltHelmet\WhiteHiltHelmet.cs" />
-    <Compile Include="Items\Armors\WhiteHiltShield\WhiteHiltShield.cs" />
-    <Compile Include="Items\Food\ChanterelleStew\ChanterelleStew.cs" />
-    <Compile Include="Items\Coatings\WeaponCoatingBase.cs" />
-    <Compile Include="Items\Coatings\WeaponCoatingEffect.cs" />
-    <Compile Include="Items\Coatings\Whetstone\Whetstone.cs" />
-    <Compile Include="Items\Coatings\JuniperOil\JuniperOil.cs" />
-    <Compile Include="Items\Coatings\WolfLichenOil\WolfLichenOil.cs" />
-    <Compile Include="Items\Food\BogFishStew\BogFishStew.cs" />
-    <Compile Include="Items\Food\CattailPorridge\CattailPorridge.cs" />
-    <Compile Include="Items\Food\CranberrySoup\CranberrySoup.cs" />
-    <Compile Include="Items\Food\DragonscaleBroth\DragonscaleBroth.cs" />
-    <Compile Include="Items\Food\LingonberrySoup\LingonberrySoup.cs" />
-    <Compile Include="Items\Food\MountainStew\MountainStew.cs" />
-    <Compile Include="Items\Food\MossPorridge\MossPorridge.cs" />
-    <Compile Include="Items\Food\JuniperSmokedHam\JuniperSmokedHam.cs" />
-    <Compile Include="Items\Food\CandiedAngelica\CandiedAngelica.cs" />
-    <Compile Include="Items\Food\SorrelSalad\SorrelSalad.cs" />
-    <Compile Include="Items\Food\RosehipSoup\RosehipSoup.cs" />
-    <Compile Include="Items\Food\CarawayLoxStew\CarawayLoxStew.cs" />
-    <Compile Include="Items\Food\CloudberrySkyr\CloudberrySkyr.cs" />
-    <Compile Include="Items\Food\SmokedGrouper\SmokedGrouper.cs" />
-    <Compile Include="Items\Food\PorciniStew\PorciniStew.cs" />
-    <Compile Include="Items\Food\RoserootBroth\RoserootBroth.cs" />
-    <Compile Include="Items\Food\SmokedFish\SmokedFish.cs" />
-    <Compile Include="Items\Food\OctopusStew\OctopusStew.cs" />
-    <Compile Include="Items\Food\KrakenFeast\KrakenFeast.cs" />
-    <Compile Include="Items\Food\SmokedWolfJerky\SmokedWolfJerky.cs" />
-    <Compile Include="Items\Food\SweetGaleSausages\SweetGaleSausages.cs" />
-    <Compile Include="Items\Food\WhiteHiltFoodBase.cs" />
-    <Compile Include="Items\Curing\CuredFoods.cs" />
-    <Compile Include="Items\Curing\CuringIngredients.cs" />
-    <Compile Include="Items\Curing\CuringSettings.cs" />
-    <Compile Include="Items\Food\WildGarlicSoup\WildGarlicSoup.cs" />
-    <Compile Include="Items\Foraging\Angelica\Angelica.cs" />
-    <Compile Include="Items\Foraging\BogBean\BogBean.cs" />
-    <Compile Include="Items\Foraging\BogIron\BogIron.cs" />
-    <Compile Include="Items\Foraging\Caraway\Caraway.cs" />
-    <Compile Include="Items\Foraging\Cattail\Cattail.cs" />
-    <Compile Include="Items\Foraging\Chanterelle\Chanterelle.cs" />
-    <Compile Include="Items\Foraging\Cranberries\Cranberries.cs" />
-    <Compile Include="Items\Foraging\Ergot\Ergot.cs" />
-    <Compile Include="Items\Foraging\Crowberries\Crowberries.cs" />
-    <Compile Include="Items\Foraging\ForageableBase.cs" />
-    <Compile Include="Items\Foraging\Henbane\Henbane.cs" />
-    <Compile Include="Items\Foraging\IcelandMoss\IcelandMoss.cs" />
-    <Compile Include="Items\Foraging\Juniper\Juniper.cs" />
-    <Compile Include="Items\Foraging\LabradorTea\LabradorTea.cs" />
-    <Compile Include="Items\Foraging\Madder\Madder.cs" />
-    <Compile Include="Items\Foraging\Meadowsweet\Meadowsweet.cs" />
-    <Compile Include="Items\Foraging\MountainSorrel\MountainSorrel.cs" />
-    <Compile Include="Items\Foraging\Peat\Peat.cs" />
-    <Compile Include="Items\Foraging\Lingonberries\Lingonberries.cs" />
-    <Compile Include="Items\Foraging\Porcini\Porcini.cs" />
-    <Compile Include="Items\Foraging\Roseroot\Roseroot.cs" />
-    <Compile Include="Items\Foraging\SphagnumMoss\SphagnumMoss.cs" />
-    <Compile Include="Items\Foraging\Reed\Reed.cs" />
-    <Compile Include="Items\Foraging\RockLichen\RockLichen.cs" />
-    <Compile Include="Items\Foraging\Rosehips\Rosehips.cs" />
-    <Compile Include="Items\Roofing\RoofMaterials.cs" />
-    <Compile Include="Items\Foraging\SweetGale\SweetGale.cs" />
-    <Compile Include="Items\Foraging\WildGarlic\WildGarlic.cs" />
-    <Compile Include="Items\Foraging\WildHops\WildHops.cs" />
-    <Compile Include="Items\Foraging\WolfLichen\WolfLichen.cs" />
-    <Compile Include="Items\Foraging\Woad\Woad.cs" />
-    <Compile Include="Items\Foraging\Yarrow\Yarrow.cs" />
-    <Compile Include="Items\Meads\BogBeanBitter\BogBeanBitter.cs" />
-    <Compile Include="Items\Meads\BogBeanBitter\CleansingEffect.cs" />
-    <Compile Include="Items\Meads\CranberryMead\CranberryMead.cs" />
-    <Compile Include="Items\Meads\CrowberryWine\CrowberryWine.cs" />
-    <Compile Include="Items\Meads\LingonberryMead\LingonberryMead.cs" />
-    <Compile Include="Items\Meads\JuniperSahti\JuniperSahti.cs" />
-    <Compile Include="Items\Meads\YarrowGruit\YarrowGruit.cs" />
-    <Compile Include="Items\Meads\HopAle\HopAle.cs" />
-    <Compile Include="Items\Meads\HenbaneBeer\HenbaneBeer.cs" />
-    <Compile Include="Items\Meads\LabradorTeaBrew\InsectWardEffect.cs" />
-    <Compile Include="Items\Meads\LabradorTeaBrew\LabradorTeaBrew.cs" />
-    <Compile Include="Items\Meads\MeadowsweetMead\MeadowsweetMead.cs" />
-    <Compile Include="Items\Meads\RoserootMead\RoserootMead.cs" />
-    <Compile Include="Items\Meads\SweetGaleAle\SweetGaleAle.cs" />
-    <Compile Include="Items\Meads\WhiteHiltMeadBase.cs" />
-    <Compile Include="Items\Navigation\AmuletGems.cs" />
-    <Compile Include="Items\Navigation\NavigatorTable.cs" />
-    <Compile Include="Items\Navigation\PathfinderAmulet.cs" />
-    <Compile Include="Items\Navigation\RubyPathfinderAmulet.cs" />
-    <Compile Include="Items\Runes\BlackMetalRune\BlackMetalRune.cs" />
-    <Compile Include="Items\Runes\BronzeRune\BronzeRune.cs" />
-    <Compile Include="Items\Runes\FlametalRune\FlametalRune.cs" />
-    <Compile Include="Items\Runes\GoldRune\GoldRune.cs" />
-    <Compile Include="Items\Runes\IronRune\IronRune.cs" />
-    <Compile Include="Items\Runes\SilverRune\SilverRune.cs" />
-    <Compile Include="Items\Runes\WhiteHiltRuneBase.cs" />
-    <Compile Include="Items\Runes\EtchingRuneBase.cs" />
-    <Compile Include="Items\Runes\BoneRune\BoneRune.cs" />
-    <Compile Include="Items\Runes\FangRune\FangRune.cs" />
-    <Compile Include="Items\Runes\ObsidianRune\ObsidianRune.cs" />
-    <Compile Include="Items\Runes\MireRune\MireRune.cs" />
-    <Compile Include="Items\Runes\BloodRune\BloodRune.cs" />
-    <Compile Include="Items\Runes\ThunderRune\ThunderRune.cs" />
-    <Compile Include="Pieces\Lights\Rushlight.cs" />
-    <Compile Include="Pieces\Lights\SoapstoneLamp.cs" />
-    <Compile Include="Patches\Gear\WardPatch.cs" />
-    <Compile Include="Items\Binding\DreadEffect.cs" />
-    <Compile Include="Patches\Gear\DreadPatch.cs" />
-    <Compile Include="Items\ShipUpgrades\ShipUpgrades.cs" />
-    <Compile Include="Items\ShipUpgrades\WhiteHiltShipUpgradeBase.cs" />
-    <Compile Include="Items\IWhiteHiltConfigurable.cs" />
-    <Compile Include="Items\IWhiteHiltCustomItem.cs" />
-    <Compile Include="Items\Indestructible\IndestructiblePiece.cs" />
-    <Compile Include="Items\Indestructible\IndestructibleItem.cs" />
-    <Compile Include="Items\Potions\GiftOfBaldur\GiftOfBaldur.cs" />
-    <Compile Include="Items\Potions\GiftOfBaldur\GiftOfBaldurEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkr.cs" />
-    <Compile Include="Items\Potions\GiftOfBrokkr\GiftOfBrokkrEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfEir\GiftOfEir.cs" />
-    <Compile Include="Items\Potions\GiftOfEir\GiftOfEirEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrir.cs" />
-    <Compile Include="Items\Potions\GiftOfFenrir\GiftOfFenrirEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreya.cs" />
-    <Compile Include="Items\Potions\GiftOfFreya\GiftOfFreyaEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyr.cs" />
-    <Compile Include="Items\Potions\GiftOfFreyr\GiftOfFreyrEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfHeimdall\GiftOfHeimdall.cs" />
-    <Compile Include="Items\Potions\GiftOfVolva\GiftOfVolva.cs" />
-    <Compile Include="Items\Potions\GiftOfHel\GiftOfHel.cs" />
-    <Compile Include="Items\Potions\GiftOfHel\GiftOfHelEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfHugin\GiftOfHugin.cs" />
-    <Compile Include="Items\Potions\GiftOfHugin\GiftOfHuginEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunn.cs" />
-    <Compile Include="Items\Potions\GiftOfIdunn\GiftOfIdunnEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfKvasir\GiftOfKvasir.cs" />
-    <Compile Include="Items\Potions\GiftOfLoki\GiftOfLoki.cs" />
-    <Compile Include="Items\Potions\GiftOfLoki\GiftOfLokiEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfMunin\GiftOfMunin.cs" />
-    <Compile Include="Items\Potions\GiftOfMunin\GiftOfMuninEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfNjord\GiftOfNjord.cs" />
-    <Compile Include="Items\Potions\GiftOfNjord\GiftOfNjordEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdin.cs" />
-    <Compile Include="Items\Potions\GiftOfOdin\GiftOfOdinEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfRatatoskr\GiftOfRatatoskr.cs" />
-    <Compile Include="Items\Potions\GiftOfRatatoskr\GiftOfRatatoskrEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfSkadi\GiftOfSkadi.cs" />
-    <Compile Include="Items\Potions\GiftOfSkadi\GiftOfSkadiEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfSleipnir\GiftOfSleipnir.cs" />
-    <Compile Include="Items\Potions\GiftOfSleipnir\GiftOfSleipnirEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfSurt\GiftOfSurt.cs" />
-    <Compile Include="Items\Potions\GiftOfSurt\GiftOfSurtEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfThor\GiftOfThor.cs" />
-    <Compile Include="Items\Potions\GiftOfThor\GiftOfThorEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyr.cs" />
-    <Compile Include="Items\Potions\GiftOfTyr\GiftOfTyrEffect.cs" />
-    <Compile Include="Items\Potions\GiftOfUllr\GiftOfUllr.cs" />
-    <Compile Include="Items\Potions\PotionBase.cs" />
-    <Compile Include="Items\Potions\PotionSettings.cs" />
-    <Compile Include="Items\Tools\WhiteHiltAxe\WhiteHiltAxe.cs" />
-    <Compile Include="Items\Tools\WhiteHiltCultivator\WhiteHiltCultivator.cs" />
-    <Compile Include="Items\Tools\WhiteHiltHammer\WhiteHiltHammer.cs" />
-    <Compile Include="Items\Tools\WhiteHiltHoe\WhiteHiltHoe.cs" />
-    <Compile Include="Items\Tools\WhiteHiltPickaxe\WhiteHiltPickaxe.cs" />
-    <Compile Include="Items\Tools\WhiteHiltToolBase.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltAtgeir\WhiteHiltAtgeir.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltBattleaxe\WhiteHiltBattleaxe.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltBow\WhiteHiltBow.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltBow\WhiteHiltBowFlex.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltBuckler\WhiteHiltBuckler.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltCrossbow\WhiteHiltCrossbow.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltKnife\WhiteHiltKnife.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltMace\WhiteHiltMace.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltSledge\WhiteHiltSledge.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltSpear\WhiteHiltSpear.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltStaffFire\WhiteHiltStaffFire.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltStaffIce\WhiteHiltStaffIce.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltStaffLightning\WhiteHiltStaffLightning.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltSword\WhiteHiltSword.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltTowerShield\WhiteHiltTowerShield.cs" />
-    <Compile Include="Items\Weapons\WhiteHiltWeaponBase.cs" />
-    <Compile Include="Items\Weapons\StaffFlame.cs" />
-    <Compile Include="Patches\Crafting\ChainBenchRecipePatch.cs" />
-    <Compile Include="Patches\Crafting\CraftAmountPatches.cs" />
-    <Compile Include="Patches\Crafting\NearbyContainerPatches.cs" />
-    <Compile Include="Patches\Crafting\NearbyContainerStationPatches.cs" />
-    <Compile Include="Building\BuildCamera.cs" />
-    <Compile Include="Building\BuildGizmos.cs" />
-    <Compile Include="Building\BuildPlacer.cs" />
-    <Compile Include="Building\BuildRotation.cs" />
-    <Compile Include="Building\BuildToolbar.cs" />
-    <Compile Include="Building\BuildTools.cs" />
-    <Compile Include="Building\BuildToolSettings.cs" />
-    <Compile Include="Building\BuildUndo.cs" />
-    <Compile Include="Building\RepairTools.cs" />
-    <Compile Include="Building\Doors\AutoDoor.cs" />
-    <Compile Include="Building\Doors\AutoDoorSettings.cs" />
-    <Compile Include="Patches\Building\AutoDoorPatches.cs" />
-    <Compile Include="Building\Groups\Blueprint.cs" />
-    <Compile Include="Building\Groups\BlueprintPanel.cs" />
-    <Compile Include="Building\Groups\BuildSelection.cs" />
-    <Compile Include="Building\Groups\GroupGhost.cs" />
-    <Compile Include="Building\Groups\GroupPlacer.cs" />
-    <Compile Include="Building\Groups\GroupSettings.cs" />
-    <Compile Include="Building\Groups\GroupTools.cs" />
-    <Compile Include="Building\Groups\PieceSnapshot.cs" />
-    <Compile Include="Building\Terrain\AreaPicker.cs" />
-    <Compile Include="Building\Terrain\FarmTools.cs" />
-    <Compile Include="Building\Terrain\GrowthMarkers.cs" />
-    <Compile Include="Building\Terrain\HoeTools.cs" />
-    <Compile Include="Building\Terrain\RoadBuilder.cs" />
-    <Compile Include="Building\Terrain\TerrainCost.cs" />
-    <Compile Include="Building\Terrain\TerrainEdit.cs" />
-    <Compile Include="Building\Terrain\TerrainPanel.cs" />
-    <Compile Include="Building\Terrain\TerrainSettings.cs" />
-    <Compile Include="Building\Terrain\TerrainShapes.cs" />
-    <Compile Include="Building\Moats\MoatBuilder.cs" />
-    <Compile Include="Building\Moats\MoatEffects.cs" />
-    <Compile Include="Building\Moats\MoatGeometry.cs" />
-    <Compile Include="Building\Moats\MoatSection.cs" />
-    <Compile Include="Building\Moats\MoatSettings.cs" />
-    <Compile Include="Building\Moats\MoatTool.cs" />
-    <Compile Include="Patches\Building\MoatPatches.cs" />
-    <Compile Include="Patches\Building\TerrainPatches.cs" />
-    <Compile Include="Building\Media\Film.cs" />
-    <Compile Include="Building\Media\FilmPlayer.cs" />
-    <Compile Include="Building\Media\MediaMode.cs" />
-    <Compile Include="Building\Media\MediaOverlay.cs" />
-    <Compile Include="Building\Media\MediaPanel.cs" />
-    <Compile Include="Building\Media\MediaSettings.cs" />
-    <Compile Include="Patches\Building\BuildToolPatches.cs" />
-    <Compile Include="Crafting\ContainerPulse.cs" />
-    <Compile Include="Crafting\CraftAmountSelector.cs" />
-    <Compile Include="Crafting\CraftingPanelSettings.cs" />
-    <Compile Include="Crafting\IUnlimitedItems.cs" />
-    <Compile Include="Crafting\RequirementOverlay.cs" />
-    <Compile Include="Crafting\NearbyContainers.cs" />
-    <Compile Include="Helpers\FireEffects.cs" />
-    <Compile Include="Patches\EternalFire\EternalFirePatches.cs" />
-    <Compile Include="Pieces\EternalFire\EternalFireRules.cs" />
-    <Compile Include="Pieces\EternalFire\SurtsBrazier.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalDestination.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\IWhiteHiltPortal.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalBaseGlow.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalSettings.cs" />
-    <Compile Include="Pieces\Portals\Effects\PortalFx.cs" />
-    <Compile Include="Pieces\Portals\Effects\PortalFxPlayer.cs" />
-    <Compile Include="Pieces\Portals\Effects\PortalFxScreen.cs" />
-    <Compile Include="Pieces\Portals\Effects\PortalFxSettings.cs" />
-    <Compile Include="Pieces\Portals\Effects\PortalFxWorld.cs" />
-    <Compile Include="Patches\Portals\PortalFxPatches.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravel.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\PortalTravelPanel.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalComponent.cs" />
-    <Compile Include="Pieces\Portals\WhiteHiltPortal\WhiteHiltPortalPieces.cs" />
-    <Compile Include="Patches\Portals\HomeStonePatch.cs" />
-    <Compile Include="Patches\Portals\ValkyrieStonePatch.cs" />
-    <Compile Include="Patches\Portals\PortalTravelMapPatch.cs" />
-    <Compile Include="Items\Portals\HomeStone.cs" />
-    <Compile Include="Patches\Foraging\ForagingDropPatch.cs" />
-    <Compile Include="Patches\Foraging\PeatFuelPatch.cs" />
-    <Compile Include="Patches\Ranching\LoxMilkingPatches.cs" />
-    <Compile Include="Ranching\LoxMilking.cs" />
-    <Compile Include="Patches\Meads\InsectWardPatch.cs" />
-    <Compile Include="Patches\Meads\DeepSleepPatch.cs" />
-    <Compile Include="Patches\Roofing\RoofDropPatches.cs" />
-    <Compile Include="Patches\Navigation\CartographerDeskPatch.cs" />
-    <Compile Include="Patches\Navigation\MinimapExplorePatch.cs" />
-    <Compile Include="Patches\Navigation\MapAreaPatches.cs" />
-    <Compile Include="Patches\Navigation\DiscoveryPatches.cs" />
-    <Compile Include="Patches\Navigation\PortraitPatches.cs" />
-    <Compile Include="Patches\Navigation\CompassPatches.cs" />
-    <Compile Include="Patches\Navigation\SharedMapRevealPatches.cs" />
-    <Compile Include="Patches\Navigation\ShipHelmPatch.cs" />
-    <Compile Include="Patches\Navigation\ShipRoutePatches.cs" />
-    <Compile Include="Patches\Navigation\WaypointPatches.cs" />
-    <Compile Include="Patches\Navigation\WeatherPatches.cs" />
-    <Compile Include="Patches\Navigation\OverviewPatches.cs" />
-    <Compile Include="Patches\Navigation\ShipRoutePaddlePatch.cs" />
-    <Compile Include="Patches\Navigation\StoneDowsingPatches.cs" />
-    <Compile Include="Patches\Treasure\TreasurePatches.cs" />
-    <Compile Include="Treasure\BuriedTreasure.cs" />
-    <Compile Include="Treasure\TreasureLoot.cs" />
-    <Compile Include="Treasure\TreasureMapItem.cs" />
-    <Compile Include="Treasure\TreasureMapPanel.cs" />
-    <Compile Include="Treasure\TreasureMapRenderer.cs" />
-    <Compile Include="Treasure\TreasureRegistry.cs" />
-    <Compile Include="Treasure\TreasureService.cs" />
-    <Compile Include="Treasure\TreasureSettings.cs" />
-    <Compile Include="Treasure\TreasureSiteFinder.cs" />
-    <Compile Include="Patches\Portals\PortalMapPatch.cs" />
-    <Compile Include="Patches\Portals\PortalStationsRunePatch.cs" />
-    <Compile Include="Patches\Portals\PortalGhostPatch.cs" />
-    <Compile Include="Patches\Portals\RunePortalPatch.cs" />
-    <Compile Include="Patches\Ships\ShipAnchorPatch.cs" />
-    <Compile Include="Patches\Ships\ShipAssistPatches.cs" />
-    <Compile Include="Patches\Ships\ShipCameraZoomPatch.cs" />
-    <Compile Include="Pieces\Navigation\RouteCameraSweep.cs" />
-    <Compile Include="Patches\Ships\ShipChestPatches.cs" />
-    <Compile Include="Patches\Ships\ShipTentCoverPatch.cs" />
-    <Compile Include="Patches\Potions\PotionPatches.cs" />
-    <Compile Include="Patches\Progression\ProgressionPatches.cs" />
-    <Compile Include="Patches\Planting\PlantingPatches.cs" />
-    <Compile Include="Patches\Branding\BrandingPatches.cs" />
-    <Compile Include="Branding\BrandingSettings.cs" />
-    <Compile Include="Branding\LoadingScreenLogo.cs" />
-    <Compile Include="Branding\MainMenuLogo.cs" />
-    <Compile Include="Helpers\WhiteHiltLogo.cs" />
-    <Compile Include="Pieces\Banners\WhiteHiltBannerBase.cs" />
-    <Compile Include="Pieces\Banners\WhiteHiltBanners.cs" />
-    <Compile Include="Items\Armors\WhiteHiltBannerCape\WhiteHiltBannerCape.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\UniformBadge.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\UniformLook.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltOfficerBreeches.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltOfficerJerkin.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformCape.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformTrousers.cs" />
-    <Compile Include="Items\Armors\WhiteHiltUniform\WhiteHiltUniformTunic.cs" />
-    <Compile Include="Planting\PlantableDefinition.cs" />
-    <Compile Include="Planting\Plantables.cs" />
-    <Compile Include="Planting\PlantingSettings.cs" />
-    <Compile Include="Planting\SaplingDefinition.cs" />
-    <Compile Include="Planting\Saplings.cs" />
-    <Compile Include="Backpack\BackpackGui.cs" />
-    <Compile Include="Items\Accessories\BeltPouch.cs" />
-    <Compile Include="Items\Accessories\MegingjordUpgrade.cs" />
-    <Compile Include="Items\Accessories\RootDowser.cs" />
-    <Compile Include="Items\Accessories\StoneDowser.cs" />
-    <Compile Include="Backpack\BackpackInput.cs" />
-    <Compile Include="Backpack\HandSlots.cs" />
-    <Compile Include="Companions\CompanionRest.cs" />
-    <Compile Include="Companions\DogActivities.cs" />
-    <Compile Include="Companions\DogCompanion.cs" />
-    <Compile Include="Companions\DogExpression.cs" />
-    <Compile Include="Companions\DogHomePiece.cs" />
-    <Compile Include="Companions\DogOwnerTools.cs" />
-    <Compile Include="Companions\DogRegistry.cs" />
-    <Compile Include="Companions\DogSettings.cs" />
-    <Compile Include="Companions\RestPose.cs" />
-    <Compile Include="Patches\Companions\DogPatches.cs" />
-    <Compile Include="Patches\Companions\RestPosePatch.cs" />
-    <Compile Include="Pieces\Companions\DogBed.cs" />
-    <Compile Include="Pieces\Companions\DogBowl.cs" />
-    <Compile Include="Companions\DogAction.cs" />
-    <Compile Include="Companions\DogCare.cs" />
-    <Compile Include="Companions\DogTricks.cs" />
-    <Compile Include="Companions\DogHouseHome.cs" />
-    <Compile Include="Companions\DogMemorial.cs" />
-    <Compile Include="Pieces\Companions\DogWaterBowl.cs" />
-    <Compile Include="Pieces\Companions\DogGrave.cs" />
-    <Compile Include="Pieces\Companions\DogHouse.cs" />
-    <Compile Include="Pieces\Companions\DogPieceBase.cs" />
-    <Compile Include="Clock\ClockSettings.cs" />
-    <Compile Include="Clock\GameClock.cs" />
-    <Compile Include="Patches\Clock\ClockPatches.cs" />
-    <Compile Include="Production\ProductionLabels.cs" />
-    <Compile Include="Production\ProductionNotifier.cs" />
-    <Compile Include="Production\ProductionOverview.cs" />
-    <Compile Include="Production\ProductionReader.cs" />
-    <Compile Include="Production\ProductionRegistry.cs" />
-    <Compile Include="Production\ProductionSettings.cs" />
-    <Compile Include="Production\ProductionStatus.cs" />
-    <Compile Include="Patches\Production\ProductionPatches.cs" />
-    <Compile Include="Difficulty\BloodMoonSky.cs" />
-    <Compile Include="Difficulty\CreatureStars.cs" />
-    <Compile Include="Difficulty\DifficultyCommands.cs" />
-    <Compile Include="Difficulty\DifficultyService.cs" />
-    <Compile Include="Difficulty\DifficultySettings.cs" />
-    <Compile Include="Difficulty\DifficultyState.cs" />
-    <Compile Include="Difficulty\StarHud.cs" />
-    <Compile Include="Difficulty\StarScale.cs" />
-    <Compile Include="Difficulty\WhiteHiltGear.cs" />
-    <Compile Include="Difficulty\Beasts\BeastBehaviour.cs" />
-    <Compile Include="Difficulty\Beasts\BeastDefinition.cs" />
-    <Compile Include="Difficulty\Beasts\BeastRegistry.cs" />
-    <Compile Include="Difficulty\Beasts\BeastSpawner.cs" />
-    <Compile Include="Patches\Difficulty\CreatureLevelPatches.cs" />
-    <Compile Include="Patches\Difficulty\DifficultyWorldPatches.cs" />
-    <Compile Include="Kraken\KrakenBody.cs" />
-    <Compile Include="Kraken\KrakenCommands.cs" />
-    <Compile Include="Kraken\KrakenCorpse.cs" />
-    <Compile Include="Kraken\KrakenRegistry.cs" />
-    <Compile Include="Kraken\KrakenService.cs" />
-    <Compile Include="Kraken\KrakenSettings.cs" />
-    <Compile Include="Kraken\KrakenSpawner.cs" />
-    <Compile Include="Kraken\KrakenTentacle.cs" />
-    <Compile Include="Kraken\OctopusSwim.cs" />
-    <Compile Include="Monsters\DesertDragonRegistry.cs" />
-    <Compile Include="Monsters\DragonFire.cs" />
-    <Compile Include="Monsters\DragonFlame.cs" />
-    <Compile Include="Monsters\DragonGroundFire.cs" />
-    <Compile Include="Monsters\LindormBurrow.cs" />
-    <Compile Include="Monsters\LindormService.cs" />
-    <Compile Include="Monsters\MonsterCommands.cs" />
-    <Compile Include="Monsters\MonsterCorpse.cs" />
-    <Compile Include="Monsters\MonsterRegistry.cs" />
-    <Compile Include="Monsters\MonsterSettings.cs" />
-    <Compile Include="OldLand\OldLandFiller.cs" />
-    <Compile Include="OldLand\OldLandGrounding.cs" />
-    <Compile Include="OldLand\OldLandSettings.cs" />
-    <Compile Include="Patches\OldLand\OldLandPatches.cs" />
-    <Compile Include="Patches\Kraken\KrakenPatches.cs" />
-    <Compile Include="Patches\Monsters\MonsterPatches.cs" />
-    <Compile Include="Sound\IndoorAudioFilter.cs" />
-    <Compile Include="Sound\IndoorSound.cs" />
-    <Compile Include="Sound\IndoorSoundSettings.cs" />
-    <Compile Include="Patches\Sound\IndoorSoundPatches.cs" />
-    <Compile Include="Drops\FloatingItems.cs" />
-    <Compile Include="Patches\Drops\FloatingItemsPatch.cs" />
-    <Compile Include="Pieces\Trophies\TrophyAltar.cs" />
-    <Compile Include="Pieces\Trophies\TrophyAltarSettings.cs" />
-    <Compile Include="Pieces\Roofs\RoofCatalog.cs" />
-    <Compile Include="Pieces\Roofs\RoofCoverings.cs" />
-    <Compile Include="Pieces\Roofs\RoofEave.cs" />
-    <Compile Include="Pieces\Roofs\RoofFamily.cs" />
-    <Compile Include="Pieces\Roofs\RoofInfo.cs" />
-    <Compile Include="Pieces\Roofs\RoofMeshBuilder.cs" />
-    <Compile Include="Pieces\Roofs\RoofSettings.cs" />
-    <Compile Include="Pieces\Roofs\SmokeHoleHatch.cs" />
-    <Compile Include="Pieces\Roofs\SoapstoneHearth.cs" />
-    <Compile Include="Pieces\Roofs\TarKiln.cs" />
-    <Compile Include="Pieces\Roofs\TurfGarden.cs" />
-    <Compile Include="Pieces\Waste\WasteWell.cs" />
-    <Compile Include="Pieces\Waste\WasteWellComponent.cs" />
-    <Compile Include="Pieces\Waste\WasteWellSettings.cs" />
-    <Compile Include="Patches\Waste\WasteWellPatches.cs" />
-    <Compile Include="Pieces\Smithing\RepairAnvil\RepairAnvil.cs" />
-    <Compile Include="Pieces\Smithing\RepairAnvil\RepairAnvilComponent.cs" />
-    <Compile Include="Pieces\Smithing\RepairAnvil\RepairAnvilSettings.cs" />
-    <Compile Include="Backpack\BackpackLayout.cs" />
-    <Compile Include="Backpack\BackpackSettings.cs" />
-    <Compile Include="Backpack\FoodSlots.cs" />
-    <Compile Include="Backpack\GearSlots.cs" />
-    <Compile Include="Backpack\HotbarSets.cs" />
-    <Compile Include="Backpack\HotbarSupply.cs" />
-    <Compile Include="Pieces\Structure\BeamPieceBase.cs" />
-    <Compile Include="Pieces\Structure\BeamPieces.cs" />
-    <Compile Include="Pieces\Structure\IronGratePieces.cs" />
-    <Compile Include="Painting\DyeCatalog.cs" />
-    <Compile Include="Painting\PaintBrush.cs" />
-    <Compile Include="Painting\PaintColor.cs" />
-    <Compile Include="Painting\PaintedPieces.cs" />
-    <Compile Include="Painting\PaintMixerPanel.cs" />
-    <Compile Include="Painting\PaintSettings.cs" />
-    <Compile Include="Items\Painting\WhiteHiltPaintBrush.cs" />
-    <Compile Include="Items\Painting\WhiteHiltPaintPot.cs" />
-    <Compile Include="Pieces\Painting\PaintBench.cs" />
-    <Compile Include="Patches\Painting\PaintPatches.cs" />
-    <Compile Include="Backpack\UtilitySlots.cs" />
-    <Compile Include="Patches\Accessories\BeltPouchPatch.cs" />
-    <Compile Include="Patches\Gear\BindingPatches.cs" />
-    <Compile Include="Patches\Gear\GearUpgradePatches.cs" />
-    <Compile Include="Patches\Accessories\MegingjordUpgradePatches.cs" />
-    <Compile Include="Patches\Backpack\BackpackInventoryPatches.cs" />
-    <Compile Include="Patches\Backpack\BackpackLayoutPatches.cs" />
-    <Compile Include="Patches\Backpack\BackpackSlotPatches.cs" />
-    <Compile Include="Patches\Ranching\AnimalCarePatches.cs" />
-    <Compile Include="Patches\Ranching\FeedingTroughPatch.cs" />
-    <Compile Include="Patches\Ranching\TamingPatches.cs" />
-    <Compile Include="Patches\Ships\TailwindPatch.cs" />
-    <Compile Include="Pieces\IWhiteHiltCustomPiece.cs" />
-    <Compile Include="Pieces\Cooking\StonePot\HerbTray.cs" />
-    <Compile Include="Pieces\Cooking\StonePot\SmokeOven.cs" />
-    <Compile Include="Pieces\Cooking\StonePot\SoapstoneCauldron.cs" />
-    <Compile Include="Items\Food\FishSoup\FishSoup.cs" />
-    <Compile Include="Items\Food\JuniperLoxPot\JuniperLoxPot.cs" />
-    <Compile Include="Items\Food\CloudberryPorridge\CloudberryPorridge.cs" />
-    <Compile Include="Pieces\Cooking\DryingRack.cs" />
-    <Compile Include="Pieces\Textiles\Loom.cs" />
-    <Compile Include="Items\Textiles\LinenCloth.cs" />
-    <Compile Include="Textiles\DyedCloth.cs" />
-    <Compile Include="Textiles\Dyeing.cs" />
-    <Compile Include="Textiles\TextileSettings.cs" />
-    <Compile Include="Patches\Textiles\TextilePatches.cs" />
-    <Compile Include="Saga\SagaLog.cs" />
-    <Compile Include="Saga\SagaPanel.cs" />
-    <Compile Include="Saga\SagaSettings.cs" />
-    <Compile Include="Patches\Saga\SagaPatches.cs" />
-    <Compile Include="Storage\StorageSearch.cs" />
-    <Compile Include="Guestbook\GuestbookPanel.cs" />
-    <Compile Include="Guestbook\GuestbookSettings.cs" />
-    <Compile Include="Guestbook\GuestbookStand.cs" />
-    <Compile Include="Pieces\Guestbook\GuestbookPiece.cs" />
-    <Compile Include="Patches\Guestbook\GuestbookPatches.cs" />
-    <Compile Include="Quartermaster\PackLists.cs" />
-    <Compile Include="Quartermaster\QuartermasterPanel.cs" />
-    <Compile Include="Quartermaster\StockWatch.cs" />
-    <Compile Include="Quartermaster\QuartermasterSettings.cs" />
-    <Compile Include="Quartermaster\QuartermasterStand.cs" />
-    <Compile Include="Quartermaster\QuartermasterStore.cs" />
-    <Compile Include="Pieces\Storage\QuartermasterTable.cs" />
-    <Compile Include="Patches\Quartermaster\QuartermasterPatches.cs" />
-    <Compile Include="Pieces\Defenses\DefenseLadder.cs" />
-    <Compile Include="Pieces\Defenses\DefenseLayout.cs" />
-    <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />
-    <Compile Include="Pieces\Defenses\DefensePieceBase.cs" />
-    <Compile Include="Pieces\Defenses\DefensePieces.cs" />
-    <Compile Include="Pieces\Defenses\StoneDefensePieces.cs" />
-    <Compile Include="Pieces\Defenses\StoneVariantPieces.cs" />
-    <Compile Include="Pieces\Defenses\Siege\AlarmBell.cs" />
-    <Compile Include="Pieces\Defenses\Siege\OilCauldron.cs" />
-    <Compile Include="Pieces\Defenses\Siege\SiegeSettings.cs" />
-    <Compile Include="Pieces\Storage\HarbourCrane.cs" />
-    <Compile Include="Quartermaster\QuartermasterSite.cs" />
-    <Compile Include="Pieces\Defenses\GateControl\GateHorn.cs" />
-    <Compile Include="Pieces\Defenses\GateControl\GateMechanisms.cs" />
-    <Compile Include="Pieces\Defenses\GateControl\GateRope.cs" />
-    <Compile Include="Pieces\Defenses\GateControl\PortcullisDriver.cs" />
-    <Compile Include="Pieces\Defenses\GateControl\WindlassHouse.cs" />
-    <Compile Include="Pieces\Defenses\GateLeafDriver.cs" />
-    <Compile Include="Pieces\Defenses\DrawbridgeDriver.cs" />
-    <Compile Include="Pieces\Defenses\VanillaMeshLibrary.cs" />
-    <Compile Include="Pieces\Navigation\CartographerDesk.cs" />
-    <Compile Include="Pieces\Navigation\MapTableProximity.cs" />
-    <Compile Include="Pieces\Navigation\MuninsPerch.cs" />
-    <Compile Include="Pieces\Navigation\ShipChartTable.cs" />
-    <Compile Include="Pieces\Navigation\RouteArrow.cs" />
-    <Compile Include="Pieces\Navigation\ShipRoute.cs" />
-    <Compile Include="Pieces\Navigation\ShipRoutePlanner.cs" />
-    <Compile Include="Pieces\Navigation\SkillScrolls.cs" />
-    <Compile Include="Navigation\ExplorationSkill.cs" />
-    <Compile Include="Navigation\NavigationSettings.cs" />
-    <Compile Include="Navigation\Dowsing\RootDowsingEffect.cs" />
-    <Compile Include="Navigation\Dowsing\RootDowsingSettings.cs" />
-    <Compile Include="Navigation\Dowsing\StoneDowsingEffect.cs" />
-    <Compile Include="Navigation\Dowsing\StoneDowsingService.cs" />
-    <Compile Include="Navigation\MinimapEdgeArrow.cs" />
-    <Compile Include="Navigation\Overview\ExplorationOverview.cs" />
-    <Compile Include="Navigation\Overview\OverviewPanel.cs" />
-    <Compile Include="Navigation\Overview\OverviewSettings.cs" />
-    <Compile Include="Navigation\Weather\ForecastPanel.cs" />
-    <Compile Include="Navigation\Weather\ForecastSettings.cs" />
-    <Compile Include="Navigation\Weather\StormWarning.cs" />
-    <Compile Include="Navigation\Weather\WeatherForecast.cs" />
-    <Compile Include="Navigation\Waypoints\WaypointGuide.cs" />
-    <Compile Include="Navigation\Waypoints\WaypointHud.cs" />
-    <Compile Include="Navigation\Waypoints\WaypointMap.cs" />
-    <Compile Include="Navigation\Waypoints\WaypointSettings.cs" />
-    <Compile Include="Navigation\Waypoints\WaypointTarget.cs" />
-    <Compile Include="Navigation\Dowsing\StoneDowsingSettings.cs" />
-    <Compile Include="Navigation\Dowsing\StoneDowsingTargets.cs" />
-    <Compile Include="Navigation\Areas\MapArea.cs" />
-    <Compile Include="Navigation\Areas\MapAreaOverlay.cs" />
-    <Compile Include="Navigation\Areas\MapAreaService.cs" />
-    <Compile Include="Navigation\Areas\MapAreaSettings.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryCatalog.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryFilter.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryOverlay.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryPackage.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryPanel.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoveryService.cs" />
-    <Compile Include="Navigation\Discoveries\DiscoverySettings.cs" />
-    <Compile Include="Navigation\Portraits\PortraitCapture.cs" />
-    <Compile Include="Navigation\Portraits\PortraitNetwork.cs" />
-    <Compile Include="Navigation\Portraits\PortraitPins.cs" />
-    <Compile Include="Navigation\Portraits\PortraitSettings.cs" />
-    <Compile Include="Navigation\Compass\CompassSettings.cs" />
-    <Compile Include="Navigation\Compass\MapCompass.cs" />
-    <Compile Include="Navigation\Compass\CompassGeometry.cs" />
-    <Compile Include="Navigation\Compass\HudCompassSettings.cs" />
-    <Compile Include="Navigation\Compass\HudCompass.cs" />
-    <Compile Include="Navigation\Compass\HudCompassMarkers.cs" />
-    <Compile Include="Navigation\Compass\HudCompassLayout.cs" />
-    <Compile Include="Navigation\LargeMapFrame.cs" />
-    <Compile Include="Navigation\Portraits\PortraitStore.cs" />
-    <Compile Include="Navigation\RavenSightEffect.cs" />
-    <Compile Include="Navigation\SeaRouteFinder.cs" />
-    <Compile Include="Navigation\SharedMapReveal.cs" />
-    <Compile Include="Ranching\AnimalCare.cs" />
-    <Compile Include="Ranching\FavoriteFoods.cs" />
-    <Compile Include="Ranching\HusbandrySkill.cs" />
-    <Compile Include="Ranching\RanchingSettings.cs" />
-    <Compile Include="Pieces\Defenses\DefenseSettings.cs" />
-    <Compile Include="Mastery\Angling.cs" />
-    <Compile Include="Mastery\CookingStars.cs" />
-    <Compile Include="Mastery\Crops.cs" />
-    <Compile Include="Mastery\DominoLog.cs" />
-    <Compile Include="Mastery\ForagingSkill.cs" />
-    <Compile Include="Mastery\Gathering.cs" />
-    <Compile Include="Mastery\JunkFilter.cs" />
-    <Compile Include="Mastery\MapPings.cs" />
-    <Compile Include="Mastery\MasteryEffects.cs" />
-    <Compile Include="Mastery\MasterySettings.cs" />
-    <Compile Include="Mastery\Perks.cs" />
-    <Compile Include="Mastery\SkillBook.cs" />
-    <Compile Include="Mastery\SkillLevels.cs" />
-    <Compile Include="Mastery\Stars.cs" />
-    <Compile Include="Mastery\WildPicks.cs" />
-    <Compile Include="Patches\Mastery\CookingPatches.cs" />
-    <Compile Include="Patches\Mastery\FishingPatches.cs" />
-    <Compile Include="Patches\Mastery\GatheringPatches.cs" />
-    <Compile Include="Patches\Mastery\JunkPatches.cs" />
-    <Compile Include="Patches\Mastery\MasteryPlayerPatches.cs" />
-    <Compile Include="Patches\Mastery\PickingPatches.cs" />
-    <Compile Include="Patches\Mastery\StarPatches.cs" />
-    <Compile Include="Pieces\Farming\CompostBin.cs" />
-    <Compile Include="Pieces\Farming\CompostBinComponent.cs" />
-    <Compile Include="Pieces\Fishing\FishingNet.cs" />
-    <Compile Include="Pieces\Fishing\FishingNetComponent.cs" />
-    <Compile Include="Pieces\Fishing\FishingNetSettings.cs" />
-    <Compile Include="Pieces\Fishing\NetWinch.cs" />
-    <Compile Include="Pieces\Fishing\NetWinchComponent.cs" />
-    <Compile Include="Patches\Fishing\FishingNetPatches.cs" />
-    <Compile Include="Pieces\Cooking\StonePot\StonePot.cs" />
-    <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTrough.cs" />
-    <Compile Include="Pieces\Ranching\FeedingTrough\FeedingTroughComponent.cs" />
-    <Compile Include="Pieces\Ranching\TetherPost\TetherPost.cs" />
-    <Compile Include="Pieces\Ranching\TetherPost\TetherPostComponent.cs" />
-    <Compile Include="Items\Ranching\GroomingComb.cs" />
-    <Compile Include="Pieces\Ships\HarbourAnchor\HarbourAnchor.cs" />
-    <Compile Include="Pieces\Ships\ShipAssist.cs" />
-    <Compile Include="Pieces\Ships\ShipHud.cs" />
-    <Compile Include="Pieces\Ships\ShipBell.cs" />
-    <Compile Include="Pieces\Ships\ShipSounding.cs" />
-    <Compile Include="Pieces\Ships\ManOverboard.cs" />
-    <Compile Include="Pieces\Ships\MooringPost.cs" />
-    <Compile Include="Pieces\Ships\ShipwrightBench.cs" />
-    <Compile Include="Pieces\Stonework\DryStoneWalls.cs" />
-    <Compile Include="Pieces\Stonework\HnefataflBoard.cs" />
-    <Compile Include="Pieces\Stonework\MemorialStone.cs" />
-    <Compile Include="Pieces\Stonework\ShipSetting.cs" />
-    <Compile Include="Pieces\Stonework\SlatePieces.cs" />
-    <Compile Include="Pieces\Stonework\StoneRing.cs" />
-    <Compile Include="Pieces\Stonework\StoneworkPieceBase.cs" />
-    <Compile Include="Pieces\Ships\MooringPostComponent.cs" />
-    <Compile Include="Pieces\Ships\ShipMooring.cs" />
-    <Compile Include="Pieces\Ships\ShipSettings.cs" />
-    <Compile Include="Pieces\Ships\Skidbladnir\Skidbladnir.cs" />
-    <Compile Include="Pieces\Ships\Skidbladnir\SkidbladnirShip.cs" />
-    <Compile Include="Pieces\Ships\Skidbladnir\ShipWorkshop.cs" />
-    <Compile Include="Items\Tools\WhiteHiltShipHammer.cs" />
-    <Compile Include="Patches\Ships\SkidbladnirPatches.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPassengerSync.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipChest.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipTentColliders.cs" />
-    <Compile Include="Pieces\Navigation\ShipChartTableHover.cs" />
-    <Compile Include="Pieces\Ships\ShipFog.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortal.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipPortalArrival.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipMastHover.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\ShipLanternHover.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipLook.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgrades.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShipUpgradeSetup.cs" />
-    <Compile Include="Pieces\Smithing\ChainBench\ChainBench.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\BindingStone.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\BindingStoneComponent.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\RuneEtchingTable.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\RuneEtchingTableComponent.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\RuneForge.cs" />
-    <Compile Include="Pieces\Smithing\RuneForge\RuneForgeExtensionComponent.cs" />
-    <Compile Include="Pieces\Portals\RuneRack\RuneRack.cs" />
-    <Compile Include="Pieces\Portals\RuneRack\RuneRackComponent.cs" />
-    <Compile Include="Pieces\Portals\RuneRack\RunePortalRules.cs" />
-    <Compile Include="Pieces\Portals\PortalAstrolabe\PortalAstrolabe.cs" />
-    <Compile Include="Pieces\Portals\PortalMap\MapTableExtensionComponent.cs" />
-    <Compile Include="Pieces\Portals\PortalMap\PortalMapEntry.cs" />
-    <Compile Include="Pieces\Portals\PortalMap\PortalMapPins.cs" />
-    <Compile Include="Pieces\Portals\PortalMap\PortalMapService.cs" />
-    <Compile Include="Pieces\Portals\ValkyrieStone\ValkyrieStone.cs" />
-    <Compile Include="Pieces\Portals\ValkyrieStone\ValkyrieStoneComponent.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShipBase.cs" />
-    <Compile Include="Pieces\Ships\WhiteHiltShip\WhiteHiltShip.cs" />
-    <Compile Include="Progression\IFullModeOnly.cs" />
-    <Compile Include="Progression\IWhiteHiltProgressionEntry.cs" />
-    <Compile Include="Progression\ProgressionManager.cs" />
-    <Compile Include="Progression\ProgressionMode.cs" />
-    <Compile Include="Progression\ProgressionTier.cs" />
-    <Compile Include="Progression\TierOverride.cs" />
-    <Compile Include="Progression\WhiteHiltConfig.cs" />
-    <Compile Include="Properties\IgnoreAccessModifiers.cs" />
-    <Compile Include="BrudvikWhiteHilt.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <EmbeddedResource Include="..\AssetSource\Ships\sailing_ship.assets.json">
-      <LogicalName>BrudvikWhiteHilt.Skidbladnir.assets.json</LogicalName>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Package\plugins\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Package\manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\GiftOfFreya.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfLoki.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfOdin.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfHugin.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfMunin.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfBaldur.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfBrokkr.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfFenrir.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfFreyr.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfHel.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfNjord.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfRatatoskr.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfSkadi.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfSleipnir.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfSurt.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfThor.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfTyr.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\GiftOfIdunn.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\whitehilt_foraging" />
+    <EmbeddedResource Include="..\AssetSource\Ships\sailing_ship.assets.json" LogicalName="BrudvikWhiteHilt.Skidbladnir.assets.json" Link="Pieces\Ships\Skidbladnir\sailing_ship.assets.json" />
+    <EmbeddedResource Include="..\AssetSource\Preview\defenses.json" LogicalName="BrudvikWhiteHilt.Defenses.json" Link="Pieces\Defenses\defenses.json" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
     <EmbeddedResource Include="Chests\Translations\English.json" />
     <EmbeddedResource Include="Chests\Translations\Norwegian.json" />
+    <EmbeddedResource Include="Assets\GiftOfFreya.png;Assets\GiftOfLoki.png;Assets\GiftOfOdin.png;Assets\GiftOfHugin.png;Assets\GiftOfMunin.png;Assets\GiftOfBaldur.png;Assets\GiftOfBrokkr.png;Assets\GiftOfFenrir.png;Assets\GiftOfFreyr.png;Assets\GiftOfHel.png;Assets\GiftOfNjord.png;Assets\GiftOfRatatoskr.png;Assets\GiftOfSkadi.png;Assets\GiftOfSleipnir.png;Assets\GiftOfSurt.png;Assets\GiftOfThor.png;Assets\GiftOfTyr.png;Assets\GiftOfIdunn.png" CopyToOutputDirectory="Always" />
     <!-- Licensed chest icons, git-ignored; a wildcard so builds without them still work. -->
     <EmbeddedResource Include="Assets\strg_*.png" />
     <EmbeddedResource Include="Assets\WeatherAsh.png" />
@@ -915,25 +79,19 @@
     <EmbeddedResource Include="Assets\Uniform\CapeTrim.png" />
     <EmbeddedResource Include="Assets\PortalFx\RuneRing.png" />
     <EmbeddedResource Include="Assets\PortalFx\Spark.png" />
+    <EmbeddedResource Include="Assets\WeatherCloud.png;Assets\WeatherFog.png;Assets\WeatherMoon.png;Assets\WeatherRain.png;Assets\WeatherSnow.png;Assets\WeatherStorm.png;Assets\WeatherSun.png" />
+    <EmbeddedResource Include="Assets\whitehilt_foraging" />
     <EmbeddedResource Include="Assets\PortalFx\Depart.wav" />
     <EmbeddedResource Include="Assets\PortalFx\Arrive.wav" />
-    <EmbeddedResource Include="Assets\WeatherCloud.png" />
-    <EmbeddedResource Include="Assets\WeatherFog.png" />
-    <EmbeddedResource Include="Assets\WeatherMoon.png" />
-    <EmbeddedResource Include="Assets\WeatherRain.png" />
-    <EmbeddedResource Include="Assets\WeatherSnow.png" />
-    <EmbeddedResource Include="Assets\WeatherStorm.png" />
-    <EmbeddedResource Include="Assets\WeatherSun.png" />
-    <EmbeddedResource Include="..\AssetSource\Preview\defenses.json">
-      <Link>Pieces\Defenses\defenses.json</Link>
-      <LogicalName>BrudvikWhiteHilt.Defenses.json</LogicalName>
-    </EmbeddedResource>
-    <Content Include="Package\icon.png" />
   </ItemGroup>
+
   <PropertyGroup>
     <VALHEIM_MANAGED>$(VALHEIM_INSTALL)/valheim_Data/Managed</VALHEIM_MANAGED>
     <UNITY_FOLDER>$(SolutionDir)BrudvikStackedChestUnity</UNITY_FOLDER>
   </PropertyGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
   <Target Name="CopyToUnity">
     <Message Text="Copy To Unity" Importance="high" />
     <Copy SourceFiles="$(VALHEIM_INSTALL)/BepInEx/core/BepInEx.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
@@ -960,21 +118,11 @@
     <Copy SourceFiles="$(VALHEIM_MANAGED)/com.rlabrecque.steamworks.net.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
     <Copy SourceFiles="$(VALHEIM_MANAGED)/SoftReferenceableAssets.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
   </Target>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="JotunnPostBuildTaskWin" Condition="'$(OS)' == 'Windows_NT'">
-    <Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -File &quot;$(SolutionDir)publish.ps1&quot; -Target &quot;$(ConfigurationName)&quot; -TargetPath &quot;$(TargetDir.TrimEnd('\'))&quot; -TargetAssembly &quot;$(TargetFileName)&quot; -ValheimPath &quot;$(VALHEIM_INSTALL.TrimEnd('\'))&quot; -DeployPath &quot;$(MOD_DEPLOYPATH.TrimEnd('\'))&quot; -ProjectPath &quot;$(ProjectDir.TrimEnd('\'))&quot; " />
+
+  <!-- After every build: publish.ps1 deploys a Debug build to the r2modman profile and packs a Release build. -->
+  <Target Name="JotunnPostBuildTaskWin" AfterTargets="Build" Condition="'$(OS)' == 'Windows_NT'">
+    <Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -File &quot;$(SolutionDir)publish.ps1&quot; -Target &quot;$(Configuration)&quot; -TargetPath &quot;$(TargetDir.TrimEnd('\'))&quot; -TargetAssembly &quot;$(TargetFileName)&quot; -ValheimPath &quot;$(VALHEIM_INSTALL.TrimEnd('\'))&quot; -DeployPath &quot;$(MOD_DEPLOYPATH.TrimEnd('\'))&quot; -ProjectPath &quot;$(ProjectDir.TrimEnd('\'))&quot; " />
     <CallTarget Targets="CopyToUnity" Condition="Exists('$(UNITY_FOLDER)')" />
   </Target>
-  <PropertyGroup>
-    <BuildDependsOn>
-      $(BuildDependsOn);
-      JotunnPostBuildTaskWin
-    </BuildDependsOn>
-  </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\JotunnLib.2.30.2\build\JotunnLib.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JotunnLib.2.30.2\build\JotunnLib.props'))" />
-  </Target>
+
 </Project>

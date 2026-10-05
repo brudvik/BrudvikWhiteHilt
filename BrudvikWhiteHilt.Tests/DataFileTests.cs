@@ -78,7 +78,7 @@ public class DataFileTests
         List<string> named = Regex.Matches(script, "defence\\(\"([^\"]+)\"").Cast<Match>().Select(match => match.Groups[1].Value).ToList();
 
         Assert.NotEmpty(named);
-        Assert.All(named, name => Assert.Contains($"\"name\": \"{name}\"", layout));
+        Assert.All(named, name => Assert.Matches($"\"name\":\\s*\"{name}\"", layout));
     }
 
     private static void Add(List<string> missing, HashSet<string> norwegian, string key, string file)

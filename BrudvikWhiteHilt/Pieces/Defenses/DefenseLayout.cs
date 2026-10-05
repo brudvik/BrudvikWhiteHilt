@@ -42,6 +42,7 @@ public class DefenseLayout
             throw new InvalidOperationException($"Embedded resource '{ResourceName}' has no pieces.");
         }
 
+        loaded.pieces = loaded.pieces.Select(piece => piece.of == null ? piece : loaded.Expand(piece)).ToArray();
         return loaded;
     }
 
@@ -50,6 +51,25 @@ public class DefenseLayout
     /// </summary>
     /// <param name="name">Name in the layout.</param>
     /// <returns>The piece.</returns>
+    // A variant is its plain piece with other textures and tints, and parts of its own: the black marble and grausten
+    // stone defences, written that way so the layout read at every start holds each shape once.
+    private DefensePieceData Expand(DefensePieceData variant)
+    {
+        DefensePieceData plain = Get(variant.of);
+        return new DefensePieceData
+        {
+            name = variant.name,
+            @base = plain.@base,
+            parts = plain.parts.Select(part => variant.Restyle(part)).Concat(variant.extraParts ?? Array.Empty<DefensePartData>()).ToArray(),
+            colliders = plain.colliders,
+            snapPoints = plain.snapPoints,
+            ladders = plain.ladders,
+            groups = plain.groups,
+            keep = plain.keep,
+            hitArea = plain.hitArea
+        };
+    }
+
     public DefensePieceData Get(string name)
     {
         return pieces.FirstOrDefault(piece => piece.name == name) ?? throw new InvalidOperationException($"The defence layout has no piece '{name}'.");
@@ -88,6 +108,58 @@ public class DefensePieceData
 
     /// <summary>Area where the piece hurts creatures, for pieces cloned from the sharp stakes.</summary>
     public DefenseBoxData hitArea;
+
+    public string of;
+
+    public DefenseTextureData[] textures;
+
+    public DefenseTintData[] tints;
+
+    public DefensePartData[] extraParts;
+
+    // A part of the plain piece in this variant's texture and tints.
+    internal DefensePartData Restyle(DefensePartData part)
+    {
+        string texture = textures?.FirstOrDefault(entry => entry.mesh == part.mesh)?.texture ?? part.texture;
+        float[] tint = tints?.FirstOrDefault(entry => entry.mesh == part.mesh && Same(entry.from, part.tint))?.to ?? part.tint;
+        return new DefensePartData
+        {
+            mesh = part.mesh,
+            piece = part.piece,
+            position = part.position,
+            rotation = part.rotation,
+            scale = part.scale,
+            tint = tint,
+            texture = texture,
+            group = part.group,
+            detail = part.detail
+        };
+    }
+
+    private static bool Same(float[] a, float[] b)
+    {
+        int lengthA = a?.Length ?? 0;
+        int lengthB = b?.Length ?? 0;
+        return lengthA == lengthB && Enumerable.Range(0, lengthA).All(i => Math.Abs(a[i] - b[i]) < 0.0005f);
+    }
+}
+
+[Serializable]
+public class DefenseTextureData
+{
+    public string mesh;
+
+    public string texture;
+}
+
+[Serializable]
+public class DefenseTintData
+{
+    public string mesh;
+
+    public float[] from;
+
+    public float[] to;
 }
 
 /// <summary>

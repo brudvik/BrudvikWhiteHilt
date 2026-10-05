@@ -924,13 +924,16 @@ def main():
         part("wood_pole", (-2.5, 1, 1.5))
     ], "views": views(("front", 180, 15), ("side", 90, 15), ("top", 180, 60))})
     # The stone defences live in their own module, which builds on the helpers here.
-    from build_stone_defenses import stone_pieces
+    from build_stone_defenses import stone_pieces, write_stonebox
     pieces += stone_pieces()
+    write_stonebox(OUT.parents[2] / "BrudvikWhiteHiltUnity" / "Preview" / "vanilla")
     from build_gate_controls import gate_control_pieces
     pieces += gate_control_pieces()
     from build_defence_extras import extra_pieces
     pieces += extra_pieces()
-    OUT.write_text(json.dumps({"pieces": pieces}, indent=1), encoding="utf-8")
+    # Compact, one piece to a line: the mod reads this file at every start.
+    lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
+    OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")
     print(f"wrote {OUT} with {len(pieces)} pieces")
 
 

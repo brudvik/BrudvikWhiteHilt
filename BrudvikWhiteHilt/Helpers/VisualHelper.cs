@@ -350,7 +350,15 @@ public static class VisualHelper
             return null;
         }
 
-        Sprite icon = RenderManager.Instance.Render(prefab, RenderManager.IsometricRotation);
+        // Jotunn keeps rendered icons on disk and renders again only when the mod's version or the game's changes, so
+        // the many White Hilt pieces and items are not all rendered at every start.
+        BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(BrudvikWhiteHilt.PluginGUID, out BepInEx.PluginInfo plugin);
+        Sprite icon = RenderManager.Instance.Render(new RenderManager.RenderRequest(prefab)
+        {
+            Rotation = RenderManager.IsometricRotation,
+            UseCache = plugin != null,
+            TargetPlugin = plugin?.Metadata
+        });
         if (icon == null)
         {
             Jotunn.Logger.LogWarning($"Could not render an icon for {prefab.name}, keeping the original icon.");

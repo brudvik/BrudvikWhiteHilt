@@ -21,7 +21,9 @@ Vanilla mesh facts used below (from export_vanilla.py):
 """
 
 import contextlib
+import json
 import math
+import pathlib
 import random
 
 from build_defenses import (box, drawbridge, floor, floor_box, gate_leaf, ladder_parts, part, piece, post, r3, ramp, roof,
@@ -31,7 +33,15 @@ WALK = 3.0  # height of every stone wall walk, so they all join
 SLATE = "roof_slate_albedo"  # the White Hilt slate roof texture
 
 # Nominal size of each block mesh, which the scale is worked out from.
-BLOCKS = {"stone_wall_1x1": (1.0, 1.0, 1.0), "stone_wall_2x1": (2.0, 1.0, 1.0), "stone_wall_4x2": (4.0, 2.0, 1.3)}
+BLOCKS = {"stone_wall_1x1": (1.0, 1.0, 1.0), "stone_wall_2x1": (2.0, 1.0, 1.0), "stone_wall_4x2": (4.0, 2.0, 1.3),
+          "stonebox": (1.0, 1.0, 1.0)}
+# A block thinner than this (string courses, coping, corbels, roof edges) is drawn as STONEBOX: a plain 12-triangle box
+# in the stone's texture, where the vanilla block has some 430 triangles of bevels nobody sees on a 10 cm ledge. The mod
+# builds it in VanillaMeshLibrary; write_stonebox() writes the same box for the preview.
+THIN = 0.3
+STONEBOX = "stonebox"
+# The part of the vanilla stone texture the block's flat front shows, which every face of the box shows too.
+STONEBOX_UV = (0.21, 0.03, 0.345, 0.17)
 SLIT_TINT = [0.06, 0.06, 0.07]
 QUOIN_TINT = [1.08, 1.04, 0.98]
 COURSE_TINT = [1.05, 1.02, 0.96]
@@ -81,11 +91,40 @@ def shade(rng, low=0.82, high=1.0):
 
 def block(x0, x1, y0, y1, z0, z1, mesh="stone_wall_1x1", tint=None, **extra):
     """One block mesh stretched over a box, in the stone being built of."""
+    if min(x1 - x0, y1 - y0, z1 - z0) < THIN:
+        mesh = STONEBOX
     nx, ny, nz = BLOCKS[mesh]
     if STONE["texture"] and tint != SLIT_TINT:
         extra.setdefault("texture", STONE["texture"])
     centre = ((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2)
     return part(mesh, centre, scale=((x1 - x0) / nx, (y1 - y0) / ny, (z1 - z0) / nz), tint=tint, **extra)
+
+
+def write_stonebox(folder):
+    """Writes STONEBOX as a preview mesh: a unit box centred on its origin, every face showing STONEBOX_UV."""
+    faces = [  # normal, two in-face axes
+        ((0, 1, 0), (1, 0, 0), (0, 0, 1)), ((0, -1, 0), (1, 0, 0), (0, 0, -1)),
+        ((1, 0, 0), (0, 0, -1), (0, 1, 0)), ((-1, 0, 0), (0, 0, 1), (0, 1, 0)),
+        ((0, 0, 1), (1, 0, 0), (0, 1, 0)), ((0, 0, -1), (-1, 0, 0), (0, 1, 0)),
+    ]
+    u0, v0, u1, v1 = STONEBOX_UV
+    vertices, normals, uvs, triangles = [], [], [], []
+    for normal, u, v in faces:
+        start = len(vertices) // 3
+        for su, sv in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+            vertices += [0.5 * (normal[k] + su * u[k] + sv * v[k]) for k in range(3)]
+            normals += normal
+            uvs += [u0 if su < 0 else u1, v0 if sv < 0 else v1]
+        # Unity winds front faces clockwise seen from outside: the corners already run so when u x v is the normal.
+        cross = (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+        if cross == normal:
+            triangles += [start, start + 1, start + 2, start, start + 2, start + 3]
+        else:
+            triangles += [start, start + 2, start + 1, start, start + 3, start + 2]
+    folder = pathlib.Path(folder)
+    folder.mkdir(parents=True, exist_ok=True)
+    mesh = {"name": STONEBOX, "parts": [{"texture": "stone", "vertices": vertices, "normals": normals, "uvs": uvs, "triangles": triangles}]}
+    (folder / f"{STONEBOX}.json").write_text(json.dumps(mesh), encoding="utf-8")
 
 
 def masonry(x0, x1, y0, y1, z0, z1, rng, damp=None):
@@ -215,8 +254,10 @@ def crenels(x0, x1, y, z0, z1, rng, merlons):
         if b - a > 0.6:
             parts.append(slit(x, y + 0.3, z1, 0.4))
         if STONE["spikes"]:
+            # Their own random tilt, so the rest of the wall comes out as in plain stone.
+            tilt = random.Random(f"spike{x:.2f}{y:.2f}{z0:.2f}")
             for dx in (-0.2, 0.2):
-                parts.append(part("stake", (x + dx, y + MERLON - 0.05, (z0 + z1) / 2), (rng.uniform(-6, 6), 0, rng.uniform(-6, 6)),
+                parts.append(part("stake", (x + dx, y + MERLON - 0.05, (z0 + z1) / 2), (tilt.uniform(-6, 6), 0, tilt.uniform(-6, 6)),
                                   (0.25, 0.14, 0.25), tint=[0.22, 0.2, 0.2], detail=True))
     # A coping stone along the parapet top, with moss in the embrasures and on some merlons.
     parts.append(block(x0, x1, y - 0.06, y + 0.04, z0 - 0.03, z1 + 0.03, tint=COURSE_TINT, detail=True))

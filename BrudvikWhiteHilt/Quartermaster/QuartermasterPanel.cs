@@ -63,8 +63,10 @@ public class QuartermasterPanel : MonoBehaviour
         List
     }
 
-    private readonly List<GameObject> storeSlots = new();
-    private readonly List<GameObject> bagSlots = new();
+    // Item slots are kept when hidden and filled anew, rather than built again at every refresh.
+    private readonly List<ItemSlot> storeSlots = new();
+    private readonly List<ItemSlot> bagSlots = new();
+    private GameObject bagEmpty;
     private readonly List<GameObject> filterButtons = new();
     private readonly List<GameObject> buildRows = new();
     private readonly List<GameObject> costRows = new();
@@ -375,8 +377,7 @@ public class QuartermasterPanel : MonoBehaviour
 
     private void RefreshStore()
     {
-        storeSlots.ForEach(Destroy);
-        storeSlots.Clear();
+        int shown = 0;
         string filter = (search.text ?? string.Empty).Trim();
         HashSet<string> watched = new(watches.Select(watch => watch.Key));
         HashSet<string> lowItems = new(low.Select(line => line.Prefab));
@@ -393,31 +394,34 @@ public class QuartermasterPanel : MonoBehaviour
             string description = Describe(entry) + "  -  " + entry.Group
                 + (watched.Contains(prefab) ? "  -  " + Localization.instance.Localize("$whitehilt_qm_watched") : string.Empty);
             QuartermasterStore.Entry chosen = entry;
-            storeSlots.Add(CreateSlot(storeContent, entry.Sample, entry.Unlimited ? Infinity : entry.Count.ToString(), color, description,
-                shift => OnStoreClick(chosen, shift), () => ToggleWatch(prefab)));
+            ShowSlot(storeSlots, storeContent, shown++, entry.Sample, entry.Unlimited ? Infinity : entry.Count.ToString(), color, description,
+                shift => OnStoreClick(chosen, shift), () => ToggleWatch(prefab));
         }
+
+        HideSlots(storeSlots, shown);
 
         status.text = job != null ? status.text : Localization.instance.Localize(entries.Count == 0 ? "$whitehilt_qm_empty" : "$whitehilt_qm_take_hint");
     }
 
     private void RefreshBag()
     {
-        bagSlots.ForEach(Destroy);
-        bagSlots.Clear();
         List<QuartermasterStore.Entry> bag = QuartermasterStore.Returnable(Player.m_localPlayer, containers);
-        foreach (QuartermasterStore.Entry entry in bag)
+        for (int i = 0; i < bag.Count; i++)
         {
-            QuartermasterStore.Entry chosen = entry;
-            bagSlots.Add(CreateSlot(bagContent, entry.Sample, entry.Count.ToString(), Color.white, Describe(entry), _ => OnPutBack(chosen), null));
+            QuartermasterStore.Entry chosen = bag[i];
+            ShowSlot(bagSlots, bagContent, i, chosen.Sample, chosen.Count.ToString(), Color.white, Describe(chosen), _ => OnPutBack(chosen), null);
         }
 
-        if (bag.Count == 0)
+        HideSlots(bagSlots, bag.Count);
+        if (bagEmpty == null)
         {
-            GameObject empty = GUIManager.Instance.CreateText(Localization.instance.Localize("$whitehilt_qm_bag_empty"), bagContent, Vector2.zero,
+            bagEmpty = GUIManager.Instance.CreateText(Localization.instance.Localize("$whitehilt_qm_bag_empty"), bagContent, Vector2.zero,
                 Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, FontSize, subtleColor, true, Color.black, 400f, Slot, false);
-            empty.GetComponent<Text>().alignment = TextAnchor.MiddleLeft;
-            bagSlots.Add(empty);
+            bagEmpty.GetComponent<Text>().alignment = TextAnchor.MiddleLeft;
         }
+
+        bagEmpty.SetActive(bag.Count == 0);
+        bagEmpty.transform.SetAsLastSibling();
     }
 
     private void OnStoreClick(QuartermasterStore.Entry entry, bool shift)
@@ -877,19 +881,48 @@ public class QuartermasterPanel : MonoBehaviour
 
     // ---- Building blocks -------------------------------------------------------------------------------------------
 
-    private GameObject CreateSlot(Transform parent, ItemDrop.ItemData item, string amount, Color amountColor, string description,
-        Action<bool> onClick, Action onRightClick)
+    // Shows the slot at an index of a list, built if there are not yet so many, with the given item.
+    private void ShowSlot(List<ItemSlot> slots, Transform parent, int index, ItemDrop.ItemData item, string amount, Color amountColor,
+        string description, Action<bool> onClick, Action onRightClick)
     {
-        GameObject slot = new("Slot", typeof(RectTransform));
-        slot.transform.SetParent(parent, false);
-        Image background = slot.AddComponent<Image>();
+        if (index >= slots.Count)
+        {
+            slots.Add(CreateSlot(parent));
+        }
+
+        ItemSlot slot = slots[index];
+        slot.gameObject.SetActive(true);
+        slot.Background.color = slotColor;
+        slot.Icon.sprite = item.GetIcon();
+        slot.Count.text = amount == Infinity && slot.Count.font != null && !slot.Count.font.HasCharacter(Infinity[0]) ? "MAX" : amount;
+        slot.Count.color = amountColor;
+        slot.Description = description;
+        slot.OnClick = onClick;
+        slot.OnRightClick = onRightClick;
+    }
+
+    private static void HideSlots(List<ItemSlot> slots, int shown)
+    {
+        for (int i = shown; i < slots.Count; i++)
+        {
+            slots[i].gameObject.SetActive(false);
+        }
+    }
+
+    private ItemSlot CreateSlot(Transform parent)
+    {
+        GameObject slotObject = new("Slot", typeof(RectTransform));
+        slotObject.transform.SetParent(parent, false);
+        ItemSlot slot = slotObject.AddComponent<ItemSlot>();
+        Image background = slotObject.AddComponent<Image>();
         background.color = slotColor;
+        slot.Background = background;
 
         GameObject iconObject = new("Icon", typeof(RectTransform));
-        iconObject.transform.SetParent(slot.transform, false);
+        iconObject.transform.SetParent(slotObject.transform, false);
         Image icon = iconObject.AddComponent<Image>();
-        icon.sprite = item.GetIcon();
         icon.preserveAspect = true;
+        slot.Icon = icon;
         icon.raycastTarget = false;
         RectTransform iconRect = icon.rectTransform;
         iconRect.anchorMin = Vector2.zero;
@@ -897,28 +930,25 @@ public class QuartermasterPanel : MonoBehaviour
         iconRect.offsetMin = new Vector2(6f, 6f);
         iconRect.offsetMax = new Vector2(-6f, -6f);
 
-        Text count = GUIManager.Instance.CreateText(amount, slot.transform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-Slot / 2f + 1f, 10f),
-            GUIManager.Instance.AveriaSerifBold, 14, amountColor, true, Color.black, Slot - 6f, 20f, false).GetComponent<Text>();
+        Text count = GUIManager.Instance.CreateText(string.Empty, slotObject.transform, new Vector2(1f, 0f), new Vector2(1f, 0f),
+            new Vector2(-Slot / 2f + 1f, 10f), GUIManager.Instance.AveriaSerifBold, 14, Color.white, true, Color.black, Slot - 6f, 20f, false).GetComponent<Text>();
         count.alignment = TextAnchor.LowerRight;
         count.raycastTarget = false;
-        if (amount == Infinity && count.font != null && !count.font.HasCharacter(Infinity[0]))
-        {
-            count.text = "MAX";
-        }
+        slot.Count = count;
 
         // Clicks come through an event trigger, not a button, to tell the left and the right mouse button apart.
-        EventTrigger trigger = slot.AddComponent<EventTrigger>();
+        EventTrigger trigger = slotObject.AddComponent<EventTrigger>();
         EventTrigger.Entry click = new() { eventID = EventTriggerType.PointerClick };
         click.callback.AddListener(data =>
         {
             PointerEventData pointer = data as PointerEventData;
             if (pointer != null && pointer.button == PointerEventData.InputButton.Right)
             {
-                onRightClick?.Invoke();
+                slot.OnRightClick?.Invoke();
             }
             else if (pointer == null || pointer.button == PointerEventData.InputButton.Left)
             {
-                onClick(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+                slot.OnClick?.Invoke(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
         });
         EventTrigger.Entry enter = new() { eventID = EventTriggerType.PointerEnter };
@@ -927,7 +957,7 @@ public class QuartermasterPanel : MonoBehaviour
             background.color = slotHoverColor;
             if (job == null)
             {
-                status.text = description;
+                status.text = slot.Description;
             }
         });
         EventTrigger.Entry exit = new() { eventID = EventTriggerType.PointerExit };
@@ -1167,4 +1197,15 @@ public class QuartermasterPanel : MonoBehaviour
         rect.anchoredPosition = new Vector2(Padding + x, -y);
         rect.sizeDelta = new Vector2(width, height);
     }
+}
+
+/// <summary>An item slot of the Quartermaster panel, with what it shows and does now, so it can be filled anew.</summary>
+internal sealed class ItemSlot : MonoBehaviour
+{
+    public Image Background;
+    public Image Icon;
+    public Text Count;
+    public string Description;
+    public Action<bool> OnClick;
+    public Action OnRightClick;
 }

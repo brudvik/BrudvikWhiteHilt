@@ -183,6 +183,35 @@ def extra_pieces():
         piece = {"name": name, "base": base, "parts": parts, "colliders": colliders, "snapPoints": [], "groups": groups,
                  "views": views(("front", 160, 12), ("side", 90, 10), ("angle", -140, 25))}
         pieces.append(piece)
+    plain = {piece["name"]: piece for piece in stone_pieces()}
     for stone in ("marmor", "grausten"):
-        pieces += stone_pieces(stone)
+        pieces += [as_variant(piece, plain[piece["name"][:-len(stone) - 1]]) for piece in stone_pieces(stone)]
     return pieces
+
+
+SPIKE = ("stake", [0.22, 0.2, 0.2])  # grausten's iron spikes on the merlons, which plain stone has not
+
+
+def as_variant(variant, plain):
+    """Writes a stone defence of another stone as the plain stone piece it is built on, with what differs: the texture
+    of each mesh, tints swapped mesh by mesh, and parts only it has. The mod and the preview put it back together.
+    Fails if the two differ in any other way, so a change to one cannot silently go missing from the other."""
+    extra = [part for part in variant["parts"] if (part.get("mesh"), part.get("tint")) == SPIKE]
+    parts = [part for part in variant["parts"] if (part.get("mesh"), part.get("tint")) != SPIKE]
+    assert len(parts) == len(plain["parts"]), variant["name"]
+    textures, tints = {}, {}
+    for mine, theirs in zip(parts, plain["parts"]):
+        mesh = mine.get("mesh")
+        same = {key: value for key, value in mine.items() if key not in ("texture", "tint")}
+        assert same == {key: value for key, value in theirs.items() if key not in ("texture", "tint")}, (variant["name"], mine, theirs)
+        if mine.get("texture") != theirs.get("texture"):
+            assert textures.setdefault(mesh, mine.get("texture")) == mine.get("texture") and theirs.get("texture") is None, (variant["name"], mesh)
+        if mine.get("tint") != theirs.get("tint"):
+            key = (mesh, tuple(theirs.get("tint") or ()))
+            assert tints.setdefault(key, mine.get("tint")) == mine.get("tint"), (variant["name"], key)
+    for field in ("base", "colliders", "snapPoints", "ladders", "groups", "keep", "hitArea"):
+        assert variant.get(field) == plain.get(field), (variant["name"], field)
+    return {"name": variant["name"], "of": plain["name"],
+            "textures": [{"mesh": mesh, "texture": texture} for mesh, texture in sorted(textures.items())],
+            "tints": [{"mesh": mesh, "from": list(old), "to": new} for (mesh, old), new in tints.items()],
+            "extraParts": extra, "views": variant.get("views")}

@@ -33,6 +33,11 @@ public static class PreviewRender
 
         Layout layout = JsonUtility.FromJson<Layout>(File.ReadAllText(layoutPath));
         Dictionary<string, PieceData> pieces = layout.pieces.ToDictionary(piece => piece.name);
+        // A variant (the stone defences in black marble and grausten) is its plain piece restyled, as in the mod.
+        foreach (PieceData variant in layout.pieces.Where(piece => !string.IsNullOrEmpty(piece.of)))
+        {
+            variant.parts = pieces[variant.of].parts.Select(variant.Restyle).Concat(variant.extraParts ?? new PartData[0]).ToArray();
+        }
         string[] only = (TryArgument("-previewOnly") ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         transparent = Environment.GetCommandLineArgs().Contains("-previewTransparent");
         int size = int.TryParse(TryArgument("-previewSize"), out int parsed) ? parsed : 1024;
@@ -316,6 +321,42 @@ public static class PreviewRender
         public bool template;
         public PartData[] parts;
         public View[] views;
+        public string of;
+        public TextureData[] textures;
+        public TintData[] tints;
+        public PartData[] extraParts;
+
+        public PartData Restyle(PartData part)
+        {
+            TextureData texture = textures?.FirstOrDefault(entry => entry.mesh == part.mesh);
+            TintData tint = tints?.FirstOrDefault(entry => entry.mesh == part.mesh && Same(entry.from, part.tint));
+            PartData copy = (PartData)part.MemberwiseCopy();
+            copy.texture = texture != null ? texture.texture : part.texture;
+            copy.tint = tint != null ? tint.to : part.tint;
+            return copy;
+        }
+
+        private static bool Same(float[] a, float[] b)
+        {
+            int lengthA = a?.Length ?? 0;
+            int lengthB = b?.Length ?? 0;
+            return lengthA == lengthB && Enumerable.Range(0, lengthA).All(i => Mathf.Abs(a[i] - b[i]) < 0.0005f);
+        }
+    }
+
+    [Serializable]
+    private class TextureData
+    {
+        public string mesh;
+        public string texture;
+    }
+
+    [Serializable]
+    private class TintData
+    {
+        public string mesh;
+        public float[] from;
+        public float[] to;
     }
 
     [Serializable]
@@ -330,6 +371,8 @@ public static class PreviewRender
         public string texture;
         public int repeat;
         public float[] step;
+
+        public object MemberwiseCopy() => MemberwiseClone();
     }
 
     [Serializable]

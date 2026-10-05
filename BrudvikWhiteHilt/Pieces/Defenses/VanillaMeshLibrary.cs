@@ -35,6 +35,16 @@ public static class VanillaMeshLibrary
     /// <summary>The texture key in the layout for the slate of the White Hilt slate roofs, as on the stone tower's roof.</summary>
     public const string SlateTexture = "roof_slate_albedo";
 
+    /// <summary>
+    /// The key for a plain box in the stone of the vanilla stone wall: 12 triangles where the vanilla block has some 430,
+    /// for the thin stones (string courses, coping, corbels) whose bevels nobody sees. Matches build_stone_defenses.py.
+    /// </summary>
+    public const string StoneBox = "stonebox";
+    private const string StoneBoxMaterialFrom = "stone_wall_1x1";
+
+    // The part of the vanilla stone texture the block's flat front shows, which every face of the box shows too.
+    private static readonly Rect stoneBoxUv = Rect.MinMaxRect(0.21f, 0.03f, 0.345f, 0.17f);
+
     // Prefabs whose materials can be borrowed by texture name.
     private static readonly string[] materialSources = { "iron_grate", "blackmarble_1x1", "Piece_grausten_floor_2x2" };
 
@@ -51,6 +61,12 @@ public static class VanillaMeshLibrary
         if (meshes.TryGetValue(key, out List<MeshSource> cached))
         {
             return cached;
+        }
+
+        if (key == StoneBox)
+        {
+            meshes[key] = new List<MeshSource> { new(StoneBoxMesh(), 0, Get(StoneBoxMaterialFrom)[0].Material, Matrix4x4.identity) };
+            return meshes[key];
         }
 
         if (bundleModels.Contains(key))
@@ -132,6 +148,17 @@ public static class VanillaMeshLibrary
             ?? throw new InvalidOperationException($"No vanilla material with the texture '{texture}'.");
         textureMaterials[texture] = material;
         return material;
+    }
+
+    // Unity's unit cube, centred on its origin, with every face showing the same flat stone of the stone wall's texture.
+    private static Mesh StoneBoxMesh()
+    {
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        Mesh mesh = UnityEngine.Object.Instantiate(cube.GetComponent<MeshFilter>().sharedMesh);
+        UnityEngine.Object.DestroyImmediate(cube);
+        mesh.name = StoneBox;
+        mesh.uv = mesh.uv.Select(uv => new Vector2(Mathf.Lerp(stoneBoxUv.xMin, stoneBoxUv.xMax, uv.x), Mathf.Lerp(stoneBoxUv.yMin, stoneBoxUv.yMax, uv.y))).ToArray();
+        return mesh;
     }
 
     // The bundle model's albedo on a copy of the workbench's material, so it is lit like the vanilla pieces.
