@@ -923,6 +923,9 @@ def main():
         part("eternalfire", (-4, 0, 0), scale=(1.3,) * 3),
         part("wood_pole", (-2.5, 1, 1.5))
     ], "views": views(("front", 180, 15), ("side", 90, 15), ("top", 180, 60))})
+    # The stone defences live in their own module, which builds on the helpers here.
+    from build_stone_defenses import stone_pieces
+    pieces += stone_pieces()
     OUT.write_text(json.dumps({"pieces": pieces}, indent=1), encoding="utf-8")
     print(f"wrote {OUT} with {len(pieces)} pieces")
 

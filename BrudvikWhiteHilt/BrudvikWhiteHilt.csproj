@@ -657,6 +657,7 @@
     <Compile Include="Pieces\Defenses\DefenseModelBuilder.cs" />
     <Compile Include="Pieces\Defenses\DefensePieceBase.cs" />
     <Compile Include="Pieces\Defenses\DefensePieces.cs" />
+    <Compile Include="Pieces\Defenses\StoneDefensePieces.cs" />
     <Compile Include="Pieces\Defenses\GateLeafDriver.cs" />
     <Compile Include="Pieces\Defenses\DrawbridgeDriver.cs" />
     <Compile Include="Pieces\Defenses\VanillaMeshLibrary.cs" />

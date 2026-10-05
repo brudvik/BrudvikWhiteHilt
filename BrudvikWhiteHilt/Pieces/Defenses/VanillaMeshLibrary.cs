@@ -32,6 +32,9 @@ public static class VanillaMeshLibrary
     // Keys that are models in the White Hilt asset bundle.
     private static readonly HashSet<string> bundleModels = new() { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "shipanchor", "chains", "fishnet", "rushlight", "paintbucket" };
 
+    /// <summary>The texture key in the layout for the slate of the White Hilt slate roofs, as on the stone tower's roof.</summary>
+    public const string SlateTexture = "roof_slate_albedo";
+
     // Prefabs whose materials can be borrowed by texture name.
     private static readonly string[] materialSources = { "iron_grate" };
 
@@ -102,7 +105,8 @@ public static class VanillaMeshLibrary
     }
 
     /// <summary>
-    /// Returns a vanilla material by the name of its main texture, e.g. the iron of the iron grate.
+    /// Returns a vanilla material by the name of its main texture, e.g. the iron of the iron grate, or the White Hilt
+    /// slate of the slate roofs for <see cref="SlateTexture"/>.
     /// </summary>
     /// <param name="texture">Texture name.</param>
     /// <returns>The material.</returns>
@@ -111,6 +115,12 @@ public static class VanillaMeshLibrary
         if (textureMaterials.TryGetValue(texture, out Material cached))
         {
             return cached;
+        }
+
+        if (texture == SlateTexture)
+        {
+            textureMaterials[texture] = Roofs.RoofCatalog.SlateMaterial();
+            return textureMaterials[texture];
         }
 
         Material material = materialSources
