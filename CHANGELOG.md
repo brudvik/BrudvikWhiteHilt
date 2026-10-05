@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.92.0 - 2026-10-05
 
 ### Added
 - **Stone defences**: the palisade fort in stone, built near a Stonecutter. A stone rampart (with or without a buttress), a corner bastion, a 45 degree corner, stairs, a gatehouse with a portcullis and round-fronted towers, three stone towers (the largest under a slate roof), dragon's teeth and a stone drawbridge. The wall walk is 3 m up; the fronts have plinths, corbelled parapets, merlons, buttresses and corner stones, with moss on the ledges. Stone has about 2.5 times the palisade's health, and trolls' blunt blows do half damage. See [Defences](docs/defences.md#-stone-defences).

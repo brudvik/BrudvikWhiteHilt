@@ -36,16 +36,14 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.91.0
+## ✨ New in 0.92.0
+
+- **[Stone defences](docs/defences.md#-stone-defences)**: the palisade fort in stone, with a corner bastion, a gatehouse with a portcullis, three towers and dragon's teeth. Taller than the palisade and far harder for a troll to break.
+- Building and crafting from chests is now safe when several players use the same chests.
+
+### Also new in 0.91.0
 
 - **[Quartermaster's Table](docs/base.md)**: everything in the chests around it as one store. Take a stack with a click, load a cart or ship, pack your own kits or what a blueprint needs, and get a warning when stock runs low.
-
-### Also new in 0.90.0
-
-- **[Stonework](docs/stonework.md)**: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings, slate floors and steps, and dry stone walls, all from the Stonecutter.
-- **[Soapstone Cauldron](docs/foraging.md)**: Stone Pot level 4, with fish soup, juniper lox pot and cloudberry porridge.
-- **[Shipwright's Bench](docs/ships.md#shipwrights-bench)**: its own station for ship upgrades, standing out on the jetty, with recipes from bog iron, pine tar and moss.
-- **[Gathering progress](docs/chests.md#gathering-progress)** shows which chest an item belongs in and lights it up.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
