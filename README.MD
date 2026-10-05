@@ -70,7 +70,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <table>
 <tr>
 <td align="center" width="33%" valign="top"><a href="docs/base.md"><img src="docs/images/waste_well.png" height="110" alt=""></a><br><b><a href="docs/base.md">Around the base</a></b><br><sub>Fires without fuel, crafting from nearby chests, a quartermaster's table, a guestbook, a waste well and self-closing doors.</sub></td>
-<td align="center" width="33%" valign="top"><a href="docs/defences.md"><img src="docs/images/fort_overview.png" height="110" alt=""></a><br><b><a href="docs/defences.md">Defences</a></b><br><sub>A palisade fort with ramparts, gatehouse and watchtowers, moats and a drawbridge.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/defences.md"><img src="docs/images/fort_overview.png" height="110" alt=""></a><br><b><a href="docs/defences.md">Defences</a></b><br><sub>Palisade and stone forts with ramparts, gatehouses and towers, moats and drawbridges.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/stonework.md"><img src="docs/images/memorial_stone.png" height="110" alt=""></a><br><b><a href="docs/stonework.md">Stonework</a></b><br><sub>Memorial stones, soapstone lamps, hnefatafl, ship settings, slate floors and dry stone walls.</sub></td>
 </tr>
 <tr>

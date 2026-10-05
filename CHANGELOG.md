@@ -4,6 +4,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **Stone defences**: the palisade fort in stone, built near a Stonecutter. A stone rampart (with or without a buttress), a corner bastion, a 45 degree corner, stairs, a gatehouse with a portcullis and round-fronted towers, three stone towers (the largest under a slate roof), dragon's teeth and a stone drawbridge. The wall walk is 3 m up; the fronts have plinths, corbelled parapets, merlons, buttresses and corner stones, with moss on the ledges. Stone has about 2.5 times the palisade's health, and trolls' blunt blows do half damage. See [Defences](docs/defences.md#-stone-defences).
+
 ### Fixed
 - **Building and crafting from chests is safe in multiplayer**: two players taking from the same chest at once could overwrite each other, so items were lost or doubled. A chest now counts once it is handed over with its newest contents, as for the Collection Post and the Quartermaster's Table. The chests are asked for when you take out the hammer, open the crafting panel or look at a smelter, fire or cooking station, so they are ready when you click. Alone or as the host nothing changes.
 - **Signs in blueprints keep their text**: a comma in a sign's text came back as a full stop, and a backslash followed by an n (as in *C:\new*) became a line break when the blueprint was read back.
