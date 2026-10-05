@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.91.0 - 2026-10-05
+
+### Added
+- **Quartermaster's Table**: a counter with a ledger and a tally board that opens the store of every chest, cart and ship hold within 30 m of it, as one list with filters per chest and a search. Click an item to take a stack: unlimited items refill, and of items players stored themselves the last one always stays, so the store is never emptied. Stacks in your bag can be put back into the right chests from the same window, and a second page packs what a blueprint or the piece selected in the hammer needs. It needs no workbench, so it can stand alone at an outpost. Built with the Hammer from Wood ×20, Stone ×8, Leather Scraps ×4 and Flint ×4. See [Around the base](docs/base.md).
+  - **Load a cart or ship**: take or pack straight into a cart or ship hold within the table's range instead of your bag.
+  - **Pack lists**: your own kits, such as an outpost kit, built by Shift + clicking items in the store or saved from a piece or blueprint, packed with one click at any table.
+  - **Stock warnings**: right click an item to watch it. When it runs below its limit the table glows red and its hover text says what is low, for everyone who uses it.
+
+### Changed
+- **Chests are handed over before they are changed for every container, not only White Hilt chests**: the Collection Post's handoff now also covers ordinary chests, carts and ship holds, and one handoff serves a whole ship, so the White Hilt Ship's hold and sea chest share it. The Quartermaster's Table uses it for every take, pack and put-back.
+
 ## v0.90.0 - 2026-10-04
 
 ### Added

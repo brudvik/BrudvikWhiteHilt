@@ -28,7 +28,11 @@ White Hilt grew out of many playthroughs where the best part of Valheim was buil
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.90.0
+## ✨ New in 0.91.0
+
+- **[Quartermaster's Table](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)**: everything in the chests around it as one store. Take a stack with a click, load a cart or ship, pack your own kits or what a blueprint needs, and get a warning when stock runs low.
+
+### Also new in 0.90.0
 
 - **[Stonework](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md)**: memorial stones with your own inscription, soapstone lamps, a hnefatafl board, ship settings, slate floors and steps, and dry stone walls, all from the Stonecutter.
 - **[Soapstone Cauldron](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)**: Stone Pot level 4, with fish soup, juniper lox pot and cloudberry porridge.
@@ -59,7 +63,7 @@ Every feature has its own page in the [documentation](https://github.com/brudvik
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/waste_well.png" alt="Around the base" height="120">
 
-Fires without fuel, crafting from nearby chests, a guestbook, a waste well and self-closing doors.
+Fires without fuel, crafting from nearby chests, a quartermaster's table, a guestbook, a waste well and self-closing doors.
 
 #### [Defences](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/defences.md)
 
