@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.95.1 - 2026-10-05
+
+### Fixed
+- **Wall drawers and the ship workbench, forge and stonecutter** showed broad black and white bands on their tops and fronts, which looked like tilted boards with the tools floating over them: the light pine wood was not found in the game, and the old colour palette was stretched over them instead. The pine is now looked for among everything the game has loaded, and the plank wood in a light tone stands in should it still be missing.
+- **Skidbladnir stops when everyone has left it**, as the other ships do, instead of sliding on.
+- A build refused for its requirements writes to the log which requirement is missing, as the game shows one message for all of them.
+
 ## v0.95.0 - 2026-10-05
 
 ### Added
