@@ -185,8 +185,17 @@ public static class PaletteSurfaces
         }
         catch (InvalidOperationException exception)
         {
-            Jotunn.Logger.LogWarning(exception.Message);
-            return fallback;
+            // Never the palette itself: its swatches stretched over coordinates in metres show as stripes. The plank
+            // wood in the surface's own tint instead.
+            Jotunn.Logger.LogWarning($"{exception.Message} Using the plank wood instead.");
+            if (surface.Texture == Frame.Texture)
+            {
+                return fallback;
+            }
+
+            Material planks = MaterialFor(new Surface(Frame.Texture, surface.Tint, surface.Metres), fallback);
+            materials[(surface.Texture, surface.Tint)] = planks;
+            return planks;
         }
 
         Material material = new(source) { name = $"{source.name}_whitehilt" };

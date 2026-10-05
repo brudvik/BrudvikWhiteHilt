@@ -74,8 +74,21 @@ public class SkidbladnirShip : MonoBehaviour
             referenceBody != null ? referenceBody.linearDamping : 0f, Time.fixedDeltaTime) * SkidbladnirSettings.SpeedShare.Value;
         Vector3 velocity = body.linearVelocity;
         Vector2 horizontal = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), maximum);
+        // With nobody aboard vanilla strikes the sails and lets the water stop the ship; this hull keeps far more way
+        // than the longship, so it would slide on. It is brought to rest within some seconds, turning included.
+        if (ship != null && ship.m_players.Count == 0)
+        {
+            float keep = Mathf.Exp(-EmptyBrake * Time.fixedDeltaTime);
+            horizontal *= keep;
+            Vector3 spin = body.angularVelocity;
+            body.angularVelocity = new Vector3(spin.x, spin.y * keep, spin.z);
+        }
+
         body.linearVelocity = new Vector3(horizontal.x, velocity.y, horizontal.y);
     }
+
+    // Share of its horizontal speed an empty ship loses per second, as a rate: it is near still within about ten seconds.
+    private const float EmptyBrake = 0.45f;
 
     // The ship's own solid colliders, without furnishings, as a box in the ship's space; made when first asked for.
     private Bounds? hull;

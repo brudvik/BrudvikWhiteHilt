@@ -144,10 +144,26 @@ public static class VanillaMeshLibrary
             .Where(prefab => prefab != null)
             .SelectMany(prefab => prefab.GetComponentsInChildren<Renderer>(true))
             .SelectMany(renderer => renderer.sharedMaterials)
-            .FirstOrDefault(candidate => candidate != null && candidate.mainTexture != null && candidate.mainTexture.name == texture)
+            .FirstOrDefault(candidate => HasTexture(candidate, texture))
+            // A texture of a model no prefab draws, such as the longship's unused dragon head: any loaded material with
+            // it, or else the texture itself on a copy of a wooden piece's material.
+            ?? Resources.FindObjectsOfTypeAll<Material>().FirstOrDefault(candidate => HasTexture(candidate, texture))
+            ?? OnWoodMaterial(Resources.FindObjectsOfTypeAll<Texture2D>().FirstOrDefault(candidate => candidate.name == texture))
             ?? throw new InvalidOperationException($"No vanilla material with the texture '{texture}'.");
         textureMaterials[texture] = material;
         return material;
+    }
+
+    private static bool HasTexture(Material material, string texture)
+    {
+        return material != null && material.mainTexture != null && material.mainTexture.name == texture;
+    }
+
+    private static Material OnWoodMaterial(Texture2D texture)
+    {
+        Material wood = texture == null ? null
+            : PrefabManager.Instance.GetPrefab("wood_beam")?.GetComponentsInChildren<Renderer>(true).Select(renderer => renderer.sharedMaterial).FirstOrDefault(candidate => candidate != null);
+        return wood == null ? null : new Material(wood) { name = $"{texture.name}_on_wood", mainTexture = texture };
     }
 
     // Unity's unit cube, centred on its origin, with every face showing the same flat stone of the stone wall's texture.

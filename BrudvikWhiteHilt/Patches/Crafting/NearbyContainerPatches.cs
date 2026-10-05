@@ -136,6 +136,44 @@ public static class NearbyContainerPatches
         return true;
     }
 
+    private static float nextRefusalLog;
+
+    /// <summary>
+    /// When a click to build is refused for its requirements, writes to the log which one is missing: the station, or
+    /// each resource as the inventory holds it, as it is counted, and in the chests. Vanilla shows one message for all.
+    /// </summary>
+    /// <param name="__instance">The building player.</param>
+    /// <param name="piece">The piece.</param>
+    /// <param name="mode">What is checked.</param>
+    /// <param name="__result">Whether the requirements are met.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.HaveRequirements), typeof(Piece), typeof(Player.RequirementMode))]
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    public static void ExplainRefusal(Player __instance, Piece piece, Player.RequirementMode mode, bool __result)
+    {
+        if (__result || mode != Player.RequirementMode.CanBuild || __instance != Player.m_localPlayer || piece == null
+            || Time.time < nextRefusalLog || !(ZInput.GetButtonDown("Attack") || ZInput.GetButtonDown("JoyPlace")))
+        {
+            return;
+        }
+
+        nextRefusalLog = Time.time + 1f;
+        string station = piece.m_craftingStation == null ? "none"
+            : $"{piece.m_craftingStation.m_name} known={__instance.m_knownStations.ContainsKey(piece.m_craftingStation.m_name)} "
+              + $"inRange={CraftingStation.HaveBuildStationInRange(piece.m_craftingStation.m_name, __instance.transform.position) != null}";
+        Inventory inventory = __instance.GetInventory();
+        string resources = string.Join(", ", piece.m_resources.Where(requirement => requirement.m_resItem != null).Select(requirement =>
+        {
+            string name = requirement.m_resItem.m_itemData.m_shared.m_name;
+            int held = inventory.GetAllItems().Where(item => item.m_shared.m_name == name).Sum(item => item.m_stack);
+            int kept = global::BrudvikWhiteHilt.Backpack.UtilitySlots.CountKept(inventory, name, -1, true);
+            return $"{name} need={requirement.m_amount} inInventory={held} counted={inventory.CountItems(name)} "
+                + $"kept={kept} "
+                + $"chestsHeld={NearbyContainers.Count(NearbyContainers.Use.Building, name)} chestsAll={NearbyContainers.CountAll(NearbyContainers.Use.Building, name)}";
+        }));
+        Jotunn.Logger.LogWarning($"Cannot build {piece.name}: station {station}; {resources}; paying={paying}; at {__instance.transform.position}");
+    }
+
     /// <summary>
     /// Counts every chest again after a piece is placed.
     /// </summary>
