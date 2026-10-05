@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.94.1 - 2026-10-05
 
 ### Changed
 - **Faster start**: the defence layout the mod reads at start is a quarter of its former size (the black marble and grausten pieces are written as what differs from the stone ones), and item and piece icons are kept on disk between starts, made anew only when the mod or the game changes.
