@@ -926,6 +926,8 @@ def main():
     # The stone defences live in their own module, which builds on the helpers here.
     from build_stone_defenses import stone_pieces
     pieces += stone_pieces()
+    from build_gate_controls import gate_control_pieces
+    pieces += gate_control_pieces()
     OUT.write_text(json.dumps({"pieces": pieces}, indent=1), encoding="utf-8")
     print(f"wrote {OUT} with {len(pieces)} pieces")
 

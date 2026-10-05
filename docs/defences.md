@@ -46,7 +46,7 @@ The fronts are not flat: a stepped plinth with rubble at the foot, string course
 | **Stone Corner Bastion** | A square corner with a round bastion over it; its top joins both wall walks | Hammer (Stonecutter) | Stone ×50 | 3500 |
 | **Stone Corner 45** | Turns the wall by 45 degrees, with a buttress over the joint | Hammer (Stonecutter) | Stone ×40 | 3500 |
 | **Stone Rampart Stairs** | Twelve solid steps with a cheek wall, 6 m long, up to the walk | Hammer (Stonecutter) | Stone ×30 | 2000 |
-| **Stone Gatehouse** | The palisade's double gate under a stone arch, with a raised portcullis and machicolations, between two round-fronted towers. Enter a tower from the wall walk and climb its ladder to the walk over the gate and on to the top | Hammer (Stonecutter) | Stone ×120, Core Wood ×20, Wood ×20, Iron ×10 | 10000 |
+| **Stone Gatehouse** | The palisade's double gate under a stone arch, with a portcullis ([worked from inside](#-working-the-gate)) and machicolations, between two round-fronted towers. Enter a tower from the wall walk and climb its ladder to the walk over the gate and on to the top | Hammer (Stonecutter) | Stone ×120, Core Wood ×20, Wood ×20, Iron ×10 | 10000 |
 | **Small Stone Tower** | 2 × 2 m, floors at 3 m and 5.6 m, open crenellated top | Hammer (Stonecutter) | Stone ×60, Wood ×10 | 5000 |
 | **Stone Tower** | 3 × 3 m, floors at 3 m and 5.6 m, open crenellated top | Hammer (Stonecutter) | Stone ×90, Wood ×16 | 7500 |
 | **Large Stone Tower** | 4 × 4 m, floors at 3 m, 5.6 m and 8.2 m, under a slate roof | Hammer (Stonecutter) | Stone ×130, Wood ×30 | 11000 |
@@ -58,9 +58,36 @@ The fronts are not flat: a stepped plinth with rubble at the foot, string course
 - The pieces are on the Black Forest tier, but are built near a Stonecutter, which needs iron, so they come with the Swamp in practice.
 
 
+## ⚙️ WORKING THE GATE
+
+Work the gates, drawbridges and portcullises from inside the walls, or call them open from outside with a horn. Every control follows the same rule as a door in a ward: only players who may open it can work it.
+
+<img src="images/gate_rope.png" alt="Gate Rope" title="Gate Rope" height="140"> <img src="images/windlass_house.png" alt="Windlass House" title="Windlass House" height="140">
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Gate Rope** | A rope made fast on a post. Pull it (use) to open or close the gate, drawbridge or portcullis within 15 m. Shift + use sets which of them it works, among those nearby; put up one rope for each | Hammer (no station) | Wood ×4, Leather Scraps ×4 |
+| **Windlass House** | A small stone house with the gate's machinery, working everything within 25 m: the great wheel raises and lowers the drawbridge, the crank the portcullis, the lever opens and closes the gate. Shift + use on any of them shuts everything at once, for a raid. The wheel, crank and lever turn to show how things stand | Hammer (Workbench) | Stone ×20, Wood ×20, Bronze ×4 |
+| **Gate Horn** | Blow it (attack) within 40 m of a gate: the gate opens, raising its portcullis, or closes if it was open. A drawbridge nearby follows the gate | Workbench | Boar Trophy, Leather Scraps ×2, Copper |
+
+- **The portcullis** of the stone gatehouse comes down in front of the gate leaves and blocks the gateway. It is worked only with a Gate Rope, a Windlass House or the Gate Horn, so it can be lowered while the gate leaves stay open, or kept down behind a closed gate.
+- **Teaching the horn**: a new Gate Horn calls the nearest gate. Use it on a Gate Rope or a Windlass House (put it in your hotbar and press its number while looking at the control) and it learns that gate's call: from then on it calls only that gate, wherever you stand within reach. Its tooltip says which it does.
+- A drawbridge follows its gate as before; a rope set to the drawbridge or the windlass wheel works the bridge on its own until the gate next moves.
+
+## Config
+
 Section `[Defences]` (admin only, synced from the server; it was `[Defenses]` before 0.49.0, and its value is moved over):
 
 | Setting | Default | What it does |
 |---|---|---|
 | `HealthMultiplier` | 1 | Multiplier on the health of every palisade and stone defence. Placed pieces keep their damage; a repair brings them to the new full health |
 | `DrawbridgeLinkRange` | 12 | A drawbridge follows the nearest gate within this many metres. 0 turns it off |
+
+Section `[Defences.GateControl]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `RopeRange` | 15 | How far from a Gate Rope the gate, drawbridge or portcullis it works may be, in metres |
+| `WindlassRange` | 25 | How far from a Windlass House the gate, drawbridge and portcullis it works may be, in metres |
+| `HornRange` | 40 | How far a Gate Horn is heard by a gate, in metres |
+| `HornSeconds` | 2 | Seconds the Gate Horn is blown before the gate answers |

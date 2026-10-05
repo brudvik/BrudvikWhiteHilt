@@ -8,7 +8,10 @@ using UnityEngine.Audio;
 
 namespace BrudvikWhiteHilt.Items.Summoning;
 
-/// <summary>Synchronizes a horn call and poses the arms and horn at the mouth.</summary>
+/// <summary>
+/// Synchronizes a horn call and poses the arms and horn at the mouth. Two horns are blown this way: the Horn of the
+/// Deep, which calls a beast, and the Gate Horn, a shorter and brighter call that opens or closes a gate.
+/// </summary>
 [DefaultExecutionOrder(200)]
 public class HornCaller : MonoBehaviour
 {
@@ -38,11 +41,11 @@ public class HornCaller : MonoBehaviour
     {
         if (!HoldingHorn())
             return false;
-        if (player != Player.m_localPlayer || !SummoningHornService.Enabled.Value || player.IsDead()
+        if (player != Player.m_localPlayer || (!HoldingGateHorn() && !SummoningHornService.Enabled.Value) || player.IsDead()
             || !player.CanMove() || player.InAttack() || player.InDodge() || player.IsStaggering() || player.IsKnockedBack()
             || player.InMinorAction() || player.IsSwimming() || player.IsAttached() || player.IsAttachedToShip() || player.InInterior())
             return true;
-        if (Elapsed(player.m_nview.GetZDO().GetLong(SummoningHornService.CallKey)) < SummoningHornService.BlowSeconds.Value)
+        if (Elapsed(player.m_nview.GetZDO().GetLong(SummoningHornService.CallKey)) < Duration())
             return true;
         long previous = player.m_nview.GetZDO().GetLong(SummoningHornService.CallKey);
         if (previous != 0 && previous != requestedCall)
@@ -54,7 +57,15 @@ public class HornCaller : MonoBehaviour
 
     private void Awake() => player = GetComponent<Player>();
 
-    private bool HoldingHorn() => player.m_nview != null && player.m_nview.IsValid()
+    private bool HoldingHorn() => HoldingGateHorn() || HoldingSummoningHorn();
+
+    private bool HoldingGateHorn() => player.m_nview != null && player.m_nview.IsValid()
+        && player.m_nview.GetZDO().GetInt(ZDOVars.s_rightItem) == Pieces.Defenses.GateControl.GateHorn.ItemName.GetStableHashCode();
+
+    // The gate horn is a short call; the summoning horn is blown until the beast answers.
+    private float Duration() => HoldingGateHorn() ? Pieces.Defenses.GateControl.GateMechanisms.HornSeconds.Value : SummoningHornService.BlowSeconds.Value;
+
+    private bool HoldingSummoningHorn() => player.m_nview != null && player.m_nview.IsValid()
         && player.m_nview.GetZDO().GetInt(ZDOVars.s_rightItem) == SummoningHornService.HornName.GetStableHashCode();
 
     private static float Elapsed(long start) => start == 0 || ZNet.instance == null ? float.PositiveInfinity
@@ -67,13 +78,14 @@ public class HornCaller : MonoBehaviour
         ZDO zdo = player.m_nview.GetZDO();
         long start = zdo.GetLong(SummoningHornService.CallKey);
         float elapsed = Elapsed(start);
-        float duration = SummoningHornService.BlowSeconds.Value;
+        float duration = Duration();
+        bool gateHorn = HoldingGateHorn();
         bool active = start != 0 && elapsed >= 0f && elapsed < duration && HoldingHorn() && !player.IsDead();
         if (player == Player.m_localPlayer && start != 0 && start != requestedCall)
         {
             if (!HoldingHorn() || player.IsDead() || player.IsSwimming() || player.m_moveDir != Vector3.zero
                 || !player.CanMove() || player.InAttack() || player.InDodge() || player.IsStaggering() || player.IsKnockedBack()
-                || player.InMinorAction() || player.IsAttached() || player.IsAttachedToShip() || !SummoningHornService.Enabled.Value)
+                || player.InMinorAction() || player.IsAttached() || player.IsAttachedToShip() || (!gateHorn && !SummoningHornService.Enabled.Value))
             {
                 zdo.Set(SummoningHornService.CallKey, 0L);
                 ZDOMan.instance.ForceSendZDO(player.GetZDOID());
@@ -82,7 +94,10 @@ public class HornCaller : MonoBehaviour
             else if (elapsed >= duration)
             {
                 requestedCall = start;
-                SummoningHornService.Request();
+                if (gateHorn)
+                    Pieces.Defenses.GateControl.GateHorn.Sounded(player);
+                else
+                    SummoningHornService.Request();
             }
         }
         if (active && observedCall != start)
@@ -102,7 +117,8 @@ public class HornCaller : MonoBehaviour
                     audio.rolloffMode = AudioRolloffMode.Linear;
                     audio.minDistance = 2f;
                 }
-                audio.maxDistance = SummoningHornService.SoundRange.Value;
+                audio.maxDistance = gateHorn ? Pieces.Defenses.GateControl.GateMechanisms.HornRange.Value * 1.5f : SummoningHornService.SoundRange.Value;
+                audio.pitch = gateHorn ? 1.35f : 1f;
                 audio.time = Mathf.Min(elapsed, clip.length - 0.01f);
                 audio.Play();
             }
@@ -120,7 +136,7 @@ public class HornCaller : MonoBehaviour
         if (VisualHelper.IsHeadless || player.m_nview == null || !player.m_nview.IsValid())
             return;
         float elapsed = Elapsed(player.m_nview.GetZDO().GetLong(SummoningHornService.CallKey));
-        float duration = SummoningHornService.BlowSeconds.Value;
+        float duration = Duration();
         if (!HoldingHorn() || player.IsDead() || elapsed < 0f || elapsed >= duration)
         {
             RestoreHorn();

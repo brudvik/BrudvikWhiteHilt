@@ -436,6 +436,7 @@ def stone_tower(n, levels, seed, roofed):
 
 
 GATE_WALK = 4.4  # the walk over the gateway
+PORTCULLIS_DROP = 2.75  # how far the portcullis comes down from raised to the ground (Defenses/GateControl uses the same)
 GATE_TOWER = 6.6  # the top floor of the gate towers
 
 
@@ -500,21 +501,24 @@ def gatehouse():
     parts += masonry(-2.3, 2.3, 3.0, GATE_WALK, -1.8, 0.6, rng)
     parts.append(part("stone_arch", (0, 3.25, 0.62), scale=(2.15, 0.55, 0.12), tint=COURSE_TINT))
     parts += gate_leaf(-2.0, "leaf_left", rng) + gate_leaf(0.0, "leaf_right", rng)
-    # The portcullis hangs raised in its slot, only its spikes showing under the arch.
+    # The portcullis, two iron grates side by side, hangs raised in a slot through the mass over the gateway: only its
+    # spikes show under the arch, and its top stands in a chamber behind the parapet. The mod lowers the group
+    # "portcullis" by PORTCULLIS_DROP to the ground, its collider with it.
     for x in (-1.0, 1.0):
-        parts.append(part("iron_grate", (x, 3.15, 0.4), scale=(1.0, 0.45, 1.0), tint=[0.6, 0.6, 0.62]))
+        parts.append(part("iron_grate", (x, PORTCULLIS_DROP + 0.9, 0.4), scale=(1.0, 0.9, 1.0), tint=[0.6, 0.6, 0.62], group="portcullis"))
     # Machicolations: the parapet over the gate stands out on long corbels, with gaps to drop things through.
     for x in (-1.75, -1.05, -0.35, 0.35, 1.05, 1.75):
         parts.append(block(x - 0.15, x + 0.15, GATE_WALK - 0.5, GATE_WALK, 0.6, 1.1, tint=shade(rng, 0.85, 0.95)))
     parts += masonry(-2.3, 2.3, GATE_WALK, GATE_WALK + PARAPET, 0.6, 1.1, rng)
     parts += crenels(-2.3, 2.3, GATE_WALK + PARAPET, 0.6, 1.1, rng, [-1.6, 0.0, 1.6])
-    parts.append(floor(-2.3, 2.3, -1.8, 0.6, GATE_WALK, "wood_floor"))
+    parts.append(floor(-2.3, 2.3, -1.8, 0.2, GATE_WALK, "wood_floor"))
     parts += [torch((x, 2.2, 0.62)) for x in (-2.15, 2.15)]
     parts.append(part("trophy_deer", (0, 3.75, 0.7), scale=(1.1, 1.1, 1.1), detail=True))
     colliders = [box((1.0, 1.5, 0.05), (2.0, 3.0, 0.5), group="leaf_right"),
                  box((-1.0, 1.5, 0.05), (2.0, 3.0, 0.5), group="leaf_left"),
                  span(-2.3, -2.0, -0.3, GATE_WALK, -1.8, 0.6), span(2.0, 2.3, -0.3, GATE_WALK, -1.8, 0.6),
-                 span(-2.3, 2.3, 3.0, GATE_WALK, -1.8, 0.6), span(-2.3, 2.3, GATE_WALK, GATE_WALK + PARAPET + MERLON, 0.6, 1.1)]
+                 span(-2.3, 2.3, 3.0, GATE_WALK, -1.8, 0.6), span(-2.3, 2.3, GATE_WALK, GATE_WALK + PARAPET + MERLON, 0.6, 1.1),
+                 box((0, PORTCULLIS_DROP + 1.35, 0.4), (4.0, 2.7, 0.2), group="portcullis")]
     ladders = []
     for side in (1, -1):
         tower_parts, tower_colliders, tower_ladders = gate_tower(side, rng)
@@ -523,7 +527,8 @@ def gatehouse():
         ladders += tower_ladders
     parts += rubble(-4.3, -2.6, 1.7, rng, 3) + rubble(2.6, 4.3, 1.7, rng, 3)
     snaps = [(-4.3, 0, 0), (4.3, 0, 0), (-4.3, WALK, 0), (4.3, WALK, 0)]
-    groups = [{"name": "leaf_right", "pivot": [2.0, 0, 0.05]}, {"name": "leaf_left", "pivot": [-2.0, 0, 0.05], "mirror": True}]
+    groups = [{"name": "leaf_right", "pivot": [2.0, 0, 0.05]}, {"name": "leaf_left", "pivot": [-2.0, 0, 0.05], "mirror": True},
+              {"name": "portcullis", "pivot": [0, 0, 0.4]}]
     return parts, colliders, snaps, groups, ladders
 
 

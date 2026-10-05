@@ -238,7 +238,7 @@ public class StoneGatehouse : PalisadeGatehouse
     protected override string FullName => "Stone Gatehouse";
 
     /// <inheritdoc/>
-    protected override string Description => "A double gate under a stone arch between two round-fronted towers, with a portcullis and machicolations over it. Ladders in the towers lead from the wall walks to the walk over the gate and to the tower tops.";
+    protected override string Description => "A double gate under a stone arch between two round-fronted towers, with a portcullis and machicolations over it. Work the portcullis with a Gate Rope or a Windlass House. Ladders in the towers lead from the wall walks to the walk over the gate and to the tower tops.";
 
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
@@ -260,6 +260,14 @@ public class StoneGatehouse : PalisadeGatehouse
     {
         base.CustomizePrefab(prefab, data, groups);
         StoneDefense.Harden(prefab);
+        if (groups.TryGetValue("portcullis", out Transform grate))
+        {
+            prefab.AddComponent<GateControl.PortcullisDriver>().m_grate = grate;
+        }
+        else
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: the portcullis was not found, it will not move.");
+        }
     }
 }
 

@@ -116,6 +116,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
         Pieces.Trophies.TrophyAltarSettings.Initialize();
         Pieces.Defenses.DefenseSettings.Initialize();
+        Pieces.Defenses.GateControl.GateMechanisms.Initialize();
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();
