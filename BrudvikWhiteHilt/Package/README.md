@@ -18,6 +18,7 @@ Ships and sea routes, stonework and turf roofs, foraging and feasts, forts, beas
 [Install](#-installation) ·
 [Features](#-features) ·
 [Documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) ·
+[For modders](#-for-modders) ·
 [Changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) ·
 [Releases](https://github.com/brudvik/BrudvikWhiteHilt/releases) ·
 [Report an issue](https://github.com/brudvik/BrudvikWhiteHilt/issues)
@@ -25,6 +26,8 @@ Ships and sea routes, stonework and turf roofs, foraging and feasts, forts, beas
 ![The palisade fort, the White Hilt uniform, Skidbladnir, the Shipwright's Bench and the White Hilt Portal](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/banner.png)
 
 White Hilt grew out of many playthroughs where the best part of Valheim was building a home and defending it. It adds what a Viking farm, a ship and a long winter would need, in the game's own look, and it explains itself: every piece has a page with its recipes and settings, and everything can be switched off or tuned in an in-game settings window.
+
+It is also open source and written to be read. The code explains what it does and why, and a [guide to how the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md) shows the patterns behind it, so modders can learn from it and borrow freely.
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
@@ -248,11 +251,21 @@ Each character's saga of its deeds, with renown that gives carry weight and stam
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_settings.png" alt="Settings & progression" height="120">
 
-An in-game settings window (F7), full or linear progression, and per-item switches.
+An in-game settings window (F7), linear or full progression, and per-item switches.
 
 ## 📚 Documentation
 
 The [documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting.
+
+## 🧱 For modders
+
+White Hilt is a large, working Valheim mod under the [MIT No Attribution](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/LICENSE) licence, kept readable on purpose. If you want to learn how a mod like this is put together, you are welcome to read it, copy from it and build on it.
+
+- **[How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
+- **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
+- **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+
+Questions about the code are welcome on the [issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues). How to build it yourself is under *Building from source* below.
 
 ## 🐞 Known issues
 
@@ -260,7 +273,7 @@ No known issues at the moment. Please report anything odd on the [issues page](h
 
 ## 🛠️ Building from source
 
-The mod does not compile out of the box; read up on [Valheim mod development](https://github.com/Valheim-Modding/JotunnModStub) first.
+The mod does not compile out of the box; read up on [Valheim mod development](https://github.com/Valheim-Modding/JotunnModStub) first. Jötunn's build files find Valheim through Steam and BepInEx in Valheim's folder; if yours is elsewhere, set `BEPINEX_PATH` in a git-ignored `Environment.props` next to the solution. [How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md) explains how the source is put together.
 
 The `Assets` folder is not part of the public source. The potion icons are bought from [Graphicriver](https://graphicriver.net/item/rpg-potion-icons/24972053), and the licence only allows shipping them in the pre-built mod. The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) under the same terms; without them the chests use the vanilla chest icon. To make a similar mod you would need your own licence.
 
@@ -268,7 +281,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 
 The defences, the navigation pieces and the stonework are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
-`BrudvikWhiteHilt.Tests` holds tests for what runs without the game: reading and writing blueprints, pack lists and other saved data, and checks that every English text has a Norwegian one and every piece is in `defenses.json`. They load the built mod, so build it first (the solution does), then run `dotnet test BrudvikWhiteHilt.Tests`.
+`BrudvikWhiteHilt.Tests` holds tests for what runs without the game: reading and writing blueprints, pack lists and other saved data, what is sent over the network, pure logic such as compass bearings and map geometry, and checks that every English text has a Norwegian one and every piece is in `defenses.json`. They load the built mod, so build it first (the solution does), then run `dotnet test BrudvikWhiteHilt.Tests`.
 
 The Thunderstore package gets a plain markdown version of this README (`BrudvikWhiteHilt/Package/README.md`), written by `build_thunderstore_readme.ps1` on every Release build; edit this file, not that one.
 
