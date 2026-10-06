@@ -185,4 +185,5 @@ All admin only, synced from the server.
 | `[Gear.Ammunition] PierceMultiplier` | 2 | Multiplies the pierce damage of arrows and bolts |
 | `[Gear.Ammunition] BonusFireDamage` | 30 | Fire damage added to arrows and bolts |
 | `[Gear.Ammunition] BonusSpiritDamage` | 20 | Spirit damage added to arrows and bolts |
+| `[Gear.Ammunition] BurningFlames` | 0.5 | Each player's own: how strong the flames, sparks and light of anything burning are, so a burning monster can still be seen; 1 as in the game, 0 none. Applies to all burning, not only from White Hilt arrows |
 | `[Gear.WhiteHiltBeltPouch] Weight` | 1 | Weight of the Belt Pouch |

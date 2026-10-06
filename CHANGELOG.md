@@ -8,6 +8,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Skidbladnir can be switched on and off** (`[Ships.Skidbladnir] Enabled`), and is **off by default** until it has been tried more in multiplayer. Off, Skidbladnir, the White Hilt Ship Hammer and the ship workshops cannot be built or crafted, and nothing new can be built aboard; what is already made is kept.
 
 ### Changed
+- The flames on anything burning are toned down to half, so a monster set on fire by White Hilt arrows can still be seen (`[Gear.Ammunition] BurningFlames`, each player's own; 1 as in the game, 0 none).
 - Getting ready to build or craft asks only for the chests that hold what the selected piece, recipe or station needs, no more than make up what is missing, and leaves a chest just handed to another player with them for 20 seconds (`[ChestCrafting] HandoffKeepSeconds`). The Collection Post leaves such chests be too.
 - A stack a chest keeps full without limit counts as enough for any amount, and is taken from again as it refills, so ten dishes at once work like one.
 - Crafting that lacks materials now says *Not enough in your inventory and the chests nearby* instead of nothing.

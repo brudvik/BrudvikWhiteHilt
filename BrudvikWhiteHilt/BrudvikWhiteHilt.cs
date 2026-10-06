@@ -88,6 +88,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Building.Terrain.TerrainSettings.Initialize();
         Building.Moats.MoatSettings.Initialize();
         Items.Curing.CuringSettings.Initialize();
+        Items.Ammunition.BurningFlames.Initialize();
         Textiles.TextileSettings.Initialize();
         Saga.SagaSettings.Initialize();
         Storage.StorageSearch.Initialize();

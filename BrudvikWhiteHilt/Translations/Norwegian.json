@@ -2760,6 +2760,8 @@
   "whitehilt_cfg_gear_ammunition_bonusfiredamage_desc": "Ildskade som legges til Hvithjalt-piler og -bolter.",
   "whitehilt_cfg_gear_ammunition_bonusspiritdamage": "Ekstra åndeskade",
   "whitehilt_cfg_gear_ammunition_bonusspiritdamage_desc": "Åndeskade som legges til Hvithjalt-piler og -bolter.",
+  "whitehilt_cfg_gear_ammunition_burningflames": "Styrke på flammer ved brann",
+  "whitehilt_cfg_gear_ammunition_burningflames_desc": "Hvor kraftige flammene, gnistene og lyset er på alt som brenner: 1 som i spillet, 0 ingen. Ildskade og lyd er uendret. Gjelder all brann, fra Hvithjalt-piler og alt annet.",
   "whitehilt_cfg_gear_armor_armorbonus": "Ekstra rustning",
   "whitehilt_cfg_gear_armor_armorbonus_desc": "Rustning som legges til hver Hvithjalt-rustningsdel.",
   "whitehilt_cfg_gear_armor_armorperlevelbonus": "Ekstra rustning per nivå",
