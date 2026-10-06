@@ -15,21 +15,21 @@ ITEMS = {
     "Iron": "Iron", "Copper": "Copper", "Chain": "Chain", "Coal": "Coal", "LeatherScraps": "Leather Scraps",
     "WolfPelt": "Wolf Pelt", "LinenThread": "Linen Thread", "BoneFragments": "Bone Fragments", "ElderBark": "Ancient Bark",
     "YggdrasilWood": "Yggdrasil Wood", "Blackwood": "Ashwood", "BeechSeeds": "Beech Seeds", "FirCone": "Fir Cone",
-    "Fiddleheadfern": "Fiddlehead", "Thistle": "Thistle", "Dandelion": "Dandelion", "Mushroom": "Mushroom",
+    "Fiddleheadfern": "Fiddlehead", "PineCone": "Pine Cone", "BirchSeeds": "Birch Seeds", "Acorn": "Acorn", "Thistle": "Thistle", "Dandelion": "Dandelion", "Mushroom": "Mushroom",
     "MushroomYellow": "Yellow Mushroom", "MushroomBlue": "Blue Mushroom", "MushroomMagecap": "Magecap",
     "MushroomJotunPuffs": "Jotun Puffs", "Blueberries": "Blueberries", "Raspberry": "Raspberries", "Cloudberry": "Cloudberries",
     "Flax": "Flax", "Barley": "Barley", "Onion": "Onion", "Turnip": "Turnip", "Carrot": "Carrot", "FishRaw": "Raw Fish",
 }
 
 TABS = {
-    "Garden": ("🌿 Garden", "Bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of them sway in the wind and bend when you walk through them, as Valheim's own plants do, and none of them can be picked or chopped."),
-    "Wilds": ("🪨 Wilds", "Stones, stumps, logs and moss to make a garden or a path look as if it has always been there."),
-    "Hearth": ("🍲 Hearth", "Barrels, crates, baskets, bowls, pots and food for the kitchen and the storehouse."),
-    "Workshop": ("🔨 Workshop", "Tools, firewood, fences, chains and a trader's wagon for the yard and the smithy."),
+    "Garden": ("🌿 Garden", "Trees, bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of them sway in the wind and bend when you walk through them, as Valheim's own plants do, and none of them can be picked or chopped."),
+    "Wilds": ("🪨 Wilds", "Stones, outcrops, stumps, logs, dead trees and moss to make a garden or a path look as if it has always been there."),
+    "Hearth": ("🍲 Hearth", "Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen and the storehouse."),
+    "Workshop": ("🔨 Workshop", "A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, firewood, fences and a quintain for the yard and the workshop."),
     "Home": ("🪑 Home", "Tables, stools and chairs you can sit on, shelves, boxes and pots, from the meadows to the Ashlands."),
     "Textiles": ("🧵 Textiles", "Hanging cloth, hides, curtains, banners and runner rugs."),
-    "Lights": ("🕯️ Lights", "Candles, lanterns and fires that burn without fuel. They give light, not heat or comfort."),
-    "Norse": ("ᚱ Norse", "Runestones, graves, a dolmen, fuling totems, wrecked ships and other pieces of the old world."),
+    "Lights": ("🕯️ Lights", "Candles, lanterns, lamps, a chandelier and fires that burn without fuel. They give light, not heat or comfort."),
+    "Norse": ("ᚱ Norse", "Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems, wrecked ships and other pieces of the old world."),
 }
 
 
@@ -84,8 +84,7 @@ def main():
     for tab, (title, text) in TABS.items():
         entries = [entry for entry in pieces if entry["category"] == tab]
         lines += [f"## {title}", "", text, ""]
-        image = REPO / "docs" / "images" / f"decor_{tab.lower()}.png"
-        if image.exists():
+        for image in sorted((REPO / "docs" / "images").glob(f"decor_{tab.lower()}*.png")):
             lines += [f'<img src="images/{image.name}" alt="{tab}" title="{tab}" height="260">', ""]
         lines += ["| Decoration | Description | Requirements | Notes |", "|------------|-------------|--------------|-------|"]
         for entry in entries:

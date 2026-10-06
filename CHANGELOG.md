@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **87 more decorations for the Decor Hammer**, 261 in all: real trees that sway in the wind (fir, pine, birch, autumn birch, oak, maple, ash, apple, cherry and plum) with shrubs and saplings; dead trees, fallen logs and rock outcrops; a smithy with anvil, stone forge, smith's bench, quench tub, bellows, tongs and a tool wall; a market stall, handcarts, a cart wheel, pottery, sacks and crates; tables, chairs, stools and shelves; a chandelier, oil lamps and candlesticks; stocks, a quintain, skulls, swords and shields. Forges, cooking grates and lamps burn without fuel. Models from eight Sketchfab packs (CC BY), credited in the README.
+
 ## v0.97.0 - 2026-10-06
 
 ### Added

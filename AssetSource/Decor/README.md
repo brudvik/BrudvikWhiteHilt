@@ -21,6 +21,7 @@ code.
 | `solid` | `false` lets players walk through it. Plants and cloth default to `false`, everything else to `true`. |
 | `material` | `wood` (default), `stone`, `metal` or `cloth`: health, break effects and the piece material a model is lit with. |
 | `light` | `candle`, `lantern` or `fire`: a flame and a light that need no fuel. |
+| `lightAt` | Where the flame sits, as a share of the height from the foot (0 to 1); by default the top of a candle, the middle of a lantern and the bottom of a fire. |
 | `seat` | Seat height in metres; makes it a chair. |
 | `cost` | `Item:amount,Item:amount` with Valheim's prefab names. The materials are given back when it is removed. |
 | `name`, `description` | English texts. The Norwegian ones go in `BrudvikWhiteHilt/Translations/Norwegian.json` as `piece_whitehilt_decor_<id>` and `..._description`. |

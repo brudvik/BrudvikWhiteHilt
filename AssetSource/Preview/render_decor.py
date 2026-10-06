@@ -25,6 +25,7 @@ RAW = PREVIEW / "decor"
 ROW_WIDTH = 5.0
 GAP = 0.35
 VIEW = {"yaw": 160, "pitch": 22}
+TREE_HEIGHT = 3.0
 
 
 def load(entry):
@@ -45,12 +46,13 @@ def load(entry):
 
 
 def gallery(entries):
-    """Places the models in rows from left to right, each row behind the one before."""
+    """Places the models in rows from left to right, each row behind the one before; rows of trees are wider."""
+    row_width = ROW_WIDTH * (4 if max(entry.get("height", 1.0) for entry in entries) >= TREE_HEIGHT else 1)
     parts, x, z, row_depth = [], 0.0, 0.0, 0.0
     for entry in entries:
         name, (min_x, max_x), (min_z, max_z) = load(entry)
         width, depth = max_x - min_x, max_z - min_z
-        if x > 0 and x + width > ROW_WIDTH:
+        if x > 0 and x + width > row_width:
             x, z, row_depth = 0.0, z + row_depth + GAP, 0.0
         parts.append({"mesh": f"preview_{name}", "position": [x - min_x, 0, z - min_z]})
         x += width + GAP
@@ -66,11 +68,15 @@ def main(only):
             tabs.append(entry["category"])
     tabs = [tab for tab in tabs if not only or tab.lower() in [name.lower() for name in only]]
 
+    # Trees get a gallery of their own; next to them the small plants would be lost.
     pieces = []
     for tab in tabs:
         models = [entry for entry in catalog["pieces"] if entry["category"] == tab and "vanilla" not in entry]
-        if models:
-            pieces.append({"name": f"decor_{tab.lower()}", "parts": gallery(models), "views": [VIEW]})
+        small = [entry for entry in models if entry.get("height", 1.0) < TREE_HEIGHT]
+        large = [entry for entry in models if entry.get("height", 1.0) >= TREE_HEIGHT]
+        for name, group in ((f"decor_{tab.lower()}", small), (f"decor_{tab.lower()}_trees", large)):
+            if group:
+                pieces.append({"name": name, "parts": gallery(group), "views": [VIEW]})
 
     layout = PREVIEW / "decor_layout.json"
     layout.write_text(json.dumps({"pieces": pieces}, indent=1), encoding="utf-8")

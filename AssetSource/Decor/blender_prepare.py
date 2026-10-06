@@ -18,11 +18,13 @@ def base_name(name):
     return re.sub(r"\.\d{3}$", "", name)
 
 
-def wanted(obj, names):
+def wanted(obj, names, exact):
+    """Whether the object or a node above it is asked for. A name that exists as such (\"Wooden Crate\") matches only
+    itself, not its numbered copies (\"Wooden Crate.001\"); other names match with Blender's .001 suffixes left off."""
     if not names:
         return True
     while obj is not None:
-        if base_name(obj.name) in names:
+        if obj.name in names or (base_name(obj.name) in names and base_name(obj.name) not in exact):
             return True
         obj = obj.parent
     return False
@@ -61,7 +63,8 @@ def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=source)
 
-    keep = [obj for obj in bpy.context.scene.objects if obj.type == "MESH" and wanted(obj, names)]
+    exact = {obj.name for obj in bpy.context.scene.objects if obj.name in names}
+    keep = [obj for obj in bpy.context.scene.objects if obj.type == "MESH" and wanted(obj, names, exact)]
     if not keep:
         raise RuntimeError(f"no meshes match {sorted(names)}")
 

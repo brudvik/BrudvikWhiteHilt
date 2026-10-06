@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 174 of them under eight tabs.
+The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 261 of them under eight tabs.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -18,9 +18,11 @@ The White Hilt Decor Hammer builds decorations only: plants that sway in the win
 
 ## 🌿 Garden
 
-Bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of them sway in the wind and bend when you walk through them, as Valheim's own plants do, and none of them can be picked or chopped.
+Trees, bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of them sway in the wind and bend when you walk through them, as Valheim's own plants do, and none of them can be picked or chopped.
 
 <img src="images/decor_garden.png" alt="Garden" title="Garden" height="260">
+
+<img src="images/decor_garden_trees.png" alt="Garden" title="Garden" height="260">
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
@@ -64,12 +66,33 @@ Bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of them swa
 | **Yellow Stars** | Small star-shaped yellow flowers. | Dandelion ×1 |  |
 | **Blue Flowers** | A spray of small sky-blue flowers. | Dandelion ×1 |  |
 | **Red Flowers** | Red and orange flowers that open in the sun. | Dandelion ×1 |  |
+| **Fir Tree** | A tall fir tree that never needs felling. | Wood ×10, Fir Cone ×1 |  |
+| **Pine Tree** | A tall pine with a broad crown. | Wood ×10, Pine Cone ×1 |  |
+| **Young Noble Fir** | A dense young fir. | Wood ×6, Fir Cone ×1 |  |
+| **Juniper Shrub** | A low evergreen shrub. | Wood ×2, Fir Cone ×1 |  |
+| **Fir Sapling** | A small fir sapling. | Wood ×1, Fir Cone ×1 |  |
+| **Apple Tree** | An apple tree for the farmyard. | Wood ×8, Beech Seeds ×1 |  |
+| **Ash Tree** | A tall ash tree. | Wood ×10, Beech Seeds ×1 |  |
+| **Cherry Tree** | A cherry tree in blossom. | Wood ×8, Beech Seeds ×1 |  |
+| **Plum Tree** | A plum tree for the garden. | Wood ×8, Beech Seeds ×1 |  |
+| **Holly** | A dark green holly bush. | Wood ×2 |  |
+| **Raspberry Canes** | A thicket of raspberry canes. | Raspberries ×3, Wood ×1 |  |
+| **Birch Tree** | A white-barked birch. | Wood ×10, Birch Seeds ×1 |  |
+| **Tall Birch** | A tall, slender birch. | Wood ×10, Birch Seeds ×1 |  |
+| **Autumn Birch** | A birch in its autumn colours. | Wood ×10, Birch Seeds ×1 |  |
+| **Maple Tree** | A broad maple tree. | Wood ×10, Beech Seeds ×1 |  |
+| **Oak Tree** | A spreading oak. | Wood ×10, Acorn ×1 |  |
+| **Hazel Shrub** | A leafy shrub for hedges. | Wood ×2 |  |
+| **Tall Shrub** | A tall, open shrub. | Wood ×2 |  |
+| **Leafy Sapling** | A small leafy sapling. | Wood ×1, Beech Seeds ×1 |  |
 
 ## 🪨 Wilds
 
-Stones, stumps, logs and moss to make a garden or a path look as if it has always been there.
+Stones, outcrops, stumps, logs, dead trees and moss to make a garden or a path look as if it has always been there.
 
 <img src="images/decor_wilds.png" alt="Wilds" title="Wilds" height="260">
+
+<img src="images/decor_wilds_trees.png" alt="Wilds" title="Wilds" height="260">
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
@@ -96,10 +119,18 @@ Stones, stumps, logs and moss to make a garden or a path look as if it has alway
 | **Beech Stump** | What is left of a beech. | Wood ×3 | Valheim's own look |
 | **Oak Stump** | The broad stump of an oak. | Wood ×4 | Valheim's own look |
 | **Swamp Stump** | A dark stump from the swamp. | Ancient Bark ×2 | Valheim's own look |
+| **Dead Pine** | A tall pine, long dead. | Wood ×8 |  |
+| **Snag** | A broken, dead trunk still standing. | Wood ×6 |  |
+| **Dead Tree** | A bare, dead tree. | Wood ×8 |  |
+| **Fallen Log** | A long log on the forest floor. | Wood ×6 |  |
+| **Birch Log** | A fallen birch log. | Wood ×6 |  |
+| **Mossy Boulder, Round** | A round boulder with moss on top. | Stone ×12 |  |
+| **Mossy Outcrop** | A mossy outcrop of rock. | Stone ×20 |  |
+| **Rock Outcrop** | A grey outcrop of rock. | Stone ×16 |  |
 
 ## 🍲 Hearth
 
-Barrels, crates, baskets, bowls, pots and food for the kitchen and the storehouse.
+Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen and the storehouse.
 
 <img src="images/decor_hearth.png" alt="Hearth" title="Hearth" height="260">
 
@@ -133,10 +164,30 @@ Barrels, crates, baskets, bowls, pots and food for the kitchen and the storehous
 | **Farm Barrel** | A barrel bound with iron hoops. | Wood ×4 |  |
 | **Tipped Bucket** | A bucket left lying on its side. | Wood ×2 |  |
 | **Bucket of Water** | A bucket of water from the well. | Wood ×2 |  |
+| **Fireplace Tools** | A poker, shovel and brush on their stand. | Iron ×1 |  |
+| **Tankard** | A wooden tankard for mead. | Wood ×1 |  |
+| **Two-Handled Jug** | A jug with two handles. | Stone ×1, Resin ×1 |  |
+| **Mug** | A mug with a handle. | Wood ×1 |  |
+| **Trencher** | A round wooden plate. | Wood ×1 |  |
+| **Flask** | A flask with a narrow neck. | Stone ×1, Resin ×1 |  |
+| **Stoneware Jar** | A tall jar with a stopper. | Stone ×1, Resin ×1 |  |
+| **Goblet** | An iron goblet. | Iron ×1 |  |
+| **Slatted Crate** | An open crate of slats. | Wood ×2 |  |
+| **Clay Bowl** | A wide clay bowl. | Stone ×2 |  |
+| **Clay Vase** | A clay vase. | Stone ×2, Resin ×1 |  |
+| **Large Clay Pot** | A large clay pot for storing grain. | Stone ×3 |  |
+| **Clay Bottle** | A tall clay bottle. | Stone ×3 |  |
+| **Well Bucket** | A bucket with a tall handle. | Wood ×2 |  |
+| **Market Barrel** | A tall barrel with iron hoops. | Wood ×4 |  |
+| **Sack of Grain** | An open sack of grain. | Barley ×3 |  |
+| **Sack of Seed** | An open sack of seed. | Barley ×3 |  |
+| **Wooden Box** | A sturdy wooden box. | Wood ×3 |  |
+| **Market Crate** | An open crate for vegetables. | Wood ×2 |  |
+| **Cooking Grate** | A grate over a fire, with a pot and bellows. It cooks nothing. | Iron ×2, Stone ×4, Coal ×2 | light |
 
 ## 🔨 Workshop
 
-Tools, firewood, fences, chains and a trader's wagon for the yard and the smithy.
+A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, firewood, fences and a quintain for the yard and the workshop.
 
 <img src="images/decor_workshop.png" alt="Workshop" title="Workshop" height="260">
 
@@ -160,6 +211,21 @@ Tools, firewood, fences, chains and a trader's wagon for the yard and the smithy
 | **Dvergr Pickaxe** | A dvergr miner's pickaxe. | Wood ×1, Copper ×2 | Valheim's own look |
 | **Hook and Chain** | A hoisting hook on a chain, to hang from the rafters. | Chain ×1, Copper ×1 | Valheim's own look |
 | **Trader's Wagon** | A wagon like the one Haldor travels with. | Wood ×20, Fine Wood ×8, Leather Scraps ×6 | Valheim's own look |
+| **Smith's Tool Wall** | Tongs, hammers and punches hung in a row. | Iron ×4, Wood ×2 |  |
+| **Anvil** | A heavy anvil. | Iron ×6 |  |
+| **Stone Forge** | A stone hearth with a fire that never goes out. It smelts nothing. | Stone ×20, Coal ×4 | light |
+| **Smith's Bench** | A bench with a back board for tools. | Wood ×8, Iron ×1 |  |
+| **Quench Tub** | A tub of water to cool hot iron. | Wood ×4 |  |
+| **Bellows** | Leather bellows for the forge. | Leather Scraps ×2, Wood ×1 |  |
+| **Tongs** | Long smith's tongs. | Iron ×1 |  |
+| **Crucible** | A crucible for melting metal. | Stone ×2 |  |
+| **Smithy Sign** | A hanging sign with an anvil on it. | Iron ×2 |  |
+| **Cart Wheel** | A spoked wheel to lean against a wall. | Wood ×4 |  |
+| **Handcart** | A two-wheeled handcart. | Wood ×10 |  |
+| **Market Stall** | A stall with a striped awning. | Wood ×12, Linen Thread ×4 |  |
+| **Barrow** | A small wooden cart. | Wood ×8 |  |
+| **Logs and Sacks** | Logs stacked with a few sacks. | Wood ×6, Linen Thread ×1 |  |
+| **Quintain** | A swinging target for spear practice. | Wood ×6, Leather Scraps ×2 |  |
 
 ## 🪑 Home
 
@@ -199,6 +265,17 @@ Tables, stools and chairs you can sit on, shelves, boxes and pots, from the mead
 | **Ashlands Urn** | A tall Ashlands urn. | Stone ×3, Ashwood ×1 | Valheim's own look |
 | **Barrel** | A plain barrel like the ones in abandoned houses. | Wood ×4 | Valheim's own look |
 | **Cargo Crate** | A crate washed up from a lost ship. | Wood ×4 | Valheim's own look |
+| **Long Bench** | A long, plain bench. | Wood ×4 | seat |
+| **Hooped Barrel** | A barrel with three iron hoops. | Wood ×4 |  |
+| **Wooden Chair** | A plain wooden chair. | Wood ×3 | seat |
+| **Plain Table** | A plain rectangular table. | Wood ×6 |  |
+| **Dark Round Table** | A round table of dark wood. | Wood ×5 |  |
+| **Dark Stool** | A stool of dark wood. | Wood ×2 | seat |
+| **Dark Shelves** | Open shelves of dark wood. | Wood ×6 |  |
+| **Wall Plank** | A single plank shelf for the wall. | Wood ×2 |  |
+| **Banded Chest** | An open chest bound with iron. It is only for show. | Wood ×4, Iron ×1 |  |
+| **Scroll** | A rolled scroll tied with a band. | Leather Scraps ×1 |  |
+| **Green Bottle** | A green glass bottle with a cork. | Resin ×2 |  |
 
 ## 🧵 Textiles
 
@@ -216,10 +293,11 @@ Hanging cloth, hides, curtains, banners and runner rugs.
 | **Hall Banner** | A tall banner from the halls of the Ashlands. | Ashwood ×1, Linen Thread ×2 | Valheim's own look |
 | **Hall Runner** | A long runner rug. | Linen Thread ×3 | Valheim's own look |
 | **Hall Runner End** | The end of a runner rug. | Linen Thread ×2 | Valheim's own look |
+| **Blue Tapestry** | A blue hanging on a rod. | Linen Thread ×3 |  |
 
 ## 🕯️ Lights
 
-Candles, lanterns and fires that burn without fuel. They give light, not heat or comfort.
+Candles, lanterns, lamps, a chandelier and fires that burn without fuel. They give light, not heat or comfort.
 
 <img src="images/decor_lights.png" alt="Lights" title="Lights" height="260">
 
@@ -232,10 +310,19 @@ Candles, lanterns and fires that burn without fuel. They give light, not heat or
 | **Dvergr Hanging Lamp** | A dvergr lantern to hang from a beam. | Copper ×1, Resin ×2 | Valheim's own look |
 | **Fuling Torch** | A crude fuling torch that burns forever. | Wood ×2, Resin ×2 | Valheim's own look |
 | **Old Brazier** | An iron brazier from an old stronghold. | Iron ×2, Coal ×4 | Valheim's own look |
+| **Chandelier** | An iron chandelier with candles that never burn down. | Iron ×3, Resin ×4 | light |
+| **Hanging Oil Lamp** | An oil lamp to hang from a beam. | Iron ×1, Resin ×2 | light |
+| **Wall Lamp** | A lamp for the wall. | Iron ×1, Resin ×2 | light |
+| **Tavern Lantern** | A lantern with a wide roof. | Iron ×1, Resin ×2 | light |
+| **Candle Stand** | A tall iron candle stand. | Iron ×2, Resin ×2 | light |
+| **Wall Candle** | A candle holder for the wall. | Iron ×1, Resin ×2 | light |
+| **Table Candle** | A candle in an iron holder. | Iron ×1, Resin ×2 | light |
 
 ## ᚱ Norse
 
-Runestones, graves, a dolmen, fuling totems, wrecked ships and other pieces of the old world.
+Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems, wrecked ships and other pieces of the old world.
+
+<img src="images/decor_norse.png" alt="Norse" title="Norse" height="260">
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
@@ -257,6 +344,12 @@ Runestones, graves, a dolmen, fuling totems, wrecked ships and other pieces of t
 | **Longship Wreck, Aft** | The aft part of a wrecked longship. | Fine Wood ×10, Ancient Bark ×4 | Valheim's own look |
 | **Broken Mast** | A broken mast, half buried in sand. | Fine Wood ×6 | Valheim's own look |
 | **Fallen Swords** | Swords left where a battle ended. | Iron ×4 | Valheim's own look |
+| **Stocks** | Stocks for the village's troublemakers. | Wood ×6, Iron ×1 |  |
+| **Skull** | A human skull. | Bone Fragments ×2 |  |
+| **Bone** | An old bone. | Bone Fragments ×1 |  |
+| **Iron-Rimmed Shield** | A round shield with an iron rim, for the wall. | Wood ×4, Iron ×1 |  |
+| **Old Sword** | An old sword to hang on the wall. | Iron ×2 |  |
+| **Broken Sword** | A sword snapped in battle. | Iron ×1 |  |
 
 ## ⚙️ Settings
 

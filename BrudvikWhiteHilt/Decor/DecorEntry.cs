@@ -88,6 +88,12 @@ public sealed class DecorEntry
     /// <summary>The light it gives.</summary>
     public DecorLight Light { get; private set; }
 
+    /// <summary>
+    /// Where the flame sits, as a share of the piece's height from its foot, or a negative number for the light's
+    /// usual place (the top of a candle, the middle of a lantern, the bottom of a fire).
+    /// </summary>
+    public float LightAt { get; private set; } = -1f;
+
     /// <summary>Height of the seat in metres, or 0 for a piece that cannot be sat on.</summary>
     public float Seat { get; private set; }
 
@@ -146,6 +152,7 @@ public sealed class DecorEntry
             Wind = Flag(json, "wind", false),
             Material = Text(json, "material") ?? "wood",
             Seat = Number(json, "seat", 0f),
+            LightAt = Number(json, "lightAt", -1f),
             Name = Text(json, "name"),
             Description = Text(json, "description"),
             Credit = Text(json, "credit"),
