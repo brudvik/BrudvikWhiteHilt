@@ -26,6 +26,10 @@
     <Reference Include="assembly_valheim">
       <HintPath>$(ModOutput)assembly_valheim_publicized.dll</HintPath>
     </Reference>
+    <!-- ZPackage's overloads name Valheim's small vector types, which live in assembly_utils. -->
+    <Reference Include="assembly_utils">
+      <HintPath>$(ModOutput)assembly_utils.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(ModOutput)UnityEngine.CoreModule.dll</HintPath>
     </Reference>

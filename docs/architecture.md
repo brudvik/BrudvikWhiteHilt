@@ -228,7 +228,8 @@ Valheim runs everything on one thread, and so does the mod. These habits recur:
 `BrudvikWhiteHilt.Tests` holds xUnit tests for what runs without the game:
 
 - reading and writing saved data, such as blueprints, pack lists and keys;
-- the pure logic, such as compass bearings, colour sums and map geometry;
+- what is sent over the network, such as map areas, the difficulty state and portraits;
+- the pure logic, such as compass bearings, paint colours and treasure map geometry;
 - checks of the data files against the code: every text translated, and every laid-out piece in `defenses.json`.
 
 The tests load the built mod (and see its `internal` types through `InternalsVisibleTo`), so build the solution

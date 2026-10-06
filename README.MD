@@ -182,7 +182,7 @@ The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `As
 
 The defences, the navigation pieces and the stonework are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
-`BrudvikWhiteHilt.Tests` holds tests for what runs without the game: reading and writing blueprints, pack lists and other saved data, and checks that every English text has a Norwegian one and every piece is in `defenses.json`. They load the built mod, so build it first (the solution does), then run `dotnet test BrudvikWhiteHilt.Tests`.
+`BrudvikWhiteHilt.Tests` holds tests for what runs without the game: reading and writing blueprints, pack lists and other saved data, what is sent over the network, pure logic such as compass bearings and map geometry, and checks that every English text has a Norwegian one and every piece is in `defenses.json`. They load the built mod, so build it first (the solution does), then run `dotnet test BrudvikWhiteHilt.Tests`.
 
 The Thunderstore package gets a plain markdown version of this README (`BrudvikWhiteHilt/Package/README.md`), written by `build_thunderstore_readme.ps1` on every Release build; edit this file, not that one.
 

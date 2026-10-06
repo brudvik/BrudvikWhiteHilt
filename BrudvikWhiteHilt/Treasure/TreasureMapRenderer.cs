@@ -178,7 +178,14 @@ public static class TreasureMapRenderer
         return WorldToMap(site, world) * Resolution;
     }
 
-    private static Vector2 MapToWorld(TreasureSite site, float u, float v)
+    /// <summary>
+    /// The world point at a map position, the inverse of <see cref="WorldToMap"/>.
+    /// </summary>
+    /// <param name="site">The site.</param>
+    /// <param name="u">Map x, 0..1 from the left.</param>
+    /// <param name="v">Map y, 0..1 from the bottom.</param>
+    /// <returns>World x and z.</returns>
+    internal static Vector2 MapToWorld(TreasureSite site, float u, float v)
     {
         return site.Centre + Turn(new Vector2(u - 0.5f, v - 0.5f), site.Rotation) * site.Size;
     }
