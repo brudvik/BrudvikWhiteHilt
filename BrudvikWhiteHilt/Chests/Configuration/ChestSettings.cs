@@ -98,9 +98,10 @@ namespace BrudvikWhiteHilt.Chests.Configuration
             DumpItemLists = Remember("General", WhiteHiltConfig.BindLocal(Section, "DumpItemLists", false,
                 "Write the automatically generated item list for every chest to the BepInEx log."));
 
-            Mode = Remember("General", WhiteHiltConfig.BindAdminOnly(Section, "Mode", ChestMode.Full,
+            // Linear is how a new player meets the chests; a config file that already holds a mode keeps it.
+            Mode = Remember("General", WhiteHiltConfig.BindAdminOnly(Section, "Mode", ChestMode.Linear,
+                "Linear (default): store a full stack of an item in a chest to make it unlimited for the whole world. " +
                 "Full: every item is always available. " +
-                "Linear: store a full stack of an item in a chest to make it unlimited for the whole world. " +
                 "Discovered: an item is unlimited once any player in the world has discovered it. " +
                 "In Linear and Discovered, items that do not stack are never duplicated. " +
                 "Switching from a more generous mode removes the items the new mode does not supply."));

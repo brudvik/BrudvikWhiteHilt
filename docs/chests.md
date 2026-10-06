@@ -133,8 +133,8 @@ Carts and ship holds keep unlimited items full like the Everlasting Chest, so wh
 
 | Mode | Behaviour |
 |------|-----------|
+| Linear (default) | A chest works like a normal chest until it holds a full stack of an item (`UnlockStacks`). From then on the item is unlimited in every chest of that type in the world |
 | Full | Every item is always available |
-| Linear | A chest works like a normal chest until it holds a full stack of an item (`UnlockStacks`). From then on the item is unlimited in every chest of that type in the world |
 | Discovered | An item is unlimited as soon as any player in the world has discovered it |
 
 In Linear and Discovered:
@@ -145,6 +145,8 @@ In Linear and Discovered:
 - The Everlasting Chest makes any stackable item unlimited once it holds a full stack (Linear) or once it is discovered (Discovered).
 
 Switching to a less generous mode removes the unlimited items the new mode no longer supplies, for example everything that is not unlocked when going from Full to Linear.
+
+A new config file starts in Linear; a config file that already holds a mode keeps it. If you play in Full and delete or replace the config file, set `Mode` back to `Full` before opening any chest, or the chests switch to Linear and remove what is not unlocked.
 
 ### Seeing your progress
 
@@ -175,7 +177,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 
 | Section | Setting | Description |
 |---------|---------|-------------|
-| Chests | Mode | Full, Linear or Discovered (default Full) |
+| Chests | Mode | Linear, Full or Discovered (default Linear) |
 | Chests | UnlockStacks | Linear: full stacks a chest must hold to unlock an item (1–10, default 1) |
 | Chests | SortContents | Keep the contents sorted from the top left (default on) |
 | Chests | LearnAll | Show the Learn all button (default on) |

@@ -160,7 +160,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/skills.md"><img src="docs/images/readme/tile_skills.png" height="110" alt=""></a><br><b><a href="docs/skills.md">Skills & milestones</a></b><br><sub>Milestones from level 25 to 100, a new Foraging skill, starred food and crops and the Compost Bin.</sub></td>
 <td align="center" valign="top"><a href="docs/saga.md"><img src="docs/images/readme/tile_saga.png" height="110" alt=""></a><br><b><a href="docs/saga.md">Saga</a></b><br><sub>Each character's saga of its deeds, with renown that gives carry weight and stamina.</sub></td>
-<td align="center" valign="top"><a href="docs/progression.md"><img src="docs/images/readme/tile_settings.png" height="110" alt=""></a><br><b><a href="docs/progression.md">Settings & progression</a></b><br><sub>An in-game settings window (F7), full or linear progression, and per-item switches.</sub></td>
+<td align="center" valign="top"><a href="docs/progression.md"><img src="docs/images/readme/tile_settings.png" height="110" alt=""></a><br><b><a href="docs/progression.md">Settings & progression</a></b><br><sub>An in-game settings window (F7), linear or full progression, and per-item switches.</sub></td>
 </tr>
 </table>
 

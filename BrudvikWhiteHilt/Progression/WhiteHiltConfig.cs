@@ -107,11 +107,12 @@ public static class WhiteHiltConfig
         Mode = config.Bind(
             GeneralSection,
             "Mode",
-            ProgressionMode.Full,
-            AdminOnly("Full: every White Hilt recipe is available as soon as its materials are known.\n" +
-                      "Linear: only the White Hilt tools are available at the start. Weapons, armor, potions and the ship unlock " +
-                      "when you first obtain the key material of each biome (Bronze, Iron, Silver, Black Metal, Eitr, Flametal), " +
-                      "and their recipes also cost some of that material."));
+            // Linear is how a new player meets the mod; a config file that already holds a mode keeps it.
+            ProgressionMode.Linear,
+            AdminOnly("Linear (default): only the White Hilt tools are available at the start. Weapons, armor, potions and the " +
+                      "ship unlock when you first obtain the key material of each biome (Bronze, Iron, Silver, Black Metal, Eitr, " +
+                      "Flametal), and their recipes also cost some of that material.\n" +
+                      "Full: every White Hilt recipe is available as soon as its materials are known."));
 
         ShowUnlockMessages = config.Bind(
             GeneralSection,

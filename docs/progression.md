@@ -20,7 +20,7 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 
 | Setting | Values | Description |
 |---------|--------|-------------|
-| `[General] Mode` | `Full` (default), `Linear` | Full: every recipe is available as before. Linear: White Hilt gear unlocks biome by biome. |
+| `[General] Mode` | `Linear` (default), `Full` | Linear: White Hilt gear unlocks biome by biome. Full: every recipe is available from the start. |
 | `[General] ShowUnlockMessages` | `true`/`false` | Show a message listing the newly available items when a tier unlocks. |
 | `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
 | `[Content] <ItemId>` | `true` (default)/`false` | Off: the item or piece can no longer be crafted or built. Existing copies are kept. |
@@ -37,7 +37,7 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 
 Foraging and food settings take effect without a restart.
 
-In **Linear** mode, a tier unlocks the first time you obtain its key material. Recipes in that tier also cost some of that material, unless they already require it.
+**Linear** is how a new player starts: a new config file holds `Linear`, while a config file that already has a mode keeps it, so an update never changes a running world. In linear mode, a tier unlocks the first time you obtain its key material. Recipes in that tier also cost some of that material, unless they already require it.
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
