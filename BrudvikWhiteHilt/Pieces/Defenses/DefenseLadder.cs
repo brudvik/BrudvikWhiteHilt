@@ -76,6 +76,9 @@ public class DefenseLadder : MonoBehaviour, Hoverable, Interactable
         }
 
         player.transform.position = target.Value;
+        // The game measures a fall from the highest point since the feet last touched ground: climbing down from the
+        // top of a mast would otherwise count as a fall of the whole height. The climb starts its count afresh here.
+        player.m_maxAirAltitude = target.Value.y;
         Rigidbody body = player.GetComponent<Rigidbody>();
         if (body != null)
         {
