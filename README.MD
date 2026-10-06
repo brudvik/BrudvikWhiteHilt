@@ -39,7 +39,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.99.0
+## ✨ New in 0.99.1
+
+- **[Crafting and building from chests](docs/base.md)** no longer keeps you waiting in multiplayer: the player who holds a chest sends you what you need, and the crafting or placing goes on by itself.
+
+### Also new in 0.99.0
 
 - **[Crafting and building from chests](docs/base.md)** in multiplayer: only the chests you need are fetched, it never waits for ever on a chest that cannot be handed over, and ten dishes at once work like one.
 - **Roof materials** have their chests: slate and soapstone in the Stone Chest; birch bark, straw and turf in the Material Chest. All show in the gathering overview.
