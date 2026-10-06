@@ -155,7 +155,8 @@ public static class NearbyContainers
             "Chests open their lid and glow briefly when something is taken from them.");
         handoffTimeout = WhiteHiltConfig.BindAdminOnly(Section, "HandoffTimeout", 4f,
             "How long crafting and building wait for the players who hold the nearby chests to send what is needed, in " +
-            "seconds. After that they go on with what has arrived.", new AcceptableValueRange<float>(1f, 30f));
+            "seconds. A chest that has not answered by then is asked to be handed over instead, and left out if that " +
+            "takes as long again.", new AcceptableValueRange<float>(1f, 30f));
         keepSeconds = WhiteHiltConfig.BindAdminOnly(Section, "HandoffKeepSeconds", 20f,
             "A chest just handed over to a player is left with them this many seconds by others who only get ready to " +
             "use a smelter, fire or cooking station, and by the Collection Post.", new AcceptableValueRange<float>(0f, 120f));

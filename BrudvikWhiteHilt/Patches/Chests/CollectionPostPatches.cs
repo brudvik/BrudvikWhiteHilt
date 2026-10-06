@@ -5,6 +5,7 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Chests;
 
 /// <summary>Connects chest handoff and hover text to the collection system.</summary>
+[HarmonyPatch]
 internal static class CollectionPostPatches
 {
     [HarmonyPatch(typeof(Container), "Awake"), HarmonyPostfix]

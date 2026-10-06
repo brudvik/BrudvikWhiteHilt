@@ -31,7 +31,6 @@ public static class ChestWithdrawal
     private static ZRoutedRpc registeredFor;
     private static long nextRequestId;
     private static Action continuation;
-    private static float startedAt;
 
     /// <summary>
     /// True while the crafting or placing goes on after the fetch: the items are in the inventory now, so nothing is
@@ -96,29 +95,61 @@ public static class ChestWithdrawal
         }
 
         continuation = then;
-        startedAt = Time.time;
         return true;
     }
 
     /// <summary>
-    /// Gives up on chests that have not answered within <c>HandoffTimeout</c> and goes on with what has arrived.
-    /// Call once a frame for the local player.
+    /// Asks for a chest to be handed over instead when its holder has not answered within <c>HandoffTimeout</c>, as a
+    /// machine with an older version of the mod does not know the request; takes from the chest once it is here, and
+    /// goes on without it after as long again. Call once a frame for the local player.
     /// </summary>
     public static void Tick()
     {
-        if (continuation == null || Time.time - startedAt < NearbyContainers.HandoffTimeout)
+        if (continuation == null)
         {
             return;
         }
 
-        int unanswered = pending.Values.Count(request => !request.Abandoned);
-        foreach (Request request in pending.Values)
+        float timeout = NearbyContainers.HandoffTimeout;
+        foreach (Request request in pending.Values.Where(request => !request.Abandoned).ToList())
         {
-            request.Abandoned = true;
+            if (Player.m_localPlayer == null || request.View == null || !request.View.IsValid())
+            {
+                request.Abandoned = true;
+                continue;
+            }
+
+            if (!request.HandingOver)
+            {
+                if (Time.time - request.SentAt < timeout)
+                {
+                    continue;
+                }
+
+                request.HandingOver = true;
+                request.HandoverAt = Time.time;
+                Jotunn.Logger.LogWarning($"{Utils.GetPrefabName(request.View.gameObject)} held by {DescribeOwner(request.Owner)} "
+                    + $"did not answer within {timeout:0.#} s; asking for it to be handed over instead.");
+            }
+
+            if (HandedOver(request.View, request.PlayerId))
+            {
+                pending.Remove(request.Id);
+                Inventory scratch = Scratch();
+                Extract(request.View, request.Wanted, request.PlayerId, scratch);
+                Deliver(request.View, scratch);
+            }
+            else if (Time.time - request.HandoverAt >= timeout)
+            {
+                request.Abandoned = true;
+                Jotunn.Logger.LogWarning($"{Utils.GetPrefabName(request.View.gameObject)} was not handed over either; going on without it.");
+            }
         }
 
-        Jotunn.Logger.LogWarning($"{unanswered} chests did not answer within {NearbyContainers.HandoffTimeout:0.#} s; going on with what has arrived.");
-        Continue();
+        if (!pending.Values.Any(request => !request.Abandoned))
+        {
+            Continue();
+        }
     }
 
     /// <summary>
@@ -327,19 +358,30 @@ public static class ChestWithdrawal
         }
 
         request.Attempts++;
+        request.SentAt = Time.time;
+        request.Owner = request.View.GetZDO().GetOwner();
         request.View.InvokeRPC(RequestRpc, package);
     }
 
     // On the asking machine. A reply from a machine that no longer owned the chest is sent again, to the owner now;
-    // items that arrive after the wait was given up are still put in the inventory, as they left the chest.
+    // items that arrive after the wait was given up, or after the chest was handed over instead, are still put in the
+    // inventory, as they left the chest.
     private static void OnReply(long sender, long id, bool served, ZPackage items)
     {
         if (!pending.TryGetValue(id, out Request request))
         {
+            if (served)
+            {
+                Inventory late = Scratch();
+                late.Load(items);
+                Deliver(null, late);
+            }
+
             return;
         }
 
-        if (!served && !request.Abandoned && request.Attempts < MaxAttempts && request.View != null && request.View.IsValid())
+        if (!served && !request.Abandoned && !request.HandingOver && request.Attempts < MaxAttempts
+            && request.View != null && request.View.IsValid())
         {
             Send(request);
             return;
@@ -389,6 +431,39 @@ public static class ChestWithdrawal
         return new Inventory("WhiteHiltWithdrawal", null, ScratchWidth, ScratchHeight);
     }
 
+    // Whether every container on the network object has been handed over to the local player with its newest
+    // contents; asks its owner for it until then.
+    private static bool HandedOver(ZNetView view, long playerId)
+    {
+        List<Container> containers = view.GetComponentsInChildren<Container>(true).Where(container => container.m_nview == view).ToList();
+        return containers.Count > 0 && containers.All(container => ContainerHandoff.Ready(container, playerId));
+    }
+
+    // Who holds a chest, for the log: a dedicated server holds the chests around the middle of the world.
+    private static string DescribeOwner(long owner)
+    {
+        if (ZNet.instance == null)
+        {
+            return $"peer {owner}";
+        }
+
+        ZNetPeer server = ZNet.instance.GetServerPeer();
+        if (server != null && server.m_uid == owner)
+        {
+            return "the server";
+        }
+
+        foreach (ZNet.PlayerInfo info in ZNet.instance.GetPlayerList())
+        {
+            if (info.m_characterID.UserID == owner)
+            {
+                return info.m_name;
+            }
+        }
+
+        return $"peer {owner}";
+    }
+
     // Replies come through a routed RPC to the asking peer, so they arrive even if the chest has unloaded meanwhile.
     private static void EnsureRegistered()
     {
@@ -422,6 +497,14 @@ public static class ChestWithdrawal
         public long PlayerId { get; }
 
         public int Attempts { get; set; }
+
+        public float SentAt { get; set; }
+
+        public long Owner { get; set; }
+
+        public bool HandingOver { get; set; }
+
+        public float HandoverAt { get; set; }
 
         public bool Abandoned { get; set; }
     }

@@ -2549,7 +2549,7 @@
   "whitehilt_cfg_chestcrafting_leaveone": "La én ligge igjen",
   "whitehilt_cfg_chestcrafting_leaveone_desc": "La én av hver ting ligge igjen i kista, så den beholder plassen sin der.",
   "whitehilt_cfg_chestcrafting_handofftimeout": "Ventetid på kister",
-  "whitehilt_cfg_chestcrafting_handofftimeout_desc": "Hvor lenge håndverk og bygging venter på at spillerne som har kistene i nærheten, sender det som trengs, i sekunder. Etterpå går det videre med det som har kommet.",
+  "whitehilt_cfg_chestcrafting_handofftimeout_desc": "Hvor lenge håndverk og bygging venter på at spillerne som har kistene i nærheten, sender det som trengs, i sekunder. En kiste som ikke har svart innen da, bes heller gitt over, og hoppes over om det tar like lang tid til.",
   "whitehilt_cfg_chestcrafting_handoffkeepseconds": "Behold overleverte kister",
   "whitehilt_cfg_chestcrafting_handoffkeepseconds_desc": "En kiste som nettopp er gitt til en spiller, får være hos den spilleren så mange sekunder før andre som bare gjør seg klare til å bruke en smelteovn, et bål eller en kokestasjon, eller sankestolpen, ber om den.",
   "whitehilt_cfg_chestcrafting_crafting": "Ved håndverk",

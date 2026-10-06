@@ -195,6 +195,8 @@ All patches live in `Patches/`, in folders named after the features they serve. 
   its case back to vanilla by returning `true`.
 - **Harmony's naming.** `__instance` is the patched object, `__result` the return value, and `__state` carries a
   value from the prefix to the postfix (`ForagingDropPatch` uses it to know that a pick really happened).
+- **Every patch class carries `[HarmonyPatch]`**, even when each method names its own target. `PatchAll` skips a
+  class without it and says nothing; `PatchTests` fails if one slips through.
 
 > Read next: `Patches/Chests/ContainerPatch.cs` with `Chests/ChestModule.cs`, `Patches/Foraging/PeatFuelPatch.cs`,
 > `Patches/Foraging/ForagingDropPatch.cs`.
