@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.99.0 - 2026-10-06
 
 ### Added
 - **Skidbladnir can be switched on and off** (`[Ships.Skidbladnir] Enabled`), and is **off by default** until it has been tried more in multiplayer. Off, Skidbladnir, the White Hilt Ship Hammer and the ship workshops cannot be built or crafted, and nothing new can be built aboard; what is already made is kept.
