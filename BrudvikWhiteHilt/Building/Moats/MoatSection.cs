@@ -157,6 +157,8 @@ public class MoatSection : MonoBehaviour
         nview = GetComponent<ZNetView>();
     }
 
+    // Reads the section's shape from its network object once it has arrived, then shows the water if it is a wet moat.
+    // Runs until loaded, as the data may arrive after the object.
     private void Update()
     {
         if (loaded)
@@ -208,6 +210,8 @@ public class MoatSection : MonoBehaviour
         }
     }
 
+    // Reads the section's shape: width, water level, bottom and every sample with its outward direction, depth factor
+    // and bank height.
     private void Load(ZPackage package)
     {
         package.ReadInt();
@@ -235,6 +239,8 @@ public class MoatSection : MonoBehaviour
         area = Rect.MinMaxRect(min.x - reach, min.y - reach, max.x + reach, max.y + reach);
     }
 
+    // Whether a point lies in the ditch: within the half-width of its nearest sample and below the bank. Causeways (a
+    // factor of 0) are not ditch.
     private bool Contains(Vector2 at, float height)
     {
         int nearest = -1;
@@ -334,6 +340,8 @@ public class MoatSection : MonoBehaviour
         triangles.Add(c);
     }
 
+    // A box of water along one stretch: a trigger with the game's own WaterVolume, so swimming, floating and wet feet
+    // work in the moat as in any lake.
     private void AddTrigger(int i)
     {
         Vector2 a = points[i];
@@ -364,6 +372,8 @@ public class MoatSection : MonoBehaviour
         trigger.SetActive(true);
     }
 
+    // Borrows the material and layers of the game's water from the zone prefab, so the moat's water looks and behaves
+    // like the sea. Without it moats stay dry.
     private static bool FindWaterTemplate()
     {
         if (waterMaterial != null)

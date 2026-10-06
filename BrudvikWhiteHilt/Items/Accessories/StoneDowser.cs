@@ -130,6 +130,7 @@ public class StoneDowser : IWhiteHiltCustomItem
         };
     }
 
+    // A copy of a ping effect whose sounds play lower, as its own prefab so the vanilla effect stays as it was.
     private static EffectList.EffectData LowerPitch(EffectList.EffectData source)
     {
         EffectList.EffectData copy = (EffectList.EffectData)memberwiseClone.Invoke(source, null);

@@ -126,6 +126,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             GetEffect(prefabName)?.Create(position, Quaternion.identity);
         }
 
+        // An effect from a vanilla prefab, looked up once and kept. While the game's data is not loaded yet the lookup
+        // is retried later.
         private static EffectList? GetEffect(string prefabName)
         {
             if (effects.TryGetValue(prefabName, out var cached)) return cached;

@@ -150,6 +150,8 @@ public class TurfGarden : MonoBehaviour, Hoverable, Interactable
         nview.InvokeRPC(sender, PickedRpc, RoofSettings.GardenPickAmount.Value);
     }
 
+    // On the picking player's machine: puts the roseroot picked from the turf roof into the inventory, dropping what
+    // does not fit.
     private void RPC_Picked(long sender, int amount)
     {
         Player player = Player.m_localPlayer;
@@ -170,6 +172,8 @@ public class TurfGarden : MonoBehaviour, Hoverable, Interactable
         player.Message(MessageHud.MessageType.TopLeft, $"$msg_added {prefab.GetComponent<ItemDrop>().m_itemData.m_shared.m_name} x{amount}");
     }
 
+    // Shows the plants on the turf while it is planted, growing from small to full size; each plant scales on its own
+    // pivot so it grows where it stands.
     private void Refresh()
     {
         if (m_plants == null)

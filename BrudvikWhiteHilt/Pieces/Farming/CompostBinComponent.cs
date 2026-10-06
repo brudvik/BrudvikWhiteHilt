@@ -156,6 +156,9 @@ public class CompostBinComponent : MonoBehaviour
         return inventory != null && inventory.GetAllItems().Any(item => item.m_dropPrefab != null && item.m_dropPrefab.name == CompostBin.CompostName);
     }
 
+    // On the owner, while nobody has the bin open: starts the compost timer once there is enough waste, makes compost
+    // when it runs out, and uses up compost once a day. The timer is kept in the network data as world time, so it runs
+    // on while nobody is near.
     private void Tick()
     {
         if (nview == null || !nview.IsValid() || !nview.IsOwner() || container == null || container.IsInUse() || ZNet.instance == null)
@@ -184,6 +187,7 @@ public class CompostBinComponent : MonoBehaviour
         UseCompostDaily(inventory, zdo);
     }
 
+    // Turns a portion of waste into one compost, if there is room for it.
     private static bool MakeCompost(Inventory inventory, List<ItemDrop.ItemData> waste)
     {
         GameObject compost = ZNetScene.instance?.GetPrefab(CompostBin.CompostName);
@@ -207,6 +211,8 @@ public class CompostBinComponent : MonoBehaviour
         return inventory.AddItem(compost, 1);
     }
 
+    // Uses the configured amount of compost once per in-game day, for the crops it feeds. The first day seen is only
+    // noted, so a new bin does not use compost at once.
     private static void UseCompostDaily(Inventory inventory, ZDO zdo)
     {
         if (EnvMan.instance == null)

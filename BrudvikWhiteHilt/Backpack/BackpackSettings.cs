@@ -95,6 +95,7 @@ public static class BackpackSettings
         KeyPotion2 = WhiteHiltConfig.BindLocal(KeySection, "DrinkPotion2", new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftAlt), "Drink from the second potion slot.");
     }
 
+    // The English texts of the backpack; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_hotbar_travel", "Travel bar");

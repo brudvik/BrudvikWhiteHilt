@@ -103,6 +103,8 @@ public class RuneEtchingTable
         }
     }
 
+    // Builds the etching table's look from the bundle's model on the table's material. Should anything be missing, the
+    // vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

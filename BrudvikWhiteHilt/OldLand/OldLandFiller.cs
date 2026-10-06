@@ -51,6 +51,8 @@ public class OldLandFiller : MonoBehaviour
         entries[name] = new Entry(vegetation, name.GetStableHashCode(), hashes, clearRadius, KeyPrefix + name.ToLowerInvariant());
     }
 
+    // On the server, once the world's locations are placed: starts filling the already explored land with new
+    // vegetation (such as nests) that was added after it was generated.
     private void Update()
     {
         ZNet net = ZNet.instance;
@@ -105,6 +107,8 @@ public class OldLandFiller : MonoBehaviour
             && vegetation.m_terrainDeltaRadius <= 0f && vegetation.m_minDistanceFromCenter <= 0f && vegetation.m_maxDistanceFromCenter <= 0f;
     }
 
+    // Places the new vegetation in every generated zone the way the game would, a few zones per frame so the server
+    // does not stall; marks each kind done with a global key so it is only done once per world.
     private IEnumerator Fill(List<Entry> pending)
     {
         watch.Restart();
@@ -282,6 +286,7 @@ public class OldLandFiller : MonoBehaviour
         return centre + new Vector3(Mathf.Sin(angle) * distance, 0f, Mathf.Cos(angle) * distance);
     }
 
+    // Whether a point suits the vegetation: biome, altitude, slope and forest, as the game checks them.
     private static bool Fits(ZoneSystem.ZoneVegetation vegetation, ref Vector3 point, float minNormal, float maxNormal, out Vector3 normal)
     {
         normal = Vector3.up;
@@ -393,6 +398,7 @@ public class OldLandFiller : MonoBehaviour
         }
     }
 
+    // Whether a point is clear of buildings, other objects and locations.
     private bool IsFree(Vector3 point, float clearRadius)
     {
         float buildingDistance = OldLandSettings.BuildingDistance.Value;
@@ -433,6 +439,8 @@ public class OldLandFiller : MonoBehaviour
         return true;
     }
 
+    // Creates an object in the world's network data only, as the game does for vegetation in unloaded zones; it comes
+    // to life when a player comes near.
     private static ZDO Create(GameObject prefab, int hash, Vector3 position, Quaternion rotation, float scale)
     {
         ZNetView view = prefab.GetComponent<ZNetView>();

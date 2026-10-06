@@ -225,6 +225,8 @@ public static class TerrainEdit
         }
     }
 
+    // Readies a terrain piece for changing: snapshots it for undo, and takes ownership of it, as only the owner of a
+    // network object may write its data.
     private static bool Prepare(Job job, TerrainComp comp)
     {
         if (comp == null || !comp.m_initialized || comp.m_nview == null || !comp.m_nview.IsValid())

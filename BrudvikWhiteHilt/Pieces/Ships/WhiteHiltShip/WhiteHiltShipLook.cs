@@ -100,6 +100,8 @@ public static class WhiteHiltShipLook
         }
     }
 
+    // Paints the White Hilt sail over the vanilla one: a red field with white stripes and the logo in the middle,
+    // keeping the vanilla cloth's grain so it does not look flat.
     private static void PaintSail(Transform ship)
     {
         Renderer[] sails = ship.GetComponentsInChildren<SkinnedMeshRenderer>(true)

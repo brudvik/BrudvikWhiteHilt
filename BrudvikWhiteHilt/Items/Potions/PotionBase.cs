@@ -208,6 +208,8 @@ public abstract class PotionBase : IWhiteHiltCustomItem
         }
     }
 
+    // Points the status effect's texts (start and stop messages, tooltip, name) at this mod's translation keys, only
+    // where the cloned effect had such a text.
     private void ApplyEffectTokens(SE_Stats effect)
     {
         if (!effectTextRegistered)

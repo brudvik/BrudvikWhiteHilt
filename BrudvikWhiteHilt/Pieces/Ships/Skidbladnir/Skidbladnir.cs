@@ -130,6 +130,11 @@ internal static class SkidbladnirModel
     private static readonly Vector3 BowHoldfast = new(0f, 3.3f, 10.75f);
     private static readonly Vector3 BowHoldfastStand = new(0f, 3.84f, 10.35f);
 
+    /// <summary>
+    /// Turns the cloned longship into Skidbladnir: hides the longship's own meshes (keeping the upgrades' parts), adds
+    /// the structure from the asset bundle with its rudder and sails, the colliders and decks from the manifest, the
+    /// ladders, the holdfasts and seats, and moves the upgrades, water effects and hold to fit the bigger hull.
+    /// </summary>
     internal static void Build(GameObject prefab)
     {
         Ship ship = prefab.GetComponent<Ship>();
@@ -329,6 +334,8 @@ internal static class SkidbladnirModel
         || part.GetComponentInParent<Container>(true) != null
         || part.GetComponentsInParent<Transform>(true).Any(parent => UpgradeObjects.Contains(parent.name));
 
+    // Moves the longship's stools, its mast holdfast and its bow holdfast to their places on Skidbladnir's decks,
+    // adding a fifth stool.
     private static void PlaceSeats(Transform root)
     {
         Transform interactive = root.Find("interactive");
@@ -380,6 +387,8 @@ internal static class SkidbladnirModel
         foreach (GameObject copy in copies) copy.transform.SetParent(lamp, true);
     }
 
+    // Squeezes the longship's wake, spray and ash effects to Skidbladnir's waterline, which is shorter and narrower and
+    // centred elsewhere.
     private static void FitWaterEffects(Transform root)
     {
         foreach (string name in new[] { "watereffects", "ashdamageeffects" })
@@ -411,6 +420,8 @@ internal static class SkidbladnirModel
         if (tilt.HasValue) target.localRotation = tilt.Value * target.localRotation;
     }
 
+    // Moves the upgrades the hull inherits from the longship to fit Skidbladnir: the cargo barrels along the port rail,
+    // and the tent between the boarding ladder and the forecastle stair, shortened to fit.
     private static void RelocateUpgrades(Transform root)
     {
         Transform customize = root.Find("ship/visual/Customize");
@@ -452,6 +463,8 @@ internal static class SkidbladnirModel
         upgrades.m_tentSize = new Vector3(5.4f, 2.4f, 3.25f);
     }
 
+    // Scales a group of meshes down to fit a footprint and stands it on a point, measured from the meshes' own bounds;
+    // it is only ever made smaller. With squashLength only its length is shortened, for the tent whose width must stay.
     private static void FitGroup(Transform root, Transform group, Vector3 position, Vector2 footprint, bool squashLength = false)
     {
         Vector3[] points = group.GetComponentsInChildren<MeshFilter>(true).Where(filter => filter.sharedMesh != null)

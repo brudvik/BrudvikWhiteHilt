@@ -194,6 +194,8 @@ public class FishingNet : IWhiteHiltCustomPiece
         wearNTear.m_supports = false;
     }
 
+    // Builds the net's look: the net model floating on the water and two stakes made from the vanilla wood pole on
+    // either end, so they match the rest of the building.
     private static void TryApplyVisual(CustomPiece piece, Transform visual, Transform net)
     {
         if (VisualHelper.IsHeadless)

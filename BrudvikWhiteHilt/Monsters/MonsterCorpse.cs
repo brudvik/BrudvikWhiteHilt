@@ -54,6 +54,7 @@ public class MonsterCorpse : MonoBehaviour
         }
     }
 
+    // Lets the corpse fall to the ground, sink into it after a while, and be removed on its owner when its time is up.
     private void Update()
     {
         float age = Time.time - started;

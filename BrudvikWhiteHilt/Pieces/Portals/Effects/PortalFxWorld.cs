@@ -82,6 +82,8 @@ public class PortalFxWorld : MonoBehaviour
         }
     }
 
+    // The effect at a portal: a glowing rune ring on the ground, a light and sparks in the portal's colour, and a flash
+    // on arrival.
     private void Setup(PortalFxKind effectKind, Color tint, float size, float startElapsed, Material ringMat, Material sparkMat)
     {
         kind = effectKind;
@@ -324,6 +326,7 @@ public class PortalFxWorld : MonoBehaviour
         return system;
     }
 
+    // An empty particle system that is driven by code: no looping, nothing on its own, scaled with the effect.
     private ParticleSystem CreateSystem(string name, Vector3 localPosition, Material material, ParticleSystemSimulationSpace space)
     {
         GameObject holder = new(name);

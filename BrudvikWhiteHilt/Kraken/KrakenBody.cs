@@ -157,6 +157,7 @@ public class KrakenBody : MonoBehaviour
             ? Mathf.Clamp01(share) : 1f;
     }
 
+    // Finds the Kraken's parts and notes when it rose, in the network data so every machine agrees.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -229,6 +230,8 @@ public class KrakenBody : MonoBehaviour
         visual.localPosition = position;
     }
 
+    // On the owner: enrages it when wounded, times the lifts of the ship, spawns the tentacles, and makes it retreat
+    // after a while, at dawn or when nobody is near.
     private void UpdateOwner()
     {
         if (character.IsDead())
@@ -303,6 +306,8 @@ public class KrakenBody : MonoBehaviour
         return found != null ? found.GetComponent<Ship>() : null;
     }
 
+    // On every machine near enough: warns of a coming lift and of enraging with a roar and a shaking camera, and plays
+    // its ambient sound now and then.
     private void UpdateThreat()
     {
         if (VisualHelper.IsHeadless || character.IsDead() || IsRetreating)

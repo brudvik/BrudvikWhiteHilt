@@ -734,6 +734,8 @@ public static class DogRegistry
         MessageHud.instance?.ShowMessage(MessageHud.MessageType.Center, text);
     }
 
+    // Registers the dog as a clone of the wolf: a name of its own, a ragdoll that keeps its size, no drops (it leaves
+    // its own remains) and no breeding.
     private static void AddDog()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= AddDog;
@@ -786,6 +788,8 @@ public static class DogRegistry
         }
     }
 
+    // Registers the dog's items: a puppy per coat colour, remains, the gravestone, the whistle, the collars and the
+    // coat, and the cuddle and memories effects.
     private static void AddItems()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= AddItems;
@@ -920,6 +924,8 @@ public static class DogRegistry
         }
     }
 
+    // Registers one dog item as a clone of a vanilla item with its own name, weight and look. Food values are cleared,
+    // as dog food is not for people.
     private static void AddItem(string prefabName, string copyFrom, float weight, ItemConfig config, Action<CustomItem> applyVisual, int maxStack = 1)
     {
         try
@@ -1105,6 +1111,7 @@ public static class DogRegistry
         }
     }
 
+    // Adds the puppies to the trader's goods at the configured price, or takes them away when dogs are switched off.
     private static void UpdateTrader(Trader trader)
     {
         foreach (CoatColor color in colors)

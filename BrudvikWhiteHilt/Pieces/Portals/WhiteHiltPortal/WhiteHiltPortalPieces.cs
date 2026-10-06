@@ -178,6 +178,8 @@ public abstract class WhiteHiltPortalPieceBase : IWhiteHiltCustomPiece
         return swirl;
     }
 
+    // Replaces the portal's look with the White Hilt model, copying the portal's own wood material and keeping its
+    // swirl visible. Should anything be missing, the vanilla look stays.
     private void TryApplyVisual(CustomPiece piece, GameObject swirl)
     {
         try

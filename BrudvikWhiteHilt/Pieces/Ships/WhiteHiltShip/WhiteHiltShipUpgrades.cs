@@ -351,6 +351,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         body.angularVelocity = new Vector3(spin.x, 0f, spin.z);
     }
 
+    // Finds the parts each upgrade switches on (lantern, barrels, tent, wisp, drift anchor, brazier, sea chest, portal)
+    // and registers the RPCs for adding and taking upgrades, the anchor and the lantern.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -396,6 +398,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         instances.Remove(this);
     }
 
+    // Switches the upgrades' parts on and off when the ship's upgrade mask changes, and checks the hold's size now and
+    // then.
     private void Update()
     {
         if (nview == null || !nview.IsValid())
@@ -488,6 +492,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         nview.GetZDO().Set(LanternZdoKey, IsLanternOn ? 0 : 1);
     }
 
+    // Makes the hold larger with the cargo barrels and smaller without, but never smaller over cargo, which would
+    // become unreachable.
     private void UpdateHoldSize()
     {
         Inventory inventory = container?.GetInventory();
@@ -620,6 +626,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         }
     }
 
+    // With the fishing net upgrade, catches a fish now and then while the ship sails; a higher fishing skill of those
+    // aboard makes it quicker.
     private void UpdateFishingNet(float deltaTime)
     {
         if (!ShipSettings.FishingNet.Value || !nview.IsOwner() || ship == null || !Has(ShipFishingNet.Bit) || IsAnchored
@@ -646,6 +654,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         return player != null && ship.IsPlayerInBoat(player) ? player.GetSkillFactor(Skills.SkillType.Fishing) : 0f;
     }
 
+    // Puts a fish of the biome the ship is in into the hold, sometimes two with skill, and with bycatch on now and then
+    // seaweed or an amber pearl. Those aboard gain fishing skill.
     private void CatchFish()
     {
         Inventory inventory = container?.GetInventory();

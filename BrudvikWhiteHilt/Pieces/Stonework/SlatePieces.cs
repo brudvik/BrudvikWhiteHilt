@@ -114,6 +114,8 @@ public abstract class SlatePieceBase : IWhiteHiltCustomPiece
         }
     }
 
+    // Hides the cloned wooden look and shows slate slabs built in code instead, with the roofs' slate material. The
+    // slabs are the same whole, worn or broken, as stone does not show wear the way wood does.
     private void TryApplyVisual(CustomPiece piece, WearNTear wear)
     {
         if (VisualHelper.IsHeadless)

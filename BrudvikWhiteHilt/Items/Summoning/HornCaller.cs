@@ -71,6 +71,9 @@ public class HornCaller : MonoBehaviour
     private static float Elapsed(long start) => start == 0 || ZNet.instance == null ? float.PositiveInfinity
         : (float)((ZNet.instance.GetTime().Ticks - start) / (double)TimeSpan.TicksPerSecond);
 
+    // Runs a horn call from the network data on the caller's player: plays its sound on every machine, and on the
+    // caller's own machine cancels the call when the player moves, fights or puts the horn away, or asks the server for
+    // the summons once it has been blown long enough.
     private void Update()
     {
         if (player.m_nview == null || !player.m_nview.IsValid())
@@ -131,6 +134,8 @@ public class HornCaller : MonoBehaviour
         }
     }
 
+    // Poses the arms and the horn at the mouth while it is blown, blended in and out, after the animator has posed the
+    // body. The horn is put back where it was when the call ends.
     private void LateUpdate()
     {
         if (VisualHelper.IsHeadless || player.m_nview == null || !player.m_nview.IsValid())

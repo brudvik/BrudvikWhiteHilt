@@ -179,6 +179,9 @@ public class ConfigWindow : MonoBehaviour
         return window;
     }
 
+    // Builds the window once: title, the tabs for the player's own and the server's settings, the search field, the
+    // list of setting families on the left, the settings on the right, a description box that follows the pointer, the
+    // status line and the save and close buttons.
     private void BuildContent(RectTransform panel)
     {
         Vector2 top = new(0.5f, 1f);
@@ -229,6 +232,8 @@ public class ConfigWindow : MonoBehaviour
         closeLabel.text = Localization.instance.Localize("$whitehilt_settings_close");
     }
 
+    // A Jotunn scroll view stretched into the given rectangle, with a vertical layout for its rows and a quicker scroll
+    // wheel than the default.
     private static RectTransform CreateScroll(RectTransform panel, Vector2 offsetMin, Vector2 offsetMax, float anchorRight)
     {
         GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, 8f, 4f, GUIManager.Instance.ValheimScrollbarHandleColorBlock,
@@ -312,6 +317,8 @@ public class ConfigWindow : MonoBehaviour
         }
     }
 
+    // Switches between the player's own settings and the server's, lists the families of the shown tab in the left
+    // column and keeps the chosen family when it exists there too.
     private void SetTab(bool server)
     {
         serverTab = server;
@@ -369,6 +376,8 @@ public class ConfigWindow : MonoBehaviour
         return entry.Description?.Tags?.OfType<ConfigurationManagerAttributes>().All(attributes => attributes.Browsable != false) != false;
     }
 
+    // Lists the settings of the chosen family, or with a search every setting that matches it, under the heading of
+    // their section. On the server tab a player who is not an admin sees the values but cannot change them.
     private void RebuildRows()
     {
         rows.ForEach(Destroy);
@@ -448,6 +457,8 @@ public class ConfigWindow : MonoBehaviour
         rows.Add(note);
     }
 
+    // One setting's row: its name (with a mark when changed and not saved), the field that suits its type, a reset
+    // button and a hint with its allowed range. Hovering anywhere on the row shows its description.
     private GameObject CreateRow(ConfigEntryBase entry, bool readOnly)
     {
         GameObject row = new("setting", typeof(RectTransform));
@@ -495,6 +506,9 @@ public class ConfigWindow : MonoBehaviour
         return row;
     }
 
+    // The input that suits the setting's type: a toggle for a switch, a button that captures a key for a key or
+    // shortcut, a list to step through for a fixed set of values, and a text field for numbers and text. Changes are
+    // kept pending until Save.
     private void CreateField(ConfigEntryBase entry, Transform row, float x, bool readOnly)
     {
         Vector2 left = new(0f, 0.5f);
@@ -545,6 +559,8 @@ public class ConfigWindow : MonoBehaviour
         field.onEndEdit.AddListener(text => OnFieldEdited(entry, field, text));
     }
 
+    // Takes a typed value when the field loses focus: a value that does not parse is refused with a message and the
+    // field is set back, and a number outside the allowed range is clamped to it.
     private void OnFieldEdited(ConfigEntryBase entry, InputField field, string text)
     {
         Type type = entry.SettingType;
@@ -565,6 +581,8 @@ public class ConfigWindow : MonoBehaviour
         SetPending(entry, value);
     }
 
+    // Parses typed text the way BepInEx reads the config file (TomlTypeConverter), so what is typed means the same as
+    // in the file. A decimal comma is accepted too, as many players type one.
     private static bool TryParse(string text, Type type, out object value)
     {
         value = null;
@@ -597,6 +615,8 @@ public class ConfigWindow : MonoBehaviour
         };
     }
 
+    // The "range a to b" hint of a setting with an allowed range. BepInEx's range type is generic, so its limits are
+    // read by reflection.
     private static string RangeText(ConfigEntryBase entry)
     {
         if (entry.Description?.AcceptableValues == null || entry.Description.AcceptableValues is AcceptableValueList<string>)
@@ -716,6 +736,8 @@ public class ConfigWindow : MonoBehaviour
         captureLabel.text = Localization.instance.Localize("$whitehilt_settings_pressakey");
     }
 
+    // While a key setting waits for a key: takes the first key pressed, with the modifiers held for a shortcut. Escape
+    // cancels and Backspace clears the setting.
     private void UpdateCapture()
     {
         bool plainKey = capturing.SettingType == typeof(KeyCode);
@@ -747,6 +769,8 @@ public class ConfigWindow : MonoBehaviour
         }
     }
 
+    // Writes the pending changes to the config file. Server settings are only written by an admin; reloading the file
+    // then makes Jotunn send them to the server, which passes them on to every player.
     private void Save()
     {
         if (pending.Count == 0)

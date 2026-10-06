@@ -36,6 +36,8 @@ public static class MoatEffects
         return InDitch(character, out float since) && since < MoatSettings.ClimbOutSeconds.Value;
     }
 
+    // Whether a creature stands in a moat, and since when. The position is checked only now and then per creature and
+    // remembered, as this runs for every creature every frame. Players, tamed creatures and bosses are never slowed.
     private static bool InDitch(Character character, out float since)
     {
         since = 0f;
@@ -70,6 +72,8 @@ public static class MoatEffects
         return state.Inside;
     }
 
+    // Forgets creatures not checked for a while once the table grows large, so it does not keep every creature ever
+    // seen.
     private static void Prune(float now)
     {
         if (states.Count <= PruneAbove)

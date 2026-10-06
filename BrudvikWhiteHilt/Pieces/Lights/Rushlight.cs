@@ -111,6 +111,8 @@ public class Rushlight : IWhiteHiltCustomPiece
         }
     }
 
+    // Hides the cloned torch's wood (not its flames) and puts the rushlight model in its place, moving the flame, its
+    // light and its smoke down to the tip of the rush. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece, Fireplace fireplace)
     {
         if (VisualHelper.IsHeadless)

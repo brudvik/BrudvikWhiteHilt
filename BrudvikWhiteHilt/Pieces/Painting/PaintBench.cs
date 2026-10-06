@@ -113,6 +113,8 @@ public class PaintBench : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces each of the workbench's looks (new, worn, broken) with the paint table and its props, fits the
+    // colliders, and uses the rendered icon for both the piece and the crafting station.
     private static void TryApplyVisual(CustomPiece piece, CraftingStation station)
     {
         if (VisualHelper.IsHeadless)

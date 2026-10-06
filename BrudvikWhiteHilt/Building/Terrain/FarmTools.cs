@@ -163,6 +163,7 @@ public static class FarmTools
         items.Clear();
     }
 
+    // The cultivator's tool keys: each switches a tool on or off, or refills the last planted grid.
     private static void HandleKeys(Player player)
     {
         ConfigEntry<KeyboardShortcut>[] keys = { TerrainSettings.KeyShape, TerrainSettings.KeyArea, TerrainSettings.KeyRoad, TerrainSettings.KeyHarvest };
@@ -192,6 +193,9 @@ public static class FarmTools
         }
     }
 
+    // The planting grid while the cultivator is out: rows, columns and spacing from the nudge keys, rotation from the
+    // wheel, and a green or red ghost for each spot (SpotOk). The spacing never goes below what the plant needs, or the
+    // plants would stop each other growing. A click plants every free spot; a right click leaves the tool.
     private static void TickGrid(Player player)
     {
         Piece piece = player.m_buildPieces?.GetSelectedPiece();
@@ -272,6 +276,9 @@ public static class FarmTools
         }
     }
 
+    // Plants the free spots of the grid in one go through the group placer, which checks and takes the cost like single
+    // planting. With auto-cultivate on, the ground under each spot is cultivated first, so seeds that need cultivated
+    // ground can go straight into grass. The grid is remembered so Refill can plant it again after a harvest.
     private static void PlantSpots(Player player, Piece piece, bool remember)
     {
         List<GroupPlacer.Item> plantHere = new();
@@ -326,6 +333,8 @@ public static class FarmTools
         }
     }
 
+    // The cultivate and harvest tools: the first click sets one corner of a rectangle, the arrows nudge it, and the
+    // second click cultivates or harvests the whole area.
     private static void TickRectangle(Player player)
     {
         bool aimed = AreaPicker.Aim(out Vector3 aim);
@@ -375,6 +384,9 @@ public static class FarmTools
         }
     }
 
+    // Picks every ripe crop in the rectangle the player may use, as if each were picked by hand, so drops, skill and
+    // wards behave as usual. Only crops (the grown prefabs of plants) are picked, not wild berries or mushrooms; the
+    // server can switch this off.
     private static void Harvest(Player player, Vector3 a, Vector3 b)
     {
         if (!TerrainSettings.HarvestArea.Value)
@@ -408,6 +420,8 @@ public static class FarmTools
         player.Message(MessageHud.MessageType.TopLeft, string.Format(Localization.instance.Localize("$msg_whitehilt_farm_harvested"), picked.Count));
     }
 
+    // The prefab names of everything a plant grows into that can be picked: the crops. Read from the game's prefabs, so
+    // crops added by updates and other mods count too.
     private static HashSet<string> FindCrops()
     {
         HashSet<string> names = new();
@@ -436,6 +450,9 @@ public static class FarmTools
         return names;
     }
 
+    // Whether a plant may go at a point: in its biome, on cultivated ground if it needs it (unless auto-cultivate is
+    // on), outside others' wards, and with room to grow. The room check is the plant's own (nothing within its grow
+    // radius), and it also keeps the new plant from stopping the plants around it.
     private static bool SpotOk(Piece piece, Plant plant, Vector3 point)
     {
         Heightmap heightmap = Heightmap.FindHeightmap(point);
@@ -525,6 +542,8 @@ public static class FarmTools
         return reach;
     }
 
+    // How far a collider reaches sideways from a plant's root, in the plant's space: how much room the plant takes when
+    // it is grown, used to keep neighbouring plants from blocking each other.
     private static float ColliderReach(Collider collider, Matrix4x4 toRoot)
     {
         float size = Mathf.Max(toRoot.GetColumn(0).magnitude, toRoot.GetColumn(1).magnitude, toRoot.GetColumn(2).magnitude);
@@ -563,6 +582,8 @@ public static class FarmTools
         return new Vector2(point.x, point.z).magnitude;
     }
 
+    // The largest grow radius of any plant, read once from the game's prefabs: how far to look for a neighbour that a
+    // new plant might block.
     private static float MaxGrowRadius()
     {
         if (maxGrowRadius.HasValue || ZNetScene.instance == null)

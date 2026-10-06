@@ -91,6 +91,7 @@ public static class WaypointMap
         return true;
     }
 
+    // The waypoint's map marker, a ring with a dot in it with a smooth edge, made once.
     private static Sprite Ring()
     {
         if (ring != null)

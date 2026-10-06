@@ -155,6 +155,8 @@ public class BeltPouch : IWhiteHiltCustomItem, IWhiteHiltConfigurable
         }
     }
 
+    // Tints the cloned belt to leather and renders an icon from it. Should that fail, the vanilla look stays rather
+    // than the item failing to load.
     private static void TryApplyVisual(CustomItem pouch)
     {
         if (VisualHelper.IsHeadless)

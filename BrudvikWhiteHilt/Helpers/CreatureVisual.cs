@@ -56,6 +56,8 @@ public static class CreatureVisual
         return prefab == null ? null : prefab.GetComponentsInChildren<SkinnedMeshRenderer>(true).Select(renderer => renderer.sharedMaterial).FirstOrDefault(material => material != null);
     }
 
+    // A material for a creature model from the bundle: the template's shader (a vanilla creature's, so it is lit like
+    // one) with the model's own textures. Made once per pair and reused.
     private static Material Convert(Material source, Material template)
     {
         if (source == null)

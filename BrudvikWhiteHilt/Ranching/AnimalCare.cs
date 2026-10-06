@@ -162,6 +162,8 @@ public static class AnimalCare
         }
     }
 
+    // On the animal's owner: makes it stay round the post (like the vanilla "stay" command, but round the post), or
+    // lets it go.
     private static void OnTether(Tameable tameable, Vector3 point, bool tether)
     {
         MonsterAI ai = tameable.m_monsterAI;

@@ -163,6 +163,7 @@ public class NetWinch : IWhiteHiltCustomPiece
         wearNTear.m_fragmentRoots = null;
     }
 
+    // Builds the winch's look from two bundle models, the barrel and the winch, on the vanilla wood material.
     private static void TryApplyVisual(CustomPiece piece, Transform visual)
     {
         if (VisualHelper.IsHeadless)

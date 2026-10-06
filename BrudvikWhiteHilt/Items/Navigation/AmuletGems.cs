@@ -39,6 +39,8 @@ public class AmuletGems : MonoBehaviour
         wearer = GetComponentInParent<Player>();
     }
 
+    // Now and then shows one more gem on the amulet for every few levels of the wearer's exploration skill, as a
+    // visible sign of it.
     private void Update()
     {
         refreshTimer -= Time.deltaTime;

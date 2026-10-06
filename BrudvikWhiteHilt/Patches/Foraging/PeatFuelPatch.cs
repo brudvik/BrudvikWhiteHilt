@@ -13,6 +13,7 @@ public static class PeatFuelPatch
     private const string PeatName = "$item_whitehiltpeat";
     private const string WoodName = "$item_wood";
 
+    // Lets peat be put in a fire that burns wood, worth more fuel than a log; anything else goes to the vanilla code.
     [HarmonyPrefix]
     private static bool Prefix(Fireplace __instance, Humanoid user, ItemDrop.ItemData item, ref bool __result)
     {

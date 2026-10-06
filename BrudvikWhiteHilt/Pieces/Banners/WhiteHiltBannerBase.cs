@@ -130,6 +130,9 @@ public abstract class WhiteHiltBannerBase : IWhiteHiltCustomPiece
         }
     }
 
+    // Gives the cloned banner its White Hilt cloth: the banner meshes (found by their texture's name) get a remapped
+    // mesh and a copy of their material with the new texture. Should anything be missing, the vanilla look stays rather
+    // than the piece failing to load.
     private void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)
@@ -168,6 +171,8 @@ public abstract class WhiteHiltBannerBase : IWhiteHiltCustomPiece
         }
     }
 
+    // A copy of the banner mesh whose texture coordinates run along its width in metres, so the texture is not squeezed
+    // on the wider banners. Made once per source mesh; the source must be readable, which the vanilla banners are.
     private static Mesh GetMesh(Mesh source)
     {
         if (meshes.TryGetValue(source, out Mesh cached) && cached != null)

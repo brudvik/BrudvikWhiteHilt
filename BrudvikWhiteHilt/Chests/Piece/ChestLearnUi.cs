@@ -122,6 +122,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (e.Topic == "$msg_newrecipe" || e.Topic == "$msg_newpiece" || e.Topic == "$msg_newdish") learnedRecipes++;
         }
 
+        // Learns every item in the open chest the player has not yet seen, as if they had picked it up, so its recipes
+        // become known.
         private void LearnOpenChest()
         {
             var gui = InventoryGui.instance;
@@ -172,6 +174,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             return result;
         }
 
+        // The "!" mark on an inventory slot whose item can be learned, made once per slot.
         private GameObject GetMarker(InventoryElement element)
         {
             var existing = element.transform.Find(MarkerName);

@@ -86,6 +86,8 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         player.m_customData.Remove(UsedDeathKey);
     }
 
+    // Takes the player to where they last died, paid with a Surtling core. Checked again before travelling, as the
+    // player may have died, dropped the core or used another stone while the question was open.
     private static void Travel(Player player)
     {
         // Checked again: the player may have died, dropped the core or used another stone while the popup was open.
@@ -116,6 +118,8 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
         player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_travel");
     }
 
+    // The player's last death point, if there is one and (with once per death on) the stone has not taken them there
+    // yet.
     private static bool TryGetUnusedDeath(Player player, out Vector3 deathPoint, out string reason)
     {
         deathPoint = Vector3.zero;

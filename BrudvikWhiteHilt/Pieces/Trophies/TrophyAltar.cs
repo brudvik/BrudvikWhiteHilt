@@ -141,6 +141,8 @@ public class TrophyAltar : IWhiteHiltCustomPiece
         ApplyRecipes();
     }
 
+    // A recipe at the altar that makes a trophy from trophies of the same kind and an offering; a trophy the game does
+    // not know (from a missing mod) is left out.
     private static bool AddRecipe(string trophy, string offering, int offeringAmount)
     {
         if (PrefabManager.Instance.GetPrefab(trophy)?.GetComponent<ItemDrop>() == null)
@@ -219,6 +221,8 @@ public class TrophyAltar : IWhiteHiltCustomPiece
         return item != null ? Mathf.Max(1, item.m_itemData.m_shared.m_maxStackSize) : 1;
     }
 
+    // Replaces each of the cloned looks with the altar model and a statuette baked from a creature, and uses the
+    // rendered icon for both the piece and the crafting station.
     private static void TryApplyVisual(CustomPiece piece, CraftingStation station)
     {
         if (VisualHelper.IsHeadless)

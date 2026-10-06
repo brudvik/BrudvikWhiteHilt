@@ -132,6 +132,8 @@ public abstract class BeastCounterItem : IWhiteHiltCustomItem, IWhiteHiltConfigu
         }
     }
 
+    // Tints the arrows, or gives the coatings an oil flask or whetstone model, each in its own colour so the counters
+    // are told apart, and renders an icon.
     private void ApplyLook(CustomItem item)
     {
         if (VisualHelper.IsHeadless)

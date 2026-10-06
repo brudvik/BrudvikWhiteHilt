@@ -280,6 +280,8 @@ public static class BuildGizmos
         }
     }
 
+    // Creates the root for the lines and their material. The lines live in the game scene, so after a logout they are
+    // gone and are made again.
     private static bool EnsureRoot()
     {
         if (root != null)
@@ -325,6 +327,7 @@ public static class BuildGizmos
         return line;
     }
 
+    // How long the axis lines are for a ghost: from the size of its meshes, within limits.
     private static float GhostSize(GameObject ghost)
     {
         Bounds bounds = default;

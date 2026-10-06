@@ -159,6 +159,7 @@ public static class BackpackGui
         return top;
     }
 
+    // Creates the equipment panel beside the inventory, again after the inventory is rebuilt, and places it.
     private static void EnsurePanel(InventoryGui gui, Vector2 size, float step)
     {
         if (panel == null || panel.parent != gui.m_player)
@@ -248,6 +249,7 @@ public static class BackpackGui
         foodTotal.resizeTextMaxSize = 13;
     }
 
+    // Shows what each food and potion slot gives and the total of the food slots.
     private static void UpdateFoodStats(Player player)
     {
         if (foodTotal == null)
@@ -289,6 +291,8 @@ public static class BackpackGui
         }
     }
 
+    // Moves a slot of the inventory grid into its place on the equipment panel. The slots stay part of the inventory,
+    // so dragging and the game's own code work on them unchanged.
     private static void PlaceInPanel(InventoryElement element, Vector2 size, float step)
     {
         if (!panelPlaces.TryGetValue(element.Position, out Vector2i place))
@@ -309,6 +313,7 @@ public static class BackpackGui
         Place(rect, new Vector2(left + rect.pivot.x * size.x, top - (1f - rect.pivot.y) * size.y));
     }
 
+    // Shows a faded icon and a hint in an empty slot, so it is clear what goes there.
     private static void ShowPlaceholder(InventoryElement element, SlotKind kind)
     {
         if (element.m_used || !looks.TryGetValue(kind, out SlotLook look))
@@ -332,6 +337,8 @@ public static class BackpackGui
         element.m_tooltip.m_text = Localization.instance.Localize(look.Hint);
     }
 
+    // Shows the slot's key on a food or potion slot, stretching the vanilla label (sized for one digit) to fit longer
+    // key names.
     private static void ShowFoodKey(InventoryElement element, SlotKind kind)
     {
         if ((kind != SlotKind.Food && kind != SlotKind.Potion)
@@ -365,6 +372,7 @@ public static class BackpackGui
         }
     }
 
+    // The label under the hotbar row in the inventory: which bar is stored and the key that switches.
     private static void UpdateBarLabel(InventoryGrid grid, Player player, int rows)
     {
         if (barLabel == null || barLabel.transform.parent != grid.m_gridRoot)

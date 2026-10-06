@@ -287,6 +287,8 @@ public static class BuildCamera
         eyeMoved = false;
     }
 
+    // Switches the build camera on where the game camera is, or at the player's eyes if that spot is not allowed,
+    // keeping the player's placement reach to give back when it is switched off.
     private static void Start(Player player)
     {
         if (!BuildToolSettings.CameraEnabled.Value)
@@ -342,6 +344,8 @@ public static class BuildCamera
         return BuildToolSettings.MoveSpeed.Value * SpeedFactor * (ZInput.GetButton("Run") ? BuildToolSettings.FastMultiplier.Value : 1f);
     }
 
+    // Moves the camera with the movement keys. A move that would leave the allowed area is tried again along each axis
+    // on its own, so the camera slides along the edge instead of stopping dead.
     private static void Fly(Player player, float dt)
     {
         Vector3 input = MoveInput();
@@ -384,6 +388,9 @@ public static class BuildCamera
         }
     }
 
+    // The movement keys as a direction: forward and sideways, up with jump and down with crouch. Nothing while a Ctrl
+    // shortcut is used, as Ctrl+A/S/D would otherwise also fly the camera, and no sinking once Ctrl has been used to
+    // tilt with the wheel.
     private static Vector3 MoveInput()
     {
         Vector3 input = Vector3.zero;
@@ -428,6 +435,7 @@ public static class BuildCamera
         return input;
     }
 
+    // Starts circling around the ghost, or the point aimed at, at the current distance.
     private static void BeginOrbit(Player player)
     {
         Vector3 direction = Rotation * Vector3.forward;
@@ -452,6 +460,8 @@ public static class BuildCamera
         pitch = Mathf.Clamp(Mathf.DeltaAngle(0f, euler.x), -MaxPitch, MaxPitch);
     }
 
+    // Circles around the pivot with the mouse and moves closer or away with the forward keys; a step that would leave
+    // the allowed area is not taken.
     private static void Orbit(Player player, float dt)
     {
         float oldYaw = yaw;
@@ -513,6 +523,8 @@ public static class BuildCamera
         return false;
     }
 
+    // Picks up items near the camera now and then, as the game only picks up near the player: an item another machine
+    // owns is asked for first, and nothing is picked up beyond what the player can carry.
     private static void AutoPickup(Player player, float dt)
     {
         if (!BuildToolSettings.AutoPickup.Value)
@@ -561,6 +573,7 @@ public static class BuildCamera
         pickupBuffer.Clear();
     }
 
+    // A spotlight on the camera for building in the dark, created the first time it is switched on.
     private static void UpdateLight()
     {
         bool wanted = Active && lightOn && GameCamera.instance != null;

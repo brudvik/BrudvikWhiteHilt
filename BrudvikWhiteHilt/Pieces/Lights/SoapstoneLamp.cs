@@ -123,6 +123,8 @@ public class SoapstoneLamp : IWhiteHiltCustomPiece
         box.size = new Vector3(Width, Height, Width);
     }
 
+    // Hides the cloned torch's wood (not its flames) and puts a small soapstone bowl in its place, with the flame moved
+    // down to the wick and made smaller. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece, Fireplace fireplace)
     {
         if (VisualHelper.IsHeadless)

@@ -55,6 +55,7 @@ public static class SkillBook
         }
     }
 
+    // A skill's page in the book: what the skill gives now, and its milestones, reached ones in a different colour.
     private static string Page(Player player, Skills.SkillType type)
     {
         float level = player.GetSkillLevel(type);
@@ -88,6 +89,7 @@ public static class SkillBook
         return text.ToString();
     }
 
+    // What a skill gives at its current level, one line per effect.
     private static IEnumerable<string> Now(Player player, Skills.SkillType type, float level)
     {
         if (type == ForagingSkill.Type && MasterySettings.Foraging.Value)

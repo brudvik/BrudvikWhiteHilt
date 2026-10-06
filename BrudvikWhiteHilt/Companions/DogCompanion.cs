@@ -560,6 +560,8 @@ public sealed class DogCompanion : MonoBehaviour
         Zdo.Set(goalRestKey, true);
     }
 
+    // Finds the dog's parts and bones and registers its RPCs. The ticks are spread with a random start so many dogs do
+    // not all tick in the same frame.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -607,6 +609,8 @@ public sealed class DogCompanion : MonoBehaviour
         }
     }
 
+    // Shows the dog's coat, collar and size on every machine; on its owner, runs its needs and its sitting now and
+    // then.
     private void Update()
     {
         if (Zdo == null)
@@ -636,6 +640,7 @@ public sealed class DogCompanion : MonoBehaviour
         }
     }
 
+    // Shows the collar from the network data on the neck bone, made again only when it changes.
     private void ApplyCollar()
     {
         int collar = Zdo.GetInt(collarKey);
@@ -667,6 +672,8 @@ public sealed class DogCompanion : MonoBehaviour
         }
     }
 
+    // Shows the coat colour, its greying with age and a worn coat, as a material made from the original one; checked
+    // now and then and only changed when one of them did.
     private void ApplyColor()
     {
         if (VisualHelper.IsHeadless || Time.time < nextColorCheck)
@@ -713,6 +720,8 @@ public sealed class DogCompanion : MonoBehaviour
         ai.m_alertRange = puppy ? 0f : alertRange;
     }
 
+    // The dog's slow update on its owner: hunger, health, home, old age and care, and where to rest. Time is measured
+    // in world time since the last tick (capped), so a dog that was away from players catches up.
     private void Tick()
     {
         ZDO zdo = Zdo;
@@ -847,6 +856,7 @@ public sealed class DogCompanion : MonoBehaviour
         PlaySound("dogwhine");
     }
 
+    // Barks and warns the owner when an enemy comes near home, at most once in a while.
     private void Guard(Vector3 home)
     {
         if (Time.time < nextGuard)
@@ -938,6 +948,8 @@ public sealed class DogCompanion : MonoBehaviour
         return home;
     }
 
+    // Picks where the dog rests at home: beside its master's bed at night, in its own bed under a roof, or in its house
+    // at night and in rain.
     private void UpdateRestGoal(bool atHome, Vector3 home, DogHomePiece house, DogHomePiece bed)
     {
         RestSpot spot = null;
@@ -982,6 +994,8 @@ public sealed class DogCompanion : MonoBehaviour
         goalWalkTime = 0f;
     }
 
+    // Feeds the dog. Bone broth does more: fed for two days, half its health back, no poison and faster growth for a
+    // day.
     private void OnAte(ItemDrop food)
     {
         if (!nview.IsOwner())
@@ -1133,6 +1147,8 @@ public sealed class DogCompanion : MonoBehaviour
         ZNetScene.instance.Destroy(gameObject);
     }
 
+    // When the dog dies: drops its remains with its name and age for a gravestone, and its collar and coat. A dog that
+    // dies of old age leaves a puppy in its house.
     private void OnDeath()
     {
         if (!nview.IsOwner())

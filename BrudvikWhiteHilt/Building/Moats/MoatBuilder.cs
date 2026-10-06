@@ -116,6 +116,8 @@ public static class MoatBuilder
         DigNear(player);
     }
 
+    // Digs the next stretch of the moat near the player, one per call. Terrain can only be changed where it is loaded,
+    // so the moat is dug as the player walks along it.
     private static void DigNear(Player player)
     {
         Vector2 here = new(player.transform.position.x, player.transform.position.z);
@@ -139,6 +141,8 @@ public static class MoatBuilder
         }
     }
 
+    // Whether the ground at both ends of a stretch, and to both sides as far as the moat reaches, is loaded: digging
+    // part of a stretch would leave a step in it.
     private static bool Loaded(MoatRun run, Chunk chunk)
     {
         float reach = moat.Spec.Reach;
@@ -158,6 +162,10 @@ public static class MoatBuilder
         return true;
     }
 
+    // Digs one stretch: the bottom is set from the lowest bank of the stretch, so the ditch is level and a wet moat
+    // holds water; the earth goes to the chosen bank. Each terrain vertex belongs to the stretch of its nearest sample,
+    // so neighbouring stretches never dig it twice. The section's shape is saved on a network object (MoatSection),
+    // which shows the water and slows what wades in it on every machine.
     private static void Dig(Player player, MoatRun run, Chunk chunk)
     {
         MoatSpec spec = moat.Spec;
@@ -293,6 +301,8 @@ public static class MoatBuilder
         return places;
     }
 
+    // Places vanilla sharp stakes along a staked ditch, paid like building them by hand. When the materials run out it
+    // warns once and the ditch goes on without stakes.
     private static void PlaceStakes(Player player, List<(Vector3 Position, float Yaw)> stakes)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(StakePrefab) : null;
@@ -363,6 +373,7 @@ public static class MoatBuilder
         return Path.Combine(Paths.ConfigPath, "BrudvikWhiteHilt", "moats", world + ".whmoat");
     }
 
+    // Saves the moat being dug, per world, so it carries on after a restart.
     private static void Save()
     {
         if (string.IsNullOrEmpty(loadedWorld))
@@ -408,6 +419,7 @@ public static class MoatBuilder
         }
     }
 
+    // Reads the moat being dug for this world, if any.
     private static void Load()
     {
         moat = null;

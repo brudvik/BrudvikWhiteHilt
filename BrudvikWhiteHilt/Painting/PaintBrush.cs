@@ -294,6 +294,7 @@ public static class PaintBrush
         return Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
     }
 
+    // One pixel of a brush action's icon, drawn in code: a colour wheel for paint, and so on.
     private static Color32 IconPixel(BrushAction action, float dx, float dy, float r)
     {
         Color32 clear = new(0, 0, 0, 0);
@@ -444,6 +445,7 @@ public static class PaintBrush
         return targets.Count > 0;
     }
 
+    // The player-built pieces within the brush's radius and height that the player may change (no one else's ward).
     private static void FindTargets(Player player, Vector3 centre, float radius)
     {
         targets.Clear();
@@ -501,6 +503,7 @@ public static class PaintBrush
         nextRefresh = 0f;
     }
 
+    // The point the player looks at, within placement reach (the build camera's reach while it is on).
     private static bool Aim(Player player, out Vector3 point)
     {
         point = default;
@@ -530,6 +533,7 @@ public static class PaintBrush
         }
     }
 
+    // Shows the brush's colour, the paint left and the radius at the bottom of the screen while the brush is held.
     private static void UpdateHud(Player player, ItemDrop.ItemData brush)
     {
         if (brush == null || Hud.instance == null)

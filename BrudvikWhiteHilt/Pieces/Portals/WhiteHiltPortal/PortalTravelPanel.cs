@@ -154,6 +154,8 @@ public class PortalTravelPanel : MonoBehaviour
         return travelPanel;
     }
 
+    // Builds the travel panel once: title, buttons to rename the portal, make it private and set it as home, a search
+    // with sorting, the list of destinations and the travel buttons.
     private void BuildContent(RectTransform panel)
     {
         Vector2 top = new(0.5f, 1f);
@@ -270,6 +272,8 @@ public class PortalTravelPanel : MonoBehaviour
     // The portal is a Unity object, which compares equal to null once destroyed.
     private bool HasOrigin => origin as Object != null;
 
+    // Opens the panel for a portal with the large map, where the destinations are pinned. Without a map in the world
+    // the panel stops the player's input itself.
     private void Show(IWhiteHiltPortal portal)
     {
         origin = portal;
@@ -295,6 +299,7 @@ public class PortalTravelPanel : MonoBehaviour
         CenterOn(portal.Position);
     }
 
+    // Closes the panel, removes its pins, gives input back and returns the map to its small size.
     private void Close()
     {
         if (!HasOrigin && !gameObject.activeSelf)
@@ -356,6 +361,7 @@ public class PortalTravelPanel : MonoBehaviour
         sortLabel.text = Localization.instance.Localize(PortalSettings.SortByDistance ? "$whitehilt_portal_sort_distance" : "$whitehilt_portal_sort_name");
     }
 
+    // Lists the destinations that match the search, by name or by distance.
     private void RefreshList()
     {
         if (!HasOrigin || Player.m_localPlayer == null)
@@ -391,6 +397,8 @@ public class PortalTravelPanel : MonoBehaviour
         RefreshPins();
     }
 
+    // One destination as a row: a star for home, its name, private or not, and its distance; the portal the player
+    // stands at is shown but cannot be chosen.
     private GameObject CreateRow(PortalDestination destination, Vector3 here, string home)
     {
         bool isHere = IsOrigin(destination);
@@ -522,6 +530,7 @@ public class PortalTravelPanel : MonoBehaviour
         map.m_mapOffset = offset;
     }
 
+    // Pins every destination on the map, the chosen one larger.
     private void RefreshPins()
     {
         RemovePins();

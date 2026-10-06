@@ -142,6 +142,8 @@ public class TreasureService : MonoBehaviour
         }
     }
 
+    // On the server: buries the treasure for a map at the first suitable place the client proposed, or replies with
+    // where it already lies. A player can only have so many treasures buried at once.
     private void RPC_Request(long sender, ZPackage package)
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || ZoneSystem.instance == null)
@@ -187,6 +189,8 @@ public class TreasureService : MonoBehaviour
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, ReplyRpc, reply);
     }
 
+    // Buries a treasure at the first candidate that suits, as an object in the network data only, which comes to life
+    // when a player comes near.
     private bool TryBury(string id, long playerId, List<TreasureCandidate> candidates, int step, int steps, out Mound buried)
     {
         buried = null;
@@ -232,6 +236,8 @@ public class TreasureService : MonoBehaviour
         return false;
     }
 
+    // Whether a place suits a treasure: an allowed biome on dry land, in a generated zone, away from other treasures,
+    // locations and buildings, and near water or a landmark to recognise it by.
     private bool Suits(TreasureCandidate candidate)
     {
         Vector3 point = candidate.Chest;
@@ -322,6 +328,7 @@ public class TreasureService : MonoBehaviour
         return marks;
     }
 
+    // Writes a treasure's site to the reply: the mound, the chest, the map's area and its landmarks.
     private static void WriteSite(ZPackage reply, ZDOID mound, Vector2 centre, float size)
     {
         ZDO zdo = ZDOMan.instance.GetZDO(mound);
@@ -342,6 +349,7 @@ public class TreasureService : MonoBehaviour
         }
     }
 
+    // On the client: stores the site on the map, or gives the map back with why it could not be buried.
     private void RPC_Reply(long sender, ZPackage reply)
     {
         Player player = Player.m_localPlayer;

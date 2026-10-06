@@ -139,6 +139,8 @@ public class HarbourCrane : QuartermasterSite, Interactable, Hoverable
         started = Time.time;
     }
 
+    // Plays the crane's lift: swings out, lowers the hook, waits, raises it and swings back, each part eased. Only a
+    // look, started by the swing RPC on every machine.
     private void Update()
     {
         if (jib == null)

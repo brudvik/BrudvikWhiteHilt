@@ -216,6 +216,8 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     {
     }
 
+    // Copies the protective stats of another armour piece onto this one, so the White Hilt piece can look like one item
+    // and protect like another. The look stays the cloned one's.
     private static void CopyStats(ItemDrop.ItemData.SharedData target, string sourceName)
     {
         ItemDrop source = PrefabManager.Cache.GetPrefab<ItemDrop>(sourceName);

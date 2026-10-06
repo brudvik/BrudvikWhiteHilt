@@ -66,6 +66,8 @@ public class StoneDowsingService : MonoBehaviour
         ZRoutedRpc.instance?.Register<ZPackage>(ReplyRpc, RPC_Reply);
     }
 
+    // On the server: looks for the nearest clearing of rocks for the asking player, as only the server knows every
+    // object in the world, and replies with where it is.
     private void RPC_Request(long sender, Vector3 position)
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZoneSystem.instance == null || ZDOMan.instance == null)
@@ -125,6 +127,8 @@ public class StoneDowsingService : MonoBehaviour
         return found;
     }
 
+    // How many rocks of the given kinds that are not yet mined lie within a radius, read from the server's network data
+    // by sector.
     private static int CountRocks(Vector3 centre, float radius, HashSet<int> prefabs)
     {
         Vector2s min = ZoneSystem.GetZone(centre - new Vector3(radius, 0f, radius));
@@ -178,6 +182,8 @@ public class StoneDowsingService : MonoBehaviour
         return trackedPrefabs;
     }
 
+    // On the asking player's machine: shows the clearing on the map and tells its direction and distance, only when it
+    // is a new one, so the player is not told the same thing again and again.
     private void RPC_Reply(long sender, ZPackage reply)
     {
         Player player = Player.m_localPlayer;

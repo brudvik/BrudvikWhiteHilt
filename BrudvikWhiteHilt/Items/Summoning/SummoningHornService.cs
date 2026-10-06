@@ -71,6 +71,9 @@ public class SummoningHornService : MonoBehaviour
         ZRoutedRpc.instance.Register<string>(ReplyRpc, RPC_Reply);
     }
 
+    // On the server: checks a horn call (the caller is alive, holds a horn, and blew it long enough according to the
+    // network data) and picks what comes, the Kraken or a beast of the biome. The server decides so a client cannot
+    // summon at will; the caller's machine then spawns it.
     private void RPC_Call(long sender, ZDOID shipId)
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer())
@@ -163,6 +166,8 @@ public class SummoningHornService : MonoBehaviour
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc, started, shipId, beastKey);
     }
 
+    // On the caller's machine, once the server has allowed it: spawns the Kraken by the ship or the beast near the
+    // player, if things still hold, and tells the server whether it worked.
     private void RPC_Spawn(long sender, long started, ZDOID shipId, string beastKey)
     {
         if (sender != ZRoutedRpc.instance.GetServerPeerID() || !spawnedCalls.Add(started))

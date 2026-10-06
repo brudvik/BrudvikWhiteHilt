@@ -77,6 +77,8 @@ public class SmokeOven
         }
     }
 
+    // Replaces the cloned table's look with the smoke oven model, fits the colliders to it, and adds the fire and
+    // smoke. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

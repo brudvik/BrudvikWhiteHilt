@@ -319,6 +319,8 @@ public static class BackpackLayout
         }
     }
 
+    // Moves items out of slots that cannot hold them (after the layout changed) into free grid slots, dropping them if
+    // there is no room.
     private static void MoveMisplacedItems(Player player, int rows)
     {
         Inventory inventory = player.m_inventory;

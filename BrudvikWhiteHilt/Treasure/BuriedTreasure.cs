@@ -115,6 +115,7 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         }
     }
 
+    // Hints to a player carrying the map that they are close: a message when warm, and dust rising over the spot.
     private void Update()
     {
         if (Time.time < nextCheck || nview == null || !nview.IsValid())
@@ -217,6 +218,7 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         }
     }
 
+    // Digs up the treasure: a chest with loot, or the next map of a hunt, and tells the world.
     private void Unearth(string id)
     {
         GameObject prefab = ZNetScene.instance.GetPrefab(TreasureRegistry.ChestPrefabName);

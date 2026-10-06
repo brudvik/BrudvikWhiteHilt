@@ -134,6 +134,8 @@ public class RuneRack : IWhiteHiltCustomPiece
         }
     }
 
+    // Builds the rune post's look: two copies of the vanilla wood pole as posts, so they match the rest of the
+    // building, with the plank model between them and a ring for every rune.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

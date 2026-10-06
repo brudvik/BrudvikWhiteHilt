@@ -177,6 +177,7 @@ public static class MasteryPlayerPatches
         SkillBook.Fill(__instance, player);
     }
 
+    // While a player with the perk blocks with a shield, the players near them get the shield wall effect.
     private static void RaiseShieldWall(Player player)
     {
         if (Time.time < nextShieldWall || !player.IsBlocking())

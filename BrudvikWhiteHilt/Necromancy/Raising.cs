@@ -521,6 +521,7 @@ internal sealed class RaiseChannel : MonoBehaviour
         until = Time.time + Raising.ChannelSeconds.Value;
     }
 
+    // Runs the raising while the necromancer holds still; moving, being hurt or putting the staff away breaks it.
     private void Update()
     {
         Vector3? grave = Raising.PendingGrave;
@@ -561,6 +562,7 @@ internal sealed class RiseAtGrave : MonoBehaviour
         until = Time.time + GiveUpSeconds;
     }
 
+    // Waits for the raised player to arrive at their grave after the teleport, then finishes the raising there.
     private void Update()
     {
         Player player = GetComponent<Player>();
@@ -626,6 +628,7 @@ internal sealed class RaiseEffect : MonoBehaviour
         playing[by] = effect;
     }
 
+    // Builds the effect at the grave: a column of green flames, a light and a band from the necromancer to the grave.
     private void Build()
     {
         // A column of three flames, each larger than the staff's.
@@ -659,6 +662,8 @@ internal sealed class RaiseEffect : MonoBehaviour
         }
     }
 
+    // Swells the light as the raising goes on, keeps the band between the necromancer and the grave, and removes itself
+    // when done.
     private void Update()
     {
         if (Time.time >= until)

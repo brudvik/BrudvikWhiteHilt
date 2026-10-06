@@ -69,6 +69,7 @@ public static class RoofDropPatches
     [HarmonyPatch(typeof(DropTable), nameof(DropTable.GetDropList), new Type[0])]
     private static class AddRoofMaterials
     {
+        // Adds roofing materials to what breaks: birch bark from birches, slate and soapstone from mountain rock.
         private static void Postfix(List<GameObject> __result)
         {
             if (breaking == null || __result == null || __result.Count == 0 || ZNetScene.instance == null)
@@ -103,6 +104,7 @@ public static class RoofDropPatches
             }
         }
 
+        // For each stone dropped, a chance of slate and of soapstone as well.
         private static void AddStones(List<GameObject> drops)
         {
             int stones = drops.FindAll(drop => drop != null && drop.name == "Stone").Count;
@@ -127,6 +129,8 @@ public static class RoofDropPatches
     [HarmonyPatch(typeof(Attack), nameof(Attack.SpawnOnHitTerrain))]
     private static class CutTurf
     {
+        // Digging near the surface of a turf biome with a pickaxe sometimes cuts a turf; not under water, deep down or
+        // in tilled soil.
         private static void Postfix(GameObject __result, Vector3 hitPoint, Character character, ItemDrop.ItemData weapon)
         {
             if (__result == null || character == null || character != Player.m_localPlayer || weapon?.m_shared == null

@@ -131,6 +131,8 @@ public class ChainBench : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces the cloned anvil's look with the vise model and hangs chains on its stump. Should anything be missing,
+    // the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

@@ -216,6 +216,8 @@ public abstract class DogPieceBase : IWhiteHiltCustomPiece
         wearNTear.m_fragmentRoots = null;
     }
 
+    // Applies the dog's model and renders an icon from it; on a server without graphics, or if something is missing,
+    // the piece keeps working without it.
     private void TryApplyVisual(CustomPiece piece, Transform visual)
     {
         if (VisualHelper.IsHeadless)

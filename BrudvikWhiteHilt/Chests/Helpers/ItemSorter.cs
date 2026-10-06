@@ -141,6 +141,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return result;
         }
 
+        // Collects every item with its data, and the ammunition types used for fishing (bait), which go with the tools.
         private void CollectItems()
         {
             foreach (var prefab in objectDb.m_items)
@@ -161,6 +162,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // Notes what every recipe makes and from what, both ways, so items can be sorted by what they are made of and
+        // what they are used in.
         private void CollectRecipes()
         {
             foreach (var recipe in objectDb.m_recipes)
@@ -196,6 +199,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // Notes where items come from in the world: trees, rocks, chests, creatures, pickables and so on, which sorts
+        // materials into wood, ore, animal parts and the like.
         private void CollectWorldSources()
         {
             foreach (var prefab in scene.m_prefabs)
@@ -251,6 +256,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // Notes what each smelter turns into what; those that burn coal make metal.
         private void CollectSmelter(Smelter smelter)
         {
             if (smelter.m_conversion == null) return;
@@ -329,6 +335,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             source?.Add(prefab.name);
         }
 
+        // The items worth a place in a chest: real items that can be obtained, one of each display name (several
+        // prefabs share a name).
         private List<string> SelectCandidates(List<string> unobtainable)
         {
             // Several prefabs share one display name (unused variants, creature gear); keep one of them.
@@ -398,6 +406,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // The category an item's own type gives: armour, tools, weapons or trophies. Fishing bait and rods go with the
+        // tools.
         private ChestCategory ByItemType(string name, SharedData shared)
         {
             switch (shared.m_itemType)
@@ -528,6 +538,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             while (changed);
         }
 
+        // The category of an item made only from items of one category, or smelted from one; none if its ingredients
+        // disagree.
         private ChestCategory CategoryOfIngredients(string name, HashSet<ChestCategory> categories)
         {
             if (ingredientsOf.TryGetValue(name, out var ingredients) && ingredients.Count > 0)

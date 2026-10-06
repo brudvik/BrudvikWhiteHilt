@@ -65,6 +65,7 @@ public sealed class DogMemorial : MonoBehaviour
         }
     }
 
+    // Remembers the dog for a player who stays near its gravestone a while, and may let its ghost appear.
     private void Update()
     {
         UpdateGhost();
@@ -147,6 +148,7 @@ public sealed class DogMemorial : MonoBehaviour
         return true;
     }
 
+    // Fades the ghost in and out, bobbing gently, and removes it when its time is up.
     private void UpdateGhost()
     {
         if (ghost == null)

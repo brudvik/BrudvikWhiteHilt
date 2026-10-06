@@ -86,6 +86,8 @@ public class PortalMapService : MonoBehaviour
         ZRoutedRpc.instance?.Register<ZPackage>(TravelRpcName, RPC_PortalList);
     }
 
+    // On the server: scans the world for portals, ships and the pieces that unlock them now and then, a few sectors per
+    // frame so the scan never stalls the server, and sends ship positions more often as ships move.
     private void Update()
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || ZNetScene.instance == null)
@@ -134,6 +136,8 @@ public class PortalMapService : MonoBehaviour
         return true;
     }
 
+    // Moves the travel destinations of ship portals with their ships, and drops those whose ship is gone or has lost
+    // its portal.
     private void UpdateShipPortals()
     {
         foreach ((ZDOID id, PortalDestination destination) in travelShips.ToList())
@@ -162,6 +166,7 @@ public class PortalMapService : MonoBehaviour
         return zdo.GetPosition() + zdo.GetRotation() * local;
     }
 
+    // Starts a new scan of the world, finding the prefabs to look for the first time.
     private void BeginScan()
     {
         if (portalPrefabs == null)
@@ -182,6 +187,8 @@ public class PortalMapService : MonoBehaviour
         sectorIndex = 0;
     }
 
+    // Scans the next few sectors of the world's objects; once all are done, also the portals the game keeps apart
+    // (those in unloaded areas) and finishes the scan.
     private void ContinueScan()
     {
         List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
@@ -293,6 +300,7 @@ public class PortalMapService : MonoBehaviour
         }
     }
 
+    // Notes a White Hilt portal both as a map pin and as a travel destination.
     private void CollectTravelPortal(ZDO zdo, bool ground)
     {
         string name = zdo.GetString(WhiteHiltPortalComponent.NameKey);
@@ -336,6 +344,8 @@ public class PortalMapService : MonoBehaviour
         scanTravelShips.Add((zdo.m_uid, destination));
     }
 
+    // Uses what the scan found: which runes each portal's rune posts allow, whether a map table with an astrolabe
+    // (portals) or a harbour anchor (ships) makes them shown on the map, and sends the result to the players.
     private void FinishScan()
     {
         EternalFireRules.SetBrazierPresent(brazierFound);
@@ -363,6 +373,8 @@ public class PortalMapService : MonoBehaviour
         return extensions.Any(extension => mapTables.Any(table => Vector3.Distance(extension, table) <= ActivationRange));
     }
 
+    // Sends each player what they may see: public portals, their own private ones and those of their group, and the
+    // ships with their builders' names, sending only to those whose list changed.
     private void Publish()
     {
         Dictionary<long, string> online = new();
@@ -473,6 +485,8 @@ public class PortalMapService : MonoBehaviour
         return true;
     }
 
+    // Sorts the game's prefabs into what the scan looks for: vanilla and White Hilt portals, ships, map tables and the
+    // pieces that unlock the map. Done once, by component, so portals from other mods are found too.
     private void FindPrefabs()
     {
         portalPrefabs = new HashSet<int>();

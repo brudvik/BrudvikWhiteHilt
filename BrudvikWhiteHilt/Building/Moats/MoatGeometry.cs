@@ -448,6 +448,8 @@ public static class MoatGeometry
         return lines;
     }
 
+    // Points along a path every Step metres, so every stretch of the moat has the same sample spacing however the path
+    // was clicked.
     private static List<Vector2> Resample(IList<Vector2> corners, bool closed)
     {
         List<Vector2> samples = new();
@@ -546,6 +548,8 @@ public static class MoatGeometry
         }
     }
 
+    // Which side of a run the buildings are on, by counting the player's pieces on either side of it: the inside of a
+    // moat round a base, so the bank can be thrown up on the right side.
     private static bool BuildingsOnRight(MoatRun run)
     {
         Vector2 middle = run.Points[run.Count / 2];
@@ -588,6 +592,7 @@ public static class MoatGeometry
         return right > left;
     }
 
+    // The centres of the gates and doors near a run, where the moat leaves a causeway so the base can still be reached.
     private static List<Vector2> GatesNear(MoatRun run, float reach)
     {
         List<Vector2> gates = new();
@@ -614,6 +619,8 @@ public static class MoatGeometry
         return gates;
     }
 
+    // The walls joined to the clicked piece, found by spreading from it to every player-built piece whose footprint
+    // touches one already found: the outline of the base the moat follows. Ships, carts and plants are left out.
     private static List<Footprint> ConnectedWalls(Piece start)
     {
         found.Clear();
@@ -758,6 +765,10 @@ public static class MoatGeometry
 
         public Vector2 Centre => Box.center;
 
+        /// <summary>
+        /// A piece's footprint on the ground: the corners of its solid colliders seen from above and the box round
+        /// them, which the outline of the base is built from.
+        /// </summary>
         public static Footprint Of(Piece piece)
         {
             Footprint footprint = new() { Gate = piece.GetComponent<Door>() != null };

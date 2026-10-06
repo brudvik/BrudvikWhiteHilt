@@ -178,6 +178,8 @@ public class FishingNetComponent : MonoBehaviour, Hoverable
         all.Remove(this);
     }
 
+    // The share of a catch this net gets when other nets lie near: one over the number of nets within the radius, so
+    // packing nets together does not multiply the catch.
     private float CrowdShare()
     {
         float radius = FishingNetSettings.CrowdRadius.Value;
@@ -212,6 +214,8 @@ public class FishingNetComponent : MonoBehaviour, Hoverable
         }
     }
 
+    // Keeps a ghost on the water's surface while it is being placed, bobs the net on the waves and redraws the rope to
+    // its winch now and then.
     private void LateUpdate()
     {
         if (ghost)
@@ -247,6 +251,7 @@ public class FishingNetComponent : MonoBehaviour, Hoverable
         net.position = position;
     }
 
+    // Rebuilds the rope to the winch only when the winch or the net has moved, as building the mesh is not free.
     private void UpdateRope()
     {
         NetWinchComponent winch = Winch();
@@ -301,6 +306,8 @@ public class FishingNetComponent : MonoBehaviour, Hoverable
         return created;
     }
 
+    // A rope as a tube along a hanging curve between two points: a parabola that sags more the longer it is, with a
+    // ring of vertices at each step.
     private Mesh BuildRopeMesh(Vector3 from, Vector3 to)
     {
         float sag = 0.15f + 0.03f * Vector3.Distance(from, to);
@@ -349,6 +356,7 @@ public class FishingNetComponent : MonoBehaviour, Hoverable
         return mesh;
     }
 
+    // A plain rope-coloured material on the vanilla wood shader, made once and shared by all ropes.
     private static Material RopeMaterial()
     {
         if (ropeMaterial != null)

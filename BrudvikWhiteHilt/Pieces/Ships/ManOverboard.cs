@@ -96,6 +96,9 @@ public static class ManOverboard
         }
     }
 
+    // Notices the local player falling off a moving ship: swimming within moments of being aboard, while the ship went
+    // fast enough. The ship's speed is measured from its movement, as a passenger's copy of the ship has no real
+    // velocity. While overboard, the player's position is sent to everybody now and then.
     private static void WatchOwnFall(Player player)
     {
         float now = Time.time;
@@ -165,6 +168,8 @@ public static class ManOverboard
         UpdateShipPin(player);
     }
 
+    // Starts an overboard: remembers the ship, tells the player, and if the setting says so stops the ship's route and
+    // held course so it does not sail away from them.
     private static void Begin(Player player)
     {
         ZNetView view = lastShip.m_nview;
@@ -226,6 +231,8 @@ public static class ManOverboard
         ShowEdgeArrow(map, shipArrow, player.transform.position, shipPosition);
     }
 
+    // Moves the map pins of those overboard to where they were last heard of, forgets those not heard of for a while,
+    // and points an arrow at the edge of the screen towards the nearest.
     private static void UpdateAlerts(Player player)
     {
         if (alerts.Count == 0)
@@ -318,6 +325,8 @@ public static class ManOverboard
         return hover == null || hover.GetComponentInParent<Player>() != null;
     }
 
+    // On every machine: someone fell overboard, moved, or is back aboard. Only those aboard the ship they fell from are
+    // told, with a pin on the map, a message and the ship's bell.
     private static void RPC_Overboard(long sender, ZDOID shipId, string name, Vector3 position, bool active)
     {
         if (ZNet.instance == null || sender == ZDOMan.GetSessionID())
@@ -368,6 +377,8 @@ public static class ManOverboard
         player.Message(MessageHud.MessageType.Center, string.Format(Translations.Word("whitehilt_overboard_pulled"), name));
     }
 
+    // Pulls the player who fell overboard up onto the deck beside the shipmate who threw the rope, moving with the
+    // ship.
     private static void PullAboard(Player player)
     {
         pullAt = 0f;

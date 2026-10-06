@@ -32,6 +32,7 @@ public static class ForagingDropPatch
         __state = __instance.m_nview != null && __instance.m_nview.IsValid() && __instance.m_nview.IsOwner() && !__instance.m_picked;
     }
 
+    // After a pickable is picked: drops the extra items registered for it in this biome, each by its own chance.
     [HarmonyPostfix]
     private static void Postfix(Pickable __instance, bool __state)
     {

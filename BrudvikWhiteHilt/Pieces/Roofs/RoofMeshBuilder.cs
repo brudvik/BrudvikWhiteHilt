@@ -507,6 +507,7 @@ public static class RoofMeshBuilder
         return facets;
     }
 
+    // The facet of the roof a point lies on, or the nearest one if it lies on none (a point on a shared edge).
     private static Facet FindFacet(List<Facet> facets, Vector2 point)
     {
         Facet best = facets[0];
@@ -529,6 +530,9 @@ public static class RoofMeshBuilder
         return best;
     }
 
+    // Adds one sloped facet of the roof: the underside as boards running down, and the covering on top as courses of
+    // tiles or shingles that step down the slope, each course lifted a little over the one below so the edges show like
+    // real tiles. Texture coordinates follow the slope, so tiles keep their size on every pitch.
     private static void AddFacet(MeshParts parts, Facet facet, List<Boundary> boundaries, RoofStyle style, float courseLength)
     {
         float slopeFactor = Mathf.Sqrt(1f + facet.Gradient.sqrMagnitude);
@@ -632,6 +636,8 @@ public static class RoofMeshBuilder
             boundary.Outward);
     }
 
+    // The edge of the piece a facet's edge lies on, if any: where the roof meets the next piece and the courses must
+    // line up with it.
     private static Boundary? FindBoundary(List<Boundary> boundaries, Vector2 a, Vector2 b)
     {
         foreach (Boundary boundary in boundaries)
@@ -678,6 +684,8 @@ public static class RoofMeshBuilder
         parts.AddCylinder(TrimMaterial, a, b, radius, 8, 2f);
     }
 
+    // The ridge cover along the top of a ridge or an outer corner: crossed boards or a roll, as the covering's style
+    // says.
     private static void AddCrest(MeshParts parts, RoofShape shape, RoofPitch pitch, RoofStyle style, RoofPart part, List<Facet> facets)
     {
         if (style.Crest == RoofCrest.None || facets.Count < 2 || (shape != RoofShape.Ridge && shape != RoofShape.OuterCorner) || part == RoofPart.EaveX)
@@ -738,6 +746,7 @@ public static class RoofMeshBuilder
         parts.AddBox(center, along * ((b - a).magnitude / 2f), normal * (thickness / 2f), down * (width / 2f), material, 1f);
     }
 
+    // The frame round the smoke hole: four boards standing on the roof's plane.
     private static void AddSmokeHoleFrame(MeshParts parts, RoofPitch pitch, RoofStyle style)
     {
         Vector3 normal = SurfaceNormal(RoofShape.SmokeHole, pitch, 0f, 0f);
@@ -797,6 +806,7 @@ public static class RoofMeshBuilder
         return result;
     }
 
+    // Whether a point lies inside a convex polygon: on the same side of every edge.
     private static bool Contains(List<Vector2> polygon, Vector2 point)
     {
         bool? sign = null;
@@ -997,6 +1007,10 @@ public static class RoofMeshBuilder
             AddPolygon(material, capB, capUv, axis);
         }
 
+        /// <summary>
+        /// The collected vertices as a mesh: one sub-mesh per material (underside, top, trim and so on), or one for
+        /// all.
+        /// </summary>
         public Mesh ToMesh(string name, int subMeshes = 4)
         {
             Mesh mesh = new() { name = name };

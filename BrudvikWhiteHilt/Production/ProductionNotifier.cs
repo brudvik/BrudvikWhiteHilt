@@ -63,6 +63,8 @@ public static class ProductionNotifier
         (watched, next) = (next, watched);
     }
 
+    // The message for a piece that stopped working: ready, full, born, done or stopped with why. A windmill stopping
+    // for want of wind is not news.
     private static string Change(ProductionState before, ProductionStatus now)
     {
         if (before != ProductionState.Working || now.State == ProductionState.Working)

@@ -31,6 +31,7 @@ namespace BrudvikWhiteHilt.Kraken
             }
         }
 
+        // Squeezes the glowing eyes on a copy of the mesh into narrow slits that slant inwards, for an angry look.
         private static void NarrowEyes(Transform root, SkinnedMeshRenderer renderer)
         {
             Mesh mesh = Object.Instantiate(renderer.sharedMesh);

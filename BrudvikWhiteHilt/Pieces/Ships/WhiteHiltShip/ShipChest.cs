@@ -91,6 +91,8 @@ public class ShipChest : MonoBehaviour
         return true;
     }
 
+    // On the ship's owner: hands the ship over to the player opening the sea chest, with its newest data, unless
+    // someone else has it open. The chest is part of the ship's network object, so opening it means owning the ship.
     private static void RequestOpen(Container container, long sender)
     {
         ZNetView nview = container.m_nview;

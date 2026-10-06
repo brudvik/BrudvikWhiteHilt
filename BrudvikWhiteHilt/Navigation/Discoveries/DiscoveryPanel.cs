@@ -129,6 +129,8 @@ public static class DiscoveryPanel
         builtData = -1;
     }
 
+    // Rebuilds the panel's contents: a group per kind of discovery with a button for each, and the header at the bottom
+    // so the panel opens upwards from it.
     private static void Rebuild(bool locked)
     {
         builtData = DiscoveryOverlay.DataVersion;
@@ -197,6 +199,7 @@ public static class DiscoveryPanel
         return y + QuickHeight + Gap;
     }
 
+    // A small button with a hint shown in the footer while it is hovered.
     private static Text AddQuickButton(float x, float y, float width, string label, string hint, UnityEngine.Events.UnityAction onClick)
     {
         GameObject button = GUIManager.Instance.CreateButton(Localization.instance.Localize(label), content, Vector2.zero, Vector2.zero, Vector2.zero, width, QuickHeight);
@@ -220,6 +223,8 @@ public static class DiscoveryPanel
         return text;
     }
 
+    // A group of discovery kinds: a title that switches the whole group, and an icon button per kind that switches it
+    // alone. Returns where the next group starts.
     private static float AddGroup(DiscoveryGroup group, List<DiscoveryKind> kinds, float y)
     {
         List<string> keys = kinds.Select(kind => kind.Key).ToList();
@@ -294,6 +299,7 @@ public static class DiscoveryPanel
         return y + rows * IconSize + (rows - 1) * Gap;
     }
 
+    // Marks the kinds found in the biome the player stands in, and the items that are unlimited in the chests.
     private static void PaintStatus()
     {
         if (builtLocationsFor != ZoneSystem.instance)
@@ -330,6 +336,7 @@ public static class DiscoveryPanel
         }
     }
 
+    // A kind's hover text, with notes on whether it is unlimited, in the current biome or hidden as unlimited.
     private static string GetHoverText(KindToggle toggle)
     {
         string text = toggle.HoverText;
@@ -437,6 +444,7 @@ public static class DiscoveryPanel
         return component;
     }
 
+    // Shows a kind's hover text in the footer and highlights its button while the pointer is over it.
     private static void AddHover(GameObject target, string text, KindToggle toggle)
     {
         toggle.HoverText = text;

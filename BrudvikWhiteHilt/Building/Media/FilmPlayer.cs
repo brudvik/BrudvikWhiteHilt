@@ -175,6 +175,9 @@ public static class FilmPlayer
         return length;
     }
 
+    // Where the camera is at a time in the film: it holds at each point for its pause, then moves to the next over the
+    // leg's seconds. The path is a Catmull-Rom curve through the points, so it passes through every one of them without
+    // corners; a smooth leg also eases in and out.
     private static void Evaluate(Film playing, float at, out Vector3 position, out Quaternion rotation, out float fov)
     {
         var points = playing.Points;

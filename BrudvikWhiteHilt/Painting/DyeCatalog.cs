@@ -222,6 +222,8 @@ public static class DyeCatalog
         return best;
     }
 
+    // Tries every amount of each chosen dye (within what the player has) and keeps the mix closest to the wanted
+    // colour, the smaller one on a tie.
     private static void TryAmounts(List<int> picks, int index, int[] amounts, List<Dye> candidates, Dictionary<Dye, int> stock, Color want,
         ref Mix best, ref float bestDistance)
     {
@@ -272,6 +274,7 @@ public static class DyeCatalog
         return Mathf.Sqrt((2f * dr * dr + 4f * dg * dg + 3f * db * db) / 9f);
     }
 
+    // Measures the colour of each dye from its icon (or a fixed colour where the icon misleads), once.
     private static List<Dye> Measure()
     {
         List<Dye> measured = new();

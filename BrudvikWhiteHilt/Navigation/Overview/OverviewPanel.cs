@@ -100,6 +100,8 @@ public static class OverviewPanel
         }
     }
 
+    // Updates the overview: how much of each biome is explored, as a bar and a number, and the world total. The header
+    // stays at the bottom so the panel opens upwards from it.
     private static void Refresh(Minimap map, bool locked)
     {
         string title = Localization.instance.Localize("$whitehilt_overview_title");
@@ -185,6 +187,7 @@ public static class OverviewPanel
         row.Value.text = $"{Mathf.FloorToInt(share * 100f)} %  ({Mathf.RoundToInt(explored * area)} km²)";
     }
 
+    // Builds the panel once: a header that folds it, a row per biome in its colour, the world row and a foot note.
     private static void Create()
     {
         Vector2 bottomLeft = Vector2.zero;
@@ -221,6 +224,7 @@ public static class OverviewPanel
         foot = CreateText(content, 13, Color.white, TextAnchor.UpperLeft);
     }
 
+    // One row: the biome's name, a bar in its colour and the explored share.
     private static Row CreateRow(string name, Color colour)
     {
         GameObject root = new("Row", typeof(RectTransform));

@@ -196,6 +196,7 @@ public static class MoatTool
         return spec;
     }
 
+    // How many causeways the planned moat has: each run of samples with a factor of 0 counts once.
     private static int CountCauseways(List<MoatRun> runs)
     {
         int count = 0;

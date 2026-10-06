@@ -32,6 +32,8 @@ public class OctopusSwim : MonoBehaviour
         lastPosition = transform.position;
     }
 
+    // Darts and tilts the octopus while it moves fast in water, from its measured speed, as a fish has no swim
+    // animation of its own for this model.
     private void Update()
     {
         if (animator == null || Time.deltaTime <= 0f)

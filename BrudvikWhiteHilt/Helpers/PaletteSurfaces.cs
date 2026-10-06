@@ -87,6 +87,8 @@ public static class PaletteSurfaces
         renderer.sharedMaterials = shared;
     }
 
+    // Splits a mesh into one sub-mesh per palette swatch its triangles sample, and gives each triangle texture
+    // coordinates projected along its facing axis, so a real texture can tile across it at the right scale.
     private static Mesh Build(Mesh source, IReadOnlyList<(float U, Surface Surface)> swatches, Vector3 scale, List<Surface> used)
     {
         Vector3[] vertices = source.vertices;

@@ -145,6 +145,8 @@ public static class PortalFxScreen
         veilRing.color = new Color(colour.r, colour.g, colour.b, ringAlpha);
     }
 
+    // The full-screen flash and rune ring the travelling player sees, made once on an overlay canvas that survives
+    // scene changes.
     private static bool EnsureVeil()
     {
         if (veilRoot != null)

@@ -143,6 +143,7 @@ public class NavigatorTable : IWhiteHiltCustomItem, IWhiteHiltConfigurable
         }
     }
 
+    // Replaces the cloned item's look with the sextant model and renders an icon from it.
     private static void TryApplyVisual(CustomItem table)
     {
         if (VisualHelper.IsHeadless)

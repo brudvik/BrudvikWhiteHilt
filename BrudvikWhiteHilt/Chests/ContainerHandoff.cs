@@ -123,6 +123,8 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return true;
     }
 
+    // Whether this machine owns the container and may change it. If not, asks the owner for it and waits for the newest
+    // data to arrive; asks again if no answer comes.
     private bool Ready(long playerId)
     {
         if (view == null || !view.IsValid() || InUse())
@@ -167,6 +169,8 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return false;
     }
 
+    // On the owner: hands the container over if nobody is using it and the player may open it. The newest data is saved
+    // and sent first, so the new owner does not work on an older copy.
     private void Request(long sender, long playerId, long request)
     {
         if (!view.IsOwner())

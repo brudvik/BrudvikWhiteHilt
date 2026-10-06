@@ -116,6 +116,8 @@ public class BlueprintPanel : MonoBehaviour
         instance.RefreshList();
     }
 
+    // Closes the panel when the build tool is put away or the screen is cleared for a photo, keeps the game from
+    // reading keys while the search field has focus, and puts the delete button back after its confirmation time.
     private void Update()
     {
         if (!IsOpen)
@@ -147,6 +149,8 @@ public class BlueprintPanel : MonoBehaviour
         }
     }
 
+    // Builds the panel once: search field, list of blueprints, the chosen blueprint's details and the buttons to place,
+    // rename, delete and close.
     private void Build()
     {
         panel = GUIManager.Instance.CreateWoodpanel(transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), Vector2.zero, PanelWidth, 700f, false);
@@ -232,6 +236,8 @@ public class BlueprintPanel : MonoBehaviour
         });
     }
 
+    // Deletes the chosen blueprint on the second click within a few seconds, so a blueprint is not lost to a slip of
+    // the mouse.
     private void OnDelete()
     {
         if (selected == null)
@@ -253,6 +259,7 @@ public class BlueprintPanel : MonoBehaviour
         Reload();
     }
 
+    // Lists the saved blueprints that match the search, with their piece count; clicking one selects it.
     private void RefreshList()
     {
         rows.ForEach(Destroy);
@@ -291,6 +298,8 @@ public class BlueprintPanel : MonoBehaviour
         RefreshDetails();
     }
 
+    // Shows the chosen blueprint: its name and maker, what it costs against what the player and the chests nearby have,
+    // and how many of its pieces this game does not know (from a mod not installed), which are skipped when placed.
     private void RefreshDetails()
     {
         Player player = Player.m_localPlayer;

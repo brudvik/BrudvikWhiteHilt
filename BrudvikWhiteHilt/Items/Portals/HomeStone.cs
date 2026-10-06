@@ -260,6 +260,7 @@ public class HomeStone : IWhiteHiltCustomItem, IWhiteHiltConfigurable
         return (new DateTime(ticks) - ZNet.instance.GetTime()).TotalSeconds;
     }
 
+    // Replaces the cloned item's look with the home stone model and renders an icon from it.
     private static void TryApplyVisual(CustomItem stone)
     {
         if (VisualHelper.IsHeadless)

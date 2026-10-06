@@ -70,6 +70,8 @@ public class PortcullisDriver : MonoBehaviour
         }
     }
 
+    // Moves the grate towards where the network data says it should be, at a steady speed, with the gate's door sounds
+    // when it starts. Every machine animates it from the same data, so no RPC is needed per frame.
     private void Update()
     {
         bool lowered = IsLowered;

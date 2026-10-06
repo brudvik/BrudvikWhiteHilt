@@ -94,6 +94,8 @@ public static class Saplings
         return true;
     }
 
+    // Dresses a birch sapling clone as another tree: bark, autumn leaves, a Yggdrasil shoot or ashwood, borrowed from
+    // the vanilla trees.
     private static void Dress(SaplingDefinition sapling, GameObject prefab)
     {
         Transform healthy = prefab.transform.Find(states[0]);

@@ -128,6 +128,8 @@ public static class DiscoveryFilter
         Save();
     }
 
+    // Loads which kinds of discoveries the player has chosen to show, saved in the player's custom data, so the choice
+    // follows the character between worlds.
     private static void Load()
     {
         Player player = Player.m_localPlayer;

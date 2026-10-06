@@ -109,6 +109,7 @@ public static class TreasureRegistry
         AddChest();
     }
 
+    // Registers a treasure map item with its own model.
     private static void AddMap(string prefabName, Color? tint)
     {
         try
@@ -156,6 +157,8 @@ public static class TreasureRegistry
         }
     }
 
+    // Registers the mound of a buried treasure: a clone of a vanilla mound without its own destruction, hover or
+    // particles, digging it up being done by BuriedTreasure.
     private static void AddMound()
     {
         try
@@ -208,6 +211,7 @@ public static class TreasureRegistry
         }
     }
 
+    // Registers the treasure chest: a clone of a vanilla chest that cannot be removed and disappears once emptied.
     private static void AddChest()
     {
         try
@@ -287,6 +291,7 @@ public static class TreasureRegistry
             TreasureSettings.HuntPrice.Value);
     }
 
+    // Adds a treasure map to the trader's goods at a price, or takes it away.
     private static void UpdateTradeItem(Trader trader, string prefabName, bool sold, int price)
     {
         ItemDrop map = PrefabManager.Instance.GetPrefab(prefabName)?.GetComponent<ItemDrop>();

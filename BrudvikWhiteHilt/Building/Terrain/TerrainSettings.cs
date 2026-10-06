@@ -145,6 +145,7 @@ public static class TerrainSettings
         return WhiteHiltConfig.BindLocal(KeySection, key, new KeyboardShortcut(main, KeyCode.LeftControl), description);
     }
 
+    // The English texts of the terrain and farming tools; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_terrain", "Terrain");

@@ -95,6 +95,8 @@ public class SurtsBrazier : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces the cloned look with the brazier model, makes its coals glow from the model's emission map, and adds
+    // flames on the coals. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

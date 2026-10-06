@@ -76,6 +76,7 @@ public static class GroupSettings
         return WhiteHiltConfig.BindLocal(Section + ".Keys", key, new KeyboardShortcut(main, KeyCode.LeftControl), description);
     }
 
+    // The English texts of the group tools; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_group_select", "Select");

@@ -66,6 +66,7 @@ public static class KrakenPatches
         return Scale(hit, KrakenSettings.ShipDamagePercent.Value, KrakenSettings.ShipDamagePerExtraPlayer.Value);
     }
 
+    // Adds the octopus to the world's spawn lists, next to the fish it copies, or on its own if that fish is not found.
     [HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Awake))]
     [HarmonyPostfix]
     private static void SpawnSystemAwakePostfix(SpawnSystem __instance)
@@ -131,6 +132,7 @@ public static class KrakenPatches
         return 1f + Mathf.Max(0, playersAboard - 1) * bonusPercent / 100f;
     }
 
+    // Scales the Kraken's damage by the setting, the size of the crew and its rage.
     private static bool Scale(HitData hit, float percent, float bonusPercent)
     {
         Character attacker = hit.GetAttacker();

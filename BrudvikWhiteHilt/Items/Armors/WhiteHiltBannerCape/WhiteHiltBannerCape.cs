@@ -94,6 +94,8 @@ public class WhiteHiltBannerCape : IWhiteHiltCustomItem
         }
     }
 
+    // Gives the cloned troll hide cape the banner's look: the cloth worn on the back gets its own material, the dropped
+    // item is whitened. Should anything be missing, the troll hide look stays.
     private static void TryApplyVisual(CustomItem item)
     {
         if (VisualHelper.IsHeadless)

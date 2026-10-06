@@ -112,6 +112,8 @@ public static class MediaOverlay
         }
     }
 
+    // Creates the overlay once the game's fonts are loaded: a canvas above everything else, scaled like a 1920 x 1080
+    // screen, with the black fade, the title card texts, the countdown and the toast.
     private static bool Ensure()
     {
         if (root != null)

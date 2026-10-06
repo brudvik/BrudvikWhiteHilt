@@ -141,6 +141,7 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             return RemoveWhere(inventory, item => supply.IsStock(previous, category, item) && !supply.IsSupplied(mode, category, item));
         }
 
+        // Unlocks an item as unlimited once the chest holds enough of it, with an effect and a message.
         private static void UnlockFullStacks(Container container, Inventory inventory, ChestCategory category, ChestSupply supply)
         {
             var totals = new Dictionary<string, int>();
@@ -232,6 +233,8 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             return changed || refilled;
         }
 
+        // Fills in full stacks of the unlimited items this chest should hold but does not; returns whether anything was
+        // added.
         private static bool AddMissing(Inventory inventory, ChestCategory category, ChestSupply supply)
         {
             var present = new Dictionary<string, int>();

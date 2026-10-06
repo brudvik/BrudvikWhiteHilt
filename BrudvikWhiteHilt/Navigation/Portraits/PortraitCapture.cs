@@ -65,6 +65,9 @@ public static class PortraitCapture
         }
     }
 
+    // Takes the player's portrait on the character screen: spawns a copy of the character out of sight, waits for its
+    // gear and pose, strips the helmet and weapons, and renders its head. Skipped when the look has not changed since
+    // the last portrait.
     private static IEnumerator Capture(FejdStartup startup, PlayerProfile profile)
     {
         VisEquipment visual = Spawn(startup, profile);
@@ -112,6 +115,8 @@ public static class PortraitCapture
         Stop(startup);
     }
 
+    // A copy of the player's character for the portrait, made without network registration (it must not appear in any
+    // world) and without physics.
     private static VisEquipment Spawn(FejdStartup startup, PlayerProfile profile)
     {
         Transform point = startup.m_characterPreviewPoint;
@@ -162,6 +167,9 @@ public static class PortraitCapture
         return string.Format(CultureInfo.InvariantCulture, "{0:F3},{1:F3},{2:F3}", colour.x, colour.y, colour.z);
     }
 
+    // Renders the head on its own layer with its own lights (the menu scene's lights are switched off meanwhile),
+    // twice: on black and on white, so the background can be taken out exactly. The game's light and fog settings are
+    // put back afterwards.
     private static byte[] Render(VisEquipment visual)
     {
         Transform root = visual.transform;
@@ -348,6 +356,8 @@ public static class PortraitCapture
         return new Vector2Int(offsetX, offsetY);
     }
 
+    // Shrinks the supersampled render to the portrait's size and turns the coverage into alpha, dividing it out of the
+    // colour so the soft edges do not show a dark fringe.
     private static byte[] Combine(Color32[] onBlack, float[] coverage, int big, Vector2Int offset)
     {
         int size = PortraitStore.Size;

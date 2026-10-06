@@ -45,6 +45,9 @@ public static class CompanionRest
 
         public override bool IsCheat => true;
 
+        /// <summary>
+        /// Makes the nearest tame dog lie, sit, sleep, or stand up again; a console command.
+        /// </summary>
         public override void Run(string[] args)
         {
             Player player = Player.m_localPlayer;

@@ -174,6 +174,8 @@ public class OilCauldron : MonoBehaviour, Interactable, Hoverable
         return 0f;
     }
 
+    // Finds the pot to tip, registers the RPCs for loading and pouring, and adds a glow for the embers (not on a server
+    // without graphics).
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -255,6 +257,8 @@ public class OilCauldron : MonoBehaviour, Interactable, Hoverable
         }
     }
 
+    // Flickers the embers while pitch is heating, and tips the pot after a pour: forward, held, and back, each part
+    // eased so the motion does not jerk.
     private void Update()
     {
         if (nview == null || !nview.IsValid())

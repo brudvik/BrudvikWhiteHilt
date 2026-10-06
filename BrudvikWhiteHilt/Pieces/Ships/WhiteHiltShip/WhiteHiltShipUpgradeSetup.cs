@@ -226,6 +226,7 @@ public static class WhiteHiltShipUpgradeSetup
         container.m_rootObjectOverride = root.GetComponent<ZNetView>();
     }
 
+    // A box over the lantern that can be hovered and used to switch it, as the lantern's own meshes have no collider.
     private static void AddLanternInteraction(Transform root)
     {
         Transform lamp = root.Find("ship/visual/Customize/TraderLamp");
@@ -265,6 +266,8 @@ public static class WhiteHiltShipUpgradeSetup
         light.range *= Mathf.Max(0.1f, reach);
     }
 
+    // Measures the tent cloth to know where the tent covers the deck (for shelter), and gives it colliders so it can be
+    // stood on.
     private static void MeasureTent(Transform root, WhiteHiltShipUpgrades upgrades)
     {
         Transform customize = root.Find("ship/visual/Customize") ?? throw new InvalidOperationException("Customize not found");

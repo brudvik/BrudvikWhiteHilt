@@ -162,6 +162,7 @@ public static class ShipRoutePlanner
         }
     }
 
+    // Shows the route's markers as numbered map pins, and only rebuilds them when the markers changed.
     private static void UpdatePins(ShipRoute route)
     {
         IReadOnlyList<Vector3> markers = route != null ? route.Markers : null;
@@ -190,6 +191,8 @@ public static class ShipRoutePlanner
         }
     }
 
+    // Updates the panel's hint and buttons: sailing and exploring need a level of the exploration skill, and are greyed
+    // out while a route is being plotted.
     private static void UpdatePanel(Player player)
     {
         int count = editing.Markers.Count;
@@ -229,6 +232,8 @@ public static class ShipRoutePlanner
         Plot(true);
     }
 
+    // Plots a sea route through the markers, in a coroutine spread over frames as it can take a while, then sets sail.
+    // Exploring follows the coast instead of taking the shortest way.
     private static void Plot(bool explore)
     {
         ShipRoute route = editing;
@@ -284,6 +289,8 @@ public static class ShipRoutePlanner
         editing?.SetMarkers(new List<Vector3>());
     }
 
+    // Builds the route panel once, at the bottom of the screen: the hint and the buttons to sail, explore, clear and
+    // close.
     private static void EnsurePanel()
     {
         if (panel != null)

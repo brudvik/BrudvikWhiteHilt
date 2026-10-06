@@ -150,6 +150,7 @@ public sealed class DogTricks : MonoBehaviour
         }
     }
 
+    // The trick an emote asks for, if any.
     private static bool TryGetTrick(string emote, out Trick trick)
     {
         switch (emote)
@@ -195,6 +196,8 @@ public sealed class DogTricks : MonoBehaviour
         }
     }
 
+    // On the dog's owner: does a trick. A lesson counts towards learning it, with a treat; a learned trick gives
+    // experience instead.
     private void RPC_Trick(long sender, int trickIndex, bool lesson)
     {
         if (!nview.IsOwner())

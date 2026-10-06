@@ -285,6 +285,7 @@ public static class HoeTools
         return metres.ToString("0.0", CultureInfo.InvariantCulture) + " m";
     }
 
+    // The hoe's tool keys: each switches a tool on or off, starts planning a road or sets the reference height.
     private static void HandleKeys(Player player)
     {
         ConfigEntry<KeyboardShortcut>[] keys =
@@ -331,6 +332,8 @@ public static class HoeTools
         }
     }
 
+    // The brush size for the vanilla hoe pieces: the wheel with the tilt modifier held makes the brush larger or
+    // smaller, shown as a circle around the ghost. Size 0 leaves vanilla's own brush.
     private static void UpdateBrush(Player player)
     {
         if (!WheelSetsBrush(player))
@@ -362,6 +365,9 @@ public static class HoeTools
         }
     }
 
+    // The level tool in three steps: the first two clicks set the rectangle, the wheel then sets the height (from the
+    // reference if one is set), and the third click levels the area. The cost and how much is dug and filled are shown
+    // before it is done.
     private static void TickLevel(Player player)
     {
         bool aimed = AreaPicker.Aim(out Vector3 aim);
@@ -444,6 +450,8 @@ public static class HoeTools
         Back();
     }
 
+    // The ramp tool: the first click sets the start, the end follows the aim (or the chosen slope), and the second
+    // click builds a band of terrain between them. Length, rise and slope are shown while aiming.
     private static void TickRamp(Player player)
     {
         bool aimed = AreaPicker.Aim(out Vector3 aim);
@@ -508,6 +516,8 @@ public static class HoeTools
         }
     }
 
+    // The paint and reset tools: the first click sets one corner of a rectangle and the second paints or resets the
+    // whole area. Painting shows its stone cost while aiming.
     private static void TickRectangle(Player player)
     {
         bool aimed = AreaPicker.Aim(out Vector3 aim);
@@ -553,6 +563,8 @@ public static class HoeTools
         Back();
     }
 
+    // Puts the terrain in a rectangle back as the world generated it. Refused when the area is too large or any of it
+    // lies in a ward or a place where building is not allowed. Moats inside it are forgotten too.
     private static void ResetArea(Player player, Vector3 a, Vector3 b)
     {
         Vector2 min = new(Mathf.Min(a.x, b.x), Mathf.Min(a.z, b.z));
@@ -621,6 +633,7 @@ public static class HoeTools
         return text;
     }
 
+    // A right click steps back: one stage of the level tool, the rectangle's first corner, or out of the tool.
     private static void Back()
     {
         if (!Clicked(1))

@@ -345,6 +345,7 @@ public sealed class DogCare : MonoBehaviour
         }
     }
 
+    // Raises the dog's mood with its master near, less with strangers, and lowers it when alone or uncomfortable.
     private void UpdateMood(float dt, float day, bool uncomfortable)
     {
         Vector3 position = transform.position;
@@ -404,6 +405,8 @@ public sealed class DogCare : MonoBehaviour
         }
     }
 
+    // Starts an action, first taking the pose it needs. The start is set a little into the future when the pose
+    // changes, so the action begins once the dog has got there.
     private void StartAction(DogAction action)
     {
         ZDO zdo = Zdo;
@@ -480,6 +483,8 @@ public sealed class DogCare : MonoBehaviour
         }
     }
 
+    // On the dog's owner: applies a care item: a treat cheers the dog, a bandage heals it and cures poison, a coat
+    // keeps it warm.
     private void RPC_Care(long sender, int item)
     {
         if (!nview.IsOwner())

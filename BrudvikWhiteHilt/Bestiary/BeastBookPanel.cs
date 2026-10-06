@@ -166,6 +166,8 @@ public sealed class BeastBookPanel : MonoBehaviour
         scroll.verticalNormalizedPosition = 1f;
     }
 
+    // Shows the current page: the beast's name, what the player has learned of it and an ink sketch of its trophy,
+    // keeping the same beast open when new ones are discovered.
     private void Refresh()
     {
         BeastCounter selected = page >= 0 && page < pages.Length ? pages[page] : null;
@@ -198,6 +200,7 @@ public sealed class BeastBookPanel : MonoBehaviour
         illustration.enabled = illustration.sprite != null;
     }
 
+    // An ink sketch made from a trophy icon, made once per icon. A failure only leaves the page without a picture.
     private Sprite Sketch(Sprite source)
     {
         if (source == null || VisualHelper.IsHeadless)
@@ -235,6 +238,8 @@ public sealed class BeastBookPanel : MonoBehaviour
         return sketch;
     }
 
+    // Paints the sketch: the icon's outline and shading in brown ink on paper, with a grainy, broken edge so it looks
+    // drawn by hand rather than copied.
     private static Color32[] PaintSketch(Color32[] study)
     {
         float[] coverage = new float[StudySize * StudySize];
@@ -318,6 +323,7 @@ public sealed class BeastBookPanel : MonoBehaviour
         }
     }
 
+    // Builds the book once: title, heading, sketch, a scrolling page, buttons to turn pages and to close.
     private static BeastBookPanel Build()
     {
         Vector2 top = new(0.5f, 1f);

@@ -30,6 +30,8 @@ public class RoofEave : MonoBehaviour
         nextCheck = Time.time + Random.Range(0.2f, 0.6f);
     }
 
+    // Now and then, and only while the roof is seen, hides each edge board where another roof piece continues past it.
+    // The checks are spread out with a random delay so a large roof does not test every piece in the same frame.
     private void Update()
     {
         if (Time.time < nextCheck)

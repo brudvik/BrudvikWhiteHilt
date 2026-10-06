@@ -186,6 +186,8 @@ public static class RoadBuilder
         }
     }
 
+    // Ends road planning: with two or more points the road is prepared (heights along it smoothed), shown with pins on
+    // the map and saved, to be built as the player walks along it.
     private static void FinishPlanning(Player player)
     {
         Planning = false;
@@ -211,6 +213,9 @@ public static class RoadBuilder
             string.Format(Localization.instance.Localize("$msg_whitehilt_terrain_road_started"), Mathf.RoundToInt(Length(road.Points))));
     }
 
+    // Builds the stretches of the road near the player, one chunk at a time. Terrain can only be changed where it is
+    // loaded, so the road is built as the player walks it. Parts under water are skipped, and the road ends once every
+    // chunk is built.
     private static void BuildNear(Player player)
     {
         Vector2 here = Flat(player.transform.position);
@@ -269,6 +274,7 @@ public static class RoadBuilder
         }
     }
 
+    // Marks the planned road on the map with a pin every few metres.
     private static void ShowRoadPins()
     {
         ClearPlanPins();
@@ -313,6 +319,7 @@ public static class RoadBuilder
         return Path.Combine(Paths.ConfigPath, "BrudvikWhiteHilt", "roads", world + ".whroad");
     }
 
+    // Saves the road being built, per world, so it carries on after a restart.
     private static void Save()
     {
         if (string.IsNullOrEmpty(loadedWorld))
@@ -360,6 +367,7 @@ public static class RoadBuilder
         }
     }
 
+    // Reads the road being built for this world, if any, and shows it on the map.
     private static void Load()
     {
         road = null;
@@ -431,6 +439,11 @@ public static class RoadBuilder
         public bool[] Built = Array.Empty<bool>();
         public HashSet<long> Done = new();
 
+        /// <summary>
+        /// Samples the road every half metre and gives each sample a height: the ground's own, smoothed along the road,
+        /// or for an even road a steady slope between the points. The samples are grouped into the chunks that are
+        /// built one at a time.
+        /// </summary>
         public void Prepare()
         {
             Samples.Clear();

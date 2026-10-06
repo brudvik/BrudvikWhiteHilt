@@ -116,6 +116,8 @@ public static class GameClock
         player.Message(MessageHud.MessageType.Center, message);
     }
 
+    // Shows the time (rounded as set), the day and the weather to come, turning the text to the warning colour shortly
+    // before nightfall.
     private static void Refresh(float hours)
     {
         int round = Mathf.Clamp(ClockSettings.RoundMinutes.Value, 1, 60);
@@ -154,6 +156,9 @@ public static class GameClock
         UpdateLayout();
     }
 
+    /// <summary>
+    /// Places the clock in the corner and moves the hotbar down if the clock would overlap it.
+    /// </summary>
     internal static void UpdateLayout()
     {
         if (root == null) return;

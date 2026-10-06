@@ -40,6 +40,7 @@ public class KrakenTentacle : MonoBehaviour
     /// <summary>Whether this tentacle is busy warning, sweeping or withdrawing.</summary>
     public bool IsSweeping => TryGetSweep(out _, out _, out _, out _, out _);
 
+    // Notes the model's rest pose and size, for the sweep that stretches it.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -60,6 +61,7 @@ public class KrakenTentacle : MonoBehaviour
         }
     }
 
+    // On the owner: dies when the body is gone or retreats, otherwise plans the next sweep.
     private void Update()
     {
         if (Time.time < nextTick || !nview.IsValid() || !nview.IsOwner() || character.IsDead())
@@ -94,6 +96,8 @@ public class KrakenTentacle : MonoBehaviour
             ? upgrades : null;
     }
 
+    // Plans a sweep through the ship's tent at those sheltering there, now and then, through an opening it can pass.
+    // The plan goes into the network data so every machine shows the same sweep.
     private void ScheduleSweep(ZDO body)
     {
         WhiteHiltShipUpgrades upgrades = TargetShip(body);
@@ -134,6 +138,8 @@ public class KrakenTentacle : MonoBehaviour
         }
     }
 
+    // Whether the sweep can pass through the tent at some height without hitting anything but characters; moves its
+    // line to that height.
     private bool FindOpening(WhiteHiltShipUpgrades ship, Bounds shelter, float radius, ref Vector3 entry, ref Vector3 exit)
     {
         float height = entry.y;
@@ -160,6 +166,7 @@ public class KrakenTentacle : MonoBehaviour
         return false;
     }
 
+    // The sweep under way, if any: its ship, where it enters and leaves, and how far along it is.
     private bool TryGetSweep(out WhiteHiltShipUpgrades ship, out Vector3 entry, out Vector3 exit, out float phase, out long stamp)
     {
         ship = null;
@@ -183,6 +190,7 @@ public class KrakenTentacle : MonoBehaviour
         return true;
     }
 
+    // Shows the sweep: warns those aboard, stretches the tentacle across the tent and back, and hits those in its path.
     private void LateUpdate()
     {
         if (!TryGetSweep(out WhiteHiltShipUpgrades ship, out Vector3 entry, out Vector3 exit, out float phase, out long stamp))
@@ -227,6 +235,8 @@ public class KrakenTentacle : MonoBehaviour
         previousReach = reach;
     }
 
+    // Hits the sheltering players the sweep passed since the last frame, each at most once per sweep (noted in the
+    // network data).
     private void HitSweep(WhiteHiltShipUpgrades upgrades, Vector3 entry, Vector3 exit, float previous, float current, long stamp)
     {
         Bounds shelter = new(upgrades.m_tentCenter, upgrades.m_tentSize);

@@ -437,6 +437,7 @@ public static class DogPatches
         }
     }
 
+    // Gives a dog a care item used on it (a treat, a bandage or a coat), and whether it was one.
     private static bool TryGiveCareItem(DogCompanion dog, Humanoid user, ItemDrop.ItemData item)
     {
         DogCare care = dog.GetComponent<DogCare>();

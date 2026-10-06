@@ -102,6 +102,7 @@ public class SkidbladnirShip : MonoBehaviour
         return hull.Value.size != Vector3.zero && hull.Value.Contains(transform.InverseTransformPoint(point));
     }
 
+    // The box around the ship's own solid colliders, without the furnishings, in the ship's space.
     private Bounds MeasureHull()
     {
         Bounds? bounds = null;

@@ -209,6 +209,7 @@ public static class RequirementOverlay
         }
     }
 
+    // A thin bar along the bottom of a requirement's slot that fills with how much of it the chests hold.
     private static Transform CreateBar(Transform elementRoot)
     {
         GameObject root = new(BarName, typeof(RectTransform), typeof(Image));

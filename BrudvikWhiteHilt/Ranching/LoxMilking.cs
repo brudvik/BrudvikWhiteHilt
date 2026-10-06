@@ -150,6 +150,7 @@ public static class LoxMilking
         return seconds >= milkDays.Value * DaySeconds;
     }
 
+    // Registers lox milk as an item with the milk pail model.
     private static void AddItem()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= AddItem;

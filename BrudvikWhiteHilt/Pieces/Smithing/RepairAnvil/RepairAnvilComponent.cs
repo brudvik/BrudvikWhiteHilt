@@ -112,6 +112,8 @@ public class RepairAnvilComponent : MonoBehaviour, Hoverable, Interactable
         return worn;
     }
 
+    // Takes the cost of repairing a number of items from the player, checking all of it first so nothing is taken when
+    // something is missing.
     private static bool Pay(Player player, int items)
     {
         IReadOnlyList<(string Prefab, int Amount)> cost = RepairAnvilSettings.Cost();

@@ -89,6 +89,8 @@ public abstract class IronGratePieceBase : IWhiteHiltCustomPiece
         }
     }
 
+    // Makes a larger grate from the vanilla one: tiles each of its wear looks, widens the collider, and puts snap
+    // points along the new edges.
     private static void Assemble(GameObject prefab, int width, int height, int tileSize)
     {
         Transform root = prefab.transform;
@@ -121,6 +123,8 @@ public abstract class IronGratePieceBase : IWhiteHiltCustomPiece
         }
     }
 
+    // Repeats a look across the grate's size inside a new parent, so WearNTear can switch the whole set on and off as
+    // one.
     private static GameObject Tile(GameObject source, Transform root, int width, int height, int tileSize)
     {
         GameObject state = new($"WhiteHilt{source.name}");

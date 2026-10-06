@@ -163,6 +163,8 @@ public abstract class WeaponCoatingBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         Configure(effect, strength.Value);
     }
 
+    // Replaces the cloned item's look with the coating's model in the plant material and the coating's tint, and
+    // renders an icon from it.
     private void ApplyLook(CustomItem item)
     {
         if (VisualHelper.IsHeadless)

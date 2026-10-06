@@ -223,6 +223,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     {
     }
 
+    // Copies the combat stats of another weapon onto this one, so the White Hilt weapon can look like one item and
+    // fight like another.
     private static void CopyStats(ItemDrop.ItemData.SharedData target, string sourceName)
     {
         ItemDrop source = PrefabManager.Cache.GetPrefab<ItemDrop>(sourceName);
@@ -288,6 +290,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         GearUpgrades.BindConfig();
     }
 
+    // Replaces the cloned weapon's look with the White Hilt model and renders an icon from it. A broken look only logs
+    // a warning: the item must stay, or players would lose it from their inventories.
     private void TryApplyModel(IndestructibleItem item)
     {
         if (ModelName == null || VisualHelper.IsHeadless)

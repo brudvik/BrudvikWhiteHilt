@@ -161,6 +161,8 @@ public static class CraftAmountSelector
         return RectTransformUtility.RectangleContainsScreenPoint(root, Input.mousePosition, camera);
     }
 
+    // Adds the craft amount arrows to the crafting panel, again when the inventory is rebuilt for another world. A
+    // failure is logged and the panel works as in vanilla.
     private static void EnsureBuilt(InventoryGui gui)
     {
         if (builtFor == gui)

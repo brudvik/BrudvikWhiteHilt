@@ -61,6 +61,8 @@ public class TerrainPanel : MonoBehaviour
         instance.Build();
     }
 
+    // Shows the hoe's or the cultivator's panel while that tool is in hand and nothing else covers the screen, and
+    // refreshes its lines now and then.
     private void Update()
     {
         Player player = Player.m_localPlayer;
@@ -94,6 +96,7 @@ public class TerrainPanel : MonoBehaviour
         }
     }
 
+    // Builds the hoe's and the cultivator's panels once, with a button for every tool and setting and its key.
     private void Build()
     {
         float full = PanelWidth - Padding * 2f;
@@ -145,6 +148,8 @@ public class TerrainPanel : MonoBehaviour
         Finish(farmPanel);
     }
 
+    // Updates the panel's lines: the height under the aim, brush size, road and moat progress and the current settings
+    // of each button.
     private void Refresh(Player player, bool hoe)
     {
         string on = Localization.instance.Localize("$whitehilt_build_on");
@@ -216,6 +221,7 @@ public class TerrainPanel : MonoBehaviour
         return text;
     }
 
+    // A button with its key shown before its label, which runs an action for the local player.
     private Text AddButton(Transform parent, float x, float width, string token, ConfigEntry<KeyboardShortcut> key, Action<Player> onClick)
     {
         GameObject button = GUIManager.Instance.CreateButton(string.Empty, parent, new Vector2(0f, 1f), new Vector2(0f, 1f),

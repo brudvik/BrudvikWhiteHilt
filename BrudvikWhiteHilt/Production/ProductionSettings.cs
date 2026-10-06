@@ -113,6 +113,7 @@ public static class ProductionSettings
         return WhiteHiltConfig.BindLocal(Section + ".Stations", key, true, "Timers for: " + what);
     }
 
+    // The English texts of the production overview; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_prod_overview", "Production");

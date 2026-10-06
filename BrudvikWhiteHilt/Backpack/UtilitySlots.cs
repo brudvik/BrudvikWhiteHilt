@@ -279,6 +279,8 @@ public static class UtilitySlots
         }
     }
 
+    // Collects the accessories worn in the utility row and sums their eitr regeneration, weight and the equipment
+    // modifiers the game reads by reflection.
     private static void Collect(Player player)
     {
         worn.Clear();
@@ -311,6 +313,8 @@ public static class UtilitySlots
         }
     }
 
+    // Keeps the status effects of the worn accessories on the player, removing those of accessories taken off (unless
+    // worn gear gives the same).
     private static void ApplyStatusEffects(Player player)
     {
         HashSet<StatusEffect> desired = new();

@@ -54,6 +54,8 @@ public class ShipPassengerSync : MonoBehaviour
         }
     }
 
+    // On a passenger's machine: moves the ship's body towards the pose the owner last sent, through its velocity rather
+    // than by setting the position, so physics and the players riding it move smoothly instead of in jumps.
     private bool Step()
     {
         if (!ShipSettings.PassengerSmoothing.Value || body == null || nview == null || !nview.IsValid())

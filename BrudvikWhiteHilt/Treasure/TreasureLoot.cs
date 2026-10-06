@@ -67,6 +67,7 @@ public static class TreasureLoot
         }
     }
 
+    // Reads a configured loot list ("Item:min-max:weight, ..."), skipping unknown items.
     private static List<Entry> Parse(string text)
     {
         List<Entry> entries = new();

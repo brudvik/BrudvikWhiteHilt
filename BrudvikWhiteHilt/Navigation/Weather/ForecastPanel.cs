@@ -77,6 +77,8 @@ public static class ForecastPanel
             && (piece.GetComponent<MapTable>() != null || Utils.GetPrefabName(piece.gameObject) == CartographerDesk.StationPrefabName));
     }
 
+    // Shows the forecast for the biome the player is in: the weather now and in the coming periods, more of them with a
+    // higher exploration skill.
     private static void Refresh(Player player)
     {
         if (panel == null)
@@ -127,6 +129,7 @@ public static class ForecastPanel
         ((RectTransform)panel.transform).sizeDelta = new Vector2(Width, y + Padding);
     }
 
+    // Builds the forecast panel once, in the top right corner.
     private static void Create()
     {
         Vector2 topRight = new(1f, 1f);

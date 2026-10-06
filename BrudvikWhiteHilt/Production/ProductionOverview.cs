@@ -71,6 +71,7 @@ public static class ProductionOverview
         Refresh(player);
     }
 
+    // Lists what is working near the player: name, status and distance, sorted.
     private static void Refresh(Player player)
     {
         Vector3 position = player.transform.position;

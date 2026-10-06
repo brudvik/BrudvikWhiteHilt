@@ -179,6 +179,7 @@ public static class PortraitPins
             : "Portrait test pin added, but you have no portrait yet: it is taken in the main menu when the character is shown.";
     }
 
+    // Shows the player's own portrait in place of the map's arrow, turned with it if the heading marker is on.
     private static void UpdateOwn(Minimap map, RectTransform layer, bool large, bool show, float size, int font)
     {
         SetMarkerVisible(map.m_largeMarker, !show);
@@ -231,6 +232,7 @@ public static class PortraitPins
         }
     }
 
+    // Removes the portraits of pins that are gone from the map.
     private static void RemoveGone()
     {
         gone.Clear();
@@ -279,6 +281,8 @@ public static class PortraitPins
         return rect;
     }
 
+    // Creates a portrait view: the backdrop, the picture, a letter for players without one, the heading ring and the
+    // name.
     private static PortraitView Create(RectTransform layer)
     {
         GameObject root = new("Portrait", typeof(RectTransform));
@@ -348,6 +352,7 @@ public static class PortraitPins
         rect.anchoredPosition = Vector2.zero;
     }
 
+    // A round white disc for the backdrop, with a soft edge, made once.
     private static Sprite Disc()
     {
         if (disc != null)
@@ -374,6 +379,8 @@ public static class PortraitPins
         return disc;
     }
 
+    // The heading ring, white so the image can tint it, drawn from a signed distance so its edge is smooth at any size;
+    // with a tip pointing up for players whose heading is known.
     private static Sprite Ring(bool tip)
     {
         Sprite cached = tip ? ringWithTip : ring;
@@ -462,6 +469,10 @@ public static class PortraitPins
         public Text Name;
         public Image Heading;
 
+        /// <summary>
+        /// Shows a portrait, or a letter on a backdrop coloured from the name for players without one, with its name
+        /// and heading ring.
+        /// </summary>
         public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName, Quaternion? heading, Color ringColour)
         {
             ((RectTransform)transform).sizeDelta = new Vector2(size, size);

@@ -73,6 +73,8 @@ public static class RoofCatalog
         SoapstoneHearth.ApplyConfig();
     }
 
+    // Makes every roof piece once the vanilla prefabs are there: each covering in each shape and pitch, and a dragon
+    // gable for each pitch. A piece that fails is logged and skipped, so one bad combination does not cost all roofs.
     private static void Create()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= Create;
@@ -114,6 +116,9 @@ public static class RoofCatalog
         }
     }
 
+    // One roof piece: a clone of the vanilla roof of that shape and pitch (so snapping, support and the build table
+    // behave the same), stripped of its look and given a mesh built for the covering, with eaves that hide where the
+    // roof goes on, a hatch for the smoke hole, and the covering's health and fire resistance.
     private static void CreateRoof(RoofCovering covering, RoofShape shape, RoofPitch pitch)
     {
         RoofFamily family = RoofFamily.Get(covering);
@@ -203,6 +208,8 @@ public static class RoofCatalog
         }
     }
 
+    // Points the piece's wear states at the one built visual, as the vanilla wear meshes are gone, and gives it the
+    // covering's health; slate and turf do not burn.
     private static void SetUpWearNTear(GameObject prefab, GameObject visual, RoofFamily family)
     {
         WearNTear wearNTear = prefab.GetComponent<WearNTear>() ?? throw new InvalidOperationException($"{prefab.name} has no WearNTear.");
@@ -222,6 +229,8 @@ public static class RoofCatalog
         }
     }
 
+    // The smoke hole's hatch: a lid on a hinge that SmokeHoleHatch opens and shuts, with its own collider so rain and
+    // players are kept out when it is shut.
     private static void AddHatch(GameObject prefab, RoofPitch pitch)
     {
         HatchPlacement hatch = RoofMeshBuilder.Hatch(pitch);
@@ -250,6 +259,8 @@ public static class RoofCatalog
         component.m_closedRotation = hatch.Rotation;
     }
 
+    // The roof's edge boards, one per edge, and a point just past each edge where a roof piece further down would be.
+    // RoofEave hides an edge board when another roof piece continues there, so only the outer edge of a roof shows one.
     private static void AddEaves(GameObject prefab, RoofShape shape, RoofPitch pitch, RoofStyle style, Material[] shared)
     {
         RoofPart[] parts = RoofMeshBuilder.Eaves(shape);
@@ -435,6 +446,8 @@ public static class RoofCatalog
         return result;
     }
 
+    // A dragon gable for a pitch: a clone of the wood pole (for its support), with its look and colliders replaced by
+    // crossed boards that fit the roof's pitch.
     private static void CreateGable(RoofPitch pitch)
     {
         PieceConfig config = new()
@@ -523,6 +536,8 @@ public static class RoofCatalog
         }
     }
 
+    // Applies the config to a roof prefab: whether it can be built, its recipe and its health. A health change also
+    // reaches roof pieces already standing, as their WearNTear was copied from the prefab when placed.
     private static void Apply(GameObject prefab, bool enabled, string recipe, float? health)
     {
         if (prefab == null)

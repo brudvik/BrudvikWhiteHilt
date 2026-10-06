@@ -155,6 +155,9 @@ public static class MonsterRegistry
         };
     }
 
+    /// <summary>
+    /// Registers a monster's loot item as a recoloured clone of a vanilla item.
+    /// </summary>
     internal static void AddItem(string name, string copyFrom, Action<GameObject> recolor)
     {
         CustomItem item = new(name, copyFrom);
@@ -175,6 +178,7 @@ public static class MonsterRegistry
         ItemManager.Instance.AddItem(item);
     }
 
+    // Registers the Lindorm: a clone of a vanilla creature with its own model, speed, bite, loot and corpse.
     private static void AddLindorm()
     {
         float scale = MonsterSettings.LindormScale.Value;
@@ -243,6 +247,8 @@ public static class MonsterRegistry
         CreatureManager.Instance.AddCreature(creature);
     }
 
+    // Registers the giant spider: a clone of a vanilla creature with its own model, a bite that webs its prey, loot,
+    // corpse and night spawns in the Black Forest.
     private static GameObject AddSpider()
     {
         float scale = SpiderBaseScale * MonsterSettings.SpiderScale.Value;
@@ -336,6 +342,10 @@ public static class MonsterRegistry
         return prefab;
     }
 
+    /// <summary>
+    /// Gives a creature its own sounds from the bundle: clones of a vanilla sound effect with the clip swapped, so the
+    /// game's volume and mixing apply to them.
+    /// </summary>
     internal static void AddCreatureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon, string prefix, string attack = "attack")
     {
         GameObject source = (ai.m_alertedEffects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
@@ -408,6 +418,8 @@ public static class MonsterRegistry
         return web;
     }
 
+    // Registers the spider nest as a clone of the greydwarf nest that spawns spiders, and places it in the world as
+    // vegetation.
     private static void AddNest(GameObject spider)
     {
         GameObject nest = PrefabManager.Instance.CreateClonedPrefab(NestName, "Spawner_GreydwarfNest");
@@ -513,6 +525,8 @@ public static class MonsterRegistry
         }
     }
 
+    // A creature weapon with one attack: no chain or random variants, which would add a number to the animation
+    // trigger.
     private static CustomItem AddWeapon(string name, string trigger, HitData.DamageTypes damages, float range, float height, float angle, float rayWidth, float interval)
     {
         CustomItem weapon = new(name, BaseWeapon);
@@ -590,6 +604,10 @@ public static class MonsterRegistry
         return visual;
     }
 
+    /// <summary>
+    /// Gives a cloned creature its health, its weapon, the corpse instead of a ragdoll, and the hit and alert effects
+    /// of another creature.
+    /// </summary>
     internal static Humanoid SetUpHumanoid(GameObject prefab, float health, CustomItem weapon, GameObject corpse, string effectsFrom)
     {
         Humanoid humanoid = prefab.GetComponent<Humanoid>();

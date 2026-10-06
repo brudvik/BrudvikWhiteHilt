@@ -243,6 +243,7 @@ public static class DogOwnerTools
         return string.Join(";", new[] { position.x, position.y, position.z }.Select(value => value.ToString("F1", CultureInfo.InvariantCulture)));
     }
 
+    // Reads a position written as "x;y;z" with invariant numbers.
     private static bool TryParse(string text, out Vector3 position)
     {
         position = Vector3.zero;

@@ -139,6 +139,8 @@ public static class GroupTools
         Mode = ToolMode.Paste;
     }
 
+    // The group tools' keys. Each counts as a Ctrl combination used, so the vanilla meaning of the key is held back
+    // (CtrlComboUsed); the server can switch the tools off.
     private static void HandleKeys(Player player)
     {
         ConfigEntry<KeyboardShortcut>[] keys =
@@ -258,6 +260,9 @@ public static class GroupTools
         }
     }
 
+    // Copies the selection to paste elsewhere, or with cut moves it: a move takes the pieces down and puts them up
+    // again where they are pasted, so it is refused when any of them cannot be taken down (a ward, a station in use,
+    // contents).
     private static void CopySelection(Player player, bool cut)
     {
         List<Piece> pieces = BuildSelection.Pieces();
@@ -291,6 +296,8 @@ public static class GroupTools
         }
     }
 
+    // Tears down the selected pieces the player may tear down, with what tearing down by hand gives back, and records
+    // it for undo. Pieces that may not be torn down are left and counted.
     private static void DeleteSelection(Player player)
     {
         List<Piece> pieces = BuildSelection.Pieces();
@@ -312,6 +319,7 @@ public static class GroupTools
         }
     }
 
+    // Saves the selection as a blueprint under a name the player types.
     private static void SaveSelection(Player player)
     {
         List<Piece> pieces = BuildSelection.Pieces();
@@ -332,6 +340,8 @@ public static class GroupTools
         });
     }
 
+    // The select tool: a click adds or removes a piece, Shift with two clicks selects everything in a box, and
+    // PgUp/PgDn change the box's height.
     private static void TickSelect(Player player)
     {
         bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -393,6 +403,8 @@ public static class GroupTools
             KeyName(GroupSettings.KeyDelete), KeyName(GroupSettings.KeySave), KeyName(GroupSettings.KeyClear));
     }
 
+    // The paste tool: the copied pieces follow the aim, snapped to the grid if it is on, turned with the wheel and
+    // shifted with the nudge keys. What it costs and whether it fits is checked as it moves.
     private static void TickPaste(Player player)
     {
         if (pasteSource == null || pasteParts.Count == 0)
@@ -453,6 +465,8 @@ public static class GroupTools
         HintLine = string.Format(Localization.instance.Localize("$whitehilt_group_hint_paste"), pasteSource.Name, pasteParts.Count, status);
     }
 
+    // Places the pasted pieces. A copy is paid for like building; a move first takes the original pieces down without
+    // giving anything back, then places them for free, so moving costs nothing and yields nothing.
     private static void PlacePaste(Player player)
     {
         UpdateCheck(player, cutSource == null, force: true);
@@ -482,6 +496,8 @@ public static class GroupTools
         Exit();
     }
 
+    // The line and area tool for the held piece: the first click sets the start, the second places a row along a line
+    // or a grid over an area, each piece as many times as fits.
     private static void TickLine(Player player)
     {
         Piece piece = player.m_buildPieces?.GetSelectedPiece();
@@ -567,6 +583,8 @@ public static class GroupTools
             KeyName(GroupSettings.KeyLine), problem ?? Localization.instance.Localize("$whitehilt_group_ready"));
     }
 
+    // The pieces of a line: as many copies as fit along it, laid end to end along the piece's longer side, following
+    // the ground for low pieces such as floors and paths.
     private static void LineItems(Piece piece, Vector3 start, Vector3 end)
     {
         BuildPlacer.Range(piece, Vector3.right, out float minX, out float maxX);
@@ -597,6 +615,7 @@ public static class GroupTools
         }
     }
 
+    // The pieces of an area: a grid of copies, as many as fit each way, turned with the build rotation.
     private static void AreaItems(Player player, Piece piece, Vector3 start, Vector3 end)
     {
         BuildPlacer.Range(piece, Vector3.right, out float minX, out float maxX);

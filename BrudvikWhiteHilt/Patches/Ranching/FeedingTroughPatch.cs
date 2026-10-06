@@ -83,6 +83,7 @@ public static class FeedingTroughPatch
         __instance.m_animator.SetTrigger("consume");
     }
 
+    // Now and then, while the animal is hungry, looks for a trough with food it eats within reach.
     private static bool TryFindTrough(MonsterAI ai, FeedingState state, float dt)
     {
         state.SearchTimer += dt;

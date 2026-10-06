@@ -129,6 +129,8 @@ public static class ShipHud
         return $"{seconds / 60}:{seconds % 60:00}";
     }
 
+    // The ship's speed over the water, measured from its movement and smoothed, as a passenger's copy of the ship has
+    // no real velocity.
     private static float MeasureSpeed(Ship ship)
     {
         Vector3 position = ship.transform.position;

@@ -107,6 +107,7 @@ public static class HotbarSupply
         Show(element, ammo.GetIcon(), count.ToString(), low > 0 && count <= low ? lowColor : countColor);
     }
 
+    // Shows the supply under a hotbar slot: an icon and a count, laid out with or without the icon.
     private static void Show(GameObject element, Sprite sprite, string text, Color color)
     {
         Transform overlay = element.transform.Find(OverlayName);
@@ -158,6 +159,7 @@ public static class HotbarSupply
         }
     }
 
+    // Creates the supply overlay under a hotbar slot.
     private static Transform Create(Transform element)
     {
         if (GUIManager.Instance == null)

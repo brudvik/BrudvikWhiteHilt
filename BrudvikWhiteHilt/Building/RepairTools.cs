@@ -238,6 +238,8 @@ public static class RepairTools
         nextScan = 0f;
     }
 
+    // The player-built pieces within a radius that are damaged, nearest first. Health is read from the network data,
+    // which is what the owner wrote, as the local copy may lag.
     private static void FindDamaged(Vector3 point, float radius)
     {
         damaged.Clear();
@@ -301,6 +303,7 @@ public static class RepairTools
         piece.Invoke(nameof(WearNTear.ResetHighlight), HighlightSeconds);
     }
 
+    // The point the player looks at, within placement reach (the build camera's reach while it is on).
     private static bool Aim(Player player, out Vector3 point)
     {
         point = default;

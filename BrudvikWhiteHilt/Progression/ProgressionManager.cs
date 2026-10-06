@@ -130,6 +130,8 @@ public static class ProgressionManager
         return piecesChanged;
     }
 
+    // The tier an entry unlocks at: none if switched off, the start in full mode, otherwise its configured or default
+    // tier.
     private static ProgressionTier? ResolveTier(IWhiteHiltProgressionEntry entry, bool linear)
     {
         TierOverride tierOverride = WhiteHiltConfig.GetTierOverride(entry.Id);
@@ -172,6 +174,8 @@ public static class ProgressionManager
         return ProgressionTier.Start;
     }
 
+    // An entry's recipe: the configured or built-in one, with the tier's material added in linear mode. Remembered
+    // until the tier or recipe changes.
     private static Piece.Requirement[] GetRequirements(IWhiteHiltProgressionEntry entry, Piece.Requirement[] current, ProgressionTier? linearTier, int maxRequirements)
     {
         string prefabName = entry.GatedPrefabName;
@@ -218,6 +222,8 @@ public static class ProgressionManager
         return requirements;
     }
 
+    // Reads a configured recipe ("Item:amount[:perLevel], ..."), skipping and logging bad entries. A recipe with
+    // nothing usable keeps the built-in one, as it would otherwise be free.
     private static Piece.Requirement[] GetConfiguredRequirements(IWhiteHiltProgressionEntry entry, Piece.Requirement[] builtIn, int maxRequirements)
     {
         string text = WhiteHiltConfig.GetRecipeOverride(entry.Id);
@@ -266,6 +272,8 @@ public static class ProgressionManager
         return result;
     }
 
+    // Tells the player what a newly reached tier unlocks. The first check after loading a character only notes the
+    // tier, so old unlocks are not announced.
     private static void AnnounceNewTier(Player player, ProgressionTier unlockedTier, bool linear)
     {
         // The first evaluation per player is a baseline, so loading a character never announces old unlocks.

@@ -70,6 +70,8 @@ public class LindormBurrow : MonoBehaviour
         instances.Remove(this);
     }
 
+    // On the owner: sinks back into the ground when it has had no prey for a while, sooner at dawn if it only comes at
+    // night.
     private void Update()
     {
         if (!nview.IsValid())

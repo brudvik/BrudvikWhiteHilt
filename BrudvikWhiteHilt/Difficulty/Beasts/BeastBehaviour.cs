@@ -55,6 +55,7 @@ public class BeastBehaviour : MonoBehaviour
         instances.Remove(this);
     }
 
+    // On the owner: when night ends and no player is near, the beast vanishes in a puff.
     private void Update()
     {
         if (Time.time < nextCheck)

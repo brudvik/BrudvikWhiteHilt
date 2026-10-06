@@ -80,6 +80,8 @@ public class WasteWellComponent : MonoBehaviour
         }
     }
 
+    // Empties the well a while after it was closed, so a player who drops something by mistake can still open it and
+    // take it back.
     private void Dispose()
     {
         if (container.IsInUse())

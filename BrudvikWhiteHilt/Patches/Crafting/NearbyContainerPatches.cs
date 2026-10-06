@@ -412,6 +412,7 @@ public static class NearbyContainerPatches
         return counting.HasValue && Player.m_localPlayer != null && inventory == Player.m_localPlayer.GetInventory() && NearbyContainers.IsActive(counting.Value);
     }
 
+    // Shows or hides the small chest mark on a requirement that is (partly) taken from chests.
     private static void ShowChestIcon(Transform elementRoot, bool show)
     {
         Transform icon = elementRoot.Find($"res_icon/{ChestIconName}");

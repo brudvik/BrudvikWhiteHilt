@@ -110,6 +110,7 @@ public static class RoofMaterials
         }
     }
 
+    // Registers a roofing material as a recoloured clone of a vanilla item, with its own name and icon.
     private static void AddItem(string name, string copyFrom, Func<Color32, Color32> recolor)
     {
         CustomItem item = new(name, copyFrom);

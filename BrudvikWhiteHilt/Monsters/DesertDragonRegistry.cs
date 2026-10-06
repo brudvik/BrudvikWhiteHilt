@@ -96,6 +96,8 @@ public static class DesertDragonRegistry
         }
     }
 
+    // Registers the desert dragon: a clone of a vanilla creature with its own model, flame attack, loot, corpse and
+    // spawns in the Plains.
     private static void AddDragon()
     {
         float size = MonsterSettings.DragonScale.Value;

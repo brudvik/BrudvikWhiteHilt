@@ -167,6 +167,8 @@ public class QuartermasterPanel : MonoBehaviour
         }
     }
 
+    // Closes the window when the player walks away, dies or presses Escape, runs a job still waiting for its chests to
+    // be handed over, and puts the delete button back after its confirmation time has run out.
     private void Update()
     {
         Player player = Player.m_localPlayer;
@@ -375,6 +377,9 @@ public class QuartermasterPanel : MonoBehaviour
         filterButtons.Add(button);
     }
 
+    // Fills the store page from the listed entries, filtered by the chosen group and the search text. Slots are reused
+    // (ShowSlot) rather than rebuilt, as this runs on every keystroke in the search field. An entry is coloured red
+    // when a stock watch says it runs low and gold when a chest keeps it without limit.
     private void RefreshStore()
     {
         int shown = 0;
@@ -403,6 +408,8 @@ public class QuartermasterPanel : MonoBehaviour
         status.text = job != null ? status.text : Localization.instance.Localize(entries.Count == 0 ? "$whitehilt_qm_empty" : "$whitehilt_qm_take_hint");
     }
 
+    // Shows what the player, or the chosen cart or ship hold, carries that belongs in a chest around, so it can be put
+    // back with a click.
     private void RefreshBag()
     {
         List<QuartermasterStore.Entry> bag = QuartermasterStore.Returnable(Player.m_localPlayer, containers);
@@ -424,6 +431,9 @@ public class QuartermasterPanel : MonoBehaviour
         bagEmpty.transform.SetAsLastSibling();
     }
 
+    // Takes a stack of an entry, or with Shift adds it to the selected pack list. The chests holding it and the target
+    // are first handed over to this player (Begin), and the entry is read again once they are: another player may have
+    // taken some while the request was on its way.
     private void OnStoreClick(QuartermasterStore.Entry entry, bool shift)
     {
         if (shift)
@@ -530,6 +540,8 @@ public class QuartermasterPanel : MonoBehaviour
 
     // ---- Pack page -------------------------------------------------------------------------------------------------
 
+    // Lists what the pack page can pack for: the build table of the hammer in hand, the saved pack lists and the saved
+    // blueprints, and keeps the selection valid when the hammer is put away or a list is deleted.
     private void RefreshBuilds()
     {
         buildRows.ForEach(Destroy);
@@ -648,6 +660,9 @@ public class QuartermasterPanel : MonoBehaviour
         };
     }
 
+    // Shows what the selected build needs times the number of copies, against what the player or the target holds and
+    // what the chests can give. A row is red when there is not enough; on a pack list each row has buttons to change or
+    // remove the item.
     private void RefreshCost()
     {
         costRows.ForEach(Destroy);
@@ -708,6 +723,8 @@ public class QuartermasterPanel : MonoBehaviour
         RefreshCost();
     }
 
+    // Packs what the selected build needs into the inventory or the chosen cart or ship hold, once every chest holding
+    // any of it has been handed over. Says whether all of it was there.
     private void OnPack()
     {
         List<KeyValuePair<ItemDrop, int>> cost = BaseCost()
@@ -775,6 +792,8 @@ public class QuartermasterPanel : MonoBehaviour
         RefreshBuilds();
     }
 
+    // Deletes the selected pack list on the second click within a few seconds, so a list is not lost to a slip of the
+    // mouse.
     private void OnDeleteList()
     {
         PackList list = SelectedList();
@@ -836,6 +855,8 @@ public class QuartermasterPanel : MonoBehaviour
 
     // ---- Watch page ------------------------------------------------------------------------------------------------
 
+    // Shows every stock watch with what the chests hold now; a watch below its threshold is red. The same counts drive
+    // the warning on the table's hover text.
     private void RefreshWatches()
     {
         watchRows.ForEach(Destroy);
@@ -857,6 +878,8 @@ public class QuartermasterPanel : MonoBehaviour
         watchHint.text = Localization.instance.Localize(watches.Count == 0 ? "$whitehilt_qm_watch_empty" : "$whitehilt_qm_watch_hint");
     }
 
+    // Raises or lowers a watch's threshold, removing the watch at zero, and saves the watches on the table so every
+    // player sees them.
     private void ChangeWatch(string prefab, int change)
     {
         int index = watches.FindIndex(watch => watch.Key == prefab);
@@ -909,6 +932,8 @@ public class QuartermasterPanel : MonoBehaviour
         }
     }
 
+    // Builds one item slot of the store or the bag: background, icon and amount. Its click and hover handlers read the
+    // slot's current item, so a slot can be filled anew (ShowSlot) instead of built again.
     private ItemSlot CreateSlot(Transform parent)
     {
         GameObject slotObject = new("Slot", typeof(RectTransform));
@@ -1009,6 +1034,8 @@ public class QuartermasterPanel : MonoBehaviour
         return window;
     }
 
+    // Builds the window once: title, the three tabs, the target button that picks inventory, cart or ship, the three
+    // pages, the status line and the close button.
     private void BuildContents(Transform panel)
     {
         float inner = Width - Padding * 2f;
@@ -1053,6 +1080,8 @@ public class QuartermasterPanel : MonoBehaviour
         AddButton(panel, Localization.instance.Localize("$whitehilt_qm_close"), (inner - 160f) / 2f, Height - Padding - RowHeight, 160f, Close);
     }
 
+    // Builds the store page: the search field, the group filters, the grid of what the chests hold, and the bag with
+    // its unload button.
     private void BuildStorePage(Transform page, float y, float inner)
     {
         search = GUIManager.Instance.CreateInputField(page, Vector2.zero, Vector2.zero, Vector2.zero, InputField.ContentType.Standard,
@@ -1082,6 +1111,8 @@ public class QuartermasterPanel : MonoBehaviour
         bagContent = AddGrid(page, y, inner, BagHeight);
     }
 
+    // Builds the pack page: the list of builds with buttons to make, save and delete pack lists, the cost list, and the
+    // copies counter with the pack button.
     private void BuildPackPage(Transform page, float y, float inner, float bottom)
     {
         float listHeight = bottom - y - (RowHeight + Gap) * 2f;

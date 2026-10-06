@@ -161,6 +161,8 @@ public class ValkyrieStone : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces the cloned table's look with the Valkyrie stone model, with its knotwork and runes glowing gold from the
+    // model's own glow map. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

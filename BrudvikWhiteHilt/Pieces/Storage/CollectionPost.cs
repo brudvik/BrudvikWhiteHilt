@@ -109,6 +109,7 @@ public sealed class CollectionPost : IWhiteHiltCustomPiece
         box.size = size;
     }
 
+    // Builds the post's look: the post model with a small bed beside it and a warm light, so it can be found at night.
     private static void ApplyVisual(CustomPiece piece, Transform visual)
     {
         if (VisualHelper.IsHeadless) return;

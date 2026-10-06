@@ -182,6 +182,8 @@ public class ShipRoute : MonoBehaviour
         return Mathf.Repeat(Mathf.Atan2(to.x - from.x, to.z - from.z) * Mathf.Rad2Deg, 360f);
     }
 
+    // Finds the ship's other parts and registers the RPCs for the route: its markers, setting sail, stopping and
+    // messages to the captain.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -206,6 +208,8 @@ public class ShipRoute : MonoBehaviour
         instances.Remove(this);
     }
 
+    // Reads the markers and the path from the network data, only when it has changed, as unpacking them every frame
+    // would be wasteful.
     private void Read()
     {
         if (nview == null || !nview.IsValid())
@@ -249,6 +253,9 @@ public class ShipRoute : MonoBehaviour
         wasUnderway = underway;
     }
 
+    // On the ship's owner: drops markers the ship has passed, and while sailing a route steers along the path. The
+    // route stops when the helm is taken, nobody is aboard or the chart table is gone. Speed drops near the end, in
+    // turns, near land when exploring and when someone is standing on deck.
     private void FixedUpdate()
     {
         if (ship == null || nview == null || !nview.IsValid() || !nview.IsOwner())
@@ -496,6 +503,8 @@ public class ShipRoute : MonoBehaviour
         }
     }
 
+    // On the ship's owner: starts sailing the path a player plotted, remembering who gave the order. Stops holding
+    // course and weighs anchor, so nothing else fights the autopilot.
     private void RPC_Sail(long sender, ZPackage route, ZPackage snappedMarkers, bool explore)
     {
         if (!nview.IsOwner() || !ShipSettings.ShipRoutes.Value || !ShipSettings.RouteAutopilot.Value)

@@ -43,6 +43,10 @@ public static class HudCompassMarkers
         nextRefresh = 0f;
     }
 
+    /// <summary>
+    /// Shows the map's pins and custom targets on the compass strip. The list of pins is refreshed only now and then,
+    /// as walking it every frame would cost too much on a map with many pins.
+    /// </summary>
     internal static void Update(Vector3 here, float heading, float width, float height)
     {
         RefreshContext();
@@ -97,6 +101,8 @@ public static class HudCompassMarkers
         return ordinary && own && pin.m_save && HudCompassSettings.ShowOwnPins.Value;
     }
 
+    // Places one marker on the strip at its bearing, reusing a pooled image; a marker outside the strip's visible
+    // degrees is not shown.
     private static void Place(Vector3 target, Sprite sprite, Vector3 here, float heading, float width, float height, ref int used)
     {
         if (sprite == null || (Mathf.Approximately(target.x, here.x) && Mathf.Approximately(target.z, here.z))) return;

@@ -80,6 +80,8 @@ public static class KrakenRegistry
         CreatureManager.OnVanillaCreaturesAvailable += Add;
     }
 
+    // Registers the Kraken and its parts once the vanilla creatures are there. Each part is tried on its own, so one
+    // failing does not take the rest with it.
     private static void Add()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= Add;
@@ -114,6 +116,7 @@ public static class KrakenRegistry
         }
     }
 
+    // Registers a Kraken loot item as a tinted clone of a vanilla item.
     private static CustomItem AddItem(string name, string copyFrom, Color tint)
     {
         CustomItem item = new(name, copyFrom);
@@ -135,6 +138,7 @@ public static class KrakenRegistry
         return item;
     }
 
+    // Registers the Kraken's trophy as a darkened clone of the serpent's.
     private static void AddTrophy()
     {
         CustomItem trophy = new(TrophyName, "TrophySerpent");
@@ -161,6 +165,7 @@ public static class KrakenRegistry
         ItemManager.Instance.AddItem(trophy);
     }
 
+    // Registers the octopus as a clone of a fish with its own model, which swims by darting.
     private static void AddOctopus(Material template)
     {
         CustomItem octopus = new(OctopusName, "Fish8");
@@ -207,6 +212,8 @@ public static class KrakenRegistry
         return prefab;
     }
 
+    // Registers the Kraken's body: a clone of a root creature (it stands in one place) with its own model, health,
+    // attack, loot and corpse.
     private static void AddBody(Material template)
     {
         float scale = KrakenSettings.Scale.Value;
@@ -261,6 +268,7 @@ public static class KrakenRegistry
         CreatureManager.Instance.AddCreature(creature);
     }
 
+    // Registers a tentacle: a clone of a root creature with its own model, health and lash.
     private static void AddTentacle()
     {
         float scale = TentacleScale;
@@ -306,6 +314,8 @@ public static class KrakenRegistry
         CreatureManager.Instance.AddCreature(creature);
     }
 
+    // A creature weapon with one attack: no chain or random variants, which would add a number to the animation
+    // trigger.
     private static CustomItem AddWeapon(string name, string trigger, float damage, float range, float height, float angle, float rayWidth)
     {
         CustomItem weapon = new(name, "tentaroot_attack");
@@ -329,6 +339,7 @@ public static class KrakenRegistry
         return weapon;
     }
 
+    // Sets the Kraken's sounds to the configured volume, pitch and range.
     private static void ConfigureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon)
     {
         var effects = new[] { ai.m_idleSound, ai.m_alertedEffects, humanoid.m_hitEffects, humanoid.m_critHitEffects,
@@ -385,6 +396,7 @@ public static class KrakenRegistry
         };
     }
 
+    // Borrows the serpent's hit, death and alert effects, without its ragdoll, which would fall out of the sky.
     private static void BorrowSerpentEffects(Humanoid humanoid)
     {
         GameObject serpent = PrefabManager.Instance.GetPrefab("Serpent");

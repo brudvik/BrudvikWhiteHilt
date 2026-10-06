@@ -311,6 +311,8 @@ public class CarvedText : MonoBehaviour
 
     private void OnDisable() => TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(OnTextChanged);
 
+    // Each time TextMeshPro rebuilds the text, moves every vertex onto the stone's curved face, so the letters follow
+    // the stone instead of floating flat in front of it. The guard keeps the vertex update from calling this again.
     private void OnTextChanged(UnityEngine.Object changed)
     {
         if (laying || changed != text || Face == null || piece == null)

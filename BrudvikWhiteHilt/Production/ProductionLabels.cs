@@ -77,6 +77,7 @@ public static class ProductionLabels
         }
     }
 
+    // Shows labels over the nearest production pieces that have something to say, nearest first and a limited number.
     private static void Refresh(Player player)
     {
         Vector3 position = player.transform.position;
@@ -154,6 +155,7 @@ public static class ProductionLabels
         return lift;
     }
 
+    // Creates the canvas for the labels once the game's fonts are there.
     private static bool Ensure()
     {
         if (root != null)

@@ -93,6 +93,7 @@ public class GuestbookPanel : MonoBehaviour
         }
     }
 
+    // Builds the guestbook panel once: a title, the entries and a close button.
     private static GuestbookPanel Build()
     {
         GameObject panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),

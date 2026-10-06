@@ -74,6 +74,8 @@ public static class ShipSounding
         return eligible && danger != null ? $"<color={DangerColour}>{line}</color>" : line;
     }
 
+    // Warns once per encounter with shallow water or rocks ahead, with the ship's bell if set; a new warning comes only
+    // after the way has been clear for a while, so the warning does not repeat every few seconds along a shore.
     private static void UpdateWarning(Ship ship, string currentDanger, bool eligible)
     {
         if (!eligible)

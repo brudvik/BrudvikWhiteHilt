@@ -269,6 +269,9 @@ public class NetWinchComponent : MonoBehaviour
             .Sum(item => item.m_stack);
     }
 
+    // On the owner, while nobody has the winch open: adds up the time since the last tick, capped so a long absence
+    // does not give a huge catch at once, and catches fish at the rate the nets in reach give. Progress is kept in the
+    // network data, so it survives the area unloading.
     private void Tick()
     {
         if (nview == null || !nview.IsValid() || !nview.IsOwner() || container == null || container.IsInUse() || ZNet.instance == null)
@@ -326,6 +329,8 @@ public class NetWinchComponent : MonoBehaviour
         return nets[nets.Count - 1];
     }
 
+    // Catches one fish of the net's biome, sometimes a bigger one, and uses a bait if there is one. Each catch wears
+    // the net, and bycatch may add seaweed or, at sea, an amber pearl.
     private bool Catch(Inventory inventory, FishingNetComponent net)
     {
         Heightmap.Biome biome = WorldGenerator.instance.GetBiome(net.transform.position);

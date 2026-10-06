@@ -200,6 +200,8 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         return ScriptableObject.CreateInstance<SE_Stats>();
     }
 
+    // Creates the mead's status effect with its name, icon and duration. It keeps the vanilla drinking animation and
+    // effects, but not the vanilla category, which would cancel vanilla meads when drunk.
     private SE_Stats CreateEffect(ItemDrop.ItemData.SharedData shared)
     {
         SE_Stats effect = CreateEffectInstance();

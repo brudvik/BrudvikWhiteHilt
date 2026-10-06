@@ -259,6 +259,8 @@ public class GuestbookStand : MonoBehaviour, Interactable, Hoverable
         WatchRaids();
     }
 
+    // Writes a visit for each player who comes near after being away for a while. Whoever is already near when the book
+    // starts watching came before, so they are not written down again.
     private void WatchVisitors()
     {
         double now = ZNet.instance.GetTimeSeconds();
@@ -284,6 +286,8 @@ public class GuestbookStand : MonoBehaviour, Interactable, Hoverable
         primed = true;
     }
 
+    // Writes a raid when hostile creatures come near and attack, with what came, and rings the alarm bells; writes its
+    // end once it has been quiet for a while.
     private void WatchRaids()
     {
         float radius = GuestbookSettings.Radius.Value;

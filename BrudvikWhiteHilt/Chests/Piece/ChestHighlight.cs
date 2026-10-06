@@ -36,6 +36,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             highlight.Begin(chest, color, seconds);
         }
 
+        // Lights the chest in a colour for some seconds, or keeps an already lit one lit longer.
         private void Begin(Container chest, Color color, float seconds)
         {
             bool lit = glow != null && Time.time < until;
@@ -58,6 +59,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (!lit) nextSparkle = 0f;
         }
 
+        // Pulses the light and sparkles now and then, fades it out at the end, and removes itself when done.
         private void Update()
         {
             if (glow == null || container == null || Time.time >= until)

@@ -259,6 +259,8 @@ public static class MediaMode
         CharacterHidden = false;
     }
 
+    // Hides the HUD and the small map while the screen is cleared for photos and films, and gives back exactly what the
+    // player had shown before, as the player may have hidden the HUD already.
     private static void ApplyHud()
     {
         bool hide = HideUi;
@@ -290,6 +292,8 @@ public static class MediaMode
         }
     }
 
+    // Takes a photo: hides the HUD, waits two frames for it to be gone from the picture, saves the screenshot (at up to
+    // four times the screen size) and shows the HUD again.
     private static IEnumerator PhotoRoutine()
     {
         Capturing = true;
@@ -310,6 +314,8 @@ public static class MediaMode
         MediaOverlay.Toast(string.Format(Localization.instance.Localize("$msg_whitehilt_media_saved"), file));
     }
 
+    // Takes a small picture of the current view for a film point: hides the HUD, waits for the end of the frame,
+    // captures the screen and scales it down on the GPU.
     private static IEnumerator ThumbnailRoutine(Action<Texture2D> done)
     {
         Capturing = true;

@@ -118,6 +118,8 @@ public class MediaPanel : MonoBehaviour
         instance.SetInputBlocked(false);
     }
 
+    // Runs the overlay, closes the panel when the build camera is switched off, keeps the game from reading keys while
+    // a text field has focus, hides the panel while the screen is cleared and refreshes its labels now and then.
     private void Update()
     {
         MediaOverlay.Tick();
@@ -154,6 +156,8 @@ public class MediaPanel : MonoBehaviour
         }
     }
 
+    // Opens the panel on the films of this world, loaded the first time or after a world change, with an empty film if
+    // there are none.
     private void Open()
     {
         string world = ZNet.instance != null ? ZNet.instance.GetWorldName() : string.Empty;
@@ -175,6 +179,8 @@ public class MediaPanel : MonoBehaviour
         ShowFilm();
     }
 
+    // Builds the panel once: photo buttons, time and weather, the films with their title card settings, the list of
+    // points and the buttons to add, change and play them.
     private void Build()
     {
         panel = GUIManager.Instance.CreateWoodpanel(transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), Vector2.zero, PanelWidth, 800f, false);
@@ -316,6 +322,7 @@ public class MediaPanel : MonoBehaviour
         ShowFilm();
     }
 
+    // Deletes the film on the second click within a few seconds, so a film is not lost to a slip of the mouse.
     private void OnDeleteFilm()
     {
         if (Time.unscaledTime > deleteArmedUntil)
@@ -363,6 +370,7 @@ public class MediaPanel : MonoBehaviour
         MediaMode.TakeThumbnail(this, thumb => SetThumb(film, point, thumb));
     }
 
+    // Moves the selected point to the current view, keeping its timing, and takes a new thumbnail for it.
     private void OnUpdatePoint()
     {
         Film film = CurrentFilm;
@@ -484,6 +492,7 @@ public class MediaPanel : MonoBehaviour
         RefreshLabels();
     }
 
+    // Updates the buttons' labels from the current settings and the selected point.
     private void RefreshLabels()
     {
         string on = Localization.instance.Localize("$whitehilt_build_on");
@@ -504,6 +513,7 @@ public class MediaPanel : MonoBehaviour
         transitionLabel.text = Localization.instance.Localize(smooth ? "$whitehilt_media_smooth" : "$whitehilt_media_linear");
     }
 
+    // Lists the film's points, with a note when there are none yet.
     private void RefreshList()
     {
         rows.ForEach(Destroy);
@@ -528,6 +538,7 @@ public class MediaPanel : MonoBehaviour
         RefreshLabels();
     }
 
+    // One point of the film as a row: its thumbnail, its name and its timing; clicking it selects it.
     private GameObject CreateRow(Film film, int index, float width)
     {
         FilmPoint point = film.Points[index];
@@ -585,6 +596,7 @@ public class MediaPanel : MonoBehaviour
         return label;
     }
 
+    // A button on the panel, which does nothing while there is no local player.
     private Text AddButton(float x, float width, Action onClick)
     {
         GameObject button = GUIManager.Instance.CreateButton(string.Empty, panel.transform, new Vector2(0f, 1f), new Vector2(0f, 1f),

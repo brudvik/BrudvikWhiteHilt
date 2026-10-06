@@ -226,6 +226,8 @@ public static class PortalFx
         return effect;
     }
 
+    // Loads the rune ring and spark textures once from the embedded resources; if that fails the effects run without
+    // them rather than fail every frame.
     private static void LoadTextures()
     {
         if (sparkTexture != null || texturesFailed || VisualHelper.IsHeadless)

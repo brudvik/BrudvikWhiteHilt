@@ -129,6 +129,8 @@ public static class BuildPlacer
             && piece.GetComponent<TerrainModifier>() == null && piece.GetComponent<TerrainOp>() == null;
     }
 
+    // Why a piece may not be placed at a spot, or null if it may: a place where building is not allowed, someone else's
+    // ward, the wrong biome, or the same piece already there facing the same way.
     private static string CheckSpot(Piece piece, Vector3 position, Quaternion rotation)
     {
         if (Location.IsInsideNoBuildLocation(position))
@@ -204,6 +206,7 @@ public static class BuildPlacer
         Span(corners, localAxis, out min, out max);
     }
 
+    // How far a set of points reaches along an axis, from its lowest to its highest.
     private static void Span(List<Vector3> points, Vector3 axis, out float min, out float max)
     {
         min = 0f;

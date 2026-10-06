@@ -88,6 +88,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (root != null) root.SetActive(false);
         }
 
+        // Fills the panel with the chest's contents: how full it is, its progress towards unlimited, and an icon per
+        // stack with its amount or the unlimited mark.
         private void Refresh(Inventory inventory, ChestCategory category)
         {
             var mode = supply.Mode;
@@ -124,6 +126,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (hidden > 0) more.text = Texts.Get("bsc_hover_more", hidden);
         }
 
+        // Builds the panel on the HUD, using the HUD's font; MAX stands in for the infinity sign where the font lacks
+        // it. The HUD is made anew for every world, so this is done again then.
         private bool TryBuild()
         {
             var hud = Hud.instance;

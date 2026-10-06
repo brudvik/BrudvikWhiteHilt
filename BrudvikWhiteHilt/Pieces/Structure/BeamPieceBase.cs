@@ -144,6 +144,7 @@ public abstract class BeamPieceBase : IWhiteHiltCustomPiece
         }
     }
 
+    // Shapes the clone of the vanilla beam: stretched longer, doubled side by side, or stretched and tilted.
     private void Reshape(Transform root)
     {
         Vector3 axis = Axis.normalized;
@@ -262,6 +263,8 @@ public abstract class BeamPieceBase : IWhiteHiltCustomPiece
         return (name == "new" || name == "worn" || name == "wornbroken") && child.childCount > 0;
     }
 
+    // Moves each beam in the hammer's list to just after the vanilla beams it was made from, so they are found together
+    // instead of at the end.
     private static void PlaceAfterOriginals()
     {
         PieceTable table = PieceManager.Instance.GetPieceTable(PieceTables.Hammer);

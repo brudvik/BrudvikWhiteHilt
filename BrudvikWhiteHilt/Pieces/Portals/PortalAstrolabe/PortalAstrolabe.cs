@@ -132,6 +132,9 @@ public class PortalAstrolabe : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces the cloned table's look with the astrolabe model, lit like other pieces, and makes only its amethyst
+    // glow by an emission map made from the clearly purple pixels of the texture. Should anything be missing, the
+    // vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

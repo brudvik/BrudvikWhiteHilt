@@ -23,6 +23,8 @@ public static class BeastRegistry
         CreatureManager.OnVanillaCreaturesAvailable += AddBeasts;
     }
 
+    // Registers every beast once the vanilla creatures are there, each on its own so one failing does not take the
+    // rest.
     private static void AddBeasts()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= AddBeasts;
@@ -60,6 +62,7 @@ public static class BeastRegistry
         return item;
     }
 
+    // Registers a beast as a faster, darker, glowing clone of a creature, dropping its own trophy.
     private static void CreateCreature(BeastDefinition beast, GameObject trophy)
     {
         string name = Translations.Token(beast.NameKey);
@@ -134,6 +137,7 @@ public static class BeastRegistry
         });
     }
 
+    // A red light in the beast's body, so it is seen coming at night.
     private static void AddGlow(GameObject prefab)
     {
         if (VisualHelper.IsHeadless)

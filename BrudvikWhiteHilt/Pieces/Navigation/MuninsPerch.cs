@@ -132,6 +132,8 @@ public class MuninsPerch : IWhiteHiltCustomPiece
         }
     }
 
+    // Builds the perch's look: the post model with the raven on top, its eyes recoloured to glow gold. Should anything
+    // be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

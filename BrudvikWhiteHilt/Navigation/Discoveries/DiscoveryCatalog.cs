@@ -131,6 +131,10 @@ public static class DiscoveryCatalog
         Translations.AddEnglish("whitehilt_disc_off", "off");
     }
 
+    /// <summary>
+    /// The biomes each kind of location can be found in, read from the world's location list, so the panel can mark
+    /// what is found in the current biome.
+    /// </summary>
     internal static Dictionary<string, Heightmap.Biome> GetLocationBiomes()
     {
         Dictionary<string, Heightmap.Biome> result = new();

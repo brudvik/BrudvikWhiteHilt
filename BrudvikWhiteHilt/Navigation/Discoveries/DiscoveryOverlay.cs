@@ -211,6 +211,8 @@ public static class DiscoveryOverlay
         }
     }
 
+    // Places the discovery markers on the map: those of one kind that would overlap at this zoom are merged into one
+    // marker with a count, so the map does not drown in icons.
     private static void Layout(Minimap map, Layer layer, Rect uv, float size, bool large)
     {
         Vector2 rect = layer.Root.rect.size;
@@ -422,6 +424,9 @@ public static class DiscoveryOverlay
             label.GetComponent<Outline>().effectColor = Color.black;
         }
 
+        /// <summary>
+        /// Shows one marker: its icon, a coloured rim, and a count when it stands for more than one.
+        /// </summary>
         public void Show(Vector2 position, float size, Sprite sprite, Color rimColour, int number)
         {
             if (!root.activeSelf)

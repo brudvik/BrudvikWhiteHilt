@@ -20,6 +20,7 @@ public static class TreasurePatches
         __instance.gameObject.AddComponent<TreasureService>();
     }
 
+    // Gives a bought treasure map its id and price, and asks the server to bury its treasure.
     [HarmonyPatch(typeof(Trader), nameof(Trader.OnBought))]
     [HarmonyPostfix]
     private static void BoughtPostfix(Trader.TradeItem item)
@@ -45,6 +46,7 @@ public static class TreasurePatches
         }
     }
 
+    // Using a treasure map opens it, or asks for its site if it has none yet.
     [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UseItem))]
     [HarmonyPrefix]
     private static bool UseItemPrefix(Humanoid __instance, ItemDrop.ItemData item)

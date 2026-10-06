@@ -256,6 +256,8 @@ public static class NearbyContainers
         return Count(use, name, quality, true);
     }
 
+    // How many of an item the nearby chests hold, remembered for a moment, as the game asks for every requirement of
+    // every recipe each time the panel refreshes.
     private static int Count(Use use, string name, int quality, bool all)
     {
         if (IsExcluded(name))

@@ -162,6 +162,8 @@ public static class FilmStore
         return Path.Combine(Paths.ConfigPath, "BrudvikWhiteHilt", "media", world);
     }
 
+    // Writes a film to a package: a version number first, so older files can still be read when the format changes,
+    // then its title card settings and every point with its thumbnail.
     private static ZPackage Write(Film film)
     {
         ZPackage package = new();
@@ -187,6 +189,7 @@ public static class FilmStore
         return package;
     }
 
+    // Reads a film written by Write; the version number is read past for now, as there is only one format.
     private static Film Read(ZPackage package, string id)
     {
         package.ReadInt();
@@ -219,6 +222,7 @@ public static class FilmStore
         return film;
     }
 
+    // A thumbnail as raw RGB bytes, three per pixel: small, and readable without any image codec.
     private static byte[] ThumbBytes(Texture2D thumb)
     {
         if (thumb == null)
@@ -238,6 +242,7 @@ public static class FilmStore
         return bytes;
     }
 
+    // A thumbnail from the bytes ThumbBytes wrote, or null if they are not of the right size.
     private static Texture2D ThumbFromBytes(byte[] bytes)
     {
         if (bytes == null || bytes.Length != FilmPoint.ThumbWidth * FilmPoint.ThumbHeight * 3)

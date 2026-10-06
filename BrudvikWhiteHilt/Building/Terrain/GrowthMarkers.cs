@@ -80,6 +80,8 @@ public static class GrowthMarkers
         }
     }
 
+    // Finds the plants (and with regrow timers on, the picked bushes) around the player and puts a label over each: how
+    // long until it grows, or why it does not.
     private static void Refresh(Player player)
     {
         targets.Clear();
@@ -178,6 +180,7 @@ public static class GrowthMarkers
         return minutes >= 60 ? $"{minutes / 60} h {minutes % 60} min" : $"{minutes} min";
     }
 
+    // Creates the overlay canvas for the labels once the game's fonts are loaded.
     private static bool Ensure()
     {
         if (root != null)

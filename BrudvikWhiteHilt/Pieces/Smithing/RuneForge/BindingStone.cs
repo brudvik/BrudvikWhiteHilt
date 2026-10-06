@@ -100,6 +100,8 @@ public class BindingStone
         box.size = colliderSize;
     }
 
+    // Builds the binding stone's look on the table's plain material, makes its runes and core glow from the model's
+    // emission map, and adds a light. Should anything be missing, the vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

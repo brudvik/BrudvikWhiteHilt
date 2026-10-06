@@ -65,6 +65,9 @@ public static class DefenseModelBuilder
         AddTorchFlames(visualRoot, placements.Where(placement => placement.Mesh == TorchMesh));
     }
 
+    // Combines the placements of one group into as few meshes as possible: one per material, and apart for small
+    // details, which cast no shadow. Fewer renderers means fewer draw calls, which matters for walls built of many
+    // vanilla parts.
     private static void BuildGroup(Transform parent, Matrix4x4 toParent, List<Placement> placements, List<Renderer> details, List<Renderer> mains)
     {
         Dictionary<(Material, bool), List<CombineInstance>> batches = new();
@@ -159,6 +162,8 @@ public static class DefenseModelBuilder
         return material;
     }
 
+    // Turns a layout piece into a flat list of placements, following pieces made of other pieces. The depth limit stops
+    // a layout that refers to itself from recursing forever.
     private static void Flatten(DefenseLayout layout, DefensePieceData piece, Matrix4x4 parent, List<Placement> placements, int depth)
     {
         foreach (DefensePartData part in piece.parts)

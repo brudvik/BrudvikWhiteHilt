@@ -94,6 +94,8 @@ namespace BrudvikWhiteHilt.Chests
             return module;
         }
 
+        // Sets up the chest feature: the settings, the catalogues of items and biomes, the world's progress and the
+        // panels, and subscribes to the events the Harmony patches raise. The patches stay small; the logic lives here.
         private void Initialize()
         {
             Texts.Register($"{ResourceRoot}.Chests");
@@ -218,6 +220,10 @@ namespace BrudvikWhiteHilt.Chests
             return chestSupply.AbsorbsDeposit(FindPiece(container).CustomPieceConfig.ItemCategory, container.GetInventory(), item);
         }
 
+        /// <summary>
+        /// Puts an item a collection post found into this chest, if the chest takes it: on its owner and while nobody
+        /// has it open. Stacks are topped up first, then empty slots are used; returns how many were taken.
+        /// </summary>
         internal int DepositCollected(Container container, ItemDrop.ItemData source)
         {
             if (CollectionPriority(container, source) < 0 || container.m_nview == null || !container.m_nview.IsValid()

@@ -82,6 +82,7 @@ public sealed class MinimapEdgeArrow
         }
     }
 
+    // Creates the arrow and its distance label on the small map, again when the map is rebuilt for another world.
     private void Ensure(Minimap map)
     {
         Transform parent = map.m_mapImageSmall.transform;

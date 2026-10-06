@@ -174,6 +174,8 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             : "$whitehilt_autopilot_off");
     }
 
+    // Finds the ship's parts and registers its RPCs: holding course, the shallow water warning, a push off the shore
+    // and the halt.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -193,6 +195,9 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         wasOwner = nview.IsOwner();
     }
 
+    // Holds the course on the owner's machine while nobody is at the helm: the heading the ship had when the helmsman
+    // let go. Now and then it looks ahead for shallow water and stops the ship before it runs aground. Nobody aboard
+    // ends the held course.
     private void FixedUpdate()
     {
         if (ship == null || nview == null || !nview.IsValid() || !nview.IsOwner() || !HoldingCourse)
@@ -262,6 +267,8 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         return false;
     }
 
+    // When this machine becomes the ship's owner, takes over the sail and rudder the old owner left in the network
+    // data, so the ship does not drop its sail or turn when ownership changes hands.
     private void UpdateOwnerControls()
     {
         if (upgrades == null || nview == null || !nview.IsValid() || ship == null)
@@ -281,6 +288,9 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         wasOwner = owner;
     }
 
+    // Hands the ship to whoever stands at the helm. The owner simulates the physics, and a helmsman on another machine
+    // steering a ship owned elsewhere feels lag. Not while a chest aboard is open (or about to be), and the chests are
+    // saved first so nothing in them is lost in the handover.
     private void UpdateHelmOwnership()
     {
         if (upgrades == null || !ShipSettings.HelmOwnership.Value || ship == null || nview == null || !nview.IsValid()
@@ -333,6 +343,8 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
         }
     }
 
+    // With diagnostics on, writes to the log now and then who owns the ship, who is at the helm, and the longest gaps
+    // between network updates and frames: what is needed to find the cause of a jerky ship in multiplayer.
     private void Update()
     {
         if (!ShipSettings.ShipDiagnostics.Value || upgrades == null || ship == null || nview == null || !nview.IsValid()

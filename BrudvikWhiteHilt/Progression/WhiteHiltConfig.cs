@@ -39,6 +39,7 @@ public static class WhiteHiltConfig
         }),
     };
 
+    // Settings that no longer exist; they are removed from the config file so it does not keep dead entries.
     private static readonly (string Section, string Key)[] RetiredEntries =
     {
         ("Gear.Indestructible", "ArmorBonus"),
@@ -349,6 +350,8 @@ public static class WhiteHiltConfig
         return AccessTools.Property(typeof(ConfigFile), "OrphanedEntries")?.GetValue(configFile) as Dictionary<ConfigDefinition, string>;
     }
 
+    // Carries the values of renamed sections and settings over to their new names, so a player's config survives a
+    // rename.
     private static void MoveRenamedEntries()
     {
         var orphans = Orphans();

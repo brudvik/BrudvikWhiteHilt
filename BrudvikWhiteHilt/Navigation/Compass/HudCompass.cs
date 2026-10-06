@@ -110,6 +110,8 @@ public static class HudCompass
         return image;
     }
 
+    // Creates the compass strip on the HUD, again after the HUD is rebuilt for another world: a masked strip with a
+    // background, its ticks, the markers and the centre indicator.
     private static void Ensure()
     {
         Transform parent = Hud.instance.m_rootObject.transform;
@@ -140,6 +142,8 @@ public static class HudCompass
         indicator.rectTransform.localRotation = Quaternion.Euler(0f, 0f, indicator.sprite != null ? 180f : 45f);
     }
 
+    // Creates a tick for every bearing the settings ask for (with degrees or a direction as its label), only when those
+    // settings changed.
     private static void RebuildTicks()
     {
         if (tickInterval == HudCompassSettings.TickInterval.Value && mediumInterval == HudCompassSettings.MediumTickInterval.Value

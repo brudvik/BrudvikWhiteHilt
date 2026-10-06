@@ -206,6 +206,8 @@ public class ShipChartTable : MonoBehaviour
         return $"\n[<color=yellow><b>$KEY_AltPlace + $KEY_Use</b></color>] $whitehilt_charttable_take\n$whitehilt_charttable_sight: {radius} m";
     }
 
+    // Registers the RPC for setting up and taking down the chart table, and drops the table when the ship is destroyed
+    // so it is not lost with it.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -246,6 +248,8 @@ public class ShipChartTable : MonoBehaviour
         }
     }
 
+    // On the ship's owner: sets the table up or takes it down. The owner decides, so two players doing it at once
+    // cannot both win; the loser gets their table back.
     private void RPC_Set(long sender, bool installed)
     {
         if (!nview.IsOwner())

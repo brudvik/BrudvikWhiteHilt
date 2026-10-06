@@ -42,6 +42,8 @@ public class SkillScrolls : MonoBehaviour
         refreshTimer = 0f;
     }
 
+    // Now and then shows one more scroll on the table for every few levels of exploration, as a visible sign of the
+    // skill.
     private void Update()
     {
         refreshTimer -= Time.deltaTime;

@@ -122,6 +122,8 @@ public class ShipMooring : MonoBehaviour
         }
     }
 
+    // Keeps a moored ship still by freezing its sideways movement and turning (bobbing stays), on the owner's machine.
+    // Lets it go if its post is gone from the world, not merely out of reach.
     private void FixedUpdate()
     {
         if (nview == null || !nview.IsValid() || !nview.IsOwner() || body == null)
@@ -162,6 +164,7 @@ public class ShipMooring : MonoBehaviour
         }
     }
 
+    // Draws the mooring rope from the post to the ship, hanging in a curve that sags more the longer it is.
     private void LateUpdate()
     {
         GameObject post = IsMoored && ZNetScene.instance != null ? ZNetScene.instance.FindInstance(Post) : null;
@@ -215,6 +218,7 @@ public class ShipMooring : MonoBehaviour
         return (bow - post).sqrMagnitude < (stern - post).sqrMagnitude ? bow : stern;
     }
 
+    // The rope's line renderer, with one shared plain-coloured material.
     private LineRenderer CreateRope()
     {
         if (ropeMaterial == null)

@@ -268,6 +268,8 @@ public static class GearUpgrades
         return string.IsNullOrEmpty(extra) ? cost : $"{cost}, {extra}";
     }
 
+    // Reads a configured list of upgrade materials ("Item:amount, ..."), skipping and logging entries that are not real
+    // items or amounts.
     private static List<Piece.Requirement> Parse(string text, int from, int to)
     {
         List<Piece.Requirement> requirements = new();
@@ -324,6 +326,10 @@ public static class GearUpgrades
 
         public int MaxQuality => VanillaMaxQuality + biomes.TakeWhile(entry => !string.IsNullOrWhiteSpace(entry.Value)).Count();
 
+        /// <summary>
+        /// The extra upgrade requirements of this gear, parsed again only when the configured text changed. The swamp
+        /// list covers the vanilla levels; each further biome adds one level above the vanilla maximum.
+        /// </summary>
         public Piece.Requirement[] GetUpgrades()
         {
             if (ObjectDB.instance == null)

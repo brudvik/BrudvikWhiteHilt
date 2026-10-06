@@ -53,6 +53,8 @@ public class ConfigButton : MonoBehaviour
         instance.Build();
     }
 
+    // Builds the small corner panel once: a wooden panel with a title, a line of text and the button that opens the
+    // settings window. It starts hidden and is shown in the menus only.
     private void Build()
     {
         Vector2 corner = Vector2.zero;

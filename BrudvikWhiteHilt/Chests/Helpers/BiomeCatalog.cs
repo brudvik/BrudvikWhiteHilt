@@ -178,6 +178,10 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 AddPlacements(placements);
             }
 
+            /// <summary>
+            /// Adds the creatures that spawn in each biome, from the spawn lists in the game scene. Raids are left out,
+            /// and so are spawns that only start after a boss, for creatures that also live elsewhere from the start.
+            /// </summary>
             public void AddSpawns()
             {
                 var placements = new List<Placement>();
@@ -282,6 +286,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 return result;
             }
 
+            // Adds what a prefab yields in a biome, following what it turns into: trees into logs, rocks into pieces,
+            // spawners into creatures. The depth limit stops a chain that loops back on itself.
             private void AddSources(GameObject? prefab, Biome biome, int depth)
             {
                 if (prefab == null || depth > MaxSourceDepth) return;

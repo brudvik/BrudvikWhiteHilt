@@ -312,6 +312,7 @@ public static class BuildToolSettings
         };
     }
 
+    // The English texts of the build tools; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_build_toolbar", "Build tools");

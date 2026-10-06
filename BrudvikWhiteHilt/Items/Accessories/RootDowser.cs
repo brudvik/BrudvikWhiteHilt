@@ -95,6 +95,8 @@ public class RootDowser : IWhiteHiltCustomItem
         }
     }
 
+    // A copy of the Wishbone's ping effects with their own prefabs: higher pitched and green, so the root dowser is
+    // told apart from the Wishbone by ear and eye. The cloned prefabs are made once and reused.
     private static EffectList CreateSignal(EffectList source)
     {
         return new EffectList
@@ -131,6 +133,7 @@ public class RootDowser : IWhiteHiltCustomItem
         };
     }
 
+    // Turns the cloned Wishbone green and renders an icon from it.
     private static void ApplyVisual(CustomItem dowser)
     {
         if (VisualHelper.IsHeadless)

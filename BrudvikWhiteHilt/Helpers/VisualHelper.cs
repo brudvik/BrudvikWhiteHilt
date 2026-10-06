@@ -401,6 +401,7 @@ public static class VisualHelper
         return true;
     }
 
+    // The bounds of a set of meshes in the root's space, from the eight corners of each mesh's own bounds.
     private static Bounds GetLocalBounds(Transform root, MeshRenderer[] renderers)
     {
         Bounds bounds = default;

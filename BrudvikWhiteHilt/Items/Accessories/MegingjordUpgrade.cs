@@ -102,6 +102,8 @@ public static class MegingjordUpgrade
         return own + Mathf.Max(0, quality - 1) * CarryWeightPerLevel.Value;
     }
 
+    // Adds upgrade levels to the vanilla Megingjord at the forge. The amounts are per level with no base amount, so the
+    // recipe only upgrades and never crafts a new belt, and nothing is given back.
     private static void AddRecipe()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= AddRecipe;

@@ -125,6 +125,8 @@ public class PortalFxPlayer : MonoBehaviour
         }
     }
 
+    // Plays the travel effect on a player as their network data says: departing, incoming or arriving, and since when.
+    // Every machine reads the same data, so everyone sees the same effect without an RPC per frame.
     private void LateUpdate()
     {
         if (visual == null || VisualHelper.IsHeadless)
@@ -227,6 +229,8 @@ public class PortalFxPlayer : MonoBehaviour
         }
     }
 
+    // Poses the player for a phase of the effect: lifting, spinning and stretching thin as they depart, hidden while in
+    // transit, and growing back as they arrive, with sparks that grow with it.
     private void Pose(int phase, float elapsed)
     {
         float flashAt = PortalFxSettings.FlashAt.Value;
@@ -330,6 +334,7 @@ public class PortalFxPlayer : MonoBehaviour
         incoming = null;
     }
 
+    // Sets how many sparks fly, in the portal's colour; the spark system is only made the first time any are needed.
     private void SetSparkRate(float rate)
     {
         if (rate <= 0f && sparks == null)

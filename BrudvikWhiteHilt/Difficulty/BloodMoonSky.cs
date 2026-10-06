@@ -73,6 +73,7 @@ public static class BloodMoonSky
         }
     }
 
+    // The red gradient the aurora takes during a blood moon, made once.
     private static Texture2D AuroraGradient()
     {
         if (auroraGradient != null)

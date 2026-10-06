@@ -217,6 +217,7 @@ public static class PortalMapPins
         return GetIcon(new PortalMapEntry());
     }
 
+    // A pin's label: the ship's name, or the portal's name with whether it is private, for a group or for a guild.
     private static string Label(PortalMapEntry entry)
     {
         if (entry.Kind == PortalMapEntry.ShipKind)

@@ -123,6 +123,7 @@ public class RootDowsingEffect : StatusEffect
             && plant.m_itemPrefab != null && RootDowsingSettings.IsTrackedItem(plant.m_itemPrefab.name) && plant.CanBePicked();
     }
 
+    // Makes the dowsed root glow green once the player is close enough, made the first time it is needed.
     private void UpdateGlow(float distance)
     {
         if (RootDowsingSettings.GlowDistance.Value <= 0f || distance > RootDowsingSettings.GlowDistance.Value)

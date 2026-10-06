@@ -32,6 +32,8 @@ public class WhiteHiltBowFlex : MonoBehaviour
     private float pull;
     private float applied = -1f;
 
+    // Prepares a copy of the bow's mesh for bending: finds the string's vertices and weighs each limb vertex by how far
+    // out it is, so the tips bend most.
     private void Start()
     {
         owner = GetComponentInParent<Humanoid>();
@@ -62,6 +64,8 @@ public class WhiteHiltBowFlex : MonoBehaviour
         }
     }
 
+    // Bends the bow as it is drawn: the string follows the hand, the limbs bend back, and on release the string snaps
+    // forward. The draw is read from the animator on others' machines, as only the owner knows its exact value.
     private void LateUpdate()
     {
         float target = 0f;

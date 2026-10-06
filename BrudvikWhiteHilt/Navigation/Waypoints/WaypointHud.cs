@@ -92,6 +92,7 @@ public static class WaypointHud
         root.anchoredPosition = new Vector2(0f, -top);
     }
 
+    // Creates the arrow and label at the top of the HUD, again after the HUD is rebuilt for another world.
     private static bool Ensure(Minimap map)
     {
         Transform parent = Hud.instance.m_rootObject != null ? Hud.instance.m_rootObject.transform : null;

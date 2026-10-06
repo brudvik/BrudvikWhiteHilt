@@ -61,6 +61,8 @@ public class MapAreaService : MonoBehaviour
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_MapAreas);
     }
 
+    // On the server: scans the world now and then, a few sectors per frame. A failed scan is logged and retried later
+    // instead of stopping the feature.
     private void Update()
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || ZNetScene.instance == null)
@@ -88,6 +90,8 @@ public class MapAreaService : MonoBehaviour
         }
     }
 
+    // On a client: takes the areas the server found; anything not from the server is ignored, so a player cannot draw
+    // areas on others' maps.
     private void RPC_MapAreas(long sender, ZPackage package)
     {
         if (ZNet.instance == null || sender != ZRoutedRpc.instance.GetServerPeerID())
@@ -118,6 +122,8 @@ public class MapAreaService : MonoBehaviour
         sectorIndex = MapAreaSettings.AllowAreas.Value ? 0 : ZDOMan.instance.m_objectsBySector.Length;
     }
 
+    // Collects the objects of the next few sectors; when all sectors are done, groups them into areas. Spreading the
+    // scan over frames keeps a large world from stalling the server.
     private void ContinueScan()
     {
         List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
@@ -144,6 +150,8 @@ public class MapAreaService : MonoBehaviour
         nextScan = Time.time + ScanPause;
     }
 
+    // Sorts the game's prefabs once into what makes an area: planted crops, crops grown from them, animals and building
+    // pieces with what they are (bed, fire, bench, portal, sign). Found by component, so other mods' pieces count too.
     private static Dictionary<int, Traits> FindTraits()
     {
         Dictionary<int, Traits> found = new();
@@ -179,6 +187,8 @@ public class MapAreaService : MonoBehaviour
         return found;
     }
 
+    // What a prefab tells about the place it stands in, if anything. Ships and carts move about and say nothing about a
+    // place.
     private static Traits Classify(GameObject prefab, bool grownCrop)
     {
         if (grownCrop)
@@ -383,6 +393,8 @@ public class MapAreaService : MonoBehaviour
         return false;
     }
 
+    // Groups the cells holding something into areas by flood fill, letting a small gap bridge two cells; a group with
+    // too few things is not an area.
     private IEnumerable<MapArea> Group(Func<Cell, int> count, int minimum, MapAreaKind kind)
     {
         Dictionary<long, Cell> open = cells.Where(pair => count(pair.Value) > 0).ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -419,6 +431,9 @@ public class MapAreaService : MonoBehaviour
         }
     }
 
+    // Describes a group of cells as an area: a base if it has a bed and a fire, an outpost if it has a workbench or
+    // portal, otherwise just a building. The builder is the player who placed most of its pieces, and a sign inside
+    // gives its name.
     private MapArea Describe(List<Cell> group, int total, MapAreaKind kind)
     {
         MapArea area = new() { Kind = kind, Count = total, Cells = group.Select(cell => cell.Index).ToList() };
@@ -445,6 +460,8 @@ public class MapAreaService : MonoBehaviour
         return area;
     }
 
+    // Gives every area its builder's name (of players known online), then sends each player the areas, only when their
+    // list has changed.
     private void Publish()
     {
         Dictionary<long, string> online = new(names);

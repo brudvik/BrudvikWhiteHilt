@@ -37,6 +37,7 @@ public static class MediaSettings
         KeyPanel = WhiteHiltConfig.BindLocal(Section, "Panel", new KeyboardShortcut(KeyCode.U), "Open and close the media panel with time of day, weather and films.");
     }
 
+    // The English texts of the photo and film tools; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_media", "Media");

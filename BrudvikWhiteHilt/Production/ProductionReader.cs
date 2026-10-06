@@ -95,6 +95,7 @@ public static class ProductionReader
         return $"<color={color}>{text}</color>";
     }
 
+    // Reads a smelter, kiln or windmill: its queue, when it is done, and whether its fuel lasts.
     private static bool ReadSmelter(Smelter smelter, ProductionStatus status)
     {
         if (!Valid(smelter.m_nview) || smelter.m_maxOre <= 0 || smelter.m_secPerProduct <= 0f)
@@ -177,6 +178,7 @@ public static class ProductionReader
         return true;
     }
 
+    // Reads a fermenter: when it is ready, or that it needs a roof (its timer starts over until it has one).
     private static bool ReadFermenter(Fermenter fermenter, ProductionStatus status)
     {
         if (!Valid(fermenter.m_nview))
@@ -213,6 +215,7 @@ public static class ProductionReader
         return true;
     }
 
+    // Reads a cooking station: what is cooking, ready or burnt, when it is done or burns, and how long the fuel lasts.
     private static bool ReadCooking(CookingStation station, ProductionStatus status)
     {
         if (!Valid(station.m_nview) || station.m_slots == null)
@@ -324,6 +327,7 @@ public static class ProductionReader
         return true;
     }
 
+    // Reads a beehive: how full it is, or why it does not fill.
     private static bool ReadBeehive(Beehive hive, ProductionStatus status)
     {
         if (!Valid(hive.m_nview) || hive.m_secPerUnit <= 0f || hive.m_maxHoney <= 0)
@@ -351,6 +355,7 @@ public static class ProductionReader
         return SetFilling(status, hive.m_nview.GetZDO(), hive.m_secPerUnit, level, hive.m_maxHoney);
     }
 
+    // Reads a sap collector: how full it is, or why it does not fill.
     private static bool ReadSapCollector(SapCollector collector, ProductionStatus status)
     {
         if (!Valid(collector.m_nview) || collector.m_secPerUnit <= 0f || collector.m_maxLevel <= 0)
@@ -380,6 +385,7 @@ public static class ProductionReader
         return SetFilling(status, collector.m_nview.GetZDO(), collector.m_secPerUnit, level, collector.m_maxLevel);
     }
 
+    // Reads a player-built fire: how long its fuel lasts, or that it is out or wet.
     private static bool ReadFire(Fireplace fire, ProductionStatus status)
     {
         if (!Valid(fire.m_nview) || fire.m_infiniteFuel || !fire.m_canRefill || fire.m_secPerFuel <= 0f || fire.m_fuelItem == null)
@@ -422,6 +428,7 @@ public static class ProductionReader
         return true;
     }
 
+    // Reads an egg: when it hatches, or what it needs (warmth, a roof, lying alone).
     private static bool ReadEgg(EggGrow egg, ProductionStatus status)
     {
         if (!Valid(egg.m_nview) || egg.m_item == null)
@@ -464,6 +471,7 @@ public static class ProductionReader
         return true;
     }
 
+    // Reads a tame animal: when a pregnancy ends, or why it does not breed.
     private static bool ReadAnimal(Procreation animal, ProductionStatus status, bool detailed)
     {
         Tameable tameable = animal.m_tameable;

@@ -100,6 +100,7 @@ public static class HotbarSets
         return item?.m_shared.m_buildPieces != null;
     }
 
+    // The small label beside the hotbar on the HUD: which bar is active and the key that switches.
     private static void UpdateHudLabel(Player player)
     {
         if (hudLabel == null)

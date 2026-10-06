@@ -104,6 +104,7 @@ public class GroomingComb : IWhiteHiltCustomItem
         }
     }
 
+    // Replaces the cloned item's look with the comb model and renders an icon from it.
     private static void TryApplyVisual(CustomItem comb)
     {
         if (VisualHelper.IsHeadless)

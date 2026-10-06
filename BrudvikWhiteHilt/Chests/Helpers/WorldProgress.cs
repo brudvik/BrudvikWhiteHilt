@@ -148,6 +148,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             AddAndReturnNew(candidates);
         }
 
+        // Adds keys and returns those that were new. The server saves and broadcasts them; a client sends them to the
+        // server, which is the one record of the world's progress.
         private List<string> AddAndReturnNew(IEnumerable<string> candidates)
         {
             if (!EnsureSession()) return new List<string>();
@@ -246,6 +248,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return true;
         }
 
+        // Reads the world's unlocked and discovered items from disk.
         private void Load()
         {
             try
@@ -265,6 +268,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // Reads the stock reported by each chest from disk, skipping lines that do not parse, and works out the best
+        // stock of each item.
         private void LoadStock()
         {
             try
@@ -310,6 +315,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             }
         }
 
+        // Writes the stock of each chest to disk, one line per chest and item.
         private void SaveStock()
         {
             try
@@ -396,6 +402,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return amounts;
         }
 
+        // On the server: answers a request for the whole record, adds keys a client found, and takes a chest's stock
+        // report. What a client sends is checked first, so a client cannot fill the record with nonsense.
         private IEnumerator OnServerReceive(long sender, ZPackage package)
         {
             if (EnsureSession())
@@ -460,6 +468,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return true;
         }
 
+        // On a client: takes the whole record, new keys and the best stock from the server.
         private IEnumerator OnClientReceive(long sender, ZPackage package)
         {
             if (EnsureSession())

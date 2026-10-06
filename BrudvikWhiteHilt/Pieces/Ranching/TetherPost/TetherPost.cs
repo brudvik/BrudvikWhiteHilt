@@ -122,6 +122,8 @@ public class TetherPost : IWhiteHiltCustomPiece
         }
     }
 
+    // Builds the post's look: the leaning post model with an iron chain hung on it. Should anything be missing, the
+    // vanilla look stays.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

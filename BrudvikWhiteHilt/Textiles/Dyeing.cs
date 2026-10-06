@@ -147,6 +147,8 @@ public static class Dyeing
         return false;
     }
 
+    // Takes the dye from the pot and the cloth from the player, checking both first so nothing is taken when something
+    // is missing.
     private static bool Pay(Player player, ItemDrop.ItemData pot, int uses, int cloth)
     {
         if (player.m_noPlacementCost)

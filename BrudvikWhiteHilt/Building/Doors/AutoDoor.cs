@@ -175,6 +175,8 @@ public class AutoDoor : MonoBehaviour
         Tick();
     }
 
+    // Decides whether to close the door now: on a timer when nobody is in the opening, at once when enemies come near,
+    // and for windows when rain or night begins (not all through it, so they can be opened again).
     private void Tick()
     {
         // Windows close when rain or night begins, not all through it, so they can be opened again.
@@ -254,6 +256,8 @@ public class AutoDoor : MonoBehaviour
         door.UpdateState();
     }
 
+    // Whether a player, or a tamed animal if the setting says so, stands in the opening, so the door is not shut on
+    // them.
     private bool IsOpeningBusy()
     {
         Vector3 centre = transform.TransformPoint(localCentre);
@@ -283,6 +287,8 @@ public class AutoDoor : MonoBehaviour
         return false;
     }
 
+    // Whether a hostile creature that has noticed someone or is out hunting is near the door, not one only wandering
+    // past.
     private bool IsEnemyNear()
     {
         Vector3 centre = transform.TransformPoint(localCentre);

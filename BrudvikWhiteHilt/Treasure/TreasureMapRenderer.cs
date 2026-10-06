@@ -226,6 +226,7 @@ public static class TreasureMapRenderer
         return Color.Lerp(colour, colour * tint, 0.6f);
     }
 
+    // Draws the shore lines and height contours in ink over the coloured map, every fifth contour darker.
     private static void DrawContoursAndShores(Color[] colours, float[] heights, float water)
     {
         const int n = Resolution;
@@ -392,6 +393,7 @@ public static class TreasureMapRenderer
         }
     }
 
+    // Draws a dashed red path between two points.
     private static void DrawPath(Color[] colours, Vector2 from, Vector2 to)
     {
         Vector2 line = to - from;
@@ -421,6 +423,7 @@ public static class TreasureMapRenderer
         }
     }
 
+    // Draws a small compass with an arrow pointing north.
     private static void DrawNorthArrow(Color[] colours, Vector2 north)
     {
         Vector2 centre = new(Resolution - 24f, Resolution - 26f);

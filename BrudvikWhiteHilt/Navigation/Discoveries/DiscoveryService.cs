@@ -61,6 +61,7 @@ public class DiscoveryService : MonoBehaviour
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_Discoveries);
     }
 
+    // On the server: scans the world now and then, a few sectors per frame, and sends the result to the players.
     private void Update()
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || ZNetScene.instance == null || ZoneSystem.instance == null)
@@ -110,6 +111,7 @@ public class DiscoveryService : MonoBehaviour
         sectorIndex = 0;
     }
 
+    // Collects the finds of the next few sectors; when all are done, the scan is finished.
     private void ContinueScan()
     {
         List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
@@ -183,6 +185,8 @@ public class DiscoveryService : MonoBehaviour
         finds.Add(new RawFind { Kind = info.Kind, Position = position, Pickable = info.Pickable, Ripe = ripe, GrownCrop = info.GrownCrop });
     }
 
+    // Turns the finds into map markers, but only once a map table has Munin's perch near it. With the table-only
+    // setting, only what is explored on the table's map is shown.
     private void FinishScan()
     {
         List<DiscoveryEntry> entries = new();
@@ -205,6 +209,8 @@ public class DiscoveryService : MonoBehaviour
         SetPackage(entries);
     }
 
+    // Clusters the finds of a kind by cell, so a field of berries is one marker. Crops grown near buildings are
+    // planted, not found, and left out.
     private void AddClusters(List<DiscoveryEntry> entries, bool onlyTable)
     {
         Dictionary<(int Kind, Vector2Int Cell), Cluster> clusters = new();
@@ -267,6 +273,8 @@ public class DiscoveryService : MonoBehaviour
         return best;
     }
 
+    // Adds the world's locations (dungeons, camps and so on) of the kinds shown: with the table-only setting those
+    // explored on the table's map, otherwise those already placed in the world.
     private void AddLocations(List<DiscoveryEntry> entries, bool onlyTable)
     {
         foreach (ZoneSystem.LocationInstance instance in ZoneSystem.instance.m_locationInstances.Values)
@@ -410,6 +418,8 @@ public class DiscoveryService : MonoBehaviour
         nextPublish = 0f;
     }
 
+    // Sends each player the latest markers, only when they have not had this version yet; the host playing on its own
+    // machine gets them directly.
     private void Publish()
     {
         HashSet<long> current = new();
@@ -439,6 +449,8 @@ public class DiscoveryService : MonoBehaviour
         }
     }
 
+    // Sorts the game's prefabs once into the kinds of discoveries, and notes the map tables and pieces, so the scan
+    // only needs to look up a prefab hash.
     private void FindPrefabs()
     {
         kinds.Clear();
@@ -489,6 +501,8 @@ public class DiscoveryService : MonoBehaviour
         Jotunn.Logger.LogInfo($"Discoveries: {prefabs.Count} prefabs in {kinds.Count} kinds, {mapTablePrefabs.Count} map table prefabs");
     }
 
+    // What a prefab can be discovered as: a plant or a resource from what it can be picked for, or a resource from what
+    // it drops. Items set to be ignored are left out.
     private static bool TryClassify(GameObject prefab, out string key, out DiscoveryGroup group, out Pickable pickable)
     {
         key = null;

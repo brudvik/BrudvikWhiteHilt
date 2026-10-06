@@ -86,6 +86,7 @@ public class DifficultyService : MonoBehaviour
         ZRoutedRpc.instance?.Register<string>(AdminReplyRpc, RPC_AdminReply);
     }
 
+    // Runs the server's and the client's parts; a failure is logged and retried later instead of stopping the feature.
     private void Update()
     {
         if (ZNet.instance == null || ZRoutedRpc.instance == null)
@@ -110,6 +111,8 @@ public class DifficultyService : MonoBehaviour
         }
     }
 
+    // On the server: rolls for a blood moon at nightfall, works out the pressure now and then, and sends it to the
+    // players.
     private void UpdateServer()
     {
         long night = DifficultyState.NightId();
@@ -141,6 +144,8 @@ public class DifficultyService : MonoBehaviour
         }
     }
 
+    // Works out the pressure from the players online, the days, the biomes reached and White Hilt gear worn. Players
+    // and gear are smoothed, as they change when people come and go.
     private void Compute(bool bloodMoon)
     {
         List<ZDO> players = PlayerZdos();
@@ -194,6 +199,7 @@ public class DifficultyService : MonoBehaviour
         return total <= 0f ? 0f : Mathf.Clamp01((players * wPlayers + days * wDays + biomes * wBiomes + gear * wGear) / total);
     }
 
+    // The network data of every player online, the host's own included.
     private static List<ZDO> PlayerZdos()
     {
         List<ZDO> players = new();
@@ -218,6 +224,8 @@ public class DifficultyService : MonoBehaviour
         return players;
     }
 
+    // Rolls for a blood moon tonight, once some boss is defeated and not too soon after the last one; more likely under
+    // more pressure.
     private void RollBloodMoon(long night)
     {
         if (!DifficultySettings.Enabled.Value || !DifficultySettings.BloodMoonEnabled.Value || !AnyBossDefeated())
@@ -293,6 +301,8 @@ public class DifficultyService : MonoBehaviour
         player.Message(MessageHud.MessageType.Center, up ? "$msg_whitehilt_bloodmoon_start" : "$msg_whitehilt_bloodmoon_end");
     }
 
+    // On a client: in bad weather at night (or any night with a blood moon) away from bases, asks the server whether a
+    // beast comes, a limited number of times per night.
     private void WatchForBeast(Player player)
     {
         if (!DifficultySettings.Enabled.Value || !DifficultySettings.BeastsEnabled.Value || player.IsDead() || player.InInterior() || player.IsTeleporting())
@@ -349,6 +359,8 @@ public class DifficultyService : MonoBehaviour
         }
     }
 
+    // On the server: decides whether a beast comes for a player and which, keeping count per player and night and
+    // keeping beasts apart.
     private void RPC_BeastRequest(long sender, Vector3 position, int biome, bool atSea)
     {
         if (!ZNet.instance.IsServer() || !DifficultySettings.Enabled.Value || !DifficultySettings.BeastsEnabled.Value)
@@ -399,6 +411,7 @@ public class DifficultyService : MonoBehaviour
         }
     }
 
+    // On the server: an admin's command to start or stop a blood moon or summon a beast.
     private void RPC_Admin(long sender, string command, string argument)
     {
         if (!ZNet.instance.IsServer())
@@ -430,6 +443,7 @@ public class DifficultyService : MonoBehaviour
         }
     }
 
+    // Starts a blood moon tonight (or at nightfall) or stops it.
     private void SetBloodMoon(long sender, bool start)
     {
         long night = DifficultyState.NightId();

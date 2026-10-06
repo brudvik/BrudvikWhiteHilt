@@ -127,6 +127,9 @@ public class HarbourAnchor : IWhiteHiltCustomPiece
         }
     }
 
+    // Replaces the cloned table's look with the anchor model from the asset bundle, using the table's material so it is
+    // lit like other pieces, and renders an icon from it. Should anything be missing, the vanilla look stays rather
+    // than the piece failing to load.
     private static void TryApplyVisual(CustomPiece piece)
     {
         if (VisualHelper.IsHeadless)

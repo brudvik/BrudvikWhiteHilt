@@ -96,6 +96,8 @@ public class DrawbridgeDriver : MonoBehaviour
         linkKnown = true;
     }
 
+    // The nearest door within range that is not this drawbridge or another drawbridge: the gate this drawbridge
+    // follows.
     private ZNetView FindGate(float range)
     {
         ZNetView best = null;

@@ -213,6 +213,7 @@ public static class Gathering
         }
     }
 
+    // Plants a sapling of the felled tree where it stood, paid with seeds from the player's inventory.
     private static void Replant(Player player, Vector3 spot, string saplingName)
     {
         GameObject prefab = ZNetScene.instance?.GetPrefab(saplingName);
@@ -237,6 +238,7 @@ public static class Gathering
         player.Message(MessageHud.MessageType.TopLeft, $"$msg_whitehilt_replanted: {seed.m_resItem.m_itemData.m_shared.m_name}", 0, seed.m_resItem.m_itemData.GetIcon());
     }
 
+    // The sapling that grows into a tree, found once from the game's plant pieces.
     private static string SaplingFor(string treePrefab)
     {
         if (saplingByTree == null && ZNetScene.instance != null)
@@ -273,6 +275,7 @@ public static class Gathering
         }
     }
 
+    // Drops something found, by weighted chance.
     private static void SpawnFind((string Prefab, int Min, int Max, float Weight)[] table, Vector3 position)
     {
         float roll = Random.value * table.Sum(entry => entry.Weight);

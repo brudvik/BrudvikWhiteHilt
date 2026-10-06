@@ -134,6 +134,8 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
         return true;
     }
 
+    // Finds the rune rings and registers the RPCs for hanging and taking runes. The visuals wait for the first Update,
+    // as the child EffectFade throws until its own Awake has run.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -184,6 +186,7 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
         }
     }
 
+    // On the post's owner: hangs a rune. If two players hung the same rune at once, the second one is given back.
     private void RPC_AddRune(long sender, int index)
     {
         if (!nview.IsOwner())
@@ -245,6 +248,7 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
         }
     }
 
+    // Shows the rings of the hung runes, and the full set effect when all are there.
     private void UpdateVisuals()
     {
         int mask = Mask;

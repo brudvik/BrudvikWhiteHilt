@@ -302,6 +302,8 @@ public static class BuildTools
         return factor.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
     }
 
+    // The wheel with a modifier held tilts or rolls the piece instead of turning it. The game reads the wheel too, so a
+    // step is only taken once the wheel has moved as far as the game's own threshold.
     private static void HandleWheel(Player player)
     {
         bool tilt = Input.GetKey(BuildToolSettings.TiltWheelModifier.Value);

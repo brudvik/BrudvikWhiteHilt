@@ -225,6 +225,7 @@ public static class SagaLog
         }
     }
 
+    // A deed was done: every player near enough to witness it writes it in their saga with its renown.
     private static void RPC_Deed(long sender, int kind, string name, Vector3 position)
     {
         Player player = Player.m_localPlayer;
@@ -246,6 +247,8 @@ public static class SagaLog
         Add(player, deed, name, string.Empty, renown);
     }
 
+    // Writes a deed in the player's saga (kept in the player's custom data, the oldest dropped beyond the limit), adds
+    // its renown and tells of a new rank.
     private static void Add(Player player, SagaKind kind, string name, string extra, int renown)
     {
         int day = EnvMan.instance != null ? EnvMan.instance.GetDay() : 0;

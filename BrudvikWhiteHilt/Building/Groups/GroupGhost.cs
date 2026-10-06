@@ -78,6 +78,8 @@ public static class GroupGhost
         }
     }
 
+    // Creates the ghost root and its two see-through materials. Called each time, as the root is lost when the scene
+    // changes.
     private static bool Ensure()
     {
         if (root != null)
@@ -104,6 +106,9 @@ public static class GroupGhost
         return true;
     }
 
+    // A hidden copy of a piece's meshes in the ghost colour, made once per piece and cloned for every ghost of it:
+    // placing a large blueprint shows hundreds of ghosts, and instantiating the real prefabs would run their scripts.
+    // Lower LOD levels and a plant's other looks are left out so the ghost shows the piece once.
     private static GameObject Template(Piece piece)
     {
         string key = piece.gameObject.name;
@@ -143,6 +148,7 @@ public static class GroupGhost
         return template;
     }
 
+    // The renderers of every LOD level but the first, which the ghost leaves out so it does not draw the piece twice.
     private static HashSet<Renderer> LowDetailRenderers(GameObject prefab)
     {
         HashSet<Renderer> lowDetail = new();

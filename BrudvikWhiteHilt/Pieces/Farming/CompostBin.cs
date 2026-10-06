@@ -113,6 +113,7 @@ public class CompostBin : IWhiteHiltCustomPiece
         }
     }
 
+    // Registers the compost item, a clone of coal recoloured to a brown earth, with its own name and icon.
     private static void AddCompost()
     {
         CustomItem item = new(CompostName, "Coal");
@@ -174,6 +175,7 @@ public class CompostBin : IWhiteHiltCustomPiece
         wearNTear.m_fragmentRoots = null;
     }
 
+    // Builds the bin's look from the bundle's model, standing on the piece's origin, and renders an icon from it.
     private static void TryApplyVisual(CustomPiece piece, Transform visual)
     {
         if (VisualHelper.IsHeadless)

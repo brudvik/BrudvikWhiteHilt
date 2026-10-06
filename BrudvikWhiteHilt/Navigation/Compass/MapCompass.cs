@@ -56,6 +56,8 @@ public static class MapCompass
             new Vector2(0f, 1f), new Vector2(LargeMargin, -LargeMargin), yaw);
     }
 
+    // Shows or hides a compass on the map, turning its needle to the player's heading and showing the bearing in
+    // degrees if set.
     private static CompassView Show(CompassView view, Transform parent, bool visible, float size, Vector2 corner, Vector2 offset, float yaw)
     {
         if (!visible)
@@ -96,6 +98,8 @@ public static class MapCompass
         return view;
     }
 
+    // Builds a compass: the dial, the four letters, the needle and the degree readout. Should its pictures fail to
+    // load, the compass is left out.
     private static CompassView Create(Transform parent, Vector2 corner, Vector2 offset)
     {
         if (dial == null || needle == null)
@@ -194,6 +198,9 @@ public static class MapCompass
         private float size = -1f;
         private bool degrees;
 
+        /// <summary>
+        /// Sizes the compass and its letters and readout, only when its size or the degree setting changed.
+        /// </summary>
         public void Layout(float width, bool showDegrees)
         {
             if (Mathf.Approximately(width, size) && showDegrees == degrees)

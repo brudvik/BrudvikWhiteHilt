@@ -85,6 +85,8 @@ public class KrakenService : MonoBehaviour
         }
     }
 
+    // Whether the Kraken may rise by this ship now: in deep ocean, in fog with little wind, at night if set, after the
+    // required boss, and only one at a time.
     private static bool Conditions(Ship ship)
     {
         Player player = Player.m_localPlayer;

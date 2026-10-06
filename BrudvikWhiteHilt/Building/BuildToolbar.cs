@@ -73,6 +73,8 @@ public class BuildToolbar : MonoBehaviour
         instance.Build();
     }
 
+    // Shows the toolbar and the hint while building with nothing else on screen, frees the cursor while the cursor key
+    // is held or a build panel is open, and refreshes the toolbar now and then.
     private void Update()
     {
         Player player = Player.m_localPlayer;
@@ -112,6 +114,8 @@ public class BuildToolbar : MonoBehaviour
         }
     }
 
+    // Builds the toolbar once: a title that folds it up, the readout, and a button with its key for every build tool.
+    // The game's own tooltip is borrowed so the buttons explain themselves on hover.
     private void Build()
     {
         tooltipPrefab = InventoryGui.instance?.m_playerGrid?.m_elementPrefab?.GetComponent<UITooltip>()?.m_tooltipPrefab;
@@ -225,6 +229,8 @@ public class BuildToolbar : MonoBehaviour
         title.text = Localization.instance.Localize("$whitehilt_build_toolbar") + (collapsed ? "  [+]" : "  [-]");
     }
 
+    // Updates the readout (heading, tilt, roll, height above the ground and distance from the last piece), every
+    // button's state and the hint line of the tool in use.
     private void Refresh(Player player)
     {
         string on = Localization.instance.Localize("$whitehilt_build_on");
@@ -295,6 +301,7 @@ public class BuildToolbar : MonoBehaviour
         return label;
     }
 
+    // A toolbar button with the game's tooltip, which does nothing while there is no local player.
     private Text AddButton(Transform parent, float x, float width, Action<Player> onClick, string tip)
     {
         GameObject button = GUIManager.Instance.CreateButton(string.Empty, parent, new Vector2(0f, 1f), new Vector2(0f, 1f),

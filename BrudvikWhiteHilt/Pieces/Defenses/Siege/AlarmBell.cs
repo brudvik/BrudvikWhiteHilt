@@ -205,6 +205,8 @@ public class AlarmBell : MonoBehaviour, Interactable, Hoverable
         bell.localRotation = bellRest * Quaternion.Euler(angle, 0f, 0f);
     }
 
+    // Creates the bell's audio source the first time it rings, with a tone made in code. It borrows the mixer group of
+    // a vanilla sound effect so the game's volume settings also apply to the bell.
     private void EnsureAudio()
     {
         if (audioSource != null)

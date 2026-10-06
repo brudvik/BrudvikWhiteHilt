@@ -169,6 +169,7 @@ public class DragonGroundFire : MonoBehaviour
         }
     }
 
+    // Removes a burnt-out patch on its owner, and fits the flames to the patch's size on every machine.
     private void Update()
     {
         bool active = IsActive;
@@ -208,6 +209,8 @@ public class DragonGroundFireDamage : MonoBehaviour
 {
     private float nextTick;
 
+    // Now and then burns what stands in a fire patch: characters owned here, if the dragon that lit it is their enemy,
+    // and building pieces.
     private void Update()
     {
         if (Time.time < nextTick)

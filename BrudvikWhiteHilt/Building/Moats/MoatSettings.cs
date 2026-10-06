@@ -190,6 +190,7 @@ public static class MoatSettings
         return WhiteHiltConfig.BindAdminOnly(Section, key, value, description, new AcceptableValueRange<float>(min, max));
     }
 
+    // The English texts of the moat tool; Norwegian.json has the translations.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_moat", "Moat");

@@ -89,6 +89,8 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         if (view.IsOwner()) view.GetZDO().Set(PausedKey, !view.GetZDO().GetBool(PausedKey));
     }
 
+    // Runs a collection round now and then. Only the player nearest the post collects drops, so two players do not
+    // collect the same drop; the post's owner empties its basket.
     private void Update()
     {
         UpdateGlow();
@@ -124,6 +126,8 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         glow.range = GlowRange + flare * 3f;
     }
 
+    // Moves loose drops within reach into chests that take them, a limited number per round so a large pile is done
+    // over several rounds. A drop near several posts goes to the nearest, so posts do not compete for it.
     private void CollectDrops(Player player, List<Container> receivers)
     {
         var receiversByPost = new Dictionary<CollectionPostComponent, List<Container>> { [this] = receivers };

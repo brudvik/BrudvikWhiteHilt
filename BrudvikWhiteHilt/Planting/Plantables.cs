@@ -171,6 +171,8 @@ public static class Plantables
         return true;
     }
 
+    // The piece that plants a plantable: its own piece for saplings, otherwise one added to the vanilla prefab, with
+    // the name, category and placement rules of planting.
     private static Piece Prepare(PlantableDefinition definition, GameObject prefab, Piece template)
     {
         if (pieces.TryGetValue(definition.Prefab, out Piece piece) && piece != null)
@@ -228,6 +230,8 @@ public static class Plantables
         }
     }
 
+    // What planting costs: the item the plant gives, and an extra item for some. Without a known item it cannot be
+    // planted.
     private static bool SetRequirements(PlantableDefinition definition, Piece piece)
     {
         int cost = definition.Cost.Value;
@@ -283,6 +287,7 @@ public static class Plantables
         return false;
     }
 
+    // Gives vines snap points so they can be planted in rows, or takes them away.
     private static void SetSnapPoints(GameObject prefab, bool wanted)
     {
         List<Transform> existing = prefab.transform.Cast<Transform>().Where(child => child.name == SnapPointName).ToList();

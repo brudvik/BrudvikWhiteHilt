@@ -156,6 +156,8 @@ public static class IndoorSound
         }
     }
 
+    // Gives a sound source the indoor filter: a low-pass filter that muffles it while the player is indoors, once per
+    // source.
     private static void Attach(AudioSource source, bool wind)
     {
         handled.RemoveWhere(known => known == null);

@@ -118,6 +118,9 @@ public static class TerrainCost
         GroupPlacer.Give(player, new[] { new Piece.Requirement { m_resItem = item, m_amount = amount, m_recover = true } }, onlyRecoverable: false);
     }
 
+    // Works out the stone cost from the vanilla hoe pieces instead of fixed numbers: stone per square metre from
+    // paving, per cubic metre from raising. If the game changes those pieces, the tools cost the same as doing the work
+    // with the vanilla hoe.
     private static void Derive()
     {
         if (derived || ZNetScene.instance == null)

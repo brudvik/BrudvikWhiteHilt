@@ -207,6 +207,7 @@ public static class Angling
         return parts.Length > index ? parts[index] : "0";
     }
 
+    // Snags something on the line instead of a fish, by weighted chance, and puts it in the inventory.
     private static void Snag(Player player)
     {
         float roll = Random.value * snags.Sum(entry => entry.Weight);

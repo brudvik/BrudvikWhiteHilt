@@ -222,6 +222,8 @@ public static class MapAreaOverlay
         labelRoot.SetAsLastSibling();
     }
 
+    // Draws an area as a texture: a disc round every cell, so neighbouring cells melt into one rounded shape instead of
+    // a staircase of squares. Large areas get coarser pixels so the texture stays within its size limit.
     private static Visual AreaVisual(MapArea area)
     {
         float radius = MapArea.CellSize * 0.75f + Margin;
@@ -343,6 +345,8 @@ public static class MapAreaOverlay
         return new Visual(Ring(), false, ward.Enabled ? wardOn : wardOff, ward.Position - reach, ward.Position + reach, null, ward.Position);
     }
 
+    // The dashed ring drawn round a ward's reach, made once: a thin circle whose alpha falls off smoothly at its edge,
+    // cut into dashes by angle.
     private static Texture2D Ring()
     {
         if (ring != null)
@@ -377,6 +381,8 @@ public static class MapAreaOverlay
         return ring;
     }
 
+    // Moves every area's picture and label to where it lies on the map now, and hides those out of view, as the map can
+    // be panned and zoomed every frame.
     private static void Place(Minimap map, Rect uv, Rect rect, bool large, bool labels)
     {
         foreach (Visual visual in visuals)
@@ -447,6 +453,9 @@ public static class MapAreaOverlay
 
         public Text Label { get; }
 
+        /// <summary>
+        /// Removes the visual's pictures, label and the texture it made.
+        /// </summary>
         public void Destroy()
         {
             if (Large != null)

@@ -16,6 +16,9 @@ internal static class CollectionSettings
     internal static ConfigEntry<bool> PlayerDrops;
     internal static ConfigEntry<float> OwnershipRetry;
 
+    /// <summary>
+    /// Binds the collection post's settings (server side, synced to clients) and its English texts.
+    /// </summary>
     internal static void Initialize()
     {
         Enabled = WhiteHiltConfig.BindAdminOnly("Chests.Collection", "Enabled", true, "Collection posts gather loose items into White Hilt chests.");

@@ -86,6 +86,8 @@ namespace BrudvikWhiteHilt.Chests
             }
         }
 
+        // Counts the items in every White Hilt chest in the world, read from the network data, so even chests in
+        // unloaded areas are counted.
         private static Dictionary<string, ChestRecord> Count()
         {
             var hashes = new Dictionary<int, string>();
@@ -172,6 +174,7 @@ namespace BrudvikWhiteHilt.Chests
             return chests;
         }
 
+        // Reports what has decreased in every chest since the earlier count: a tool for finding lost items.
         private static void Compare(Terminal? context, Dictionary<string, ChestRecord> before, Dictionary<string, ChestRecord> after, string beforeName)
         {
             var losses = new List<string>();

@@ -87,6 +87,7 @@ public sealed class DogExpression : MonoBehaviour
         happyUntil = Mathf.Max(happyUntil, Time.time + seconds);
     }
 
+    // Finds the bones the expression moves: tail, legs, spine, head, jaw and so on, by name.
     private void Awake()
     {
         dog = GetComponent<DogCompanion>();
@@ -115,6 +116,8 @@ public sealed class DogExpression : MonoBehaviour
         }
     }
 
+    // Moves the bones after the animator: wagging, looking at its master, digging, tricks, hopping, snoring and
+    // carrying a stick. Skipped off screen, where the animator stops writing the bones and the turns would pile up.
     private void LateUpdate()
     {
         if (dog == null || !dog.enabled || dog.OwnerId == 0L)

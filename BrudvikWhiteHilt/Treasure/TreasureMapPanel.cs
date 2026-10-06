@@ -91,6 +91,7 @@ public class TreasureMapPanel : MonoBehaviour
         return component;
     }
 
+    // Builds the map panel once: the title, the map picture with its marks, a stamp for plundered maps and a note.
     private void BuildContent(RectTransform panel)
     {
         Vector2 top = new(0.5f, 1f);
@@ -125,6 +126,8 @@ public class TreasureMapPanel : MonoBehaviour
         close.GetComponent<Button>().onClick.AddListener(Close);
     }
 
+    // Shows a treasure map: its landmarks (named with enough skill), its compass, a note and the drawn map, which is
+    // rendered in the background. Some of the map is faded, less with more skill.
     private void Show(Player player, ItemDrop.ItemData map, TreasureSite site)
     {
         string id = TreasureMapItem.GetId(map);
@@ -233,6 +236,8 @@ public class TreasureMapPanel : MonoBehaviour
             DiscoveryCatalog.GetLabel(nearest.Value.Kind));
     }
 
+    // A word on where the treasure lies (by the sea, by water, in forest, in hills or in the open), from the land round
+    // it.
     private static string FeatureKey(WorldGenerator world, Vector3 chest, Heightmap.Biome biome)
     {
         float water = ZoneSystem.instance.m_waterLevel;
@@ -275,6 +280,7 @@ public class TreasureMapPanel : MonoBehaviour
         return highest - lowest > 15f ? "whitehilt_treasure_in_hills" : "whitehilt_treasure_in_open";
     }
 
+    // Puts a landmark's icon on the map, with its name if the player may see names.
     private void AddLandmark(TreasureSite site, TreasureLandmark mark, bool named)
     {
         Vector2 position = TreasureMapRenderer.WorldToMap(site, mark.Position);

@@ -96,6 +96,8 @@ public static class SeaRouteFinder
         done(route, snapped);
     }
 
+    // An A* search over the grid of water cells, as a coroutine that yields when it has run too long in one frame, so
+    // finding a long route does not freeze the game.
     private static IEnumerator Search((int X, int Z) start, (int X, int Z) goal, Grid grid, Action<List<(int X, int Z)>> done)
     {
         if (start == goal)
@@ -329,6 +331,7 @@ public static class SeaRouteFinder
         return grid.Options == null || IsCoast(cell, grid) ? 1f : Mathf.Max(1f, grid.Options.OpenWaterCost);
     }
 
+    // Whether land lies within the coast distance of a cell, remembered per cell.
     private static bool IsCoast((int X, int Z) cell, Grid grid)
     {
         long key = Key(cell);
@@ -351,6 +354,8 @@ public static class SeaRouteFinder
         return coast;
     }
 
+    // Whether a cell is deep enough for a ship at a few points across it, inside the world's edge; remembered per cell,
+    // as the height lookup is not cheap.
     private static bool IsWater((int X, int Z) cell, Grid grid)
     {
         long key = Key(cell);

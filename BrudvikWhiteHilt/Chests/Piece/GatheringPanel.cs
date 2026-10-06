@@ -165,6 +165,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             Refresh();
         }
 
+        // Updates the panel for the shown biome: what can be gathered there and how far each item is from unlimited.
         private void Refresh()
         {
             nextRefresh = Time.time + RefreshSeconds;
@@ -198,6 +199,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             }
         }
 
+        // The items of the shown biome with their state (unlimited, in progress, not yet discovered, or just stored),
+        // sorted with those closest to unlimited first.
         private List<Entry> CollectEntries(Player player)
         {
             var mode = supply.Mode;
@@ -242,6 +245,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
                 .ToList();
         }
 
+        // Fills a row: the item's icon and name, the chest it goes in, how many the player carries, and its progress.
         private void Fill(Row row, Entry entry)
         {
             row.Root.SetActive(true);
@@ -299,6 +303,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
             return BiomeCatalog.Order.Where(biome => biome == current || known == Biome.None || (known & biome) != 0).ToList();
         }
 
+        // Builds the panel once next to the inventory: the biome title with buttons to browse biomes, the summary, a
+        // scrolling list and a hint.
         private void Build(InventoryGui gui)
         {
             font = GUIManager.Instance.TMP_AveriaSansLibre;
@@ -420,6 +426,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             if (image != null) image.sprite = icon;
         }
 
+        // One row of the list, with alternating backgrounds and a highlight while hovered.
         private Row CreateRow(Transform parent, int index)
         {
             var root = new GameObject("Row", typeof(RectTransform));
@@ -509,6 +516,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
                 : Texts.Get("bsc_gather_highlight_none", entry.ChestName, Mathf.RoundToInt(ChestHighlight.Range)));
         }
 
+        // A TextMeshPro text in the panel's font.
         private TMP_Text CreateText(string name, Transform parent, float size, TextAlignmentOptions alignment, Color color)
         {
             var textObject = new GameObject(name, typeof(RectTransform));

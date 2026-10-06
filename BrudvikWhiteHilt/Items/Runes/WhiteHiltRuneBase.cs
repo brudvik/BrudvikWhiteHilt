@@ -236,6 +236,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
             new AcceptableValueRange<int>(1, 100));
     }
 
+    // Gives the rune ring its colours: the stone in the rune's body colour and the carved rune in its glow colour, plus
+    // a separate glow texture with only the rune lit for the rune rack.
     private void TryApplyVisual(CustomItem rune)
     {
         if (VisualHelper.IsHeadless)
@@ -269,6 +271,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         return pixel.r > 150 && pixel.b < 90;
     }
 
+    // Recolours one pixel of the ring's texture: the carved rune takes the rune's colour, the rest the body colour,
+    // keeping the texture's light and shade. Near-black pixels stay as they are.
     private Color32 Recolor(Color32 pixel)
     {
         if (IsCarvedRune(pixel))

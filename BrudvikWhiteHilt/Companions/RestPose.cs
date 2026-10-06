@@ -146,6 +146,7 @@ public sealed class RestPose : MonoBehaviour
         }
     }
 
+    // Builds the lie, sleep and sit poses from the bones' rest pose, which still holds as the animator has not run yet.
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -179,6 +180,7 @@ public sealed class RestPose : MonoBehaviour
         }
     }
 
+    // Blends the bones into the pose over the animator's output; when the pose changes, the dog stands up fully first.
     private void LateUpdate()
     {
         Pose wanted = character != null && character.IsDead() ? Pose.None : Current;

@@ -140,6 +140,8 @@ public class StorageSearch : MonoBehaviour
         }
     }
 
+    // Searches the chests in range for items whose name contains the text, lists them by amount and pins the chests on
+    // the map.
     private void Search()
     {
         Player player = Player.m_localPlayer;
@@ -233,6 +235,7 @@ public class StorageSearch : MonoBehaviour
         pins.Clear();
     }
 
+    // Builds the search panel once: a title, the search field, the results and a close button.
     private static StorageSearch Build()
     {
         GameObject panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),

@@ -88,6 +88,8 @@ public class PaintMixerPanel : MonoBehaviour
         return mixer;
     }
 
+    // Builds the mixer once: a colour wheel with a brightness bar, the colour as a swatch with its hex and RGB fields,
+    // favourites, the suggested mix and the buttons.
     private void BuildContent(RectTransform panel)
     {
         Vector2 top = new(0.5f, 1f);
@@ -156,6 +158,8 @@ public class PaintMixerPanel : MonoBehaviour
         ShowFavourites();
     }
 
+    // Closes the panel when the player walks off or presses Escape (not while typing), and works out a new mix a moment
+    // after the colour stops changing.
     private void Update()
     {
         Player player = Player.m_localPlayer;
@@ -246,6 +250,7 @@ public class PaintMixerPanel : MonoBehaviour
         ShowFavourites();
     }
 
+    // Mixes a pot of paint from the suggested dyes and a binder.
     private void OnMix()
     {
         Player player = Player.m_localPlayer;
@@ -311,6 +316,7 @@ public class PaintMixerPanel : MonoBehaviour
         barMarker.anchoredPosition = new Vector2(0f, (brightness - 0.5f) * ((RectTransform)barMarker.parent).rect.height);
     }
 
+    // Shows the suggested mix: how close it comes, its parts and how many of each the player has.
     private void ShowSuggestion()
     {
         Player player = Player.m_localPlayer;
@@ -364,6 +370,7 @@ public class PaintMixerPanel : MonoBehaviour
         return (PaintSettings.Favourites.Value ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(entry => entry.Trim()).ToArray();
     }
 
+    // Draws the colour wheel at the current brightness, with a smooth edge.
     private void DrawWheel()
     {
         Color32[] pixels = new Color32[WheelPixels * WheelPixels];

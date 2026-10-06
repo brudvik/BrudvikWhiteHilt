@@ -132,6 +132,7 @@ public class WhiteHiltPaintPot : IWhiteHiltCustomItem
         }
     }
 
+    // Replaces the cloned item's look with the paint bucket model and renders an icon from it.
     private static void TryApplyVisual(CustomItem pot)
     {
         if (VisualHelper.IsHeadless)

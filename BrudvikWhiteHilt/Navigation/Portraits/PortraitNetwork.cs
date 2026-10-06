@@ -128,6 +128,8 @@ public class PortraitNetwork : MonoBehaviour
         ownTexture = PortraitStore.ToTexture(PortraitStore.Decompress(data));
     }
 
+    // Now and then looks who is in the world and greets those who are new with the hash of our portrait. A player
+    // waiting to respawn has no character but is still there.
     private void Update()
     {
         if (Time.time < nextScan || ZNet.instance == null || ZRoutedRpc.instance == null)
@@ -193,6 +195,8 @@ public class PortraitNetwork : MonoBehaviour
         seen = present;
     }
 
+    // Hears another player's portrait hash, and fetches the portrait only if it is neither loaded nor in the local
+    // cache, so portraits are sent once and not every session.
     private void RPC_Hash(long sender, string hash)
     {
         if (!PortraitStore.IsHash(hash))
@@ -239,6 +243,8 @@ public class PortraitNetwork : MonoBehaviour
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, DataRpc, package);
     }
 
+    // Takes a portrait sent by another player, only if it is the one they announced and its contents match the hash,
+    // and caches it on disk.
     private void RPC_Data(long sender, ZPackage package)
     {
         if (!CooledDown(lastData, sender) || !peerHashes.TryGetValue(sender, out string expected))

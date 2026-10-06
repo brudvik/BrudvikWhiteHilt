@@ -288,6 +288,8 @@ public sealed class DogActivities : MonoBehaviour
         }
     }
 
+    // Runs to the thrown stick and picks it up. The stick may not have reached this machine yet, so the dog waits a
+    // while before giving up.
     private void Chase(float dt)
     {
         GameObject stick = ZNetScene.instance.FindInstance(stickId);
@@ -318,6 +320,7 @@ public sealed class DogActivities : MonoBehaviour
         activity = Activity.Return;
     }
 
+    // Brings the stick back to the thrower and drops it before them, for experience and a happy dog.
     private void Return(float dt)
     {
         Player thrower = Player.GetPlayer(throwerId);
@@ -409,6 +412,7 @@ public sealed class DogActivities : MonoBehaviour
         Begin(Activity.Dig);
     }
 
+    // Walks to the spot, digs for a while, and turns something up by weighted chance, telling the owner if near.
     private void Dig(float dt)
     {
         ZDO zdo = nview.GetZDO();

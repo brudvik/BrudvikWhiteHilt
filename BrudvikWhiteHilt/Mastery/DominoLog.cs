@@ -34,6 +34,8 @@ public class DominoLog : MonoBehaviour
         body = GetComponent<Rigidbody>();
     }
 
+    // A falling log that hits a standing tree fast enough chops it, so trees can fall like dominoes. Each tree is hit
+    // once, and the hit is marked as a domino hit and gives no skill.
     private void OnCollisionEnter(Collision collision)
     {
         if (Time.time > until || nview == null || !nview.IsValid() || !nview.IsOwner() || body == null || body.linearVelocity.magnitude < MinSpeed)

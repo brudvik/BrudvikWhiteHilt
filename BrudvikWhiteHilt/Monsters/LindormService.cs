@@ -180,6 +180,7 @@ public class LindormService : MonoBehaviour
         return peer?.m_socket != null && ZNet.instance.IsAdmin(peer.m_socket.GetHostName());
     }
 
+    // Spawns the Lindorm at a spot near the player, hunting them.
     private static void Spawn(Player player, int level)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(MonsterRegistry.LindormName) : null;
@@ -206,6 +207,7 @@ public class LindormService : MonoBehaviour
         Jotunn.Logger.LogInfo($"The Lindorm broke out of the ground near {player.GetPlayerName()} at {point}, level {level}");
     }
 
+    // A spot on dry ground at a distance from the player and outside any base.
     private static bool TryFindPoint(Vector3 origin, out Vector3 point)
     {
         ZoneSystem zones = ZoneSystem.instance;

@@ -60,6 +60,7 @@ public static class BeastSpawner
         return true;
     }
 
+    // A spot at the configured distance from the player: deep water at sea, otherwise dry ground outside any base.
     private static bool TryFindPoint(Vector3 origin, bool sea, out Vector3 point)
     {
         ZoneSystem zones = ZoneSystem.instance;

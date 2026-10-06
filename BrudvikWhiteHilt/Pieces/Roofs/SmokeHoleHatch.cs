@@ -137,6 +137,7 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
         lastWet = wet;
     }
 
+    // Whether a fire burns under the hatch, within the configured range, so the hatch can open by itself for the smoke.
     private bool FireBelow()
     {
         float range = RoofSettings.HatchFireRange.Value;

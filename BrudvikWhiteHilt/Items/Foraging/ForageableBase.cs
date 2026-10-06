@@ -425,6 +425,8 @@ public abstract class ForageableBase
         pickable.m_amount = pickAmount.Value > 0 ? pickAmount.Value : vanillaAmount;
     }
 
+    // Lifts the plant's model off the ground by the configured clearance (as mountain ground is steep and would swallow
+    // it), and fits the pick-up collider round what is shown so it can still be hovered and picked.
     private void ApplyMountainPlacement(GameObject prefab, Pickable plant)
     {
         if (groundClearance == null)

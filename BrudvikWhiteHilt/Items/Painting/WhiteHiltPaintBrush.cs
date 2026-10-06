@@ -104,6 +104,8 @@ public class WhiteHiltPaintBrush : IWhiteHiltCustomItem, IWhiteHiltConfigurable
         }
     }
 
+    // The brush's own build table: one "piece" per brush action, cloned from the repair piece so choosing it and
+    // clicking works like the hammer's repair. None of them can be placed or removed.
     private static void AddPieceTable()
     {
         PieceManager.Instance.AddPieceTable(new CustomPieceTable(TableName, new PieceTableConfig
@@ -136,6 +138,7 @@ public class WhiteHiltPaintBrush : IWhiteHiltCustomItem, IWhiteHiltConfigurable
         return repair != null ? repair.name : throw new InvalidOperationException("the hammer's repair piece was not found");
     }
 
+    // Replaces the cloned hammer's look with the brush model and renders an icon from it.
     private static void TryApplyVisual(IndestructibleItem brush)
     {
         if (VisualHelper.IsHeadless)

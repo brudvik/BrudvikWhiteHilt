@@ -112,6 +112,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return EnsureBuilt() && largestRequirement.TryGetValue(prefabName, out var amount) ? amount : 0;
         }
 
+        // Sorts all items into chest categories the first time it is needed, and again when the game's item database is
+        // made anew (another world).
         private bool EnsureBuilt()
         {
             var objectDb = ObjectDB.instance;
@@ -140,6 +142,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return true;
         }
 
+        // The largest amount of each item any recipe or build piece needs, at every quality; an item is unlimited once
+        // a chest holds that much.
         private static Dictionary<string, int> CollectLargestRequirements(ObjectDB objectDb)
         {
             var result = new Dictionary<string, int>();

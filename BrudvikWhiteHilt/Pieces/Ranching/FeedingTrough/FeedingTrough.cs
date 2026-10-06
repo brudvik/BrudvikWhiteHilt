@@ -151,6 +151,7 @@ public class FeedingTrough : IWhiteHiltCustomPiece
         wearNTear.m_fragmentRoots = null;
     }
 
+    // Builds the trough's look from the bundle's model on a vanilla wood material, and renders an icon from it.
     private static void TryApplyVisual(CustomPiece piece, Transform visual)
     {
         if (VisualHelper.IsHeadless)
