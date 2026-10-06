@@ -61,3 +61,9 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Skills & milestones](skills.md) | Skill milestones, the Foraging skill, starred food and crops and the Compost Bin |
 | [Saga](saga.md) | Each character's saga and renown |
 | [Settings & progression](progression.md) | The in-game settings window, progression modes, content switches, recipes and tiers |
+
+## 🧱 For modders
+
+| Page | What you find there |
+|------|---------------------|
+| [How the mod is built](architecture.md) | A guide to the source for those who want to learn from it: start-up, cloning items and pieces, assets, multiplayer, Harmony, settings, texts, performance and tests |
