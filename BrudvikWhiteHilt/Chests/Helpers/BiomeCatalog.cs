@@ -77,6 +77,13 @@ namespace BrudvikWhiteHilt.Chests.Helpers
 
         private static readonly IReadOnlyList<string> NoItems = new List<string>();
 
+        // Drops added by patches, which no drop table shows: the item, the prefabs it comes from, and the biomes it is
+        // limited to (null for wherever the prefab is placed).
+        private static readonly List<(string Item, Func<GameObject, bool> Source, Func<Biome>? Within)> RegisteredDrops = new();
+
+        // Items found in fixed biomes rather than from a placed prefab, such as turf cut from the ground.
+        private static readonly List<(string Item, Func<Biome> Biomes)> RegisteredBiomes = new();
+
         private readonly ChestSettings settings;
         private ObjectDB? builtFor;
         private Dictionary<Biome, IReadOnlyList<string>> itemsByBiome = new();
@@ -88,6 +95,29 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public BiomeCatalog(ChestSettings settings)
         {
             this.settings = settings;
+        }
+
+        /// <summary>
+        /// Records an item a patch drops from some prefabs, so it is listed in the biomes those prefabs are placed in.
+        /// Call before the first world loads.
+        /// </summary>
+        /// <param name="item">The item prefab name.</param>
+        /// <param name="source">Tells whether a placed prefab (or what it turns into, like a tree into logs) drops it.</param>
+        /// <param name="within">The biomes the drop is limited to, read when the lists are built; null for all.</param>
+        public static void RegisterDrop(string item, Func<GameObject, bool> source, Func<Biome>? within = null)
+        {
+            RegisteredDrops.Add((item, source, within));
+        }
+
+        /// <summary>
+        /// Records an item that is found in given biomes rather than dropped by a placed prefab. Call before the first
+        /// world loads.
+        /// </summary>
+        /// <param name="item">The item prefab name.</param>
+        /// <param name="biomes">The biomes, read when the lists are built.</param>
+        public static void RegisterBiomes(string item, Func<Biome> biomes)
+        {
+            RegisteredBiomes.Add((item, biomes));
         }
 
         /// <summary>
@@ -113,6 +143,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             builder.AddVegetation(zoneSystem);
             builder.AddSpawns();
             builder.AddLocationItems(LocationItems);
+            builder.AddRegisteredBiomes();
             itemsByBiome = builder.Build();
             builtFor = objectDb;
             if (settings.DumpItemLists.Value) builder.Dump();
@@ -263,6 +294,15 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 }
             }
 
+            public void AddRegisteredBiomes()
+            {
+                currentSource = "registered biomes";
+                foreach (var (item, biomes) in RegisteredBiomes)
+                {
+                    AddItem(item, biomes());
+                }
+            }
+
             /// <summary>
             /// Writes the items of every biome to the log, each with the first source that placed it there.
             /// </summary>
@@ -293,6 +333,11 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 if (prefab == null || depth > MaxSourceDepth) return;
 
                 AddItem(prefab.name, biome);
+
+                foreach (var (item, source, within) in RegisteredDrops)
+                {
+                    if (source(prefab)) AddItem(item, within == null ? biome : biome & within());
+                }
 
                 if (prefab.TryGetComponent(out TreeBase tree))
                 {

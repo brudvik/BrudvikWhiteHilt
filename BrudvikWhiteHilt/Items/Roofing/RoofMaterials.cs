@@ -1,3 +1,5 @@
+using BrudvikWhiteHilt.Chests.Constants;
+using BrudvikWhiteHilt.Chests.Helpers;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Patches.Foraging;
 using BrudvikWhiteHilt.Pieces.Roofs;
@@ -66,6 +68,20 @@ public static class RoofMaterials
         ForagingDropPatch.Register("Pickable_Flax", Heightmap.Biome.All, Straw, () => RoofSettings.StrawChance.Value);
         ForagingDropPatch.Register("Pickable_Flax_Wild", Heightmap.Biome.All, Straw, () => RoofSettings.StrawChance.Value);
 
+        // They drop through patches, which the chests' item sorter cannot see.
+        ItemSorter.RegisterSource(Slate, ChestCategory.Stone);
+        ItemSorter.RegisterSource(Soapstone, ChestCategory.Stone);
+        ItemSorter.RegisterSource(BirchBark, ChestCategory.Material);
+        ItemSorter.RegisterSource(Straw, ChestCategory.Material);
+        ItemSorter.RegisterSource(Turf, ChestCategory.Material);
+
+        // The gathering overview lists them where RoofDropPatches drops them.
+        BiomeCatalog.RegisterDrop(BirchBark, prefab => prefab.name.StartsWith("Birch", StringComparison.Ordinal)
+            && (prefab.GetComponent<TreeBase>() != null || prefab.GetComponent<TreeLog>() != null));
+        BiomeCatalog.RegisterDrop(Slate, IsRock, () => Heightmap.Biome.Mountain);
+        BiomeCatalog.RegisterDrop(Soapstone, IsRock, () => Heightmap.Biome.Mountain);
+        BiomeCatalog.RegisterBiomes(Turf, () => RoofSettings.TurfBiomes.Value);
+
         PrefabManager.OnVanillaPrefabsAvailable += Add;
     }
 
@@ -94,6 +110,12 @@ public static class RoofMaterials
             AddItem(Straw, "Flax", pixel => Shade(pixel, new Color(0.95f, 0.78f, 0.42f), 0f));
         });
         Try("Slate outcrop", AddOutcrop);
+    }
+
+    // Rocks that can be mined; in the Mountains RoofDropPatches adds slate and soapstone to their stone.
+    private static bool IsRock(GameObject prefab)
+    {
+        return prefab.GetComponent<MineRock>() != null || prefab.GetComponent<MineRock5>() != null;
     }
 
     private static void Try(string what, Action action)
@@ -178,6 +200,9 @@ public static class RoofMaterials
         }
 
         mineRock.m_dropItems = new DropTable { m_drops = drops, m_dropMin = 2, m_dropMax = 4, m_dropChance = 1f };
+
+        // The broken outcrop is a network object of its own; unregistered, other players never saw it.
+        PrefabManager.Instance.AddPrefab(new CustomPrefab(frac, false));
 
         GameObject outcrop = PrefabManager.Instance.CreateClonedPrefab(OutcropName, "rock4_copper");
         Destructible destructible = outcrop.GetComponent<Destructible>() ?? throw new InvalidOperationException("rock4_copper has no Destructible");

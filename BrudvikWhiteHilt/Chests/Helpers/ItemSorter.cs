@@ -71,6 +71,9 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             { "FrozenKingDrop", ChestCategory.Treasure }
         };
 
+        // Items from sources the sorter cannot see, such as drops added by a patch, with the chest they belong in.
+        private static readonly Dictionary<string, ChestCategory> RegisteredSources = new();
+
         private readonly ObjectDB objectDb;
         private readonly ZNetScene scene;
         private readonly ChestSettings settings;
@@ -102,6 +105,17 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             this.objectDb = objectDb;
             this.scene = scene;
             this.settings = settings;
+        }
+
+        /// <summary>
+        /// Marks an item as obtainable and places it in a chest, for items whose source the sorter cannot see: drops
+        /// added by a Harmony patch, for one. The Include setting still wins. Call before the first world loads.
+        /// </summary>
+        /// <param name="prefabName">The item prefab name.</param>
+        /// <param name="category">The chest it belongs in.</param>
+        public static void RegisterSource(string prefabName, ChestCategory category)
+        {
+            RegisteredSources[prefabName] = category;
         }
 
         /// <summary>
@@ -253,6 +267,11 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                         if (requirement?.m_resItem != null) plantRequirements.Add(requirement.m_resItem.name);
                     }
                 }
+            }
+
+            foreach (var name in RegisteredSources.Keys)
+            {
+                if (items.ContainsKey(name)) obtainable.Add(name);
             }
         }
 
@@ -467,7 +486,12 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         {
             foreach (var name in candidates)
             {
-                if (!assigned.ContainsKey(name) && BuiltInPlacements.TryGetValue(name, out var category)) assigned[name] = category;
+                if (assigned.ContainsKey(name)) continue;
+
+                if (BuiltInPlacements.TryGetValue(name, out var category) || RegisteredSources.TryGetValue(name, out category))
+                {
+                    assigned[name] = category;
+                }
             }
         }
 

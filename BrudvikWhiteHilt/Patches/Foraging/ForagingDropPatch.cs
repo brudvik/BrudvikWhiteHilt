@@ -23,6 +23,7 @@ public static class ForagingDropPatch
     public static void Register(string pickableName, Heightmap.Biome biome, string itemName, Func<float> chance)
     {
         extraDrops.Add(new ExtraDrop(pickableName, biome, itemName, chance));
+        global::BrudvikWhiteHilt.Chests.Helpers.BiomeCatalog.RegisterDrop(itemName, prefab => prefab.name == pickableName, () => biome);
     }
 
     [HarmonyPrefix]

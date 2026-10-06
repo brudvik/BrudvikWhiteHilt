@@ -23,10 +23,10 @@ The contents of every chest are worked out when a world loads. Every item in the
 | Chest | Colour | Contents |
 |-------|--------|----------|
 | Wood Chest | Black | Everything that drops from trees and logs (wood, resin, bark), plus Coal |
-| Stone Chest | Grey | Everything mined from rocks and deposits (stone, flint, obsidian, crystal, sulfur), plus what is crafted from stone only |
+| Stone Chest | Grey | Everything mined from rocks and deposits (stone, flint, obsidian, crystal, sulfur, slate, soapstone), plus what is crafted from stone only |
 | Metal Chest | Dark red | Ores, scrap and bars, plus what is crafted from metal only (nails) and Chain |
 | Food Chest | Brown | All food, fish, raw and uncooked ingredients, and anything used in a food recipe (10 rows) |
-| Material Chest | Dark blue | All remaining crafting materials, including Surtling Core, Ectoplasm, Flax, casts and moulds |
+| Material Chest | Dark blue | All remaining crafting materials, including Surtling Core, Ectoplasm, Flax, birch bark, straw, turf, casts and moulds |
 | Animal Chest | Yellow | Materials dropped by creatures (hides, bones, scales, feathers, leather scraps…) |
 | Seed Chest | Green | Seeds, cones and nuts that are planted but not used as ingredients |
 | Trophy Chest | Teal | All trophies |

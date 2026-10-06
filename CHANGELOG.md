@@ -11,6 +11,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Fixed
 - Building and crafting from chests no longer waits for ever on a chest that cannot be handed over: chests someone has open, ship and cart holds, and chests left marked as open by a player who logged out (now freed). After 4 seconds of waiting (`[ChestCrafting] HandoffTimeout`) it goes on with the chests at hand, and the log says which chests it waited for.
+- Slate, soapstone, birch bark, straw and turf belong in a chest again (Stone and Material Chests) and show in the gathering overview where they drop: slate and soapstone in the Mountains, birch bark where birches grow, straw in the Plains and turf in the `TurfBiomes`. Before, the chests took them for unobtainable. Forageables that also drop from vanilla plants are listed in those plants' biomes too.
+- The broken slate outcrop is registered with the game, so every player sees it and it stays after a reload.
 
 ## v0.98.0 - 2026-10-06
 
