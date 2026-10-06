@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.96.0 - 2026-10-06
 
 ### Changed
 - **New players start in linear progression.** A new config file now holds `Linear` for both `[General] Mode` (White Hilt gear unlocks biome by biome) and the chests' `Mode` (an item becomes unlimited once a chest holds a full stack of it). A config file that already holds a mode keeps it, so existing worlds and servers play on as before. If you play in Full and delete or replace your config file, set both back to `Full` before opening any chest, or the chests remove what is not unlocked.
