@@ -32,6 +32,7 @@
     { "image": "white_hilt_sword", "models": ["whsword"] },
     { "image": "white_hilt_bow", "models": ["whbow"] },
     { "image": "white_hilt_battleaxe", "models": ["whbattleaxe"] },
+    { "image": "white_hilt_crystal_axe", "models": ["whaxe"] },
     { "image": "white_hilt_spear", "models": ["whspear"] },
     { "image": "white_hilt_mace", "models": ["whmace"] },
     { "image": "white_hilt_atgeir", "models": ["whatgeir"] },

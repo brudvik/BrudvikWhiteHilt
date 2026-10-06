@@ -68,6 +68,11 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     protected virtual float BonusFireDamage => 0f;
 
     /// <summary>
+    /// Spirit damage added on top of the weapon's own damage.
+    /// </summary>
+    protected virtual float BonusSpiritDamage => 0f;
+
+    /// <summary>
     /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
@@ -192,6 +197,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
 
         HitData.DamageTypes damages = baseDamages.Clone();
         damages.m_fire += BonusFireDamage;
+        damages.m_spirit += BonusSpiritDamage;
         shared.m_damages = damages;
 
         // Only the types the weapon already deals grow with its level, so a sword gets no pierce.

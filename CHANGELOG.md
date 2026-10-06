@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **White Hilt Crystal Axe**: the White Hilt Battleaxe made one-handed, so a shield goes with it. It swings like the Iron Axe, has a lilac head with the Crystal Battleaxe's glow, and deals +20 spirit damage like it (`[Gear.Weapons] CrystalAxeSpiritDamage`). Forge level 2: Iron ×20, Crystal ×10, Iron Axe ×1; it unlocks with the Mountains.
+
 ## v0.100.0 - 2026-10-06
 
 ### Fixed
