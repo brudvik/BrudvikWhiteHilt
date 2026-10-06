@@ -285,8 +285,11 @@ public static class DecorPieceFactory
             return cached;
         }
 
-        Renderer renderer = PrefabManager.Instance.GetPrefab(prefabName)?.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(found => found.sharedMaterial != null)
+        // Not simply the first renderer: that is wood_pole2's snow cap, which made the decorations see-through and shiny.
+        GameObject prefab = PrefabManager.Instance.GetPrefab(prefabName)
             ?? throw new InvalidOperationException($"the vanilla {prefabName} was not found");
+        Renderer renderer = VisualHelper.PieceTemplate(prefab)
+            ?? throw new InvalidOperationException($"the vanilla {prefabName} has no visible part");
         templates[prefabName] = renderer;
         return renderer;
     }

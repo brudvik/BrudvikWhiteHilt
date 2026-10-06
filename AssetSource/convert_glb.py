@@ -122,6 +122,10 @@ def texture_source(gltf, primitive):
     pbr = material.get("pbrMetallicRoughness", {})
     gloss = material.get("extensions", {}).get("KHR_materials_pbrSpecularGlossiness", {})
     colour = tuple(pbr.get("baseColorFactor") or gloss.get("diffuseFactor") or (1.0, 1.0, 1.0, 1.0))
+    # A material made see-through by its factor (glass, a water surface) cannot blend in Valheim's piece shader, which
+    # only cuts out below half alpha: the water of a tub vanished. It is drawn solid instead; a texture's own alpha
+    # (leaves, cut-out edges) is kept.
+    colour = colour[:3] + (1.0,)
     texture_info = pbr.get("baseColorTexture") or gloss.get("diffuseTexture")
     if texture_info is None:
         return ("colour", None, colour)

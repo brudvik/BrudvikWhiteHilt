@@ -387,6 +387,25 @@ public static class VisualHelper
         }
     }
 
+    /// <summary>
+    /// The renderer of a vanilla piece whose material suits as a template for a model's own: the active part with a
+    /// <c>Custom/Piece</c> material, on the piece layer if there is one. The first renderer is often the snow cap
+    /// (<c>floor_2x2_snow</c>, <c>pole_top_snow</c>: Valheim/Snow, inactive, default layer), which draws a model
+    /// see-through and shiny.
+    /// </summary>
+    /// <param name="prefab">The vanilla piece, or a clone of it.</param>
+    /// <returns>The renderer, or null if the piece shows nothing.</returns>
+    public static Renderer PieceTemplate(GameObject prefab)
+    {
+        int pieceLayer = LayerMask.NameToLayer("piece");
+        return prefab.GetComponentsInChildren<Renderer>(true)
+            .Where(renderer => renderer is MeshRenderer or SkinnedMeshRenderer)
+            .Where(renderer => renderer.sharedMaterial != null && IsActiveBelow(renderer.transform, prefab.transform))
+            .OrderByDescending(renderer => renderer.sharedMaterial.shader != null && renderer.sharedMaterial.shader.name == "Custom/Piece")
+            .ThenByDescending(renderer => renderer.gameObject.layer == pieceLayer)
+            .FirstOrDefault();
+    }
+
     // activeInHierarchy is always false inside Jotunn's disabled prefab container, so walk up to the root instead.
     internal static bool IsActiveBelow(Transform transform, Transform root)
     {

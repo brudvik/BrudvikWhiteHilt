@@ -267,7 +267,7 @@ public static class TreasureRegistry
     private static Renderer ChestTemplate()
     {
         GameObject source = PrefabManager.Instance.GetPrefab(ChestSource);
-        return source.GetComponentsInChildren<MeshRenderer>(true).First();
+        return VisualHelper.PieceTemplate(source);
     }
 
     // Runs for every ZNetScene, so it must be idempotent.

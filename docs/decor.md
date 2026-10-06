@@ -281,6 +281,8 @@ Tables, stools and chairs you can sit on, shelves, boxes and pots, from the mead
 
 Hanging cloth, hides, curtains, banners and runner rugs.
 
+<img src="images/decor_textiles.png" alt="Textiles" title="Textiles" height="260">
+
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
 | **Hanging Cloth** | A long cloth hung from the rafters. | Linen Thread ×2 | Valheim's own look |

@@ -97,7 +97,7 @@ public abstract class ShipWorkshopBase : IWhiteHiltCustomPiece
             });
             GameObject prefab = piece.PiecePrefab;
             CraftingStation station = prefab.GetComponent<CraftingStation>();
-            Renderer template = prefab.GetComponentsInChildren<MeshRenderer>(true).First();
+            Renderer template = VisualHelper.PieceTemplate(prefab);
             foreach (Renderer renderer in prefab.GetComponentsInChildren<Renderer>(true)) renderer.enabled = false;
             foreach (LODGroup group in prefab.GetComponentsInChildren<LODGroup>(true)) UnityEngine.Object.DestroyImmediate(group);
             foreach (Collider collider in prefab.GetComponentsInChildren<Collider>(true))

@@ -87,7 +87,7 @@ public sealed class WallDrawer : MonoBehaviour
 	public static void Configure(GameObject prefab)
 	{
 		prefab.AddComponent<WallDrawer>();
-		Renderer template = prefab.GetComponentsInChildren<MeshRenderer>(true).First();
+		Renderer template = VisualHelper.PieceTemplate(prefab);
 		foreach (MeshRenderer renderer in prefab.GetComponentsInChildren<MeshRenderer>(true)) renderer.enabled = false;
 		foreach (LODGroup group in prefab.GetComponentsInChildren<LODGroup>(true)) UnityEngine.Object.DestroyImmediate(group);
 		foreach (Collider collider in prefab.GetComponentsInChildren<Collider>(true))
