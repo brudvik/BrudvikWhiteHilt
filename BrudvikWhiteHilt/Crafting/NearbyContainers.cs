@@ -52,9 +52,16 @@ public static class NearbyContainers
     private const float RequestCooldown = 10f;
     private const int RequestedLimit = 500;
 
+    // What a stack a chest keeps full without limit counts as: enough for any recipe, and no risk of overflow when added.
+    private const int UnlimitedAmount = 1000000;
+
+    // A chest that refills at once is taken from again, up to this many times for one requirement.
+    private const int MaxTakeRounds = 100;
+    private const float WaitLogInterval = 1f;
+
     private static readonly HashSet<Container> all = new();
     private static readonly List<(Container Container, float SqrDistance)> nearby = new();
-    private static readonly Dictionary<(string Name, int Quality, bool Building, bool All), int> countCache = new();
+    private static readonly Dictionary<(string Name, int Quality, bool Building, bool All, bool Unlimited), int> countCache = new();
     private static readonly Dictionary<(string Name, bool Building), bool> unlimitedCache = new();
     private static readonly Dictionary<Container, float> requested = new();
 
@@ -71,6 +78,8 @@ public static class NearbyContainers
     private static ConfigEntry<KeyboardShortcut> toggleKey;
     private static ConfigEntry<KeyCode> fillAllKey;
     private static ConfigEntry<bool> showTakenChests;
+    private static ConfigEntry<float> handoffTimeout;
+    private static ConfigEntry<float> keepSeconds;
 
     private static HashSet<string> excludedContainerSet = new();
     private static HashSet<string> excludedItemSet;
@@ -80,6 +89,9 @@ public static class NearbyContainers
     private static Vector3 listPosition;
     private static float countTime = float.NegativeInfinity;
     private static float nextWarm;
+    private static float waitStarted = float.NegativeInfinity;
+    private static float lastWaitAt = float.NegativeInfinity;
+    private static float nextWaitLog;
 
     /// <summary>
     /// True while the fill-all key (Shift by default) is held: fuel and ore are filled up in one go.
@@ -90,6 +102,12 @@ public static class NearbyContainers
     /// True if the chests should show when something is taken from them.
     /// </summary>
     public static bool ShowTakenChests => showTakenChests == null || showTakenChests.Value;
+
+    /// <summary>
+    /// How long a chest just handed over to a player is left with them by others who only get ready to use it, in
+    /// seconds.
+    /// </summary>
+    public static float KeepSeconds => keepSeconds?.Value ?? 0f;
 
     /// <summary>
     /// Tells which items the restocking chests keep without limit, or null while the chest module is off.
@@ -104,6 +122,7 @@ public static class NearbyContainers
         Translations.AddEnglish("msg_whitehilt_chests_on", "Using nearby chests");
         Translations.AddEnglish("msg_whitehilt_chests_off", "Not using nearby chests");
         Translations.AddEnglish("msg_whitehilt_chests_waiting", "Fetching from the chests, try again in a moment");
+        Translations.AddEnglish("msg_whitehilt_chests_notenough", "Not enough in your inventory and the chests nearby");
         Translations.AddEnglish("whitehilt_chests_inventory", "in your inventory");
         Translations.AddEnglish("whitehilt_chests_chests", "in chests");
 
@@ -127,6 +146,12 @@ public static class NearbyContainers
             "Hold while adding fuel or ore to fill it up at once from your inventory and nearby chests.");
         showTakenChests = WhiteHiltConfig.BindLocal(Section, "ShowTakenChests", true,
             "Chests open their lid and glow briefly when something is taken from them.");
+        handoffTimeout = WhiteHiltConfig.BindAdminOnly(Section, "HandoffTimeout", 4f,
+            "How long building and crafting wait for chests another player holds to be handed over, in seconds. After that " +
+            "they go on with the chests already at hand.", new AcceptableValueRange<float>(1f, 30f));
+        keepSeconds = WhiteHiltConfig.BindAdminOnly(Section, "HandoffKeepSeconds", 20f,
+            "A chest just handed over to a player is left with them this many seconds by others who only get ready to " +
+            "build or craft. Taking from it still asks for it at once.", new AcceptableValueRange<float>(0f, 120f));
 
         excludedContainers.SettingChanged += (_, _) => excludedContainerSet = ParseList(excludedContainers.Value);
         excludedItems.SettingChanged += (_, _) => excludedItemSet = null;
@@ -192,8 +217,9 @@ public static class NearbyContainers
     }
 
     /// <summary>
-    /// Asks for the chests around the local player to be handed over while the player gets ready to use them, so
-    /// they count and can be taken from by the time the player clicks. Call once a frame for the local player.
+    /// Asks for the chests the local player is about to need to be handed over while the player gets ready to use
+    /// them, so they count and can be taken from by the time the player clicks: only chests holding what the selected
+    /// piece, recipe or station lacks, and none another player was just handed. Call once a frame for the local player.
     /// </summary>
     /// <param name="player">The local player.</param>
     public static void Warm(Player player)
@@ -215,17 +241,7 @@ public static class NearbyContainers
             requested.Clear();
         }
 
-        long playerId = player.GetPlayerID();
-        foreach (Container container in InRange(use.Value))
-        {
-            if (ContainerHandoff.Held(container) || (requested.TryGetValue(container, out float at) && Time.time - at < RequestCooldown))
-            {
-                continue;
-            }
-
-            requested[container] = Time.time;
-            ContainerHandoff.Ready(container, playerId);
-        }
+        RequestFor(player, use.Value, UpcomingNeeds(player, use.Value), true, null);
     }
 
     /// <summary>
@@ -238,7 +254,7 @@ public static class NearbyContainers
     /// <returns>The number available.</returns>
     public static int Count(Use use, string name, int quality = -1)
     {
-        return Count(use, name, quality, false);
+        return Count(use, name, quality, false, false);
     }
 
     /// <summary>
@@ -253,12 +269,27 @@ public static class NearbyContainers
     /// <returns>The number in the chests.</returns>
     public static int CountAll(Use use, string name, int quality = -1)
     {
-        return Count(use, name, quality, true);
+        return Count(use, name, quality, true, false);
+    }
+
+    /// <summary>
+    /// How many of an item the chests around the local player can give, for checking a requirement: like
+    /// <see cref="Count"/> or <see cref="CountAll"/>, but a stack a chest keeps full without limit counts as enough for
+    /// any amount, since it refills each time something is taken.
+    /// </summary>
+    /// <param name="use">What the items are wanted for; building has its own range.</param>
+    /// <param name="name">Shared item name.</param>
+    /// <param name="quality">Item quality, or -1 for any.</param>
+    /// <param name="heldOnly">True to count only the chests handed over to the player, the ones taken from.</param>
+    /// <returns>The number the chests can give.</returns>
+    public static int CountForCheck(Use use, string name, int quality, bool heldOnly)
+    {
+        return Count(use, name, quality, !heldOnly, true);
     }
 
     // How many of an item the nearby chests hold, remembered for a moment, as the game asks for every requirement of
     // every recipe each time the panel refreshes.
-    private static int Count(Use use, string name, int quality, bool all)
+    private static int Count(Use use, string name, int quality, bool all, bool countUnlimited)
     {
         if (IsExcluded(name))
         {
@@ -267,7 +298,7 @@ public static class NearbyContainers
 
         ExpireCounts();
         bool building = use == Use.Building;
-        if (countCache.TryGetValue((name, quality, building, all), out int cached))
+        if (countCache.TryGetValue((name, quality, building, all, countUnlimited), out int cached))
         {
             return cached;
         }
@@ -275,16 +306,18 @@ public static class NearbyContainers
         int count = 0;
         foreach (Container container in all ? InRange(use) : GetNearby(use))
         {
-            count += Available(container, name, quality);
+            count = Mathf.Min(UnlimitedAmount, count + Available(container, name, quality, countUnlimited));
         }
 
-        countCache[(name, quality, building, all)] = count;
+        countCache[(name, quality, building, all, countUnlimited)] = count;
         return count;
     }
 
     /// <summary>
     /// Asks for the chests a crafting or a piece needs, should the ones handed over not be enough, and tells whether it
-    /// must wait for them. Call just before the requirements are checked and taken.
+    /// must wait for them. Only as many chests as make up what is missing are asked for, nearest first; chests that
+    /// cannot be handed over now are left out. After <c>HandoffTimeout</c> seconds of waiting it goes on with the
+    /// chests at hand. Call just before the requirements are checked and taken.
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="use">Crafting or building.</param>
@@ -297,38 +330,38 @@ public static class NearbyContainers
             return false;
         }
 
-        bool waiting = false;
-        long playerId = player.GetPlayerID();
-        foreach ((string name, int amount) in requirements)
+        // A click long after the last one starts a new wait.
+        float timeout = handoffTimeout.Value;
+        if (Time.time - lastWaitAt > timeout)
         {
-            if (amount <= 0 || IsExcluded(name))
-            {
-                continue;
-            }
-
-            int own = player.GetInventory().CountItems(name);
-            if (own >= amount || own + Count(use, name) >= amount)
-            {
-                continue;
-            }
-
-            foreach (Container container in InRange(use))
-            {
-                if (!ContainerHandoff.Held(container) && Available(container, name, -1) > 0)
-                {
-                    waiting = true;
-                    requested[container] = Time.time;
-                    ContainerHandoff.Ready(container, playerId);
-                }
-            }
+            waitStarted = Time.time;
         }
 
-        if (waiting)
+        lastWaitAt = Time.time;
+        countCache.Clear();
+        List<string> skipped = new();
+        int asked = RequestFor(player, use, requirements, false, skipped);
+        if (asked == 0)
         {
-            countCache.Clear();
+            lastWaitAt = float.NegativeInfinity;
+            if (skipped.Count > 0)
+            {
+                LogWait($"Chests left out for {use}, as they cannot be handed over now: {string.Join(", ", skipped)}", false);
+            }
+
+            return false;
         }
 
-        return waiting;
+        if (Time.time - waitStarted >= timeout)
+        {
+            lastWaitAt = float.NegativeInfinity;
+            LogWait($"Gave up waiting for {asked} chests for {use} after {timeout:0.#} s; going on with the chests at hand.", true);
+            return false;
+        }
+
+        LogWait($"Waiting for {asked} chests to be handed over for {use}"
+            + (skipped.Count > 0 ? $"; left out: {string.Join(", ", skipped)}" : string.Empty), false);
+        return true;
     }
 
     /// <summary>
@@ -389,7 +422,7 @@ public static class NearbyContainers
         int taken = 0;
         foreach (Container container in containers)
         {
-            if (container == null || !container.m_nview.IsValid() || Available(container, name, quality) <= 0)
+            if (container == null || !container.m_nview.IsValid() || Available(container, name, quality, false) <= 0)
             {
                 continue;
             }
@@ -400,20 +433,38 @@ public static class NearbyContainers
                 continue;
             }
 
-            int take = Mathf.Min(amount - taken, Available(container, name, quality));
-            if (take <= 0)
+            // A chest that keeps the item without limit refills its stack as soon as something is taken, so it is
+            // taken from again until the amount is met.
+            Inventory inventory = container.GetInventory();
+            bool unlimited = IsUnlimitedIn(container, inventory, name, quality);
+            int before = taken;
+            for (int round = 0; round < MaxTakeRounds && taken < amount; round++)
+            {
+                int take = Mathf.Min(amount - taken, Available(container, name, quality, false));
+                if (take <= 0)
+                {
+                    break;
+                }
+
+                inventory.RemoveItem(name, take, quality);
+                taken += take;
+                if (!unlimited)
+                {
+                    break;
+                }
+            }
+
+            if (taken == before)
             {
                 continue;
             }
 
-            container.GetInventory().RemoveItem(name, take, quality);
             container.Save();
             if (ShowTakenChests)
             {
                 ContainerPulse.Play(container);
             }
 
-            taken += take;
             if (taken >= amount)
             {
                 break;
@@ -440,10 +491,198 @@ public static class NearbyContainers
         return otherModInstalled.Value;
     }
 
-    private static int Available(Container container, string name, int quality)
+    // How many of an item a container can give; with countUnlimited, a stack it keeps full counts as enough for anything.
+    private static int Available(Container container, string name, int quality, bool countUnlimited)
     {
-        int count = container.GetInventory()?.CountItems(name, quality) ?? 0;
+        Inventory inventory = container.GetInventory();
+        if (inventory == null)
+        {
+            return 0;
+        }
+
+        if (countUnlimited && IsUnlimitedIn(container, inventory, name, quality))
+        {
+            return UnlimitedAmount;
+        }
+
+        int count = inventory.CountItems(name, quality);
         return leaveOne.Value ? Mathf.Max(0, count - 1) : count;
+    }
+
+    private static bool IsUnlimitedIn(Container container, Inventory inventory, string name, int quality)
+    {
+        return Unlimited != null && inventory.GetAllItems().Any(item => item.m_shared.m_name == name
+            && (quality < 0 || item.m_quality == quality) && Unlimited.IsUnlimitedIn(container, item));
+    }
+
+    // Asks for the chests in range, nearest first, that hold what the needs lack beyond the inventory and the chests
+    // already handed over, until each need is met. Warming leaves chests another player was just handed, and counts
+    // the ones it asked for a moment ago as coming. Chests that cannot be handed over now go to skipped. Returns how
+    // many chests were asked for.
+    private static int RequestFor(Player player, Use use, IEnumerable<(string Name, int Amount)> needs, bool warming, List<string> skipped)
+    {
+        HashSet<Container> asked = new();
+        long playerId = player.GetPlayerID();
+        foreach ((string name, int amount) in needs)
+        {
+            if (amount <= 0 || IsExcluded(name))
+            {
+                continue;
+            }
+
+            int have = Mathf.Min(UnlimitedAmount, player.GetInventory().CountItems(name) + CountForCheck(use, name, -1, true));
+            foreach (Container container in InRange(use))
+            {
+                if (have >= amount)
+                {
+                    break;
+                }
+
+                if (ContainerHandoff.Held(container))
+                {
+                    continue;
+                }
+
+                int available = Available(container, name, -1, true);
+                if (available <= 0)
+                {
+                    continue;
+                }
+
+                string reason = WhyNotHandedOver(container);
+                if (reason != null)
+                {
+                    skipped?.Add($"{Utils.GetPrefabName(container.m_nview.gameObject)} ({reason})");
+                    continue;
+                }
+
+                if (warming)
+                {
+                    if (requested.TryGetValue(container, out float at) && Time.time - at < RequestCooldown)
+                    {
+                        have = Mathf.Min(UnlimitedAmount, have + available);
+                        continue;
+                    }
+
+                    if (ContainerHandoff.KeptByOther(container, KeepSeconds))
+                    {
+                        continue;
+                    }
+                }
+
+                requested[container] = Time.time;
+                ContainerHandoff.Ready(container, playerId);
+                asked.Add(container);
+                have = Mathf.Min(UnlimitedAmount, have + available);
+            }
+        }
+
+        return asked.Count;
+    }
+
+    // Why a container cannot be handed over now, or null if it can: someone has it open, or it is a ship's or cart's
+    // own hold, which the game passes to whoever is aboard or pulling.
+    private static string WhyNotHandedOver(Container container)
+    {
+        if (ContainerHandoff.InUse(container))
+        {
+            return "open";
+        }
+
+        GameObject root = container.m_nview.gameObject;
+        if (root.GetComponent<Ship>() != null)
+        {
+            return "ship";
+        }
+
+        return root.GetComponent<Vagon>() != null ? "cart" : null;
+    }
+
+    // What the player is about to need: the selected piece's resources, the selected recipe's at the chosen amount, or
+    // one of each fuel and ore the station looked at takes.
+    private static List<(string Name, int Amount)> UpcomingNeeds(Player player, Use use)
+    {
+        List<(string Name, int Amount)> needs = new();
+        if (use == Use.Building)
+        {
+            Piece piece = player.GetSelectedPiece();
+            if (piece != null && piece.m_resources != null)
+            {
+                needs.AddRange(piece.m_resources.Where(requirement => requirement.m_resItem != null)
+                    .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount)));
+            }
+
+            return needs;
+        }
+
+        if (use == Use.Crafting)
+        {
+            InventoryGui gui = InventoryGui.instance;
+            Recipe recipe = gui != null ? gui.m_selectedRecipe.Recipe : null;
+            if (recipe == null || recipe.m_resources == null)
+            {
+                return needs;
+            }
+
+            ItemDrop.ItemData upgrade = gui.m_selectedRecipe.ItemData;
+            int quality = upgrade != null ? upgrade.m_quality + 1 : 1;
+            int multiplier = CraftAmountSelector.SelectedAmount(gui);
+            CraftingStation station = player.GetCurrentCraftingStation();
+            needs.AddRange(recipe.m_resources
+                .Where(requirement => requirement.m_resItem != null
+                    && (station != null ? station.m_upgrader == requirement.m_upgraderResource : !requirement.m_upgraderResource))
+                .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.GetAmount(quality) * multiplier)));
+            return needs;
+        }
+
+        GameObject hovered = player.GetHoverObject();
+        if (hovered == null)
+        {
+            return needs;
+        }
+
+        List<ItemDrop> items = new();
+        Smelter smelter = hovered.GetComponentInParent<Smelter>();
+        if (smelter != null)
+        {
+            items.Add(smelter.m_fuelItem);
+            items.AddRange(smelter.m_conversion.Select(conversion => conversion.m_from));
+        }
+
+        CookingStation cooking = hovered.GetComponentInParent<CookingStation>();
+        if (cooking != null)
+        {
+            items.Add(cooking.m_fuelItem);
+            items.AddRange(cooking.m_conversion.Select(conversion => conversion.m_from));
+        }
+
+        Fireplace fireplace = hovered.GetComponentInParent<Fireplace>();
+        if (fireplace != null)
+        {
+            items.Add(fireplace.m_fuelItem);
+        }
+
+        needs.AddRange(items.Where(item => item != null).Select(item => (item.m_itemData.m_shared.m_name, 1)).Distinct());
+        return needs;
+    }
+
+    // Writes why building or crafting waits, at most once a second, so a player's report can be traced in the log.
+    private static void LogWait(string message, bool warning)
+    {
+        if (Time.time < nextWaitLog && !warning)
+        {
+            return;
+        }
+
+        nextWaitLog = Time.time + WaitLogInterval;
+        if (warning)
+        {
+            Jotunn.Logger.LogWarning(message);
+        }
+        else
+        {
+            Jotunn.Logger.LogInfo(message);
+        }
     }
 
     // The containers in range for a use that the player holds, nearest first: the ones that count and are taken from.

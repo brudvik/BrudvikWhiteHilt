@@ -108,6 +108,16 @@ public static class CraftAmountSelector
         Apply(gui);
     }
 
+    /// <summary>
+    /// How many of the selected recipe the Craft button makes at once: the chosen amount, or one.
+    /// </summary>
+    /// <param name="gui">The inventory screen.</param>
+    /// <returns>The amount.</returns>
+    public static int SelectedAmount(InventoryGui gui)
+    {
+        return CraftingPanelSettings.AmountSelector != null && CraftingPanelSettings.AmountSelector.Value && CanMultiCraft(gui) ? amount : 1;
+    }
+
     private static int MaxAmount()
     {
         return Math.Max(1, CraftingPanelSettings.MaxCraftAmount.Value);

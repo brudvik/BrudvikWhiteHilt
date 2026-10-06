@@ -229,7 +229,8 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         {
             if (priority > heldBack) break;
             if (!canContinue()) { waiting = true; return; }
-            if (!ContainerHandoff.Ready(chest, playerId))
+            // Sorting can wait; a chest just handed to a player who builds or crafts stays with them a while.
+            if (ContainerHandoff.KeptByOther(chest, NearbyContainers.KeepSeconds) || !ContainerHandoff.Ready(chest, playerId))
             {
                 waiting = true;
                 heldBack = priority;

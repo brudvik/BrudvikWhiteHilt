@@ -17,6 +17,9 @@ internal sealed class ContainerHandoff : MonoBehaviour
     private const string ResponseRpc = "WhiteHilt_CollectionResponse";
     private const float DefaultRetrySeconds = 5f;
 
+    // When the container was last handed over, in world time ticks, so others can leave it be for a while.
+    private static readonly int HandedAtKey = "whitehilt_handoff_at".GetStableHashCode();
+
     private ZNetView view;
     private List<Container> containers;
     private long sequence;
@@ -72,6 +75,42 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return handoff != null ? handoff.Held() : container.m_nview.IsOwner() && !container.IsInUse();
     }
 
+    /// <summary>
+    /// Checks whether someone has a container, or another container on the same network object, open, so it cannot be
+    /// handed over now.
+    /// </summary>
+    /// <param name="container">The container.</param>
+    /// <returns>True if it is in use.</returns>
+    internal static bool InUse(Container container)
+    {
+        if (container == null || container.m_nview == null || !container.m_nview.IsValid())
+        {
+            return false;
+        }
+
+        ContainerHandoff handoff = container.m_nview.GetComponent<ContainerHandoff>();
+        return handoff != null ? handoff.InUse() : container.IsInUse() || container.m_nview.GetZDO().GetInt(ZDOVars.s_inUse) != 0;
+    }
+
+    /// <summary>
+    /// Checks whether a container was handed over to another player less than <paramref name="seconds"/> ago, so a
+    /// player who only gets ready to use it leaves it with them for now.
+    /// </summary>
+    /// <param name="container">The container.</param>
+    /// <param name="seconds">How long a handed-over container is left with its new owner.</param>
+    /// <returns>True if another player has had it for a shorter time.</returns>
+    internal static bool KeptByOther(Container container, float seconds)
+    {
+        if (seconds <= 0f || container == null || container.m_nview == null || !container.m_nview.IsValid()
+            || container.m_nview.IsOwner() || ZNet.instance == null)
+        {
+            return false;
+        }
+
+        long handedAt = container.m_nview.GetZDO().GetLong(HandedAtKey);
+        return handedAt > 0 && (ZNet.instance.GetTime() - new System.DateTime(handedAt)).TotalSeconds < seconds;
+    }
+
     private void Register(ZNetView nview)
     {
         view = nview;
@@ -90,9 +129,28 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return containers;
     }
 
+    // The game hands a container to whoever opens it, so on the owner the open flag is stale when none of its
+    // containers is open here: left behind by a player who logged out with it open. It is cleared, or the container
+    // could never be handed over again.
     private bool InUse()
     {
-        return view.GetZDO().GetInt(ZDOVars.s_inUse) != 0 || Containers().Any(container => container.IsInUse());
+        if (Containers().Any(container => container.IsInUse()))
+        {
+            return true;
+        }
+
+        if (view.GetZDO().GetInt(ZDOVars.s_inUse) == 0)
+        {
+            return false;
+        }
+
+        if (!view.IsOwner())
+        {
+            return true;
+        }
+
+        view.GetZDO().Set(ZDOVars.s_inUse, 0);
+        return false;
     }
 
     private bool Held()
@@ -190,6 +248,7 @@ internal sealed class ContainerHandoff : MonoBehaviour
                 container.Save();
             }
 
+            view.GetZDO().Set(HandedAtKey, ZNet.instance.GetTime().Ticks);
             data.Write((long)view.GetZDO().DataRevision);
             ZDOMan.instance.ForceSendZDO(sender, view.GetZDO().m_uid);
             view.GetZDO().SetOwner(sender);

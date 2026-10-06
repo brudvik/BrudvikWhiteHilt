@@ -90,6 +90,15 @@ public static class NearbyContainerPatches
         }
 
         paying = true;
+
+        // Vanilla gives up without a word when the requirements are not met; say so, as the chests are often why.
+        if (NearbyContainers.IsActive(NearbyContainers.Use.Crafting) && !ZoneSystem.instance.GetGlobalKey(GlobalKeys.NoCraftCost)
+            && !player.HaveRequirements(recipe, false, quality, multiplier))
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_notenough");
+            return false;
+        }
+
         return true;
     }
 
@@ -277,7 +286,8 @@ public static class NearbyContainerPatches
         int need = req.GetAmount(quality) * craftMultiplier;
         int own = player.GetInventory().CountItems(name);
         int inChests = chestsActive && (overlay || own < need) ? NearbyContainers.CountAll(use, name) : 0;
-        bool fromChests = own < need && own + inChests >= need;
+        int usable = chestsActive && own < need ? NearbyContainers.CountForCheck(use, name, -1, false) : 0;
+        bool fromChests = own < need && own + usable >= need;
         if (fromChests)
         {
             elementRoot.Find("res_amount").GetComponent<TMP_Text>().color = fromChestsColor;
@@ -344,7 +354,7 @@ public static class NearbyContainerPatches
     {
         if (IsCountingFor(__instance))
         {
-            __result += paying ? NearbyContainers.Count(counting.Value, name, quality) : NearbyContainers.CountAll(counting.Value, name, quality);
+            __result += NearbyContainers.CountForCheck(counting.Value, name, quality, paying);
         }
     }
 
@@ -360,7 +370,7 @@ public static class NearbyContainerPatches
     {
         if (!__result && IsCountingFor(__instance))
         {
-            __result = (paying ? NearbyContainers.Count(counting.Value, name) : NearbyContainers.CountAll(counting.Value, name)) > 0;
+            __result = NearbyContainers.CountForCheck(counting.Value, name, -1, paying) > 0;
         }
     }
 

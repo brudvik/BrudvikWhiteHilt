@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- Getting ready to build or craft asks only for the chests that hold what the selected piece, recipe or station needs, no more than make up what is missing, and leaves a chest just handed to another player with them for 20 seconds (`[ChestCrafting] HandoffKeepSeconds`). The Collection Post leaves such chests be too.
+- A stack a chest keeps full without limit counts as enough for any amount, and is taken from again as it refills, so ten dishes at once work like one.
+- Crafting that lacks materials now says *Not enough in your inventory and the chests nearby* instead of nothing.
+
+### Fixed
+- Building and crafting from chests no longer waits for ever on a chest that cannot be handed over: chests someone has open, ship and cart holds, and chests left marked as open by a player who logged out (now freed). After 4 seconds of waiting (`[ChestCrafting] HandoffTimeout`) it goes on with the chests at hand, and the log says which chests it waited for.
+
 ## v0.98.0 - 2026-10-06
 
 ### Added
