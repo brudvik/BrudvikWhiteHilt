@@ -63,7 +63,10 @@
   <ItemGroup>
     <EmbeddedResource Include="..\AssetSource\Ships\sailing_ship.assets.json" LogicalName="BrudvikWhiteHilt.Skidbladnir.assets.json" Link="Pieces\Ships\Skidbladnir\sailing_ship.assets.json" />
     <EmbeddedResource Include="..\AssetSource\Preview\defenses.json" LogicalName="BrudvikWhiteHilt.Defenses.json" Link="Pieces\Defenses\defenses.json" />
+    <EmbeddedResource Include="..\AssetSource\Decor\decor.json" LogicalName="BrudvikWhiteHilt.Decor.json" Link="Decor\decor.json" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
+    <!-- The decor bundle is a file next to the DLL, not embedded: Unity reads it from disk (Decor/DecorAssets.cs). -->
+    <None Include="Assets\whitehilt_decor" Link="whitehilt_decor" Condition="Exists('Assets\whitehilt_decor')" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="Chests\Translations\English.json" />
     <EmbeddedResource Include="Chests\Translations\Norwegian.json" />
     <EmbeddedResource Include="Assets\GiftOfFreya.png;Assets\GiftOfLoki.png;Assets\GiftOfOdin.png;Assets\GiftOfHugin.png;Assets\GiftOfMunin.png;Assets\GiftOfBaldur.png;Assets\GiftOfBrokkr.png;Assets\GiftOfFenrir.png;Assets\GiftOfFreyr.png;Assets\GiftOfHel.png;Assets\GiftOfNjord.png;Assets\GiftOfRatatoskr.png;Assets\GiftOfSkadi.png;Assets\GiftOfSleipnir.png;Assets\GiftOfSurt.png;Assets\GiftOfThor.png;Assets\GiftOfTyr.png;Assets\GiftOfIdunn.png" CopyToOutputDirectory="Always" />

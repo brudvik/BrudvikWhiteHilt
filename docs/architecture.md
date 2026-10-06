@@ -126,7 +126,15 @@ builds a game piece from each entry. `DefenseModelBuilder` combines the meshes p
 vanilla parts is drawn with a few draw calls. To add a shape, you change the Python script; the tests in
 `LayoutTests` check that the file still matches what the code expects.
 
-> Read next: `Pieces/Defenses/DefenseLayout.cs`, `Pieces/Defenses/DefenseModelBuilder.cs`, `Helpers/ForagingAssets.cs`.
+The Decor Hammer goes one step further. Each of its decorations is one line in `AssetSource/Decor/decor.json`, which
+the mod embeds, and `DecorPieceFactory` builds a piece from it. A decoration with a vanilla look copies only the visible
+parts of a vanilla prefab, so a decorative bush keeps Valheim's wind but cannot be chopped. One with a model takes it
+from a second bundle, `whitehilt_decor`, which `prepare_decor.py` and Blender fill from Poly Haven and downloaded
+models. That bundle is a file next to the DLL rather than embedded, so Unity reads it from disk instead of the mod
+keeping a copy in memory.
+
+> Read next: `Pieces/Defenses/DefenseLayout.cs`, `Pieces/Defenses/DefenseModelBuilder.cs`, `Helpers/ForagingAssets.cs`,
+> `Decor/DecorPieceFactory.cs` with `AssetSource/Decor/README.md`.
 
 ## 🌐 Multiplayer
 

@@ -8,11 +8,14 @@
     into the mod's embedded assets. Unity must be the same version as Valheim (see valheim_Data/../UnityPlayer.dll).
     -UnityOnly skips the model, sound and creature conversion and rebuilds the bundle from what is already in the Unity
     project, e.g. after changing only AssetSource/Unity/*.cs.
+    The Decor Hammer's models (AssetSource/Decor/Models, made by AssetSource/Decor/prepare_decor.py) go into a second
+    bundle, BrudvikWhiteHilt/Assets/whitehilt_decor, shipped as a file next to the DLL. -DecorOnly builds only that one.
 #>
 param(
     [string]$UnityPath = "C:\Program Files\Unity\Hub\Editor\6000.0.75f1\Editor\Unity.exe",
     [string]$BlenderPath = "",
-    [switch]$UnityOnly
+    [switch]$UnityOnly,
+    [switch]$DecorOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -22,6 +25,8 @@ $project = Join-Path $repoRoot 'BrudvikWhiteHiltUnity'
 $logFile = Join-Path $env:TEMP 'whitehilt_unity_build.log'
 $bundleTarget = Join-Path $repoRoot 'BrudvikWhiteHilt\Assets\whitehilt_foraging'
 $foragingAssets = Join-Path $project 'Assets\Foraging'
+$decorAssets = Join-Path $project 'Assets\Decor'
+$decorTarget = Join-Path $repoRoot 'BrudvikWhiteHilt\Assets\whitehilt_decor'
 $creatureAssets = Join-Path $project 'Assets\Creatures'
 $editorScripts = Join-Path $project 'Assets\Editor'
 
@@ -69,6 +74,28 @@ function Convert-Models {
     }
 }
 
+# The decor models are named decor_<id>, so they cannot clash with the main bundle's.
+function Convert-Decor {
+    if (Test-Path $decorAssets) {
+        Remove-Item (Join-Path $decorAssets '*') -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force $decorAssets | Out-Null
+    foreach ($model in Get-ChildItem (Join-Path $PSScriptRoot 'Decor\Models') -Filter *.glb) {
+        python (Join-Path $PSScriptRoot 'convert_glb.py') $model.FullName $decorAssets "decor_$($model.BaseName.ToLowerInvariant())"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Model conversion failed for $($model.Name)"
+        }
+    }
+}
+
+function Build-Decor {
+    Write-Host "Building decor bundle (log: $logFile)"
+    Invoke-Unity @('-batchmode', '-quit', '-nographics', '-projectPath', "`"$project`"", '-executeMethod', 'BuildDecorBundle.Build', '-logFile', "`"$logFile`"")
+    Copy-Item (Join-Path $project 'AssetBundlesDecor\whitehilt_decor') $decorTarget -Force
+    Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-Host $_.Line }
+    Write-Host "Copied decor bundle to $decorTarget ($((Get-Item $decorTarget).Length) bytes)"
+}
+
 # Blender turns each rigged glTF into an FBX with its textures; Unity builds the prefab (BuildCreatures.cs).
 function Export-Creatures {
     if (Test-Path $creatureAssets) {
@@ -114,9 +141,19 @@ if (-not (Test-Path (Join-Path $project 'Assets'))) {
 New-Item -ItemType Directory -Force $editorScripts | Out-Null
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildForagingBundle.cs') $editorScripts -Force
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildCreatures.cs') $editorScripts -Force
+Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildDecorBundle.cs') $editorScripts -Force
+
+if ($DecorOnly) {
+    if (-not $UnityOnly) {
+        Convert-Decor
+    }
+    Build-Decor
+    return
+}
 
 if (-not $UnityOnly) {
     Convert-Models
+    Convert-Decor
     Export-Creatures
     & (Join-Path $PSScriptRoot 'build_skidbladnir.ps1') -BlenderPath $BlenderPath
 }
@@ -127,3 +164,5 @@ Invoke-Unity @('-batchmode', '-quit', '-nographics', '-projectPath', "`"$project
 Copy-Item (Join-Path $project 'AssetBundles\whitehilt_foraging') $bundleTarget -Force
 Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-Host $_.Line }
 Write-Host "Copied bundle to $bundleTarget ($((Get-Item $bundleTarget).Length) bytes)"
+
+Build-Decor

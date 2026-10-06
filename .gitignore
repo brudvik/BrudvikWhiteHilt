@@ -381,3 +381,6 @@ Environment.props
 
 # Assets folder - exclude PNG icons (licensed content) but keep placeholder
 BrudvikWhiteHilt/Assets/*.png
+
+# Poly Haven downloads for the decor models (AssetSource/Decor/prepare_decor.py).
+AssetSource/Decor/Download/

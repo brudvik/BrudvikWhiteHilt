@@ -30,6 +30,10 @@
     <Reference Include="assembly_utils">
       <HintPath>$(ModOutput)assembly_utils.dll</HintPath>
     </Reference>
+    <!-- The decor catalogue's costs are Jotunn RequirementConfigs. -->
+    <Reference Include="Jotunn">
+      <HintPath>$(ModOutput)Jotunn.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(ModOutput)UnityEngine.CoreModule.dll</HintPath>
     </Reference>

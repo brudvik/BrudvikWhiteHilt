@@ -275,6 +275,14 @@ public static class PreviewRender
             Texture2D image = new(2, 2);
             image.LoadImage(File.ReadAllBytes(file));
             material.mainTexture = image;
+            // Leaves and grass are cards cut out by the texture's alpha, as in game.
+            if (image.GetPixels32().Any(pixel => pixel.a < 128))
+            {
+                material.SetFloat("_Mode", 1f);
+                material.SetFloat("_Cutoff", 0.5f);
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.renderQueue = 2450;
+            }
         }
 
         if (tint != null && tint.Length >= 3)
