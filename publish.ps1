@@ -32,11 +32,12 @@ Push-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Path)
 # Plugin name without ".dll"
 $name = "$TargetAssembly" -Replace('.dll')
 
-# Create the mdb file
+# Create the mdb file, for debuggers that need Mono's format; only when pdb2mdb.exe has been put in libraries\Debug.
 $pdb = "$TargetPath\$name.pdb"
-if (Test-Path -Path "$pdb") {
+$pdb2mdb = "$(Get-Location)\libraries\Debug\pdb2mdb.exe"
+if ((Test-Path -Path "$pdb") -and (Test-Path -Path "$pdb2mdb")) {
     Write-Host "Create mdb file for plugin $name"
-    Invoke-Expression "& `"$(Get-Location)\libraries\Debug\pdb2mdb.exe`" `"$TargetPath\$TargetAssembly`""
+    Invoke-Expression "& `"$pdb2mdb`" `"$TargetPath\$TargetAssembly`""
 }
 
 # Main Script
@@ -51,7 +52,9 @@ if ($Target.Equals("Debug")) {
     Write-Host "Copy $TargetAssembly to $plug"
     Copy-Item -Path "$TargetPath\$name.dll" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.pdb" -Destination "$plug" -Force
-    Copy-Item -Path "$TargetPath\$name.dll.mdb" -Destination "$plug" -Force
+    if (Test-Path -Path "$TargetPath\$name.dll.mdb") {
+        Copy-Item -Path "$TargetPath\$name.dll.mdb" -Destination "$plug" -Force
+    }
 }
 
 if($Target.Equals("Release")) {

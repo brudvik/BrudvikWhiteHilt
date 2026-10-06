@@ -50,14 +50,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\0Harmony.dll</HintPath>
-    </Reference>
+    <!-- BepInEx and Harmony come from Jotunn's props, found through BEPINEX_PATH (by default the BepInEx folder in
+         Valheim's; set it in Environment.props if yours is elsewhere). The props do not add assembly_utils, which
+         holds Valheim's small vector types. -->
     <Reference Include="assembly_utils">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed\assembly_utils.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>E:\Valheim\Modding\BepInExPack_Valheim\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(VALHEIM_MANAGED)\assembly_utils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data.DataSetExtensions" />

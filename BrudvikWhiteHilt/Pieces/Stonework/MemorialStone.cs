@@ -88,7 +88,7 @@ public class MemorialStone : StoneworkPieceBase
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = TextArea.size / unit;
-        text.enableWordWrapping = true;
+        text.textWrappingMode = TextWrappingModes.Normal;
         text.overflowMode = TextOverflowModes.Truncate;
         text.alignment = TextAlignmentOptions.Center;
         text.enableAutoSizing = true;
