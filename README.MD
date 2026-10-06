@@ -23,6 +23,7 @@
   <a href="#-installation">Install</a> ·
   <a href="#-features">Features</a> ·
   <a href="docs/README.md">Documentation</a> ·
+  <a href="#-for-modders">For modders</a> ·
   <a href="CHANGELOG.md">Changelog</a> ·
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/releases">Releases</a> ·
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/issues">Report an issue</a>
@@ -33,6 +34,8 @@
 </p>
 
 White Hilt grew out of many playthroughs where the best part of Valheim was building a home and defending it. It adds what a Viking farm, a ship and a long winter would need, in the game's own look, and it explains itself: every piece has a page with its recipes and settings, and everything can be switched off or tuned in an in-game settings window.
+
+It is also open source and written to be read. The code explains what it does and why, and a [guide to how the mod is built](docs/architecture.md) shows the patterns behind it, so modders can learn from it and borrow freely.
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
@@ -163,7 +166,17 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 
 ## 📚 Documentation
 
-The [documentation](docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting. Modders who want to learn from the source can start with [How the mod is built](docs/architecture.md).
+The [documentation](docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting.
+
+## 🧱 For modders
+
+White Hilt is a large, working Valheim mod under the [MIT No Attribution](LICENSE) licence, kept readable on purpose. If you want to learn how a mod like this is put together, you are welcome to read it, copy from it and build on it.
+
+- **[How the mod is built](docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
+- **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
+- **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+
+Questions about the code are welcome on the [issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues). How to build it yourself is under *Building from source* below.
 
 ## 🐞 Known issues
 
