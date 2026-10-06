@@ -38,7 +38,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private ItemDrop.ItemData.SharedData shared;
 
     /// <summary>
-    /// Position of the rune on the post, from 0 to <see cref="Count"/> - 1. Also its bit in the post's mask. -1 for a rune
+    /// Position of the rune on the post, from 0 to <see cref="Count"/> - 1. Also its bit in the post's mask. -1 for a
+    /// rune
     /// that is only etched into weapons and never hung on a post.
     /// </summary>
     public abstract int Index { get; }
@@ -126,7 +127,8 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private string NameKey => Translations.ItemKey(BaseName);
 
     /// <summary>
-    /// Constructor for the WhiteHiltRuneBase class. Registers the rune and its English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the rune and its English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected WhiteHiltRuneBase(ItemManager instance)

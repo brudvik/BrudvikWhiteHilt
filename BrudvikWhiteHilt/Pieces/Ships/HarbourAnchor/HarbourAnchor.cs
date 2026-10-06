@@ -10,8 +10,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships.HarbourAnchor;
 
 /// <summary>
-/// A map table extension: a standing iron anchor. While one stands within <see cref="PortalMapService.ActivationRange"/>
-/// of a map table, every ship shows on everyone's map.
+/// A map table extension: a standing iron anchor. While one stands within
+/// <see cref="PortalMapService.ActivationRange"/> of a map table, every ship shows on everyone's map.
 /// </summary>
 public class HarbourAnchor : IWhiteHiltCustomPiece
 {
@@ -49,7 +49,8 @@ public class HarbourAnchor : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the HarbourAnchor class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public HarbourAnchor(PieceManager instance)

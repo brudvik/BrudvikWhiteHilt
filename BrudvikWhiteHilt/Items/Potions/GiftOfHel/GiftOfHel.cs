@@ -8,8 +8,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfHel;
 
 /// <summary>
-/// This class defines the Gift of Hel potion.
-/// Grants a one-time resurrection effect - respawn with all items on death.
+/// The Gift of Hel potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it gives
+/// <see cref="GiftOfHelEffect"/>.
 /// </summary>
 public class GiftOfHel : PotionBase
 {
@@ -27,29 +27,19 @@ public class GiftOfHel : PotionBase
         Translations.AddEnglish(SparedMessageKey, "Hel has spared you from death!");
     }
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfHel";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Hel";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you a second chance from the goddess of the underworld";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfHel.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = MonsterRegistry.GlandName, Amount = 2, Recover = false },
@@ -57,18 +47,13 @@ public class GiftOfHel : PotionBase
         new RequirementConfig { Item = "Dandelion", Amount = 5, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfHelEffect>();

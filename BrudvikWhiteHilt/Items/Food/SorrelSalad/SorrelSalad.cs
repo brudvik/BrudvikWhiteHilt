@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.SorrelSalad;
 public class SorrelSalad : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the SorrelSalad class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public SorrelSalad(ItemManager instance) : base(instance) { }

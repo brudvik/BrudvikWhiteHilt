@@ -10,11 +10,11 @@ namespace BrudvikWhiteHilt.Items.Indestructible;
 public class IndestructiblePiece : CustomPiece
 {
     /// <summary>
-    /// Constructor for the IndestructiblePiece class.
+    /// Clones a vanilla piece and makes the clone indestructible.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="basePrefabName"></param>
-    /// <param name="itemConfig"></param>
+    /// <param name="name">Prefab name of the new piece.</param>
+    /// <param name="basePrefabName">Vanilla piece to clone.</param>
+    /// <param name="itemConfig">Name, description, piece table and requirements.</param>
     public IndestructiblePiece(string name, string basePrefabName, PieceConfig itemConfig) : base(name, basePrefabName, itemConfig)
     {
         var wearNTear = Piece.GetComponent<WearNTear>();

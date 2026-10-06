@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
 /// The Shipwright's Bench: a workbench with a ship's anchor, an anchor chain, a coil of rope, a fishing net and a tar
-/// bucket, the crafting station for the White Hilt Ship upgrades and the Ship Hammer, and the station the Harbour Anchor
+/// bucket, the crafting station for the White Hilt Ship upgrades and the Ship Hammer, and the station the Harbour
+/// Anchor
 /// and the Mooring Post are built at. It stands in the open on a jetty: it needs no roof and does not rot in the rain.
 /// </summary>
 public class ShipwrightBench : DefensePieceBase
@@ -25,7 +26,8 @@ public class ShipwrightBench : DefensePieceBase
     private static readonly Vector3 LightPosition = new(-1.3f, 1.51f, 0.38f);
 
     /// <summary>
-    /// Constructor for the ShipwrightBench class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public ShipwrightBench(PieceManager instance) : base(instance)

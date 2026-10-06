@@ -6,36 +6,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfSurt;
 
 /// <summary>
-/// This class defines the Gift of Surt potion.
-/// Grants resistance to fire damage.
+/// The Gift of Surt potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it
+/// gives <see cref="GiftOfSurtEffect"/>.
 /// </summary>
 public class GiftOfSurt : PotionBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public GiftOfSurt(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfSurt";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Surt";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you the power of the fire giant from Muspelheim";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfSurt.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "SurtlingCore", Amount = 5, Recover = false },
@@ -43,18 +38,13 @@ public class GiftOfSurt : PotionBase
         new RequirementConfig { Item = "FlametalNew", Amount = 2, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfSurtEffect>();

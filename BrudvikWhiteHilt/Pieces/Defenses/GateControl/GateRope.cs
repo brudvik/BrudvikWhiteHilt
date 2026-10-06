@@ -178,7 +178,8 @@ public class GateRope : MonoBehaviour, Interactable, Hoverable
 public class GateRopePiece : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the GateRopePiece class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public GateRopePiece(PieceManager instance) : base(instance) { }

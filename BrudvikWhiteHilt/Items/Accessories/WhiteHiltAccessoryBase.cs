@@ -8,39 +8,47 @@ using System;
 namespace BrudvikWhiteHilt.Items.Accessories;
 
 /// <summary>
-/// This class defines the base for all White Hilt accessory items.
+/// Base class for the White Hilt accessories worn in the utility slot, such as the belt pouch and the dowsers. Each is
+/// a clone of a vanilla utility item (<see cref="CopyFrom"/>), made indestructible; a subclass sets what it does in
+/// <see cref="ConfigureStats"/>, usually an equip effect. The plugin finds every subclass by reflection and calls
+/// <see cref="Add"/>.
 /// </summary>
 public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
     private IndestructibleItem added;
 
     /// <summary>
-    /// The base name of the accessory item.
+    /// Prefab name of the accessory. It is also the key of its name and description in the translation files
+    /// (<c>$item_&lt;name&gt;</c>), and saved worlds and inventories refer to the item by it, so it must never change
+    /// once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the accessory item.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the accessory item.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla utility item the accessory is cloned from, e.g. Megingjord: it brings the slot and the model the look is
+    /// built on.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// The requirements for crafting the accessory item.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected abstract RequirementConfig[] Requirements { get; }
 
     /// <summary>
-    /// Indicates whether the accessory is enabled or not.
+    /// Whether the accessory is added to the game at all. A disabled one is skipped when the plugin starts, so it never
+    /// reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -62,9 +70,10 @@ public abstract class WhiteHiltAccessoryBase : IWhiteHiltCustomItem, IWhiteHiltC
     private readonly ItemManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltAccessoryBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected WhiteHiltAccessoryBase(ItemManager instance)
     {
         this.instance = instance;

@@ -12,7 +12,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Lights;
 
 /// <summary>
-/// The Soapstone Lamp: a small carved bowl of soapstone with a wick in resin, as the Norse lit their houses. Smaller and
+/// The Soapstone Lamp: a small carved bowl of soapstone with a wick in resin, as the Norse lit their houses. Smaller
+/// and
 /// cosier than a torch, for tables and shelves. Carved near a Stonecutter.
 /// </summary>
 public class SoapstoneLamp : IWhiteHiltCustomPiece
@@ -54,7 +55,8 @@ public class SoapstoneLamp : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the SoapstoneLamp class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public SoapstoneLamp(PieceManager instance)

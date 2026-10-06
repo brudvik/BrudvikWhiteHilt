@@ -10,22 +10,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions;
 
 /// <summary>
-/// This class defines the base for all potions.
+/// Base class for the Gifts of the gods, the White Hilt potions. A potion is made like a vanilla mead: a mead base
+/// cooked at the Cauldron, then fermented into the potion. Both are clones of the vanilla minor healing mead and its
+/// base, tinted or given an icon of their own; drinking the potion applies the status effect from
+/// <see cref="CreateEffect"/>, whose numbers come from <see cref="PotionSettings"/>. The plugin finds every subclass by
+/// reflection and calls <see cref="Add"/>.
 /// </summary>
 public abstract class PotionBase : IWhiteHiltCustomItem
 {
     /// <summary>
-    /// The base name of the potion.
+    /// Base of the potion's prefab names: the potion is <c>&lt;name&gt;Mead</c> and its base
+    /// <c>&lt;name&gt;MeadBase</c>, and
+    /// their translation keys follow (<c>$item_&lt;name&gt;mead</c>). Saved worlds and inventories refer to the items
+    /// by
+    /// these names, so it must never change once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the potion.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the potion.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
@@ -40,7 +49,8 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     protected virtual Color Tint => Color.white;
 
     /// <summary>
-    /// Indicates whether the potion is enabled or not.
+    /// Whether the potion is added to the game at all. A disabled one is skipped when the plugin starts, so it never
+    /// reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -60,7 +70,8 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     public string GatedPrefabName => $"{BaseName}MeadBase";
 
     /// <summary>
-    /// The requirements for crafting the potion.
+    /// Ingredients of the mead base, cooked at the Cauldron; the fermenter then turns it into the potion, as with the
+    /// vanilla meads.
     /// </summary>
     protected abstract RequirementConfig[] MeadBaseRequirements { get; }
 
@@ -68,9 +79,10 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     private bool effectTextRegistered;
 
     /// <summary>
-    /// Constructor for the PotionBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected PotionBase(ItemManager instance)
     {
         PotionSettings.Initialize();
@@ -160,9 +172,10 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     }
 
     /// <summary>
-    /// Creates the effect for the potion.
+    /// Creates the status effect drinking the potion gives. Called once, when the potion is added; its numbers come
+    /// from <see cref="PotionSettings"/>, so a config change applies to the next drink.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The effect, which the base registers with Jotunn and sets as the mead's consume effect.</returns>
     protected abstract SE_Stats CreateEffect();
 
     // Effects set their English text in Initialize, which runs after Valheim has loaded its languages,

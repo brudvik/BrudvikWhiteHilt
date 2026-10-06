@@ -14,7 +14,8 @@ public class SweetGaleAle : WhiteHiltMeadBase
     private readonly ConfigEntry<float> carryWeight;
 
     /// <summary>
-    /// Constructor for the SweetGaleAle class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public SweetGaleAle(ItemManager instance) : base(instance)

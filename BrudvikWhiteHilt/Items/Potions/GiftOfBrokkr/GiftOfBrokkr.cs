@@ -6,36 +6,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfBrokkr;
 
 /// <summary>
-/// This class defines the Gift of Brokkr potion.
-/// Grants crafting bonuses.
+/// The Gift of Brokkr potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it
+/// gives <see cref="GiftOfBrokkrEffect"/>.
 /// </summary>
 public class GiftOfBrokkr : PotionBase, IFullModeOnly
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public GiftOfBrokkr(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfBrokkr";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Brokkr";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you the skill of the legendary dwarf smith";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfBrokkr.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
@@ -43,18 +38,13 @@ public class GiftOfBrokkr : PotionBase, IFullModeOnly
         new RequirementConfig { Item = "Blueberries", Amount = 5, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfBrokkrEffect>();

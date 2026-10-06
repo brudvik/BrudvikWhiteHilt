@@ -15,7 +15,8 @@ public class MeadowsweetMead : WhiteHiltMeadBase
     private readonly ConfigEntry<float> staggerReduction;
 
     /// <summary>
-    /// Constructor for the MeadowsweetMead class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public MeadowsweetMead(ItemManager instance) : base(instance)

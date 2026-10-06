@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Items.Runes;
 public abstract class EtchingRuneBase : WhiteHiltRuneBase
 {
     /// <summary>
-    /// Constructor for the EtchingRuneBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected EtchingRuneBase(Jotunn.Managers.ItemManager instance) : base(instance) { }

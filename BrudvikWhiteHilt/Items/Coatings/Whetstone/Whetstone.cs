@@ -12,7 +12,8 @@ namespace BrudvikWhiteHilt.Items.Coatings.Whetstone;
 public class Whetstone : WeaponCoatingBase
 {
     /// <summary>
-    /// Constructor for the Whetstone class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public Whetstone(ItemManager instance) : base(instance) { }

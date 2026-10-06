@@ -58,7 +58,8 @@ public class HomeStone : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the HomeStone class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public HomeStone(ItemManager instance)
@@ -86,7 +87,8 @@ public class HomeStone : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     }
 
     /// <summary>
-    /// Takes the player back if they went home a moment ago, else home if the stone has rested and a home portal is set.
+    /// Takes the player back if they went home a moment ago, else home if the stone has rested and a home portal is
+    /// set.
     /// </summary>
     /// <param name="player">The local player.</param>
     public static void Use(Player player)

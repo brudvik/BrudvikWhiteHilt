@@ -9,32 +9,36 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
-/// Base class for White Hilt ships.
+/// Base class for the White Hilt ships, built with the hammer. Each is a clone of a vanilla ship
+/// (<see cref="CopyFrom"/>), which brings its physics, sail and controls; this class makes it indestructible, ready for
+/// the Ashlands' fiery water and gives it comfort, and lets the subclass change the prefab
+/// (<see cref="CustomizePrefab"/>). The plugin finds every subclass by reflection and calls <see cref="Add"/>.
 /// </summary>
 public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
 {
     /// <summary>
-    /// The base name of the ship.
+    /// Prefab name of the ship. Saved worlds refer to the ship by it, so it must never change once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the ship.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the ship.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla ship it is cloned from; it brings the physics, sail, controls and hold.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// The requirements for crafting the ship.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
     {
@@ -42,7 +46,8 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
     };
 
     /// <summary>
-    /// Indicates whether the weapon is enabled or not.
+    /// Whether the ship is added to the game at all. A disabled one is skipped when the plugin starts, so it never
+    /// reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -66,9 +71,10 @@ public abstract class WhiteHiltShipBase : IWhiteHiltCustomPiece
     private readonly PieceManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltShipBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's piece manager, which the piece is added to.</param>
     protected WhiteHiltShipBase(PieceManager instance)
     {
         this.instance = instance;

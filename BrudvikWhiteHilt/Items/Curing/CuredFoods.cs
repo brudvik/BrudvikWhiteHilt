@@ -14,7 +14,8 @@ namespace BrudvikWhiteHilt.Items.Curing;
 public abstract class CuredFoodBase : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the CuredFoodBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected CuredFoodBase(ItemManager instance) : base(instance) { }
@@ -51,7 +52,8 @@ public abstract class CuredFoodBase : WhiteHiltFoodBase
 public class CuredHam : CuredFoodBase
 {
     /// <summary>
-    /// Constructor for the CuredHam class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public CuredHam(ItemManager instance) : base(instance) { }
@@ -111,7 +113,8 @@ public class CuredHam : CuredFoodBase
 public class CuredSausage : CuredFoodBase
 {
     /// <summary>
-    /// Constructor for the CuredSausage class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public CuredSausage(ItemManager instance) : base(instance) { }
@@ -168,7 +171,8 @@ public class CuredSausage : CuredFoodBase
 public class Stockfish : CuredFoodBase
 {
     /// <summary>
-    /// Constructor for the Stockfish class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public Stockfish(ItemManager instance) : base(instance) { }
@@ -225,7 +229,8 @@ public class Stockfish : CuredFoodBase
 public class Rakfisk : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the Rakfisk class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public Rakfisk(ItemManager instance) : base(instance) { }

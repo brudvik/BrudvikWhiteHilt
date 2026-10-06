@@ -17,7 +17,8 @@ public class ThunderRune : EtchingRuneBase
     public const string Name = "WhiteHiltThunderRune";
 
     /// <summary>
-    /// Constructor for the ThunderRune class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ThunderRune(ItemManager instance) : base(instance) { }

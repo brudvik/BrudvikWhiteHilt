@@ -21,7 +21,8 @@ public class Peat : ForageableBase
     private static ConfigEntry<float> fuelValue;
 
     /// <summary>
-    /// Constructor for the Peat class. Binds the fuel setting.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Binds the fuel setting.
     /// </summary>
     public Peat()
     {

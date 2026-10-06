@@ -8,7 +8,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Smithing.RuneForge;
 
 /// <summary>
-/// A <see cref="RuneForge"/> extension: a carver's table where a rune is etched into a trophy-bound White Hilt weapon to
+/// A <see cref="RuneForge"/> extension: a carver's table where a rune is etched into a trophy-bound White Hilt weapon
+/// to
 /// give it fire, frost, poison, lightning, a web or the grip of the deep.
 /// </summary>
 public class RuneEtchingTable
@@ -27,7 +28,8 @@ public class RuneEtchingTable
     private static readonly Vector3 colliderSize = new(1.15f, 0.86f, 0.62f);
 
     /// <summary>
-    /// Constructor for the RuneEtchingTable class. Registers the English text.
+    /// Creates the extension and registers its English text. The <see cref="RuneForge"/> creates it and adds it
+    /// to the game together with itself, as it only works next to it.
     /// </summary>
     public RuneEtchingTable()
     {

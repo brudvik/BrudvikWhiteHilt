@@ -29,7 +29,8 @@ public class WhiteHiltStaffNecromancy : WhiteHiltWeaponBase
     private const float EyeFlameScale = 0.18f;
 
     /// <summary>
-    /// Constructor for the WhiteHiltStaffNecromancy class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public WhiteHiltStaffNecromancy(ItemManager instance) : base(instance) { }

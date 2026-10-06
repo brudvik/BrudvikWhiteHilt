@@ -9,7 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 
 /// <summary>
-/// A small cauldron made from Meadows materials. It only cooks the White Hilt foods. A <see cref="HerbTray"/> next to it gives level 2,
+/// A small cauldron made from Meadows materials. It only cooks the White Hilt foods. A <see cref="HerbTray"/> next to
+/// it gives level 2,
 /// a <see cref="SmokeOven"/> as well gives level 3, and a <see cref="SoapstoneCauldron"/> too gives level 4.
 /// </summary>
 public class StonePot : IWhiteHiltCustomPiece
@@ -47,7 +48,8 @@ public class StonePot : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the StonePot class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StonePot(PieceManager instance)

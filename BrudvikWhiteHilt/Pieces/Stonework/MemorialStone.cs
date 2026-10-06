@@ -10,7 +10,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Stonework;
 
 /// <summary>
-/// A raised memorial stone, a bauta, with an inscription of your own on its face, like the runestones raised for the dead
+/// A raised memorial stone, a bauta, with an inscription of your own on its face, like the runestones raised for the
+/// dead
 /// and for great deeds. It works as the vanilla sign: use it to carve the text, and the hover text shows it.
 /// </summary>
 public class MemorialStone : StoneworkPieceBase
@@ -28,7 +29,8 @@ public class MemorialStone : StoneworkPieceBase
     private static readonly Color CutEdgeColor = new(0.78f, 0.76f, 0.72f, 0.55f);
 
     /// <summary>
-    /// Constructor for the MemorialStone class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public MemorialStone(PieceManager instance) : base(instance)

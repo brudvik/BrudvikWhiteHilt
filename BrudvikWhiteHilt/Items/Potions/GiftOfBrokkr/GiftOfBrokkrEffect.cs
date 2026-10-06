@@ -4,7 +4,9 @@ using BrudvikWhiteHilt.Helpers;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfBrokkr;
 
 /// <summary>
-/// This class defines the effect of the Gift of Brokkr potion.
+/// The status effect of the Gift of Brokkr potion. It is a vanilla <c>SE_Stats</c>: its fields, set in <c>OnEnable</c>,
+/// give the duration and the plain stat changes, and the game calls its overridden hooks (<c>Modify...</c>,
+/// <c>OnDamaged</c>) while it is active, so it can change stamina use, damage and the like as they happen.
 /// Grants enhanced crafting abilities and workstation bonuses.
 /// </summary>
 public class GiftOfBrokkrEffect : SE_Stats
@@ -12,7 +14,7 @@ public class GiftOfBrokkrEffect : SE_Stats
     /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
-    /// <param name="effectName"></param>
+    /// <param name="effectName">Name of the potion: the effect's name and the subject of its start and stop messages.</param>
     public void Initialize(string effectName)
     {
         base.name = effectName;
@@ -36,7 +38,7 @@ public class GiftOfBrokkrEffect : SE_Stats
     /// <summary>
     /// Sets the icon for the effect.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">Embedded resource name of the icon image.</param>
     public void SetIcon(string path)
     {
         m_icon = AssetUtilsExtended.LoadTextureFromEmbeddedResource(path).ConvertToSprite();
@@ -45,8 +47,8 @@ public class GiftOfBrokkrEffect : SE_Stats
     /// <summary>
     /// Modifies skill level to boost crafting-related skills.
     /// </summary>
-    /// <param name="skill"></param>
-    /// <param name="level"></param>
+    /// <param name="skill">The skill asked about.</param>
+    /// <param name="level">Its level so far; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifySkillLevel(Skills.SkillType skill, ref float level)
     {
         base.ModifySkillLevel(skill, ref level);
@@ -60,8 +62,8 @@ public class GiftOfBrokkrEffect : SE_Stats
     /// <summary>
     /// No stamina cost for home/building items.
     /// </summary>
-    /// <param name="baseStaminaUse"></param>
-    /// <param name="staminaUse"></param>
+    /// <param name="baseStaminaUse">What the action costs without any effect.</param>
+    /// <param name="staminaUse">What it costs so far; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifyHomeItemStaminaUsage(float baseStaminaUse, ref float staminaUse)
     {
         staminaUse *= PotionSettings.Brokkr.HomeItemStaminaMultiplier.Value;

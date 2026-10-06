@@ -4,34 +4,28 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltAtgeir;
 
 /// <summary>
-/// This class represents the White Hilt Atgeir.
+/// The White Hilt Atgeir, cloned from the vanilla <c>AtgeirIron</c> and the White Hilt model <c>whatgeir</c> from the
+/// asset bundle.
 /// </summary>
 public class WhiteHiltAtgeir : WhiteHiltWeaponBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltAtgeir class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltAtgeir(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the atgeir.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltAtgeir";
 
-    /// <summary>
-    /// The full name of the atgeir.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Atgeir";
 
-    /// <summary>
-    /// The description of the atgeir.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Atgeir of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "AtgeirIron";
 
     /// <summary>
@@ -39,14 +33,10 @@ public class WhiteHiltAtgeir : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whatgeir";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Atgeir is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Atgeir.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 25, Recover = false },

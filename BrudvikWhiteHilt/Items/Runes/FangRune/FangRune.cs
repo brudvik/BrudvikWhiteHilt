@@ -6,7 +6,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Runes.FangRune;
 
 /// <summary>
-/// An etching rune of iron and wolf fangs. Etched with wolf lichen it gives Wolfsbane: poison that bites beasts hardest.
+/// An etching rune of iron and wolf fangs. Etched with wolf lichen it gives Wolfsbane: poison that bites beasts
+/// hardest.
 /// </summary>
 public class FangRune : EtchingRuneBase
 {
@@ -16,7 +17,8 @@ public class FangRune : EtchingRuneBase
     public const string Name = "WhiteHiltFangRune";
 
     /// <summary>
-    /// Constructor for the FangRune class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public FangRune(ItemManager instance) : base(instance) { }

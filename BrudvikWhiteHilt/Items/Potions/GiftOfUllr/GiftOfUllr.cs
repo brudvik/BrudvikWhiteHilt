@@ -26,7 +26,8 @@ public class GiftOfUllr : PotionBase
     }
 
     /// <summary>
-    /// Constructor for the GiftOfUllr class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public GiftOfUllr(ItemManager instance) : base(instance) { }

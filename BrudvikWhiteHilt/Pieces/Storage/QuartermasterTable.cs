@@ -17,7 +17,8 @@ namespace BrudvikWhiteHilt.Pieces.Storage;
 public class QuartermasterTable : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the QuartermasterTable class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public QuartermasterTable(PieceManager instance) : base(instance) { }

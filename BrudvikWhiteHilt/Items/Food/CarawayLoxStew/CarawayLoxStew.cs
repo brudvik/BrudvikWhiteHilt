@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.CarawayLoxStew;
 public class CarawayLoxStew : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the CarawayLoxStew class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public CarawayLoxStew(ItemManager instance) : base(instance) { }

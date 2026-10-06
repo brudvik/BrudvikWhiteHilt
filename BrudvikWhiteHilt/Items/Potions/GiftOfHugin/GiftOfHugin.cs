@@ -6,35 +6,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfHugin;
 
 /// <summary>
-/// This class defines the Gift of Hugin potion.
+/// The Gift of Hugin potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it
+/// gives <see cref="GiftOfHuginEffect"/>.
 /// </summary>
 public class GiftOfHugin : PotionBase, IFullModeOnly
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public GiftOfHugin(ItemManager instance) : base(instance) {}
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfHugin";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Hugin";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you maximum skill level";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfHugin.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "NeckTail", Amount = 20, Recover = false },
@@ -42,18 +38,13 @@ public class GiftOfHugin : PotionBase, IFullModeOnly
         new RequirementConfig { Item = "Blueberries", Amount = 20, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfHuginEffect>();

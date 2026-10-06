@@ -3,38 +3,29 @@
 namespace BrudvikWhiteHilt.Items.Tools.WhiteHiltCultivator;
 
 /// <summary>
-/// This class defines the White Hilt Cultivator item.
+/// The White Hilt Cultivator, cloned from the vanilla <c>Cultivator</c>.
 /// </summary>
 public class WhiteHiltCultivator : WhiteHiltToolBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltCultivator class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltCultivator(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the cultivator.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltCultivator";
 
-    /// <summary>
-    /// The full name of the cultivator.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Cultivator";
 
-    /// <summary>
-    /// The description of the cultivator.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Cultivator of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "Cultivator";
 
-    /// <summary>
-    /// Indicates whether the tool is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

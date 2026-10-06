@@ -4,34 +4,28 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltSpear;
 
 /// <summary>
-/// This class represents the White Hilt Spear.
+/// The White Hilt Spear, cloned from the vanilla <c>SpearElderbark</c> and the White Hilt model <c>whspear</c> from the
+/// asset bundle.
 /// </summary>
 public class WhiteHiltSpear : WhiteHiltWeaponBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltSpear class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltSpear(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the spear.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltSpear";
 
-    /// <summary>
-    /// The full name of the spear.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Spear";
 
-    /// <summary>
-    /// The description of the spear.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Spear of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "SpearElderbark";
 
     /// <summary>
@@ -39,14 +33,10 @@ public class WhiteHiltSpear : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whspear";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Spear is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Spear.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 20, Recover = false },

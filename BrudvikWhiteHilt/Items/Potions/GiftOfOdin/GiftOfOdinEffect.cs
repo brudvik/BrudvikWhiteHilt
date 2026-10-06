@@ -7,7 +7,9 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfOdin;
 
 /// <summary>
-/// This class defines the effect of the Gift of Odin potion.
+/// The status effect of the Gift of Odin potion. It is a vanilla <c>SE_Stats</c>: its fields, set in <c>OnEnable</c>,
+/// give the duration and the plain stat changes, and the game calls its overridden hooks (<c>Modify...</c>,
+/// <c>OnDamaged</c>) while it is active, so it can change stamina use, damage and the like as they happen.
 /// </summary>
 public class GiftOfOdinEffect : SE_Stats
 {
@@ -19,7 +21,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
-    /// <param name="effectName"></param>
+    /// <param name="effectName">Name of the potion: the effect's name and the subject of its start and stop messages.</param>
     public void Initialize(string effectName)
     {
         base.name = effectName;
@@ -43,7 +45,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Sets the icon for the effect.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">Embedded resource name of the icon image.</param>
     public void SetIcon(string path)
     {
         m_icon = AssetUtilsExtended.LoadTextureFromEmbeddedResource(path).ConvertToSprite();
@@ -52,7 +54,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Setups the effect for the character. This is called when the effect is applied to a character.
     /// </summary>
-    /// <param name="character"></param>
+    /// <param name="character">The character the effect is put on.</param>
     public override void Setup(Character character)
     {
         base.Setup(character);
@@ -65,8 +67,8 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Modifies the fall damage taken by the character. This is called when the character takes fall damage.
     /// </summary>
-    /// <param name="baseDamage"></param>
-    /// <param name="damage"></param>
+    /// <param name="baseDamage">The fall damage without any effect.</param>
+    /// <param name="damage">The fall damage so far; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
         damage *= Mathf.Lerp(1f, PotionSettings.Odin.FallDamageMultiplier.Value,
@@ -76,7 +78,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Modifies the health regen. This is called when the character is regenerating health.
     /// </summary>
-    /// <param name="regenMultiplier"></param>
+    /// <param name="regenMultiplier">Multiplier of health regeneration; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifyHealthRegen(ref float regenMultiplier)
     {
         regenMultiplier += PotionSettings.Odin.HealthRegenBonus.Value * HealingFactor(m_character);
@@ -85,7 +87,7 @@ public class GiftOfOdinEffect : SE_Stats
     /// <summary>
     /// Updates the status effect. This is called every frame while the effect is active.
     /// </summary>
-    /// <param name="dt"></param>
+    /// <param name="dt">Seconds since the last update.</param>
     public override void UpdateStatusEffect(float dt)
     {
         base.UpdateStatusEffect(dt);

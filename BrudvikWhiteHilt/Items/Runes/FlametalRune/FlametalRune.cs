@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Items.Runes.FlametalRune;
 public class FlametalRune : WhiteHiltRuneBase
 {
     /// <summary>
-    /// Constructor for the FlametalRune class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public FlametalRune(ItemManager instance) : base(instance) { }

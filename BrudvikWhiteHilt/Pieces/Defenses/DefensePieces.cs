@@ -13,7 +13,8 @@ namespace BrudvikWhiteHilt.Pieces.Defenses;
 public class PalisadeRampart : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the PalisadeRampart class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public PalisadeRampart(PieceManager instance) : base(instance) { }
@@ -48,7 +49,8 @@ public class PalisadeRampart : DefensePieceBase
 public class PalisadeCorner : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the PalisadeCorner class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public PalisadeCorner(PieceManager instance) : base(instance) { }
@@ -83,7 +85,8 @@ public class PalisadeCorner : DefensePieceBase
 public class PalisadeCorner45 : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the PalisadeCorner45 class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public PalisadeCorner45(PieceManager instance) : base(instance) { }
@@ -118,7 +121,8 @@ public class PalisadeCorner45 : DefensePieceBase
 public class RampartStairs : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the RampartStairs class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public RampartStairs(PieceManager instance) : base(instance) { }
@@ -151,7 +155,8 @@ public class RampartStairs : DefensePieceBase
 public class PalisadeGatehouse : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the PalisadeGatehouse class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public PalisadeGatehouse(PieceManager instance) : base(instance) { }
@@ -216,7 +221,8 @@ public class PalisadeGatehouse : DefensePieceBase
 public class Drawbridge : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the Drawbridge class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public Drawbridge(PieceManager instance) : base(instance) { }
@@ -280,7 +286,8 @@ public class Drawbridge : DefensePieceBase
 public abstract class WatchtowerBase : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the WatchtowerBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     protected WatchtowerBase(PieceManager instance) : base(instance)
@@ -300,7 +307,8 @@ public abstract class WatchtowerBase : DefensePieceBase
 public class WatchtowerSmall : WatchtowerBase
 {
     /// <summary>
-    /// Constructor for the WatchtowerSmall class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WatchtowerSmall(PieceManager instance) : base(instance) { }
@@ -333,7 +341,8 @@ public class WatchtowerSmall : WatchtowerBase
 public class WatchtowerMedium : WatchtowerBase
 {
     /// <summary>
-    /// Constructor for the WatchtowerMedium class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WatchtowerMedium(PieceManager instance) : base(instance) { }
@@ -366,7 +375,8 @@ public class WatchtowerMedium : WatchtowerBase
 public class WatchtowerLarge : WatchtowerBase
 {
     /// <summary>
-    /// Constructor for the WatchtowerLarge class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WatchtowerLarge(PieceManager instance) : base(instance) { }
@@ -399,7 +409,8 @@ public class WatchtowerLarge : WatchtowerBase
 public class ChevalDeFrise : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the ChevalDeFrise class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public ChevalDeFrise(PieceManager instance) : base(instance) { }

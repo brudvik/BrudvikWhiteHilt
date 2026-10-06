@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Items.Food.DragonscaleBroth;
 public class DragonscaleBroth : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the DragonscaleBroth class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public DragonscaleBroth(ItemManager instance) : base(instance) { }

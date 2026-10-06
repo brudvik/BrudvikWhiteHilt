@@ -66,7 +66,8 @@ public abstract class WhiteHiltPortalPieceBase : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the WhiteHiltPortalPieceBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     protected WhiteHiltPortalPieceBase(PieceManager instance)
@@ -227,7 +228,8 @@ public class WhiteHiltPortal : WhiteHiltPortalPieceBase
     private static readonly Vector3 openingInMesh = new(0.05f, 0.45f, -0.1f);
 
     /// <summary>
-    /// Constructor for the WhiteHiltPortal class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WhiteHiltPortal(PieceManager instance) : base(instance) { }
@@ -313,7 +315,8 @@ public class WhiteHiltGroundPortal : WhiteHiltPortalPieceBase
     private static readonly Vector3 ringCentre = new(0f, 0f, -0.16f);
 
     /// <summary>
-    /// Constructor for the WhiteHiltGroundPortal class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WhiteHiltGroundPortal(PieceManager instance) : base(instance) { }

@@ -10,8 +10,9 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Portals.RuneRack;
 
 /// <summary>
-/// A free-standing post with a hook plank for the portal runes. Runes on a post within <see cref="RunePortalRules.Range"/>
-/// of a portal let that portal carry their metals. All runes on one post let it carry everything.
+/// A free-standing post with a hook plank for the portal runes. Runes on a post within
+/// <see cref="RunePortalRules.Range"/> of a portal let that portal carry their metals. All runes on one post let it
+/// carry everything.
 /// </summary>
 public class RuneRack : IWhiteHiltCustomPiece
 {
@@ -57,7 +58,8 @@ public class RuneRack : IWhiteHiltCustomPiece
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the RuneRack class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public RuneRack(PieceManager instance)

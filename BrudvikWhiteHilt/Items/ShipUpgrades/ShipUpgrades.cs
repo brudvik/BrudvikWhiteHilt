@@ -20,7 +20,8 @@ public class ShipLantern : WhiteHiltShipUpgradeBase
     public const int Bit = 0;
 
     /// <summary>
-    /// Constructor for the ShipLantern class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipLantern(ItemManager instance) : base(instance) { }
@@ -64,7 +65,8 @@ public class ShipBarrels : WhiteHiltShipUpgradeBase
     public const int Bit = 1;
 
     /// <summary>
-    /// Constructor for the ShipBarrels class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipBarrels(ItemManager instance) : base(instance) { }
@@ -107,7 +109,8 @@ public class ShipTent : WhiteHiltShipUpgradeBase
     public const int Bit = 2;
 
     /// <summary>
-    /// Constructor for the ShipTent class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipTent(ItemManager instance) : base(instance) { }
@@ -151,7 +154,8 @@ public class ShipMastWisp : WhiteHiltShipUpgradeBase
     public const int Bit = 3;
 
     /// <summary>
-    /// Constructor for the ShipMastWisp class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipMastWisp(ItemManager instance) : base(instance) { }
@@ -195,7 +199,8 @@ public class ShipFishingNet : WhiteHiltShipUpgradeBase
     public const int Bit = 4;
 
     /// <summary>
-    /// Constructor for the ShipFishingNet class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipFishingNet(ItemManager instance) : base(instance) { }
@@ -239,7 +244,8 @@ public class ShipDriftAnchor : WhiteHiltShipUpgradeBase
     public const int Bit = 5;
 
     /// <summary>
-    /// Constructor for the ShipDriftAnchor class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipDriftAnchor(ItemManager instance) : base(instance) { }
@@ -283,7 +289,8 @@ public class ShipBrazier : WhiteHiltShipUpgradeBase
     public const int Bit = 6;
 
     /// <summary>
-    /// Constructor for the ShipBrazier class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipBrazier(ItemManager instance) : base(instance) { }
@@ -327,7 +334,8 @@ public class ShipChestUpgrade : WhiteHiltShipUpgradeBase
     public const int Bit = 7;
 
     /// <summary>
-    /// Constructor for the ShipChestUpgrade class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipChestUpgrade(ItemManager instance) : base(instance) { }
@@ -371,7 +379,8 @@ public class ShipPortalUpgrade : WhiteHiltShipUpgradeBase
     public const int Bit = 8;
 
     /// <summary>
-    /// Constructor for the ShipPortalUpgrade class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public ShipPortalUpgrade(ItemManager instance) : base(instance) { }

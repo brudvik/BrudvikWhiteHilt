@@ -40,7 +40,8 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected abstract string EffectTooltip { get; }
 
     /// <summary>
-    /// Values for <c>{0}</c>, <c>{1}</c>... in <see cref="EffectTooltip"/>, read each time the tooltip is shown; null for none.
+    /// Values for <c>{0}</c>, <c>{1}</c>... in <see cref="EffectTooltip"/>, read each time the tooltip is shown; null
+    /// for none.
     /// </summary>
     protected virtual object[] TooltipValues => null;
 
@@ -103,7 +104,8 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private string TooltipKey => $"se_{BaseName.ToLowerInvariant()}_tooltip";
 
     /// <summary>
-    /// Constructor for the WhiteHiltMeadBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected WhiteHiltMeadBase(ItemManager instance)
@@ -182,7 +184,8 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     }
 
     /// <summary>
-    /// Sets what the effect does. The effect starts empty, apart from its duration. Called again when the config changes,
+    /// Sets what the effect does. The effect starts empty, apart from its duration. Called again when the config
+    /// changes,
     /// so it must set values rather than add to them.
     /// </summary>
     /// <param name="effect">The mead's status effect.</param>

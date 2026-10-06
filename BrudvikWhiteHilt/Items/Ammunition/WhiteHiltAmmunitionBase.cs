@@ -9,7 +9,10 @@ using System;
 namespace BrudvikWhiteHilt.Items.Ammunition;
 
 /// <summary>
-/// This class defines the base for all White Hilt ammunition items.
+/// Base class for the White Hilt arrows and bolts. Each is a clone of vanilla ammunition (<see cref="CopyFrom"/>),
+/// which brings the projectile and its flight; this class sets the stack crafted at once and applies the config's
+/// damage. Ammunition is used up, so unlike the other White Hilt gear it is not indestructible. The plugin finds every
+/// subclass by reflection and calls <see cref="Add"/>.
 /// </summary>
 public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
@@ -23,22 +26,25 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem, IWhiteHilt
     private HitData.DamageTypes baseDamages;
 
     /// <summary>
-    /// The base name of the ammunition item.
+    /// Prefab name of the ammunition. It is also the key of its name and description in the translation files
+    /// (<c>$item_&lt;name&gt;</c>), and saved worlds and inventories refer to the item by it, so it must never change
+    /// once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the ammunition item.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the ammunition item.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla ammunition it is cloned from; it brings the projectile, its flight and its hit effects.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
@@ -48,12 +54,13 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem, IWhiteHilt
     protected virtual int CraftAmount => 200;
 
     /// <summary>
-    /// The requirements for crafting the ammunition item.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected abstract RequirementConfig[] Requirements { get; }
 
     /// <summary>
-    /// Indicates whether the ammunition is enabled or not.
+    /// Whether the ammunition is added to the game at all. A disabled one is skipped when the plugin starts, so it
+    /// never reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -75,9 +82,10 @@ public abstract class WhiteHiltAmmunitionBase : IWhiteHiltCustomItem, IWhiteHilt
     private readonly ItemManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltAmmunitionBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected WhiteHiltAmmunitionBase(ItemManager instance)
     {
         this.instance = instance;

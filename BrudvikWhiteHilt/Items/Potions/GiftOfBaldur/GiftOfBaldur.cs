@@ -6,36 +6,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfBaldur;
 
 /// <summary>
-/// This class defines the Gift of Baldur potion.
-/// Grants stealth/invisibility to enemies.
+/// The Gift of Baldur potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it
+/// gives <see cref="GiftOfBaldurEffect"/>.
 /// </summary>
 public class GiftOfBaldur : PotionBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public GiftOfBaldur(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfBaldur";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Baldur";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you the unseen grace of the shining god";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfBaldur.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "Wood", Amount = 5, Recover = false },
@@ -43,18 +38,13 @@ public class GiftOfBaldur : PotionBase
         new RequirementConfig { Item = "Resin", Amount = 5, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfBaldurEffect>();

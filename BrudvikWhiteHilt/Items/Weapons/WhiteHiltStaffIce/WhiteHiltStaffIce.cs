@@ -6,34 +6,28 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltStaffIce;
 
 /// <summary>
-/// This class represents the White Hilt Staff of Ice.
+/// The White Hilt Staff of Ice, cloned from the vanilla <c>StaffIceShards</c> and the White Hilt model <c>whstaff</c>
+/// from the asset bundle. In linear progression it unlocks with the Mountain tier.
 /// </summary>
 public class WhiteHiltStaffIce : WhiteHiltWeaponBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltStaffIce class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltStaffIce(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the staff.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltStaffIce";
 
-    /// <summary>
-    /// The full name of the staff.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Staff of Ice";
 
-    /// <summary>
-    /// The description of the staff.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Staff of Ice of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "StaffIceShards";
 
     /// <summary>
@@ -50,17 +44,13 @@ public class WhiteHiltStaffIce : WhiteHiltWeaponBase
         StaffFlame.Apply(model, new Color(0.25f, 0.55f, 1f));
     }
 
-    /// <summary>
-    /// Indicates whether the White Hilt Staff of Ice is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Mountain;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Staff of Ice.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 10, Recover = false },

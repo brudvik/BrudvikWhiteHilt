@@ -17,7 +17,8 @@ public class Loom : DefensePieceBase
     public const string StationPrefabName = "piece_whitehilt_vev";
 
     /// <summary>
-    /// Constructor for the Loom class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public Loom(PieceManager instance) : base(instance) { }

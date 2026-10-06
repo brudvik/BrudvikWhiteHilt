@@ -5,34 +5,28 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltBow;
 
 /// <summary>
-/// This class represents the White Hilt Bow.
+/// The White Hilt Bow, cloned from the vanilla <c>BowHuntsman</c> and the White Hilt model <c>whbow</c> from the asset
+/// bundle.
 /// </summary>
 public class WhiteHiltBow : WhiteHiltWeaponBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltBow class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltBow(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the bow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltBow";
 
-    /// <summary>
-    /// The full name of the bow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Bow";
 
-    /// <summary>
-    /// The description of the bow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Bow of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "BowHuntsman";
 
     /// <summary>
@@ -40,14 +34,10 @@ public class WhiteHiltBow : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whbow";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Bow is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Bow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 20, Recover = false },

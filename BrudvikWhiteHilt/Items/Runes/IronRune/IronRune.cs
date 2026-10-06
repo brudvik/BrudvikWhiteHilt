@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Items.Runes.IronRune;
 public class IronRune : WhiteHiltRuneBase
 {
     /// <summary>
-    /// Constructor for the IronRune class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public IronRune(ItemManager instance) : base(instance) { }

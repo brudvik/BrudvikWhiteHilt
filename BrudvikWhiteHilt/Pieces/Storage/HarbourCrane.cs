@@ -221,7 +221,8 @@ public class HarbourCrane : QuartermasterSite, Interactable, Hoverable
 public class HarbourCranePiece : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the HarbourCranePiece class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public HarbourCranePiece(PieceManager instance) : base(instance) { }

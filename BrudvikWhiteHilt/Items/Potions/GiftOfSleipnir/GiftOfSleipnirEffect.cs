@@ -4,7 +4,9 @@ using BrudvikWhiteHilt.Helpers;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfSleipnir;
 
 /// <summary>
-/// This class defines the effect of the Gift of Sleipnir potion.
+/// The status effect of the Gift of Sleipnir potion. It is a vanilla <c>SE_Stats</c>: its fields, set in <c>OnEnable</c>,
+/// give the duration and the plain stat changes, and the game calls its overridden hooks (<c>Modify...</c>,
+/// <c>OnDamaged</c>) while it is active, so it can change stamina use, damage and the like as they happen.
 /// Grants increased movement speed, no fall damage, and higher jumps.
 /// </summary>
 public class GiftOfSleipnirEffect : SE_Stats
@@ -12,7 +14,7 @@ public class GiftOfSleipnirEffect : SE_Stats
     /// <summary>
     /// Initializes the effect with the given name.
     /// </summary>
-    /// <param name="effectName"></param>
+    /// <param name="effectName">Name of the potion: the effect's name and the subject of its start and stop messages.</param>
     public void Initialize(string effectName)
     {
         base.name = effectName;
@@ -38,7 +40,7 @@ public class GiftOfSleipnirEffect : SE_Stats
     /// <summary>
     /// Sets the icon for the effect.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">Embedded resource name of the icon image.</param>
     public void SetIcon(string path)
     {
         m_icon = AssetUtilsExtended.LoadTextureFromEmbeddedResource(path).ConvertToSprite();
@@ -47,8 +49,8 @@ public class GiftOfSleipnirEffect : SE_Stats
     /// <summary>
     /// Modifies the fall damage taken by the character.
     /// </summary>
-    /// <param name="baseDamage"></param>
-    /// <param name="damage"></param>
+    /// <param name="baseDamage">The fall damage without any effect.</param>
+    /// <param name="damage">The fall damage so far; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifyFallDamage(float baseDamage, ref float damage)
     {
         damage *= PotionSettings.Sleipnir.FallDamageMultiplier.Value;

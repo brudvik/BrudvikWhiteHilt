@@ -14,7 +14,8 @@ namespace BrudvikWhiteHilt.Pieces.Stonework;
 public class HnefataflBoard : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the HnefataflBoard class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public HnefataflBoard(PieceManager instance) : base(instance)

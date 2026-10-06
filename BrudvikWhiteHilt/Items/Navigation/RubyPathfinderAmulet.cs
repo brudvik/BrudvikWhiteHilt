@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Items.Navigation;
 /// <summary>
 /// The Pathfinder's Ruby Amulet: the Pathfinder's Amulet with a ruby in the middle of the valknut. It does everything
 /// the Pathfinder does, and while it is worn the player can set a target on the map that an arrow leads to
-/// (<see cref="BrudvikWhiteHilt.Navigation.Waypoints.WaypointGuide"/>). Made from a Pathfinder's Amulet once the
+/// (<see cref="global::BrudvikWhiteHilt.Navigation.Waypoints.WaypointGuide"/>). Made from a Pathfinder's Amulet once
+/// the
 /// player has the Ruby Pathfinder milestone in Exploration.
 /// </summary>
 public class RubyPathfinderAmulet : PathfinderAmulet
@@ -54,7 +55,8 @@ public class RubyPathfinderAmulet : PathfinderAmulet
     };
 
     /// <summary>
-    /// Constructor for the RubyPathfinderAmulet class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public RubyPathfinderAmulet(ItemManager instance) : base(instance)

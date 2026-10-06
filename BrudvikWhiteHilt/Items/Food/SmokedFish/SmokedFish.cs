@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.SmokedFish;
 public class SmokedFish : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the SmokedFish class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public SmokedFish(ItemManager instance) : base(instance) { }

@@ -9,7 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Defenses.Siege;
 
 /// <summary>
-/// The Oil Cauldron on the walk over a gate. Fill it with pitch (Resin or Tar), which must heat a while, or with stones;
+/// The Oil Cauldron on the walk over a gate. Fill it with pitch (Resin or Tar), which must heat a while, or with
+/// stones;
 /// tip it and it pours down in front of the wall, through the machicolations: pitch burns, stones strike. What it
 /// holds and when it was filled are kept on the cauldron; the player who tips it deals the damage.
 /// </summary>
@@ -301,7 +302,8 @@ public class OilCauldron : MonoBehaviour, Interactable, Hoverable
 public class OilCauldronPiece : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the OilCauldronPiece class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public OilCauldronPiece(PieceManager instance) : base(instance) { }

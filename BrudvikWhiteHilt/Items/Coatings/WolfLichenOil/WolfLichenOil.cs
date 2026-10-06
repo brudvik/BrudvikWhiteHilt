@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Items.Coatings.WolfLichenOil;
 public class WolfLichenOil : WeaponCoatingBase
 {
     /// <summary>
-    /// Constructor for the WolfLichenOil class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public WolfLichenOil(ItemManager instance) : base(instance) { }

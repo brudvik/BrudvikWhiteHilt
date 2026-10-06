@@ -7,51 +7,39 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Accessories.WhiteHiltMegingjord;
 
 /// <summary>
-/// This class represents the White Hilt Megingjord.
-/// An enhanced belt that grants massive carry weight bonus.
+/// The White Hilt Megingjord, cloned from the vanilla <c>BeltStrength</c>.
 /// </summary>
 public class WhiteHiltMegingjord : WhiteHiltAccessoryBase
 {
     private const string EffectKey = "se_whitehiltmegingjord";
 
     /// <summary>
-    /// Constructor for the WhiteHiltMegingjord class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltMegingjord(ItemManager instance) : base(instance)
     {
         Translations.AddEnglish(EffectKey, "Dyrnwyn's Strength");
         Translations.AddEnglish($"{EffectKey}_tooltip", "Carry weight increased by 700");
     }
 
-    /// <summary>
-    /// The base name of the megingjord.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltMegingjord";
 
-    /// <summary>
-    /// The full name of the megingjord.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Megingjord";
 
-    /// <summary>
-    /// The description of the megingjord.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Belt of Dyrnwyn. Grants immense carrying capacity (+700).";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "BeltStrength";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Megingjord is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => false;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Megingjord.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 10, Recover = false },

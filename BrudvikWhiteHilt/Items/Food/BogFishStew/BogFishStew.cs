@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.BogFishStew;
 public class BogFishStew : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the BogFishStew class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public BogFishStew(ItemManager instance) : base(instance) { }

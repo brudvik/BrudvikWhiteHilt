@@ -17,7 +17,8 @@ public class BloodRune : EtchingRuneBase
     public const string Name = "WhiteHiltBloodRune";
 
     /// <summary>
-    /// Constructor for the BloodRune class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public BloodRune(ItemManager instance) : base(instance) { }

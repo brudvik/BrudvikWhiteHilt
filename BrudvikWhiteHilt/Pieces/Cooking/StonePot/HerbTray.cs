@@ -8,7 +8,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 
 /// <summary>
-/// An extension for the <see cref="StonePot"/>: a tray with a mortar and herbs. Placed next to the pot, it raises the pot to level 2.
+/// An extension for the <see cref="StonePot"/>: a tray with a mortar and herbs. Placed next to the pot, it raises the
+/// pot to level 2.
 /// </summary>
 public class HerbTray
 {
@@ -22,7 +23,8 @@ public class HerbTray
     private const float Size = 1f;
 
     /// <summary>
-    /// Constructor for the HerbTray class. Registers the English text.
+    /// Creates the extension and registers its English text. The <see cref="StonePot"/> creates it and adds it
+    /// to the game together with itself, as it only works next to it.
     /// </summary>
     public HerbTray()
     {

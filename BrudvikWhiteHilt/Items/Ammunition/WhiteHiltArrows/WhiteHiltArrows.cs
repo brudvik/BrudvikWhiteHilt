@@ -4,50 +4,36 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Ammunition.WhiteHiltArrows;
 
 /// <summary>
-/// This class represents the White Hilt Arrows.
-/// High-damage arrows crafted in large quantities.
+/// The White Hilt Arrows, cloned from the vanilla <c>ArrowIron</c>.
 /// </summary>
 public class WhiteHiltArrows : WhiteHiltAmmunitionBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltArrows class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltArrows(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the arrows.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltArrows";
 
-    /// <summary>
-    /// The full name of the arrows.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Arrows";
 
-    /// <summary>
-    /// The description of the arrows.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Arrows of Dyrnwyn. Enhanced with fire and spirit damage.";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "ArrowIron";
 
-    /// <summary>
-    /// The amount crafted per recipe.
-    /// </summary>
+    /// <inheritdoc/>
     protected override int CraftAmount => 200;
 
-    /// <summary>
-    /// Indicates whether the White Hilt Arrows are enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Arrows.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 2, Recover = false },

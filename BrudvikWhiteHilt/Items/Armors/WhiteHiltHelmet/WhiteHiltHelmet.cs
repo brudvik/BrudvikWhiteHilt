@@ -4,38 +4,34 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Armors.WhiteHiltHelmet;
 
 /// <summary>
-/// This class defines the White Hilt Helmet item.
+/// The White Hilt Helmet, cloned from the vanilla <c>HelmetFlametal</c>, which gives its look and how it is used, with
+/// the stats of <c>HelmetIron</c>.
 /// </summary>
 public class WhiteHiltHelmet : WhiteHiltArmorBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltHelmet(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the White Hilt Helmet item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltHelmet";
 
-    /// <summary>
-    /// The full name of the White Hilt Helmet item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Helmet";
 
-    /// <summary>
-    /// The description of the White Hilt Helmet item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Helmet of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "HelmetFlametal";
 
     /// <inheritdoc/>
     protected override string StatsFrom => "HelmetIron";
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Helmet.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 30, Recover = false },
@@ -43,8 +39,6 @@ public class WhiteHiltHelmet : WhiteHiltArmorBase
         new() { Item = "HelmetIron", Amount = 1, Recover = false },
     };
 
-    /// <summary>
-    /// Indicates whether the tool is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

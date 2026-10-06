@@ -14,7 +14,9 @@ namespace BrudvikWhiteHilt.Chests.Helpers
     /// </summary>
     public class CustomPieceExtended : CustomPiece
     {
-        // Configuration for the custom piece
+        /// <summary>
+        /// The config the chest was made from, with its category.
+        /// </summary>
         public readonly CustomPieceConfigExtended CustomPieceConfig;
 
         /// <summary>
@@ -22,15 +24,39 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// </summary>
         public string PrefabName { get; }
 
-        // Indicates whether the piece has been spawned
+        /// <summary>
+        /// Whether the piece has been added to the game, so it is set up only once.
+        /// </summary>
         public bool Spawned { get; set; } = false;
 
-        // Properties
+        /// <summary>
+        /// The chest's colour: tinted into its wood and used for its glow and its sign.
+        /// </summary>
         public Color Color { get; set; }
+
+        /// <summary>
+        /// The embedded resource path of the category sign shown on the chest's front.
+        /// </summary>
         public string Icon { get; set; }
+
+        /// <summary>
+        /// The chest's name as shown when hovered, as a translation token.
+        /// </summary>
         public string Tooltip { get; set; }
+
+        /// <summary>
+        /// Rows of the chest's inventory.
+        /// </summary>
         public int Rows { get; set; }
+
+        /// <summary>
+        /// Columns of the chest's inventory.
+        /// </summary>
         public int Columns { get; set; }
+
+        /// <summary>
+        /// Whether the chest glows in its colour, brighter the more of its items are unlimited.
+        /// </summary>
         public bool EnableGlow { get; set; }
 
         /// <summary>
@@ -53,7 +79,11 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             this.EnableGlow = true;
         }
 
-        // Additional methods to apply the properties
+        /// <summary>
+        /// Puts the properties set above onto the prefab: colour, sign, name, inventory size and glow. Call once, after
+        /// they are set and before the piece is added to the game. A missing sign is only a warning; the chest still
+        /// works without it.
+        /// </summary>
         public void ApplyProperties()
         {
             ChangeColor(this.Color);

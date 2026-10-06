@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Items.Meads.CranberryMead;
 public class CranberryMead : WhiteHiltMeadBase
 {
     /// <summary>
-    /// Constructor for the CranberryMead class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public CranberryMead(ItemManager instance) : base(instance) { }

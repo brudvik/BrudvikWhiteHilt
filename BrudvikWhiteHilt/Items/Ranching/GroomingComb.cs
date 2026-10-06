@@ -44,7 +44,8 @@ public class GroomingComb : IWhiteHiltCustomItem
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the GroomingComb class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public GroomingComb(ItemManager instance)

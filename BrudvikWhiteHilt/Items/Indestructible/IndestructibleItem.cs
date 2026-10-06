@@ -8,7 +8,9 @@ using System;
 namespace BrudvikWhiteHilt.Items.Indestructible;
 
 /// <summary>
-/// This class defines an indestructible item.
+/// A Jotunn <see cref="CustomItem"/> that never wears out: no durability, no drain, and a <see cref="WearNTear"/> that
+/// takes no damage, which is what makes White Hilt gear indestructible. Its weight comes from the config and is
+/// applied again when the config changes or is synced from the server.
 /// </summary>
 public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
 {
@@ -20,7 +22,8 @@ public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
     private ItemDrop.ItemData.SharedData _ItemData = null;
 
     /// <summary>
-    /// Gets or sets the shared data for the item.
+    /// The item's shared data: the values every copy of the item shares, such as damage, armour and weight. Changing
+    /// it changes the item everywhere at once, also items already in inventories.
     /// </summary>
     public ItemDrop.ItemData.SharedData ItemData
     {
@@ -29,11 +32,11 @@ public class IndestructibleItem : CustomItem, IWhiteHiltConfigurable
     }
 
     /// <summary>
-    /// Constructor for the IndestructibleItem class.
+    /// Clones a vanilla item and makes the clone indestructible.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="basePrefabName"></param>
-    /// <param name="itemConfig"></param>
+    /// <param name="name">Prefab name of the new item.</param>
+    /// <param name="basePrefabName">Vanilla item to clone.</param>
+    /// <param name="itemConfig">Name, description, recipe and station.</param>
     public IndestructibleItem(string name, string basePrefabName, ItemConfig itemConfig) : base(name, basePrefabName, itemConfig)
     {
         try

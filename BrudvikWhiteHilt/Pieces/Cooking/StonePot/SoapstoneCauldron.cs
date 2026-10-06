@@ -9,9 +9,10 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 
 /// <summary>
-/// An extension for the <see cref="StonePot"/>: a heavy cauldron carved out of soapstone, which holds the heat long, as the
-/// Norse cooked in them. Placed next to the pot together with the <see cref="HerbTray"/> and the <see cref="SmokeOven"/>, it
-/// raises the pot to level 4. It is carved at the Stonecutter, which must be near when it is built.
+/// An extension for the <see cref="StonePot"/>: a heavy cauldron carved out of soapstone, which holds the heat long, as
+/// the Norse cooked in them. Placed next to the pot together with the <see cref="HerbTray"/> and the
+/// <see cref="SmokeOven"/>, it raises the pot to level 4. It is carved at the Stonecutter, which must be near when it
+/// is built.
 /// </summary>
 public class SoapstoneCauldron
 {
@@ -27,7 +28,8 @@ public class SoapstoneCauldron
     private const float Size = 0.75f;
 
     /// <summary>
-    /// Constructor for the SoapstoneCauldron class. Registers the English text.
+    /// Creates the extension and registers its English text. The <see cref="StonePot"/> creates it and adds it
+    /// to the game together with itself, as it only works next to it.
     /// </summary>
     public SoapstoneCauldron()
     {

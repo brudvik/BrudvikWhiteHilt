@@ -10,7 +10,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Curing;
 
 /// <summary>
-/// Base class for food made ready for curing in the Stone Pot, e.g. a seasoned ham that is then hung on the drying rack.
+/// Base class for food made ready for curing in the Stone Pot, e.g. a seasoned ham that is then hung on the drying
+/// rack.
 /// Not food itself.
 /// </summary>
 public abstract class CuringIngredientBase : IWhiteHiltCustomItem
@@ -54,7 +55,8 @@ public abstract class CuringIngredientBase : IWhiteHiltCustomItem
     public string GatedPrefabName => BaseName;
 
     /// <summary>
-    /// Constructor for the CuringIngredientBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected CuringIngredientBase(ItemManager instance)
@@ -111,7 +113,8 @@ public class SeasonedHam : CuringIngredientBase
     public const string PrefabName = "WhiteHiltSeasonedHam";
 
     /// <summary>
-    /// Constructor for the SeasonedHam class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public SeasonedHam(ItemManager instance) : base(instance) { }
@@ -152,7 +155,8 @@ public class RawSausage : CuringIngredientBase
     public const string PrefabName = "WhiteHiltRawSausage";
 
     /// <summary>
-    /// Constructor for the RawSausage class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public RawSausage(ItemManager instance) : base(instance) { }
@@ -193,7 +197,8 @@ public class RakfiskTub : CuringIngredientBase
     public const string PrefabName = "WhiteHiltRakfiskTub";
 
     /// <summary>
-    /// Constructor for the RakfiskTub class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public RakfiskTub(ItemManager instance) : base(instance) { }

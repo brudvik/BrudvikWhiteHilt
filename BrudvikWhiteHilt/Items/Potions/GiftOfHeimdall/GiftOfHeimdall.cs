@@ -26,7 +26,8 @@ public class GiftOfHeimdall : PotionBase
     }
 
     /// <summary>
-    /// Constructor for the GiftOfHeimdall class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public GiftOfHeimdall(ItemManager instance) : base(instance) { }

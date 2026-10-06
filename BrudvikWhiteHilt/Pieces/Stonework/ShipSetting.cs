@@ -5,12 +5,14 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Pieces.Stonework;
 
 /// <summary>
-/// A ship setting: raised stones in the outline of a ship, 12 m long, the tallest at the stems, as the Norse set them round their graves.
+/// A ship setting: raised stones in the outline of a ship, 12 m long, the tallest at the stems, as the Norse set them
+/// round their graves.
 /// </summary>
 public class ShipSetting : StoneworkPieceBase
 {
     /// <summary>
-    /// Constructor for the ShipSetting class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public ShipSetting(PieceManager instance) : base(instance)

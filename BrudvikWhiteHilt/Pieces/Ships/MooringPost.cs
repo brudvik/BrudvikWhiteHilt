@@ -9,7 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
-/// The Mooring Post: a thick post with a coil of rope, built from vanilla meshes. Use it to moor the nearest ship, which
+/// The Mooring Post: a thick post with a coil of rope, built from vanilla meshes. Use it to moor the nearest ship,
+/// which
 /// then lies still where it is until it is cast off at the post.
 /// </summary>
 public class MooringPost : DefensePieceBase
@@ -20,7 +21,8 @@ public class MooringPost : DefensePieceBase
     public const float RopeHeight = 1f;
 
     /// <summary>
-    /// Constructor for the MooringPost class. Registers the English texts.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English texts.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public MooringPost(PieceManager instance) : base(instance)

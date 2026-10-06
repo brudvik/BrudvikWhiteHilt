@@ -10,7 +10,11 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Armors;
 
 /// <summary>
-/// This class defines the base for all White Hilt armor items.
+/// Base class for the White Hilt armour, capes and shields worn as gear. Each piece is a clone of a vanilla piece
+/// (<see cref="CopyFrom"/>), which decides its slot and how it sits on the body; this class makes it indestructible,
+/// can give it another vanilla piece's armour, resistances and set bonus (<see cref="StatsFrom"/>), applies the
+/// config's armour and movement bonuses, registers its upgrades through the biomes and lets the subclass change its
+/// look (<see cref="ApplyVisual"/>). The plugin finds every subclass by reflection and calls <see cref="Add"/>.
 /// </summary>
 public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
@@ -27,27 +31,32 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     private GearKind? upgradeKind;
 
     /// <summary>
-    /// The base name of the armor item.
+    /// Prefab name of the armor piece. It is also the key of its name and description in the translation files
+    /// (<c>$item_&lt;name&gt;</c>), and saved worlds and inventories refer to the item by it, so it must never change
+    /// once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the armor item.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the armor item.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla piece the armour is cloned from. It decides the slot (helmet, chest, legs, cape, shield) and the model
+    /// the look is built on.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// Vanilla item whose armor, resistances and set bonus replace those of <see cref="CopyFrom"/>, or null to keep them.
+    /// Vanilla item whose armor, resistances and set bonus replace those of <see cref="CopyFrom"/>, or null to keep
+    /// them.
     /// Lets a piece keep a later biome's look with stats from its own tier.
     /// </summary>
     protected virtual string StatsFrom => null;
@@ -68,7 +77,7 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     protected virtual int MinStationLevel => 3;
 
     /// <summary>
-    /// The requirements for crafting the armor item.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
     {
@@ -76,7 +85,8 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     };
 
     /// <summary>
-    /// Indicates whether the armor is enabled or not.
+    /// Whether the armor piece is added to the game at all. A disabled one is skipped when the plugin starts, so it
+    /// never reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -98,9 +108,10 @@ public abstract class WhiteHiltArmorBase : IWhiteHiltCustomItem, IWhiteHiltConfi
     private readonly ItemManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltArmorBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected WhiteHiltArmorBase(ItemManager instance)
     {
         this.instance = instance;

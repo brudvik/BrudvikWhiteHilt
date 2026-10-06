@@ -5,35 +5,31 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Armors.WhiteHiltCape;
 
 /// <summary>
-/// This class defines the White Hilt Cape item.
+/// The White Hilt Cape, cloned from the vanilla <c>CapeFeather</c>. In linear progression it unlocks with the Plains
+/// tier.
 /// </summary>
 public class WhiteHiltCape : WhiteHiltArmorBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltCape(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the White Hilt Cape item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltCape";
 
-    /// <summary>
-    /// The full name of the White Hilt Cape item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Cape";
 
-    /// <summary>
-    /// The description of the White Hilt Cape item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Cape of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "CapeFeather";
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Cape.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Feathers", Amount = 30, Recover = false },
@@ -45,8 +41,6 @@ public class WhiteHiltCape : WhiteHiltArmorBase
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Plains;
 
-    /// <summary>
-    /// Indicates whether the tool is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

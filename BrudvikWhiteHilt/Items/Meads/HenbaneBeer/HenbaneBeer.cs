@@ -16,7 +16,8 @@ public class HenbaneBeer : WhiteHiltMeadBase
     private static ConfigEntry<float> crashShare;
 
     /// <summary>
-    /// Constructor for the HenbaneBeer class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public HenbaneBeer(ItemManager instance) : base(instance)

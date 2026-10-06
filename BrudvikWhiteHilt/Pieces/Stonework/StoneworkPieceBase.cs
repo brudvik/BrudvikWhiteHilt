@@ -7,13 +7,15 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Stonework;
 
 /// <summary>
-/// A stone piece from the layout, built near the Stonecutter: it is stone in the building rules, does not wear in the rain
+/// A stone piece from the layout, built near the Stonecutter: it is stone in the building rules, does not wear in the
+/// rain
 /// and sounds like a stone wall when struck or broken.
 /// </summary>
 public abstract class StoneworkPieceBase : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the StoneworkPieceBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     protected StoneworkPieceBase(PieceManager instance) : base(instance)

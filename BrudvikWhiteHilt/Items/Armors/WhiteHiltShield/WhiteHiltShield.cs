@@ -4,35 +4,30 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Armors.WhiteHiltShield;
 
 /// <summary>
-/// This class defines the White Hilt Shield item.
+/// The White Hilt Shield, cloned from the vanilla <c>ShieldBanded</c>.
 /// </summary>
 public class WhiteHiltShield : WhiteHiltArmorBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltShield(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the White Hilt Shield item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltShield";
 
-    /// <summary>
-    /// The full name of the White Hilt Shield item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Shield";
 
-    /// <summary>
-    /// The description of the White Hilt Shield item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Shield of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "ShieldBanded";
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Shield.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 30, Recover = false },
@@ -40,8 +35,6 @@ public class WhiteHiltShield : WhiteHiltArmorBase
         new() { Item = "ShieldIronBuckler", Amount = 1, Recover = false },
     };
 
-    /// <summary>
-    /// Indicates whether the tool is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

@@ -12,8 +12,10 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Stonework;
 
 /// <summary>
-/// A floor piece of slate slabs, built near the Stonecutter. It is a vanilla wooden floor or stair underneath, so it snaps
-/// and collides like one, but it is stone and looks like the slate roof: thin slabs whose slates keep their size however
+/// A floor piece of slate slabs, built near the Stonecutter. It is a vanilla wooden floor or stair underneath, so it
+/// snaps
+/// and collides like one, but it is stone and looks like the slate roof: thin slabs whose slates keep their size
+/// however
 /// the slab is cut. AssetSource/Preview/build_slate.py draws the same slabs for the documentation.
 /// </summary>
 public abstract class SlatePieceBase : IWhiteHiltCustomPiece
@@ -25,7 +27,8 @@ public abstract class SlatePieceBase : IWhiteHiltCustomPiece
     private readonly PieceManager instance;
 
     /// <summary>
-    /// Constructor for the SlatePieceBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     protected SlatePieceBase(PieceManager instance)

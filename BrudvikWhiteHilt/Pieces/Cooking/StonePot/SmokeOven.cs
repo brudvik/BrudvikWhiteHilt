@@ -8,7 +8,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 
 /// <summary>
-/// An extension for the <see cref="StonePot"/>: a clay oven for smoking fish and meat. Placed next to the pot together with the
+/// An extension for the <see cref="StonePot"/>: a clay oven for smoking fish and meat. Placed next to the pot together
+/// with the
 /// <see cref="HerbTray"/>, it raises the pot to level 3.
 /// </summary>
 public class SmokeOven
@@ -30,7 +31,8 @@ public class SmokeOven
     private static readonly Vector3 chimneyInMesh = new(0.534f, 1.02f, -0.01f);
 
     /// <summary>
-    /// Constructor for the SmokeOven class. Registers the English text.
+    /// Creates the extension and registers its English text. The <see cref="StonePot"/> creates it and adds it
+    /// to the game together with itself, as it only works next to it.
     /// </summary>
     public SmokeOven()
     {

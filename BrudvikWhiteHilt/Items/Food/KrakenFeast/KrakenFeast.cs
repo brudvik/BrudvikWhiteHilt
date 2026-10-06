@@ -11,7 +11,8 @@ namespace BrudvikWhiteHilt.Items.Food.KrakenFeast;
 public class KrakenFeast : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the KrakenFeast class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public KrakenFeast(ItemManager instance) : base(instance) { }

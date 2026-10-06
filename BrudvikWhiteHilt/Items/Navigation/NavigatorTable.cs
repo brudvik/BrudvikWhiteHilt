@@ -11,7 +11,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Navigation;
 
 /// <summary>
-/// The Navigator's Table: a small table with a sea chart and a sextant, set up on a ship's deck by using it on the helm.
+/// The Navigator's Table: a small table with a sea chart and a sextant, set up on a ship's deck by using it on the
+/// helm.
 /// Aboard, it widens the circle of map the crew uncovers, more so the higher their Exploration skill.
 /// </summary>
 public class NavigatorTable : IWhiteHiltCustomItem, IWhiteHiltConfigurable
@@ -48,7 +49,8 @@ public class NavigatorTable : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the NavigatorTable class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public NavigatorTable(ItemManager instance)

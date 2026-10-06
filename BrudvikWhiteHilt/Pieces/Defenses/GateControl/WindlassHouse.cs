@@ -245,7 +245,8 @@ public class WindlassControl : MonoBehaviour, Hoverable, Interactable
 public class WindlassHousePiece : DefensePieceBase
 {
     /// <summary>
-    /// Constructor for the WindlassHousePiece class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public WindlassHousePiece(PieceManager instance) : base(instance) { }

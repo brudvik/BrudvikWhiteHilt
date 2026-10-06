@@ -8,7 +8,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Companions;
 
 /// <summary>
-/// A bark bowl that holds a little food. A hungry dog, or any tame animal, walks over and eats from it like from a trough.
+/// A bark bowl that holds a little food. A hungry dog, or any tame animal, walks over and eats from it like from a
+/// trough.
 /// </summary>
 public class DogBowl : DogPieceBase
 {
@@ -21,7 +22,8 @@ public class DogBowl : DogPieceBase
     private const float Size = 0.12f;
 
     /// <summary>
-    /// Constructor for the DogBowl class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DogBowl(PieceManager instance) : base(instance)

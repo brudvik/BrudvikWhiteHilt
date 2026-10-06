@@ -25,7 +25,8 @@ public class DogWaterBowl : DogPieceBase
     private static readonly Color32 waterColor = new(46, 88, 104, 255);
 
     /// <summary>
-    /// Constructor for the DogWaterBowl class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DogWaterBowl(PieceManager instance) : base(instance)

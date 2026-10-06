@@ -6,36 +6,31 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfRatatoskr;
 
 /// <summary>
-/// This class defines the Gift of Ratatoskr potion.
-/// Grants increased sprint speed and stamina efficiency.
+/// The Gift of Ratatoskr potion: brewed like a mead, from a mead base cooked at the Cauldron and fermented. Drinking it
+/// gives <see cref="GiftOfRatatoskrEffect"/>.
 /// </summary>
 public class GiftOfRatatoskr : PotionBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public GiftOfRatatoskr(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "GiftOfRatatoskr";
 
-    /// <summary>
-    /// The full name of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "Gift of Ratatoskr";
 
-    /// <summary>
-    /// The description of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "Grants you the agility of the squirrel that runs upon Yggdrasil";
 
-    /// <summary>
-    /// The path to the icon of the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfRatatoskr.png";
 
-    /// <summary>
-    /// The requirements for crafting the potion.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] MeadBaseRequirements => new[]
     {
         new RequirementConfig { Item = "Resin", Amount = 5, Recover = false },
@@ -43,18 +38,13 @@ public class GiftOfRatatoskr : PotionBase
         new RequirementConfig { Item = "Mushroom", Amount = 5, Recover = false }
     };
 
-    /// <summary>
-    /// Indicates whether the potion is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
 
-    /// <summary>
-    /// Creates the effect for the potion.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     protected override SE_Stats CreateEffect()
     {
         var effect = ScriptableObject.CreateInstance<GiftOfRatatoskrEffect>();

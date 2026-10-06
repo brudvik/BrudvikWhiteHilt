@@ -9,7 +9,10 @@ using System;
 namespace BrudvikWhiteHilt.Items.Tools;
 
 /// <summary>
-/// Base class for White Hilt tools.
+/// Base class for the White Hilt tools: hammer, hoe, cultivator, axe and pickaxe. Each is a clone of the vanilla tool
+/// (<see cref="CopyFrom"/>), which brings what the tool does (the hammer's build table, the hoe's terrain tools); this
+/// class makes it indestructible and applies the config's stamina reduction for building, farming and cultivating. The
+/// plugin finds every subclass by reflection and calls <see cref="Add"/>.
 /// </summary>
 public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
@@ -21,27 +24,30 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private float baseStaminaModifier;
 
     /// <summary>
-    /// The base name of the tool.
+    /// Prefab name of the tool. It is also the key of its name and description in the translation files
+    /// (<c>$item_&lt;name&gt;</c>), and saved worlds and inventories refer to the item by it, so it must never change
+    /// once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the tool.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the tool.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla tool it is cloned from; it brings what the tool does, such as the hammer's piece table.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// The requirements for crafting the tool.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
     {
@@ -51,7 +57,8 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     };
 
     /// <summary>
-    /// Indicates whether the tool is enabled or not.
+    /// Whether the tool is added to the game at all. A disabled one is skipped when the plugin starts, so it never
+    /// reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -73,9 +80,10 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private readonly ItemManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltToolBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected WhiteHiltToolBase(ItemManager instance)
     {
         this.instance = instance;

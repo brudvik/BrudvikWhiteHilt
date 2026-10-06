@@ -25,7 +25,8 @@ public class GiftOfEir : PotionBase
     }
 
     /// <summary>
-    /// Constructor for the GiftOfEir class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public GiftOfEir(ItemManager instance) : base(instance) { }

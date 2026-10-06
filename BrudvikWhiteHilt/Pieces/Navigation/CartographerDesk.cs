@@ -20,7 +20,8 @@ public class CartographerDesk : DefensePieceBase
     public const string StationPrefabName = "piece_whitehilt_kartmakerbenk";
 
     /// <summary>
-    /// Constructor for the CartographerDesk class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public CartographerDesk(PieceManager instance) : base(instance)

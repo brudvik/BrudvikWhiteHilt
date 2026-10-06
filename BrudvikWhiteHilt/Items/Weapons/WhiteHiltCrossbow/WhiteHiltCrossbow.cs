@@ -6,36 +6,30 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltCrossbow;
 
 /// <summary>
-/// This class represents the White Hilt Crossbow.
+/// The White Hilt Crossbow, cloned from the vanilla <c>CrossbowArbalest</c> and the White Hilt model <c>whcrossbow</c>
+/// from the asset bundle.
 /// </summary>
 public class WhiteHiltCrossbow : WhiteHiltWeaponBase
 {
     // Centre of the vanilla bolt on the new stock, in attach space, just ahead of the drawn string.
     private static readonly Vector3 boltPosition = new(0f, 0.12f, 0.52f);
     /// <summary>
-    /// Constructor for the WhiteHiltCrossbow class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltCrossbow(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the crossbow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltCrossbow";
 
-    /// <summary>
-    /// The full name of the crossbow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Crossbow";
 
-    /// <summary>
-    /// The description of the crossbow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Crossbow of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from. A real crossbow, so it shoots bolts and reloads.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "CrossbowArbalest";
 
     /// <summary>
@@ -43,14 +37,10 @@ public class WhiteHiltCrossbow : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whcrossbow";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Crossbow is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Crossbow.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 20, Recover = false },

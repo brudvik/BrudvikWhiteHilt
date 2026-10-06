@@ -19,7 +19,8 @@ public class HopAle : WhiteHiltMeadBase
     private static ConfigEntry<float> restedBonus;
 
     /// <summary>
-    /// Constructor for the HopAle class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public HopAle(ItemManager instance) : base(instance)

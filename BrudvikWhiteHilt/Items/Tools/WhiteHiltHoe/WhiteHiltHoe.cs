@@ -3,38 +3,29 @@
 namespace BrudvikWhiteHilt.Items.Tools.WhiteHiltHoe;
 
 /// <summary>
-/// This class defines the White Hilt Hoe item.
+/// The White Hilt Hoe, cloned from the vanilla <c>Hoe</c>.
 /// </summary>
 public class WhiteHiltHoe : WhiteHiltToolBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltHoe class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltHoe(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the hoe.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltHoe";
 
-    /// <summary>
-    /// The full name of the hoe.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Hoe";
 
-    /// <summary>
-    /// The description of the hoe.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Hoe of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "Hoe";
 
-    /// <summary>
-    /// Indicates whether the tool is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

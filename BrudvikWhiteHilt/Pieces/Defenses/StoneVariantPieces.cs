@@ -9,7 +9,8 @@ namespace BrudvikWhiteHilt.Pieces.Defenses;
 public class StoneRampartMarble : StoneRampart
 {
     /// <summary>
-    /// Constructor for the StoneRampartMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneRampartMarble(PieceManager instance) : base(instance) { }
@@ -22,7 +23,8 @@ public class StoneRampartMarble : StoneRampart
 public class StoneRampartGrausten : StoneRampart
 {
     /// <summary>
-    /// Constructor for the StoneRampartGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneRampartGrausten(PieceManager instance) : base(instance) { }
@@ -35,7 +37,8 @@ public class StoneRampartGrausten : StoneRampart
 public class StoneRampartPlainMarble : StoneRampartPlain
 {
     /// <summary>
-    /// Constructor for the StoneRampartPlainMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneRampartPlainMarble(PieceManager instance) : base(instance) { }
@@ -48,7 +51,8 @@ public class StoneRampartPlainMarble : StoneRampartPlain
 public class StoneRampartPlainGrausten : StoneRampartPlain
 {
     /// <summary>
-    /// Constructor for the StoneRampartPlainGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneRampartPlainGrausten(PieceManager instance) : base(instance) { }
@@ -61,7 +65,8 @@ public class StoneRampartPlainGrausten : StoneRampartPlain
 public class StoneCornerMarble : StoneCorner
 {
     /// <summary>
-    /// Constructor for the StoneCornerMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneCornerMarble(PieceManager instance) : base(instance) { }
@@ -74,7 +79,8 @@ public class StoneCornerMarble : StoneCorner
 public class StoneCornerGrausten : StoneCorner
 {
     /// <summary>
-    /// Constructor for the StoneCornerGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneCornerGrausten(PieceManager instance) : base(instance) { }
@@ -87,7 +93,8 @@ public class StoneCornerGrausten : StoneCorner
 public class StoneCorner45Marble : StoneCorner45
 {
     /// <summary>
-    /// Constructor for the StoneCorner45Marble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneCorner45Marble(PieceManager instance) : base(instance) { }
@@ -100,7 +107,8 @@ public class StoneCorner45Marble : StoneCorner45
 public class StoneCorner45Grausten : StoneCorner45
 {
     /// <summary>
-    /// Constructor for the StoneCorner45Grausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneCorner45Grausten(PieceManager instance) : base(instance) { }
@@ -113,7 +121,8 @@ public class StoneCorner45Grausten : StoneCorner45
 public class StoneStairsMarble : StoneStairs
 {
     /// <summary>
-    /// Constructor for the StoneStairsMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneStairsMarble(PieceManager instance) : base(instance) { }
@@ -126,7 +135,8 @@ public class StoneStairsMarble : StoneStairs
 public class StoneStairsGrausten : StoneStairs
 {
     /// <summary>
-    /// Constructor for the StoneStairsGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneStairsGrausten(PieceManager instance) : base(instance) { }
@@ -139,7 +149,8 @@ public class StoneStairsGrausten : StoneStairs
 public class StoneGatehouseMarble : StoneGatehouse
 {
     /// <summary>
-    /// Constructor for the StoneGatehouseMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneGatehouseMarble(PieceManager instance) : base(instance) { }
@@ -152,7 +163,8 @@ public class StoneGatehouseMarble : StoneGatehouse
 public class StoneGatehouseGrausten : StoneGatehouse
 {
     /// <summary>
-    /// Constructor for the StoneGatehouseGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneGatehouseGrausten(PieceManager instance) : base(instance) { }
@@ -165,7 +177,8 @@ public class StoneGatehouseGrausten : StoneGatehouse
 public class StoneDrawbridgeMarble : StoneDrawbridge
 {
     /// <summary>
-    /// Constructor for the StoneDrawbridgeMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneDrawbridgeMarble(PieceManager instance) : base(instance) { }
@@ -178,7 +191,8 @@ public class StoneDrawbridgeMarble : StoneDrawbridge
 public class StoneDrawbridgeGrausten : StoneDrawbridge
 {
     /// <summary>
-    /// Constructor for the StoneDrawbridgeGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneDrawbridgeGrausten(PieceManager instance) : base(instance) { }
@@ -191,7 +205,8 @@ public class StoneDrawbridgeGrausten : StoneDrawbridge
 public class DragonsTeethMarble : DragonsTeeth
 {
     /// <summary>
-    /// Constructor for the DragonsTeethMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DragonsTeethMarble(PieceManager instance) : base(instance) { }
@@ -204,7 +219,8 @@ public class DragonsTeethMarble : DragonsTeeth
 public class DragonsTeethGrausten : DragonsTeeth
 {
     /// <summary>
-    /// Constructor for the DragonsTeethGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DragonsTeethGrausten(PieceManager instance) : base(instance) { }
@@ -217,7 +233,8 @@ public class DragonsTeethGrausten : DragonsTeeth
 public class StoneTowerSmallMarble : StoneTowerSmall
 {
     /// <summary>
-    /// Constructor for the StoneTowerSmallMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerSmallMarble(PieceManager instance) : base(instance) { }
@@ -230,7 +247,8 @@ public class StoneTowerSmallMarble : StoneTowerSmall
 public class StoneTowerSmallGrausten : StoneTowerSmall
 {
     /// <summary>
-    /// Constructor for the StoneTowerSmallGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerSmallGrausten(PieceManager instance) : base(instance) { }
@@ -243,7 +261,8 @@ public class StoneTowerSmallGrausten : StoneTowerSmall
 public class StoneTowerMediumMarble : StoneTowerMedium
 {
     /// <summary>
-    /// Constructor for the StoneTowerMediumMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerMediumMarble(PieceManager instance) : base(instance) { }
@@ -256,7 +275,8 @@ public class StoneTowerMediumMarble : StoneTowerMedium
 public class StoneTowerMediumGrausten : StoneTowerMedium
 {
     /// <summary>
-    /// Constructor for the StoneTowerMediumGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerMediumGrausten(PieceManager instance) : base(instance) { }
@@ -269,7 +289,8 @@ public class StoneTowerMediumGrausten : StoneTowerMedium
 public class StoneTowerLargeMarble : StoneTowerLarge
 {
     /// <summary>
-    /// Constructor for the StoneTowerLargeMarble class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerLargeMarble(PieceManager instance) : base(instance) { }
@@ -282,7 +303,8 @@ public class StoneTowerLargeMarble : StoneTowerLarge
 public class StoneTowerLargeGrausten : StoneTowerLarge
 {
     /// <summary>
-    /// Constructor for the StoneTowerLargeGrausten class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public StoneTowerLargeGrausten(PieceManager instance) : base(instance) { }

@@ -32,7 +32,8 @@ public class BindingStone
     private static readonly Color lightColor = new(1f, 0.25f, 0.1f);
 
     /// <summary>
-    /// Constructor for the BindingStone class. Registers the English text.
+    /// Creates the extension and registers its English text. The <see cref="RuneForge"/> creates it and adds it
+    /// to the game together with itself, as it only works next to it.
     /// </summary>
     public BindingStone()
     {

@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Meads.BogBeanBitter;
 public class BogBeanBitter : WhiteHiltMeadBase
 {
     /// <summary>
-    /// Constructor for the BogBeanBitter class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public BogBeanBitter(ItemManager instance) : base(instance) { }

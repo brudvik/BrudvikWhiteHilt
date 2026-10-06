@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.FishSoup;
 public class FishSoup : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the FishSoup class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public FishSoup(ItemManager instance) : base(instance) { }

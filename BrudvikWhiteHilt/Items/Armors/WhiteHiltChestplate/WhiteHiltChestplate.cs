@@ -4,35 +4,30 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Armors.WhiteHiltChestplate;
 
 /// <summary>
-/// This class defines the White Hilt Chestplate item.
+/// The White Hilt Chestplate, cloned from the vanilla <c>ArmorIronChest</c>.
 /// </summary>
 public class WhiteHiltChestplate : WhiteHiltArmorBase
 {
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltChestplate(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the White Hilt Chestplate item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltChestplate";
 
-    /// <summary>
-    /// The full name of the White Hilt Chestplate item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Chestplate";
 
-    /// <summary>
-    /// The description of the White Hilt Chestplate item.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Chestplate of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "ArmorIronChest";
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Chestplate.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 20, Recover = false },
@@ -40,8 +35,6 @@ public class WhiteHiltChestplate : WhiteHiltArmorBase
         new() { Item = "ArmorBronzeChest", Amount = 1, Recover = false },
     };
 
-    /// <summary>
-    /// Indicates whether the armor is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

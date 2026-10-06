@@ -12,9 +12,10 @@ namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 public class WhiteHiltShip : WhiteHiltShipBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltShip class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's piece manager, which the piece is added to.</param>
     public WhiteHiltShip(PieceManager instance) : base(instance)
     {
         Translations.AddEnglish("whitehilt_ship_take", "Take off the last upgrade");
@@ -38,29 +39,19 @@ public class WhiteHiltShip : WhiteHiltShipBase
         Translations.AddEnglish("whitehilt_shipportal_unnamed", "Unnamed ship portal");
     }
 
-    /// <summary>
-    /// The base name of the ship.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltShip";
 
-    /// <summary>
-    /// The full name of the ship.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Ship";
 
-    /// <summary>
-    /// The description of the ship.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Ship of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "VikingShip";
 
-    /// <summary>
-    /// Indicates whether the White Hilt ship is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
@@ -78,9 +69,7 @@ public class WhiteHiltShip : WhiteHiltShipBase
         WhiteHiltShipLook.Apply(ship);
     }
 
-    /// <summary>
-    /// The name of the ship prefab.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "FineWood", Amount = 20, Recover = false },

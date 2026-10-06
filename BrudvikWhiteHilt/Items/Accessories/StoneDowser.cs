@@ -14,7 +14,8 @@ namespace BrudvikWhiteHilt.Items.Accessories;
 
 /// <summary>
 /// The Stone Dowser: a Wishbone in grey stone, cut at the stonecutter and worn as an accessory. It leads to the nearest
-/// clearing that still has rocks for the Mysterious Rock and pings toward each rock nearby (<see cref="StoneDowsingEffect"/>).
+/// clearing that still has rocks for the Mysterious Rock and pings toward each rock nearby
+/// (<see cref="StoneDowsingEffect"/>).
 /// </summary>
 public class StoneDowser : IWhiteHiltCustomItem
 {
@@ -54,7 +55,8 @@ public class StoneDowser : IWhiteHiltCustomItem
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the StoneDowser class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public StoneDowser(ItemManager instance)

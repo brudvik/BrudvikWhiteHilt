@@ -6,40 +6,35 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltSword;
 
 /// <summary>
-/// Class for the White Hilt Sword item.
+/// The White Hilt Sword, cloned from the vanilla <c>SwordDyrnwyn</c>, which gives its look and how it is used, with the
+/// stats of <c>SwordIron</c> and the White Hilt model <c>whsword</c> from the asset bundle. In linear progression it
+/// unlocks with the BlackForest tier.
 /// </summary>
 public class WhiteHiltSword : WhiteHiltWeaponBase
 {
     private static ConfigEntry<float> fireDamage;
 
     /// <summary>
-    /// Constructor for the WhiteHiltSword class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltSword(ItemManager instance) : base(instance)
     {
         fireDamage ??= WhiteHiltConfig.BindAdminOnly("Gear.Weapons", "SwordFireDamage", 5f,
             "Fire damage of the White Hilt Sword; sets the target briefly alight.", new AcceptableValueRange<float>(0f, 100f));
     }
 
-    /// <summary>
-    /// The base name of the sword.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltSword";
 
-    /// <summary>
-    /// The full name of the sword.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Sword";
 
-    /// <summary>
-    /// The description of the sword.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Sword of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "SwordDyrnwyn";
 
     /// <summary>
@@ -55,17 +50,13 @@ public class WhiteHiltSword : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whsword";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Bow is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Sword.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Bronze", Amount = 20, Recover = false },

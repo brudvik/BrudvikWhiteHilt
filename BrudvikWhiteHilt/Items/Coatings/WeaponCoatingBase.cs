@@ -98,7 +98,8 @@ public abstract class WeaponCoatingBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private string TooltipKey => $"se_{BaseName.ToLowerInvariant()}_tooltip";
 
     /// <summary>
-    /// Constructor for the WeaponCoatingBase class. Binds the settings and registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Binds the settings and registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected WeaponCoatingBase(ItemManager instance)

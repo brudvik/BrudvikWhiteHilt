@@ -85,7 +85,8 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
     public string PrefabName => $"piece_whitehilt_{LayoutName}";
 
     /// <summary>
-    /// Constructor for the DefensePieceBase class. Registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Registers the English text.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     protected DefensePieceBase(PieceManager instance)

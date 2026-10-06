@@ -4,34 +4,28 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltTowerShield;
 
 /// <summary>
-/// This class represents the White Hilt Tower Shield.
+/// The White Hilt Tower Shield, cloned from the vanilla <c>ShieldIronTower</c> and the White Hilt model
+/// <c>whtowershield</c> from the asset bundle.
 /// </summary>
 public class WhiteHiltTowerShield : WhiteHiltWeaponBase
 {
     /// <summary>
-    /// Constructor for the WhiteHiltTowerShield class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     public WhiteHiltTowerShield(ItemManager instance) : base(instance) { }
 
-    /// <summary>
-    /// The base name of the tower shield.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string BaseName => "WhiteHiltTowerShield";
 
-    /// <summary>
-    /// The full name of the tower shield.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string FullName => "White Hilt Tower Shield";
 
-    /// <summary>
-    /// The description of the tower shield.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string Description => "The Indestructible Tower Shield of Dyrnwyn";
 
-    /// <summary>
-    /// The name of the item to copy from.
-    /// </summary>
+    /// <inheritdoc/>
     protected override string CopyFrom => "ShieldIronTower";
 
     /// <summary>
@@ -39,14 +33,10 @@ public class WhiteHiltTowerShield : WhiteHiltWeaponBase
     /// </summary>
     protected override string ModelName => "whtowershield";
 
-    /// <summary>
-    /// Indicates whether the White Hilt Tower Shield is enabled.
-    /// </summary>
+    /// <inheritdoc/>
     public override bool Enabled => true;
 
-    /// <summary>
-    /// The requirements for crafting the White Hilt Tower Shield.
-    /// </summary>
+    /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 30, Recover = false },

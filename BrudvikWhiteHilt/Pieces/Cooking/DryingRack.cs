@@ -11,7 +11,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Cooking;
 
 /// <summary>
-/// A drying rack (hjell): two crossed-pole trestles with a ridge pole, where hams, sausages and cod hang for days to cure.
+/// A drying rack (hjell): two crossed-pole trestles with a ridge pole, where hams, sausages and cod hang for days to
+/// cure.
 /// It is a vanilla cooking station without fire: <see cref="DryingRackAir"/> keeps it "lit" by the wind, nothing burns,
 /// and the slots neither smoke nor sizzle.
 /// </summary>
@@ -27,7 +28,8 @@ public class DryingRack : DefensePieceBase
     private static readonly Dictionary<string, Func<float>> cookTimes = new();
 
     /// <summary>
-    /// Constructor for the DryingRack class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DryingRack(PieceManager instance) : base(instance) { }

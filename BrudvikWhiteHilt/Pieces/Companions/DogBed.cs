@@ -20,7 +20,8 @@ public class DogBed : DogPieceBase
     private const float Size = 0.32f;
 
     /// <summary>
-    /// Constructor for the DogBed class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The piece manager.</param>
     public DogBed(PieceManager instance) : base(instance)

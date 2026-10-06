@@ -11,7 +11,12 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Weapons;
 
 /// <summary>
-/// Base class for White Hilt weapons.
+/// Base class for the White Hilt weapons and shields. A weapon is a clone of a vanilla one (<see cref="CopyFrom"/>), so
+/// it keeps that weapon's attacks, animations, sounds and effects; this class then makes it indestructible, can give it
+/// the damage of another vanilla weapon (<see cref="StatsFrom"/>), the config's damage bonuses and its own model from
+/// the White Hilt asset bundle (<see cref="ModelName"/>), and registers its upgrades through the biomes. A subclass
+/// only states these facts. The plugin finds every subclass by reflection and calls <see cref="Add"/>, so adding a
+/// weapon means adding a class.
 /// </summary>
 public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
@@ -27,27 +32,32 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     private GearKind? upgradeKind;
 
     /// <summary>
-    /// The base name of the weapon.
+    /// Prefab name of the weapon. It is also the key of its name and description in the translation files
+    /// (<c>$item_&lt;name&gt;</c>), and saved worlds and inventories refer to the item by it, so it must never change
+    /// once released.
     /// </summary>
     protected abstract string BaseName { get; }
 
     /// <summary>
-    /// The full name of the weapon.
+    /// Name shown to players, in English. Other languages come from the embedded translation files
+    /// (Translations/*.json), keyed by the prefab name.
     /// </summary>
     protected abstract string FullName { get; }
 
     /// <summary>
-    /// The description of the weapon.
+    /// Item description, in English; translated the same way as the name.
     /// </summary>
     protected abstract string Description { get; }
 
     /// <summary>
-    /// The name of the item to copy from.
+    /// Vanilla item the weapon is cloned from. It decides how the weapon behaves (attacks, animations, skill, sounds),
+    /// not only how it looks, so pick the vanilla weapon that should be swung.
     /// </summary>
     protected abstract string CopyFrom { get; }
 
     /// <summary>
-    /// Vanilla item whose damage, blocking and attack costs replace those of <see cref="CopyFrom"/>, or null to keep them.
+    /// Vanilla item whose damage, blocking and attack costs replace those of <see cref="CopyFrom"/>, or null to keep
+    /// them.
     /// Lets a weapon keep a later biome's look and effects with stats from its own tier.
     /// </summary>
     protected virtual string StatsFrom => null;
@@ -58,7 +68,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     protected virtual float BonusFireDamage => 0f;
 
     /// <summary>
-    /// The requirements for crafting the weapon.
+    /// Ingredients of the recipe. The progression tier may add its own cost on top (see ProgressionManager).
     /// </summary>
     protected virtual RequirementConfig[] Requirements => new RequirementConfig[]
     {
@@ -66,7 +76,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     };
 
     /// <summary>
-    /// Indicates whether the weapon is enabled or not.
+    /// Whether the weapon is added to the game at all. A disabled one is skipped when the plugin starts, so it never
+    /// reaches ObjectDB or a recipe.
     /// </summary>
     public abstract bool Enabled { get; }
 
@@ -81,7 +92,8 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     protected virtual int StationLevel => 2;
 
     /// <summary>
-    /// Name of the mesh in the White Hilt asset bundle that replaces the vanilla look (texture <c>&lt;name&gt;_albedo</c>),
+    /// Name of the mesh in the White Hilt asset bundle that replaces the vanilla look (texture
+    /// <c>&lt;name&gt;_albedo</c>),
     /// or null to keep the vanilla look.
     /// </summary>
     protected virtual string ModelName => null;
@@ -104,9 +116,10 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     private readonly ItemManager instance;
 
     /// <summary>
-    /// Constructor for the WhiteHiltWeaponBase class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
-    /// <param name="instance"></param>
+    /// <param name="instance">Jotunn's item manager, which the item is added to.</param>
     protected WhiteHiltWeaponBase(ItemManager instance)
     {
         this.instance = instance;

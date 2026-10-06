@@ -114,7 +114,8 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private string BuffTooltipKey => $"se_{BaseName.ToLowerInvariant()}_tooltip";
 
     /// <summary>
-    /// Constructor for the WhiteHiltFoodBase class. Binds the config entries and registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Binds the config entries and registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     protected WhiteHiltFoodBase(ItemManager instance)

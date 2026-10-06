@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Items.Food.LingonberrySoup;
 public class LingonberrySoup : WhiteHiltFoodBase
 {
     /// <summary>
-    /// Constructor for the LingonberrySoup class.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public LingonberrySoup(ItemManager instance) : base(instance) { }

@@ -12,7 +12,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Ammunition;
 
 /// <summary>
-/// Fire arrows tipped with a sliver of Desert Dragon scale: the vanilla fire arrow, with Plains-strength pierce and fire.
+/// Fire arrows tipped with a sliver of Desert Dragon scale: the vanilla fire arrow, with Plains-strength pierce and
+/// fire.
 /// </summary>
 public class DragonfireArrow : IWhiteHiltCustomItem, IWhiteHiltConfigurable
 {
@@ -50,7 +51,8 @@ public class DragonfireArrow : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     public string GatedPrefabName => PrefabName;
 
     /// <summary>
-    /// Constructor for the DragonfireArrow class. Binds the config entries and registers the English text.
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run. Binds the config entries and registers the English text.
     /// </summary>
     /// <param name="instance">The item manager.</param>
     public DragonfireArrow(ItemManager instance)
