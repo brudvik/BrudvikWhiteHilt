@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.97.0 - 2026-10-06
 
 ### Added
 - **Decor Hammer**: a build tool of its own with 174 decorations under eight tabs: Garden, Wilds, Hearth, Workshop, Home, Textiles, Lights and Norse. Bushes, ferns, flowers, young trees and mushrooms sway in the wind and bend when you walk through them; stones, stumps and logs; barrels, baskets, bowls and food; tools, fences, firewood and a trader's wagon; tables, stools and chairs to sit on; hanging cloth, banners and rugs; candles, lanterns and fires that need no fuel; runestones, graves, a dolmen, fuling totems and wrecked ships. Many are Valheim's own props and plants that could not be built before; the rest are models from Poly Haven and Sketchfab. A decoration shows up once you know its materials, needs no support and gives its materials back when removed. See [Decor Hammer](docs/decor.md).

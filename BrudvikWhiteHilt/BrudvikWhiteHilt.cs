@@ -41,7 +41,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     public const string PluginName = "BrudvikWhiteHilt";
 
     /// <summary>The version; it must match Package/manifest.json and Properties/AssemblyInfo.cs.</summary>
-    public const string PluginVersion = "0.96.0";
+    public const string PluginVersion = "0.97.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
