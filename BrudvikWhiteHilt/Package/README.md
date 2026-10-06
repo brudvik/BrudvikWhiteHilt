@@ -31,20 +31,18 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.100.0
+## ✨ New in 0.101.1
+
+- **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)** are solid again: wood and stone decorations took the snow shader of the vanilla piece they copy and looked see-through and shiny. Wall drawers and ship workshops had the same fault. Water and glass, such as the water in the Quench Tub, no longer vanish.
+
+### Also new in 0.101.0
+
+- **[Sixteen new White Hilt weapons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)**, from the Swamp to the Ashlands, each with its own model, white grip and a trait of its own: a Bearded Axe that hooks shields, a Seax that makes wounds bleed, a Javelin and a Throwing Axe that fly as themselves, a Flail that swings past the guard, a Morning Star that breaks armour, a Halberd for big game, a Scythe that reaps life, a Trident of the sea, a one-handed Crystal Axe and Wand, a Dane Axe, War Hammer, Ice Sword, Claymore, Crystal Staff and Rune Sword. The weapons of later biomes take that biome's materials and strength.
+- **[Glow](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#glow)**: colour a Glow Rune at the Paint Bench and etch it into any White Hilt weapon or shield, and its blade glows in that colour for everyone to see.
+
+### Also new in 0.100.0
 
 - **[Crafting and building from chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)** finally works with chests another player holds: the part that readies every chest for multiplayer was never applied. The Collection Post and the Quartermaster's Table gain from it too. Everyone, the server included, needs this version.
-
-### Also new in 0.99.0
-
-- **[Crafting and building from chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)** in multiplayer: only the chests you need are fetched, it never waits for ever on a chest that cannot be handed over, and ten dishes at once work like one.
-- **Roof materials** have their chests: slate and soapstone in the Stone Chest; birch bark, straw and turf in the Material Chest. All show in the gathering overview.
-- **[Skidbladnir](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#skidbladnir)** is switched off by default until it has been tried more in multiplayer.
-- **Burning flames** are toned down, so a monster you set on fire can still be seen.
-
-### Also new in 0.98.0
-
-- **[Decor Hammer](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)**: a hammer of its own with 261 decorations under eight tabs. Real trees that sway in the wind, a smithy, a market stall, furniture, a chandelier and stocks are new in 0.98.0. Bushes, ferns, flowers and young trees that sway in the wind and bend when you walk through them; stones, stumps and logs; barrels, baskets, bowls and food; tools, fences and firewood; tables, stools and shelves; hanging cloth and banners; candles, lanterns and fires without fuel; runestones, graves and wrecked ships. Each shows up once you know its materials.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -178,7 +176,7 @@ Raise a puppy from the Bog Witch into a companion that follows, fights, learns t
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/white_hilt_sword.png" alt="White Hilt gear" height="120">
 
-Indestructible weapons, shields, armour and tools, upgraded biome by biome.
+Indestructible weapons from the Swamp to the Ashlands, shields, armour and tools, upgraded biome by biome.
 
 #### [Potions](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md)
 
@@ -190,7 +188,7 @@ Eighteen meads named after the Norse gods, from endless stamina to permanent ski
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/repair_anvil.png" alt="Smithing" height="120">
 
-The Repair Anvil, the Chain Bench, rune etching, whetstones and weapon oils.
+The Repair Anvil, the Chain Bench, rune etching, glowing weapons, whetstones and weapon oils.
 
 #### [Restocking chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)
 

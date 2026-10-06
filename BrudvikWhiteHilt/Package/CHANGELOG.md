@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.101.1 - 2026-10-06
+
+### Fixed
+- **Decorations looked see-through and shiny.** Wood and stone decorations took their material from the snow cap of the vanilla piece they copy (Valheim's snow shader) instead of its wood or stone. They now get the piece's own material and layer, so they are solid, weather and take light like the buildings around them. The wall drawers and the ship workshops had the same fault and are fixed too.
+- Glass and water that a model made see-through, such as the water in the Quench Tub, vanished in the game; they are now drawn solid.
+- The decor page shows the Textiles gallery too.
+
 ## v0.101.0 - 2026-10-06
 
 ### Added
