@@ -17,6 +17,9 @@ namespace BrudvikWhiteHilt.Patches.Crafting;
 public static class NearbyContainerPatches
 {
     private const string ChestIconName = "WhiteHiltChestIcon";
+
+    // How long after the items have arrived the replayed click to place a piece may come.
+    private const float ReplayWindow = 1f;
     private static readonly Color fromChestsColor = new(1f, 0.78f, 0.3f);
 
     // Set while vanilla counts the player's items for a requirement check, so the chests are added to the count.
@@ -26,6 +29,10 @@ public static class NearbyContainerPatches
     // Otherwise every chest the player may use counts, so what is shown is what lies there.
     private static bool paying;
     private static Sprite chestIcon;
+
+    // The piece whose placing is clicked again once the items for it arrived; it is placed without fetching again.
+    private static Piece replaying;
+    private static float replayAt;
 
     /// <summary>
     /// Keeps track of the containers in the world.
@@ -42,8 +49,8 @@ public static class NearbyContainerPatches
     }
 
     /// <summary>
-    /// Switches the use of chests off and on with the toggle key, and asks for the chests around the player to be
-    /// handed over when the player gets ready to use them.
+    /// Switches the use of chests off and on with the toggle key, asks for the chests around a station the player looks
+    /// at to be handed over, and goes on with a crafting or placing whose chests did not answer in time.
     /// </summary>
     /// <param name="__instance">The player.</param>
     [HarmonyPatch(typeof(Player), nameof(Player.Update))]
@@ -54,12 +61,14 @@ public static class NearbyContainerPatches
         {
             NearbyContainers.CheckToggleKey(__instance);
             NearbyContainers.Warm(__instance);
+            ChestWithdrawal.Tick();
         }
     }
 
     /// <summary>
-    /// Before a crafting is done: waits for the chests it needs to be handed over, if the ones held are not enough, and
-    /// then counts only the held ones while vanilla checks and takes the requirements.
+    /// Before a crafting is done: fetches what the inventory lacks from the chests nearby. If other players hold some of
+    /// them, the crafting stops here and is done again by itself once the items have arrived. Then vanilla checks and
+    /// takes the requirements, with only the chests handed over counting.
     /// </summary>
     /// <param name="__instance">The inventory screen.</param>
     /// <param name="player">The crafting player.</param>
@@ -79,14 +88,20 @@ public static class NearbyContainerPatches
         int quality = __instance.m_craftUpgradeItem != null ? __instance.m_craftUpgradeItem.m_quality + 1 : 1;
         int multiplier = __instance.m_multiCrafting ? Mathf.Max(1, __instance.m_multiCraftAmount) : 1;
         CraftingStation station = player.GetCurrentCraftingStation();
-        IEnumerable<(string, int)> needs = recipe.m_resources
-            .Where(requirement => requirement.m_resItem != null
-                && (station != null ? station.m_upgrader == requirement.m_upgraderResource : !requirement.m_upgraderResource))
-            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.GetAmount(quality) * multiplier));
-        if (NearbyContainers.WaitForChests(player, NearbyContainers.Use.Crafting, needs))
+        if (!ChestWithdrawal.Continuing)
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
-            return false;
+            if (ChestWithdrawal.Busy)
+            {
+                player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+                return false;
+            }
+
+            List<(string Name, int Amount)> needs = CraftingNeeds(player, recipe, station, quality, multiplier);
+            if (ChestWithdrawal.Fetch(player, NearbyContainers.Use.Crafting, needs, ResumeCrafting(__instance, player, station)))
+            {
+                player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+                return false;
+            }
         }
 
         paying = true;
@@ -117,7 +132,9 @@ public static class NearbyContainerPatches
     }
 
     /// <summary>
-    /// Before a piece is placed: as <see cref="BeginCrafting"/>, for the piece's resources.
+    /// Before a piece is placed: as <see cref="BeginCrafting"/>, for the piece's resources. A placing that waited for
+    /// the chests is clicked again by itself, and then refused if the items still did not suffice, so a piece is never
+    /// placed half paid for.
     /// </summary>
     /// <param name="__instance">The building player.</param>
     /// <param name="piece">The piece.</param>
@@ -133,15 +150,33 @@ public static class NearbyContainerPatches
             return true;
         }
 
-        IEnumerable<(string, int)> needs = piece.m_resources.Where(requirement => requirement.m_resItem != null)
-            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount));
-        if (NearbyContainers.WaitForChests(__instance, NearbyContainers.Use.Building, needs))
+        bool replayed = replaying == piece && Time.time - replayAt <= ReplayWindow;
+        replaying = null;
+        if (!replayed)
         {
-            __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
-            return false;
+            if (ChestWithdrawal.Busy)
+            {
+                __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+                return false;
+            }
+
+            List<(string Name, int Amount)> needs = piece.m_resources.Where(requirement => requirement.m_resItem != null)
+                .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount)).ToList();
+            if (ChestWithdrawal.Fetch(__instance, NearbyContainers.Use.Building, needs, ResumePlacing(__instance, piece)))
+            {
+                __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");
+                return false;
+            }
         }
 
         paying = true;
+        if (NearbyContainers.IsActive(NearbyContainers.Use.Building) && !ZoneSystem.instance.GetGlobalKey(piece.FreeBuildKey())
+            && !__instance.HaveRequirements(piece, Player.RequirementMode.CanBuild))
+        {
+            __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_notenough");
+            return false;
+        }
+
         return true;
     }
 
@@ -409,6 +444,97 @@ public static class NearbyContainerPatches
                 NearbyContainers.Take(use, name, missing, itemQuality);
             }
         }
+    }
+
+    // What a crafting takes: each requirement times the amount crafted, without the upgrade-only ones at a plain
+    // station. A recipe that takes any one of its ingredients fetches nothing when the inventory holds one, and else
+    // only the first one the chests can make up.
+    private static List<(string Name, int Amount)> CraftingNeeds(Player player, Recipe recipe, CraftingStation station, int quality,
+        int multiplier)
+    {
+        List<(string Name, int Amount)> needs = recipe.m_resources
+            .Where(requirement => requirement.m_resItem != null
+                && (station != null ? station.m_upgrader == requirement.m_upgraderResource : !requirement.m_upgraderResource))
+            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.GetAmount(quality) * multiplier))
+            .ToList();
+        if (!recipe.m_requireOnlyOneIngredient)
+        {
+            return needs;
+        }
+
+        Inventory inventory = player.GetInventory();
+        if (needs.Any(need => inventory.CountItems(need.Name) >= need.Amount))
+        {
+            return new List<(string Name, int Amount)>();
+        }
+
+        return needs.Where(need => inventory.CountItems(need.Name)
+                + NearbyContainers.CountForCheck(NearbyContainers.Use.Crafting, need.Name, -1, false) >= need.Amount)
+            .Take(1).ToList();
+    }
+
+    // Crafts once more when the items fetched for it have arrived. Vanilla reads what to craft from fields a new click
+    // overwrites, so they are captured now, set back for the crafting and restored after it. Nothing is crafted if the
+    // player has left the station meanwhile.
+    private static Action ResumeCrafting(InventoryGui gui, Player player, CraftingStation station)
+    {
+        Recipe recipe = gui.m_craftRecipe;
+        ItemDrop.ItemData upgrade = gui.m_craftUpgradeItem;
+        int variant = gui.m_craftVariant;
+        bool multiCrafting = gui.m_multiCrafting;
+        int multiCraftAmount = gui.m_multiCraftAmount;
+        return () =>
+        {
+            if (gui == null || player == null || player != Player.m_localPlayer || player.IsDead()
+                || player.GetCurrentCraftingStation() != station)
+            {
+                Jotunn.Logger.LogInfo($"Did not craft {recipe.name} after fetching from the chests, as the player left the station.");
+                return;
+            }
+
+            Recipe savedRecipe = gui.m_craftRecipe;
+            ItemDrop.ItemData savedUpgrade = gui.m_craftUpgradeItem;
+            int savedVariant = gui.m_craftVariant;
+            bool savedMultiCrafting = gui.m_multiCrafting;
+            int savedMultiCraftAmount = gui.m_multiCraftAmount;
+            gui.m_craftRecipe = recipe;
+            gui.m_craftUpgradeItem = upgrade;
+            gui.m_craftVariant = variant;
+            gui.m_multiCrafting = multiCrafting;
+            gui.m_multiCraftAmount = multiCraftAmount;
+            try
+            {
+                gui.DoCrafting(player);
+            }
+            finally
+            {
+                gui.m_craftRecipe = savedRecipe;
+                gui.m_craftUpgradeItem = savedUpgrade;
+                gui.m_craftVariant = savedVariant;
+                gui.m_multiCrafting = savedMultiCrafting;
+                gui.m_multiCraftAmount = savedMultiCraftAmount;
+            }
+        };
+    }
+
+    // Clicks to place the piece again when the items fetched for it have arrived: vanilla places a piece within a moment
+    // of the click time, and pays for it and trains the skill around the placing, so setting the time does it all the
+    // vanilla way, wherever the piece is aimed now. Nothing happens if the player put the hammer away or chose another
+    // piece meanwhile.
+    private static Action ResumePlacing(Player player, Piece piece)
+    {
+        return () =>
+        {
+            if (player == null || player != Player.m_localPlayer || !player.InPlaceMode() || player.GetSelectedPiece() != piece)
+            {
+                Jotunn.Logger.LogInfo($"Did not place {piece.name} after fetching from the chests, as the player stopped building it.");
+                return;
+            }
+
+            replaying = piece;
+            replayAt = Time.time;
+            player.m_placePressedTime = Time.time;
+        };
     }
 
     // Crafting happens with the inventory open; building with it closed.

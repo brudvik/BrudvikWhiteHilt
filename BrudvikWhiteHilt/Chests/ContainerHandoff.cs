@@ -116,6 +116,8 @@ internal sealed class ContainerHandoff : MonoBehaviour
         view = nview;
         view.Register<long, long>(RequestRpc, Request);
         view.Register<long, ZPackage>(ResponseRpc, Response);
+        view.Register<ZPackage>(global::BrudvikWhiteHilt.Crafting.ChestWithdrawal.RequestRpc,
+            (sender, package) => global::BrudvikWhiteHilt.Crafting.ChestWithdrawal.Serve(view, sender, package));
     }
 
     // Looked up once: the build menu asks whether a chest is held for every piece it shows.

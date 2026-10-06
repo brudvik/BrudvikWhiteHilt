@@ -167,12 +167,19 @@ first. `ContainerHandoff` asks the owner to save the chest, send its newest data
 change waits until that has arrived. Ships do the same at the helm (`ShipAssist.UpdateHelmOwnership`): the
 helmsman owns the physics, so steering does not lag.
 
+**Or the owner does the change.** Handing a chest over goes wrong when two players want the same chests at the same
+moment: each hands its chests to the other. Crafting and building from chests therefore ask the owner to take the
+items out and send them (`ChestWithdrawal`): the request goes to the chest's network object, which routes it to the
+owner; the owner checks access, takes the items, saves the chest and replies to the asker with the items in a
+`ZPackage`. The click waits for the replies and is then done again by itself.
+
 **World time, not frame time.** Things that go on while nobody is near use the world clock
 (`ZNet.instance.GetTime()`) and store the last tick in the ZDO. Examples are compost, fishing nets, a dog's hunger
 and the Kraken's lifts. When the area loads again, the owner catches up on the time that passed, with a cap.
 
-> Read next: `Chests/ContainerHandoff.cs`, `Navigation/Discoveries/DiscoveryService.cs`, `Pieces/Ships/ShipAssist.cs`,
-> `Pieces/Fishing/NetWinchComponent.cs`, `Pieces/Ships/WhiteHiltShip/ShipPassengerSync.cs`.
+> Read next: `Chests/ContainerHandoff.cs`, `Crafting/ChestWithdrawal.cs`, `Navigation/Discoveries/DiscoveryService.cs`,
+> `Pieces/Ships/ShipAssist.cs`, `Pieces/Fishing/NetWinchComponent.cs`,
+> `Pieces/Ships/WhiteHiltShip/ShipPassengerSync.cs`.
 
 ## 🪝 Harmony patches
 
