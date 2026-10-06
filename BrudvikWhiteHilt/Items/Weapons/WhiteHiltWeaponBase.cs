@@ -30,6 +30,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     private HitData.DamageTypes baseDamages;
     private HitData.DamageTypes baseDamagesPerLevel;
     private GearKind? upgradeKind;
+    private GameObject thrownProjectile;
 
     /// <summary>
     /// Prefab name of the weapon. It is also the key of its name and description in the translation files
@@ -103,6 +104,27 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     /// </summary>
     protected virtual string ModelName => null;
 
+    /// <summary>
+    /// What sets the weapon apart when it hits (bleeding, hooking shields), or null for nothing beyond its damage.
+    /// </summary>
+    protected virtual WeaponTrait Trait => null;
+
+    /// <summary>
+    /// Whether a thrown weapon flies as its own model (<see cref="ModelName"/>) instead of the vanilla projectile's look.
+    /// </summary>
+    protected virtual bool ThrownAsModel => false;
+
+    /// <summary>
+    /// How many turns per second a weapon thrown as its own model spins end over end; 0 flies straight like a spear.
+    /// </summary>
+    protected virtual float ThrownSpin => 0f;
+
+    /// <summary>
+    /// The colour the model always glows in where its emission map (<c>&lt;name&gt;_emission</c>) is lit, or null for
+    /// none. A Glow Rune etched into the weapon shines over it, and it comes back when that glow is put out.
+    /// </summary>
+    protected virtual Color? ModelGlow => null;
+
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Swamp;
 
@@ -155,6 +177,12 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
                 CopyStats(item.ItemData, StatsFrom);
             }
 
+            AdjustStats(item.ItemData);
+            if (ThrownAsModel)
+            {
+                thrownProjectile = ThrownWeapon.CreateProjectile(BaseName, item.ItemData.m_secondaryAttack);
+            }
+
             baseDamageMultiplier = item.ItemData.m_attack.m_damageMultiplier;
             baseDamages = item.ItemData.m_damages.Clone();
             baseDamagesPerLevel = item.ItemData.m_damagesPerLevel.Clone();
@@ -166,6 +194,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             }
 
             Binding.GearBinding.Register(NameToken, item.ItemData.m_itemType == ItemDrop.ItemData.ItemType.Shield);
+            WeaponTraits.Register(item.ItemData.m_name, Trait);
 
             ApplyConfig();
 
@@ -226,6 +255,15 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     /// </summary>
     /// <param name="model">The object that shows the model, under the item's attach child.</param>
     protected virtual void OnModelApplied(GameObject model)
+    {
+    }
+
+    /// <summary>
+    /// Called after the clone and <see cref="StatsFrom"/>, before the config's bonuses are added, to give the weapon its
+    /// own damage and attacks. The config's bonuses then build on what this leaves.
+    /// </summary>
+    /// <param name="shared">The weapon's shared data.</param>
+    protected virtual void AdjustStats(ItemDrop.ItemData.SharedData shared)
     {
     }
 
@@ -309,7 +347,16 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         try
         {
             GameObject model = VisualHelper.ReplaceWeaponMesh(item.ItemPrefab, ForagingAssets.LoadMesh(ModelName), ForagingAssets.LoadTexture($"{ModelName}_albedo"));
+            if (ModelGlow.HasValue)
+            {
+                ApplyModelGlow(model, ModelGlow.Value);
+            }
+
             OnModelApplied(model);
+            if (thrownProjectile != null)
+            {
+                ThrownWeapon.ApplyLook(thrownProjectile, model, ThrownSpin);
+            }
 
             Sprite icon = VisualHelper.RenderIcon(item.ItemPrefab);
             if (icon != null)
@@ -322,5 +369,30 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         {
             Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
         }
+    }
+
+    // Lights the model with its emission map (<ModelName>_emission). Without the map it keeps its model, only unlit.
+    private void ApplyModelGlow(GameObject model, Color glow)
+    {
+        Material material = model.GetComponent<MeshRenderer>().sharedMaterial;
+        if (!material.HasProperty("_EmissionMap"))
+        {
+            return;
+        }
+
+        Texture2D emission;
+        try
+        {
+            emission = ForagingAssets.LoadTexture($"{ModelName}_emission");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Jotunn.Logger.LogWarning($"{FullName}: no glow: {ex.Message}");
+            return;
+        }
+
+        material.EnableKeyword("_EMISSION");
+        material.SetTexture("_EmissionMap", emission);
+        material.SetColor("_EmissionColor", glow);
     }
 }

@@ -75,10 +75,21 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Mire Rune | Iron ×4, Copper ×3, Tar ×2 |
 | Blood Rune | Iron ×4, Bloodbag ×5 |
 | Thunder Rune | Iron ×4, Silver ×2, Crystal ×3 |
+| Glow Rune | Iron ×4, Surtling Core ×1, Resin ×5 |
 
 The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6), and `WardShare` (0.5).
 
 ---
+
+### Glow
+
+A **Glow Rune** makes any White Hilt weapon or shield glow in a colour you choose, bound or not, beside any infusion:
+
+1. Smith a blank Glow Rune at the Rune Forge.
+2. At the **Paint Bench**, open the colour wheel (Shift + Use), pick the colour and press **Colour Glow Rune**. It takes the dyes the wheel suggests, as for a paint pot but without the binder.
+3. Hold the weapon or shield and use the coloured rune on the **Rune Etching Table**. The rune is used up; a new one replaces the colour, and a black rune puts the glow out.
+
+The blade or head glows in the colour and sheds a soft light; a weapon whose model has no glowing part only sheds the light. Everyone sees it, in your hands and on the ground.
 
 ## 🪨 WHETSTONE AND WEAPON OILS
 

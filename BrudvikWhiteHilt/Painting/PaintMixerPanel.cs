@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Items.Painting;
+using BrudvikWhiteHilt.Items.Runes.GlowRune;
 using Jotunn.Managers;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ public class PaintMixerPanel : MonoBehaviour
     private InputField blueField;
     private Text suggestionText;
     private Button mixButton;
+    private Button glowButton;
 
     /// <summary>True while the window is open.</summary>
     public static bool IsOpen => instance != null && instance.gameObject.activeSelf;
@@ -149,10 +151,13 @@ public class PaintMixerPanel : MonoBehaviour
         suggestionText.alignment = TextAnchor.UpperLeft;
         suggestionText.supportRichText = true;
 
-        Text mixLabel = CreateButton(panel, bottom, new Vector2(-100f, 40f), 180f, OnMix);
+        Text mixLabel = CreateButton(panel, bottom, new Vector2(-190f, 40f), 170f, OnMix);
         mixLabel.text = Localization.instance.Localize("$whitehilt_paint_mix");
         mixButton = mixLabel.GetComponentInParent<Button>();
-        CreateButton(panel, bottom, new Vector2(100f, 40f), 180f, Close).text = Localization.instance.Localize("$whitehilt_paint_close");
+        Text glowLabel = CreateButton(panel, bottom, new Vector2(0f, 40f), 170f, OnGlow);
+        glowLabel.text = Localization.instance.Localize("$whitehilt_paint_glow");
+        glowButton = glowLabel.GetComponentInParent<Button>();
+        CreateButton(panel, bottom, new Vector2(190f, 40f), 170f, Close).text = Localization.instance.Localize("$whitehilt_paint_close");
 
         DrawWheel();
         ShowFavourites();
@@ -282,6 +287,38 @@ public class PaintMixerPanel : MonoBehaviour
         Changed(redrawWheel: false);
     }
 
+    // Colours a Glow Rune from the suggested dyes; a rune needs no binder.
+    private void OnGlow()
+    {
+        Player player = Player.m_localPlayer;
+        if (player == null)
+        {
+            return;
+        }
+
+        ItemDrop.ItemData rune = GlowRune.FindToColour(player);
+        if (rune == null)
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_norune");
+            return;
+        }
+
+        if (suggestion == null || !suggestion.Available)
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_paint_lacking");
+            return;
+        }
+
+        foreach ((DyeCatalog.Dye dye, int amount) in suggestion.Parts)
+        {
+            DyeCatalog.Take(player, dye.Name, amount);
+        }
+
+        GlowRune.SetColor(rune, Current);
+        player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_coloured");
+        Changed(redrawWheel: false);
+    }
+
     private void SetColor(Color32 color)
     {
         Color.RGBToHSV(color, out hue, out saturation, out brightness);
@@ -324,6 +361,7 @@ public class PaintMixerPanel : MonoBehaviour
         {
             suggestionText.text = Localization.instance.Localize("$whitehilt_paint_no_dyes");
             mixButton.interactable = false;
+            glowButton.interactable = false;
             return;
         }
 
@@ -348,6 +386,7 @@ public class PaintMixerPanel : MonoBehaviour
 
         suggestionText.text = text.ToString();
         mixButton.interactable = suggestion.Available;
+        glowButton.interactable = suggestion.Available && GlowRune.FindToColour(player) != null;
     }
 
     private static string Line(string name, int amount, int have)

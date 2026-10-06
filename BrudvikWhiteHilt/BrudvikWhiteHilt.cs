@@ -126,6 +126,11 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
+        Items.Weapons.BleedEffect.Register();
+        Items.Weapons.ArmorBreakEffect.Register();
+        Patches.Gear.WeaponTraitPatches.RegisterTranslations();
+        Items.Weapons.WeaponGlow.RegisterTranslations();
+        Items.Runes.GlowRune.GlowRune.RegisterTranslations();
         Kraken.KrakenSettings.Initialize();
         Items.Summoning.SummoningHornService.Initialize();
         Kraken.KrakenCommands.Register();

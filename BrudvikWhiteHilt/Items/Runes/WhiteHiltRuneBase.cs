@@ -92,6 +92,11 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// <inheritdoc/>
     public virtual ProgressionTier DefaultTier => ProgressionTier.Swamp;
 
+    /// <summary>
+    /// How many of the rune stack in one slot; by default the config's <c>MaxStackSize</c>.
+    /// </summary>
+    protected virtual int MaxStackSize => maxStackSize.Value;
+
     /// <inheritdoc/>
     public string Id => BaseName;
 
@@ -221,7 +226,7 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         }
 
         shared.m_weight = weight.Value;
-        shared.m_maxStackSize = maxStackSize.Value;
+        shared.m_maxStackSize = MaxStackSize;
     }
 
     private static void BindConfig()

@@ -114,7 +114,7 @@ Ocean materials (Octopus, Kraken Ink and Tentacle) count as Swamp, since the Kra
 - Things gated by their own ingredients (Stone Pot dishes in `Items/Food/`, meads in `Items/Meads/`, roofs in `Pieces/Roofs/`) stay at `ProgressionTier.Start`, or are not tied to tiers at all, and must not get extra tier materials such as Bronze or Silver.
 - The White Hilt forageables of a biome (`Items/Foraging/`) count as that biome's materials.
 
-**Exception – White Hilt gear**: the crafting recipes of White Hilt armor (uniforms included), weapons, shields and tools still use materials up to and including the **Swamp**, since the gear grows with the player instead. It upgrades past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor]`, `[Gear.Weapons]` and `[Gear.Shields] Upgrade*`, see `Items/GearUpgrades.cs`; shields also take a Lindorm Scale per level, staffs stay at quality 4). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape. The White Hilt Crystal Axe needs Crystal (Mountain) and has `ProgressionTier.Mountain`, since its glow and spirit damage come from the Crystal Battleaxe.
+**Exception – White Hilt gear**: the crafting recipes of White Hilt armor (uniforms included), weapons, shields and tools still use materials up to and including the **Swamp**, since the gear grows with the player instead. It upgrades past quality 4 with one level per later biome, paid with that biome's material (`[Gear.Armor]`, `[Gear.Weapons]` and `[Gear.Shields] Upgrade*`, see `Items/GearUpgrades.cs`; shields also take a Lindorm Scale per level, staffs stay at quality 4). The White Hilt Cape needs a Deathsquito trophy (Plains) and has `ProgressionTier.Plains`, since its feather fall comes from the Mistlands feather cape. White Hilt weapons may also belong to a later biome (agreed 2026-10-06): such a weapon uses that biome's materials, has that biome's `ProgressionTier` and the strength of its vanilla weapons, e.g. the White Hilt Crystal Axe (Crystal, Mountain). The Swamp ones stay the core set every player can make early.
 
 ### CopyFrom Item References
 
@@ -210,7 +210,7 @@ When adding new items, update the appropriate table in the feature's page in `do
 Before committing changes:
 
 1. ✅ All new public types and members have XML documentation, and longer private methods a what-and-why comment
-2. ✅ Crafting requirements follow the biome rule (White Hilt gear recipes: Swamp or earlier)
+2. ✅ Crafting requirements follow the biome rule (White Hilt gear recipes: Swamp or earlier, or a later-biome weapon's own biome)
 3. ✅ `Enabled` property is set appropriately
 4. ✅ Every new English text has a Norwegian one
 5. ✅ Changelog updated in `CHANGELOG.md`

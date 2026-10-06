@@ -23,7 +23,9 @@ under a weapon's attach transform with an identity transform (the hand is the or
      optional parts written as their own OBJ (same texture) and left out of the main mesh; "pull" (glb units)
      bends the part into a V along the span axis, e.g. a crossbow string drawn back to its latch.
 A <name>.paint.json recolours parts of the texture: {"paint": [{"material": "Wood"} or {"min": [...], "max": [...]}
-(in the final mesh space), "colour": [r, g, b], "strength": 0.9}]}.
+(in the final mesh space), "colour": [r, g, b], "strength": 0.9}]}. It may also hold "glow": [{"min": [...],
+"max": [...]} or {"material": ...}]: a model without an emission map of its own then gets <name>_emission, lit only on
+those triangles (e.g. a blade or carved runes), so a glow colour set in the game lights just that part.
 
 A <name>.fragments.json ({"count": 8}) also writes the model cut into about that many chunks of whole triangles as
 <name>_frag0.obj, <name>_frag1.obj, ... in the same space and with the same texture. A piece breaks into them when it is
@@ -237,33 +239,40 @@ def weapon_space(positions, normals, spec, scale=None):
     return positions, normals, scale
 
 
+def triangle_mask(size, positions, indices, corners, corner_materials, rule, wrap):
+    """A mask (PIL "L" image) of the texture under the triangles a paint or glow rule selects, and how many it selects."""
+    from PIL import Image, ImageDraw, ImageFilter
+
+    width, height = size
+    mask = Image.new("L", size, 0)
+    draw = ImageDraw.Draw(mask)
+    selected = 0
+    for i in range(0, len(indices), 3):
+        if "material" in rule:
+            if corner_materials[i] != rule["material"]:
+                continue
+        else:
+            centre = [sum(positions[v][axis] for v in indices[i:i + 3]) / 3 for axis in range(3)]
+            if not all(rule["min"][axis] <= centre[axis] <= rule["max"][axis] for axis in range(3)):
+                continue
+        triangle = corners[i:i + 3]
+        if wrap:
+            shift_u, shift_v = math.floor(min(u for u, _ in triangle)), math.floor(min(v for _, v in triangle))
+            triangle = [(u - shift_u, v - shift_v) for u, v in triangle]
+        draw.polygon([(u * width, v * height) for u, v in triangle], fill=255)
+        selected += 1
+    if selected == 0:
+        raise ValueError(f"rule {rule} selects no triangles")
+    return mask.filter(ImageFilter.MaxFilter(3)), selected
+
+
 def paint(image, positions, indices, corners, corner_materials, rules, wrap):
     """Recolours the texture under the triangles each rule selects, keeping the shading of the original."""
-    from PIL import Image, ImageDraw, ImageFilter, ImageStat
+    from PIL import Image, ImageStat
 
     image = image.convert("RGB")
-    width, height = image.size
     for rule in rules:
-        mask = Image.new("L", image.size, 0)
-        draw = ImageDraw.Draw(mask)
-        selected = 0
-        for i in range(0, len(indices), 3):
-            if "material" in rule:
-                if corner_materials[i] != rule["material"]:
-                    continue
-            else:
-                centre = [sum(positions[v][axis] for v in indices[i:i + 3]) / 3 for axis in range(3)]
-                if not all(rule["min"][axis] <= centre[axis] <= rule["max"][axis] for axis in range(3)):
-                    continue
-            triangle = corners[i:i + 3]
-            if wrap:
-                shift_u, shift_v = math.floor(min(u for u, _ in triangle)), math.floor(min(v for _, v in triangle))
-                triangle = [(u - shift_u, v - shift_v) for u, v in triangle]
-            draw.polygon([(u * width, v * height) for u, v in triangle], fill=255)
-            selected += 1
-        if selected == 0:
-            raise ValueError(f"paint rule {rule} selects no triangles")
-        mask = mask.filter(ImageFilter.MaxFilter(3))
+        mask, selected = triangle_mask(image.size, positions, indices, corners, corner_materials, rule, wrap)
         grey = image.convert("L")
         mean = max(1.0, ImageStat.Stat(grey, mask).mean[0])
         tinted = Image.merge("RGB", [
@@ -273,6 +282,23 @@ def paint(image, positions, indices, corners, corner_materials, rules, wrap):
         print(f"  painted {selected} triangles {rule.get('material', '')}")
     buffer = io.BytesIO()
     image.save(buffer, "PNG")
+    return buffer.getvalue()
+
+
+def glow_map(albedo, positions, indices, corners, corner_materials, rules, wrap):
+    """An emission map lit only under the triangles the glow rules select, with the albedo's shading so detail shows;
+    the game multiplies it by the glow colour."""
+    from PIL import Image, ImageChops
+
+    grey = albedo.convert("L").point(lambda level: 128 + level // 2)
+    lit = Image.new("L", albedo.size, 0)
+    for rule in rules:
+        mask, selected = triangle_mask(albedo.size, positions, indices, corners, corner_materials, rule, wrap)
+        lit = ImageChops.lighter(lit, mask)
+        print(f"  glow on {selected} triangles {rule.get('material', '')}")
+    glow = Image.composite(grey, Image.new("L", albedo.size, 0), lit).convert("RGB")
+    buffer = io.BytesIO()
+    glow.save(buffer, "PNG")
     return buffer.getvalue()
 
 
@@ -525,12 +551,15 @@ def main(input_path, output_dir, name):
     else:
         image, data = image_bytes(gltf, binary, sources[0][1])
         extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"
+    glow_rules = []
     if paint_file.exists():
         from PIL import Image
 
-        rules = json.loads(paint_file.read_text())["paint"]
-        data = paint(Image.open(io.BytesIO(data)), positions, indices, corners, corner_materials, rules, not use_atlas)
-        extension = ".png"
+        paint_spec = json.loads(paint_file.read_text())
+        glow_rules = paint_spec.get("glow", [])
+        if paint_spec.get("paint"):
+            data = paint(Image.open(io.BytesIO(data)), positions, indices, corners, corner_materials, paint_spec["paint"], not use_atlas)
+            extension = ".png"
     (output_dir / f"{name}_albedo{extension}").write_bytes(data)
 
     emissive = {emissive_source(gltf, primitive) for _, primitive in parts}
@@ -539,6 +568,12 @@ def main(input_path, output_dir, name):
         image, data = image_bytes(gltf, binary, emissive.pop())
         extension = ".jpg" if image.get("mimeType") == "image/jpeg" else ".png"
         (output_dir / f"{name}_emission{extension}").write_bytes(data)
+    elif glow_rules:
+        from PIL import Image
+
+        albedo = Image.open(io.BytesIO((output_dir / f"{name}_albedo{extension}").read_bytes()))
+        (output_dir / f"{name}_emission.png").write_bytes(glow_map(albedo, positions, indices, corners, corner_materials, glow_rules, not use_atlas))
+        has_emission = True
 
     print(f"{name}: {len(parts)} parts, {len(sources)} textures{' (atlas)' if use_atlas else ''}{' + emission' if has_emission else ''}, "
           f"{vertex_count} vertices, {len(indices) // 3 * 2} triangles (double-sided), original height {height:.4f}")
