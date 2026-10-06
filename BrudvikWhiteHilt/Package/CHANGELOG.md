@@ -2,6 +2,22 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.99.0 - 2026-10-06
+
+### Added
+- **Skidbladnir can be switched on and off** (`[Ships.Skidbladnir] Enabled`), and is **off by default** until it has been tried more in multiplayer. Off, Skidbladnir, the White Hilt Ship Hammer and the ship workshops cannot be built or crafted, and nothing new can be built aboard; what is already made is kept.
+
+### Changed
+- The flames on anything burning are toned down to half, so a monster set on fire by White Hilt arrows can still be seen (`[Gear.Ammunition] BurningFlames`, each player's own; 1 as in the game, 0 none).
+- Getting ready to build or craft asks only for the chests that hold what the selected piece, recipe or station needs, no more than make up what is missing, and leaves a chest just handed to another player with them for 20 seconds (`[ChestCrafting] HandoffKeepSeconds`). The Collection Post leaves such chests be too.
+- A stack a chest keeps full without limit counts as enough for any amount, and is taken from again as it refills, so ten dishes at once work like one.
+- Crafting that lacks materials now says *Not enough in your inventory and the chests nearby* instead of nothing.
+
+### Fixed
+- Building and crafting from chests no longer waits for ever on a chest that cannot be handed over: chests someone has open, ship and cart holds, and chests left marked as open by a player who logged out (now freed). After 4 seconds of waiting (`[ChestCrafting] HandoffTimeout`) it goes on with the chests at hand, and the log says which chests it waited for.
+- Slate, soapstone, birch bark, straw and turf belong in a chest again (Stone and Material Chests) and show in the gathering overview where they drop: slate and soapstone in the Mountains, birch bark where birches grow, straw in the Plains and turf in the `TurfBiomes`. Before, the chests took them for unobtainable. Forageables that also drop from vanilla plants are listed in those plants' biomes too.
+- The broken slate outcrop is registered with the game, so every player sees it and it stays after a reload.
+
 ## v0.98.0 - 2026-10-06
 
 ### Added

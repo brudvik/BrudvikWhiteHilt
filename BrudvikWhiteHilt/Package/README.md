@@ -31,15 +31,16 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.98.0
+## ✨ New in 0.99.0
+
+- **[Crafting and building from chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)** in multiplayer: only the chests you need are fetched, it never waits for ever on a chest that cannot be handed over, and ten dishes at once work like one.
+- **Roof materials** have their chests: slate and soapstone in the Stone Chest; birch bark, straw and turf in the Material Chest. All show in the gathering overview.
+- **[Skidbladnir](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#skidbladnir)** is switched off by default until it has been tried more in multiplayer.
+- **Burning flames** are toned down, so a monster you set on fire can still be seen.
+
+### Also new in 0.98.0
 
 - **[Decor Hammer](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)**: a hammer of its own with 261 decorations under eight tabs. Real trees that sway in the wind, a smithy, a market stall, furniture, a chandelier and stocks are new in 0.98.0. Bushes, ferns, flowers and young trees that sway in the wind and bend when you walk through them; stones, stumps and logs; barrels, baskets, bowls and food; tools, fences and firewood; tables, stools and shelves; hanging cloth and banners; candles, lanterns and fires without fuel; runestones, graves and wrecked ships. Each shows up once you know its materials.
-
-### Also new in 0.95.0
-
-- **[Necromancer's Staff](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md#waking-the-fallen)**: a skull burning green on the White Hilt scepter. It raises skeletons, and at a fallen friend's grave it wakes them there with their gear and lost skills, at a heavy price in your own life.
-- **[Find an item's chest](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md)**: point at an item in your inventory and the chests it belongs in light up nearby; its tooltip names the chest.
-- **Wall drawers and ship workshops** in Valheim's own wood and iron, and Skidbladnir's lower room stays dry in waves.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
