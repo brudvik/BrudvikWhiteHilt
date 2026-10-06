@@ -2,6 +2,23 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.101.0 - 2026-10-06
+
+### Added
+- **White Hilt Crystal Axe**: the White Hilt Battleaxe made one-handed, so a shield goes with it. It swings like the Iron Axe, has a lilac head with the Crystal Battleaxe's glow, and deals +20 spirit damage like it (`[Gear.Weapons] CrystalAxeSpiritDamage`). Forge level 2: Iron ×20, Crystal ×10, Iron Axe ×1; it unlocks with the Mountains.
+- **Four new White Hilt weapons for the Swamp**, each with its own model and white grip:
+  - **Bearded Axe**: a one-handed axe whose beard hooks shields, staggering a target with a shield 1.5 times as much.
+  - **Seax**: a knife that cuts deeper than the White Hilt Knife and makes its target **bleed** (4 damage per second for 6 seconds, +1 per quality level; `[Gear.Weapons] Bleed*`).
+  - **Javelin**: a light spear made for throwing: faster, harder and cheaper throws, a weaker stab.
+  - **Throwing Axe**: hews like the Iron Axe and is thrown like a spear, spinning end over end.
+  - The javelin and the throwing axe fly as themselves instead of as a vanilla spear.
+- **Six White Hilt weapons for later biomes**, with that biome's materials, strength and unlock:
+  - Mountains: **Dane Axe** (two-handed, a quarter more reach), **Flail** (30% of blows cannot be blocked), **War Hammer** (blunt and pierce, mines ore like an iron pickaxe) and **Ice Sword** (frost that slows, a blade that glows icy blue).
+  - Plains: **Morning Star** (breaks armour: the target takes 15% more damage for 8 seconds) and **Halberd** (25% more damage against large creatures).
+  - Mistlands: **Claymore** (two-handed sword), **Scythe** (slash and spirit, heals you for 5% of the damage), **Crystal Staff** (a third stronger than the Staff of Ice, glowing cyan) and **Wand** (one-handed fire staff for half the eitr, with a shield).
+  - Ashlands: **Rune Sword** (runes that glow) and **Trident** (lightning, 30% more damage against foes in the water and sea creatures; Splitnir's look for now).
+- **Glow**: a **Glow Rune** from the Rune Forge, coloured at the Paint Bench (**Colour Glow Rune** in the colour wheel) and etched at the Rune Etching Table, makes any White Hilt weapon or shield glow in that colour, bound or not. The blade or head glows and sheds a soft light, and everyone sees it. A black rune puts the glow out.
+
 ## v0.100.0 - 2026-10-06
 
 ### Fixed
