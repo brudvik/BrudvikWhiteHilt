@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.99.1 - 2026-10-06
+
+### Fixed
+- **Crafting and building from chests no longer keeps you waiting in multiplayer.** When two players crafted or built at the same moment, each handed the chests to the other, and both were told to try again for ever. The chests now stay where they are: the player who holds a chest takes out what you need and sends it to you. Meanwhile you see *Fetching from the chests...*, and the crafting or placing then goes on by itself, with no second click. If a chest does not answer within 4 seconds (`[ChestCrafting] HandoffTimeout`), it goes on with what has arrived, and a piece is never placed half paid for.
+
 ## v0.99.0 - 2026-10-06
 
 ### Added
