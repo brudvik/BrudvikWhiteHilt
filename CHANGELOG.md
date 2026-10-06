@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.95.2 - 2026-10-06
 
 ### Fixed
 - **Climbing down a ladder no longer hurts**: going down from Skidbladnir's mast and lookout, or a tower's upper floors, counted as a fall from the height you left.
