@@ -15,6 +15,8 @@ Both White Hilt ships are indestructible, immune to all damage types and Ashland
 
 ### Skidbladnir
 
+**Off by default** until it has been tried more in multiplayer: `[Ships.Skidbladnir] Enabled` switches Skidbladnir, the [White Hilt Ship Hammer and the ship workshops](#ship-workshops) on. While it is off none of them can be built or crafted and nothing new can be built aboard; ships, hammers, workshops and furnishings already made are kept.
+
 Named for Freyr's ship, Skidbladnir is a separate Hammer piece (`WhiteHiltSkidbladnir`), not a replacement for the White Hilt Ship. The central lower room is about 11 × 5.9 m with 2.6–2.9 m headroom. It ships empty: build workbenches, furniture and storage yourself with the ordinary Hammer. Normal materials, station, access and placement rules still apply. Terrain tools, plants and other vehicles cannot be attached.
 
 Pieces you place on the ship line up with its deck and heading, even when it rocks or lies at an angle; rotation steps, the grid and nudging follow the ship. Build while the ship lies still. If the Drift Anchor upgrade is installed, lower it first. Furnishings retain their own inventories, damage and removal behavior, but use the ship as a foundation and move with it. A piece is fixed to the ship when you aim at the ship (or at furnishings on it) and it stands within the hull or on it, also on walls and up high; a piece beside the hull, on a jetty, is not, so the ship never catches on it. Their ship-local placement is saved for reloading; disabling new building does not detach existing furnishings. Remove the furnishings before dismantling the ship. Like the other ships, it strikes its sails and comes to rest when everyone has left it. Group moving/copying, beds and interactions supplied by other mods require separate in-game checks.
@@ -123,6 +125,7 @@ Section `[Ships.Skidbladnir]` (admin only, synced from the server, except `Lower
 
 | Setting | Default | What it does |
 |---|---|---|
+| `Enabled` | false | Skidbladnir, the Ship Hammer and the ship workshops can be built and crafted, and furnishings built aboard. Off: none of them; what is already made is kept |
 | `WaterlineOffset` | 1.2 | Model height above the buoyancy plane in metres; restart required. Changing it requires repositioning existing furnishings |
 | `SpeedShare` | 0.5 | Share of the existing ship's ideal full-sail reference speed; range 0.1 to 0.5 |
 | `Building` | true | Allow new ordinary Hammer pieces aboard; saved furnishings remain attached when off |

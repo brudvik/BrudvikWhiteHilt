@@ -163,23 +163,32 @@ public abstract class ShipWorkshopBase : IWhiteHiltCustomPiece
 /// <summary>Compact shipboard workbench.</summary>
 public sealed class ShipWorkbench : ShipWorkshopBase
 {
+    /// <summary>Prefab name of the ship workbench.</summary>
+    public const string PrefabName = "piece_whitehilt_shipworkbench";
+
     /// <summary>Creates the workbench descriptor.</summary>
     /// <param name="instance">Piece manager.</param>
-    public ShipWorkbench(PieceManager instance) : base(instance, "piece_whitehilt_shipworkbench", "Ship Workbench", "piece_workbench", "shipworkbench") { }
+    public ShipWorkbench(PieceManager instance) : base(instance, PrefabName, "Ship Workbench", "piece_workbench", "shipworkbench") { }
 }
 
 /// <summary>Compact shipboard forge.</summary>
 public sealed class ShipForge : ShipWorkshopBase
 {
+    /// <summary>Prefab name of the ship forge.</summary>
+    public const string PrefabName = "piece_whitehilt_shipforge";
+
     /// <summary>Creates the forge descriptor.</summary>
     /// <param name="instance">Piece manager.</param>
-    public ShipForge(PieceManager instance) : base(instance, "piece_whitehilt_shipforge", "Ship Forge", "forge", "shipforge") { }
+    public ShipForge(PieceManager instance) : base(instance, PrefabName, "Ship Forge", "forge", "shipforge") { }
 }
 
 /// <summary>Compact shipboard stonecutter.</summary>
 public sealed class ShipStonecutter : ShipWorkshopBase
 {
+    /// <summary>Prefab name of the ship stonecutter.</summary>
+    public const string PrefabName = "piece_whitehilt_shipstonecutter";
+
     /// <summary>Creates the stonecutter descriptor.</summary>
     /// <param name="instance">Piece manager.</param>
-    public ShipStonecutter(PieceManager instance) : base(instance, "piece_whitehilt_shipstonecutter", "Ship Stonecutter", "piece_stonecutter", "shipstonecutter") { }
+    public ShipStonecutter(PieceManager instance) : base(instance, PrefabName, "Ship Stonecutter", "piece_stonecutter", "shipstonecutter") { }
 }

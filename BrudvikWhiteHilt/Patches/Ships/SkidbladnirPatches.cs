@@ -91,7 +91,7 @@ public static class SkidbladnirPatches
     {
         // Stations are m_noInWater, which makes vanilla pass water=true; water pieces are excluded by Allowed.
         aimed = null;
-        if (!SkidbladnirSettings.Building.Value || GameCamera.instance == null || __instance.m_placementGhost == null) return;
+        if (!SkidbladnirSettings.BuildingAllowed || GameCamera.instance == null || __instance.m_placementGhost == null) return;
         Piece selected = __instance.m_placementGhost.GetComponent<Piece>();
         if (!Allowed(selected)) return;
         if (!Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out RaycastHit hit,
@@ -123,7 +123,7 @@ public static class SkidbladnirPatches
     public static void BeginPlacement(Piece piece, Vector3 pos, out SkidbladnirShip __state)
     {
         __state = placing;
-        placing = SkidbladnirSettings.Building.Value && Allowed(piece) ? ShipFurniture.Supporting(aimed, pos) : null;
+        placing = SkidbladnirSettings.BuildingAllowed && Allowed(piece) ? ShipFurniture.Supporting(aimed, pos) : null;
     }
 
     /// <summary>Clears the transaction even if another placement hook throws.</summary>

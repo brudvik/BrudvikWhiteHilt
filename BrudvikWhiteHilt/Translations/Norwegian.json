@@ -1195,6 +1195,8 @@
   "whitehilt_wall_drawer": "Veggskuff",
   "whitehilt_wall_drawer_description": "En grunn skuff for spillerbygde tre- og steinvegger, på land eller om bord. Samme lager, ikon og etterfylling som kista.",
   "whitehilt_cfgsec_ships_skidbladnir": "Skidbladnir",
+  "whitehilt_cfg_ships_skidbladnir_enabled": "Skidbladnir på",
+  "whitehilt_cfg_ships_skidbladnir_enabled_desc": "Skidbladnir, Hvithjalt-skipshammeren og skipsverkstedene kan bygges og lages, og innredning kan bygges om bord. Av: ingen av dem kan bygges eller lages; skip, hammere og verksteder som alt finnes, beholdes.",
   "whitehilt_cfg_ships_skidbladnir_waterlineoffset": "Høyde over vannplanet",
   "whitehilt_cfg_ships_skidbladnir_waterlineoffset_desc": "Skipsmodellens høyde over flyteplanet, i meter. Krever omstart. Eksisterende innredning må flyttes dersom høyden endres.",
   "whitehilt_cfg_ships_skidbladnir_speedshare": "Andel av Hvithjalt-skipets fart",

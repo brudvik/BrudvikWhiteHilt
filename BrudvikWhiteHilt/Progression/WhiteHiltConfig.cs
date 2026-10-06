@@ -75,6 +75,7 @@ public static class WhiteHiltConfig
 
     private static readonly Dictionary<string, ConfigEntry<TierOverride>> tierOverrides = new();
     private static readonly Dictionary<string, ConfigEntry<bool>> enabledEntries = new();
+    private static readonly Dictionary<string, ConfigEntry<bool>> featureGates = new();
     private static readonly Dictionary<string, ConfigEntry<string>> recipeOverrides = new();
     private static readonly Dictionary<string, string> sectionLabels = new();
     private static readonly Dictionary<(string Section, string Key), string> keyLabels = new();
@@ -171,7 +172,23 @@ public static class WhiteHiltConfig
     /// <returns>False only if the config switches it off.</returns>
     public static bool IsEnabled(string id)
     {
+        if (featureGates.TryGetValue(id, out var gate) && !gate.Value)
+        {
+            return false;
+        }
+
         return !enabledEntries.TryGetValue(id, out var entry) || entry.Value;
+    }
+
+    /// <summary>
+    /// Ties an item or piece to the switch of the feature it belongs to: while the switch is off, the entry can no
+    /// longer be crafted or built, as if its own [Content] switch were off.
+    /// </summary>
+    /// <param name="id">The entry's identifier.</param>
+    /// <param name="feature">The feature's on/off setting.</param>
+    public static void AddFeatureGate(string id, ConfigEntry<bool> feature)
+    {
+        featureGates[id] = feature;
     }
 
     /// <summary>

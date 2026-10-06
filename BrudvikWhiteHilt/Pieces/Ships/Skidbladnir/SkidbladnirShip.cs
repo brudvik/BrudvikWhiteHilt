@@ -24,7 +24,7 @@ public class SkidbladnirShip : MonoBehaviour
     private float sailSize = 1f;
 
     /// <summary>Whether the ship is still enough for ordinary hammer placement.</summary>
-    public bool CanBuild => SkidbladnirSettings.Building.Value && body != null
+    public bool CanBuild => SkidbladnirSettings.BuildingAllowed && body != null
         && new Vector2(body.linearVelocity.x, body.linearVelocity.z).magnitude <= SkidbladnirSettings.BuildMaxSpeed.Value
         && (upgrades == null || !upgrades.Has(ShipDriftAnchor.Bit) || upgrades.IsAnchored);
 

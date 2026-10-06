@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Tools;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -55,6 +56,8 @@ public class Skidbladnir : WhiteHiltShipBase
 /// <summary>Server-synchronized settings for Skidbladnir.</summary>
 public static class SkidbladnirSettings
 {
+    /// <summary>Whether Skidbladnir, the ship hammer and the ship workshops can be built and crafted.</summary>
+    public static ConfigEntry<bool> Enabled { get; private set; }
     /// <summary>Model elevation relative to the ship's buoyancy plane, in metres; requires restart.</summary>
     public static ConfigEntry<float> WaterlineOffset { get; private set; }
     /// <summary>Maximum share of the White Hilt ship's reference full-sail speed.</summary>
@@ -70,9 +73,24 @@ public static class SkidbladnirSettings
     /// <summary>Furthest camera distance below deck, in metres; 0 keeps the vanilla camera. Local.</summary>
     public static ConfigEntry<float> LowerDeckCameraDistance { get; private set; }
 
+    /// <summary>Whether players may attach new building pieces to the ship now: Skidbladnir and building aboard are on.</summary>
+    public static bool BuildingAllowed => Enabled != null && Enabled.Value && Building.Value;
+
     /// <summary>Binds the sailing home's adjustable rules.</summary>
     public static void Initialize()
     {
+        // Off until it has been tried more in multiplayer; ships and workshops already built are kept.
+        Enabled = WhiteHiltConfig.BindAdminOnly("Ships.Skidbladnir", "Enabled", false,
+            "Skidbladnir, the White Hilt Ship Hammer and the ship workshops can be built and crafted, and furnishings built " +
+            "on the ship. Off: none of them can be built or crafted; ships, hammers and workshops already made are kept.");
+        foreach (string id in new[]
+        {
+            Skidbladnir.PrefabName, WhiteHiltShipHammer.PrefabName, ShipWorkbench.PrefabName, ShipForge.PrefabName, ShipStonecutter.PrefabName
+        })
+        {
+            WhiteHiltConfig.AddFeatureGate(id, Enabled);
+        }
+
         WaterlineOffset = WhiteHiltConfig.BindAdminOnly("Ships.Skidbladnir", "WaterlineOffset", 1.2f,
             "Ship model elevation above the buoyancy plane in metres. Restart required.", new AcceptableValueRange<float>(0.6f, 2.5f));
         SpeedShare = WhiteHiltConfig.BindAdminOnly("Ships.Skidbladnir", "SpeedShare", 0.5f,
