@@ -21,12 +21,13 @@ using System.Linq;
 namespace BrudvikWhiteHilt;
 
 /// <summary>
-/// Main class for the BrudvikWhiteHilt plugin.
-/// This class initializes the plugin, sets up custom chests, and applies Harmony patches.
-/// 
-/// Plugins not compatible with this:
-/// - AAA_Crafting by Azumatt
+/// The plugin. BepInEx creates it once when the game starts. It binds every setting and registers the texts, finds
+/// the mod's items and pieces by reflection, adds them when Jotunn has the vanilla prefabs ready, starts the chest
+/// module and applies the Harmony patches. docs/architecture.md describes the start-up order and why it is so.
 /// </summary>
+/// <remarks>
+/// Not compatible with AAA_Crafting by Azumatt.
+/// </remarks>
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
 [BepInDependency(Patches.Portals.PortalStationsRunePatch.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
@@ -36,11 +37,13 @@ namespace BrudvikWhiteHilt;
 [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
 internal class BrudvikWhiteHilt : BaseUnityPlugin
 {
-    /// <summary>
-    /// Constants for the plugin's GUID, name, and version.
-    /// </summary>
+    /// <summary>The plugin's unique ID, which BepInEx and other mods know it by. Never change it.</summary>
     public const string PluginGUID = "com.jotunn.BrudvikWhiteHilt";
+
+    /// <summary>The plugin's name.</summary>
     public const string PluginName = "BrudvikWhiteHilt";
+
+    /// <summary>The version; it must match Package/manifest.json and Properties/AssemblyInfo.cs.</summary>
     public const string PluginVersion = "0.95.2";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();

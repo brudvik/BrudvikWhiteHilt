@@ -187,7 +187,7 @@ No known issues at the moment. Please report anything odd on the [issues page](h
 
 <br>
 
-The mod does not compile out of the box; read up on [Valheim mod development](https://github.com/Valheim-Modding/JotunnModStub) first. [How the mod is built](docs/architecture.md) explains how the source is put together.
+The mod does not compile out of the box; read up on [Valheim mod development](https://github.com/Valheim-Modding/JotunnModStub) first. Jötunn's build files find Valheim through Steam and BepInEx in Valheim's folder; if yours is elsewhere, set `BEPINEX_PATH` in a git-ignored `Environment.props` next to the solution. [How the mod is built](docs/architecture.md) explains how the source is put together.
 
 The `Assets` folder is not part of the public source. The potion icons are bought from [Graphicriver](https://graphicriver.net/item/rpg-potion-icons/24972053), and the licence only allows shipping them in the pre-built mod. The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) under the same terms; without them the chests use the vanilla chest icon. To make a similar mod you would need your own licence.
 
