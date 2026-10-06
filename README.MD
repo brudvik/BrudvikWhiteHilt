@@ -39,9 +39,9 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.99.1
+## ✨ New in 0.100.0
 
-- **[Crafting and building from chests](docs/base.md)** no longer keeps you waiting in multiplayer: the player who holds a chest sends you what you need, and the crafting or placing goes on by itself.
+- **[Crafting and building from chests](docs/base.md)** finally works with chests another player holds: the part that readies every chest for multiplayer was never applied. The Collection Post and the Quartermaster's Table gain from it too. Everyone, the server included, needs this version.
 
 ### Also new in 0.99.0
 

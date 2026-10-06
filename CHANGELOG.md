@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.100.0 - 2026-10-06
 
 ### Fixed
 - **Crafting and building from chests said there was not enough in multiplayer**, even with unlimited chests, when another player held the chests. The cause was older than the chest crafting itself: the patch that prepares every chest for multiplayer was never applied, because Harmony skips a patch class without its own `[HarmonyPatch]`. So no chest could be asked for, or answer a request for its items. This also brings to life what was built on it: the Collection Post and the Quartermaster's Table now get chests handed over from other players instead of using only the ones you hold, the Collection Post shows its hover text and pauses with Alt + E, and items players drop are left alone by it also after the area has been reloaded (unless `PlayerDrops` is on). A test now fails if a patch class would be skipped.
