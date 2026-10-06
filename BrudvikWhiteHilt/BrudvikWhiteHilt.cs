@@ -25,9 +25,6 @@ namespace BrudvikWhiteHilt;
 /// the mod's items and pieces by reflection, adds them when Jotunn has the vanilla prefabs ready, starts the chest
 /// module and applies the Harmony patches. docs/architecture.md describes the start-up order and why it is so.
 /// </summary>
-/// <remarks>
-/// Not compatible with AAA_Crafting by Azumatt.
-/// </remarks>
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
 [BepInDependency(Patches.Portals.PortalStationsRunePatch.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
