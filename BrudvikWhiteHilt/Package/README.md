@@ -45,7 +45,7 @@ See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHAN
 
 ## 📥 Installation
 
-**With a mod manager** (r2modman or Thunderstore Mod Manager): install *BrudvikWhiteHilt*; BepInEx and Jötunn come along.
+**With a mod manager** [not published yet!] (r2modman or Thunderstore Mod Manager): install *BrudvikWhiteHilt*; BepInEx and Jötunn come along.
 
 **By hand:**
 
