@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **Decor seats**: you sat about half a metre too high, on top of a chair's back, since the sitting animation lifts the body above the seat point; it now sits on the seat as on Valheim's own chairs. The Wooden Chair no longer has you facing into its back.
+- The decor stools, the Long Bench and the Wooden Chair are a little bigger, near Valheim's own (stools 0.55 m, the chair 1.2 m, the Low Stool 0.3 m).
+
 ## v0.102.0 - 2026-10-07
 
 ### Added

@@ -97,6 +97,11 @@ public sealed class DecorEntry
     /// <summary>Height of the seat in metres, or 0 for a piece that cannot be sat on.</summary>
     public float Seat { get; private set; }
 
+    /// <summary>
+    /// Which way one sits, in degrees about the vertical from the model's +z; 180 for a chair whose back is on +z.
+    /// </summary>
+    public float SeatYaw { get; private set; }
+
     /// <summary>What it costs.</summary>
     public RequirementConfig[] Requirements { get; private set; }
 
@@ -152,6 +157,7 @@ public sealed class DecorEntry
             Wind = Flag(json, "wind", false),
             Material = Text(json, "material") ?? "wood",
             Seat = Number(json, "seat", 0f),
+            SeatYaw = Number(json, "seatYaw", 0f),
             LightAt = Number(json, "lightAt", -1f),
             Name = Text(json, "name"),
             Description = Text(json, "description"),

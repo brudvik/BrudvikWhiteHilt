@@ -33,6 +33,11 @@ public static class DecorPieceFactory
     private const string BasePrefab = "wood_pole2";
     private const string VegetationTemplate = "Bush01";
 
+    // How far the sitting animation lifts the body above the chair's attach point, and the lowest the point may go: a
+    // low stool sinks the feet a little rather than leave the body floating.
+    private const float SitLift = 0.5f;
+    private const float LowestAttach = -0.15f;
+
     // The vanilla bush's material is made for a bush of this height; sway and push are scaled from it.
     private const float TemplateHeight = 3f;
 
@@ -83,7 +88,7 @@ public static class DecorPieceFactory
         AddLight(entry, prefab.transform, bounds);
         if (entry.Seat > 0f)
         {
-            AddSeat(prefab, bounds, entry.Seat);
+            AddSeat(prefab, bounds, entry.Seat, entry.SeatYaw);
         }
 
         Sprite icon = VisualHelper.RenderIcon(prefab);
@@ -428,8 +433,11 @@ public static class DecorPieceFactory
         }
     }
 
-    // A chair like the vanilla one, sitting at the seat height in the middle of the piece, facing its front.
-    private static void AddSeat(GameObject prefab, Bounds bounds, float seat)
+    // A chair like the vanilla one in the middle of the piece, facing seatYaw from its +z. The sitting animation lifts
+    // the body about half a metre above the attach point, as Valheim's chairs show (their seats are 0.5 to 0.6 m high,
+    // their attach points 0 to 0.1 m), so the point goes that much below the seat. With the seat height itself the body
+    // floated half a metre too high, on top of a chair's back.
+    private static void AddSeat(GameObject prefab, Bounds bounds, float seat, float seatYaw)
     {
         Chair vanilla = PrefabManager.Instance.GetPrefab("piece_chair")?.GetComponent<Chair>();
         if (vanilla == null)
@@ -445,7 +453,8 @@ public static class DecorPieceFactory
 
         GameObject attach = new("attach");
         attach.transform.SetParent(prefab.transform, false);
-        attach.transform.localPosition = new Vector3(bounds.center.x, seat, bounds.center.z);
+        attach.transform.localPosition = new Vector3(bounds.center.x, Mathf.Max(seat - SitLift, LowestAttach), bounds.center.z);
+        attach.transform.localRotation = Quaternion.Euler(0f, seatYaw, 0f);
         chair.m_attachPoint = attach.transform;
     }
 }

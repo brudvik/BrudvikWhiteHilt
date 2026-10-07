@@ -22,7 +22,8 @@ code.
 | `material` | `wood` (default), `stone`, `metal` or `cloth`: health, break effects and the piece material a model is lit with. |
 | `light` | `candle`, `lantern` or `fire`: a flame and a light that need no fuel. |
 | `lightAt` | Where the flame sits, as a share of the height from the foot (0 to 1); by default the top of a candle, the middle of a lantern and the bottom of a fire. |
-| `seat` | Seat height in metres; makes it a chair. |
+| `seat` | Height of the seat surface in metres; makes it a chair. See **Chairs, stools and benches** below. |
+| `seatYaw` | Which way one sits, in degrees about the vertical from the model's +z (default 0). `180` for a chair whose back is on +z. |
 | `cost` | `Item:amount,Item:amount` with Valheim's prefab names. The materials are given back when it is removed. |
 | `name`, `description` | English texts. The Norwegian ones go in `BrudvikWhiteHilt/Translations/Norwegian.json` as `piece_whitehilt_decor_<id>` and `..._description`. |
 | `credit` | Required for a `file:` model: `<Title> by <Author> (<licence>)`, also added to the README's credits. |
@@ -36,3 +37,24 @@ code.
 4. `dotnet test BrudvikWhiteHilt.Tests` checks the ids, tabs, translations, models and credits.
 
 `Download/` holds Poly Haven's original files and is not committed.
+
+## Chairs, stools and benches
+
+Check every new seat on three points; the first decor chairs got all three wrong.
+
+1. **Size like Valheim's own**, not the real-world size `prepare_decor.py` fills in: Valheim's furniture is bigger
+   than life. Stools about 0.55 m high (the vanilla stool is 0.6), chairs 1.2 to 1.3 m to the top of the back, benches
+   about 0.5 m. Raise `height` and set `seat` to match (`seat` is about the stool's height, and about 0.45 of a chair's).
+2. **`seat` is the seat surface, not where the body goes.** The sitting animation lifts the body about half a metre
+   above the chair's attach point, so `DecorPieceFactory.AddSeat` puts the point `SitLift` (0.5 m) below the seat,
+   never lower than `LowestAttach` (-0.15 m), as Valheim's chairs do (their attach points are 0 to 0.1 m high under
+   seats of 0.5 to 0.6 m). Never set `seat` to a lower value to fix a body that floats: fix the model's size instead.
+3. **The back on -z.** One sits facing +z, so a chair's back must rise on its -z side. Measure which side it is on
+   before adding it: take the vertices well above the seat (the back) and see whether their mean lies at -z or +z of
+   the middle. For a bundle model use `BrudvikWhiteHiltUnity/Assets/Decor/decor_<id>.obj` (Unity mirrors x on import,
+   z is as written); for a vanilla prop its mesh, e.g. via `AssetSource/Tools/vanilla_prefab.py`. A back on +z needs
+   `"seatYaw": 180` (the Wooden Chair has it); one on ±x needs 90 or 270. Stools and backless benches face either way.
+
+Then sit on it in the game: the body should rest on the seat with the back behind it. Existing pieces in the world
+take new sizes and seats when the game loads, since they come from the prefab.
+
