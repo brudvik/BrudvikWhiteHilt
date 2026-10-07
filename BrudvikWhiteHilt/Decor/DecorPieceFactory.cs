@@ -415,12 +415,14 @@ public static class DecorPieceFactory
 
         (float height, float scale, float range, float intensity) = entry.Light switch
         {
-            DecorLight.Candle => (0.92f, 0.05f, 3f, 1.1f),
-            DecorLight.Lantern => (0.5f, 0.07f, 6f, 1.3f),
+            // The flames are scaled truly (scaleParticles), so these are their real sizes against a campfire's: a
+            // candle's flame a few centimetres, a lantern's a little more, a fire pit's half a campfire.
+            DecorLight.Candle => (0.92f, 0.12f, 3f, 1.1f),
+            DecorLight.Lantern => (0.5f, 0.15f, 6f, 1.3f),
             _ => (0.12f, 0.55f, 9f, 1.5f)
         };
         Vector3 position = new(bounds.center.x, Mathf.Lerp(bounds.min.y, bounds.max.y, entry.LightAt >= 0f ? entry.LightAt : height), bounds.center.z);
-        Transform flames = FireEffects.AddFlames(root, "WhiteHiltDecorFlame", position, scale);
+        Transform flames = FireEffects.AddFlames(root, "WhiteHiltDecorFlame", position, scale, scaleParticles: true);
         foreach (Light light in flames.GetComponentsInChildren<Light>(true))
         {
             light.range = range;

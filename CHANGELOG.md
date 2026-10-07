@@ -8,6 +8,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Decorations in more sizes**: barrels, crates, baskets, pots, sacks and chests, stones, stumps and logs, bushes and trees, runestones and the dolmen can also be built small (0.6 times) and large (1.5 times), and the cart wheel twice the size. A copy costs about half, one and a half or twice as much. 199 more pieces in all.
 
 ### Fixed
+- **Decor candles and lanterns burned with campfire-sized flames.** Their flames were shrunk only where they rose from, not in size; now they are truly small: a few centimetres on a candle, a little more in a lantern, half a campfire in a fire pit or forge.
 - **Nothing could be set on a decoration**, not even a pot on a decor table: decorations told Valheim they carry nothing, and it refuses to place anything on such a piece. Solid decorations (tables, barrels, crates, shelves, chests, stones) now carry what is set on them; plants and cloth still do not. A decoration also no longer wears down without support, as was meant.
 - **Decor seats**: you sat about half a metre too high, on top of a chair's back, since the sitting animation lifts the body above the seat point; it now sits on the seat as on Valheim's own chairs. The Wooden Chair no longer has you facing into its back.
 - The decor stools, the Long Bench and the Wooden Chair are a little bigger, near Valheim's own (stools 0.55 m, the chair 1.2 m, the Low Stool 0.3 m).

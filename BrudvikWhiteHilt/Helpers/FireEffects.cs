@@ -19,8 +19,13 @@ public static class FireEffects
     /// <param name="name">Name of the new child.</param>
     /// <param name="localPosition">Where the flames burn, in the parent's space.</param>
     /// <param name="scale">Size relative to the campfire.</param>
+    /// <param name="scaleParticles">
+    /// Whether the scale also sizes the flames themselves. The campfire's particles scale in their own space, so by
+    /// default the scale only narrows where they rise from and each flame stays campfire-sized; a candle needs them
+    /// truly small.
+    /// </param>
     /// <returns>The new child.</returns>
-    public static Transform AddFlames(Transform parent, string name, Vector3 localPosition, float scale)
+    public static Transform AddFlames(Transform parent, string name, Vector3 localPosition, float scale, bool scaleParticles = false)
     {
         Transform campfire = GetCampfire();
         Transform fire = CreateAnchor(parent, name, localPosition);
@@ -28,6 +33,15 @@ public static class FireEffects
         foreach (string part in flameParts)
         {
             CopyPart(campfire, part, fire);
+        }
+
+        if (scaleParticles)
+        {
+            foreach (ParticleSystem particles in fire.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                ParticleSystem.MainModule main = particles.main;
+                main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+            }
         }
 
         return fire;
