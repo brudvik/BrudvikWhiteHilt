@@ -2,6 +2,24 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.102.0 - 2026-10-07
+
+### Added
+- **Twelve more White Hilt weapons and shields**, each with its own model, from materials only (no vanilla weapon in the recipe, so none hides until one has been carried):
+  - Swamp: **Viking Sword** (the last blow of a run strikes three times as hard), **Hand Axe** (more chop than slash), **Round Shield**.
+  - Mountains: **Falchion** (sweeps half again as wide), **Bardiche** (a slashing pole-axe).
+  - Plains: **Gladius** (slash and pierce, backstab bonus, cheaper blows), **War Axe** (two-handed), **Pike** (half again the reach), **Recurve Bow** (drawn in 60% of the time), **Hird Shield** (half again the parry bonus).
+  - Mistlands: **Pike Axe** (its gilded head glows), **Bec de Corbin** (breaks armour).
+- The **White Hilt Trident** has a model of its own and flies as itself when thrown.
+- **Flame Rune**: smithed at the Rune Forge, coloured at the Paint Bench and etched at the Rune Etching Table like the Glow Rune. The White Hilt Sword's Dyrnwyn fire and the staffs' flames take its colour, a blue flame for instance; other White Hilt gear catches fire along its head or blade.
+- At the Rune Etching Table, with White Hilt gear in hand, **Shift + Use** takes the glow off and **Alt + Use** puts the flame out (own flames included) or brings it back as it was, both free.
+
+### Changed
+- White Hilt gear above quality 4 no longer glows brighter and changes colour with every level: the vanilla upgrade sparkles stay as at quality 5. An etched glow is a little softer.
+- The Paint Bench's colour wheel has a button for each rune: **Glow Rune** and **Flame Rune**.
+- The colour wheel says what each button did, in the window above the buttons and with the colour used: the message used to show in the middle of the screen, hidden behind the window.
+- The Glow Rune and the Flame Rune are runestones of their own instead of rings like the etching runes, so they are told apart at a glance. Their carved sign glows in the rune's colour, also on the ground.
+
 ## v0.101.1 - 2026-10-06
 
 ### Fixed
