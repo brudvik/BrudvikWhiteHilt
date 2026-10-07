@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.102.0 - 2026-10-07
 
 ### Added
 - **Twelve more White Hilt weapons and shields**, each with its own model, from materials only (no vanilla weapon in the recipe, so none hides until one has been carried):

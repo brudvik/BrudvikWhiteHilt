@@ -39,14 +39,16 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.101.1
+## ✨ New in 0.102.0
 
-- **[Decorations](docs/decor.md)** are solid again: wood and stone decorations took the snow shader of the vanilla piece they copy and looked see-through and shiny. Wall drawers and ship workshops had the same fault. Water and glass, such as the water in the Quench Tub, no longer vanish.
+- **[Twelve more White Hilt weapons and shields](docs/equipment.md)**: a Viking Sword, Hand Axe and Round Shield for the Swamp; a Falchion and Bardiche for the Mountains; a Gladius, War Axe, Pike, Recurve Bow and Hird Shield for the Plains; a glowing Pike Axe and an armour-breaking Bec de Corbin for the Mistlands. The Trident has a model of its own.
+- **[Flame Rune](docs/smithing.md#glow-and-flame)**: set any White Hilt weapon or shield burning in a colour of your own, a blue Dyrnwyn flame for instance. Glow and flame come off for free at the Rune Etching Table, and both runes are runestones of their own.
+- White Hilt gear no longer glows brighter with every quality level above 4.
 
-### Also new in 0.101.0
+### Also new in 0.101.0 and 0.101.1
 
-- **[Sixteen new White Hilt weapons](docs/equipment.md)**, from the Swamp to the Ashlands, each with its own model, white grip and a trait of its own: a Bearded Axe that hooks shields, a Seax that makes wounds bleed, a Javelin and a Throwing Axe that fly as themselves, a Flail that swings past the guard, a Morning Star that breaks armour, a Halberd for big game, a Scythe that reaps life, a Trident of the sea, a one-handed Crystal Axe and Wand, a Dane Axe, War Hammer, Ice Sword, Claymore, Crystal Staff and Rune Sword. The weapons of later biomes take that biome's materials and strength.
-- **[Glow](docs/smithing.md#glow-and-flame)**: colour a Glow Rune at the Paint Bench and etch it into any White Hilt weapon or shield, and its blade glows in that colour for everyone to see.
+- **[Sixteen new White Hilt weapons](docs/equipment.md)** from the Swamp to the Ashlands, each with a trait of its own, and the **[Glow Rune](docs/smithing.md#glow-and-flame)** that makes any White Hilt gear glow in your colour.
+- **[Decorations](docs/decor.md)** are solid again instead of see-through and shiny.
 
 ### Also new in 0.100.0
 
