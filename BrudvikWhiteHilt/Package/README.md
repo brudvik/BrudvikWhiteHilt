@@ -31,7 +31,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.102.0
+## ✨ New in 0.103.0
+
+- **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md) in more sizes**: barrels, crates, baskets, pots, stones, stumps, bushes, trees and runestones can also be built small and large, and the cart wheel twice the size, 460 decorations in all.
+- Things can be **set on decorations**: a pot on a decor table, a lantern on a barrel.
+- Decor **chairs and stools** seat you on the seat, facing the right way, and are Valheim-sized; decor **candles and lanterns** burn with flames to match.
+
+### Also new in 0.102.0
 
 - **[Twelve more White Hilt weapons and shields](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)**: a Viking Sword, Hand Axe and Round Shield for the Swamp; a Falchion and Bardiche for the Mountains; a Gladius, War Axe, Pike, Recurve Bow and Hird Shield for the Plains; a glowing Pike Axe and an armour-breaking Bec de Corbin for the Mistlands. The Trident has a model of its own.
 - **[Flame Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#glow-and-flame)**: set any White Hilt weapon or shield burning in a colour of your own, a blue Dyrnwyn flame for instance. Glow and flame come off for free at the Rune Etching Table, and both runes are runestones of their own.
@@ -41,10 +47,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 
 - **[Sixteen new White Hilt weapons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)** from the Swamp to the Ashlands, each with a trait of its own, and the **[Glow Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#glow-and-flame)** that makes any White Hilt gear glow in your colour.
 - **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)** are solid again instead of see-through and shiny.
-
-### Also new in 0.100.0
-
-- **[Crafting and building from chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md)** finally works with chests another player holds: the part that readies every chest for multiplayer was never applied. The Collection Post and the Quartermaster's Table gain from it too. Everyone, the server included, needs this version.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -112,7 +114,7 @@ A free build camera, precise rotation, undo, area repair, blueprints and terrain
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/decor_hearth.png" alt="Decor Hammer" height="120">
 
-261 decorations: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.
+460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.
 
 ### ⛵ Sea & travel
 
