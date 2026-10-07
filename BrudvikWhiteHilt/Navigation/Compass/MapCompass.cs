@@ -60,6 +60,12 @@ public static class MapCompass
     // degrees if set.
     private static CompassView Show(CompassView view, Transform parent, bool visible, float size, Vector2 corner, Vector2 offset, float yaw)
     {
+        // Every world gets a new map, and the old compass went with the old one.
+        if (view != null && view.Root == null)
+        {
+            view = null;
+        }
+
         if (!visible)
         {
             if (view != null)

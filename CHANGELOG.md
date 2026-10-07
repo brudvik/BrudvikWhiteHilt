@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- The map compass disappeared after leaving a world and joining another, and filled the log with an error every frame.
+
 ## v0.104.0 - 2026-10-07
 
 ### Added
