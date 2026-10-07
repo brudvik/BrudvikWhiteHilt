@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.103.0 - 2026-10-07
 
 ### Added
 - **Decorations in more sizes**: barrels, crates, baskets, pots, sacks and chests, stones, stumps and logs, bushes and trees, runestones and the dolmen can also be built small (0.6 times) and large (1.5 times), and the cart wheel twice the size. A copy costs about half, one and a half or twice as much. 199 more pieces in all.
