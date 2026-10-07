@@ -31,7 +31,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.103.0
+## ✨ New in 0.104.0
+
+- **[Attack styles](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/attack-styles.md)**: the White Hilt melee weapons swing in several styles, a signature one and others that suit their grip, drawn anew for every combo and as strong in each. A Gladius stabs and lunges, a Falchion chops, a War Axe hews from above.
+- **[The Rune Sword's own cuts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/attack-styles.md#-the-rune-swords-own-cuts)**: an overhead strike, a lunging thrust and a leaping whirl, animations made for the mod.
+- The server chooses Varied, Signature or Vanilla for everyone, and each player can choose for themselves.
+
+### Also new in 0.103.0
 
 - **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md) in more sizes**: barrels, crates, baskets, pots, stones, stumps, bushes, trees and runestones can also be built small and large, and the cart wheel twice the size, 460 decorations in all.
 - Things can be **set on decorations**: a pot on a decor table, a lantern on a barrel.
@@ -42,11 +48,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 - **[Twelve more White Hilt weapons and shields](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)**: a Viking Sword, Hand Axe and Round Shield for the Swamp; a Falchion and Bardiche for the Mountains; a Gladius, War Axe, Pike, Recurve Bow and Hird Shield for the Plains; a glowing Pike Axe and an armour-breaking Bec de Corbin for the Mistlands. The Trident has a model of its own.
 - **[Flame Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#glow-and-flame)**: set any White Hilt weapon or shield burning in a colour of your own, a blue Dyrnwyn flame for instance. Glow and flame come off for free at the Rune Etching Table, and both runes are runestones of their own.
 - White Hilt gear no longer glows brighter with every quality level above 4.
-
-### Also new in 0.101.0 and 0.101.1
-
-- **[Sixteen new White Hilt weapons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md)** from the Swamp to the Ashlands, each with a trait of its own, and the **[Glow Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#glow-and-flame)** that makes any White Hilt gear glow in your colour.
-- **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)** are solid again instead of see-through and shiny.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -199,6 +200,12 @@ The Repair Anvil, the Chain Bench, rune etching, glowing weapons, whetstones and
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/collection_post.png" alt="Restocking chests" height="120">
 
 Fourteen chests that keep themselves stocked, wall drawers and a Collection Post that sorts.
+
+#### [Attack styles & animations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/attack-styles.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_attack_styles.png" alt="Attack styles & animations" height="120">
+
+Weapons that swing in several styles, and the Rune Sword's own strike, thrust and leaping whirl.
 
 ### 🐉 Beasts & challenge
 
