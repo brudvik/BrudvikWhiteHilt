@@ -1,6 +1,8 @@
 using BrudvikWhiteHilt.Difficulty.Beasts;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Binding;
+using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Items.Runes.FlameRune;
 using BrudvikWhiteHilt.Items.Runes.GlowRune;
 using BrudvikWhiteHilt.Items.Weapons;
 using BrudvikWhiteHilt.Painting;
@@ -38,10 +40,17 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
         Translations.AddEnglish("msg_whitehilt_etch_need", "You need {0}");
         Translations.AddEnglish("msg_whitehilt_etch_done", "{0} is etched into your {1}");
         Translations.AddEnglish("whitehilt_etch_glow", "Glow Rune: makes any White Hilt weapon or shield glow in its colour");
+        Translations.AddEnglish("whitehilt_etch_flame", "Flame Rune: sets any White Hilt weapon or shield burning in its colour");
+        Translations.AddEnglish("whitehilt_etch_remove_glow", "Remove the glow, free");
+        Translations.AddEnglish("whitehilt_etch_remove_flame", "Put the flame out, or bring it back as it was, free");
         Translations.AddEnglish("msg_whitehilt_glow_nogear", "Hold a White Hilt weapon or shield");
-        Translations.AddEnglish("msg_whitehilt_glow_blank", "Colour the Glow Rune at the Paint Bench first");
+        Translations.AddEnglish("msg_whitehilt_glow_blank", "Colour the rune at the Paint Bench first");
         Translations.AddEnglish("msg_whitehilt_glow_done", "Your {0} glows {1}");
         Translations.AddEnglish("msg_whitehilt_glow_out", "The glow in your {0} goes out");
+        Translations.AddEnglish("msg_whitehilt_glow_none", "Your {0} has no glow");
+        Translations.AddEnglish("msg_whitehilt_flame_done", "Your {0} burns {1}");
+        Translations.AddEnglish("msg_whitehilt_flame_out", "The flame of your {0} goes out");
+        Translations.AddEnglish("msg_whitehilt_flame_back", "Your {0} burns as it was made to again");
     }
 
     /// <inheritdoc/>
@@ -57,6 +66,9 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
         }
 
         text += "\n<color=#a0a0a0>" + localization.Localize("$whitehilt_etch_glow") + "</color>";
+        text += "\n<color=#a0a0a0>" + localization.Localize("$whitehilt_etch_flame") + "</color>";
+        text += "\n" + localization.Localize("[<color=yellow><b>$KEY_AltPlace + $KEY_Use</b></color>] $whitehilt_etch_remove_glow");
+        text += "\n" + localization.Localize("[<color=yellow><b>Alt + $KEY_Use</b></color>] $whitehilt_etch_remove_flame");
 
         Player player = Player.m_localPlayer;
         ItemDrop.ItemData weapon = player != null ? HeldGear(player, shields: false) : null;
@@ -70,7 +82,12 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
     {
         if (GlowRune.IsGlowRune(item))
         {
-            return user is Player glowPlayer && EtchGlow(glowPlayer, item);
+            return user is Player glowPlayer && EtchColour(glowPlayer, item, GlowRune.Name);
+        }
+
+        if (FlameRune.IsFlameRune(item))
+        {
+            return user is Player flamePlayer && EtchColour(flamePlayer, item, FlameRune.Name);
         }
 
         Infusion infusion = item?.m_dropPrefab != null ? Infusion.FromRune(item.m_dropPrefab.name) : null;
@@ -120,8 +137,68 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
         return true;
     }
 
-    // Etches a glow rune's colour into the White Hilt weapon in hand, or else the shield; a black rune puts a glow out.
-    private bool EtchGlow(Player player, ItemDrop.ItemData rune)
+    /// <summary>
+    /// Shift + Use takes the glow off the White Hilt gear in hand, Alt + Use puts its flame out or brings it back as
+    /// it was; both are free. Use alone tells how the table works.
+    /// </summary>
+    /// <param name="user">The one using the table.</param>
+    /// <param name="hold">Whether the key is held.</param>
+    /// <param name="alt">Whether Shift (the alternative place key) is held.</param>
+    /// <returns>True when handled.</returns>
+    public override bool Interact(Humanoid user, bool hold, bool alt)
+    {
+        bool altKey = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+        if (hold || user is not Player player || (!alt && !altKey))
+        {
+            return base.Interact(user, hold, alt);
+        }
+
+        if (!CanUse(player, out CraftingStation forge))
+        {
+            return true;
+        }
+
+        ItemDrop.ItemData gear = HeldGear(player, shields: true);
+        if (gear == null)
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_nogear");
+            return true;
+        }
+
+        Localization localization = Localization.instance;
+        string name = localization.Localize(gear.m_shared.m_name);
+        if (altKey)
+        {
+            bool wasOff = WeaponFlame.IsOff(gear);
+            if (wasOff)
+            {
+                WeaponFlame.Restore(gear);
+            }
+            else
+            {
+                WeaponFlame.PutOut(gear);
+            }
+
+            player.Message(MessageHud.MessageType.Center, string.Format(localization.Localize(wasOff ? "$msg_whitehilt_flame_back" : "$msg_whitehilt_flame_out"), name));
+        }
+        else if (WeaponGlow.TryGetColor(gear, out _))
+        {
+            WeaponGlow.Clear(gear);
+            player.Message(MessageHud.MessageType.Center, string.Format(localization.Localize("$msg_whitehilt_glow_out"), name));
+        }
+        else
+        {
+            player.Message(MessageHud.MessageType.Center, string.Format(localization.Localize("$msg_whitehilt_glow_none"), name));
+            return true;
+        }
+
+        PlayEffect(forge);
+        return true;
+    }
+
+    // Etches a glow or flame rune's colour into the White Hilt weapon in hand, or else the shield. A black glow rune
+    // puts a glow out.
+    private bool EtchColour(Player player, ItemDrop.ItemData rune, string runeName)
     {
         if (!CanUse(player, out CraftingStation forge))
         {
@@ -135,20 +212,31 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
             return true;
         }
 
-        if (!GlowRune.TryGetColor(rune, out Color32 color))
+        if (!ColourRunes.TryGetColor(rune, runeName, out Color32 color))
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_blank");
             return true;
         }
 
         player.GetInventory().RemoveOneItem(rune);
-        WeaponGlow.SetColor(gear, color);
-        PlayEffect(forge);
         Localization localization = Localization.instance;
         string name = localization.Localize(gear.m_shared.m_name);
-        player.Message(MessageHud.MessageType.Center, WeaponGlow.IsDark(color)
-            ? string.Format(localization.Localize("$msg_whitehilt_glow_out"), name)
-            : string.Format(localization.Localize("$msg_whitehilt_glow_done"), name, PaintColor.Swatch(color)));
+        string message;
+        if (runeName == FlameRune.Name)
+        {
+            WeaponFlame.SetColor(gear, color);
+            message = string.Format(localization.Localize("$msg_whitehilt_flame_done"), name, PaintColor.Swatch(color));
+        }
+        else
+        {
+            WeaponGlow.SetColor(gear, color);
+            message = WeaponGlow.IsDark(color)
+                ? string.Format(localization.Localize("$msg_whitehilt_glow_out"), name)
+                : string.Format(localization.Localize("$msg_whitehilt_glow_done"), name, PaintColor.Swatch(color));
+        }
+
+        PlayEffect(forge);
+        player.Message(MessageHud.MessageType.Center, message);
         return true;
     }
 

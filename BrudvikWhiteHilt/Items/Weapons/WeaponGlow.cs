@@ -16,9 +16,9 @@ public static class WeaponGlow
 {
     private const string ColorKey = "whitehilt_glow";
     private const string LightName = "whitehilt_glow_light";
-    private const float Intensity = 1.6f;
+    private const float Intensity = 1.2f;
     private const float LightRange = 2f;
-    private const float LightIntensity = 1.2f;
+    private const float LightIntensity = 1f;
     private const int DarkSum = 24;
 
     private static readonly int rightKey = "whitehilt_glow_right".GetStableHashCode();
@@ -67,6 +67,15 @@ public static class WeaponGlow
         {
             item.m_customData[ColorKey] = PaintColor.ToHex(color);
         }
+    }
+
+    /// <summary>
+    /// Takes the glow off an item.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    public static void Clear(ItemDrop.ItemData item)
+    {
+        item.m_customData.Remove(ColorKey);
     }
 
     /// <summary>

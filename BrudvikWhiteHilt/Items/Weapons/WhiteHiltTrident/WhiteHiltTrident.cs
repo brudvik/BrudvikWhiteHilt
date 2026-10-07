@@ -6,9 +6,9 @@ using Jotunn.Managers;
 namespace BrudvikWhiteHilt.Items.Weapons.WhiteHiltTrident;
 
 /// <summary>
-/// The White Hilt Trident, a spear cloned from the vanilla <c>SpearSplitner</c> with lightning damage. It is made for
-/// the sea: it deals more damage to foes in the water and to sea creatures. It keeps Splitnir's look until it gets a
-/// model of its own. In linear progression it unlocks with the Ashlands tier.
+/// The White Hilt Trident, a spear cloned from the vanilla <c>SpearSplitner</c> with lightning damage and the White Hilt
+/// model <c>whtrident</c>. It is made for the sea: it deals more damage to foes in the water and to sea creatures, and
+/// flies as itself when thrown. In linear progression it unlocks with the Ashlands tier.
 /// </summary>
 public class WhiteHiltTrident : WhiteHiltWeaponBase
 {
@@ -37,6 +37,14 @@ public class WhiteHiltTrident : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "SpearSplitner";
+
+    /// <summary>
+    /// Trident by Akshat (shooter24994), with a white grip.
+    /// </summary>
+    protected override string ModelName => "whtrident";
+
+    /// <inheritdoc/>
+    protected override bool ThrownAsModel => true;
 
     /// <inheritdoc/>
     protected override WeaponTrait Trait => new() { SeaBonus = () => seaBonus.Value };

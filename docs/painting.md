@@ -19,7 +19,7 @@ Paint or stain any building piece in the colour you choose. The colour is saved 
 - **Paint** bleaches the texture first, so light colours and white work; **Stain** tints over the wood, so the grain shows but it can only darken.
 - The mouse wheel sets the brush radius (0 = only the aimed piece, up to `MaxRadius`, 8 m); the pieces in reach show the colour before you click. Paint and stain respect wards.
 - `Painting` → `PotUses` (20, server-synced) sets how many pieces a Paint Pot covers.
-- **Colour Glow Rune** in the colour wheel gives a Glow Rune from your inventory the chosen colour, for the dyes alone; etch it into White Hilt gear to make it glow ([Glow](smithing.md#glow)).
+- **Glow Rune** and **Flame Rune** in the colour wheel give such a rune from your inventory the chosen colour, for the dyes alone; etch it into White Hilt gear to make it glow or burn in that colour ([Glow and flame](smithing.md#glow-and-flame)).
 
 ## 🧶 Weaving and dyeing
 

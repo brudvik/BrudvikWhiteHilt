@@ -1,3 +1,5 @@
+using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Items.Runes.FlameRune;
 using BrudvikWhiteHilt.Items.Runes.GlowRune;
 using BrudvikWhiteHilt.Items.Weapons;
 using HarmonyLib;
@@ -5,14 +7,14 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Gear;
 
 /// <summary>
-/// Lights glowing White Hilt gear in hand and on the ground, and shows the glow and a glow rune's colour in the
-/// tooltip.
+/// Shows the glow and flame etched into White Hilt gear, in hand and on the ground, and shows them and a glow or flame
+/// rune's colour in the tooltip.
 /// </summary>
 [HarmonyPatch]
 public static class WeaponGlowPatches
 {
     /// <summary>
-    /// Keeps the gear in every character's hands glowing in the colour etched into it.
+    /// Keeps the gear in every character's hands glowing and burning as etched.
     /// </summary>
     /// <param name="__instance">The equipment visuals.</param>
     [HarmonyPatch(typeof(VisEquipment), nameof(VisEquipment.UpdateVisuals))]
@@ -20,10 +22,11 @@ public static class WeaponGlowPatches
     public static void UpdateVisuals(VisEquipment __instance)
     {
         WeaponGlow.Refresh(__instance);
+        WeaponFlame.Refresh(__instance);
     }
 
     /// <summary>
-    /// Lights a glowing item lying on the ground.
+    /// Shows the glow and flame of an item lying on the ground.
     /// </summary>
     /// <param name="__instance">The dropped item.</param>
     [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.Start))]
@@ -31,10 +34,13 @@ public static class WeaponGlowPatches
     public static void Start(ItemDrop __instance)
     {
         WeaponGlow.ApplyDropped(__instance);
+        WeaponFlame.ApplyDropped(__instance);
+        ColourRunes.ApplyDropped(__instance, GlowRune.Name);
+        ColourRunes.ApplyDropped(__instance, FlameRune.Name);
     }
 
     /// <summary>
-    /// Adds the glow of an item, or the colour of a glow rune, to its tooltip.
+    /// Adds the glow and flame of an item, or the colour of a glow or flame rune, to its tooltip.
     /// </summary>
     /// <param name="item">The item.</param>
     /// <param name="__result">The tooltip.</param>
@@ -43,6 +49,7 @@ public static class WeaponGlowPatches
     [HarmonyPostfix]
     public static void GetTooltip(ItemDrop.ItemData item, ref string __result)
     {
-        __result += WeaponGlow.TooltipText(item) + GlowRune.TooltipText(item);
+        __result += WeaponGlow.TooltipText(item) + WeaponFlame.TooltipText(item)
+            + ColourRunes.TooltipText(item, GlowRune.Name) + ColourRunes.TooltipText(item, FlameRune.Name);
     }
 }

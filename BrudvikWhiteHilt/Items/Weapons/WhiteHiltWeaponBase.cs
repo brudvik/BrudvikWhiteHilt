@@ -193,6 +193,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
                 GearUpgrades.Register(BaseName, NameToken, upgradeKind.Value);
             }
 
+            FreezeUpgradeGlow(item.ItemPrefab);
             Binding.GearBinding.Register(NameToken, item.ItemData.m_itemType == ItemDrop.ItemData.ItemType.Shield);
             WeaponTraits.Register(item.ItemData.m_name, Trait);
 
@@ -368,6 +369,17 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
         catch (Exception ex)
         {
             Jotunn.Logger.LogWarning($"{FullName}: keeping the vanilla look: {ex.Message}");
+        }
+    }
+
+    // Vanilla upgrade sparkles (ParticleIntensityScaler) light up above quality 4 and grow and change colour with every
+    // level after that. White Hilt gear goes far past 4, so they grew too bright; without the per-level growth they keep
+    // the look of the first level above 4.
+    private static void FreezeUpgradeGlow(GameObject itemPrefab)
+    {
+        foreach (ParticleIntensityScaler scaler in itemPrefab.GetComponentsInChildren<ParticleIntensityScaler>(true))
+        {
+            scaler.itemDropLevelMultiplier = 0f;
         }
     }
 

@@ -1,4 +1,6 @@
 using BrudvikWhiteHilt.Items.Painting;
+using BrudvikWhiteHilt.Items.Runes;
+using BrudvikWhiteHilt.Items.Runes.FlameRune;
 using BrudvikWhiteHilt.Items.Runes.GlowRune;
 using Jotunn.Managers;
 using System;
@@ -26,6 +28,7 @@ public class PaintMixerPanel : MonoBehaviour
     private const float MaxDistance = 6f;
     private const float SuggestDelay = 0.15f;
     private const int FavouriteCount = 8;
+    private const float StatusSeconds = 4f;
 
     private static PaintMixerPanel instance;
 
@@ -49,8 +52,11 @@ public class PaintMixerPanel : MonoBehaviour
     private InputField greenField;
     private InputField blueField;
     private Text suggestionText;
+    private Text statusText;
+    private float statusUntil;
     private Button mixButton;
     private Button glowButton;
+    private Button flameButton;
 
     /// <summary>True while the window is open.</summary>
     public static bool IsOpen => instance != null && instance.gameObject.activeSelf;
@@ -151,13 +157,20 @@ public class PaintMixerPanel : MonoBehaviour
         suggestionText.alignment = TextAnchor.UpperLeft;
         suggestionText.supportRichText = true;
 
-        Text mixLabel = CreateButton(panel, bottom, new Vector2(-190f, 40f), 170f, OnMix);
+        // What the last button did, above the buttons: a message in the middle of the screen is hidden by this window.
+        statusText = AddText(panel, bottom, new Vector2(0f, 78f), 16, PanelWidth - 40f, 24f, Color.white);
+        statusText.supportRichText = true;
+
+        Text mixLabel = CreateButton(panel, bottom, new Vector2(-210f, 40f), 135f, OnMix);
         mixLabel.text = Localization.instance.Localize("$whitehilt_paint_mix");
         mixButton = mixLabel.GetComponentInParent<Button>();
-        Text glowLabel = CreateButton(panel, bottom, new Vector2(0f, 40f), 170f, OnGlow);
+        Text glowLabel = CreateButton(panel, bottom, new Vector2(-70f, 40f), 135f, OnGlow);
         glowLabel.text = Localization.instance.Localize("$whitehilt_paint_glow");
         glowButton = glowLabel.GetComponentInParent<Button>();
-        CreateButton(panel, bottom, new Vector2(190f, 40f), 170f, Close).text = Localization.instance.Localize("$whitehilt_paint_close");
+        Text flameLabel = CreateButton(panel, bottom, new Vector2(70f, 40f), 135f, OnFlame);
+        flameLabel.text = Localization.instance.Localize("$whitehilt_paint_flame");
+        flameButton = flameLabel.GetComponentInParent<Button>();
+        CreateButton(panel, bottom, new Vector2(210f, 40f), 135f, Close).text = Localization.instance.Localize("$whitehilt_paint_close");
 
         DrawWheel();
         ShowFavourites();
@@ -174,6 +187,11 @@ public class PaintMixerPanel : MonoBehaviour
         {
             Close();
             return;
+        }
+
+        if (statusText.text.Length > 0 && Time.unscaledTime > statusUntil)
+        {
+            statusText.text = string.Empty;
         }
 
         if (suggestionDirty && Time.unscaledTime - changedAt >= SuggestDelay)
@@ -266,13 +284,13 @@ public class PaintMixerPanel : MonoBehaviour
 
         if (suggestion == null || !suggestion.Available)
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_paint_lacking");
+            Notify(player, "$msg_whitehilt_paint_lacking", success: false);
             return;
         }
 
         if (!player.GetInventory().HaveEmptySlot())
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_paint_full");
+            Notify(player, "$msg_whitehilt_paint_full", success: false);
             return;
         }
 
@@ -283,12 +301,16 @@ public class PaintMixerPanel : MonoBehaviour
 
         DyeCatalog.Take(player, DyeCatalog.BinderName(), 1);
         WhiteHiltPaintPot.Create(player, Current);
-        player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_paint_mixed");
+        Notify(player, "$msg_whitehilt_paint_mixed", success: true);
         Changed(redrawWheel: false);
     }
 
-    // Colours a Glow Rune from the suggested dyes; a rune needs no binder.
-    private void OnGlow()
+    private void OnGlow() => ColourRune(GlowRune.Name, "$msg_whitehilt_glow_norune", "$msg_whitehilt_glow_coloured");
+
+    private void OnFlame() => ColourRune(FlameRune.Name, "$msg_whitehilt_flame_norune", "$msg_whitehilt_flame_coloured");
+
+    // Colours a Glow or Flame Rune from the suggested dyes; a rune needs no binder.
+    private void ColourRune(string runeName, string noRune, string coloured)
     {
         Player player = Player.m_localPlayer;
         if (player == null)
@@ -296,16 +318,16 @@ public class PaintMixerPanel : MonoBehaviour
             return;
         }
 
-        ItemDrop.ItemData rune = GlowRune.FindToColour(player);
+        ItemDrop.ItemData rune = ColourRunes.FindToColour(player, runeName);
         if (rune == null)
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_norune");
+            Notify(player, noRune, success: false);
             return;
         }
 
         if (suggestion == null || !suggestion.Available)
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_paint_lacking");
+            Notify(player, "$msg_whitehilt_paint_lacking", success: false);
             return;
         }
 
@@ -314,9 +336,23 @@ public class PaintMixerPanel : MonoBehaviour
             DyeCatalog.Take(player, dye.Name, amount);
         }
 
-        GlowRune.SetColor(rune, Current);
-        player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_glow_coloured");
+        ColourRunes.SetColor(rune, Current);
+        Notify(player, coloured, success: true);
         Changed(redrawWheel: false);
+    }
+
+    // Shows what a button did in the window, with the colour when it worked, and in the message log.
+    private void Notify(Player player, string message, bool success)
+    {
+        string text = Localization.instance.Localize(message);
+        if (success)
+        {
+            text += "   " + PaintColor.Swatch(Current);
+        }
+
+        statusText.text = $"<color={(success ? "#9CE07A" : "#FF9A7A")}>{text}</color>";
+        statusUntil = Time.unscaledTime + StatusSeconds;
+        player.Message(MessageHud.MessageType.TopLeft, text);
     }
 
     private void SetColor(Color32 color)
@@ -362,6 +398,7 @@ public class PaintMixerPanel : MonoBehaviour
             suggestionText.text = Localization.instance.Localize("$whitehilt_paint_no_dyes");
             mixButton.interactable = false;
             glowButton.interactable = false;
+            flameButton.interactable = false;
             return;
         }
 
@@ -386,7 +423,8 @@ public class PaintMixerPanel : MonoBehaviour
 
         suggestionText.text = text.ToString();
         mixButton.interactable = suggestion.Available;
-        glowButton.interactable = suggestion.Available && GlowRune.FindToColour(player) != null;
+        glowButton.interactable = suggestion.Available && ColourRunes.FindToColour(player, GlowRune.Name) != null;
+        flameButton.interactable = suggestion.Available && ColourRunes.FindToColour(player, FlameRune.Name) != null;
     }
 
     private static string Line(string name, int amount, int have)

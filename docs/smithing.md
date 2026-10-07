@@ -76,20 +76,27 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Blood Rune | Iron ×4, Bloodbag ×5 |
 | Thunder Rune | Iron ×4, Silver ×2, Crystal ×3 |
 | Glow Rune | Iron ×4, Surtling Core ×1, Resin ×5 |
+| Flame Rune | Iron ×4, Surtling Core ×2, Coal ×5 |
 
 The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6), and `WardShare` (0.5).
 
 ---
 
-### Glow
+### Glow and flame
 
-A **Glow Rune** makes any White Hilt weapon or shield glow in a colour you choose, bound or not, beside any infusion:
+<img src="images/glow_rune.png" alt="Glow Rune" title="Glow Rune" height="140"> <img src="images/flame_rune.png" alt="Flame Rune" title="Flame Rune" height="140">
 
-1. Smith a blank Glow Rune at the Rune Forge.
-2. At the **Paint Bench**, open the colour wheel (Shift + Use), pick the colour and press **Colour Glow Rune**. It takes the dyes the wheel suggests, as for a paint pot but without the binder.
-3. Hold the weapon or shield and use the coloured rune on the **Rune Etching Table**. The rune is used up; a new one replaces the colour, and a black rune puts the glow out.
+A **Glow Rune** makes any White Hilt weapon or shield glow in a colour you choose, and a **Flame Rune** sets it burning in one, bound or not, beside any infusion:
 
-The blade or head glows in the colour and sheds a soft light; a weapon whose model has no glowing part only sheds the light. Everyone sees it, in your hands and on the ground.
+1. Smith a blank rune at the Rune Forge: Glow Rune (Iron ×4, Surtling Core ×1, Resin ×5) or Flame Rune (Iron ×4, Surtling Core ×2, Coal ×5).
+2. At the **Paint Bench**, open the colour wheel (Shift + Use), pick the colour and press **Glow Rune** or **Flame Rune**. It takes the dyes the wheel suggests, as for a paint pot but without the binder.
+3. Hold the weapon or shield and use the coloured rune on the **Rune Etching Table**. The rune is used up; a new one replaces the colour.
+
+- **Glow**: the blade or head glows in the colour and sheds a soft light; a weapon whose model has no glowing part only sheds the light. It is as strong at every quality.
+- **Flame**: the White Hilt Sword's Dyrnwyn fire and the staffs' flames take the colour, a blue flame instead of the usual one for instance; other gear catches fire along its head or the top of its blade.
+- **Free at the table**, with the gear in hand: **Shift + Use** takes the glow off, **Alt + Use** puts the flame out, the sword's and the staffs' own flames included, and a second Alt + Use brings it back as it was.
+
+Everyone sees glow and flame, in your hands and on the ground. White Hilt gear above quality 4 shows the vanilla upgrade sparkles as at quality 5, without growing brighter with every level.
 
 ## 🪨 WHETSTONE AND WEAPON OILS
 

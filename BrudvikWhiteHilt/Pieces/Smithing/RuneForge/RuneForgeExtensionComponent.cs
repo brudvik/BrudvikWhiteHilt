@@ -29,7 +29,7 @@ public abstract class RuneForgeExtensionComponent : MonoBehaviour, Hoverable, In
     }
 
     /// <inheritdoc/>
-    public bool Interact(Humanoid user, bool hold, bool alt)
+    public virtual bool Interact(Humanoid user, bool hold, bool alt)
     {
         if (hold || user is not Player player)
         {

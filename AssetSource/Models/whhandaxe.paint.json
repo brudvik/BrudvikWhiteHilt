@@ -1,0 +1,8 @@
+{
+  "paint": [
+    { "material": "Wood", "colour": [0.92, 0.9, 0.84], "strength": 0.85 }
+  ],
+  "glow": [
+    { "material": "Steel" }
+  ]
+}

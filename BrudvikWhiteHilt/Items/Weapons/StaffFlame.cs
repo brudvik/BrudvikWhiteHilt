@@ -100,9 +100,13 @@ public static class StaffFlame
         }
     }
 
-    // Recolours a flame's particles. The fire textures carry their own orange, so a grey copy of the material is made
-    // (once per texture) and the colour comes from the particles instead.
-    private static void Recolor(ParticleSystem particles, Color colour)
+    /// <summary>
+    /// Recolours a flame's particles. The fire textures carry their own orange, so a grey copy of the material is made
+    /// (once per texture) and the colour comes from the particles instead.
+    /// </summary>
+    /// <param name="particles">The flame's particle system.</param>
+    /// <param name="colour">The new colour.</param>
+    public static void Recolor(ParticleSystem particles, Color colour)
     {
         ParticleSystem.MainModule main = particles.main;
         main.startColor = new ParticleSystem.MinMaxGradient(colour);

@@ -97,6 +97,13 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// </summary>
     protected virtual int MaxStackSize => maxStackSize.Value;
 
+    /// <summary>
+    /// A model of its own in place of the ring (a mesh in the White Hilt asset bundle with <c>&lt;name&gt;_albedo</c>
+    /// and an <c>&lt;name&gt;_emission</c> map of its carved sign), or null for the ring. The sign glows in
+    /// <see cref="RuneColor"/>.
+    /// </summary>
+    protected virtual string StoneModel => null;
+
     /// <inheritdoc/>
     public string Id => BaseName;
 
@@ -256,7 +263,16 @@ public abstract class WhiteHiltRuneBase : IWhiteHiltCustomItem, IWhiteHiltConfig
             RingTexture.name = $"{BaseName}_ring";
             GlowTexture = VisualHelper.RecolorTexture(ForagingAssets.LoadTexture("runering_albedo"), pixel => IsCarvedRune(pixel) ? (Color32)RuneColor : new Color32(0, 0, 0, 255));
             GlowTexture.name = $"{BaseName}_glow";
-            VisualHelper.ReplaceMesh(rune.ItemPrefab, ForagingAssets.LoadMesh("runering"), RingTexture, size: RingSize);
+            if (StoneModel == null)
+            {
+                VisualHelper.ReplaceMesh(rune.ItemPrefab, ForagingAssets.LoadMesh("runering"), RingTexture, size: RingSize);
+            }
+            else
+            {
+                GameObject stone = VisualHelper.ReplaceMesh(rune.ItemPrefab, ForagingAssets.LoadMesh(StoneModel),
+                    ForagingAssets.LoadTexture($"{StoneModel}_albedo"), size: RingSize);
+                ColourRunes.LightSign(stone, ForagingAssets.LoadTexture($"{StoneModel}_emission"), RuneColor);
+            }
 
             Sprite icon = VisualHelper.RenderIcon(rune.ItemPrefab);
             if (icon != null)
