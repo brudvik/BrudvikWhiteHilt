@@ -59,3 +59,12 @@ Check every new seat on three points; the first decor chairs got all three wrong
 Then sit on it in the game: the body should rest on the seat with the back behind it. Existing pieces in the world
 take new sizes and seats when the game loads, since they come from the prefab.
 
+## Support
+
+`DecorPieceFactory.SetUpWearNTear` sets two flags whose names mislead:
+
+- `m_supports` is whether the piece carries what is set on it. With `false`, Valheim's placement check
+  (`Player.UpdatePlacementGhost`) refuses anything aimed at the piece, so no pot could stand on a decor table. Solid
+  decorations have `true`; plants and cloth, which one walks through, `false`.
+- `m_noSupportWear = true` means the piece is *worn down* without support, the opposite of what it says. Decorations
+  have `false`, so a lantern may hang in the air.

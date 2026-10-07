@@ -13,6 +13,7 @@ The White Hilt Decor Hammer builds decorations only: plants that sway in the win
 - Removing a decoration gives its materials back, so rearranging a room costs nothing.
 - Plants, cloth and small things on tables let you walk through them; the hammer still removes them.
 - Decorations need no support: a lantern can hang from a beam and a pot can stand on a shelf.
+- Anything can be set on a solid decoration: a pot on a table, a lantern on a barrel, a crate on a crate. Plants, cloth and other things you walk through carry nothing.
 - Stools, chairs and benches can be sat on.
 - A size copy (small: 0.6 times, large: 1.5 times, huge: twice the size) costs about half, one and a half or twice as much.
 - Bushes, trees and other pieces with Valheim's own look are copies of their looks only: they cannot be chopped, picked, mined or looted.

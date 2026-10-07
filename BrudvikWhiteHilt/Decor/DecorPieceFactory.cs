@@ -367,10 +367,13 @@ public static class DecorPieceFactory
         wear.m_snowWorn = null;
         wear.m_snowBroken = null;
         wear.m_fragmentRoots = null;
-        // Decorations do not carry anything and may hang from a beam or stand on a shelf without support.
-        wear.m_noSupportWear = true;
+        // Decorations need no support: a lantern may hang in the air, a pot stand on a shelf. (m_noSupportWear = true
+        // would mean the opposite: worn down without support.) A solid one carries what is set on it, a table, barrel
+        // or crate; Valheim refuses to place anything on a piece that does not (m_supports = false). Plants and cloth
+        // carry nothing.
+        wear.m_noSupportWear = false;
         wear.m_noRoofWear = true;
-        wear.m_supports = false;
+        wear.m_supports = entry.Solid;
         wear.m_health = entry.Wind ? 30f : entry.Material switch { "stone" => 300f, "metal" => 300f, "cloth" => 50f, _ => 150f };
         wear.m_materialType = entry.Material switch
         {
