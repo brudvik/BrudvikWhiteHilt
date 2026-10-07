@@ -73,6 +73,17 @@ public static class ForagingAssets
             ?? throw new InvalidOperationException($"Prefab '{name}' not found in {ResourceName}.");
     }
 
+    /// <summary>
+    /// Loads an animation clip from the bundle, such as the Rune Sword's cuts made by BuildAttackClips.cs.
+    /// </summary>
+    /// <param name="name">Clip name.</param>
+    /// <returns>The clip.</returns>
+    public static AnimationClip LoadAnimation(string name)
+    {
+        return GetBundle().LoadAllAssets<AnimationClip>().FirstOrDefault(clip => clip.name == name)
+            ?? throw new InvalidOperationException($"Animation '{name}' not found in {ResourceName}.");
+    }
+
     private static AssetBundle GetBundle()
     {
         if (bundle == null)

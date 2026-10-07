@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -36,6 +37,11 @@ public class WhiteHiltScythe : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "AtgeirIron";
+
+    /// <summary>
+    /// Reaps in wide sweeps first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Cleave, AttackStyle.Polearm };
 
     /// <summary>
     /// War Scythe by Yudha Mfr, held slanted like the vanilla atgeirs, with a white grip.

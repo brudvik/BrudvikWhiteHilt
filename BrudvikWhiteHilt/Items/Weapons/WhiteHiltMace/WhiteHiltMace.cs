@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -27,6 +28,11 @@ public class WhiteHiltMace : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "MaceIron";
+
+    /// <summary>
+    /// Blows from above first, as a head of iron wants.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Chop, AttackStyle.Slash };
 
     /// <summary>
     /// Brass Viking Mace by Asylum Nox, with a white grip.

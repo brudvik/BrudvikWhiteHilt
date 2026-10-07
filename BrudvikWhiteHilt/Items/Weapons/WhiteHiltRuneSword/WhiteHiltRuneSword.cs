@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -30,6 +31,11 @@ public class WhiteHiltRuneSword : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "SwordNiedhogg";
+
+    /// <summary>
+    /// Its own cuts first: an overhead strike, a lunging thrust and a leaping whirl (see RuneSwordMotion).
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Rune, AttackStyle.Slash, AttackStyle.Stab };
 
     /// <summary>
     /// Viking Rune Sword by Pitchforkone, with a white grip; its runes glow.

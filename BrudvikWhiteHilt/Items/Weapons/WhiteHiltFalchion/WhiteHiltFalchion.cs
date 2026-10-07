@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltFalchion : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "SwordSilver";
+
+    /// <summary>
+    /// A heavy curved blade that chops first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Chop, AttackStyle.Slash };
 
     /// <summary>
     /// Falchion by Whatevvs, with a white grip.

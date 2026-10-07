@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -37,6 +38,11 @@ public class WhiteHiltHalberd : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "AtgeirBlackmetal";
+
+    /// <summary>
+    /// Spike, axe and hook: thrusts, cleaves and hews.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Polearm, AttackStyle.Cleave, AttackStyle.Hew };
 
     /// <summary>
     /// Viking Halberd by beyondmatter, held slanted like the vanilla atgeirs, with a white grip.

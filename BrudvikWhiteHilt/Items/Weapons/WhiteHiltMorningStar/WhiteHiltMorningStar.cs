@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltMorningStar : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "MaceNeedle";
+
+    /// <summary>
+    /// Blows from above first, as a spiked head wants.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Chop, AttackStyle.Slash };
 
     /// <summary>
     /// Morning star by AndreySurnachev, with a white grip.

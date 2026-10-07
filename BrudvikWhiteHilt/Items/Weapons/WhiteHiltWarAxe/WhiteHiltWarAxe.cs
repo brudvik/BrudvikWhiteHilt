@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -28,6 +29,11 @@ public class WhiteHiltWarAxe : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "Battleaxe";
+
+    /// <summary>
+    /// Overhead hews first, then cleaves.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Hew, AttackStyle.Cleave };
 
     /// <inheritdoc/>
     protected override string StatsFrom => "BattleaxeBlackmetal";

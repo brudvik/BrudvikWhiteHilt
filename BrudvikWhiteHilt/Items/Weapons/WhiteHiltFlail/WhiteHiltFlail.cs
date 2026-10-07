@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -36,6 +37,11 @@ public class WhiteHiltFlail : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "MaceIron";
+
+    /// <summary>
+    /// Swung, never thrust: a chain cannot stab.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Slash, AttackStyle.Chop };
 
     /// <summary>
     /// Medieval Flail by Herzog, the chain swung out along the haft, with a white grip.

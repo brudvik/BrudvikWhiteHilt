@@ -134,7 +134,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/chests.md"><img src="docs/images/collection_post.png" height="110" alt=""></a><br><b><a href="docs/chests.md">Restocking chests</a></b><br><sub>Fourteen chests that keep themselves stocked, wall drawers and a Collection Post that sorts.</sub></td>
-<td></td>
+<td align="center" valign="top"><a href="docs/attack-styles.md"><img src="docs/images/readme/tile_attack_styles.png" height="110" alt=""></a><br><b><a href="docs/attack-styles.md">Attack styles & animations</a></b><br><sub>Weapons that swing in several styles, and the Rune Sword's own strike, thrust and leaping whirl.</sub></td>
 <td></td>
 </tr>
 </table>

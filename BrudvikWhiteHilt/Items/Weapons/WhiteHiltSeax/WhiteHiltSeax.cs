@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -27,6 +28,11 @@ public class WhiteHiltSeax : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "KnifeChitin";
+
+    /// <summary>
+    /// A long single-edged knife: slashes first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Slash, AttackStyle.Stab };
 
     /// <summary>
     /// Viking Seax by Bram@NC, with a white grip.

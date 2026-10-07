@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -31,6 +32,11 @@ public class WhiteHiltDaneAxe : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "Battleaxe";
+
+    /// <summary>
+    /// Wide cleaves, overhead hews and long two-handed cuts.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Cleave, AttackStyle.Hew, AttackStyle.Greatsword };
 
     /// <inheritdoc/>
     protected override string StatsFrom => "BattleaxeCrystal";

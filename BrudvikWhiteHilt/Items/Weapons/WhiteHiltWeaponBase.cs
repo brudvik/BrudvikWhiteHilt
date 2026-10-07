@@ -120,6 +120,12 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
     protected virtual float ThrownSpin => 0f;
 
     /// <summary>
+    /// The ways the weapon swings, its signature first (see <see cref="Styles.AttackStyle"/>), or null for those of
+    /// the vanilla animation it is cloned with. Bows, crossbows and staffs never vary.
+    /// </summary>
+    protected virtual Styles.AttackStyle[] Swings => null;
+
+    /// <summary>
     /// The colour the model always glows in where its emission map (<c>&lt;name&gt;_emission</c>) is lit, or null for
     /// none. A Glow Rune etched into the weapon shines over it, and it comes back when that glow is put out.
     /// </summary>
@@ -196,6 +202,7 @@ public abstract class WhiteHiltWeaponBase : IWhiteHiltCustomItem, IWhiteHiltConf
             FreezeUpgradeGlow(item.ItemPrefab);
             Binding.GearBinding.Register(NameToken, item.ItemData.m_itemType == ItemDrop.ItemData.ItemType.Shield);
             WeaponTraits.Register(item.ItemData.m_name, Trait);
+            Styles.AttackVariety.Register(item.ItemData, Swings);
 
             ApplyConfig();
 

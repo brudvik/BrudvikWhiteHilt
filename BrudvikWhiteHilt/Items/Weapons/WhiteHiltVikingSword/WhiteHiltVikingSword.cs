@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -27,6 +28,11 @@ public class WhiteHiltVikingSword : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "SwordIron";
+
+    /// <summary>
+    /// Broad cuts and chops; no stabs with its rounded point.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Slash, AttackStyle.Chop };
 
     /// <summary>
     /// Viking sword by Shannen Art, with a white grip.

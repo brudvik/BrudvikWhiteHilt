@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltBecDeCorbin : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "AtgeirBlackmetal";
+
+    /// <summary>
+    /// A beak and hammer on a pole: brought down from above first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Hew, AttackStyle.Polearm };
 
     /// <summary>
     /// Bec De Corbin by AndreySurnachev, with a white grip.

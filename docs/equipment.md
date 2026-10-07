@@ -82,6 +82,10 @@ The Necromancer's Staff raises skeletons to fight for you, like the Dead Raiser 
 
 You cannot wake yourself, and graves from before this version cannot be woken.
 
+### Attack styles
+
+The melee weapons swing in several styles, a signature one and others that suit their grip, and the Rune Sword has cuts of its own. See [Attack styles & animations](attack-styles.md).
+
 ---
 
 ## 🛡️ ARMOR
@@ -183,7 +187,7 @@ All tools are indestructible with reduced stamina usage (stamina modifier -1).
 
 ## Config
 
-All admin only, synced from the server.
+All admin only, synced from the server. The attack style settings are on [Attack styles & animations](attack-styles.md).
 
 | Setting | Default | What it does |
 |---|---|---|

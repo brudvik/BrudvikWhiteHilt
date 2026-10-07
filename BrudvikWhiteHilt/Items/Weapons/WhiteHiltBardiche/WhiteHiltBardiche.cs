@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltBardiche : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "AtgeirIron";
+
+    /// <summary>
+    /// A long axe blade on a pole: cleaves first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Cleave, AttackStyle.Polearm };
 
     /// <summary>
     /// Bardiche by Kanpai, coloured steel grey (the model has no texture).

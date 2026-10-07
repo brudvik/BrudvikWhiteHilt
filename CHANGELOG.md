@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Attack styles**: the White Hilt melee weapons no longer swing the same way every time. Each has a signature style and one or two others that suit its grip (a Gladius stabs and lunges, a Falchion chops, a War Axe hews from above), and every new combo draws one of them. Damage and stamina per second stay the weapon's own in every style. The tooltip lists the styles. The server chooses Varied, Signature or Vanilla for everyone, and each player can choose for themselves. See [Attack styles & animations](docs/attack-styles.md).
+- **The Rune Sword's own cuts**: a rising overhead strike, a lunging thrust and a leaping whirl, new animations made for the mod and seen by every player.
+
 ## v0.103.0 - 2026-10-07
 
 ### Added

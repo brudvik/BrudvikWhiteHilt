@@ -130,6 +130,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Weapons.ArmorBreakEffect.Register();
         Patches.Gear.WeaponTraitPatches.RegisterTranslations();
         Items.Weapons.WeaponGlow.RegisterTranslations();
+        Items.Weapons.Styles.AttackVarietySettings.Initialize();
+        Items.Weapons.Styles.AttackVariety.RegisterTranslations();
         Items.Runes.GlowRune.GlowRune.RegisterTranslations();
         Items.Runes.FlameRune.FlameRune.RegisterTranslations();
         Items.Runes.ColourRunes.RegisterTranslations();

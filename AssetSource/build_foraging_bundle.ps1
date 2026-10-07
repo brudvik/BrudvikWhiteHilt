@@ -142,6 +142,7 @@ New-Item -ItemType Directory -Force $editorScripts | Out-Null
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildForagingBundle.cs') $editorScripts -Force
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildCreatures.cs') $editorScripts -Force
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildDecorBundle.cs') $editorScripts -Force
+Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildAttackClips.cs') $editorScripts -Force
 
 if ($DecorOnly) {
     if (-not $UnityOnly) {
@@ -156,6 +157,18 @@ if (-not $UnityOnly) {
     Convert-Decor
     Export-Creatures
     & (Join-Path $PSScriptRoot 'build_skidbladnir.ps1') -BlenderPath $BlenderPath
+}
+
+# The Rune Sword's attack clips are checked against the game's own player animator, so they need the game installed;
+# without it the clips already in the project are used. Not -nographics: it renders preview strips too.
+$game = if ($env:VALHEIM_INSTALL) { $env:VALHEIM_INSTALL } else { 'C:\Program Files (x86)\Steam\steamapps\common\Valheim' }
+if (Test-Path (Join-Path $game 'valheim_Data')) {
+    Write-Host "Building attack clips (log: $logFile)"
+    Invoke-Unity @('-batchmode', '-quit', '-projectPath', "`"$project`"", '-executeMethod', 'BuildAttackClips.Build', '-logFile', "`"$logFile`"")
+    Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-Host $_.Line }
+}
+else {
+    Write-Warning "Valheim not found at $game (set VALHEIM_INSTALL); keeping the attack clips already in the project."
 }
 
 Write-Host "Building asset bundle (log: $logFile)"

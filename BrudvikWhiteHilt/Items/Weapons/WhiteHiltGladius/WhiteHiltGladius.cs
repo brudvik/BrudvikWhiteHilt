@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltGladius : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "SwordBlackmetal";
+
+    /// <summary>
+    /// A short thrusting sword: stabs and lunges first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Stab, AttackStyle.Lunge, AttackStyle.Slash };
 
     /// <summary>
     /// The white-gripped sword from Roman Gladius Fantasy Set by Asylum Nox.

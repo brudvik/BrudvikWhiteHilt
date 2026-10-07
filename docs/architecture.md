@@ -84,6 +84,14 @@ Nothing else needs to be registered. Reflection finds the class, and `WhiteHiltW
 3. It applies the config and swaps in the White Hilt model.
 4. It hands the item to Jotunn, which adds it to ObjectDB and its recipe to the crafting station.
 
+A weapon may also name the ways it swings (`Swings`, see `Items/Weapons/Styles`). Every attack of the player's
+animator is an Any State transition on its trigger alone, so a prefix on `Attack.Start` can give the attack the game
+has just cloned another animation, angle, damage and stamina before the game sets the trigger. The Rune Sword's own
+cuts are humanoid clips made by `AssetSource/Unity/BuildAttackClips.cs`; while the sword is in hand,
+`RuneSwordMotion` swaps the player's controller for an `AnimatorOverrideController` that plays them in the dual
+knives' states.
+What was learnt about Valheim's player animations on the way is in [Attack styles & animations](attack-styles.md).
+
 The base classes are `WhiteHiltWeaponBase`, `WhiteHiltArmorBase`, `WhiteHiltAccessoryBase`, `PotionBase`,
 `WhiteHiltMeadBase`, the tool, ammunition and ship bases, and `ForageableBase`. Each of them explains its pattern in
 its class comment, so the many subclasses only use `<inheritdoc/>`.

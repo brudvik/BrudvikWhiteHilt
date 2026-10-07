@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Weapons.Styles;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -29,6 +30,11 @@ public class WhiteHiltWarHammer : WhiteHiltWeaponBase
 
     /// <inheritdoc/>
     protected override string CopyFrom => "MaceIron";
+
+    /// <summary>
+    /// Hammer blows from above first.
+    /// </summary>
+    protected override AttackStyle[] Swings => new[] { AttackStyle.Chop, AttackStyle.Slash };
 
     /// <summary>
     /// War Hammer by Yudha Mfr, coloured steel grey.
