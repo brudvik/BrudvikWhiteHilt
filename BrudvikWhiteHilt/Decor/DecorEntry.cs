@@ -53,6 +53,14 @@ public sealed class DecorEntry
 {
     private const string ResourceName = "BrudvikWhiteHilt.Decor.json";
 
+    // The size copies a decoration can have: the name it is added under, how much it is scaled, and its cost factor.
+    private static readonly Dictionary<string, (float Scale, float Cost)> sizes = new()
+    {
+        ["small"] = (0.6f, 0.5f),
+        ["large"] = (1.5f, 1.5f),
+        ["huge"] = (2f, 2f)
+    };
+
     private static List<DecorEntry> all;
 
     /// <summary>Short id, unique in the catalogue; the prefab, mesh and translation keys are made from it.</summary>
@@ -114,11 +122,26 @@ public sealed class DecorEntry
     /// <summary>Attribution for a CC BY model, or null.</summary>
     public string Credit { get; private set; }
 
+    /// <summary>
+    /// For a size copy, its size (<c>small</c>, <c>large</c> or <c>huge</c>); null for the decoration as listed.
+    /// </summary>
+    public string Size { get; private set; }
+
+    /// <summary>
+    /// Id of the entry whose model it shows: its own, or for a size copy the listed decoration's.
+    /// </summary>
+    public string ModelId { get; private set; }
+
     /// <summary>Prefab name of the piece.</summary>
     public string PrefabName => $"piece_whitehilt_decor_{Id}";
 
     /// <summary>Mesh and texture name in the decor bundle.</summary>
-    public string MeshName => $"decor_{Id}";
+    public string MeshName => $"decor_{ModelId}";
+
+    /// <summary>
+    /// The size names an entry may list under <c>sizes</c>.
+    /// </summary>
+    public static IEnumerable<string> SizeNames => sizes.Keys;
 
     /// <summary>
     /// Every entry of the catalogue, read once from the embedded file.
@@ -141,7 +164,39 @@ public sealed class DecorEntry
     internal static List<DecorEntry> Parse(string json)
     {
         IDictionary<string, object> root = (IDictionary<string, object>)SimpleJson.SimpleJson.DeserializeObject(json);
-        return ((IList<object>)root["pieces"]).Cast<IDictionary<string, object>>().Select(FromJson).ToList();
+        return ((IList<object>)root["pieces"]).Cast<IDictionary<string, object>>().SelectMany(WithSizes).ToList();
+    }
+
+    // The decoration as listed, then a copy for each size it lists under "sizes": the same model scaled, as its own
+    // piece "<id>_<size>", for a cost that grows and shrinks with it.
+    private static IEnumerable<DecorEntry> WithSizes(IDictionary<string, object> json)
+    {
+        DecorEntry entry = FromJson(json);
+        yield return entry;
+        if (!json.TryGetValue("sizes", out object listed) || listed is not IList<object> names)
+        {
+            yield break;
+        }
+
+        foreach (string size in names.Select(name => Convert.ToString(name, CultureInfo.InvariantCulture)))
+        {
+            if (!sizes.TryGetValue(size, out (float Scale, float Cost) factor))
+            {
+                throw new InvalidDataException($"decor entry {entry.Id} has an unknown size '{size}'");
+            }
+
+            DecorEntry copy = (DecorEntry)entry.MemberwiseClone();
+            copy.Id = $"{entry.Id}_{size}";
+            copy.Size = size;
+            copy.Scale = entry.Scale * factor.Scale;
+            copy.Requirements = entry.Requirements.Select(requirement => new RequirementConfig
+            {
+                Item = requirement.Item,
+                Amount = Math.Max(1, (int)Math.Ceiling(requirement.Amount * factor.Cost)),
+                Recover = requirement.Recover
+            }).ToArray();
+            yield return copy;
+        }
     }
 
     private static DecorEntry FromJson(IDictionary<string, object> json)
@@ -149,6 +204,7 @@ public sealed class DecorEntry
         DecorEntry entry = new()
         {
             Id = Text(json, "id") ?? throw new InvalidDataException("a decor entry has no id"),
+            ModelId = Text(json, "id"),
             Category = Text(json, "category") ?? "Home",
             VanillaPrefab = Text(json, "vanilla"),
             BundleMesh = Text(json, "bundle"),
@@ -213,7 +269,8 @@ public sealed class DecorEntry
     {
         foreach (DecorEntry entry in All)
         {
-            Translations.AddEnglish(entry.PrefabName, entry.Name ?? entry.Id);
+            string name = entry.Name ?? entry.ModelId;
+            Translations.AddEnglish(entry.PrefabName, entry.Size == null ? name : $"{name} ({entry.Size})");
             Translations.AddEnglish($"{entry.PrefabName}_description", entry.Description ?? string.Empty);
         }
     }

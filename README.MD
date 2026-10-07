@@ -87,7 +87,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/build-tools.md"><img src="docs/images/readme/tile_build_tools.png" height="110" alt=""></a><br><b><a href="docs/build-tools.md">Build camera & toolbar</a></b><br><sub>A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.</sub></td>
-<td align="center" valign="top"><a href="docs/decor.md"><img src="docs/images/decor_hearth.png" height="110" alt=""></a><br><b><a href="docs/decor.md">Decor Hammer</a></b><br><sub>261 decorations: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.</sub></td>
+<td align="center" valign="top"><a href="docs/decor.md"><img src="docs/images/decor_hearth.png" height="110" alt=""></a><br><b><a href="docs/decor.md">Decor Hammer</a></b><br><sub>460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.</sub></td>
 <td></td>
 </tr>
 </table>

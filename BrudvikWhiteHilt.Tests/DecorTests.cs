@@ -51,7 +51,7 @@ public class DecorTests
     {
         string folder = Repository.Path("AssetSource", "Decor", "Models");
         HashSet<string> models = new(Directory.GetFiles(folder, "*.glb").Select(Path.GetFileNameWithoutExtension));
-        List<DecorEntry> withModels = Catalog().Where(entry => entry.Look == DecorLook.Model).ToList();
+        List<DecorEntry> withModels = Catalog().Where(entry => entry.Look == DecorLook.Model && entry.Size == null).ToList();
 
         Assert.All(withModels, entry => Assert.True(models.Contains(entry.Id), $"{entry.Id}: run AssetSource/Decor/prepare_decor.py"));
         Assert.All(withModels, entry => Assert.True(entry.Height > 0f, $"{entry.Id} has no height"));
@@ -80,6 +80,22 @@ public class DecorTests
             .Distinct();
 
         Assert.All(authors, author => Assert.Contains(author, readme));
+    }
+
+    [Fact]
+    public void SizeCopiesShowTheirDecorationsModelScaled()
+    {
+        List<DecorEntry> catalog = Catalog();
+        DecorEntry barrel = catalog.Single(entry => entry.Id == "barrel_old");
+        DecorEntry large = catalog.Single(entry => entry.Id == "barrel_old_large");
+        DecorEntry small = catalog.Single(entry => entry.Id == "barrel_old_small");
+
+        Assert.Equal("large", large.Size);
+        Assert.Equal(barrel.MeshName, large.MeshName);
+        Assert.Equal(barrel.Scale * 1.5f, large.Scale, 3);
+        Assert.Equal(barrel.Scale * 0.6f, small.Scale, 3);
+        Assert.True(large.Requirements.Sum(requirement => requirement.Amount) > barrel.Requirements.Sum(requirement => requirement.Amount));
+        Assert.All(catalog.Where(entry => entry.Size != null), entry => Assert.Equal(0f, entry.Seat));
     }
 
     [Fact]

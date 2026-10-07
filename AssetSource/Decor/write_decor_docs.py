@@ -49,12 +49,16 @@ def notes(entry):
         found.append("light")
     if "vanilla" in entry:
         found.append("Valheim's own look")
+    if entry.get("sizes"):
+        found.append("also " + " and ".join(entry["sizes"]))
     return ", ".join(found)
 
 
 def main():
     catalog = json.loads((HERE / "decor.json").read_text(encoding="utf-8"))
     pieces = catalog["pieces"]
+    # Each size an entry lists is a piece of its own in the game.
+    count = len(pieces) + sum(len(entry.get("sizes", [])) for entry in pieces)
     lines = [
         "# 🪴 Decor Hammer",
         "",
@@ -62,7 +66,8 @@ def main():
         "",
         "The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and"
         " workshop things, furniture, cloth, lights and Norse pieces. There are "
-        f"{len(pieces)} of them under eight tabs.",
+        f"{count} of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large"
+        " size as well.",
         "",
         "| Item | Description | Crafting Station | Requirements |",
         "|------|-------------|------------------|--------------|",
@@ -77,6 +82,8 @@ def main():
         "- Plants, cloth and small things on tables let you walk through them; the hammer still removes them.",
         "- Decorations need no support: a lantern can hang from a beam and a pot can stand on a shelf.",
         "- Stools, chairs and benches can be sat on.",
+        "- A size copy (small: 0.6 times, large: 1.5 times, huge: twice the size) costs about half, one and a half or"
+        " twice as much.",
         "- Bushes, trees and other pieces with Valheim's own look are copies of their looks only: they cannot be chopped,"
         " picked, mined or looted.",
         "",
@@ -108,7 +115,7 @@ def main():
         "",
     ]
     (REPO / "docs" / "decor.md").write_text("\n".join(lines), encoding="utf-8")
-    print(f"docs/decor.md: {len(pieces)} decorations")
+    print(f"docs/decor.md: {count} decorations")
 
 
 if __name__ == "__main__":

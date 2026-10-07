@@ -23,6 +23,7 @@ code.
 | `light` | `candle`, `lantern` or `fire`: a flame and a light that need no fuel. |
 | `lightAt` | Where the flame sits, as a share of the height from the foot (0 to 1); by default the top of a candle, the middle of a lantern and the bottom of a fire. |
 | `seat` | Height of the seat surface in metres; makes it a chair. See **Chairs, stools and benches** below. |
+| `sizes` | Size copies to add as pieces of their own, `<id>_<size>`: `small` (0.6 times the size, half the cost), `large` (1.5 times, half again the cost) or `huge` (twice, double). Not for tools, seats or anything that has a real size. A copy's id must not be another entry's (`rock_mossy_small` is). Its Norwegian name is the decoration's with `(liten)`, `(stor)` or `(svær)`. |
 | `seatYaw` | Which way one sits, in degrees about the vertical from the model's +z (default 0). `180` for a chair whose back is on +z. |
 | `cost` | `Item:amount,Item:amount` with Valheim's prefab names. The materials are given back when it is removed. |
 | `name`, `description` | English texts. The Norwegian ones go in `BrudvikWhiteHilt/Translations/Norwegian.json` as `piece_whitehilt_decor_<id>` and `..._description`. |

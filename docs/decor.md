@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 261 of them under eight tabs.
+The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 460 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -14,6 +14,7 @@ The White Hilt Decor Hammer builds decorations only: plants that sway in the win
 - Plants, cloth and small things on tables let you walk through them; the hammer still removes them.
 - Decorations need no support: a lantern can hang from a beam and a pot can stand on a shelf.
 - Stools, chairs and benches can be sat on.
+- A size copy (small: 0.6 times, large: 1.5 times, huge: twice the size) costs about half, one and a half or twice as much.
 - Bushes, trees and other pieces with Valheim's own look are copies of their looks only: they cannot be chopped, picked, mined or looted.
 
 ## 🌿 Garden
@@ -26,16 +27,16 @@ Trees, bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of t
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
-| **Leafy Bush** | A round green bush from the meadows. | Wood ×2 | Valheim's own look |
-| **Heath Bush** | A low bush of the open heath. | Wood ×2 | Valheim's own look |
-| **Dense Bush** | A thick bush of small leaves. | Wood ×2 | Valheim's own look |
-| **Shrub** | A small shrub for borders and corners. | Wood ×1 | Valheim's own look |
-| **Heath Shrub** | A small, dry shrub of the heath. | Wood ×1 | Valheim's own look |
-| **Young Beech** | A young beech tree that never grows old. | Beech Seeds ×1, Wood ×2 | Valheim's own look |
-| **Young Beech, Bushy** | A young, bushy beech tree. | Beech Seeds ×1, Wood ×2 | Valheim's own look |
-| **Young Fir** | A small fir tree from the Black Forest. | Fir Cone ×1, Wood ×2 | Valheim's own look |
+| **Leafy Bush** | A round green bush from the meadows. | Wood ×2 | Valheim's own look, also small and large |
+| **Heath Bush** | A low bush of the open heath. | Wood ×2 | Valheim's own look, also small and large |
+| **Dense Bush** | A thick bush of small leaves. | Wood ×2 | Valheim's own look, also small and large |
+| **Shrub** | A small shrub for borders and corners. | Wood ×1 | Valheim's own look, also small and large |
+| **Heath Shrub** | A small, dry shrub of the heath. | Wood ×1 | Valheim's own look, also small and large |
+| **Young Beech** | A young beech tree that never grows old. | Beech Seeds ×1, Wood ×2 | Valheim's own look, also small and large |
+| **Young Beech, Bushy** | A young, bushy beech tree. | Beech Seeds ×1, Wood ×2 | Valheim's own look, also small and large |
+| **Young Fir** | A small fir tree from the Black Forest. | Fir Cone ×1, Wood ×2 | Valheim's own look, also small and large |
 | **Yggdrasil Shoot** | A young shoot of the world tree, from the Mistlands. | Yggdrasil Wood ×2 | Valheim's own look |
-| **Ashlands Bush** | A thorny, ember-red bush from the Ashlands. | Ashwood ×2 | Valheim's own look |
+| **Ashlands Bush** | A thorny, ember-red bush from the Ashlands. | Ashwood ×2 | Valheim's own look, also small and large |
 | **Ashlands Fern** | A fern that grows in the warm ash. | Fiddlehead ×1 | Valheim's own look |
 | **Thistle** | A blue-flowered thistle that is never picked. | Thistle ×1 | Valheim's own look |
 | **Dandelion** | A single yellow dandelion. | Dandelion ×1 | Valheim's own look |
@@ -53,8 +54,8 @@ Trees, bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of t
 | **Tall Fern** | A taller fern with arching fronds. | Wood ×1 |  |
 | **Stinging Nettle** | A tall clump of nettles. Best admired from a distance. | Wood ×1 |  |
 | **Nettles** | A small clump of nettles. | Wood ×1 |  |
-| **Round Shrub** | A full, round shrub. | Wood ×2 |  |
-| **Low Shrub** | A low, spreading shrub. | Wood ×1 |  |
+| **Round Shrub** | A full, round shrub. | Wood ×2 | also small and large |
+| **Low Shrub** | A low, spreading shrub. | Wood ×1 | also small and large |
 | **Wood Sorrel** | A patch of clover-leaved sorrel. | Wood ×1 |  |
 | **Dandelion Patch** | A patch of dandelions, some already gone to seed. | Dandelion ×2 |  |
 | **Celandine** | Bright yellow spring flowers. | Dandelion ×1 |  |
@@ -66,25 +67,25 @@ Trees, bushes, young trees, ferns, flowers, mushrooms and berry bushes. All of t
 | **Yellow Stars** | Small star-shaped yellow flowers. | Dandelion ×1 |  |
 | **Blue Flowers** | A spray of small sky-blue flowers. | Dandelion ×1 |  |
 | **Red Flowers** | Red and orange flowers that open in the sun. | Dandelion ×1 |  |
-| **Fir Tree** | A tall fir tree that never needs felling. | Wood ×10, Fir Cone ×1 |  |
-| **Pine Tree** | A tall pine with a broad crown. | Wood ×10, Pine Cone ×1 |  |
-| **Young Noble Fir** | A dense young fir. | Wood ×6, Fir Cone ×1 |  |
-| **Juniper Shrub** | A low evergreen shrub. | Wood ×2, Fir Cone ×1 |  |
-| **Fir Sapling** | A small fir sapling. | Wood ×1, Fir Cone ×1 |  |
-| **Apple Tree** | An apple tree for the farmyard. | Wood ×8, Beech Seeds ×1 |  |
-| **Ash Tree** | A tall ash tree. | Wood ×10, Beech Seeds ×1 |  |
-| **Cherry Tree** | A cherry tree in blossom. | Wood ×8, Beech Seeds ×1 |  |
-| **Plum Tree** | A plum tree for the garden. | Wood ×8, Beech Seeds ×1 |  |
-| **Holly** | A dark green holly bush. | Wood ×2 |  |
+| **Fir Tree** | A tall fir tree that never needs felling. | Wood ×10, Fir Cone ×1 | also small and large |
+| **Pine Tree** | A tall pine with a broad crown. | Wood ×10, Pine Cone ×1 | also small and large |
+| **Young Noble Fir** | A dense young fir. | Wood ×6, Fir Cone ×1 | also small and large |
+| **Juniper Shrub** | A low evergreen shrub. | Wood ×2, Fir Cone ×1 | also small and large |
+| **Fir Sapling** | A small fir sapling. | Wood ×1, Fir Cone ×1 | also small and large |
+| **Apple Tree** | An apple tree for the farmyard. | Wood ×8, Beech Seeds ×1 | also small and large |
+| **Ash Tree** | A tall ash tree. | Wood ×10, Beech Seeds ×1 | also small and large |
+| **Cherry Tree** | A cherry tree in blossom. | Wood ×8, Beech Seeds ×1 | also small and large |
+| **Plum Tree** | A plum tree for the garden. | Wood ×8, Beech Seeds ×1 | also small and large |
+| **Holly** | A dark green holly bush. | Wood ×2 | also small and large |
 | **Raspberry Canes** | A thicket of raspberry canes. | Raspberries ×3, Wood ×1 |  |
-| **Birch Tree** | A white-barked birch. | Wood ×10, Birch Seeds ×1 |  |
-| **Tall Birch** | A tall, slender birch. | Wood ×10, Birch Seeds ×1 |  |
-| **Autumn Birch** | A birch in its autumn colours. | Wood ×10, Birch Seeds ×1 |  |
-| **Maple Tree** | A broad maple tree. | Wood ×10, Beech Seeds ×1 |  |
-| **Oak Tree** | A spreading oak. | Wood ×10, Acorn ×1 |  |
-| **Hazel Shrub** | A leafy shrub for hedges. | Wood ×2 |  |
-| **Tall Shrub** | A tall, open shrub. | Wood ×2 |  |
-| **Leafy Sapling** | A small leafy sapling. | Wood ×1, Beech Seeds ×1 |  |
+| **Birch Tree** | A white-barked birch. | Wood ×10, Birch Seeds ×1 | also small and large |
+| **Tall Birch** | A tall, slender birch. | Wood ×10, Birch Seeds ×1 | also small and large |
+| **Autumn Birch** | A birch in its autumn colours. | Wood ×10, Birch Seeds ×1 | also small and large |
+| **Maple Tree** | A broad maple tree. | Wood ×10, Beech Seeds ×1 | also small and large |
+| **Oak Tree** | A spreading oak. | Wood ×10, Acorn ×1 | also small and large |
+| **Hazel Shrub** | A leafy shrub for hedges. | Wood ×2 | also small and large |
+| **Tall Shrub** | A tall, open shrub. | Wood ×2 | also small and large |
+| **Leafy Sapling** | A small leafy sapling. | Wood ×1, Beech Seeds ×1 | also small and large |
 
 ## 🪨 Wilds
 
@@ -96,37 +97,37 @@ Stones, outcrops, stumps, logs, dead trees and moss to make a garden or a path l
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
-| **Dead Fir** | A small fir that dried out long ago. | Wood ×3 | Valheim's own look |
+| **Dead Fir** | A small fir that dried out long ago. | Wood ×3 | Valheim's own look, also small and large |
 | **Moss** | Patches of soft moss for stones and roofs. | Stone ×1 |  |
-| **Old Stump** | The stump of a long-felled tree. | Wood ×4 |  |
-| **Split Stump** | A broken stump with splintered wood. | Wood ×4 |  |
-| **Fallen Trunk** | A dead trunk lying in the moss. | Wood ×6 |  |
-| **Weathered Trunk** | A grey, weathered trunk. | Wood ×6 |  |
-| **Dry Branches** | A few dry branches on the ground. | Wood ×1 |  |
+| **Old Stump** | The stump of a long-felled tree. | Wood ×4 | also small and large |
+| **Split Stump** | A broken stump with splintered wood. | Wood ×4 | also small and large |
+| **Fallen Trunk** | A dead trunk lying in the moss. | Wood ×6 | also small and large |
+| **Weathered Trunk** | A grey, weathered trunk. | Wood ×6 | also small and large |
+| **Dry Branches** | A few dry branches on the ground. | Wood ×1 | also small and large |
 | **Pine Roots** | Roots reaching out of the ground. | Wood ×3 |  |
-| **Mossy Standing Stone** | A tall stone with moss on its back. | Stone ×10 |  |
-| **Mossy Boulder** | A boulder grown over with moss. | Stone ×8 |  |
-| **Mossy Stone** | A stone with a cap of moss. | Stone ×4 |  |
-| **Boulder** | A large, rounded boulder. | Stone ×12 |  |
-| **Field Stone** | A stone cleared from a field. | Stone ×4 |  |
-| **Meadow Rock** | A grey rock of the meadows. | Stone ×10 | Valheim's own look |
-| **Forest Rock** | A mossy rock of the Black Forest. | Stone ×10 | Valheim's own look |
-| **Heath Rock** | A weathered rock of the heath. | Stone ×10 | Valheim's own look |
-| **Mountain Rock** | A rock from the mountains. | Stone ×10 | Valheim's own look |
-| **Mistlands Rock** | A rock from the Mistlands. | Stone ×10 | Valheim's own look |
-| **Rotten Stump** | An old stump from the meadows. | Wood ×4 | Valheim's own look |
-| **Mossy Log** | An old fir log covered in moss. | Wood ×6 | Valheim's own look |
-| **Beech Stump** | What is left of a beech. | Wood ×3 | Valheim's own look |
-| **Oak Stump** | The broad stump of an oak. | Wood ×4 | Valheim's own look |
-| **Swamp Stump** | A dark stump from the swamp. | Ancient Bark ×2 | Valheim's own look |
-| **Dead Pine** | A tall pine, long dead. | Wood ×8 |  |
-| **Snag** | A broken, dead trunk still standing. | Wood ×6 |  |
-| **Dead Tree** | A bare, dead tree. | Wood ×8 |  |
-| **Fallen Log** | A long log on the forest floor. | Wood ×6 |  |
-| **Birch Log** | A fallen birch log. | Wood ×6 |  |
-| **Mossy Boulder, Round** | A round boulder with moss on top. | Stone ×12 |  |
-| **Mossy Outcrop** | A mossy outcrop of rock. | Stone ×20 |  |
-| **Rock Outcrop** | A grey outcrop of rock. | Stone ×16 |  |
+| **Mossy Standing Stone** | A tall stone with moss on its back. | Stone ×10 | also small and large |
+| **Mossy Boulder** | A boulder grown over with moss. | Stone ×8 | also small and large |
+| **Mossy Stone** | A stone with a cap of moss. | Stone ×4 | also large |
+| **Boulder** | A large, rounded boulder. | Stone ×12 | also small and large |
+| **Field Stone** | A stone cleared from a field. | Stone ×4 | also small and large |
+| **Meadow Rock** | A grey rock of the meadows. | Stone ×10 | Valheim's own look, also small and large |
+| **Forest Rock** | A mossy rock of the Black Forest. | Stone ×10 | Valheim's own look, also small and large |
+| **Heath Rock** | A weathered rock of the heath. | Stone ×10 | Valheim's own look, also small and large |
+| **Mountain Rock** | A rock from the mountains. | Stone ×10 | Valheim's own look, also small and large |
+| **Mistlands Rock** | A rock from the Mistlands. | Stone ×10 | Valheim's own look, also small and large |
+| **Rotten Stump** | An old stump from the meadows. | Wood ×4 | Valheim's own look, also small and large |
+| **Mossy Log** | An old fir log covered in moss. | Wood ×6 | Valheim's own look, also small and large |
+| **Beech Stump** | What is left of a beech. | Wood ×3 | Valheim's own look, also small and large |
+| **Oak Stump** | The broad stump of an oak. | Wood ×4 | Valheim's own look, also small and large |
+| **Swamp Stump** | A dark stump from the swamp. | Ancient Bark ×2 | Valheim's own look, also small and large |
+| **Dead Pine** | A tall pine, long dead. | Wood ×8 | also small and large |
+| **Snag** | A broken, dead trunk still standing. | Wood ×6 | also small and large |
+| **Dead Tree** | A bare, dead tree. | Wood ×8 | also small and large |
+| **Fallen Log** | A long log on the forest floor. | Wood ×6 | also small and large |
+| **Birch Log** | A fallen birch log. | Wood ×6 | also small and large |
+| **Mossy Boulder, Round** | A round boulder with moss on top. | Stone ×12 | also small and large |
+| **Mossy Outcrop** | A mossy outcrop of rock. | Stone ×20 | also small and large |
+| **Rock Outcrop** | A grey outcrop of rock. | Stone ×16 | also small and large |
 
 ## 🍲 Hearth
 
@@ -136,32 +137,32 @@ Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen 
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
-| **Mead Barrel** | A barrel on its stand, with a bung for tapping. | Wood ×4, Resin ×1 |  |
-| **Old Barrel** | A sturdy old barrel. | Wood ×4 |  |
-| **Worn Barrel** | A barrel worn by years of use. | Wood ×4 |  |
-| **Wooden Crate** | A crate with a latched lid. | Wood ×3 |  |
-| **Plank Crate** | A crate of rough planks. | Wood ×3 |  |
-| **Wooden Bucket** | A bucket with a rope handle. | Wood ×2 |  |
+| **Mead Barrel** | A barrel on its stand, with a bung for tapping. | Wood ×4, Resin ×1 | also small and large |
+| **Old Barrel** | A sturdy old barrel. | Wood ×4 | also small and large |
+| **Worn Barrel** | A barrel worn by years of use. | Wood ×4 | also small and large |
+| **Wooden Crate** | A crate with a latched lid. | Wood ×3 | also small and large |
+| **Plank Crate** | A crate of rough planks. | Wood ×3 | also small and large |
+| **Wooden Bucket** | A bucket with a rope handle. | Wood ×2 | also small and large |
 | **Pail** | A pail with two handles. | Wood ×2 |  |
-| **Flat Basket** | A shallow woven basket. | Wood ×2 |  |
-| **Lidded Basket** | A woven basket with a lid. | Wood ×2 |  |
+| **Flat Basket** | A shallow woven basket. | Wood ×2 | also small and large |
+| **Lidded Basket** | A woven basket with a lid. | Wood ×2 | also small and large |
 | **Wooden Bowl** | A deep bowl turned from one piece of wood. | Wood ×1 |  |
 | **Small Bowl** | A small wooden bowl. | Wood ×1 |  |
 | **Carved Plate** | A wooden plate with a carved rim. | Wood ×1 |  |
 | **Wooden Spoon** | A large wooden spoon. | Wood ×1 |  |
 | **Cutting Board** | A worn board for chopping. | Wood ×1 |  |
-| **Clay Pot** | A plain clay pot. | Stone ×2, Resin ×1 |  |
-| **Clay Planter** | A clay pot for growing herbs. | Stone ×2 |  |
+| **Clay Pot** | A plain clay pot. | Stone ×2, Resin ×1 | also small |
+| **Clay Planter** | A clay pot for growing herbs. | Stone ×2 | also small and large |
 | **Cheese Box** | A round box of thin wood. | Wood ×1 |  |
 | **Onion** | An onion that keeps forever. | Onion ×1 |  |
 | **Apple** | A red apple, just for show. | Raspberries ×1 |  |
-| **Fish Barrel** | A barrel of salted fish. | Wood ×4, Raw Fish ×1 |  |
+| **Fish Barrel** | A barrel of salted fish. | Wood ×4, Raw Fish ×1 | also small and large |
 | **Milk Pail** | A pail for the morning milking. | Wood ×2 |  |
 | **Fish Drying Rack** | Fish hung on a rack to dry in the wind. | Wood ×4, Raw Fish ×2 |  |
-| **Basket of Turnips** | A basket brimming with turnips. | Wood ×2, Turnip ×3 |  |
-| **Basket of Carrots** | A basket of fresh carrots. | Wood ×2, Carrot ×3 |  |
-| **Farm Basket** | An empty basket for the harvest. | Wood ×2 |  |
-| **Farm Barrel** | A barrel bound with iron hoops. | Wood ×4 |  |
+| **Basket of Turnips** | A basket brimming with turnips. | Wood ×2, Turnip ×3 | also small and large |
+| **Basket of Carrots** | A basket of fresh carrots. | Wood ×2, Carrot ×3 | also small and large |
+| **Farm Basket** | An empty basket for the harvest. | Wood ×2 | also small and large |
+| **Farm Barrel** | A barrel bound with iron hoops. | Wood ×4 | also small and large |
 | **Tipped Bucket** | A bucket left lying on its side. | Wood ×2 |  |
 | **Bucket of Water** | A bucket of water from the well. | Wood ×2 |  |
 | **Fireplace Tools** | A poker, shovel and brush on their stand. | Iron ×1 |  |
@@ -172,17 +173,17 @@ Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen 
 | **Flask** | A flask with a narrow neck. | Stone ×1, Resin ×1 |  |
 | **Stoneware Jar** | A tall jar with a stopper. | Stone ×1, Resin ×1 |  |
 | **Goblet** | An iron goblet. | Iron ×1 |  |
-| **Slatted Crate** | An open crate of slats. | Wood ×2 |  |
+| **Slatted Crate** | An open crate of slats. | Wood ×2 | also small and large |
 | **Clay Bowl** | A wide clay bowl. | Stone ×2 |  |
-| **Clay Vase** | A clay vase. | Stone ×2, Resin ×1 |  |
-| **Large Clay Pot** | A large clay pot for storing grain. | Stone ×3 |  |
+| **Clay Vase** | A clay vase. | Stone ×2, Resin ×1 | also small and large |
+| **Large Clay Pot** | A large clay pot for storing grain. | Stone ×3 | also small and large |
 | **Clay Bottle** | A tall clay bottle. | Stone ×3 |  |
 | **Well Bucket** | A bucket with a tall handle. | Wood ×2 |  |
-| **Market Barrel** | A tall barrel with iron hoops. | Wood ×4 |  |
-| **Sack of Grain** | An open sack of grain. | Barley ×3 |  |
-| **Sack of Seed** | An open sack of seed. | Barley ×3 |  |
-| **Wooden Box** | A sturdy wooden box. | Wood ×3 |  |
-| **Market Crate** | An open crate for vegetables. | Wood ×2 |  |
+| **Market Barrel** | A tall barrel with iron hoops. | Wood ×4 | also small and large |
+| **Sack of Grain** | An open sack of grain. | Barley ×3 | also small and large |
+| **Sack of Seed** | An open sack of seed. | Barley ×3 | also small and large |
+| **Wooden Box** | A sturdy wooden box. | Wood ×3 | also small and large |
+| **Market Crate** | An open crate for vegetables. | Wood ×2 | also small and large |
 | **Cooking Grate** | A grate over a fire, with a pot and bellows. It cooks nothing. | Iron ×2, Stone ×4, Coal ×2 | light |
 
 ## 🔨 Workshop
@@ -194,7 +195,7 @@ A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, fi
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
 | **Chopping Block** | A chopping log with an axe in it. | Wood ×3, Flint ×1 |  |
-| **Split Firewood** | A few pieces of split firewood. | Wood ×3 |  |
+| **Split Firewood** | A few pieces of split firewood. | Wood ×3 | also small and large |
 | **Fence Post** | A rough fence post. | Wood ×1 |  |
 | **Rail Fence** | A length of split-rail fence. | Wood ×3 |  |
 | **Log Fence** | A low fence of crossed logs. | Wood ×3 |  |
@@ -220,11 +221,11 @@ A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, fi
 | **Tongs** | Long smith's tongs. | Iron ×1 |  |
 | **Crucible** | A crucible for melting metal. | Stone ×2 |  |
 | **Smithy Sign** | A hanging sign with an anvil on it. | Iron ×2 |  |
-| **Cart Wheel** | A spoked wheel to lean against a wall. | Wood ×4 |  |
+| **Cart Wheel** | A spoked wheel to lean against a wall. | Wood ×4 | also huge |
 | **Handcart** | A two-wheeled handcart. | Wood ×10 |  |
 | **Market Stall** | A stall with a striped awning. | Wood ×12, Linen Thread ×4 |  |
 | **Barrow** | A small wooden cart. | Wood ×8 |  |
-| **Logs and Sacks** | Logs stacked with a few sacks. | Wood ×6, Linen Thread ×1 |  |
+| **Logs and Sacks** | Logs stacked with a few sacks. | Wood ×6, Linen Thread ×1 | also small and large |
 | **Quintain** | A swinging target for spear practice. | Wood ×6, Leather Scraps ×2 |  |
 
 ## 🪑 Home
@@ -250,30 +251,30 @@ Tables, stools and chairs you can sit on, shelves, boxes and pots, from the mead
 | **Dvergr Chair** | A dvergr chair. | Yggdrasil Wood ×2 | seat, Valheim's own look |
 | **Dvergr Stool** | A dvergr stool. | Yggdrasil Wood ×1 | seat, Valheim's own look |
 | **Dvergr Shelf** | A dvergr storage shelf. | Yggdrasil Wood ×3 | Valheim's own look |
-| **Dvergr Barrel** | A barrel from the dvergr stores. | Yggdrasil Wood ×3, Copper ×1 | Valheim's own look |
-| **Dvergr Crate** | A dvergr supply crate. | Yggdrasil Wood ×2 | Valheim's own look |
-| **Long Dvergr Crate** | A long dvergr crate. | Yggdrasil Wood ×3 | Valheim's own look |
+| **Dvergr Barrel** | A barrel from the dvergr stores. | Yggdrasil Wood ×3, Copper ×1 | Valheim's own look, also small and large |
+| **Dvergr Crate** | A dvergr supply crate. | Yggdrasil Wood ×2 | Valheim's own look, also small and large |
+| **Long Dvergr Crate** | A long dvergr crate. | Yggdrasil Wood ×3 | Valheim's own look, also small and large |
 | **Mountain Chair** | A chair from a mountain hall. | Wood ×3, Wolf Pelt ×1 | seat, Valheim's own look |
 | **Mountain Table** | A table from a mountain hall. | Wood ×6, Wolf Pelt ×1 | Valheim's own look |
 | **Charred Bench** | A bench from the halls of the Ashlands. | Ashwood ×4 | seat, Valheim's own look |
 | **Charred Stool** | A stool from the halls of the Ashlands. | Ashwood ×2 | seat, Valheim's own look |
 | **Charred Table** | A table from the halls of the Ashlands. | Ashwood ×6 | Valheim's own look |
-| **Braided Box** | A box with braided leather bands. | Wood ×2, Leather Scraps ×1 | Valheim's own look |
-| **Castle Urn** | An urn from an old stronghold. | Stone ×2 | Valheim's own look |
-| **Red Ashlands Pot** | A red-glazed pot from the Ashlands. | Stone ×2, Ashwood ×1 | Valheim's own look |
-| **Green Ashlands Pot** | A green-glazed pot from the Ashlands. | Stone ×2, Ashwood ×1 | Valheim's own look |
-| **Ashlands Urn** | A tall Ashlands urn. | Stone ×3, Ashwood ×1 | Valheim's own look |
-| **Barrel** | A plain barrel like the ones in abandoned houses. | Wood ×4 | Valheim's own look |
-| **Cargo Crate** | A crate washed up from a lost ship. | Wood ×4 | Valheim's own look |
+| **Braided Box** | A box with braided leather bands. | Wood ×2, Leather Scraps ×1 | Valheim's own look, also small and large |
+| **Castle Urn** | An urn from an old stronghold. | Stone ×2 | Valheim's own look, also small and large |
+| **Red Ashlands Pot** | A red-glazed pot from the Ashlands. | Stone ×2, Ashwood ×1 | Valheim's own look, also small and large |
+| **Green Ashlands Pot** | A green-glazed pot from the Ashlands. | Stone ×2, Ashwood ×1 | Valheim's own look, also small and large |
+| **Ashlands Urn** | A tall Ashlands urn. | Stone ×3, Ashwood ×1 | Valheim's own look, also small and large |
+| **Barrel** | A plain barrel like the ones in abandoned houses. | Wood ×4 | Valheim's own look, also small and large |
+| **Cargo Crate** | A crate washed up from a lost ship. | Wood ×4 | Valheim's own look, also small and large |
 | **Long Bench** | A long, plain bench. | Wood ×4 | seat |
-| **Hooped Barrel** | A barrel with three iron hoops. | Wood ×4 |  |
+| **Hooped Barrel** | A barrel with three iron hoops. | Wood ×4 | also small and large |
 | **Wooden Chair** | A plain wooden chair. | Wood ×3 | seat |
 | **Plain Table** | A plain rectangular table. | Wood ×6 |  |
 | **Dark Round Table** | A round table of dark wood. | Wood ×5 |  |
 | **Dark Stool** | A stool of dark wood. | Wood ×2 | seat |
 | **Dark Shelves** | Open shelves of dark wood. | Wood ×6 |  |
 | **Wall Plank** | A single plank shelf for the wall. | Wood ×2 |  |
-| **Banded Chest** | An open chest bound with iron. It is only for show. | Wood ×4, Iron ×1 |  |
+| **Banded Chest** | An open chest bound with iron. It is only for show. | Wood ×4, Iron ×1 | also small and large |
 | **Scroll** | A rolled scroll tied with a band. | Leather Scraps ×1 |  |
 | **Green Bottle** | A green glass bottle with a cork. | Resin ×2 |  |
 
@@ -328,12 +329,12 @@ Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems,
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
-| **Runestone** | A standing stone carved with runes. | Stone ×10 | Valheim's own look |
-| **Old Runestone** | A weathered runestone. | Stone ×10 | Valheim's own look |
-| **Dolmen** | Great stones raised by people long forgotten. | Stone ×30 | Valheim's own look |
+| **Runestone** | A standing stone carved with runes. | Stone ×10 | Valheim's own look, also small and large |
+| **Old Runestone** | A weathered runestone. | Stone ×10 | Valheim's own look, also small and large |
+| **Dolmen** | Great stones raised by people long forgotten. | Stone ×30 | Valheim's own look, also small and large |
 | **Grave** | An old grave with a stone at its head. | Stone ×6, Bone Fragments ×2 | Valheim's own look |
-| **Mountain Gravestone** | A gravestone from the mountains. | Stone ×6 | Valheim's own look |
-| **Pile of Skulls** | A grim reminder for unwelcome guests. | Bone Fragments ×6 | Valheim's own look |
+| **Mountain Gravestone** | A gravestone from the mountains. | Stone ×6 | Valheim's own look, also small and large |
+| **Pile of Skulls** | A grim reminder for unwelcome guests. | Bone Fragments ×6 | Valheim's own look, also small and large |
 | **Fuling Totem Pole** | A totem pole from a fuling village. | Wood ×6, Bone Fragments ×2 | Valheim's own look |
 | **Fuling Fence** | A spiked fuling fence. | Wood ×4 | Valheim's own look |
 | **Straw Pile** | A pile of straw. | Barley ×2 | Valheim's own look |
