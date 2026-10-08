@@ -24,8 +24,7 @@ public static class WeaponFlame
     private const float HeadShare = 0.4f;
 
     private static readonly string[] ownFlameRoots = { "Burny vfx", "equiped" };
-    private static readonly int rightKey = "whitehilt_flame_right".GetStableHashCode();
-    private static readonly int leftKey = "whitehilt_flame_left".GetStableHashCode();
+    private static readonly int[] slotKeys = GearSlots.Keys("whitehilt_flame");
 
     /// <summary>
     /// Registers the English texts.
@@ -103,51 +102,13 @@ public static class WeaponFlame
     }
 
     /// <summary>
-    /// Keeps the flames of the gear in a character's hands as etched: the holder writes them to their ZDO, and every
-    /// machine shows them. Called every frame for every character's equipment.
+    /// Keeps the flames of the gear a character carries, in the hands and on the back, as etched: the owner writes them
+    /// to their ZDO, and every machine shows them. Called every frame for every character's equipment.
     /// </summary>
     /// <param name="equipment">The character's equipment visuals.</param>
     public static void Refresh(VisEquipment equipment)
     {
-        ZNetView nview = equipment.m_nview;
-        if (nview == null || !nview.IsValid())
-        {
-            return;
-        }
-
-        ZDO zdo = nview.GetZDO();
-        if (nview.IsOwner() && equipment.TryGetComponent(out Player player))
-        {
-            Write(zdo, rightKey, Value(player.m_rightItem));
-            Write(zdo, leftKey, Value(player.m_leftItem));
-        }
-
-        int right = zdo.GetInt(rightKey);
-        int left = zdo.GetInt(leftKey);
-        WeaponFlameState state = equipment.GetComponent<WeaponFlameState>();
-        if (state == null)
-        {
-            if (right == 0 && left == 0)
-            {
-                return;
-            }
-
-            state = equipment.gameObject.AddComponent<WeaponFlameState>();
-        }
-
-        if (state.Right != right || state.RightInstance != equipment.m_rightItemInstance)
-        {
-            state.Right = right;
-            state.RightInstance = equipment.m_rightItemInstance;
-            Apply(equipment.m_rightItemInstance, right);
-        }
-
-        if (state.Left != left || state.LeftInstance != equipment.m_leftItemInstance)
-        {
-            state.Left = left;
-            state.LeftInstance = equipment.m_leftItemInstance;
-            Apply(equipment.m_leftItemInstance, left);
-        }
+        GearSlots.Refresh<WeaponFlameState>(equipment, slotKeys, Value, Apply);
     }
 
     /// <summary>
@@ -172,14 +133,6 @@ public static class WeaponFlame
         }
 
         return IsOff(item) ? OffPacked : 0;
-    }
-
-    private static void Write(ZDO zdo, int key, int value)
-    {
-        if (zdo.GetInt(key) != value)
-        {
-            zdo.Set(key, value);
-        }
     }
 
     // Shows a model's flames as a packed value says: as made, put out, or in a colour.
@@ -329,21 +282,10 @@ public static class WeaponFlame
 }
 
 /// <summary>
-/// What a character's hand models' flames were last shown as, so they are only changed when that changes.
+/// What a character's gear models' flames were last shown as.
 /// </summary>
-public class WeaponFlameState : MonoBehaviour
+public class WeaponFlameState : GearSlotState
 {
-    /// <summary>The packed flame of the right hand.</summary>
-    public int Right;
-
-    /// <summary>The packed flame of the left hand.</summary>
-    public int Left;
-
-    /// <summary>The right-hand model that was set.</summary>
-    public GameObject RightInstance;
-
-    /// <summary>The left-hand model that was set.</summary>
-    public GameObject LeftInstance;
 }
 
 /// <summary>

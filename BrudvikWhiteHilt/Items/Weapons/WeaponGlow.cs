@@ -16,13 +16,12 @@ public static class WeaponGlow
 {
     private const string ColorKey = "whitehilt_glow";
     private const string LightName = "whitehilt_glow_light";
-    private const float Intensity = 1.2f;
-    private const float LightRange = 2f;
-    private const float LightIntensity = 1f;
+    private const float Intensity = 2.5f;
+    private const float LightRange = 2.5f;
+    private const float LightIntensity = 1.6f;
     private const int DarkSum = 24;
 
-    private static readonly int rightKey = "whitehilt_glow_right".GetStableHashCode();
-    private static readonly int leftKey = "whitehilt_glow_left".GetStableHashCode();
+    private static readonly int[] slotKeys = GearSlots.Keys("whitehilt_glow");
     private static readonly Dictionary<string, Texture2D> emissionByMesh = new();
 
     /// <summary>
@@ -91,51 +90,13 @@ public static class WeaponGlow
     }
 
     /// <summary>
-    /// Keeps the models in a character's hands glowing: the holder writes the glow of what they hold to their ZDO, and
-    /// every machine lights the models with it. Called every frame for every character's equipment.
+    /// Keeps the models a character carries glowing, in the hands and on the back: the owner writes the glow of each
+    /// item to their ZDO, and every machine lights the models with it. Called every frame for every character's equipment.
     /// </summary>
     /// <param name="equipment">The character's equipment visuals.</param>
     public static void Refresh(VisEquipment equipment)
     {
-        ZNetView nview = equipment.m_nview;
-        if (nview == null || !nview.IsValid())
-        {
-            return;
-        }
-
-        ZDO zdo = nview.GetZDO();
-        if (nview.IsOwner() && equipment.TryGetComponent(out Player player))
-        {
-            Write(zdo, rightKey, Value(player.m_rightItem));
-            Write(zdo, leftKey, Value(player.m_leftItem));
-        }
-
-        int right = zdo.GetInt(rightKey);
-        int left = zdo.GetInt(leftKey);
-        WeaponGlowState state = equipment.GetComponent<WeaponGlowState>();
-        if (state == null)
-        {
-            if (right == 0 && left == 0)
-            {
-                return;
-            }
-
-            state = equipment.gameObject.AddComponent<WeaponGlowState>();
-        }
-
-        if (state.Right != right || state.RightInstance != equipment.m_rightItemInstance)
-        {
-            state.Right = right;
-            state.RightInstance = equipment.m_rightItemInstance;
-            Apply(equipment.m_rightItemInstance, right);
-        }
-
-        if (state.Left != left || state.LeftInstance != equipment.m_leftItemInstance)
-        {
-            state.Left = left;
-            state.LeftInstance = equipment.m_leftItemInstance;
-            Apply(equipment.m_leftItemInstance, left);
-        }
+        GearSlots.Refresh<WeaponGlowState>(equipment, slotKeys, Value, Apply);
     }
 
     /// <summary>
@@ -154,14 +115,6 @@ public static class WeaponGlow
     private static int Value(ItemDrop.ItemData item)
     {
         return TryGetColor(item, out Color32 color) ? PaintColor.Pack(color, PaintMode.Paint) : 0;
-    }
-
-    private static void Write(ZDO zdo, int key, int value)
-    {
-        if (zdo.GetInt(key) != value)
-        {
-            zdo.Set(key, value);
-        }
     }
 
     // Lights a model in a colour (a packed value), or puts its glow out for 0.
@@ -212,6 +165,17 @@ public static class WeaponGlow
         }
 
         SetLight(root, glows, color, bounds);
+        ShowUpgradeGlow(root, !glows);
+    }
+
+    // Above quality 4 the game lights upgraded gear with a glow of its own (UpgraderGlow, a ParticleIntensityScaler) in
+    // a colour of its choosing, which drowned the etched colour; an etched glow takes its place.
+    private static void ShowUpgradeGlow(GameObject root, bool show)
+    {
+        foreach (ParticleIntensityScaler scaler in root.GetComponentsInChildren<ParticleIntensityScaler>(true))
+        {
+            scaler.gameObject.SetActive(show);
+        }
     }
 
     // A soft light in the glow's colour at the glowing part, or at the model's middle.
@@ -286,21 +250,10 @@ public static class WeaponGlow
 }
 
 /// <summary>
-/// What a character's hand models were last lit with, so they are only lit again when that changes.
+/// What a character's gear models were last lit with.
 /// </summary>
-public class WeaponGlowState : MonoBehaviour
+public class WeaponGlowState : GearSlotState
 {
-    /// <summary>The packed glow of the right hand.</summary>
-    public int Right;
-
-    /// <summary>The packed glow of the left hand.</summary>
-    public int Left;
-
-    /// <summary>The right-hand model that was lit.</summary>
-    public GameObject RightInstance;
-
-    /// <summary>The left-hand model that was lit.</summary>
-    public GameObject LeftInstance;
 }
 
 /// <summary>

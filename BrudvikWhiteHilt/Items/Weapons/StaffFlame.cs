@@ -1,5 +1,6 @@
 using Jotunn.Managers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Weapons;
@@ -13,6 +14,11 @@ public static class StaffFlame
     // Just above the scepter head in attach space, from AssetSource/Models/whstaff.weapon.json.
     private static readonly Vector3 headTip = new(0f, 0f, 1.16f);
     private static readonly Dictionary<Texture, Material> greyMaterials = new();
+
+    // The vanilla flame material drawn with the plain particle shader (Particles/Standard Unlit2), for flames whose own
+    // shader ignores the particles' colour.
+    private const string PlainFlameMaterial = "flameball_flipbook";
+    private static Material plainFlame;
 
     /// <summary>
     /// Replaces the vanilla staff effects under <paramref name="model"/>'s attach child with a flame in <paramref name="colour"/>.
@@ -137,7 +143,7 @@ public static class StaffFlame
                 byte level = (byte)Mathf.Max(pixel.r, pixel.g, pixel.b);
                 return new Color32(level, level, level, pixel.a);
             });
-            grey = new Material(source) { name = $"{source.name}_grey", mainTexture = texture };
+            grey = new Material(ColourableTemplate(source)) { name = $"{source.name}_grey", mainTexture = texture };
             foreach (string property in new[] { "_TintColor", "_Color", "_EmissionColor" })
             {
                 if (grey.HasProperty(property))
@@ -152,5 +158,28 @@ public static class StaffFlame
         }
 
         renderer.sharedMaterial = grey;
+    }
+
+    // Dyrnwyn's fire (Burny vfx, fx_Torch_Basic) uses a gradient-mapped shader that paints its own orange and ignores
+    // the particles' colour, so a recoloured Dyrnwyn flame stayed orange. Such a material is drawn with the plain
+    // particle shader of the vanilla flameball_flipbook instead, which multiplies by the particles' colour.
+    private static Material ColourableTemplate(Material source)
+    {
+        if (source.shader == null || source.shader.name.IndexOf("Gradient", System.StringComparison.OrdinalIgnoreCase) < 0)
+        {
+            return source;
+        }
+
+        if (plainFlame == null)
+        {
+            plainFlame = Resources.FindObjectsOfTypeAll<Material>().FirstOrDefault(material => material.name == PlainFlameMaterial);
+            if (plainFlame == null)
+            {
+                Jotunn.Logger.LogWarning($"{PlainFlameMaterial} not found; a gradient-mapped flame keeps its own colours.");
+                return source;
+            }
+        }
+
+        return plainFlame;
     }
 }
