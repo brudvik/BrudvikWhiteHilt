@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.105.1 - 2026-10-08
 
 ### Added
 - **A log line for hard hits**: when you lose more than 100 health in one hit (`[Difficulty] LogHitsAbove`, each player's own; 0 turns it off), a `[BigHit]` line in the BepInEx log tells who struck, at which level and stars, the mod's and the game's damage factors (players nearby, the world's combat setting), your armour and the damage before and after it. Fire, poison and spirit come over time and are shown as they arrived.
