@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.106.0 - 2026-10-08
+
+### Added
+- **A party list under the hotbar** (`[Party]`, on by default): the other players, nearest first, each in a compact row with their portrait (or their initial), name, distance and up to four status effects (burning, poison and frost first), and under that health, stamina and eitr as bars with numbers, `184/250`. A row flashes when its player takes a hard hit, the name turns red and the bar pulses under a quarter of the health, and a dead player's row fades until they respawn. It sits below the arrow count under the hotbar and is hidden in the inventory, in build mode, on the large map and in menus. Each player sends their own status at most twice a second and only when it changes, so the list works at any distance; the distance is shown only for players nearby or sharing their position on the map. `ShowStamina`, `ShowEitr`, `ShowDistance`, `ShowEffects`, `ShowSelf`, `MaxPlayers`, `Scale` and a toggle key set it; a server can turn it off with `AllowParty`. Every player needs this version to be shown.
+- **A death recap in the log** (`[Difficulty] LogDeathRecap`, on): when you die, a `[DeathRecap]` lists the last twelve hits however small, burning and poison included, the effects you had, and health lost between hits without a hit, such as a maximum that fell when food or Gift of Odin ran out.
+
+### Changed
+- The `[BigHit]` line shows your health with its maximum, before and after the hit.
+
 ## v0.105.1 - 2026-10-08
 
 ### Added
