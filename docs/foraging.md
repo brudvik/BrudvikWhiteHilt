@@ -48,7 +48,7 @@ Caraway likewise has a longer main stem and a base height of 0.74 m rather than 
 
 Bog Iron (about 0.22 m high) and Peat (a stack about 0.3 m high) are large enough to show above the Swamp's grass, and also have a model-aligned pick target. Existing occurrences get the clearance when their area reloads or the game restarts, without changing their saved positions, yield or regrowth. The clearance reduces burial by small terrain differences, but does not compensate for large terrain raising. New Bog Iron grows at most ankle-deep (0.3 m) in water; lumps placed deeper by earlier versions stay where they are. For the same reason Sphagnum Moss is about 0.2 m high, Iceland Moss 0.15 m and Madder 0.45 m, and new Reed stands at most 0.5 m deep in water.
 
-The plants spawn as new land is generated. Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). Plants placed there by earlier versions that lie buried or float, mostly Bog Iron and Peat at the edges of the Swamp, move onto the ground when their area loads. On top of that:
+The plants spawn as new land is generated: every zone of their biome with suitable ground gets one or more groups (Chanterelle, Porcini and Reed up to three; Ergot, Henbane, Wild Hops and Wolf Lichen one). Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). Plants placed there by earlier versions that lie buried or float, mostly Bog Iron and Peat at the edges of the Swamp, move onto the ground when their area loads. On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla wild **Turnip** in the Swamp has a 30% chance to also give Bog Bean, and a 20% chance each to give Cattail and Meadowsweet
@@ -167,6 +167,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 
 | Setting | Default | What it does |
 |---|---|---|
+| `GroupsPerZoneMin` / `GroupsPerZoneMax` | 1 / 1–3 per plant | Groups in each zone (64 × 64 m) where the ground suits the plant; the generator keeps trying spots until they are placed. 0 as the most places none |
 | `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group |
 | `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
 | `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |

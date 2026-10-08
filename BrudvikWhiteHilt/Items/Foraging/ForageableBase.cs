@@ -21,8 +21,12 @@ public abstract class ForageableBase
 {
     private static readonly Dictionary<Texture2D, Material> plantMaterials = new();
 
+    // Raised when the placement rules change so much that land filled before gets another go (OldLandFiller).
+    private const int OldLandRound = 2;
+
     private readonly ConfigEntry<bool> spawn;
-    private readonly ConfigEntry<float> spawnPerZone;
+    private readonly ConfigEntry<int> groupsPerZoneMin;
+    private readonly ConfigEntry<int> groupsPerZoneMax;
     private readonly ConfigEntry<float> extraDropChance;
     private readonly ConfigEntry<float> creatureDropChance;
     private readonly ConfigEntry<float> respawnMinutes;
@@ -121,9 +125,12 @@ public abstract class ForageableBase
 
         spawn = WhiteHiltConfig.BindAdminOnly(section, "Spawn", true,
             $"Let {FullName} grow in newly generated zones, and once in land generated before it came ([OldLand]).");
-        spawnPerZone = WhiteHiltConfig.BindAdminOnly(section, "SpawnPerZone", Vegetation.Max,
-            "Maximum number of groups per zone (64 x 64 m). Values below 1 are a chance to place one group.",
-            new AcceptableValueRange<float>(0f, 20f));
+        groupsPerZoneMin = WhiteHiltConfig.BindAdminOnly(section, "GroupsPerZoneMin", (int)Vegetation.Min,
+            "Fewest groups in each zone (64 x 64 m) where the ground suits it, in zones placed from now on. The generator keeps trying spots until they are placed.",
+            new AcceptableValueRange<int>(0, 20));
+        groupsPerZoneMax = WhiteHiltConfig.BindAdminOnly(section, "GroupsPerZoneMax", (int)Vegetation.Max,
+            "Most groups in each zone (64 x 64 m) where the ground suits it, in zones placed from now on. 0 places none.",
+            new AcceptableValueRange<int>(0, 20));
         groupSizeMin = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMin", Vegetation.GroupSizeMin,
             "Fewest plants in a group, in zones placed from now on.", new AcceptableValueRange<int>(1, 20));
         groupSizeMax = WhiteHiltConfig.BindAdminOnly(section, "GroupSizeMax", Vegetation.GroupSizeMax,
@@ -200,7 +207,7 @@ public abstract class ForageableBase
             ZoneManager.Instance.AddCustomVegetation(customVegetation);
             vegetation = customVegetation.Vegetation;
             ApplyVegetationConfig();
-            OldLandFiller.Register(vegetation, 1f);
+            OldLandFiller.Register(vegetation, 1f, OldLandRound);
 
             if (ExtraDropFrom != null)
             {
@@ -407,8 +414,13 @@ public abstract class ForageableBase
             return;
         }
 
-        vegetation.m_enable = spawn.Value;
-        vegetation.m_max = spawnPerZone.Value;
+        // A single try per group often missed the biome, height or slope, which made finds far rarer than meant, so
+        // the generator tries up to 50 spots for each group (ForcePlacement).
+        int most = groupsPerZoneMax.Value;
+        vegetation.m_enable = spawn.Value && most > 0;
+        vegetation.m_min = Mathf.Min(groupsPerZoneMin.Value, most);
+        vegetation.m_max = most;
+        vegetation.m_forcePlacement = true;
         vegetation.m_groupSizeMin = groupSizeMin.Value;
         vegetation.m_groupSizeMax = Mathf.Max(groupSizeMin.Value, groupSizeMax.Value);
     }

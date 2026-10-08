@@ -225,6 +225,8 @@ public static class RoofMaterials
             Biome = Heightmap.Biome.Mountain,
             Min = 1,
             Max = RoofSettings.SlateOutcropPerZone.Value,
+            // One try per zone often fails the height and slope checks, which made outcrops far rarer than the chance.
+            ForcePlacement = true,
             GroupSizeMin = 1,
             GroupSizeMax = 1,
             MinAltitude = 40f,
@@ -234,7 +236,7 @@ public static class RoofMaterials
         ZoneManager.Instance.AddCustomVegetation(vegetation);
         outcropVegetation = vegetation.Vegetation;
         ApplyConfig();
-        OldLand.OldLandFiller.Register(outcropVegetation, 4f, OutcropFracName);
+        OldLand.OldLandFiller.Register(outcropVegetation, 4f, 2, OutcropFracName);
     }
 
     // The copper veins become dark, blue-grey slate. Materials are shared, so each is recoloured once.

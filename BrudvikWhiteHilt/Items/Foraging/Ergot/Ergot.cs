@@ -35,7 +35,10 @@ public class Ergot : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.Plains,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
         Max = 1,
+        ForcePlacement = true,
         GroupSizeMin = 2,
         GroupSizeMax = 4,
         GroupRadius = 3f,

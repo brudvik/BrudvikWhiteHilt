@@ -33,6 +33,19 @@ public class OldLandFiller : MonoBehaviour
     /// <param name="alsoCounts">Other prefabs that show the zone already has it, such as a mined rock's broken form.</param>
     public static void Register(ZoneSystem.ZoneVegetation vegetation, float clearRadius, params string[] alsoCounts)
     {
+        Register(vegetation, clearRadius, 1, alsoCounts);
+    }
+
+    /// <summary>
+    /// Registers vegetation added by the mod, to be placed in old land too, in a given round: raising the round fills
+    /// the land once more when the placement rules have changed, still skipping zones that already have it.
+    /// </summary>
+    /// <param name="vegetation">The vegetation entry, as injected into the zone system.</param>
+    /// <param name="clearRadius">Metres the spot must be clear of trees, rocks and other objects.</param>
+    /// <param name="round">1 for the first filling; each higher round is done once more per world.</param>
+    /// <param name="alsoCounts">Other prefabs that show the zone already has it, such as a mined rock's broken form.</param>
+    public static void Register(ZoneSystem.ZoneVegetation vegetation, float clearRadius, int round, params string[] alsoCounts)
+    {
         if (vegetation?.m_prefab == null)
         {
             return;
@@ -48,7 +61,8 @@ public class OldLandFiller : MonoBehaviour
 
         string name = vegetation.m_prefab.name;
         HashSet<int> hashes = new(alsoCounts.Select(other => other.GetStableHashCode())) { name.GetStableHashCode() };
-        entries[name] = new Entry(vegetation, name.GetStableHashCode(), hashes, clearRadius, KeyPrefix + name.ToLowerInvariant());
+        string doneKey = KeyPrefix + name.ToLowerInvariant() + (round > 1 ? $"_round{round}" : string.Empty);
+        entries[name] = new Entry(vegetation, name.GetStableHashCode(), hashes, clearRadius, doneKey);
     }
 
     // On the server, once the world's locations are placed: starts filling the already explored land with new

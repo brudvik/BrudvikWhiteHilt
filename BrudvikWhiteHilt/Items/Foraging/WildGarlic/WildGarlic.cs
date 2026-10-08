@@ -33,7 +33,10 @@ public class WildGarlic : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.Meadows,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
         Max = 2,
+        ForcePlacement = true,
         GroupSizeMin = 3,
         GroupSizeMax = 6,
         GroupRadius = 3f,

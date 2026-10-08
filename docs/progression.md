@@ -26,7 +26,7 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 | `[Content] <ItemId>` | `true` (default)/`false` | Off: the item or piece can no longer be crafted or built. Existing copies are kept. |
 | `[Recipes] <ItemId>` | empty (default) or a list | Empty: the built-in recipe. Otherwise `Prefab:Amount` or `Prefab:Amount:AmountPerLevel`, comma separated, e.g. `Iron:10:5, FineWood:4`. Unknown prefabs are skipped with a warning. Pieces keep at most as many requirements as the build menu shows. |
 | `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in new zones, and once in old land (`[OldLand]`). |
-| `[Foraging.<Name>] SpawnPerZone` | 0–20 | Maximum groups per zone (64 × 64 m). Values below 1 are a chance to place one group. |
+| `[Foraging.<Name>] GroupsPerZoneMin` / `GroupsPerZoneMax` | 0–20 | Fewest and most groups in each zone (64 × 64 m) where the ground suits the plant; the generator keeps trying spots until they are placed. |
 | `[Foraging.<Name>] ExtraDropChance` | 0–1 | Chance that picking the matching vanilla plant also gives the ingredient. 0 turns it off. |
 | `[Foraging.Crowberries] CreatureDropChance` | 0–1 | Chance that a Wolf drops 1–2 Crowberries. |
 | `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish. Changes also apply to food already in inventories. |

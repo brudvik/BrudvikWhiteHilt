@@ -34,7 +34,10 @@ public class Henbane : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.Plains,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
         Max = 1,
+        ForcePlacement = true,
         GroupSizeMin = 1,
         GroupSizeMax = 3,
         GroupRadius = 3f,

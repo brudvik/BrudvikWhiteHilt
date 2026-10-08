@@ -34,7 +34,10 @@ public class Reed : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.Swamp,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
         Max = 3,
+        ForcePlacement = true,
         GroupSizeMin = 3,
         GroupSizeMax = 6,
         GroupRadius = 3f,

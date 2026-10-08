@@ -33,7 +33,10 @@ public class Porcini : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.BlackForest,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
         Max = 3,
+        ForcePlacement = true,
         GroupSizeMin = 1,
         GroupSizeMax = 3,
         GroupRadius = 2f,

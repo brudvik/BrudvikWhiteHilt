@@ -55,7 +55,10 @@ public class Peat : ForageableBase
     protected override VegetationConfig Vegetation => new()
     {
         Biome = Heightmap.Biome.Swamp,
-        Max = 1.5f,
+        // Groups per zone where the ground suits it; the generator keeps trying spots until they are placed.
+        Min = 1,
+        Max = 2,
+        ForcePlacement = true,
         GroupSizeMin = 1,
         GroupSizeMax = 2,
         GroupRadius = 3f,
