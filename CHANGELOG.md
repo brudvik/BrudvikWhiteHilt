@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.105.0 - 2026-10-08
 
 ### Added
 - **71 new decorations for the Decor Hammer**:

@@ -39,7 +39,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.104.0
+## ✨ New in 0.105.0
+
+- **[71 more decorations](docs/decor.md)**: rose-painted furniture in the old Scandinavian way, a carved high seat, bed and cupboards, a cask rack for the hall, brass pots, goblets and candlesticks, kitchen ware, a weapon wall, pier decking and mooring posts, shore rocks and young firs, 534 decorations in all.
+- **Every workbench uses nearby chests**: the Paint Bench, the build and terrain tools, dyeing, the Rune Etching Table, the Repair Anvil and more count every chest in range and fetch from other players' chests, as crafting does. The Paint Bench shows each dye with its icon and how many you have.
+- **[Forageables](docs/foraging.md) are found where they should be**: every zone with suitable ground gets its plants, Bog Iron and Peat in the Swamp above all, and explored land is filled again.
+- Monsters set on fire can be seen through their flames.
+
+### Also new in 0.104.0
 
 - **[Attack styles](docs/attack-styles.md)**: the White Hilt melee weapons swing in several styles, a signature one and others that suit their grip, drawn anew for every combo and as strong in each. A Gladius stabs and lunges, a Falchion chops, a War Axe hews from above.
 - **[The Rune Sword's own cuts](docs/attack-styles.md#-the-rune-swords-own-cuts)**: an overhead strike, a lunging thrust and a leaping whirl, animations made for the mod.
@@ -50,12 +57,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 - **[Decorations](docs/decor.md) in more sizes**: barrels, crates, baskets, pots, stones, stumps, bushes, trees and runestones can also be built small and large, and the cart wheel twice the size, 460 decorations in all.
 - Things can be **set on decorations**: a pot on a decor table, a lantern on a barrel.
 - Decor **chairs and stools** seat you on the seat, facing the right way, and are Valheim-sized; decor **candles and lanterns** burn with flames to match.
-
-### Also new in 0.102.0
-
-- **[Twelve more White Hilt weapons and shields](docs/equipment.md)**: a Viking Sword, Hand Axe and Round Shield for the Swamp; a Falchion and Bardiche for the Mountains; a Gladius, War Axe, Pike, Recurve Bow and Hird Shield for the Plains; a glowing Pike Axe and an armour-breaking Bec de Corbin for the Mistlands. The Trident has a model of its own.
-- **[Flame Rune](docs/smithing.md#glow-and-flame)**: set any White Hilt weapon or shield burning in a colour of your own, a blue Dyrnwyn flame for instance. Glow and flame come off for free at the Rune Etching Table, and both runes are runestones of their own.
-- White Hilt gear no longer glows brighter with every quality level above 4.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
