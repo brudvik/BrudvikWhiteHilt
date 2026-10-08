@@ -69,3 +69,4 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | Page | What you find there |
 |------|---------------------|
 | [How the mod is built](architecture.md) | A guide to the source for those who want to learn from it: start-up, cloning items and pieces, assets, multiplayer, Harmony, settings, texts, performance and tests |
+| [Videos](videos.md) | The episodes on the White Hilt YouTube channel, each going through one part of the code with a real bug |

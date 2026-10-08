@@ -2,6 +2,8 @@
 
 [← Back to the README](../README.MD)
 
+> 🎬 How it works in the code: [EP05 · A Piece From a Pole](https://youtu.be/_5UT5RH4YnM)
+
 The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 534 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
 
 | Item | Description | Crafting Station | Requirements |

@@ -3,7 +3,7 @@
 A guide for modders who read the source to learn. The [feature pages](README.md) say what the mod does. This page
 explains how the source is put together and why, so you know where to look and which patterns repeat. Each
 section ends with files that are worth reading next. Every longer method in them has a comment saying what it does
-and why.
+and why. The [videos](videos.md) go through the same ground on screen.
 
 Back to the [documentation](README.md) · [Main page](../README.MD)
 
@@ -25,6 +25,8 @@ Back to the [documentation](README.md) · [Main page](../README.MD)
 Namespaces follow the folders, so `Pieces/Ships/Skidbladnir/SkidbladnirShip.cs` is `BrudvikWhiteHilt.Pieces.Ships.Skidbladnir`.
 
 ## 🚀 Start-up
+
+> 🎬 On video: [EP01 · The Plugin](https://youtu.be/asFji2_038w)
 
 `BrudvikWhiteHilt.Awake` runs once when BepInEx loads the plugin. The game has no prefabs yet at that point, so it
 only does what must come first:
@@ -52,6 +54,8 @@ so they live exactly as long as a world session (see `Patches/Navigation/Discove
 > Read next: `BrudvikWhiteHilt.cs`, `Items/IWhiteHiltCustomItem.cs`, `Patches/Navigation/DiscoveryPatches.cs`.
 
 ## 🗡️ Adding an item means adding a class
+
+> 🎬 On video: [EP03 · An Item Is a Class](https://youtu.be/eMhMZ4ILjRA)
 
 Every White Hilt item and piece is one small class that describes it. A base class per kind of thing does the work,
 so the knife is only this:
@@ -123,6 +127,8 @@ Almost every item and piece has a `TryApplyVisual` (or `ApplyLook`) method, and 
 
 ## 📦 Assets and data files
 
+> 🎬 On video: [EP05 · A Piece From a Pole](https://youtu.be/_5UT5RH4YnM)
+
 The 3D models, textures and sounds are in one asset bundle, `Assets/whitehilt_foraging`, which is embedded in the
 DLL and loaded by `ForagingAssets`. The bundle is built outside the game: `AssetSource/build_foraging_bundle.ps1`
 takes `.glb` models and `.wav` sounds and builds them with Unity, the same version as Valheim. The
@@ -145,6 +151,8 @@ keeping a copy in memory.
 > `Decor/DecorPieceFactory.cs` with `AssetSource/Decor/README.md`.
 
 ## 🌐 Multiplayer
+
+> 🎬 On video: [EP04 · Who Owns It](https://youtu.be/WcdL2K7xbL4)
 
 Valheim is peer-to-peer with a server in the middle. Most bugs in multiplayer mods come from forgetting who decides
 what. The mod follows the game's own rules:
@@ -190,6 +198,8 @@ and the Kraken's lifts. When the area loads again, the owner catches up on the t
 > `Pieces/Ships/WhiteHiltShip/ShipPassengerSync.cs`.
 
 ## 🪝 Harmony patches
+
+> 🎬 On video: [EP02 · Harmony Patches](https://youtu.be/Wr303-u2zMc)
 
 All patches live in `Patches/`, in folders named after the features they serve. They follow a few habits:
 

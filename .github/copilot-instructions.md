@@ -153,7 +153,7 @@ Changes go under `## Unreleased` in `CHANGELOG.md` as they are made; a release r
 3. Installation
 4. Features: feature cards in tables, one per page in `docs/` (picture, title and a one-line description)
 5. Documentation
-6. For modders (the guide, the comments, the tests)
+6. For modders (the guide, the comments, the tests, the videos)
 7. Known issues
 8. Building from source (folded)
 9. Credits (folded)

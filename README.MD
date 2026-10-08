@@ -17,6 +17,7 @@
   <img src="https://img.shields.io/badge/J%C3%B6tunn-2.30-6e4a2e?style=flat-square" alt="Jötunn 2.30">
   <img src="https://img.shields.io/badge/multiplayer-everyone%20needs%20it-555?style=flat-square" alt="Everyone needs the mod in multiplayer">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/brudvik/BrudvikWhiteHilt?style=flat-square&color=555" alt="License"></a>
+  <a href="https://www.youtube.com/@WhiteHilt"><img src="https://img.shields.io/badge/YouTube-White%20Hilt-c4302b?style=flat-square&logo=youtube&logoColor=white" alt="YouTube channel"></a>
 </p>
 
 <p align="center">
@@ -24,6 +25,7 @@
   <a href="#-features">Features</a> ·
   <a href="docs/README.md">Documentation</a> ·
   <a href="#-for-modders">For modders</a> ·
+  <a href="docs/videos.md">Videos</a> ·
   <a href="CHANGELOG.md">Changelog</a> ·
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/releases">Releases</a> ·
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/issues">Report an issue</a>
@@ -182,6 +184,11 @@ White Hilt is a large, working Valheim mod under the [MIT No Attribution](LICENS
 - **[How the mod is built](docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
 - **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
 - **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+- **[Videos](docs/videos.md)** on the [White Hilt YouTube channel](https://www.youtube.com/@WhiteHilt) go through the code one topic at a time, with the game running alongside and a real bug in every episode: the plugin, Harmony patches, items as classes, multiplayer, build pieces, the chests, Skidbladnir, portals and portraits.
+
+<p align="center">
+  <a href="https://youtu.be/tYbkbwbTJFw"><img src="https://img.youtube.com/vi/tYbkbwbTJFw/maxresdefault.jpg" alt="White Hilt: A Valheim Mod (trailer)" width="560"></a>
+</p>
 
 Questions about the code are welcome on the [issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues). How to build it yourself is under *Building from source* below.
 

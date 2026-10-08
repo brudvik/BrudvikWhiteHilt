@@ -92,6 +92,8 @@ The rocks a **Mysterious Rock** is made from (Rock + Coal) lie in Black Forest c
 
 ## 🖼️ Player portraits on the map
 
+> 🎬 How it works in the code: [EP09 · Portraits](https://youtu.be/DDHtV-J-laI)
+
 Other players are shown on the map as a portrait of their Viking on a see-through black disc, with the name under it in a soft shadow, instead of the red figure. You are shown with your own portrait. The portraits are drawn on top of the other map markers. On both the minimap and the large map, your own portrait and gold heading ring draw in front of the other players when markers overlap.
 
 A ring around each portrait shows the heading: a point sticks out of the ring and slides round the edge as you turn. Yours is gold and points where you look, like the vanilla arrow. Other players' rings are white, and point where they face while they are near enough for their Viking to be loaded; further away the ring has no point.

@@ -46,6 +46,8 @@ A floating armillary around a glowing amethyst. Place it near a map table (`[Nav
 
 ### White Hilt Portals
 
+> 🎬 How it works in the code: [EP08 · Portals](https://youtu.be/dey8-4RZqTI)
+
 One portal network instead of pairs: every White Hilt portal leads to every other. Use a portal and the large map opens with a list on the left. Search it, sort it by name or distance (shown from where you stand), pick a portal to see it on the map, or click one on the map to pick it in the list. Double-click or **Travel** to go. From the same panel you can rename the portal you stand at, make it private (only you see and reach it) and set it as your **home**. Shift + Use on a portal also names it. The ordinary portal rules apply: no ore or metal, unless rune posts stand at the portal you travel **from** (see Portal Runes).
 
 Stations built with the Portal Stations mod become White Hilt rune circles, with their names and privacy. Remove Portal Stations from the server and every client at the same time.

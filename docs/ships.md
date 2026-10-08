@@ -15,6 +15,8 @@ Both White Hilt ships are indestructible, immune to all damage types and Ashland
 
 ### Skidbladnir
 
+> 🎬 How it works in the code: [EP07 · Skidbladnir](https://youtu.be/e94Xs37dkLM)
+
 **Off by default** until it has been tried more in multiplayer: `[Ships.Skidbladnir] Enabled` switches Skidbladnir, the [White Hilt Ship Hammer and the ship workshops](#ship-workshops) on. While it is off none of them can be built or crafted and nothing new can be built aboard; ships, hammers, workshops and furnishings already made are kept.
 
 Named for Freyr's ship, Skidbladnir is a separate Hammer piece (`WhiteHiltSkidbladnir`), not a replacement for the White Hilt Ship. The central lower room is about 11 × 5.9 m with 2.6–2.9 m headroom. It ships empty: build workbenches, furniture and storage yourself with the ordinary Hammer. Normal materials, station, access and placement rules still apply. Terrain tools, plants and other vehicles cannot be attached.

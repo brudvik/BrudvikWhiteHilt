@@ -2,6 +2,8 @@
 
 [← Back to the README](../README.MD)
 
+> 🎬 How an item is made in the code: [EP03 · An Item Is a Class](https://youtu.be/eMhMZ4ILjRA)
+
 ## ⚔️ WEAPONS
 
 All weapons are indestructible and a little stronger than the vanilla weapon they replace: +10% damage, and +2 damage per quality level on each damage type the weapon already deals. Like the armor, they can be upgraded through the biomes, see [Upgrades through the biomes](#-upgrades-through-the-biomes). A black beast trophy bound to a weapon or shield makes it stronger still, and a rune etched into a bound weapon gives it fire, frost, poison, lightning, a web or the grip of the deep, see [Binding and rune etching](smithing.md#-binding-and-rune-etching).

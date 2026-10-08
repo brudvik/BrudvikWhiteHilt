@@ -30,6 +30,8 @@ The old light of the poor: a cattail rush dipped in fat and held slanted in an i
 
 ## 📦 CRAFTING FROM CHESTS
 
+> 🎬 How it works in the code: [EP06 · The Chests](https://youtu.be/nF4_nJL1HgY)
+
 What lies in the chests, carts and ship holds within 30 m counts as your own when you **craft**, **build**, **fuel** or **smelt**, and **cook**. Requirements that are partly in chests show their amount in amber, with a small chest on the icon; the tooltip shows how many are in your inventory and how many in chests. A chest that something is taken from opens its lid and glows briefly.
 
 - Adding fuel or ore to a smelter, kiln, fire or oven takes one from the chests when your inventory has none. Hold **Shift** to fill it up in one go, first from your inventory, then from the chests.
