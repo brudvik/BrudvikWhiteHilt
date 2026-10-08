@@ -303,6 +303,11 @@ public static class FarmTools
             return;
         }
 
+        if (!GroupPlacer.Gather(player, plantHere, () => PlantSpots(player, piece, remember)))
+        {
+            return;
+        }
+
         if (AutoCultivate && piece.m_cultivatedGroundOnly)
         {
             TerrainEdit.Job job = new() { Undoable = false };

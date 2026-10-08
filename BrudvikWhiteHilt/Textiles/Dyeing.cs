@@ -1,9 +1,9 @@
-using BrudvikWhiteHilt.Building.Groups;
-using BrudvikWhiteHilt.Building.Terrain;
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Items.Painting;
 using BrudvikWhiteHilt.Items.Textiles;
 using BrudvikWhiteHilt.Painting;
 using BrudvikWhiteHilt.Pieces.Textiles;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Textiles;
@@ -43,7 +43,7 @@ public static class Dyeing
             bool ship = piece.GetComponent<Ship>() != null;
             int uses = ship ? TextileSettings.SailUses.Value : TextileSettings.BannerUses.Value;
             int cloth = ship ? TextileSettings.SailCloth.Value : 0;
-            if (Pay(player, pot, uses, cloth))
+            if (Pay(player, pot, uses, cloth, () => TryUse(player, pot)))
             {
                 DyedCloth.Set(piece.m_nview, PaintColor.Pack(color, PaintMode.Paint));
                 Done(player, piece.GetComponent<Piece>().m_name, color);
@@ -55,7 +55,7 @@ public static class Dyeing
         ItemDrop.ItemData cape = player.m_shoulderItem;
         if (cape != null && NearLoom(player))
         {
-            if (Pay(player, pot, TextileSettings.CapeUses.Value, 0))
+            if (Pay(player, pot, TextileSettings.CapeUses.Value, 0, null))
             {
                 cape.m_customData[CapeKey] = PaintColor.ToHex(color);
                 Done(player, cape.m_shared.m_name, color);
@@ -147,9 +147,9 @@ public static class Dyeing
         return false;
     }
 
-    // Takes the dye from the pot and the cloth from the player, checking both first so nothing is taken when something
-    // is missing.
-    private static bool Pay(Player player, ItemDrop.ItemData pot, int uses, int cloth)
+    // Takes the dye from the pot and the cloth from the player and nearby chests, checking both first so nothing is
+    // taken when something is missing. Cloth in chests other players hold is fetched first, and the dyeing done again.
+    private static bool Pay(Player player, ItemDrop.ItemData pot, int uses, int cloth, System.Action again)
     {
         if (player.m_noPlacementCost)
         {
@@ -162,17 +162,31 @@ public static class Dyeing
             return false;
         }
 
-        ItemDrop clothItem = cloth > 0 ? ObjectDB.instance.GetItemPrefab(LinenCloth.PrefabName)?.GetComponent<ItemDrop>() : null;
-        if (cloth > 0 && (clothItem == null || GroupPlacer.Have(player, clothItem) < cloth))
-        {
-            player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_dye_cloth"), cloth));
-            return false;
-        }
-
+        List<(string Name, int Amount)> needs = new();
         if (cloth > 0)
         {
-            TerrainCost.TryPayItem(player, clothItem, cloth);
+            ItemDrop clothItem = ObjectDB.instance.GetItemPrefab(LinenCloth.PrefabName)?.GetComponent<ItemDrop>();
+            ChestCost.Outcome outcome = ChestCost.Outcome.Lacking;
+            if (clothItem != null)
+            {
+                needs.Add((clothItem.m_itemData.m_shared.m_name, cloth));
+                outcome = ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again);
+            }
+
+            if (outcome == ChestCost.Outcome.Lacking)
+            {
+                player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_dye_cloth"), cloth));
+                return false;
+            }
+
+            if (outcome != ChestCost.Outcome.Ready)
+            {
+                ChestCost.ShowWaiting(player);
+                return false;
+            }
         }
+
+        ChestCost.Take(player, NearbyContainers.Use.Building, needs);
 
         pot.m_durability -= uses;
         if (pot.m_durability <= 0f)

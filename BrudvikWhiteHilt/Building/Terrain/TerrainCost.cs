@@ -1,5 +1,7 @@
 using BrudvikWhiteHilt.Building.Groups;
 using BrudvikWhiteHilt.Crafting;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Building.Terrain;
@@ -64,20 +66,24 @@ public static class TerrainCost
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="amount">Whole stones.</param>
-    /// <returns>True if paid; false (and nothing taken) if the player has too little.</returns>
-    public static bool TryPay(Player player, int amount)
+    /// <param name="again">Does the work again once stone fetched from other players' chests has arrived, or null.</param>
+    /// <returns>True if paid; false (and nothing taken) if the player has too little or it is being fetched.</returns>
+    public static bool TryPay(Player player, int amount, Action again = null)
     {
-        return TryPayItem(player, Stone, amount);
+        return TryPayItem(player, Stone, amount, again);
     }
 
     /// <summary>
-    /// Takes a resource from the inventory first, then from nearby chests.
+    /// Takes a resource from the inventory first, then from nearby chests, as building does (<see cref="ChestCost"/>):
+    /// what lies in chests other players hold is fetched first, and <paramref name="again"/> does the work once it has
+    /// arrived. Without it the player clicks again.
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="item">The resource.</param>
     /// <param name="amount">How many.</param>
-    /// <returns>True if paid; false (and nothing taken) if the player has too little.</returns>
-    public static bool TryPayItem(Player player, ItemDrop item, int amount)
+    /// <param name="again">Does the work again once fetched items have arrived, or null.</param>
+    /// <returns>True if paid; false (and nothing taken) if the player has too little or it is being fetched.</returns>
+    public static bool TryPayItem(Player player, ItemDrop item, int amount, Action again = null)
     {
         if (amount <= 0 || player.m_noPlacementCost || item == null)
         {
@@ -85,26 +91,20 @@ public static class TerrainCost
         }
 
         string name = item.m_itemData.m_shared.m_name;
-        if (GroupPlacer.Have(player, item) < amount)
+        List<(string Name, int Amount)> needs = new() { (name, amount) };
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again))
         {
-            player.Message(MessageHud.MessageType.Center,
-                string.Format(Localization.instance.Localize("$msg_whitehilt_terrain_missing"), Localization.instance.Localize(name), amount));
-            return false;
+            case ChestCost.Outcome.Ready:
+                ChestCost.Take(player, NearbyContainers.Use.Building, needs);
+                return true;
+            case ChestCost.Outcome.Lacking:
+                player.Message(MessageHud.MessageType.Center,
+                    string.Format(Localization.instance.Localize("$msg_whitehilt_terrain_missing"), Localization.instance.Localize(name), amount));
+                return false;
+            default:
+                ChestCost.ShowWaiting(player);
+                return false;
         }
-
-        Inventory inventory = player.GetInventory();
-        int fromInventory = Mathf.Min(amount, inventory.CountItems(name));
-        if (fromInventory > 0)
-        {
-            inventory.RemoveItem(name, fromInventory);
-        }
-
-        if (amount > fromInventory)
-        {
-            NearbyContainers.Take(NearbyContainers.Use.Building, name, amount - fromInventory);
-        }
-
-        return true;
     }
 
     /// <summary>

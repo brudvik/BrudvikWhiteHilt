@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Difficulty.Beasts;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Binding;
@@ -116,19 +117,22 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
             return true;
         }
 
+        // Paid from the inventory and nearby chests, as crafting is; the etching is done again once what lay in other
+        // players' chests has arrived.
         Inventory inventory = player.GetInventory();
         List<(string SharedName, int Amount)> cost = BindingSettings.Cost(infusion.Kind);
-        if (cost.Any(part => inventory.CountItems(part.SharedName) < part.Amount))
+        if (!ChestCost.Pay(player, NearbyContainers.Use.Crafting, cost, () =>
+            {
+                if (this != null && inventory.ContainsItem(item))
+                {
+                    UseItem(player, item);
+                }
+            }, string.Format(Localization.instance.Localize("$msg_whitehilt_etch_need"), CostText(cost))))
         {
-            player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_etch_need"), CostText(cost)));
             return true;
         }
 
         inventory.RemoveOneItem(item);
-        foreach ((string sharedName, int amount) in cost)
-        {
-            inventory.RemoveItem(sharedName, amount);
-        }
 
         GearBinding.Infuse(weapon, infusion);
         PlayEffect(forge);

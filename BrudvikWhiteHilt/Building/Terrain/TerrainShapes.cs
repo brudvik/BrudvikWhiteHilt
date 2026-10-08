@@ -310,7 +310,7 @@ public static class TerrainShapes
             return false;
         }
 
-        if (plan.Job.Ops.Count == 0 || !TerrainCost.TryPay(player, plan.Cost))
+        if (plan.Job.Ops.Count == 0 || !TerrainCost.TryPay(player, plan.Cost, () => Run(player, plan)))
         {
             return false;
         }

@@ -1,9 +1,11 @@
 using BepInEx;
 using BrudvikWhiteHilt.Building.Groups;
 using BrudvikWhiteHilt.Building.Terrain;
+using BrudvikWhiteHilt.Crafting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Building.Moats;
@@ -301,8 +303,9 @@ public static class MoatBuilder
         return places;
     }
 
-    // Places vanilla sharp stakes along a staked ditch, paid like building them by hand. When the materials run out it
-    // warns once and the ditch goes on without stakes.
+    // Places vanilla sharp stakes along a staked ditch, paid like building them by hand. What lies in chests other
+    // players hold is fetched first, and the stakes are placed when it has arrived. When the materials run out it warns
+    // once and the ditch goes on without stakes.
     private static void PlaceStakes(Player player, List<(Vector3 Position, float Yaw)> stakes)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(StakePrefab) : null;
@@ -312,9 +315,16 @@ public static class MoatBuilder
             return;
         }
 
+        List<(string Name, int Amount)> each = Needs(template);
+        if (!player.m_noPlacementCost && ChestCost.Gather(player, NearbyContainers.Use.Building,
+                each.Select(need => (need.Name, need.Amount * stakes.Count)), () => PlaceStakes(player, stakes)) == ChestCost.Outcome.Fetching)
+        {
+            return;
+        }
+
         foreach ((Vector3 position, float yaw) in stakes)
         {
-            if (!player.m_noPlacementCost && !CanPay(player, template))
+            if (!player.m_noPlacementCost && each.Any(need => ChestCost.AtHand(player, NearbyContainers.Use.Building, need.Name) < need.Amount))
             {
                 if (!stakeWarning)
                 {
@@ -325,9 +335,9 @@ public static class MoatBuilder
                 return;
             }
 
-            foreach (Piece.Requirement requirement in template.m_resources)
+            if (!player.m_noPlacementCost)
             {
-                TerrainCost.TryPayItem(player, requirement.m_resItem, requirement.m_amount);
+                ChestCost.Take(player, NearbyContainers.Use.Building, each);
             }
 
             GameObject stake = UnityEngine.Object.Instantiate(prefab, position, Quaternion.Euler(0f, yaw, 0f));
@@ -335,17 +345,10 @@ public static class MoatBuilder
         }
     }
 
-    private static bool CanPay(Player player, Piece piece)
+    private static List<(string Name, int Amount)> Needs(Piece piece)
     {
-        foreach (Piece.Requirement requirement in piece.m_resources)
-        {
-            if (requirement.m_resItem != null && requirement.m_amount > 0 && GroupPlacer.Have(player, requirement.m_resItem) < requirement.m_amount)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return piece.m_resources.Where(requirement => requirement.m_resItem != null && requirement.m_amount > 0)
+            .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount)).ToList();
     }
 
     private static float Ground(Vector2 point)

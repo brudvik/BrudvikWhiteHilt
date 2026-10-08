@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Pieces.Portals.WhiteHiltPortal;
 using System.Globalization;
 using UnityEngine;
@@ -57,7 +58,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
             return true;
         }
 
-        if (player.GetInventory().CountItems(FuelName()) < PortalSettings.ValkyrieCost)
+        if (ChestCost.Have(player, NearbyContainers.Use.Crafting, FuelName()) < PortalSettings.ValkyrieCost)
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_nocore");
             return true;
@@ -96,12 +97,21 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
+        // Paid from the inventory and nearby chests, as crafting is; the core is taken only once the journey starts, and
+        // the stone sends the player once what lay in other players' chests has arrived.
         string fuel = FuelName();
         int cost = PortalSettings.ValkyrieCost;
-        if (player.GetInventory().CountItems(fuel) < cost)
+        (string Name, int Amount)[] needs = { (fuel, cost) };
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Crafting, needs, () => Travel(player)))
         {
-            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_nocore");
-            return;
+            case ChestCost.Outcome.Ready:
+                break;
+            case ChestCost.Outcome.Lacking:
+                player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_nocore");
+                return;
+            default:
+                ChestCost.ShowWaiting(player);
+                return;
         }
 
         if (!player.TeleportTo(deathPoint + Vector3.up * ArrivalLift, player.transform.rotation, true))
@@ -109,10 +119,7 @@ public class ValkyrieStoneComponent : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
-        if (cost > 0)
-        {
-            player.GetInventory().RemoveItem(fuel, cost);
-        }
+        ChestCost.Take(player, NearbyContainers.Use.Crafting, needs);
 
         player.m_customData[UsedDeathKey] = DeathKey(deathPoint);
         player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_valkyrie_travel");

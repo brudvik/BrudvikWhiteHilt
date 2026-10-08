@@ -160,8 +160,11 @@ public static class NearbyContainerPatches
                 return false;
             }
 
+            // The hoe's big brush costs more than the piece itself; that is fetched along with it.
+            float extra = Building.TerrainPatches.BrushExtra(__instance, piece);
             List<(string Name, int Amount)> needs = piece.m_resources.Where(requirement => requirement.m_resItem != null)
-                .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name, requirement.m_amount)).ToList();
+                .Select(requirement => (requirement.m_resItem.m_itemData.m_shared.m_name,
+                    requirement.m_amount + Mathf.CeilToInt(requirement.m_amount * extra))).ToList();
             if (ChestWithdrawal.Fetch(__instance, NearbyContainers.Use.Building, needs, ResumePlacing(__instance, piece)))
             {
                 __instance.Message(MessageHud.MessageType.Center, "$msg_whitehilt_chests_waiting");

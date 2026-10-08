@@ -103,41 +103,29 @@ public static class DyeCatalog
     }
 
     /// <summary>
-    /// How many of an item the player has, in the inventory and in nearby chests.
+    /// How many of an item the player has: the inventory and every chest in range (<see cref="ChestCost.Have"/>).
     /// </summary>
     /// <param name="player">The player.</param>
     /// <param name="name">Shared item name.</param>
     /// <returns>The count.</returns>
-    public static int Have(Player player, string name)
-    {
-        int count = player.GetInventory().CountItems(name);
-        if (NearbyContainers.IsActive(NearbyContainers.Use.Crafting))
-        {
-            count += NearbyContainers.Count(NearbyContainers.Use.Crafting, name);
-        }
-
-        return count;
-    }
+    public static int Have(Player player, string name) => ChestCost.Have(player, NearbyContainers.Use.Crafting, name);
 
     /// <summary>
-    /// Takes an item from the inventory first, then from nearby chests.
+    /// Whether a chest in range keeps an item full without limit, so it never runs out.
     /// </summary>
-    /// <param name="player">The player.</param>
     /// <param name="name">Shared item name.</param>
-    /// <param name="amount">How many.</param>
-    public static void Take(Player player, string name, int amount)
-    {
-        Inventory inventory = player.GetInventory();
-        int own = Mathf.Min(amount, inventory.CountItems(name));
-        if (own > 0)
-        {
-            inventory.RemoveItem(name, own);
-        }
+    /// <returns>True if it never runs out here.</returns>
+    public static bool IsUnlimited(string name) => ChestCost.IsUnlimited(NearbyContainers.Use.Crafting, name);
 
-        if (amount > own && NearbyContainers.IsActive(NearbyContainers.Use.Crafting))
-        {
-            NearbyContainers.Take(NearbyContainers.Use.Crafting, name, amount - own);
-        }
+    /// <summary>
+    /// The icon of an item.
+    /// </summary>
+    /// <param name="prefab">Prefab name.</param>
+    /// <returns>The icon, or null.</returns>
+    public static Sprite Icon(string prefab)
+    {
+        GameObject item = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(prefab) : null;
+        return item != null && item.TryGetComponent(out ItemDrop drop) ? drop.m_itemData.GetIcon() : null;
     }
 
     /// <summary>

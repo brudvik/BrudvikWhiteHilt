@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Crafting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -76,21 +77,72 @@ public static class GroupPlacer
     }
 
     /// <summary>
-    /// How many of a resource the player has in the inventory and in nearby chests.
+    /// How many of a resource the player has in the inventory and in every chest in range (<see cref="ChestCost.Have"/>).
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="item">The resource.</param>
     /// <returns>The count.</returns>
     public static int Have(Player player, ItemDrop item)
     {
-        string name = item.m_itemData.m_shared.m_name;
-        int count = player.GetInventory().CountItems(name);
-        if (NearbyContainers.IsActive(NearbyContainers.Use.Building))
+        return ChestCost.Have(player, NearbyContainers.Use.Building, item.m_itemData.m_shared.m_name);
+    }
+
+    /// <summary>
+    /// Brings what a group costs to hand before it is placed, fetching from chests other players hold
+    /// (<see cref="ChestCost.Gather"/>). Call right before <see cref="Place"/> with pay on, after <see cref="Check"/>.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="items">The pieces.</param>
+    /// <param name="again">Does the placing again once fetched items have arrived.</param>
+    /// <returns>True if everything is at hand; false while waiting or when something is missing, which the player is told.</returns>
+    public static bool Gather(Player player, IList<Item> items, Action again)
+    {
+        if (player.m_noPlacementCost)
         {
-            count += NearbyContainers.Count(NearbyContainers.Use.Building, name);
+            return true;
         }
 
-        return count;
+        List<(string Name, int Amount)> needs = Cost(items.Select(item => item.Piece))
+            .Select(cost => (cost.Key.m_itemData.m_shared.m_name, cost.Value)).ToList();
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again))
+        {
+            case ChestCost.Outcome.Ready:
+                return true;
+            case ChestCost.Outcome.Lacking:
+                player.Message(MessageHud.MessageType.Center, Check(player, items, pay: true) ?? "$msg_whitehilt_chests_notenough");
+                return false;
+            default:
+                ChestCost.ShowWaiting(player);
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// Gathers what a group costs and places it, paid for; placed again by itself, checked once more, when it had to
+    /// wait for the chests.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="items">The pieces.</param>
+    /// <returns>True if it was placed now.</returns>
+    public static bool PlacePaid(Player player, List<Item> items)
+    {
+        if (!Gather(player, items, () =>
+        {
+            string problem = Check(player, items, pay: true);
+            if (problem != null)
+            {
+                player.Message(MessageHud.MessageType.Center, problem);
+                return;
+            }
+
+            PlacePaid(player, items);
+        }))
+        {
+            return false;
+        }
+
+        Place(player, items, pay: true);
+        return true;
     }
 
     /// <summary>

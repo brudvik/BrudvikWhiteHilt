@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Backpack;
+using BrudvikWhiteHilt.Crafting;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -68,7 +69,13 @@ public class RepairAnvilComponent : MonoBehaviour, Hoverable, Interactable
             return true;
         }
 
-        if (!Pay(player, worn.Count))
+        if (!Pay(player, worn.Count, () =>
+            {
+                if (this != null)
+                {
+                    Interact(player, false, false);
+                }
+            }))
         {
             return true;
         }
@@ -112,29 +119,16 @@ public class RepairAnvilComponent : MonoBehaviour, Hoverable, Interactable
         return worn;
     }
 
-    // Takes the cost of repairing a number of items from the player, checking all of it first so nothing is taken when
-    // something is missing.
-    private static bool Pay(Player player, int items)
+    // Takes the cost of repairing a number of items from the player and nearby chests, as crafting does, checking all
+    // of it first so nothing is taken when something is missing; again repairs once what lay in other players' chests
+    // has arrived.
+    private static bool Pay(Player player, int items, System.Action again)
     {
-        IReadOnlyList<(string Prefab, int Amount)> cost = RepairAnvilSettings.Cost();
-        Inventory inventory = player.GetInventory();
-        foreach ((string prefab, int amount) in cost)
-        {
-            string name = ItemName(prefab);
-            if (inventory.CountItems(name) < amount * items)
-            {
-                player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_anvil_missing"),
-                    amount * items, Localization.instance.Localize(name)));
-                return false;
-            }
-        }
-
-        foreach ((string prefab, int amount) in cost)
-        {
-            inventory.RemoveItem(ItemName(prefab), amount * items);
-        }
-
-        return true;
+        List<(string Name, int Amount)> needs = RepairAnvilSettings.Cost().Select(part => (ItemName(part.Prefab), part.Amount * items)).ToList();
+        (string Name, int Amount) missing = needs.FirstOrDefault(need => ChestCost.Have(player, NearbyContainers.Use.Crafting, need.Name) < need.Amount);
+        string lacking = missing.Name == null ? "$msg_whitehilt_chests_notenough" : string.Format(
+            Localization.instance.Localize("$msg_whitehilt_anvil_missing"), missing.Amount, Localization.instance.Localize(missing.Name));
+        return ChestCost.Pay(player, NearbyContainers.Use.Crafting, needs, again, lacking);
     }
 
     private static string ItemName(string prefab)

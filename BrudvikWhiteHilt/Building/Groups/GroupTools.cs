@@ -478,7 +478,7 @@ public static class GroupTools
 
         if (cutSource == null)
         {
-            GroupPlacer.Place(player, items, pay: true);
+            GroupPlacer.PlacePaid(player, items.ToList());
             checkedCount = -1;
             return;
         }
@@ -554,7 +554,7 @@ public static class GroupTools
                 }
                 else
                 {
-                    GroupPlacer.Place(player, items, pay: true);
+                    GroupPlacer.PlacePaid(player, items.ToList());
 
                     // A line carries on from where it ended, so walls can go round a house.
                     lineStart = Mode == ToolMode.Line ? point : null;

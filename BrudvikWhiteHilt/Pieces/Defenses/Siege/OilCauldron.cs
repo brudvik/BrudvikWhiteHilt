@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -130,15 +131,22 @@ public class OilCauldron : MonoBehaviour, Interactable, Hoverable
             return true;
         }
 
-        Inventory inventory = user.GetInventory();
-        if (inventory.CountItems(item.m_shared.m_name) < filling.Amount)
+        // Filled from the inventory and nearby chests, as smelters are; filled again once what lay in other players'
+        // chests has arrived.
+        string name = item.m_shared.m_name;
+        Player player = (Player)user;
+        if (!ChestCost.Pay(player, NearbyContainers.Use.FuelAndOre, new[] { (name, filling.Amount) }, () =>
+            {
+                ItemDrop.ItemData again = this != null ? player.GetInventory().GetItem(name) : null;
+                if (again != null)
+                {
+                    UseItem(player, again);
+                }
+            }, string.Format(Localization.instance.Localize("$whitehilt_cauldron_need"), Localization.instance.Localize(name), filling.Amount)))
         {
-            user.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$whitehilt_cauldron_need"),
-                Localization.instance.Localize(item.m_shared.m_name), filling.Amount));
             return true;
         }
 
-        inventory.RemoveItem(item.m_shared.m_name, filling.Amount);
         nview.InvokeRPC(LoadRpc, (int)filling.Contents);
         return true;
     }

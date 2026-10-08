@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Items.Painting;
 using BrudvikWhiteHilt.Items.Runes;
 using BrudvikWhiteHilt.Items.Runes.FlameRune;
@@ -15,8 +16,9 @@ namespace BrudvikWhiteHilt.Painting;
 
 /// <summary>
 /// The Paint Bench's colour window: a hue and saturation wheel with a brightness bar, hex and RGB fields, saved colours,
-/// and the dyes that come closest to the colour. Mixing takes the dyes and a binder from the inventory and nearby chests
-/// and gives a paint pot of the chosen colour.
+/// and the dyes that come closest to the colour, each with its icon and how many the player has. Mixing takes the dyes
+/// and a binder from the inventory and nearby chests, fetching from chests other players hold first, and gives a paint
+/// pot of the chosen colour.
 /// </summary>
 public class PaintMixerPanel : MonoBehaviour
 {
@@ -29,6 +31,10 @@ public class PaintMixerPanel : MonoBehaviour
     private const float SuggestDelay = 0.15f;
     private const int FavouriteCount = 8;
     private const float StatusSeconds = 4f;
+    private const int RowCount = 4;
+    private const float RowHeight = 34f;
+    private const float IconSize = 30f;
+    private const string Unlimited = "\u221E";
 
     private static PaintMixerPanel instance;
 
@@ -52,6 +58,7 @@ public class PaintMixerPanel : MonoBehaviour
     private InputField greenField;
     private InputField blueField;
     private Text suggestionText;
+    private readonly List<(GameObject Root, Image Icon, Text Text)> rows = new();
     private Text statusText;
     private float statusUntil;
     private Button mixButton;
@@ -152,10 +159,29 @@ public class PaintMixerPanel : MonoBehaviour
         CreateButton(panel, top, new Vector2(PanelWidth / 2f - 100f, rowY), 150f, OnSave).text =
             Localization.instance.Localize("$whitehilt_paint_save");
 
-        // The dyes.
-        suggestionText = AddText(panel, top, new Vector2(0f, -530f), 17, PanelWidth - 60f, 190f, Color.white);
-        suggestionText.alignment = TextAnchor.UpperLeft;
+        // The dyes: how close the mix comes, then a row for each part and the binder, with its icon.
+        suggestionText = AddText(panel, top, new Vector2(0f, -462f), 17, PanelWidth - 60f, 50f, Color.white);
+        suggestionText.alignment = TextAnchor.LowerLeft;
         suggestionText.supportRichText = true;
+        for (int i = 0; i < RowCount; i++)
+        {
+            float y = -505f - i * RowHeight;
+
+            // Each row fills the panel, so its parts sit where they would on the panel itself.
+            GameObject root = new("row", typeof(RectTransform));
+            RectTransform rootRect = (RectTransform)root.transform;
+            rootRect.SetParent(panel, false);
+            rootRect.anchorMin = Vector2.zero;
+            rootRect.anchorMax = Vector2.one;
+            rootRect.offsetMin = rootRect.offsetMax = Vector2.zero;
+            Image icon = AddImage(rootRect, top, new Vector2(-PanelWidth / 2f + 30f + IconSize / 2f, y), new Vector2(IconSize, IconSize), null);
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+            Text text = AddText(rootRect, top, new Vector2(IconSize / 2f + 4f, y), 17, PanelWidth - 60f - IconSize - 8f, RowHeight, Color.white);
+            text.alignment = TextAnchor.MiddleLeft;
+            text.supportRichText = true;
+            rows.Add((root, icon, text));
+        }
 
         // What the last button did, above the buttons: a message in the middle of the screen is hidden by this window.
         statusText = AddText(panel, bottom, new Vector2(0f, 78f), 16, PanelWidth - 40f, 24f, Color.white);
@@ -294,12 +320,14 @@ public class PaintMixerPanel : MonoBehaviour
             return;
         }
 
-        foreach ((DyeCatalog.Dye dye, int amount) in suggestion.Parts)
+        List<(string Name, int Amount)> needs = Needs(binder: true);
+        if (!Gathered(player, needs, OnMix))
         {
-            DyeCatalog.Take(player, dye.Name, amount);
+            return;
         }
 
-        DyeCatalog.Take(player, DyeCatalog.BinderName(), 1);
+        ChestCost.Take(player, NearbyContainers.Use.Crafting, needs);
+
         WhiteHiltPaintPot.Create(player, Current);
         Notify(player, "$msg_whitehilt_paint_mixed", success: true);
         Changed(redrawWheel: false);
@@ -331,14 +359,62 @@ public class PaintMixerPanel : MonoBehaviour
             return;
         }
 
-        foreach ((DyeCatalog.Dye dye, int amount) in suggestion.Parts)
+        List<(string Name, int Amount)> needs = Needs(binder: false);
+        if (!Gathered(player, needs, () => ColourRune(runeName, noRune, coloured)))
         {
-            DyeCatalog.Take(player, dye.Name, amount);
+            return;
         }
+
+        ChestCost.Take(player, NearbyContainers.Use.Crafting, needs);
 
         ColourRunes.SetColor(rune, Current);
         Notify(player, coloured, success: true);
         Changed(redrawWheel: false);
+    }
+
+    // What the suggested mix takes, the binder too for a pot.
+    private List<(string Name, int Amount)> Needs(bool binder)
+    {
+        List<(string Name, int Amount)> needs = suggestion.Parts.Select(part => (part.Dye.Name, part.Amount)).ToList();
+        string binderName = DyeCatalog.BinderName();
+        if (binder && binderName != null)
+        {
+            int index = needs.FindIndex(need => need.Name == binderName);
+            if (index >= 0)
+            {
+                needs[index] = (binderName, needs[index].Amount + 1);
+            }
+            else
+            {
+                needs.Add((binderName, 1));
+            }
+        }
+
+        return needs;
+    }
+
+    // Brings what lies in chests other players hold into the inventory first, as crafting does (ChestCost); the click
+    // is done again once it has arrived. False while waiting or when something is missing after all.
+    private bool Gathered(Player player, List<(string Name, int Amount)> needs, Action again)
+    {
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Crafting, needs, () =>
+        {
+            if (IsOpen && instance == this)
+            {
+                again();
+            }
+        }))
+        {
+            case ChestCost.Outcome.Ready:
+                return true;
+            case ChestCost.Outcome.Lacking:
+                Notify(player, "$msg_whitehilt_paint_lacking", success: false);
+                Changed(redrawWheel: false);
+                return false;
+            default:
+                Notify(player, "$msg_whitehilt_chests_waiting", success: false);
+                return false;
+        }
     }
 
     // Shows what a button did in the window, with the colour when it worked, and in the message log.
@@ -396,6 +472,7 @@ public class PaintMixerPanel : MonoBehaviour
         if (suggestion == null || player == null)
         {
             suggestionText.text = Localization.instance.Localize("$whitehilt_paint_no_dyes");
+            ShowRows(Array.Empty<(string, string, int, int)>());
             mixButton.interactable = false;
             glowButton.interactable = false;
             flameButton.interactable = false;
@@ -408,29 +485,50 @@ public class PaintMixerPanel : MonoBehaviour
             text.AppendLine("<color=#FF9A7A>" + Localization.instance.Localize("$whitehilt_paint_missing") + "</color>");
         }
 
-        text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_paint_match"), Mathf.RoundToInt(suggestion.Match))
+        text.Append(string.Format(Localization.instance.Localize("$whitehilt_paint_match"), Mathf.RoundToInt(suggestion.Match))
             + "   " + PaintColor.Swatch(suggestion.Result));
-        foreach ((DyeCatalog.Dye dye, int amount) in suggestion.Parts)
-        {
-            text.AppendLine(Line(Localization.instance.Localize(dye.Name), amount, DyeCatalog.Have(player, dye.Name)));
-        }
+        suggestionText.text = text.ToString();
 
+        List<(string Prefab, string Label, int Amount, int Have)> parts = suggestion.Parts
+            .Select(part => (part.Dye.Prefab, Localization.instance.Localize(part.Dye.Name), part.Amount, Have(player, part.Dye.Name)))
+            .ToList();
         string binder = DyeCatalog.BinderName();
         if (binder != null)
         {
-            text.AppendLine(Line(Localization.instance.Localize("$whitehilt_paint_binder"), 1, DyeCatalog.Have(player, binder)));
+            parts.Add((DyeCatalog.Binder, Localization.instance.Localize("$whitehilt_paint_binder"), 1, Have(player, binder)));
         }
 
-        suggestionText.text = text.ToString();
+        ShowRows(parts);
         mixButton.interactable = suggestion.Available;
         glowButton.interactable = suggestion.Available && ColourRunes.FindToColour(player, GlowRune.Name) != null;
         flameButton.interactable = suggestion.Available && ColourRunes.FindToColour(player, FlameRune.Name) != null;
     }
 
-    private static string Line(string name, int amount, int have)
+    // How many the player has, or -1 when a chest in range never runs out.
+    private static int Have(Player player, string name) => DyeCatalog.IsUnlimited(name) ? -1 : DyeCatalog.Have(player, name);
+
+    // One row per part: its icon, name, how many it takes and how many the player has, red when that is too few.
+    private void ShowRows(IReadOnlyList<(string Prefab, string Label, int Amount, int Have)> parts)
     {
-        string color = have >= amount ? "#E8E2D0" : "#FF6A5A";
-        return $"<color={color}>{name} ×{amount}   ({string.Format(Localization.instance.Localize("$whitehilt_paint_have"), have)})</color>";
+        for (int i = 0; i < rows.Count; i++)
+        {
+            (GameObject root, Image icon, Text text) = rows[i];
+            if (i >= parts.Count)
+            {
+                root.SetActive(false);
+                continue;
+            }
+
+            (string prefab, string label, int amount, int have) = parts[i];
+            Sprite sprite = DyeCatalog.Icon(prefab);
+            icon.sprite = sprite;
+            icon.enabled = sprite != null;
+            bool enough = have < 0 || have >= amount;
+            string count = have < 0 ? Unlimited : have.ToString();
+            text.text = $"<color={(enough ? "#E8E2D0" : "#FF6A5A")}>{label} ×{amount}   "
+                + $"({string.Format(Localization.instance.Localize("$whitehilt_paint_have"), count)})</color>";
+            root.SetActive(true);
+        }
     }
 
     private void ShowFavourites()

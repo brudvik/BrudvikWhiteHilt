@@ -155,6 +155,13 @@ public static class BuildUndo
                 return;
             }
 
+            // Putting pieces back is paid for: what lies in other players' chests is fetched first, then undone again.
+            if (!step.Free && restore.Count > 0 && !GroupPlacer.Gather(player, restore, () => Undo(player)))
+            {
+                steps.Add(step);
+                return;
+            }
+
             if (step.Placed.Count == 1 && step.Removed.Count == 0)
             {
                 undone.Add(PieceSnapshot.Of(alive[0]));

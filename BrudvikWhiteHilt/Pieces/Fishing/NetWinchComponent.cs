@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Helpers;
 using System;
 using System.Collections.Generic;
@@ -161,15 +162,26 @@ public class NetWinchComponent : MonoBehaviour
         List<(string SharedName, int Amount)> costs = FishingNetSettings.MendCosts();
         if (costs.Count > 0)
         {
-            Inventory inventory = player.GetInventory();
-            int index = costs.FindIndex(cost => inventory.CountItems(cost.SharedName) >= cost.Amount);
+            // The first of the costs the player can pay, from the inventory and nearby chests as crafting does; mended
+            // again once what lay in other players' chests has arrived.
+            string need = string.Format(Localization.instance.Localize("$msg_whitehilt_netwinch_need"), CostText(costs));
+            int index = costs.FindIndex(cost => ChestCost.Have(player, NearbyContainers.Use.Crafting, cost.SharedName) >= cost.Amount);
             if (index < 0)
             {
-                player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_netwinch_need"), CostText(costs)));
+                player.Message(MessageHud.MessageType.Center, need);
                 return true;
             }
 
-            inventory.RemoveItem(costs[index].SharedName, costs[index].Amount);
+            if (!ChestCost.Pay(player, NearbyContainers.Use.Crafting, new[] { costs[index] }, () =>
+                {
+                    if (this != null)
+                    {
+                        Mend(player);
+                    }
+                }, need))
+            {
+                return true;
+            }
         }
 
         nview.InvokeRPC(MendRpc);

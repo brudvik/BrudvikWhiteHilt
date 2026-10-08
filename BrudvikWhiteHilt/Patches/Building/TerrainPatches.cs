@@ -68,19 +68,11 @@ public static class TerrainPatches
     [HarmonyPriority(Priority.First)]
     public static bool BigBrush(Player __instance, Piece piece, Vector3 pos, Quaternion rot)
     {
-        if (__instance != Player.m_localPlayer || HoeTools.BrushRadius <= 0f || !TerrainSettings.HoldingHoe(__instance))
+        if (__instance != Player.m_localPlayer || !BrushScale(__instance, piece, out TerrainOp op, out float scale))
         {
             return true;
         }
 
-        TerrainOp op = piece.GetComponent<TerrainOp>();
-        float radius = op != null ? op.m_settings.GetRadius() : 0f;
-        if (radius <= 0.01f)
-        {
-            return true;
-        }
-
-        float scale = HoeTools.BrushRadius / radius;
         float extra = Mathf.Max(0f, scale * scale - 1f);
         foreach (Piece.Requirement requirement in piece.m_resources)
         {
@@ -101,6 +93,38 @@ public static class TerrainPatches
         TerrainEdit.Enqueue(job);
         piece.m_placeEffect.Create(pos, rot);
         return false;
+    }
+
+    /// <summary>
+    /// What the big brush adds to a hoe piece's cost, as a share of it (0 without the big brush), so the chests can be
+    /// fetched from for all of it before the piece is placed.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="piece">The piece about to be placed.</param>
+    /// <returns>The extra share, e.g. 3 for four times the area.</returns>
+    public static float BrushExtra(Player player, Piece piece)
+    {
+        return BrushScale(player, piece, out _, out float scale) ? Mathf.Max(0f, scale * scale - 1f) : 0f;
+    }
+
+    private static bool BrushScale(Player player, Piece piece, out TerrainOp op, out float scale)
+    {
+        op = null;
+        scale = 1f;
+        if (piece == null || HoeTools.BrushRadius <= 0f || !TerrainSettings.HoldingHoe(player))
+        {
+            return false;
+        }
+
+        op = piece.GetComponent<TerrainOp>();
+        float radius = op != null ? op.m_settings.GetRadius() : 0f;
+        if (radius <= 0.01f)
+        {
+            return false;
+        }
+
+        scale = HoeTools.BrushRadius / radius;
+        return true;
     }
 
     /// <summary>
