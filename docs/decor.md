@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 460 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
+The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 534 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -129,12 +129,25 @@ Stones, outcrops, stumps, logs, dead trees and moss to make a garden or a path l
 | **Mossy Boulder, Round** | A round boulder with moss on top. | Stone ×12 | also small and large |
 | **Mossy Outcrop** | A mossy outcrop of rock. | Stone ×20 | also small and large |
 | **Rock Outcrop** | A grey outcrop of rock. | Stone ×16 | also small and large |
+| **Shore Rock** | A weathered rock from the shore, cracked by the sea. | Stone ×16 | also small |
+| **Shore Slab** | A long, flat slab of shore rock. | Stone ×24 | also small |
+| **Root Tangle** | Thick roots twisting out of the ground. | Wood ×4 | also small |
+| **Spreading Roots** | Roots creeping along the ground. | Wood ×2 |  |
+| **Root** | A single root lying on the ground. | Wood ×1 |  |
+| **Loose Bark** | Strips of bark fallen from an old tree. | Wood ×1 |  |
+| **Low Thicket** | A long, low thicket of twigs and leaves. | Wood ×2 |  |
+| **Shrub Tuft** | A small tuft of shrub. | Wood ×1 |  |
+| **Fir Sapling** | A young fir, no higher than a child. | Wood ×2 |  |
+| **Pine Sapling** | A young pine with soft needles. | Wood ×2 |  |
+| **Spiny Shell** | A spiny shell from far-off seas. | Stone ×1 |  |
 
 ## 🍲 Hearth
 
 Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen and the storehouse.
 
 <img src="images/decor_hearth.png" alt="Hearth" title="Hearth" height="260">
+
+<img src="images/decor_hearth_trees.png" alt="Hearth" title="Hearth" height="260">
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
@@ -186,12 +199,39 @@ Barrels, crates, sacks, baskets, bowls, pots, tankards and food for the kitchen 
 | **Wooden Box** | A sturdy wooden box. | Wood ×3 | also small and large |
 | **Market Crate** | An open crate for vegetables. | Wood ×2 | also small and large |
 | **Cooking Grate** | A grate over a fire, with a pot and bellows. It cooks nothing. | Iron ×2, Stone ×4, Coal ×2 | light |
+| **Cask Rack** | A tall rack of tapped casks with their pipes, for the hall's ale and mead. | Wood ×20, Iron ×2 |  |
+| **Tapped Cask** | A cask on its side, with a tap. | Wood ×4, Iron ×1 |  |
+| **Brass Pan** | A small brass pan with a long handle. | Bronze ×1 |  |
+| **Brass Pot** | A round brass pot. | Bronze ×2 |  |
+| **Low Brass Pot** | A shallow brass pot with handles. | Bronze ×1 |  |
+| **Brass Goblet** | A brass goblet for the high table. | Bronze ×1 |  |
+| **Brass Goblets** | Three brass goblets together. | Bronze ×2 |  |
+| **Tall Clay Jar** | A tall jar of fired clay. | Stone ×1, Resin ×1 |  |
+| **Small Clay Jar** | A small clay jar. | Stone ×1, Resin ×1 |  |
+| **Trivet** | An iron trivet to stand a pot on. | Iron ×1 |  |
+| **Stoppered Bottle** | A clay bottle with a band of silver and a stopper. | Stone ×1, Resin ×1 |  |
+| **Carved Bowl** | A wooden bowl with runes carved round it. | Wood ×1 |  |
+| **Iron-Bound Bucket** | A bucket with iron bands and a wire handle. | Wood ×2, Iron ×1 |  |
+| **Wooden Tray** | A flat wooden tray. | Wood ×1 |  |
+| **Wooden Fork** | A two-pronged fork whittled from a branch. | Wood ×1 |  |
+| **Banded Pitcher** | A clay pitcher with red bands and a bound handle. | Stone ×1, Resin ×1 |  |
+| **Mortar and Pestle** | A clay mortar with its pestle, for grinding herbs. | Stone ×2 |  |
+| **Wooden Cup** | A small cup turned from wood. | Wood ×1 |  |
+| **Frying Pan** | An iron pan with a long, hooked handle. | Iron ×1 |  |
+| **Turned Plate** | A wooden plate turned on a lathe. | Wood ×1 |  |
+| **Iron Pot** | A black iron pot with its lid. | Iron ×2 |  |
+| **Rolling Pin** | A rolling pin for flatbread. | Wood ×1 |  |
+| **Spice Pot** | A small clay pot with a lid, for salt or spice. | Stone ×1 |  |
+| **Wooden Ladle** | A deep wooden spoon for stirring the pot. | Wood ×1 |  |
+| **Kitchen Knife** | A plain knife for the kitchen. | Iron ×1 |  |
 
 ## 🔨 Workshop
 
 A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, firewood, fences and a quintain for the yard and the workshop.
 
 <img src="images/decor_workshop.png" alt="Workshop" title="Workshop" height="260">
+
+<img src="images/decor_workshop_trees.png" alt="Workshop" title="Workshop" height="260">
 
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
@@ -228,6 +268,12 @@ A smithy (anvil, forge, bench, tongs, bellows), a market stall, carts, tools, fi
 | **Barrow** | A small wooden cart. | Wood ×8 |  |
 | **Logs and Sacks** | Logs stacked with a few sacks. | Wood ×6, Linen Thread ×1 | also small and large |
 | **Quintain** | A swinging target for spear practice. | Wood ×6, Leather Scraps ×2 |  |
+| **Woodsman's Axe** | A worn axe for felling trees. | Wood ×1, Iron ×1 |  |
+| **Broad Axe** | An axe with a broad blade for hewing logs. | Wood ×1, Iron ×1 |  |
+| **Broom** | A broom of twigs bound to a long handle. | Wood ×1 |  |
+| **Pier Decking** | Weathered planks for a jetty, strong enough to walk on. | Wood ×8 |  |
+| **Pier Posts** | Three tall posts driven into the seabed. | Wood ×6 |  |
+| **Mooring Posts** | Two tall posts with rope, to tie a boat to. | Wood ×6, Leather Scraps ×2 |  |
 
 ## 🪑 Home
 
@@ -278,6 +324,23 @@ Tables, stools and chairs you can sit on, shelves, boxes and pots, from the mead
 | **Banded Chest** | An open chest bound with iron. It is only for show. | Wood ×4, Iron ×1 | also small and large |
 | **Scroll** | A rolled scroll tied with a band. | Leather Scraps ×1 |  |
 | **Green Bottle** | A green glass bottle with a cork. | Resin ×2 |  |
+| **Painted Bench** | A high-backed bench painted with flowers in the old way. | Wood ×5 | seat |
+| **Painted Cupboard** | A low cupboard with doors and drawers, painted with flowers. | Wood ×8 |  |
+| **Tall Painted Cupboard** | A tall cupboard painted with flowers, with a drawer and a door. | Wood ×10 |  |
+| **Painted Chair** | A chair painted with flowers. | Wood ×3 | seat |
+| **Painted Armchair** | A broad armchair painted with flowers. | Wood ×4 | seat |
+| **Painted Side Table** | A small table with a drawer, painted with flowers. | Wood ×3 |  |
+| **Painted Shelf** | A painted shelf for cups and bowls. | Wood ×4 |  |
+| **Painted Stool** | A stool painted with flowers. | Wood ×2 | seat |
+| **Painted Long Table** | A long table painted with flowers, for many guests. | Wood ×8 |  |
+| **High Seat** | A tall carved chair for the head of the hall. | Wood ×6, Fine Wood ×2 | seat |
+| **Round Hall Table** | A heavy round table on a thick foot. | Wood ×6 |  |
+| **Worn Bookshelf** | A worn shelf for scrolls, jars and keepsakes. | Wood ×8 |  |
+| **Chest of Drawers** | A low chest with six drawers. | Wood ×5 |  |
+| **Carved Bed** | A bed with carved posts. It is for show; sleep in a bed you build. | Wood ×10, Fine Wood ×4 |  |
+| **Carved Cupboard** | A tall cupboard with four carved doors. | Wood ×10, Fine Wood ×4 |  |
+| **Carved Chest of Drawers** | A chest of drawers with carved fronts. | Wood ×6, Fine Wood ×2 |  |
+| **Iron-Bound Chest** | A heavy chest bound with iron, with a lock. It holds nothing. | Wood ×4, Iron ×2 |  |
 
 ## 🧵 Textiles
 
@@ -321,6 +384,12 @@ Candles, lanterns, lamps, a chandelier and fires that burn without fuel. They gi
 | **Candle Stand** | A tall iron candle stand. | Iron ×2, Resin ×2 | light |
 | **Wall Candle** | A candle holder for the wall. | Iron ×1, Resin ×2 | light |
 | **Table Candle** | A candle in an iron holder. | Iron ×1, Resin ×2 | light |
+| **Brass Candelabrum** | A tall branched candlestick of brass. | Bronze ×2, Resin ×3 | light |
+| **Double Candlestick** | A brass candlestick for two candles. | Bronze ×1, Resin ×2 | light |
+| **Brass Candlestick** | A simple brass candlestick. | Bronze ×1, Resin ×1 | light |
+| **Tallow Candle** | A thick candle standing on its own. | Resin ×2 | light |
+| **Iron Chamberstick** | An iron candle holder with a dish, waiting for a candle. | Iron ×1 |  |
+| **Candle Sconce** | An iron wall sconce with a candle. | Iron ×1, Resin ×2 | light |
 
 ## ᚱ Norse
 
@@ -354,6 +423,12 @@ Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems,
 | **Iron-Rimmed Shield** | A round shield with an iron rim, for the wall. | Wood ×4, Iron ×1 |  |
 | **Old Sword** | An old sword to hang on the wall. | Iron ×2 |  |
 | **Broken Sword** | A sword snapped in battle. | Iron ×1 |  |
+| **Kite Shield** | A long shield, rounded at the top and pointed at the foot. | Wood ×4, Iron ×1 |  |
+| **Ornate Dagger** | A dagger with a decorated hilt, beside its sheath. | Iron ×1 |  |
+| **Ornate Mace** | A flanged mace with a decorated haft. | Iron ×2 |  |
+| **Ornate War Hammer** | A war hammer with a spike, for the weapon wall. | Iron ×2 |  |
+| **Old Estoc** | A long, stiff thrusting sword from a foreign land. | Iron ×2 |  |
+| **Lion's Head** | A bronze lion's head, brought home from a raid. | Bronze ×2 |  |
 
 ## ⚙️ Settings
 

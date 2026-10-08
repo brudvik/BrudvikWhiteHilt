@@ -84,6 +84,9 @@ def main():
     if len(keep) > 1:
         bpy.ops.object.join()
     model = bpy.context.view_layer.objects.active
+    # A decoration stands still, and Blender applies no modifier to a mesh with shape keys (Poly Haven's horse statue).
+    if model.data.shape_keys is not None:
+        model.shape_key_clear()
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
     triangles = sum(len(polygon.vertices) - 2 for polygon in model.data.polygons)

@@ -2,6 +2,26 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **71 new decorations for the Decor Hammer**:
+  - Kitchen: a cask rack with tapped casks, brass pots, pans and goblets, clay jars, a mortar and pestle, an iron pot, trivet, ladle, rolling pin, knife, cups, plates and spice pots.
+  - Home: rose-painted furniture in the old Scandinavian way (bench, chairs, stool, cupboards, side table, shelf and long table), a carved high seat, bed, cupboard and chest of drawers, a worn bookshelf, a round hall table and an iron-bound chest.
+  - Workshop and jetty: axes, a broom, pier decking, pier posts and mooring posts.
+  - Lights: brass candlesticks and a candelabrum, a tallow candle and a candle sconce.
+  - Weapon wall: a kite shield, an ornate dagger, mace and war hammer, an estoc and a bronze lion's head.
+  - Wilds: shore rocks, roots, loose bark, a low thicket and young firs and pines.
+
+### Changed
+- The Rune Etching Table, the Repair Anvil, the Oil Cauldron, the Net Winch and the Valkyrie Stone take what they cost from nearby chests too, like crafting, instead of only from your inventory.
+- The Paint Bench shows each dye of a mix and the resin with its icon and how many you have, or ∞ when a chest in range never runs out of it.
+
+### Fixed
+- **`BurningFlames` hardly toned anything down**: the big flames of a burning creature use a shader that takes its colours from its own gradient and adds them to the screen, ignoring the fading, and even half of them overlapped into solid white. Those flames now become fewer and smaller with the setting (at 0.5 a quarter as many, half as large), so a monster shot with fire arrows can be seen through its flames. The blue, green and undead kinds of burning are toned down too.
+- **Forageables were far rarer than meant**, worst of all Bog Iron and Peat in the Swamp. A zone got at most one or two tries at a random spot, and a try that missed the biome, height or slope placed nothing, so a whole Swamp could hold only a handful. Every forageable now gets one or more groups in each zone with suitable ground (most one or two; Chanterelle, Porcini and Reed up to three; Ergot, Henbane, Wild Hops and Wolf Lichen one), and Bog Iron also grows on the wet mud of the banks. Land explored before is filled once more when the server starts, only in zones that have none of the plant. Slate outcrops come up in as many Mountain zones as `SlateOutcropPerZone` says. The setting `SpawnPerZone` is replaced by `GroupsPerZoneMin` and `GroupsPerZoneMax`.
+- The Paint Bench and the build and terrain tools sometimes said you lacked materials you had in nearby chests until you opened one. In multiplayer they counted only the chests already handed over to you. Blueprints, copy and paste, lines and areas of pieces, planting grids, undo, the terrain tools, the hoe's big brush, moat stakes, dyeing banners and sails and the Paint Bench now count every chest in range and fetch from the others when you use them, as crafting and building do, and go on by themselves once the items have arrived.
+
 ## v0.104.1 - 2026-10-08
 
 ### Fixed
