@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.104.1 - 2026-10-08
+
+### Fixed
+- The map compass disappeared after leaving a world and joining another, and filled the log with an error every frame.
+- A Glow Rune's glow was faint at first, and from quality 5 the game's own upgrade glow shone through it in a colour of its own. The etched glow is now stronger and takes the place of the upgrade glow.
+- Etched glows and flames went out when the weapon or shield was put on the back. They now stay on.
+- A Flame Rune's colour did not reach the White Hilt Sword's own fire, nor the flames it gives other gear, which kept their usual orange.
+
 ## v0.104.0 - 2026-10-07
 
 ### Added
