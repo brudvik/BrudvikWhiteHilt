@@ -6,17 +6,26 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Ammunition;
 
 /// <summary>
-/// Tones down the game's burning effect (<c>vfx_Burning</c>), the flames a creature or player gets when set on fire. The
-/// flare, flames, sparks and light are strong enough to hide a burning monster, which White Hilt arrows set on fire
-/// often. Each player sets it for themselves; it applies to all burning, as the effect does not know what lit it.
+/// Tones down the game's burning effects (<c>vfx_Burning</c>, its blue and green kinds and <c>vfx_UndeadBurn</c>), the
+/// flames a creature or player gets when set on fire. The flare, flames, sparks and light are strong enough to hide a
+/// burning monster, which White Hilt arrows set on fire often. Each player sets it for themselves; it applies to all
+/// burning, as the effect does not know what lit it.
 /// </summary>
+/// <remarks>
+/// The big flames of <c>vfx_Burning</c> ("flames (1)", 100 a second) use the gradient-mapped particle shader, which
+/// takes its colours from its own gradient, adds them to the screen and reads neither the particles' colour nor their
+/// alpha. Fading them did nothing, and halving their number still left so many overlapping that the sum stayed white.
+/// Such flames are toned down by number (the square of the strength) and size (the strength) instead.
+/// </remarks>
 public sealed class BurningFlames : MonoBehaviour
 {
     private const string Section = "Gear.Ammunition";
-    private const string EffectPrefab = "vfx_Burning";
+    private const string GradientShader = "Gradient Mapped";
 
-    // Particles shrink by at most half, so faint flames still show where the creature burns.
+    // Particles that take their colour shrink by at most half, so faint flames still show where the creature burns.
     private const float MinimumSize = 0.5f;
+
+    private static readonly string[] effectPrefabs = { "vfx_Burning", "vfx_Burning_blue", "vfx_Burning_green", "vfx_UndeadBurn" };
 
     private static ConfigEntry<float> strength;
 
@@ -36,16 +45,19 @@ public sealed class BurningFlames : MonoBehaviour
     // The effect is a network object every machine creates for itself, so the dimmer on the prefab reaches every copy.
     private static void AddToEffect()
     {
-        GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(EffectPrefab) : null;
-        if (prefab == null)
+        foreach (string name in effectPrefabs)
         {
-            Jotunn.Logger.LogWarning($"{EffectPrefab} not found; burning flames are not toned down.");
-            return;
-        }
+            GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(name) : null;
+            if (prefab == null)
+            {
+                Jotunn.Logger.LogWarning($"{name} not found; its burning flames are not toned down.");
+                continue;
+            }
 
-        if (prefab.GetComponent<BurningFlames>() == null)
-        {
-            prefab.AddComponent<BurningFlames>();
+            if (prefab.GetComponent<BurningFlames>() == null)
+            {
+                prefab.AddComponent<BurningFlames>();
+            }
         }
     }
 
@@ -67,12 +79,22 @@ public sealed class BurningFlames : MonoBehaviour
                 continue;
             }
 
-            emission.rateOverTimeMultiplier *= scale;
-            emission.rateOverDistanceMultiplier *= scale;
+            // Flames that ignore their colour can only be made fewer and smaller.
+            bool colourless = IgnoresColour(particles);
+            float count = colourless ? scale * scale : scale;
+            emission.rateOverTimeMultiplier *= count;
+            emission.rateOverDistanceMultiplier *= count;
             ParticleSystem.MainModule main = particles.main;
-            main.startSizeMultiplier *= Mathf.Lerp(MinimumSize, 1f, scale);
+            main.startSizeMultiplier *= colourless ? scale : Mathf.Lerp(MinimumSize, 1f, scale);
             main.startColor = Fade(main.startColor, scale);
         }
+    }
+
+    private static bool IgnoresColour(ParticleSystem particles)
+    {
+        Material material = particles.TryGetComponent(out ParticleSystemRenderer renderer) ? renderer.sharedMaterial : null;
+        return material != null && material.shader != null
+            && material.shader.name.IndexOf(GradientShader, System.StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     // After every Awake, so a flickering light's own base brightness is scaled too.
