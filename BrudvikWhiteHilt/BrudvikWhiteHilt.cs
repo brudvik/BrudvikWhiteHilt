@@ -90,6 +90,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Curing.CuringSettings.Initialize();
         Items.Ammunition.BurningFlames.Initialize();
         Difficulty.BigHitLog.Initialize();
+        Party.PartySettings.Initialize();
         Textiles.TextileSettings.Initialize();
         Saga.SagaSettings.Initialize();
         Storage.StorageSearch.Initialize();

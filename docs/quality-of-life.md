@@ -1,4 +1,4 @@
-# 🕰️ Clock, sound & floating items
+# 🕰️ Clock, party list, sound & floating items
 
 [← Back to the README](../README.MD)
 
@@ -9,6 +9,16 @@ The time of day in 24 hours at the upper left above the weapon/tool hotbar, e.g.
 The `Clock` section sets whether it shows (`Enabled`), the day number (`ShowDay`), the weather icon (`ShowWeather`), rounding (`RoundMinutes`, 1 = every minute), the warning (`DuskWarningHours`, 0 = off), `FontSize` and `OffsetY`; `Clock.Keys` → `ToggleClock` binds a key to show and hide it. A server can turn the clock off for everyone with `AllowClock`.
 
 The [horizontal HUD compass](navigation.md#horizontal-hud-compass) and boss bars remain at the top centre and do not move the clock. `OffsetY` controls the clock's distance from the top edge independently of the compass.
+
+---
+
+## 🛡️ PARTY LIST
+
+The other players in a compact list at the upper left, under the hotbar and the arrow count shown under a bow, nearest first. Each row has the player's portrait (the one taken for the [map](navigation.md), or their initial on a disc), their name, how far away they are and up to four status effects, burning, poison and frost first. Under that come health and stamina as bars with numbers, `184/250`, and eitr for players who have it. A row flashes when its player takes a hard hit, the name turns red and the bar pulses under a quarter of the health, and a dead player's row fades until they respawn. The distance is shown only when the player is near or shares their position on the map. The list is hidden in the inventory, in build mode, on the large map, in menus and with the HUD.
+
+Each player sends their own health, stamina and eitr to the others, at most twice a second and only when something changed, so the list works however far apart you are.
+
+The `Party` section sets whether it shows (`Enabled`), `ShowStamina`, `ShowEitr`, `ShowDistance`, `ShowEffects`, `ShowSelf` (off), `MaxPlayers` (8) and `Scale`; `Party.Keys` → `ToggleParty` binds a key to show and hide it. A server can turn it off for everyone with `AllowParty`, and then nothing is shared.
 
 ---
 

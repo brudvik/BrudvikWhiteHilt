@@ -14,11 +14,13 @@ Ships and sea routes, stonework and turf roofs, foraging and feasts, forts, beas
 ![Jötunn 2.30](https://img.shields.io/badge/J%C3%B6tunn-2.30-6e4a2e?style=flat-square)
 ![Everyone needs the mod in multiplayer](https://img.shields.io/badge/multiplayer-everyone%20needs%20it-555?style=flat-square)
 [![License](https://img.shields.io/github/license/brudvik/BrudvikWhiteHilt?style=flat-square&color=555)](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/LICENSE)
+[![YouTube channel](https://img.shields.io/badge/YouTube-White%20Hilt-c4302b?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@WhiteHilt)
 
 [Install](#-installation) ·
 [Features](#-features) ·
 [Documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) ·
 [For modders](#-for-modders) ·
+[Videos](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/videos.md) ·
 [Changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) ·
 [Releases](https://github.com/brudvik/BrudvikWhiteHilt/releases) ·
 [Report an issue](https://github.com/brudvik/BrudvikWhiteHilt/issues)
@@ -248,11 +250,11 @@ An extra row, two hotbars, and slots for equipment, food, potions, ammo and coin
 
 Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven and hive.
 
-#### [Clock, sound & floating items](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
+#### [Clock, party & sound](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="Clock, sound & floating items" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="Clock, party & sound" height="120">
 
-A clock with the weather, muffled weather indoors and dropped items that float.
+A clock with the weather, your friends' health and stamina under the hotbar, muffled weather indoors and dropped items that float.
 
 #### [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
 
@@ -283,6 +285,9 @@ White Hilt is a large, working Valheim mod under the [MIT No Attribution](https:
 - **[How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
 - **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
 - **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+- **[Videos](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/videos.md)** on the [White Hilt YouTube channel](https://www.youtube.com/@WhiteHilt) go through the code one topic at a time, with the game running alongside and a real bug in every episode: the plugin, Harmony patches, items as classes, multiplayer, build pieces, the chests, Skidbladnir, portals and portraits.
+
+[![White Hilt: A Valheim Mod (trailer)](https://img.youtube.com/vi/tYbkbwbTJFw/maxresdefault.jpg)](https://youtu.be/tYbkbwbTJFw)
 
 Questions about the code are welcome on the [issues page](https://github.com/brudvik/BrudvikWhiteHilt/issues). How to build it yourself is under *Building from source* below.
 
