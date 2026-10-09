@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.109.0 - 2026-10-10
+
+### Added
+- **Windows, stairs and a cellar for [the log house](docs/log-house.md)**:
+  - Log walls, plain and offset, with a window 1 m wide closed by two shutters. The shutters always swing out against the wall, whichever side they are opened from, and close like other windows when rain, a storm, night or a raid comes.
+  - Log walls, plain and offset, with a *glugg*: a small framed opening one log high, as in the oldest houses.
+  - A narrow stair 1 m wide that reaches the next storey in one piece, and a spiral stair round a post that rises 2 m in three quarters of a turn.
+  - A loft ladder, railings of 2 and 1 m and a railing for the slope of the stairs.
+  - A floor hatch whose lid lifts, with a ladder 2 m down to the cellar, and a dry-laid cellar wall 2 m high.
+
 ## v0.108.0 - 2026-10-10
 
 ### Added

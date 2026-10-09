@@ -33,24 +33,19 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.105.0
+## ✨ New in 0.109.0
 
-- **[71 more decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)**: rose-painted furniture in the old Scandinavian way, a carved high seat, bed and cupboards, a cask rack for the hall, brass pots, goblets and candlesticks, kitchen ware, a weapon wall, pier decking and mooring posts, shore rocks and young firs, 534 decorations in all.
-- **Every workbench uses nearby chests**: the Paint Bench, the build and terrain tools, dyeing, the Rune Etching Table, the Repair Anvil and more count every chest in range and fetch from other players' chests, as crafting does. The Paint Bench shows each dye with its icon and how many you have.
-- **[Forageables](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md) are found where they should be**: every zone with suitable ground gets its plants, Bog Iron and Peat in the Swamp above all, and explored land is filled again.
-- Monsters set on fire can be seen through their flames.
+- **[Windows for the log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-windows)**: log walls with a window closed by two shutters that swing out and shut by themselves when rain or night comes, and log walls with a *glugg*, the small window of the oldest houses.
+- **[Stairs, a ladder and railings](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-stairs-ladders-and-railings)**: a narrow stair up to the loft in one piece, a spiral stair round a post, a loft ladder, railings and a stair railing.
+- **[A cellar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-cellar)**: a floor hatch whose lid lifts, with a ladder down, and a dry-laid cellar wall.
 
-### Also new in 0.104.0
+### Also new in 0.108.0
 
-- **[Attack styles](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/attack-styles.md)**: the White Hilt melee weapons swing in several styles, a signature one and others that suit their grip, drawn anew for every combo and as strong in each. A Gladius stabs and lunges, a Falchion chops, a War Axe hews from above.
-- **[The Rune Sword's own cuts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/attack-styles.md#-the-rune-swords-own-cuts)**: an overhead strike, a lunging thrust and a leaping whirl, animations made for the mod.
-- The server chooses Varied, Signature or Vanilla for everyone, and each player can choose for themselves.
+- **[The log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)**: build the Norwegian way, with *laft*. Log walls whose logs cross at the corners, log corners with the ends sticking out, log gables for the 26° and 45° roofs, a dry-laid stone foundation, plank floors of 4 × 4 m and more, and a plank door, a dragon portal and barn doors.
 
-### Also new in 0.103.0
+### Also new in 0.107.0
 
-- **[Decorations](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md) in more sizes**: barrels, crates, baskets, pots, stones, stumps, bushes, trees and runestones can also be built small and large, and the cart wheel twice the size, 460 decorations in all.
-- Things can be **set on decorations**: a pot on a decor table, a lantern on a barrel.
-- Decor **chairs and stools** seat you on the seat, facing the right way, and are Valheim-sized; decor **candles and lanterns** burn with flames to match.
+- **A recipe list you can find your way in**, at every station: search by name or material, a button for what you can craft now, tabs for weapons, armour, tools, ammunition, food and materials, and favourites that stay at the top.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -124,7 +119,7 @@ A free build camera, precise rotation, undo, area repair, blueprints and terrain
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/log_lafthus.png" alt="Log house" height="120">
 
-Laft walls whose logs cross at the corners, log gables, a stone foundation, large plank floors, doors, a dragon portal and barn doors.
+Laft walls whose logs cross at the corners, gables, shuttered windows, stairs and a spiral stair, a stone foundation, large floors, doors and a cellar hatch.
 
 ### ⛵ Sea & travel
 
