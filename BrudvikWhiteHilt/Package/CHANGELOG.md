@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.107.0 - 2026-10-09
+
+### Added
+- **A recipe list you can find your way in**, at every station, the game's own included (`[CraftingPanel]`): a search field above the list finds recipes by name or by what they are made of; a **Craftable** button lists only what you have the materials for, counting the chests around you (`OnlyCraftable`); tabs for weapons, armour and gear, tools, ammunition, food and meads, and materials, read from each recipe's item so other mods' recipes are sorted too; and **favourites**: right-click a recipe to give it a gold ★ and keep it at the top, saved on the character. `RecipeTools` turns the search and tabs off.
+
+### Changed
+- The recipe list is sorted by name, favourites first and upgrades with the highest level first (`SortByName`, on). `CraftableFirst` puts what you can craft now first, as the game did; with `SortByName` off the game's order is kept.
+
 ## v0.106.0 - 2026-10-08
 
 ### Added
