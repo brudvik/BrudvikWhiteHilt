@@ -26,6 +26,8 @@ public class LayoutTests
         ("^havnekran$", new[] { "jib", "fall", "hook" }),
         ("^(plankedor|dorportal)$", new[] { "leaf" }),
         ("^lavedor$", new[] { "leaf_left", "leaf_right" }),
+        ("^laftvegg(_forskutt)?_vindu$", new[] { "leaf_left", "leaf_right" }),
+        ("^lem$", new[] { "lid" }),
     };
 
     private static readonly Dictionary<string, JObject> pieces = Load();

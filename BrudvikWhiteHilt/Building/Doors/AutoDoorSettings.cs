@@ -146,7 +146,8 @@ public static class AutoDoorSettings
     /// <returns>Its kind.</returns>
     public static DoorKind Classify(string prefabName)
     {
-        if (windowNames.Matches(WindowNames.Value, prefabName))
+        // The log walls with shuttered windows are named in Norwegian (piece_whitehilt_laftvegg_vindu).
+        if (windowNames.Matches(WindowNames.Value, prefabName) || (prefabName.StartsWith("piece_whitehilt_") && prefabName.EndsWith("_vindu")))
         {
             return DoorKind.Window;
         }

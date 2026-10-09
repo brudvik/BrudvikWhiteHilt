@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.LogHouse;
@@ -29,6 +30,12 @@ public abstract class LogHouseDoorBase : DefensePieceBase
     /// <summary>The leaf that turns the other way, hung on its -x edge, or null for a single door.</summary>
     protected virtual string MirroredLeafGroup => null;
 
+    /// <summary>
+    /// Parts that always turn the same way, whichever side the door is opened from (<see cref="SwingDriver"/>), each with
+    /// its axis; null for a door whose leaves swing both ways like the vanilla door.
+    /// </summary>
+    protected virtual (string Group, Vector3 Axis)[] OneWaySwings => null;
+
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
@@ -47,6 +54,15 @@ public abstract class LogHouseDoorBase : DefensePieceBase
         foreach (Collider collider in door.GetComponentsInChildren<Collider>(true))
         {
             Object.DestroyImmediate(collider);
+        }
+
+        if (OneWaySwings != null)
+        {
+            SwingDriver swing = prefab.AddComponent<SwingDriver>();
+            swing.m_door = door;
+            swing.m_parts = OneWaySwings.Select(entry => groups.TryGetValue(entry.Group, out Transform part) ? part : null).ToArray();
+            swing.m_axes = OneWaySwings.Select(entry => entry.Axis).ToArray();
+            return;
         }
 
         GateLeafDriver driver = prefab.AddComponent<GateLeafDriver>();

@@ -1,6 +1,6 @@
 # 🪵 Log house
 
-Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, and hang a plank door, a dragon portal or barn doors in the wall. Everything is built with the ordinary Hammer near a Workbench.
+Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, hang a plank door, a dragon portal or barn doors in the wall, put in shuttered windows, go up by a stair, a spiral stair or a ladder, and down through a hatch to the cellar. Everything is built with the ordinary Hammer near a Workbench.
 
 <img src="images/log_lafthus.png" alt="A small log house on a stone foundation" title="A log house of 6 × 4 m: stone foundation and cornerstones, log walls, corners and gables, a plank door, and the vanilla 45° roof" height="260">
 
@@ -86,14 +86,59 @@ The doors snap in place of a wall like the vanilla door: the Plank Door and the 
 | **Dragon Portal** (`piece_whitehilt_dorportal`) | A door in a portal of broad boards with two dragon heads and a bronze ring, 2 × 2 m | Hammer (Workbench) | Fine Wood ×8, Wood ×4, Bronze ×1 |
 | **Barn Doors** (`piece_whitehilt_lavedor`) | Two tarred board doors, 4 × 2 m, wide enough for a cart | Hammer (Workbench) | Wood ×16, Resin ×4 |
 
+## 🪟 WINDOWS
+
+<img src="images/log_laftvegg_vindu.png" alt="Log Wall with Window" title="Log Wall with Window" height="140"> <img src="images/log_laftvegg_glugg.png" alt="Log Wall with Glugg" title="Log Wall with Glugg" height="140">
+
+The windows are log walls with an opening framed in boards, in both kinds of wall, and take the place of a 2 m wall. The **Log Wall with Window** has a window 1 m wide closed by two shutters on the outside. **Use** opens them: they always swing out against the wall, whichever side you open them from. They are windows to the [self-closing doors](base.md#-self-closing-doors), so they close when rain, a storm or night begins (and can be opened again while it lasts), and at once when a raid comes. The **Log Wall with Glugg** has a *glugg*, a small opening one log high and 0.6 m wide, as in the oldest houses, which let in light and let out smoke.
+
+The window lies where the logs are taken out, so it sits a little higher in the offset wall than in the plain one.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Log Wall with Window** (`piece_whitehilt_laftvegg_vindu`) | Window 1 m wide with two shutters | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Offset Log Wall with Window** (`piece_whitehilt_laftvegg_forskutt_vindu`) | The same in the offset wall | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Log Wall with Glugg** (`piece_whitehilt_laftvegg_glugg`) | A small open window, one log high | Hammer (Workbench) | Core Wood ×4 |
+| **Offset Log Wall with Glugg** (`piece_whitehilt_laftvegg_forskutt_glugg`) | The same in the offset wall | Hammer (Workbench) | Core Wood ×4 |
+
+## 🪜 STAIRS, LADDERS AND RAILINGS
+
+<img src="images/log_smal_trapp.png" alt="Narrow Stair" title="Narrow Stair" height="140"> <img src="images/log_vindeltrapp.png" alt="Spiral Stair" title="Spiral Stair" height="140"> <img src="images/log_stige.png" alt="Loft Ladder" title="Loft Ladder" height="140"> <img src="images/log_rekkverk.png" alt="Railing" title="Railing" height="140"> <img src="images/log_trapperekkverk.png" alt="Stair Railing" title="Stair Railing" height="140">
+
+The **Narrow Stair** is 1 m wide and rises 2 m over 4 m, as steep as the vanilla stair, so it reaches a loft or the next storey in one piece. The **Spiral Stair** winds round a post with a handrail, rising 2 m in three quarters of a turn, 2.4 m across: you go up facing one way and come off a quarter turn to the left. Stack another on top, turned a quarter back, for the next storey. Cut the hole in the floor above yourself, by leaving out a floor piece.
+
+The **Loft Ladder** stands against the edge of a loft 2 m up. **Use** it at its foot to climb onto the loft behind it; on the loft, the alternate key (Shift by default) and **Use** take you down.
+
+The **Railing** is 1 m high, for the edge of a loft or a stair well, and the **Stair Railing** follows the slope of the vanilla stair and the Narrow Stair (two go along one Narrow Stair).
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Narrow Stair** (`piece_whitehilt_smal_trapp`) | 1 m wide, rising 2 m over 4 m | Hammer (Workbench) | Wood ×6 |
+| **Spiral Stair** (`piece_whitehilt_vindeltrapp`) | Rising 2 m in three quarters of a turn | Hammer (Workbench) | Wood ×14 |
+| **Loft Ladder** (`piece_whitehilt_stige`) | 2.3 m long, up to a loft 2 m up | Hammer (Workbench) | Wood ×4 |
+| **Railing** (`piece_whitehilt_rekkverk`) | 2 m long, 1 m high | Hammer (Workbench) | Wood ×3 |
+| **Railing 1 m** (`piece_whitehilt_rekkverk_1m`) | 1 m long | Hammer (Workbench) | Wood ×2 |
+| **Stair Railing** (`piece_whitehilt_trapperekkverk`) | 2 m along a stair, rising 1 m | Hammer (Workbench) | Wood ×3 |
+
+## 🧱 CELLAR
+
+<img src="images/log_lem.png" alt="Floor Hatch" title="Floor Hatch" height="140"> <img src="images/log_kjellermur.png" alt="Cellar Wall" title="Cellar Wall" height="140">
+
+Dig out a cellar under the house with the pickaxe, line it with the **Cellar Wall**, and lay a **Floor Hatch** in the floor over it. The hatch is a 2 × 2 m floor with a lid in one corner and a ladder 2 m down under it. **Use** the lid to lift it; it is a door to the self-closing doors and falls shut a while after you went through. From the cellar, **Use** the ladder to climb up onto the floor beside the hatch; from there, the alternate key and **Use** take you down.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Floor Hatch** (`piece_whitehilt_lem`) | A 2 × 2 m floor with a hatch and a ladder 2 m down | Hammer (Workbench) | Wood ×8 |
+| **Cellar Wall** (`piece_whitehilt_kjellermur`) | Field stones laid dry, 2 m long and 2 m high | Hammer (Workbench) | Stone ×20 |
+
 ## 🏡 BUILDING A HOUSE, STEP BY STEP
 
 1. Lay the **Stone Foundation** round the house and a **Cornerstone** at each corner.
 2. Put **Log Walls** along the two long sides and **Offset Log Walls** along the two ends, on top of the foundation. Leave a 2 m gap for the door.
 3. Set a **Log Corner** on each corner, turning it until its logs follow the walls; where no turn fits, use the **Log Corner, Mirrored**.
-4. Put the **Plank Door** in the gap and lay the **floor** inside, on the foundation.
+4. Put the **Plank Door** in the gap, swap a wall or two for a **Log Wall with Window**, and lay the **floor** inside, on the foundation.
 5. On top of the end walls, set two **Log Gables** each, rising to the ridge, and put the roof on.
 
 ## Config
 
-The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables and the Dragon Portal come with the Black Forest (core wood needs the bronze axe); the foundation, floors, Plank Door and Barn Doors are there from the start.
+The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables, windows and the Dragon Portal come with the Black Forest (core wood needs the bronze axe); the foundation, floors, doors, stairs, ladder, railings, hatch and cellar wall are there from the start.
