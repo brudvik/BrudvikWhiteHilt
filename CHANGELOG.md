@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.108.0 - 2026-10-10
 
 ### Added
 - **[The log house](docs/log-house.md)**: build the Norwegian way, with *laft*.
