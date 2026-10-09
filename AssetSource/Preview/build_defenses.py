@@ -931,6 +931,8 @@ def main():
     pieces += gate_control_pieces()
     from build_defence_extras import extra_pieces
     pieces += extra_pieces()
+    from build_log_house import log_house_pieces
+    pieces += log_house_pieces()
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")

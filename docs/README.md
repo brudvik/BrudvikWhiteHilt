@@ -9,6 +9,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Around the base](base.md) | Surt's Brazier, the Rushlight, crafting and building from nearby chests, the Quartermaster's Table and Harbour Crane, chest search, the guestbook, the crafting panel, the Waste Well, the Trophy Altar and self-closing doors |
 | [Defences](defences.md) | The palisade and stone forts in stone, black marble and grausten: ramparts, gatehouses, towers, stairs, moats and drawbridges; the gate rope, windlass house and gate horn that work them; the oil cauldron and alarm bell |
 | [Stonework](stonework.md) | Memorial stones, soapstone lamps, the hnefatafl board, ship settings, stone rings, slate floors and dry stone walls |
+| [Log house](log-house.md) | Laft walls with crossing corners and gables, a dry-laid stone foundation, plank floors in more sizes, and plank doors, a dragon portal and barn doors |
 | [Roofs](roofs.md) | Turf, reed, straw, shingle and slate roofs, smoke holes, dragon gables and their materials |
 | [Painting](painting.md) | The Paint Bench, paint pots and brush, dyeing banners, sails and capes, and the loom |
 | [Beams, poles & banners](building-pieces.md) | Longer and angled beams and poles, iron grates and White Hilt banners |

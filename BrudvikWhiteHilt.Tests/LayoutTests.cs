@@ -24,6 +24,8 @@ public class LayoutTests
         ("^oljegryte$", new[] { "pot" }),
         ("^alarmklokke$", new[] { "bell" }),
         ("^havnekran$", new[] { "jib", "fall", "hook" }),
+        ("^(plankedor|dorportal)$", new[] { "leaf" }),
+        ("^lavedor$", new[] { "leaf_left", "leaf_right" }),
     };
 
     private static readonly Dictionary<string, JObject> pieces = Load();
