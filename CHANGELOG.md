@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.109.0 - 2026-10-10
 
 ### Added
 - **Windows, stairs and a cellar for [the log house](docs/log-house.md)**:
