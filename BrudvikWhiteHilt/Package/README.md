@@ -120,6 +120,12 @@ A free build camera, precise rotation, undo, area repair, blueprints and terrain
 
 460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.
 
+#### [Log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/log_lafthus.png" alt="Log house" height="120">
+
+Laft walls whose logs cross at the corners, log gables, a stone foundation, large plank floors, doors, a dragon portal and barn doors.
+
 ### ⛵ Sea & travel
 
 #### [Ships](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)

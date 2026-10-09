@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.108.0 - 2026-10-10
+
+### Added
+- **[The log house](docs/log-house.md)**: build the Norwegian way, with *laft*.
+  - Log walls of core wood in 1, 2 and 4 m, in two kinds whose logs lie half a log apart, so the logs of two walls that meet cross at the corner as in a real log house. Also a low wall for under a 26° gable.
+  - Log corners whose log ends (*laftehoder*) stick out past the corner, a mirrored corner for the other two corners of a house, and a joint where an inner wall's logs run through the outer wall.
+  - Log gables for the 26° and 45° roofs, with barge boards.
+  - A dry-laid stone foundation in 2 and 4 m, 1 m high and reaching into the ground, and a cornerstone.
+  - Plank floors of 4 × 4, 4 × 2 and 2 × 1 m, and a 4 × 4 m floor on joists for a loft.
+  - A plank door, a dragon portal and barn doors wide enough for a cart, which snap in place of a wall like the vanilla door and close by themselves like every door.
+
 ## v0.107.0 - 2026-10-09
 
 ### Added
