@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Building.Media;
+using BrudvikWhiteHilt.Crafting;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Backpack;
@@ -26,6 +27,6 @@ public static class BackpackInput
     public static bool Typing()
     {
         return (Chat.instance != null && Chat.instance.HasFocus()) || Console.IsVisible() || TextInput.IsVisible()
-            || Menu.IsVisible() || MediaPanel.Typing;
+            || Menu.IsVisible() || MediaPanel.Typing || RecipeList.Typing;
     }
 }

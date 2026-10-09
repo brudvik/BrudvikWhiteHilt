@@ -122,13 +122,18 @@ The oldest lines go first once the book is full. Only the book's owner (whoever 
 
 ## 🧾 CRAFTING PANEL
 
-The crafting panel and the build menu show what you have, not only what a recipe costs.
+The crafting panel and the build menu show what you have, not only what a recipe costs, and the recipe list at every station, the game's own included, can be searched, filtered and sorted.
 
 - **What you have**: a small dark box on the left of each requirement's icon shows how many you have, in your inventory and in the chests you may use around you (white when it is enough, red when it is not). Large amounts are shortened, e.g. `1.2k`.
 - **∞**: shown in gold when a restocking chest, cart or ship hold within reach keeps the item unlimited, so it never runs out here.
 - **On the way to unlimited**: in Linear chest mode, a thin gold bar along the bottom of the icon fills up as the best chest in the world gets closer to unlocking the item.
 - **Tooltip**: shows the split (*You have 14: 6 in your inventory + 8 in chests*) and either *Unlimited from a chest nearby*, *Unlimited in the Wood Chest, but none is nearby*, or *Unlimited after 12 more (38/50 in the best chest)*.
 - **Craft several at once**: arrows on the left of the Craft button choose how many to make, e.g. 4 axes. The mouse wheel over the number works too. The requirements show the cost for all of them, and the button reads *Craft x 4*. It starts at 1 for every recipe and is not used for upgrades. With 1 chosen, Shift + Craft still makes five like in vanilla.
+- **Search**: a field above the recipe list finds recipes by name or by what they are made of, so *bronze* lists everything that takes bronze. Several words must all be found. It is emptied when the inventory closes.
+- **Craftable**: the button next to the search lists only what you have the materials for, counting the chests around you. It is lit in gold while on and is remembered between sessions.
+- **Tabs**: All, Weapons, Armour and gear, Tools, Ammunition, Food and meads, and Materials and other. A recipe's tab is read from its item, so other mods' recipes are sorted too; pickaxes and fishing rods are tools. Tabs with nothing at the station are hidden.
+- **Favourites**: right-click a recipe to mark it with a gold ★ and keep it at the top of the list; right-click again to unmark it. Favourites are saved on the character.
+- **Sorted by name**: favourites first, then by name, and upgrades of the same item with the highest level first.
 
 | Setting (`CraftingPanel`) | Default | Description |
 |---|---|---|
@@ -137,6 +142,10 @@ The crafting panel and the build menu show what you have, not only what a recipe
 | `ShowUnlockProgress` | on | The gold bar towards unlimited (each player) |
 | `AmountSelector` | on | The arrows next to the Craft button (each player) |
 | `MaxCraftAmount` | 20 | The most that can be crafted at once (server) |
+| `RecipeTools` | on | The search, Craftable button and tabs above the recipe list (each player) |
+| `OnlyCraftable` | off | List only what you can craft; the Craftable button switches it (each player) |
+| `SortByName` | on | Sort the recipe list by name, favourites first; off keeps the game's order (each player) |
+| `CraftableFirst` | off | When sorting by name, what you can craft now comes first (each player) |
 
 ---
 
