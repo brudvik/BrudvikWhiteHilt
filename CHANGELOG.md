@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.112.0 - 2026-10-10
 
 ### Added
 - **[Arches, columns and finishing stone](docs/stonework.md#arches-columns-and-finishing-stone)**, each in stone, black marble and grausten (30 pieces), built at the Stonecutter and hard like the stone defences: an arched doorway 2.7 m to its crown, an arched window at eye height, a great arch 4 × 4 m, a wide stair, a cornice and its corner, a column, a balustrade and gables for the 26° and 45° roofs. The arches are rings of wedge stones with a keystone, and their openings are round and free to walk through.
