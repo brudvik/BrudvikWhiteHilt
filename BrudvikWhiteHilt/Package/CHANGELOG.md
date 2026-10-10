@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.113.0 - 2026-10-10
+
+### Added
+- **[Bridges, jetties & quays](docs/harbour.md)**, building pieces for the water's edge that snap end to end:
+  - Jetties of 4 and 2 m on tarred piles reaching 3 m down, and a jetty head with bollards and a stair down to the boats.
+  - A stone quay with a cope, a timber fender, an iron ring and a bollard, its outer corner, and steps down along its face.
+  - A log bridge of 4 and 8 m with a log railing, a rope bridge of 8 m that sags in the middle, and a stone bridge of 8 m over an arch 6 m across.
+
 ## v0.112.0 - 2026-10-10
 
 ### Added
