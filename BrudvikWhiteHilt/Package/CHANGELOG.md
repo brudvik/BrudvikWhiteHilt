@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.115.1 - 2026-10-10
+
+### Fixed
+- **Spiral stairs stack.** A spiral stair turns three quarters of a turn per storey, so the next one up must start a quarter back, but Valheim's snapping never turns a piece and stacked stairs came out with their treads crossing. A spiral stair snapped onto another (or under it) now turns itself to go on where the other ends, so a stairwell climbs as many storeys as you like.
+
 ## v0.115.0 - 2026-10-10
 
 ### Changed
