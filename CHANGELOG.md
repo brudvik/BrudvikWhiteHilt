@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.116.0 - 2026-10-10
 
 ### Added
 - **The White Hilt HUD.** Health, stamina, eitr and adrenaline, the food, the guardian power, the hotbar and the status effects are gathered in one console at the bottom centre: the hotbar in the middle with the bars and their numbers over it, the food and the guardian power to its left and the status effects, other mods' among them, to its right. The clock and the waypoint arrow sit at the two ends of the compass, the party list at the left and the arrow count over the bow. The console rises above the ship controls when they are under it. `Style` in `[HUD]` switches back to the game's own HUD (`Vanilla`); `Scale`, `BottomMargin`, `StatusColumns` and `MaxStatusEffects` set the rest.
