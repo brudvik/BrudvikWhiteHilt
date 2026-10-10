@@ -72,3 +72,30 @@ Field stones stacked without mortar, each course set off from the one below, as 
 | **Dry Stone Wall 1 m** (`piece_whitehilt_torrmur_1m`) | 1 m long, 0.9 m high, to close a gap | Hammer, near a Stonecutter | Stone ×6 |
 | **Dry Stone Wall Corner** (`piece_whitehilt_torrmur_hjorne`) | 1 m each way, 0.9 m high | Hammer, near a Stonecutter | Stone ×10 |
 | **Field Wall** (`piece_whitehilt_steingard`) | A low wall round fields, 2 m long, 0.6 m high | Hammer, near a Stonecutter | Stone ×8 |
+
+## Arches, columns and finishing stone
+
+<img src="images/stone_steinbygg.png" alt="Arches, columns and cornices in stone, grausten and black marble" title="The same front in stone, grausten and black marble: a great arch between arched doorways, arched windows over them, a cornice, columns and balustrades" height="240">
+
+Valheim gives stone, black marble and grausten walls and floors, but not the pieces that make a building of them: arches, window frames, stairs and something to finish the top of a wall. These come in all three stones. The black marble and grausten pieces are the same shapes, cost half as much of their stone as the plain ones cost stone, are 1.5 and 2 times as strong, and come with the Mistlands and the Ashlands. Like the stone defences they are stone in the building rules, take little from blunt blows, arrows and blades, and nothing from fire, frost, poison or spirit.
+
+<img src="images/stone_buegang.png" alt="Stone Arched Doorway" title="Stone Arched Doorway" height="140"> <img src="images/stone_buevindu.png" alt="Stone Arched Window" title="Stone Arched Window" height="140"> <img src="images/stone_storbue_marmor.png" alt="Black Marble Great Arch" title="Black Marble Great Arch" height="140"> <img src="images/stone_steinsoyle_marmor.png" alt="Black Marble Column" title="Black Marble Column" height="140">
+
+<img src="images/stone_steintrinn.png" alt="Wide Stone Stair" title="Wide Stone Stair" height="110"> <img src="images/stone_gesims.png" alt="Stone Cornice" title="Stone Cornice" height="110"> <img src="images/stone_brystning.png" alt="Stone Balustrade" title="Stone Balustrade" height="110"> <img src="images/stone_steingavl_45.png" alt="Stone Gable 45°" title="Stone Gable 45°" height="110"> <img src="images/stone_storbue_grausten.png" alt="Grausten Great Arch" title="Grausten Great Arch" height="110">
+
+The arches are rings of wedge stones with a keystone, and the openings under them are round and free to walk through. The arched doorway leaves 2.7 m to its crown, a good metre over your head; the arched window sits at eye height, like the [log house's windows](log-house.md#-windows). The walls are 0.6 m thick, like the vanilla stone walls, and snap to them.
+
+| Piece | Description | Crafting Station | Stone | Black marble | Grausten |
+|-------|-------------|------------------|-------|--------------|----------|
+| **Stone Arched Doorway** (`piece_whitehilt_buegang`) | A wall 2 × 3 m with a round-arched doorway 1.4 m wide | Hammer, near a Stonecutter | Stone ×24 | Black Marble ×12 | Grausten ×12 |
+| **Stone Arched Window** (`piece_whitehilt_buevindu`) | A wall 2 × 2 m with a round-headed window 0.8 m wide at eye height | Hammer, near a Stonecutter | Stone ×16 | Black Marble ×8 | Grausten ×8 |
+| **Stone Great Arch** (`piece_whitehilt_storbue`) | An arch 4 × 4 m over an opening 3 m wide | Hammer, near a Stonecutter | Stone ×40 | Black Marble ×20 | Grausten ×20 |
+| **Wide Stone Stair** (`piece_whitehilt_steintrinn`) | 2 m wide, rising 2 m over 4 m | Hammer, near a Stonecutter | Stone ×24 | Black Marble ×12 | Grausten ×12 |
+| **Stone Cornice** (`piece_whitehilt_gesims`) | Three courses stepping out over a wall's top, 2 m long | Hammer, near a Stonecutter | Stone ×6 | Black Marble ×3 | Grausten ×3 |
+| **Stone Cornice Corner** (`piece_whitehilt_gesims_hjorne`) | The cornice round an outer corner | Hammer, near a Stonecutter | Stone ×6 | Black Marble ×3 | Grausten ×3 |
+| **Stone Column** (`piece_whitehilt_steinsoyle`) | 3 m high, with a base and a capital | Hammer, near a Stonecutter | Stone ×10 | Black Marble ×5 | Grausten ×5 |
+| **Stone Balustrade** (`piece_whitehilt_brystning`) | 2 m long and 1 m high | Hammer, near a Stonecutter | Stone ×8 | Black Marble ×4 | Grausten ×4 |
+| **Stone Gable 26°** (`piece_whitehilt_steingavl_26`) | Half a gable, 2 m wide and 1 m high | Hammer, near a Stonecutter | Stone ×8 | Black Marble ×4 | Grausten ×4 |
+| **Stone Gable 45°** (`piece_whitehilt_steingavl_45`) | Half a gable, 2 m wide and 2 m high | Hammer, near a Stonecutter | Stone ×14 | Black Marble ×7 | Grausten ×7 |
+
+The black marble and grausten pieces are named after their stone, such as *Black Marble Great Arch* or *Grausten Column*, and their prefabs end in `_marmor` and `_grausten`.

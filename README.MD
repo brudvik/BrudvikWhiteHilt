@@ -41,7 +41,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.111.0
+## ✨ New in 0.112.0
+
+- **[Arches, columns and finishing stone](docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
+
+### Also new in 0.111.0
 
 - **[The farm](docs/farm.md)**: the grey skigard round the fields with gates that shut behind you, wattle fences, wattle-and-daub walls, a well sweep that dips its bucket, and a stream mill that grinds barley at full speed without wind.
 
@@ -51,10 +55,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 - **[Stave walls and the svalgang](docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
 - **[After Borgund stave church](docs/log-house.md#-after-borgund-stave-church)**: ridge dragons, a tiered ridge turret, carved ridge crests and gable crosses, shingled walls, nave columns with masks, arcade arches and St Andrew's crosses, scissor trusses, a svalgang porch and a stave bell tower whose bell rings.
 - **[Windows at eye height](docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
-
-### Also new in 0.109.0
-
-- **[Windows, stairs and a cellar for the log house](docs/log-house.md)**: shuttered windows that close by themselves, a narrow stair and a spiral stair, a loft ladder, railings, and a floor hatch with a ladder down to the cellar.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -80,7 +80,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" width="33%" valign="top"><a href="docs/base.md"><img src="docs/images/waste_well.png" height="110" alt=""></a><br><b><a href="docs/base.md">Around the base</a></b><br><sub>Fires without fuel, crafting from nearby chests, a quartermaster's table, a guestbook, a waste well and self-closing doors.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/defences.md"><img src="docs/images/fort_overview.png" height="110" alt=""></a><br><b><a href="docs/defences.md">Defences</a></b><br><sub>Palisade and stone forts with ramparts, gatehouses and towers, moats and drawbridges.</sub></td>
-<td align="center" width="33%" valign="top"><a href="docs/stonework.md"><img src="docs/images/memorial_stone.png" height="110" alt=""></a><br><b><a href="docs/stonework.md">Stonework</a></b><br><sub>Memorial stones, soapstone lamps, hnefatafl, ship settings, slate floors and dry stone walls.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/stonework.md"><img src="docs/images/memorial_stone.png" height="110" alt=""></a><br><b><a href="docs/stonework.md">Stonework</a></b><br><sub>Memorial stones, slate floors, dry stone walls, and arches, columns, stairs and cornices in stone, black marble and grausten.</sub></td>
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/roofs.md"><img src="docs/images/roof_turf.png" height="110" alt=""></a><br><b><a href="docs/roofs.md">Roofs</a></b><br><sub>Turf, reed, straw, tarred shingles and slate in every shape, with smoke holes and dragon gables.</sub></td>

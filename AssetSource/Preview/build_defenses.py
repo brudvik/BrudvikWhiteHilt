@@ -941,6 +941,8 @@ def main():
     pieces += borgund_pieces()
     from build_farm import farm_pieces
     pieces += farm_pieces()
+    from build_stone_building import stone_building_pieces
+    pieces += stone_building_pieces()
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")
