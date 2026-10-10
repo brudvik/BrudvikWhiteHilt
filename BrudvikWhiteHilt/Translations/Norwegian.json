@@ -5982,5 +5982,26 @@
   "piece_whitehilt_steingavl_45_marmor": "Steingavl 45° i svart marmor",
   "piece_whitehilt_steingavl_45_marmor_description": "Skift som trapper seg opp til taket på 45° under en dekkstein, 2 m bred og 2 m høy. Sett én på hver halvdel av gavlveggen.",
   "piece_whitehilt_steingavl_45_grausten": "Steingavl 45° i grausten",
-  "piece_whitehilt_steingavl_45_grausten_description": "Skift som trapper seg opp til taket på 45° under en dekkstein, 2 m bred og 2 m høy. Sett én på hver halvdel av gavlveggen."
+  "piece_whitehilt_steingavl_45_grausten_description": "Skift som trapper seg opp til taket på 45° under en dekkstein, 2 m bred og 2 m høy. Sett én på hver halvdel av gavlveggen.",
+
+  "piece_whitehilt_brygge": "Brygge",
+  "piece_whitehilt_brygge_description": "4 m brygge 2 m bred: et dekke av bord på bjelker og tjærebredde peler som går 3 m ned i vannet. Seksjonene snapper ende mot ende ut fra land.",
+  "piece_whitehilt_brygge_2m": "Brygge 2 m",
+  "piece_whitehilt_brygge_2m_description": "2 m brygge, til å fylle et hull eller ta et hjørne.",
+  "piece_whitehilt_bryggehode": "Bryggehode",
+  "piece_whitehilt_bryggehode_description": "Enden av en brygge, 2 × 2 m, med en pullert på hvert ytre hjørne og en trapp ned fra enden til 1,5 m under dekket, til å klatre opp fra en båt.",
+  "piece_whitehilt_tommerbru": "Tømmerbru",
+  "piece_whitehilt_tommerbru_description": "En bru 4 m lang og 2 m bred over en bekk: to tømmerstokker som hviler på breddene, bord på tvers og rekkverk av stokker.",
+  "piece_whitehilt_tommerbru_8m": "Tømmerbru 8 m",
+  "piece_whitehilt_tommerbru_8m_description": "En tømmerbru 8 m lang over en elv, på hele stokker fra bredd til bredd.",
+  "piece_whitehilt_hengebru": "Hengebru",
+  "piece_whitehilt_hengebru_description": "En hengebru 8 m lang mellom to par stolper: plankeganger på tau som henger en halv meter ned på midten, og tau til håndlister.",
+  "piece_whitehilt_kai": "Steinkai",
+  "piece_whitehilt_kai_description": "4 m steinkai, 2 m dyp og 3 m ned i vannet: murt stein under en kant av lange steiner, en fender av tømmer langs fronten, en jernring og en pullert. Fronten vender mot vannet.",
+  "piece_whitehilt_kai_hjorne": "Steinkai, hjørne",
+  "piece_whitehilt_kai_hjorne_description": "Det ytre hjørnet av en steinkai, der den vender mot vannet på to sider, med en stor steinpullert.",
+  "piece_whitehilt_kaitrapp": "Kaitrapp",
+  "piece_whitehilt_kaitrapp_description": "Steintrinn langs fronten av en kai, 4 m lang, fra toppen og 2 m ned, til en båt eller vannet.",
+  "piece_whitehilt_steinbru": "Steinbru",
+  "piece_whitehilt_steinbru_description": "En steinbru 8 m lang over en bue 6 m bred: dekket hvelver seg 0,8 m på midten mellom lave brystvern, og landkarene går ned i breddene."
 }

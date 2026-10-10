@@ -41,20 +41,17 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.112.0
+## ✨ New in 0.113.0
+
+- **[Bridges, jetties & quays](docs/harbour.md)**: jetties on tarred piles with a jetty head and a stair down to the boats, stone quays with a fender, a ring, a bollard and steps down the face, and bridges of logs, of rope and of stone over an arch.
+
+### Also new in 0.112.0
 
 - **[Arches, columns and finishing stone](docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
 
 ### Also new in 0.111.0
 
 - **[The farm](docs/farm.md)**: the grey skigard round the fields with gates that shut behind you, wattle fences, wattle-and-daub walls, a well sweep that dips its bucket, and a stream mill that grinds barley at full speed without wind.
-
-### Also new in 0.110.0
-
-- **[Doors you walk through upright](docs/log-house.md#-doors)**: a tall plank door, a double door, hall doors and a stave church portal, 3 m high like the vanilla gate, where the vanilla door leaves a hand over your 1.85 m.
-- **[Stave walls and the svalgang](docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
-- **[After Borgund stave church](docs/log-house.md#-after-borgund-stave-church)**: ridge dragons, a tiered ridge turret, carved ridge crests and gable crosses, shingled walls, nave columns with masks, arcade arches and St Andrew's crosses, scissor trusses, a svalgang porch and a stave bell tower whose bell rings.
-- **[Windows at eye height](docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -104,7 +101,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/treasure.md"><img src="docs/images/treasure_chest.png" height="110" alt=""></a><br><b><a href="docs/treasure.md">Treasure maps</a></b><br><sub>Buy a map from Hildir, match its scrap of land to your own map and dig up the chest.</sub></td>
-<td></td>
+<td align="center" valign="top"><a href="docs/harbour.md"><img src="docs/images/water_havn.png" height="110" alt=""></a><br><b><a href="docs/harbour.md">Bridges, jetties & quays</a></b><br><sub>Jetties on piles, stone quays with steps down to the water, and log, rope and stone bridges.</sub></td>
 <td></td>
 </tr>
 </table>

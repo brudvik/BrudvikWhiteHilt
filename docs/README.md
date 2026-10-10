@@ -23,6 +23,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Ships](ships.md) | The White Hilt Ship, Skidbladnir, the Shipwright's Bench, ship upgrades, sailing help, the harbour anchor and mooring posts |
 | [Navigation](navigation.md) | The Exploration skill, route sailing, the Pathfinder's amulets, weather, Munin's Perch, the map compass and player portraits |
 | [Portals & travel](portals.md) | Metal-carrying runes, the portal network and travel map, the Home Stone, the Valkyrie Stone and the Portal Astrolabe |
+| [Bridges, jetties & quays](harbour.md) | Jetties on piles with a jetty head, stone quays with a corner and steps, and log, rope and stone bridges |
 | [Treasure maps](treasure.md) | Hildir's treasure maps, buried chests and treasure hunts |
 
 ## 🍄 Farm & food
