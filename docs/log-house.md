@@ -188,7 +188,7 @@ The carved work is put together from the game's own meshes, so it is carving in 
 
 <img src="images/log_smal_trapp.png" alt="Narrow Stair" title="Narrow Stair" height="140"> <img src="images/log_vindeltrapp.png" alt="Spiral Stair" title="Spiral Stair" height="140"> <img src="images/log_stige.png" alt="Loft Ladder" title="Loft Ladder" height="140"> <img src="images/log_rekkverk.png" alt="Railing" title="Railing" height="140"> <img src="images/log_trapperekkverk.png" alt="Stair Railing" title="Stair Railing" height="140">
 
-The **Narrow Stair** is 1 m wide and rises 2 m over 4 m, as steep as the vanilla stair, so it reaches a loft or the next storey in one piece. The **Spiral Stair** winds round a post with a handrail, rising 2 m in three quarters of a turn, 2.4 m across: you go up facing one way and come off a quarter turn to the left. Stack another on top, turned a quarter back, for the next storey. Cut the hole in the floor above yourself, by leaving out a floor piece.
+The **Narrow Stair** is 1 m wide and rises 2 m over 4 m, as steep as the vanilla stair, so it reaches a loft or the next storey in one piece. The **Spiral Stair** winds round a post with a handrail, rising 2 m in three quarters of a turn, 2.4 m across: you go up facing one way and come off a quarter turn to the left. Snap another on top for the next storey: it turns itself a quarter back to go on where the one below ends. Cut the hole in the floor above yourself, by leaving out a floor piece.
 
 The **Loft Ladder** stands against the edge of a loft 2 m up. **Use** it at its foot to climb onto the loft behind it; on the loft, the alternate key (Shift by default) and **Use** take you down.
 

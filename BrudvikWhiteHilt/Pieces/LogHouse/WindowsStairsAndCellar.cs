@@ -186,7 +186,7 @@ public sealed class SpiralStair : TimberPieceBase
     /// <inheritdoc/>
     protected override string FullName => "Spiral Stair";
     /// <inheritdoc/>
-    protected override string Description => "Treads round a post with a handrail, rising 2 m in three quarters of a turn, 2.4 m across. Stack another on top, turned a quarter back, for the next storey.";
+    protected override string Description => "Treads round a post with a handrail, rising 2 m in three quarters of a turn, 2.4 m across. Snap another on top for the next storey: it turns itself to go on where this one ends.";
     /// <inheritdoc/>
     protected override int Wood => 14;
 }

@@ -5818,7 +5818,7 @@
   "piece_whitehilt_smal_trapp": "Smal trapp",
   "piece_whitehilt_smal_trapp_description": "En trapp 1 m bred som stiger 2 m over 4 m, like bratt som vanilla-trappen, opp til et loft eller neste etasje i ett stykke.",
   "piece_whitehilt_vindeltrapp": "Vindeltrapp",
-  "piece_whitehilt_vindeltrapp_description": "Trinn rundt en stolpe med håndlist, som stiger 2 m på tre kvart omdreining, 2,4 m bred. Stable en til oppå, dreid en kvart tilbake, til neste etasje.",
+  "piece_whitehilt_vindeltrapp_description": "Trinn rundt en stolpe med håndlist, som stiger 2 m på tre kvart omdreining, 2,4 m bred. Snapp en til oppå for neste etasje: den dreier seg selv så den fortsetter der denne slutter.",
   "piece_whitehilt_stige": "Loftsstige",
   "piece_whitehilt_stige_description": "En stige 2,3 m lang mot kanten av et loft 2 m oppe. Bruk den for å klatre opp; på loftet tar alternativ-tasten og Bruk deg ned.",
   "piece_whitehilt_rekkverk": "Rekkverk",

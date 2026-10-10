@@ -122,7 +122,7 @@ def spiral_point(angle, radius, y):
 
 def spiral_stair(seed):
     """A spiral stair round a post, rising 2 m in three quarters of a turn: you go up facing +z and come off facing -x.
-    Stack another on top, turned a quarter back, for the next storey."""
+    Snap another on top for the next storey; SpiralStairPatches turns it a quarter back."""
     rng = random.Random(seed)
     parts = [part("wood_pole_log", (0, 1.1, 0), (0, rng.uniform(0, 360), 0), (0.14 / 0.26, 2.2 / 2.22, 0.14 / 0.28))]
     rise = 2.0 / SPIRAL_STEPS
