@@ -28,7 +28,7 @@ While you hold a build tool (hammer, hoe, cultivator, or a build tool from anoth
 | Repair mode | Ctrl + R | Switches the hammer to its repair and back to the piece you held. One click repairs every damaged piece in a circle around where you aim, from the ground to the roof; the mouse wheel sets the size (1 to 30 m, or one piece as in vanilla). A ring shows the area and damaged pieces glow red to yellow by how worn they are. Each piece costs a quarter of a normal repair's stamina and tool wear; warded pieces and pieces whose crafting station is out of reach are skipped |
 | Light | L | Camera light on and off |
 
-The `BuildTools` config section sets how far the camera may fly (`CameraPlayerRange`, `CameraStationRange`), the placing reach, the undo time, whether the camera picks up items near it (`AutoPickup`, off by default), and area repair (`RepairArea`, `RepairMaxRadius`, `RepairAreaCost`); these are synced from the server. Speed, mouse, light, nudge step, grid size, repair radius, the axes and whether the toolbar and hint show are your own, and every key can be changed in `BuildTools.Keys`.
+The `BuildTools` config section sets how far the camera may fly (`CameraPlayerRange`, `CameraStationRange`), the placing reach, the undo time, whether the camera picks up items near it (`AutoPickup`, off by default), and area repair (`RepairArea`, `RepairMaxRadius`, `RepairAreaCost`); these are synced from the server. Speed, mouse, light, nudge step, grid size, repair radius, the axes, whether the toolbar and hint show, and whether a piece you build shows the game's puff of dust and smoke (`PlaceSmoke`, off by default: only the hammer's knock is heard) are your own, and every key can be changed in `BuildTools.Keys`.
 
 ### Media: photos and films
 

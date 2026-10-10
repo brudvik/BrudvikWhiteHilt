@@ -57,6 +57,9 @@ public static class BuildToolSettings
     /// <summary>Whether the key hint is shown bottom-left while a build tool is held.</summary>
     public static ConfigEntry<bool> ShowHint { get; private set; }
 
+    /// <summary>Whether building a piece shows the game's puff of dust and smoke.</summary>
+    public static ConfigEntry<bool> PlaceSmoke { get; private set; }
+
     /// <summary>Camera flying speed in metres per second.</summary>
     public static ConfigEntry<float> MoveSpeed { get; private set; }
 
@@ -210,6 +213,8 @@ public static class BuildToolSettings
 
         ShowToolbar = WhiteHiltConfig.BindLocal(Section, "ShowToolbar", true, "Show the build toolbar on the left while holding a build tool.");
         ShowHint = WhiteHiltConfig.BindLocal(Section, "ShowHint", true, "Show the build camera key hint bottom-left while holding a build tool.");
+        PlaceSmoke = WhiteHiltConfig.BindLocal(Section, "PlaceSmoke", false,
+            "Show the puff of dust and smoke where a piece is built. Off, a piece appears with only its sound.");
         MoveSpeed = WhiteHiltConfig.BindLocal(Section, "MoveSpeed", 6f, "Build camera speed in metres per second.");
         FastMultiplier = WhiteHiltConfig.BindLocal(Section, "FastMultiplier", 2.5f, "Build camera speed multiplier while the run key is held.");
         MouseSensitivity = WhiteHiltConfig.BindLocal(Section, "MouseSensitivity", 1f, "Build camera mouse look multiplier on top of the game's own setting.");

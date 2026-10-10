@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Added
 - **Switch accessories off where they lie.** Right-click a Megingjord, Wisplight, Wishbone or other accessory in one of the five accessory slots to switch it off: it stays in its slot, faded, and gives nothing until you right-click it again. It stays off across sessions; dragged out of the row it is on again when next worn. Taking an accessory off is now a drag out of its slot.
+- **No puff of smoke when you build.** Building a piece no longer shows the game's cloud of dust and smoke, only the hammer's knock is heard. `PlaceSmoke` in `[BuildTools]` brings it back; it is your own setting, off by default.
 
 ## v0.115.2 - 2026-10-10
 
