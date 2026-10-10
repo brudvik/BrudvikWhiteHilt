@@ -397,6 +397,8 @@ Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems,
 
 <img src="images/decor_norse.png" alt="Norse" title="Norse" height="260">
 
+<img src="images/decor_norse_trees.png" alt="Norse" title="Norse" height="260">
+
 | Decoration | Description | Requirements | Notes |
 |------------|-------------|--------------|-------|
 | **Runestone** | A standing stone carved with runes. | Stone ×10 | Valheim's own look, also small and large |
