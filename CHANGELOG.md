@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.113.0 - 2026-10-10
 
 ### Added
 - **[Bridges, jetties & quays](docs/harbour.md)**, building pieces for the water's edge that snap end to end:
