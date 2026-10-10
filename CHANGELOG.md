@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **Friezes go onto the wall's face.** A carved frieze or post board snapped to a wall sat inside it, as Valheim's walls snap on their centre line and the frieze on its back. Snapped to a wall or a post it now moves out onto the face it faces, whatever the wall's thickness.
+- **Log corners turn to the wall.** A log corner snapped to the end of a log wall turns itself so its logs follow that wall; the plain or the mirrored corner decides which way the other wall goes.
+- **The brass candleholders have lost the flames Poly Haven modelled on their candles**, which burned as solid shapes inside the real flames. The candelabrum and the three-armed and plain candlesticks keep their size, and their flames stand on the wicks.
+
 ## v0.115.1 - 2026-10-10
 
 ### Fixed
