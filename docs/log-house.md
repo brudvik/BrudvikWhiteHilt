@@ -126,7 +126,7 @@ The other old way of building in wood: tarred boards standing on end between a s
 
 <img src="images/log_svalgang.png" alt="Svalgang" title="Svalgang" height="140"> <img src="images/log_svalgang_hjorne.png" alt="Svalgang Corner" title="Svalgang Corner" height="140">
 
-The **Svalgang** is the covered gallery round a stave church: a board floor, a low wall, an arcade of small posts and round arches, and a lean-to of the vanilla dark shingles. Snap it to the foot of a wall on its outside; its roof meets the wall 3.15 m up, so it wants the Tall Stave Wall (or two rows of walls). The **Svalgang Corner** goes round an outer corner, under a hipped corner of shingles.
+The **Svalgang** is the covered gallery round a stave church: a board floor, a low wall, an arcade of small posts and round arches, and a lean-to of the vanilla dark shingles. Snap it to the foot of a wall on its outside; its roof meets the wall 3.25 m up, so it wants the Tall Stave Wall (or two rows of walls). The **Svalgang Corner** goes round an outer corner, under a hipped corner of shingles.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
@@ -141,8 +141,8 @@ The **Svalgang** is the covered gallery round a stave church: a board floor, a l
 | **Stave Gable 45°** (`piece_whitehilt_stavgavl_45`) | 2 m wide, rising 2 m | Hammer (Workbench) | Wood ×4, Resin ×1 |
 | **Stave Wall with Window** (`piece_whitehilt_stavvegg_vindu`) | Window 1 m wide from 1 m up to the wall plate, two shutters | Hammer (Workbench) | Wood ×8, Resin ×1 |
 | **Stave Wall with Round Glugg** (`piece_whitehilt_stavvegg_glugg`) | A small round window high up | Hammer (Workbench) | Wood ×6, Resin ×1 |
-| **Svalgang** (`piece_whitehilt_svalgang`) | 2 m of covered gallery, 1.8 m deep | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
-| **Svalgang Corner** (`piece_whitehilt_svalgang_hjorne`) | The gallery's outer corner, 1.8 × 1.8 m | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
+| **Svalgang** (`piece_whitehilt_svalgang`) | 2 m of covered gallery, 2 m deep | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
+| **Svalgang Corner** (`piece_whitehilt_svalgang_hjorne`) | The gallery's outer corner, 2 × 2 m | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
 
 ## ⛪ AFTER BORGUND STAVE CHURCH
 

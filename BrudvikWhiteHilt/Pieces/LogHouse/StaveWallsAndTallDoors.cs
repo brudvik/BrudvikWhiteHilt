@@ -281,7 +281,7 @@ public sealed class Gallery : GalleryBase
     /// <inheritdoc/>
     protected override string FullName => "Svalgang";
     /// <inheritdoc/>
-    protected override string Description => "2 m of the covered gallery round a stave church: a board floor, a low wall, an arcade of small posts and arches, and a lean-to of dark shingles that meets the wall at 3.15 m. Snap it to the foot of a tall stave wall.";
+    protected override string Description => "2 m of the covered gallery round a stave church: a board floor, a low wall, an arcade of small posts and arches, and a lean-to of dark shingles that meets the wall at 3.25 m. Snap it to the foot of a tall stave wall.";
 }
 
 /// <summary>The outer corner of the svalgang.</summary>

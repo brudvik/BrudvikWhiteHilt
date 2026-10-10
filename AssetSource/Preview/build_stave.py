@@ -143,7 +143,7 @@ def stave_gable(rise, seed):
 
 
 # The svalgang stands on the +z side of a wall along x through the origin, reaching GALLERY out from its centre line.
-GALLERY = 1.8
+GALLERY = 2.0  # a vanilla floor's width, so its outer edge and its corner keep to Valheim's 2 m grid
 EAVE = 2.25
 ROOF_SCALE = GALLERY / 2  # the dark shingles rise 1 m over 2 m; scaled, the gallery's roof keeps that slope
 
@@ -182,7 +182,7 @@ def gallery_side(x0, x1, rng, z=GALLERY - 0.1, along_z=False):
 
 def gallery(seed):
     """A 2 m section of svalgang along a wall: deck, outer side, rafters and a lean-to of dark shingles that meets the
-    wall at 3.15 m, so it wants a wall at least that high (the tall stave wall)."""
+    wall at 3.25 m, so it wants a wall at least that high (the tall stave wall)."""
     rng = random.Random(seed)
     parts = [part("wood_floor", (0, 0, 0.15 + (GALLERY - 0.15) / 2), scale=(1, 1, (GALLERY - 0.15) / 2), tint=[0.75, 0.68, 0.6])]
     side, posts = gallery_side(-1, 1, rng)
