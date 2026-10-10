@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.115.0 - 2026-10-10
+
+### Changed
+- **Decor Hammer sizes after Valheim's own.** 84 decorations stood at their real size and looked lost beside the game's things, whose tankard is 0.26 m high and onion 0.27 m: tableware and food are now about twice life size, tools and weapons about one and a half, candles and lamps in between. The Carved Stand (once the Low Table, 0.3 m wide), the Low Stool, the Anvil, the Wall Plank and Moss were also too small.
+- **Flames where the candles are.** A decoration can place a flame on each candle: the Brass Candelabrum burns seven, the Three-Armed Candlestick (once the Double Candlestick) three and the Chandelier five at the ends of its arms instead of one in its bowl. The wall candle, wall lamp and sconce burn on the candle instead of between it and the wall, the wooden lantern behind its glass instead of under its roof, and the cooking grate's fire burns under the grate instead of round the pot.
+- **The Svalgang is 2 m deep** instead of 1.8 m, a vanilla floor's width: its outer edge and its corner (now 2 × 2 m) snap to Valheim's 2 m grid, so floors, posts and railings along it line up with the rest of the building. Its roof meets the wall 3.25 m up.
+
 ## v0.114.0 - 2026-10-10
 
 ### Added
