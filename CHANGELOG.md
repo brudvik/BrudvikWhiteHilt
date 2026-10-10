@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.111.0 - 2026-10-10
 
 ### Added
 - **[The farm](docs/farm.md)**:
