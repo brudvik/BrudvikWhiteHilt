@@ -33,7 +33,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.111.0
+## ✨ New in 0.112.0
+
+- **[Arches, columns and finishing stone](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
+
+### Also new in 0.111.0
 
 - **[The farm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/farm.md)**: the grey skigard round the fields with gates that shut behind you, wattle fences, wattle-and-daub walls, a well sweep that dips its bucket, and a stream mill that grinds barley at full speed without wind.
 
@@ -43,10 +47,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 - **[Stave walls and the svalgang](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
 - **[After Borgund stave church](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-after-borgund-stave-church)**: ridge dragons, a tiered ridge turret, carved ridge crests and gable crosses, shingled walls, nave columns with masks, arcade arches and St Andrew's crosses, scissor trusses, a svalgang porch and a stave bell tower whose bell rings.
 - **[Windows at eye height](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
-
-### Also new in 0.109.0
-
-- **[Windows, stairs and a cellar for the log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)**: shuttered windows that close by themselves, a narrow stair and a spiral stair, a loft ladder, railings, and a floor hatch with a ladder down to the cellar.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -84,7 +84,7 @@ Palisade and stone forts with ramparts, gatehouses and towers, moats and drawbri
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/memorial_stone.png" alt="Stonework" height="120">
 
-Memorial stones, soapstone lamps, hnefatafl, ship settings, slate floors and dry stone walls.
+Memorial stones, slate floors, dry stone walls, and arches, columns, stairs and cornices in stone, black marble and grausten.
 
 #### [Roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)
 
