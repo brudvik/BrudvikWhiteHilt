@@ -2,9 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-> 🎬 How it works in the code: [EP05 · A Piece From a Pole](https://youtu.be/_5UT5RH4YnM)
-
-The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 534 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
+The White Hilt Decor Hammer builds decorations only: plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces. There are 543 of them under eight tabs, many barrels, crates, stones, stumps, bushes and trees in a small and a large size as well.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|
@@ -431,6 +429,10 @@ Runestones, graves, a dolmen, stocks, skulls, swords and shields, fuling totems,
 | **Ornate War Hammer** | A war hammer with a spike, for the weapon wall. | Iron ×2 |  |
 | **Old Estoc** | A long, stiff thrusting sword from a foreign land. | Iron ×2 |  |
 | **Lion's Head** | A bronze lion's head, brought home from a raid. | Bronze ×2 |  |
+| **Carved Dragon Head** | A dragon's head carved in wood on a curving neck with lozenges down it, for a prow, a gable or a portal. | Fine Wood ×6, Resin ×2 | also large |
+| **Ship's Bow with Spiral Stem** | The bow of a Viking ship rising into a spiral stem, as on the Oseberg ship, for the harbour or the hall. | Fine Wood ×12, RoundLog ×4, Resin ×4 | also large |
+| **Ship's Stern with Spiral Stem** | The stern of a Viking ship with its steering oar and spiral stem. | Fine Wood ×10, RoundLog ×4, Resin ×4 | also large |
+| **Asferg Runestone** | A scan of the Asferg runestone from Jutland, its runes cut a thousand years ago. | Stone ×20 | also small and large |
 
 ## ⚙️ Settings
 

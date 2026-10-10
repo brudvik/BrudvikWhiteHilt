@@ -111,7 +111,8 @@ def main():
         else:
             sys.exit(f"{entry['id']}: unknown source {entry['source']}")
 
-        spec = {"objects": entry.get("objects", []), "tris": entry.get("tris", 3000), "texture": entry.get("texture", 512)}
+        spec = {"objects": entry.get("objects", []), "tris": entry.get("tris", 3000), "texture": entry.get("texture", 512),
+                "cutBelow": entry.get("cutBelow", 0)}
         result = subprocess.run(
             [blender, "-b", "--factory-startup", "--python-exit-code", "1", "--python", str(HERE / "blender_prepare.py"),
              "--", str(source), str(output), json.dumps(spec)],

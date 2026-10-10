@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Carvings for the [Decor Hammer](docs/decor.md)**, from CC BY models: a carved dragon head on a curving neck, the bow and the stern of a Viking ship rising into spiral stems as on the Oseberg ship, and a scan of the Asferg runestone from Jutland, in a small and a large size.
+
+### Changed
+- Models in the mod's own asset bundle can carry a normal map (`<name>_normal`), for carved relief that keeps its edges.
+
 ## v0.113.0 - 2026-10-10
 
 ### Added

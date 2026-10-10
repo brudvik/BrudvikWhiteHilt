@@ -182,7 +182,16 @@ public static class VanillaMeshLibrary
     {
         Material template = PrefabManager.Instance.GetPrefab(BundleMaterialPrefab)?.transform.Find(BundleMaterialChild)?.GetComponent<MeshRenderer>()?.sharedMaterial
             ?? throw new InvalidOperationException($"{BundleMaterialPrefab}/{BundleMaterialChild} has no material.");
-        return VisualHelper.CreateTexturedMaterial(template, ForagingAssets.LoadTexture($"{key}_albedo"), $"{key}_material");
+        Material material = VisualHelper.CreateTexturedMaterial(template, ForagingAssets.LoadTexture($"{key}_albedo"), $"{key}_material");
+        // A carved relief keeps its fine detail in a normal map (<key>_normal), as the roofs do.
+        Texture2D normal = ForagingAssets.TryLoadTexture($"{key}_normal");
+        if (normal != null && material.HasProperty("_BumpMap"))
+        {
+            material.SetTexture("_BumpMap", normal);
+            material.EnableKeyword("_NORMALMAP");
+        }
+
+        return material;
     }
 
     // activeInHierarchy is always false inside Jotunn's disabled prefab container, so walk up to the root instead.

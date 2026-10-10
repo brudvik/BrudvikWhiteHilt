@@ -47,8 +47,17 @@ public static class ForagingAssets
     /// <returns>The texture.</returns>
     public static Texture2D LoadTexture(string name)
     {
-        return GetBundle().LoadAllAssets<Texture2D>().FirstOrDefault(texture => texture.name == name)
-            ?? throw new InvalidOperationException($"Texture '{name}' not found in {ResourceName}.");
+        return TryLoadTexture(name) ?? throw new InvalidOperationException($"Texture '{name}' not found in {ResourceName}.");
+    }
+
+    /// <summary>
+    /// Loads a texture from the bundle if it has one of that name, such as the normal map a model may have.
+    /// </summary>
+    /// <param name="name">Texture name.</param>
+    /// <returns>The texture, or null.</returns>
+    public static Texture2D TryLoadTexture(string name)
+    {
+        return GetBundle().LoadAllAssets<Texture2D>().FirstOrDefault(texture => texture.name == name);
     }
 
     /// <summary>

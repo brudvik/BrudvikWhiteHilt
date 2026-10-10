@@ -6003,5 +6003,24 @@
   "piece_whitehilt_kaitrapp": "Kaitrapp",
   "piece_whitehilt_kaitrapp_description": "Steintrinn langs fronten av en kai, 4 m lang, fra toppen og 2 m ned, til en båt eller vannet.",
   "piece_whitehilt_steinbru": "Steinbru",
-  "piece_whitehilt_steinbru_description": "En steinbru 8 m lang over en bue 6 m bred: dekket hvelver seg 0,8 m på midten mellom lave brystvern, og landkarene går ned i breddene."
+  "piece_whitehilt_steinbru_description": "En steinbru 8 m lang over en bue 6 m bred: dekket hvelver seg 0,8 m på midten mellom lave brystvern, og landkarene går ned i breddene.",
+
+  "piece_whitehilt_decor_dragon_carving": "Utskåret dragehode",
+  "piece_whitehilt_decor_dragon_carving_description": "Et dragehode skåret i tre på en buet hals med ruter nedover, til en stavn, en gavl eller en portal.",
+  "piece_whitehilt_decor_ship_stem_bow": "Skipsbaug med spiralstavn",
+  "piece_whitehilt_decor_ship_stem_bow_description": "Baugen på et vikingskip som stiger opp i en spiralstavn, som på Osebergskipet, til havna eller hallen.",
+  "piece_whitehilt_decor_ship_stem_stern": "Skipsakter med spiralstavn",
+  "piece_whitehilt_decor_ship_stem_stern_description": "Akterenden på et vikingskip med styreåra og spiralstavnen.",
+  "piece_whitehilt_decor_asferg_runestone": "Asferg-steinen",
+  "piece_whitehilt_decor_asferg_runestone_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden.",
+  "piece_whitehilt_decor_dragon_carving_large": "Utskåret dragehode (stor)",
+  "piece_whitehilt_decor_dragon_carving_large_description": "Et dragehode skåret i tre på en buet hals med ruter nedover, til en stavn, en gavl eller en portal.",
+  "piece_whitehilt_decor_ship_stem_bow_large": "Skipsbaug med spiralstavn (stor)",
+  "piece_whitehilt_decor_ship_stem_bow_large_description": "Baugen på et vikingskip som stiger opp i en spiralstavn, som på Osebergskipet, til havna eller hallen.",
+  "piece_whitehilt_decor_ship_stem_stern_large": "Skipsakter med spiralstavn (stor)",
+  "piece_whitehilt_decor_ship_stem_stern_large_description": "Akterenden på et vikingskip med styreåra og spiralstavnen.",
+  "piece_whitehilt_decor_asferg_runestone_small": "Asferg-steinen (liten)",
+  "piece_whitehilt_decor_asferg_runestone_small_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden.",
+  "piece_whitehilt_decor_asferg_runestone_large": "Asferg-steinen (stor)",
+  "piece_whitehilt_decor_asferg_runestone_large_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden."
 }

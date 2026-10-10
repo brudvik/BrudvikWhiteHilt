@@ -10,6 +10,7 @@ import json
 import re
 import sys
 
+import bmesh
 import bpy
 
 
@@ -89,13 +90,43 @@ def main():
         model.shape_key_clear()
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
+    # A scan stands on a piece of the floor it was scanned on: "cutBelow" cuts away the share of the height at the
+    # bottom where that floor is.
+    cut = spec.get("cutBelow", 0)
+    if cut:
+        zs = [v.co.z for v in model.data.vertices]
+        level = min(zs) + cut * (max(zs) - min(zs))
+        # bmesh, not bpy.ops.mesh.bisect, which needs a 3D view that Blender run in the background does not have.
+        mesh = bmesh.new()
+        mesh.from_mesh(model.data)
+        geometry = mesh.verts[:] + mesh.edges[:] + mesh.faces[:]
+        bmesh.ops.bisect_plane(mesh, geom=geometry, plane_co=(0, 0, level), plane_no=(0, 0, 1), clear_inner=True)
+        mesh.to_mesh(model.data)
+        mesh.free()
+
     triangles = sum(len(polygon.vertices) - 2 for polygon in model.data.polygons)
     target = spec.get("tris", 3000)
-    if triangles > target:
+    # A scan of a million triangles takes more than one pass: each is held to 1 %, and the seams between a scan's
+    # chunks keep some edges from collapsing.
+    current = triangles
+    if current > target * 20:
+        # glTF splits a vertex on every texture seam; joined again (the UVs stay on the corners), the seams no longer
+        # hold the decimation back.
+        bpy.ops.object.mode_set(mode="EDIT")
+        bpy.ops.mesh.select_all(action="SELECT")
+        bpy.ops.mesh.remove_doubles(threshold=0.0001 * max(model.dimensions))
+        bpy.ops.object.mode_set(mode="OBJECT")
+    for _ in range(4):
+        if current <= target * 1.1:
+            break
         decimate = model.modifiers.new("decimate", "DECIMATE")
-        decimate.ratio = max(0.01, target / triangles)
+        decimate.ratio = max(0.01, target / current)
         decimate.use_collapse_triangulate = True
         bpy.ops.object.modifier_apply(modifier=decimate.name)
+        reached = sum(len(polygon.vertices) - 2 for polygon in model.data.polygons)
+        if reached >= current * 0.95:
+            break
+        current = reached
     final = sum(len(polygon.vertices) - 2 for polygon in model.data.polygons)
 
     # Only the colour textures, shrunk so the bundle stays small (Valheim's own are rarely larger): the mod lights the
@@ -109,11 +140,23 @@ def main():
         for node in list(tree.nodes):
             if node.type == "TEX_IMAGE" and node.image is not colour:
                 tree.nodes.remove(node)
+        # With its emission texture gone, a model that had one would glow white from the factor left behind.
+        for node in tree.nodes:
+            if node.type == "BSDF_PRINCIPLED":
+                node.inputs["Emission Color"].default_value = (0, 0, 0, 1)
+                node.inputs["Emission Strength"].default_value = 0.0
         if colour is None:
             continue
         if max(colour.size) > limit:
             scale = limit / max(colour.size)
             colour.scale(max(1, round(colour.size[0] * scale)), max(1, round(colour.size[1] * scale)))
+        # An alpha linked to the colour but opaque everywhere would only make the model draw as see-through.
+        if uses_alpha(tree) and colour.channels == 4 and min(colour.pixels[3::4]) > 0.95:
+            for node in tree.nodes:
+                if node.type == "BSDF_PRINCIPLED":
+                    for link in list(node.inputs["Alpha"].links):
+                        tree.links.remove(link)
+            slot.material.blend_method = "OPAQUE"
         # JPEG unless the alpha is used (leaves cut out of cards).
         colour.file_format = "PNG" if slot.material.blend_method != "OPAQUE" or uses_alpha(tree) else "JPEG"
         colour.pack()

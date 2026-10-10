@@ -15,6 +15,8 @@ code.
 | `bundle` | A model the main bundle already has (`AssetSource/Models/<name>.glb`). |
 | `objects` | With `source`: the node names to keep from the file; leave out to keep everything. |
 | `tris` | With `source`: about how many triangles to keep (default 3000). |
+| `texture` | With `source`: the largest texture side in pixels (default 512); more for carving or runes that must stay legible. |
+| `cutBelow` | With `source`: the share of the height at the bottom to cut away, for a scan standing on the floor it was scanned on. |
 | `height` | Height in metres. `prepare_decor.py` fills it in from the model's real size when it is missing. |
 | `scale` | Extra uniform scale, mostly to shrink a large vanilla prop. |
 | `wind` | `true` for plants: they sway in the wind and bend when walked through. |
