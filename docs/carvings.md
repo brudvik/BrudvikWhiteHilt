@@ -15,7 +15,7 @@ Four patterns, each as a **Carved Frieze** 2 m long and 0.3 m high for the face 
 - **Ring Chain**: rings linked by a band that weaves through them, after the Borre style of the 10th century.
 - **Urnes Loops**: a broad band in long loops with thin ones winding through it, after the Urnes style of the 11th century.
 
-The strands pass over and under where they cross, and stand out between two raised rims. The carving is a relief model with a normal map for its finer detail, so it keeps its edges up close. Friezes snap end to end; a frieze's back goes against the wall.
+The strands pass over and under where they cross, and stand out between two raised rims. The carving is a relief model with a normal map for its finer detail, so it keeps its edges up close. Friezes snap end to end. Snapped to a wall or a post, a frieze or board moves out onto its face, on the side it faces, whatever the wall's thickness.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|

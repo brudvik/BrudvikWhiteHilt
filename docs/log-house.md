@@ -218,7 +218,7 @@ Dig out a cellar under the house with the pickaxe, line it with the **Cellar Wal
 
 1. Lay the **Stone Foundation** round the house and a **Cornerstone** at each corner.
 2. Put **Log Walls** along the two long sides and **Offset Log Walls** along the two ends, on top of the foundation. Leave a 2 m gap for the door.
-3. Set a **Log Corner** on each corner, turning it until its logs follow the walls; where no turn fits, use the **Log Corner, Mirrored**.
+3. Snap a **Log Corner** to the end of a wall on each corner: it turns itself so its logs follow that wall. Where the other wall must go the other way, use the **Log Corner, Mirrored**.
 4. Put the **Plank Door** in the gap, swap a wall or two for a **Log Wall with Window**, and lay the **floor** inside, on the foundation.
 5. On top of the end walls, set two **Log Gables** each, rising to the ridge, and put the roof on.
 

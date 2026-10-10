@@ -167,7 +167,7 @@ public sealed class LogCorner : LogPieceBase
     /// <inheritdoc/>
     protected override string FullName => "Log Corner";
     /// <inheritdoc/>
-    protected override string Description => "The log ends that cross where two log walls meet and stick out past the corner. Set it on the corner, 2 m high, and turn it until its logs follow the walls; where they do not, the mirrored corner fits.";
+    protected override string Description => "The log ends that cross where two log walls meet and stick out past the corner. Snap it to the end of a log wall and it turns itself so its logs follow that wall; where the other wall must go the other way, take the mirrored corner.";
     /// <inheritdoc/>
     protected override int Logs => 3;
 }
