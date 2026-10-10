@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.114.0 - 2026-10-10
 
 ### Added
 - **[Carved friezes and post boards](docs/carvings.md)** in four patterns (plait, cable, ring chain and Urnes loops), their strands passing over and under each other between raised rims, and a **Carved Portal** 2 × 3 m with Urnes loops up its posts and a ring chain over the door.
