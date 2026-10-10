@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.114.0 - 2026-10-10
+
+### Added
+- **[Carved friezes and post boards](docs/carvings.md)** in four patterns (plait, cable, ring chain and Urnes loops), their strands passing over and under each other between raised rims, and a **Carved Portal** 2 × 3 m with Urnes loops up its posts and a ring chain over the door.
+- **Carvings for the [Decor Hammer](docs/decor.md)**, from CC BY models: a carved dragon head on a curving neck, the bow and the stern of a Viking ship rising into spiral stems as on the Oseberg ship, and a scan of the Asferg runestone from Jutland, in a small and a large size.
+
+### Changed
+- Models in the mod's own asset bundle can carry a normal map (`<name>_normal`), for carved relief that keeps its edges.
+
 ## v0.113.0 - 2026-10-10
 
 ### Added

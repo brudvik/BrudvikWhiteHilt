@@ -33,17 +33,17 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.113.0
+## ✨ New in 0.114.0
+
+- **[Carvings](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/carvings.md)**: friezes and post boards carved in plait, cable, ring chain and Urnes loops, whose strands pass over and under each other, a carved portal, and for the Decor Hammer a carved dragon head, the spiral stems of a Viking ship and the scanned Asferg runestone.
+
+### Also new in 0.113.0
 
 - **[Bridges, jetties & quays](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/harbour.md)**: jetties on tarred piles with a jetty head and a stair down to the boats, stone quays with a fender, a ring, a bollard and steps down the face, and bridges of logs, of rope and of stone over an arch.
 
 ### Also new in 0.112.0
 
 - **[Arches, columns and finishing stone](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
-
-### Also new in 0.111.0
-
-- **[The farm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/farm.md)**: the grey skigard round the fields with gates that shut behind you, wattle fences, wattle-and-daub walls, a well sweep that dips its bucket, and a stream mill that grinds barley at full speed without wind.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -118,6 +118,12 @@ A free build camera, precise rotation, undo, area repair, blueprints and terrain
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/log_lafthus.png" alt="Log house & stave walls" height="120">
 
 Laft and stave walls, a svalgang and pieces after Borgund stave church, doors 3 m high, windows at eye height, stairs and a cellar.
+
+#### [Carvings](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/carvings.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/carve_friser.png" alt="Carvings" height="120">
+
+Carved friezes and post boards in four Norse patterns, a carved portal, a dragon head, ship stems and a runestone.
 
 ### ⛵ Sea & travel
 
@@ -437,5 +443,8 @@ The Thunderstore package gets a plain markdown version of this README (`BrudvikW
 - Decor Hammer smith's tool wall: ["Medieval Tools Set"](https://sketchfab.com/3d-models/medieval-tools-set-e543a102465a4fbdb2eb89e3b8d3afb0) by [Thangzy](https://sketchfab.com/thangzy), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Split into separate props, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
 - Decor Hammer kitchen props, iron bucket, candle and chamberstick: ["Fantasy in-house props free"](https://sketchfab.com/3d-models/fantasy-in-house-props-free-60fa77ef5de34d559ca494af1b53a141) by [CaptainCatSparrow](https://sketchfab.com/CaptainCatSparrow), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Split into separate props, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
 - Decor Hammer cask rack, tapped cask and candle sconce: ["Medieval barrel stand"](https://sketchfab.com/3d-models/medieval-barrel-stand-535af97e00e94a2abee81a91f468046a) by [nosnow](https://sketchfab.com/nosnow), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Split into separate props, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Decor Hammer ship's bow and stern with spiral stems: ["Viking ship nose carvings"](https://sketchfab.com/3d-models/viking-ship-nose-carvings-a36ded93aa634d848fa0ea12dcaf0c87) and ["Viking ship stern carvings"](https://sketchfab.com/3d-models/viking-ship-stern-carvings-7f3f86adf74a4420905e8fa1f827f790) by [trivial.cat](https://sketchfab.com/trivial.cat), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Reduced, textures downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Decor Hammer carved dragon head: ["Dragon wood carving for viking ships"](https://sketchfab.com/3d-models/dragon-wood-carving-for-viking-ships-df23014bda574ea993175aea08f0363f) by [Eivind Kolbjørnsen](https://sketchfab.com/EiKoool), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Texture downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
+- Decor Hammer Asferg runestone: ["The Asferg Runestone"](https://sketchfab.com/3d-models/the-asferg-runestone-c822a379363e4df690e5a403d460d2fd) by [MortenLu](https://sketchfab.com/MortenLu), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). The scanned floor cut away, reduced from 900,000 to 4,000 triangles, texture downscaled, converted to OBJ, rescaled and made double-sided for Valheim.
 
 Made for Valheim by Kjell Arne Brudvik · [github.com/brudvik/BrudvikWhiteHilt](https://github.com/brudvik/BrudvikWhiteHilt)
