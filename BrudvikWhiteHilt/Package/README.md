@@ -33,17 +33,19 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.114.0
+## ✨ New in 0.116.0
+
+- **[The White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud)**: your health, stamina, eitr, food, guardian power, hotbar and status effects in one console at the bottom centre, with countdown rings, a strip for the ship, the piece you build, raids and warnings, your dog and tamed animals under the party list, and a quiet screen that shows only what changes. The game's own HUD is one setting away.
+
+![Concept drawing of the White Hilt HUD](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/hud_console.png)
+
+### Also new in 0.114.0
 
 - **[Carvings](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/carvings.md)**: friezes and post boards carved in plait, cable, ring chain and Urnes loops, whose strands pass over and under each other, a carved portal, and for the Decor Hammer a carved dragon head, the spiral stems of a Viking ship and the scanned Asferg runestone.
 
 ### Also new in 0.113.0
 
 - **[Bridges, jetties & quays](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/harbour.md)**: jetties on tarred piles with a jetty head and a stair down to the boats, stone quays with a fender, a ring, a bollard and steps down the face, and bridges of logs, of rope and of stone over an arch.
-
-### Also new in 0.112.0
-
-- **[Arches, columns and finishing stone](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -267,11 +269,11 @@ An extra row, two hotbars, and slots for equipment, food, potions, ammo and coin
 
 Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven and hive.
 
-#### [Clock, party & sound](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
+#### [HUD, clock, party & sound](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="Clock, party & sound" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="HUD, clock, party & sound" height="120">
 
-A clock with the weather, your friends' health and stamina under the hotbar, muffled weather indoors and dropped items that float.
+Your bars, food, hotbar and effects in one console, a clock with the weather, your friends' health and stamina, muffled weather indoors and dropped items that float.
 
 #### [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
 
@@ -302,6 +304,7 @@ White Hilt is a large, working Valheim mod under the [MIT No Attribution](https:
 - **[How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
 - **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
 - **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+- **Your mod in the White Hilt HUD**: status effects show by themselves; anything else goes in as a context line or an icon through `WhiteHiltHud`, see [For mod authors](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#for-mod-authors).
 - **[Videos](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/videos.md)** on the [White Hilt YouTube channel](https://www.youtube.com/@WhiteHilt) go through the code one topic at a time, with the game running alongside and a real bug in every episode: the plugin, Harmony patches, items as classes, multiplayer, build pieces, the chests, Skidbladnir, portals and portraits.
 
 [![White Hilt: A Valheim Mod (trailer)](https://img.youtube.com/vi/tYbkbwbTJFw/maxresdefault.jpg)](https://youtu.be/tYbkbwbTJFw)

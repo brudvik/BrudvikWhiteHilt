@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.116.0 - 2026-10-10
+
+### Added
+- **The White Hilt HUD.** Health, stamina, eitr and adrenaline, the food, the guardian power, the hotbar and the status effects are gathered in one console at the bottom centre: the hotbar in the middle with the bars and their numbers over it, the food and the guardian power to its left and the status effects, other mods' among them, to its right. The clock and the waypoint arrow sit at the two ends of the compass, the party list at the left and the arrow count over the bow. The console rises above the ship controls when they are under it. `Style` in `[HUD]` switches back to the game's own HUD (`Vanilla`); `Scale`, `BottomMargin`, `StatusColumns` and `MaxStatusEffects` set the rest.
+- **A context strip over the console**, up to three lines over the bars in the White Hilt HUD. While you steer a ship, or ride one sailing its route, its speed, heading, depth, wind, course and time to arrival. In build mode, the piece and what it costs, each amount red while too little and in White Hilt's colour when nearby chests make up the rest, instead of the game's build panel. A raid or event while it lasts, instead of the event bar. And for a while the warnings that were messages in the middle of the screen: night falling and a storm coming.
+- **Countdown rings.** Food and status effects in the console sit on dark discs with a ring that empties as their time runs out; the food's ring goes from green to red.
+- **Companions in the party list.** Your dog and the tamed animals following you are listed under the players, nearest first, with name, distance and health (`ShowCompanions`, `MaxCompanions` in `[Party]`), with either HUD.
+- **Keys for the HUD.** `[HUD.Keys]` `ToggleStyle` switches between the White Hilt HUD and the game's own; `ShowAll` shows the whole console while held, with `Calm`. Both unbound at first.
+- **A quiet screen.** With `Calm` in `[HUD]` each part of the console fades while it has nothing to tell: a full bar, food not yet half gone, status effects that have not changed for a while, the hotbar between uses. `CalmSeconds` and `CalmOpacity` set how long they stay and how much is left.
+- **Room for other mods.** Their status effects are in the console as they are; other things they want shown go in through `WhiteHiltHud`, as a line in the context strip or an icon among the status effects. Elements they put on the HUD where the console is are lifted into a band over it, so they do not cover the bars or the hotbar.
+
 ## v0.115.3 - 2026-10-10
 
 ### Added
