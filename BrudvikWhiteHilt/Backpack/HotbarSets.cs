@@ -121,7 +121,8 @@ public static class HotbarSets
             hudLabel.rectTransform.localPosition = new Vector3(-HudLabelOffset, 0f, 0f);
         }
 
-        bool show = BackpackSettings.ShowHotbarLabel.Value && !player.IsDead();
+        // The White Hilt HUD has the food where the label would be.
+        bool show = BackpackSettings.ShowHotbarLabel.Value && !player.IsDead() && !HudLayout.HudSettings.WhiteHilt;
         if (hudLabel.gameObject.activeSelf != show)
         {
             hudLabel.gameObject.SetActive(show);

@@ -23,6 +23,9 @@ public static class HudCompass
     private static bool showDegrees;
     private static bool showDirections;
 
+    /// <summary>The tape while it shows, for the White Hilt HUD to put the clock and waypoint at its ends; else null.</summary>
+    internal static RectTransform Tape => root != null && root.gameObject.activeInHierarchy ? root : null;
+
     /// <summary>Space reserved above other top-centre HUD elements when the compass is visible.</summary>
     public static float ReservedHeight => ShouldShow()
         ? HudCompassSettings.VerticalPosition.Value + HudCompassSettings.CompassHeight.Value * HudCompassSettings.Scale.Value + HudCompassSettings.LayoutGap.Value

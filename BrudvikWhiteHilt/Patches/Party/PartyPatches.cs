@@ -30,5 +30,6 @@ public static class PartyPatches
     public static void HudUpdate(Hud __instance)
     {
         PartyPanel.Update(__instance);
+        CompanionPanel.Update(__instance);
     }
 }

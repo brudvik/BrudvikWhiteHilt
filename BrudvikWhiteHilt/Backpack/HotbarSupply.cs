@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.HudLayout;
 using Jotunn.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -126,6 +127,8 @@ public static class HotbarSupply
             overlay.gameObject.SetActive(true);
         }
 
+        Anchor((RectTransform)overlay);
+
         Image icon = overlay.Find("icon").GetComponent<Image>();
         Text label = overlay.Find("count").GetComponent<Text>();
         bool hasIcon = sprite != null;
@@ -159,6 +162,15 @@ public static class HotbarSupply
         }
     }
 
+    // Under the slot; above it in the White Hilt HUD, where the hotbar is at the bottom of the screen.
+    private static void Anchor(RectTransform rect)
+    {
+        bool above = HudSettings.WhiteHilt;
+        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, above ? 1f : 0f);
+        rect.pivot = new Vector2(0.5f, above ? 0f : 1f);
+        rect.anchoredPosition = new Vector2(0f, above ? Gap : -Gap);
+    }
+
     // Creates the supply overlay under a hotbar slot.
     private static Transform Create(Transform element)
     {
@@ -170,9 +182,7 @@ public static class HotbarSupply
         GameObject root = new(OverlayName, typeof(RectTransform));
         RectTransform rect = (RectTransform)root.transform;
         rect.SetParent(element, false);
-        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
-        rect.pivot = new Vector2(0.5f, 1f);
-        rect.anchoredPosition = new Vector2(0f, -Gap);
+        Anchor(rect);
         rect.sizeDelta = new Vector2(70f, Height);
 
         GameObject iconObject = new("icon", typeof(RectTransform), typeof(Image));

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.HudLayout;
 using BrudvikWhiteHilt.Pieces.Navigation;
 using Jotunn.Managers;
 using UnityEngine;
@@ -7,7 +8,8 @@ namespace BrudvikWhiteHilt.Pieces.Ships;
 
 /// <summary>
 /// Speed, heading, depth and wind under the ship's wind indicator while steering, and the held course when it is on. While
-/// the ship sails a route on its own, the same for everyone aboard, with the time left to arrival.
+/// the ship sails a route on its own, the same for everyone aboard, with the time left to arrival. In the White Hilt HUD
+/// the same read-out is one line in the strip over the console instead.
 /// </summary>
 public static class ShipHud
 {
@@ -17,12 +19,25 @@ public static class ShipHud
     private const float MinEtaSpeed = 0.5f;
     private const float SpeedSmoothing = 0.3f;
 
+    private const string ContextId = "whitehilt.ship";
+    private const int ContextPriority = 100;
+    private const string ContextSeparator = "   ·   ";
+
     private static Text label;
+    private static string contextLine;
     private static float nextRefresh;
     private static Ship measuredShip;
     private static Vector3 lastPosition;
     private static float lastTime;
     private static float measuredSpeed;
+
+    /// <summary>
+    /// Puts the read-out in the White Hilt HUD's context strip. Call from the plugin's Awake.
+    /// </summary>
+    public static void RegisterHud()
+    {
+        WhiteHiltHud.RegisterContext(ContextId, ContextPriority, () => contextLine);
+    }
 
     /// <summary>
     /// Updates the read-out. Called after the game's ship HUD update.
@@ -40,12 +55,18 @@ public static class ShipHud
         }
 
         bool show = ship != null && ShipSettings.ShowShipHud.Value && hud.m_shipWindIndicatorRoot != null;
-        if (!show)
+        bool console = HudSettings.WhiteHilt;
+        if (!show || console)
         {
             if (label != null && label.gameObject.activeSelf)
             {
                 label.gameObject.SetActive(false);
             }
+        }
+
+        if (!show)
+        {
+            contextLine = null;
 
             // The shoal warning works without the read-out.
             if (ship != null && Time.unscaledTime >= nextRefresh)
@@ -57,10 +78,14 @@ public static class ShipHud
             return;
         }
 
-        Ensure(hud);
-        if (!label.gameObject.activeSelf)
+        if (!console)
         {
-            label.gameObject.SetActive(true);
+            contextLine = null;
+            Ensure(hud);
+            if (!label.gameObject.activeSelf)
+            {
+                label.gameObject.SetActive(true);
+            }
         }
 
         if (Time.unscaledTime < nextRefresh)
@@ -69,7 +94,11 @@ public static class ShipHud
         }
 
         nextRefresh = Time.unscaledTime + RefreshSeconds;
-        Place(hud);
+        if (!console)
+        {
+            Place(hud);
+        }
+
         bool sailingRoute = route != null;
 
         // Only the ship's owner has its real velocity; passengers measure how far it moved.
@@ -100,7 +129,11 @@ public static class ShipHud
             text += "\n" + string.Format(Localization.instance.Localize("$whitehilt_shiphud_eta"), Eta(route.Remaining(), speed));
         }
 
-        if (label.text != text)
+        if (console)
+        {
+            contextLine = text.Replace("\n", ContextSeparator);
+        }
+        else if (label.text != text)
         {
             label.text = text;
         }

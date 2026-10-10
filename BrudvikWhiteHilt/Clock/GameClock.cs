@@ -1,6 +1,8 @@
 using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.HudLayout;
+using BrudvikWhiteHilt.Navigation.Compass;
 using Jotunn.Managers;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +22,7 @@ public static class GameClock
     private const float Nightfall = 18f;
 
     private const float BossBarOffset = 80f;
+    private const float DuskAlertSeconds = 30f;
 
     private static readonly Color dayColor = new(1f, 0.95f, 0.85f);
     private static readonly Color warningColor = new(1f, 0.6f, 0.2f);
@@ -113,7 +116,7 @@ public static class GameClock
         string message = Mathf.Approximately(before, 1f)
             ? "$msg_whitehilt_clock_dusk_one"
             : string.Format(Localization.instance.Localize("$msg_whitehilt_clock_dusk"), before.ToString("0.#"));
-        player.Message(MessageHud.MessageType.Center, message);
+        HudAlerts.Warn(player, message, warningColor, DuskAlertSeconds);
     }
 
     // Shows the time (rounded as set), the day and the weather to come, turning the text to the warning colour shortly
@@ -157,13 +160,25 @@ public static class GameClock
     }
 
     /// <summary>
-    /// Places the clock in the corner and moves the hotbar down if the clock would overlap it.
+    /// Places the clock at the left end of the compass in the White Hilt HUD; else in the corner, moving the hotbar
+    /// down if the clock would overlap it.
     /// </summary>
     internal static void UpdateLayout()
     {
         if (root == null) return;
-        root.anchoredPosition = new Vector2(12f, -ClockSettings.OffsetY.Value);
-        if (hotbar != null)
+        bool console = HudSettings.WhiteHilt;
+        RectTransform tape = console ? HudCompass.Tape : null;
+        if (tape != null && root.gameObject.activeSelf)
+        {
+            PlaceBeside(tape);
+        }
+        else
+        {
+            root.anchoredPosition = new Vector2(12f, -ClockSettings.OffsetY.Value);
+        }
+
+        // The White Hilt HUD places the hotbar itself.
+        if (hotbar != null && !console)
         {
             hotbar.anchoredPosition = hotbarPosition;
             if (root.gameObject.activeSelf)
@@ -180,6 +195,17 @@ public static class GameClock
                 }
             }
         }
+    }
+
+    // Left of the compass tape, centred on its height.
+    private static void PlaceBeside(RectTransform tape)
+    {
+        RectTransform parent = (RectTransform)root.parent;
+        tape.GetWorldCorners(hotbarCorners);
+        Vector2 bottom = parent.InverseTransformPoint(hotbarCorners[0]);
+        Vector2 top = parent.InverseTransformPoint(hotbarCorners[1]);
+        Vector2 corner = new(bottom.x - IconGap * 1.5f - root.sizeDelta.x, (bottom.y + top.y + root.sizeDelta.y) / 2f);
+        root.anchoredPosition = corner - new Vector2(parent.rect.xMin, parent.rect.yMax);
     }
 
     /// <summary>

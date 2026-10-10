@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Backpack;
+using BrudvikWhiteHilt.HudLayout;
 using BrudvikWhiteHilt.Navigation.Portraits;
 using Jotunn.Managers;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ public static class PartyPanel
     // Below the hotbar slots, leaving room for the arrows, bolts or casts shown under them (HotbarSupply).
     private const float BelowHotbar = 30f;
     private const float FallbackTop = 150f;
+
+    // In the White Hilt HUD the hotbar is at the bottom, so the list stands on its own at the left, this share of the
+    // screen down.
+    private const float ConsoleTop = 0.3f;
 
     private const float Portrait = 30f;
     private const float Gap = 4f;
@@ -158,6 +163,12 @@ public static class PartyPanel
     private static void Place()
     {
         RectTransform parent = (RectTransform)root.parent;
+        if (HudSettings.WhiteHilt)
+        {
+            root.anchoredPosition = new Vector2(Left, -parent.rect.height * ConsoleTop);
+            return;
+        }
+
         float top = -FallbackTop;
         if (hotbar != null && hotbar.isActiveAndEnabled && hotbar.m_elements != null && hotbar.m_elements.Count > 0)
         {
@@ -182,6 +193,9 @@ public static class PartyPanel
 
         root.anchoredPosition = new Vector2(Left, top);
     }
+
+    /// <summary>The list while it shows, for the companions to go under it; else null.</summary>
+    internal static RectTransform Root => root != null && root.gameObject.activeInHierarchy ? root : null;
 
     private static void SetVisible(bool visible)
     {

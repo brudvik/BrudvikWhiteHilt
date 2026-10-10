@@ -38,6 +38,12 @@ public static class PartySettings
     /// <summary>Size of the list.</summary>
     public static ConfigEntry<float> Scale { get; private set; }
 
+    /// <summary>Whether the player's dogs and the tamed animals following them are listed under the players.</summary>
+    public static ConfigEntry<bool> ShowCompanions { get; private set; }
+
+    /// <summary>Most companions in the list.</summary>
+    public static ConfigEntry<int> MaxCompanions { get; private set; }
+
     /// <summary>Shows or hides the list.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyToggle { get; private set; }
 
@@ -60,6 +66,9 @@ public static class PartySettings
         ShowSelf = WhiteHiltConfig.BindLocal(Section, "ShowSelf", false, "Show yourself in the list too.");
         MaxPlayers = WhiteHiltConfig.BindLocal(Section, "MaxPlayers", 8, "Most players in the list.", new AcceptableValueRange<int>(1, 16));
         Scale = WhiteHiltConfig.BindLocal(Section, "Scale", 1f, "Size of the list.", new AcceptableValueRange<float>(0.6f, 2f));
+        ShowCompanions = WhiteHiltConfig.BindLocal(Section, "ShowCompanions", true,
+            "List your dogs and the tamed animals following you under the players, with their health and distance.");
+        MaxCompanions = WhiteHiltConfig.BindLocal(Section, "MaxCompanions", 6, "Most companions in the list.", new AcceptableValueRange<int>(1, 16));
         KeyToggle = WhiteHiltConfig.BindLocal(Section + ".Keys", "ToggleParty", KeyboardShortcut.Empty, "Show or hide the party list.");
 
         Translations.AddEnglish("whitehilt_party_dead", "dead");

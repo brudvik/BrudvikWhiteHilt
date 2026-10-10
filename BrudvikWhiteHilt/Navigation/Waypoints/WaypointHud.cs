@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.HudLayout;
 using Jotunn.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,9 +17,12 @@ public static class WaypointHud
     private const int FontSize = 16;
     private const float PulseSpeed = 8f;
     private const float PulseGrowth = 0.2f;
+    private const float BesideGap = 12f;
 
     private static readonly Color arrowColor = new(0.9f, 0.12f, 0.16f, 1f);
     private static readonly Color pulseColor = new(1f, 0.85f, 0.85f, 1f);
+
+    private static readonly Vector3[] corners = new Vector3[4];
 
     private static RectTransform root;
     private static Image arrow;
@@ -85,11 +89,31 @@ public static class WaypointHud
     internal static void UpdateLayout()
     {
         if (root == null) return;
+        RectTransform tape = HudSettings.WhiteHilt ? Compass.HudCompass.Tape : null;
+        if (tape != null)
+        {
+            PlaceBeside(tape);
+            return;
+        }
+
         float reserved = Compass.HudCompass.ReservedHeight;
         float top = reserved > 0f ? Mathf.Max(WaypointSettings.HudArrowTop.Value,
             reserved + Clock.GameClock.BossOffset)
             : WaypointSettings.HudArrowTop.Value;
         root.anchoredPosition = new Vector2(0f, -top);
+    }
+
+    // Right of the compass tape in the White Hilt HUD: the arrow centred on the tape's height, the name and distance
+    // under it.
+    private static void PlaceBeside(RectTransform tape)
+    {
+        RectTransform parent = (RectTransform)root.parent;
+        tape.GetWorldCorners(corners);
+        Vector2 bottom = parent.InverseTransformPoint(corners[3]);
+        Vector2 top = parent.InverseTransformPoint(corners[2]);
+        float size = WaypointSettings.HudArrowSize.Value;
+        Vector2 point = new(bottom.x + BesideGap + size / 2f, (bottom.y + top.y + size) / 2f);
+        root.anchoredPosition = point - new Vector2(parent.rect.center.x, parent.rect.yMax);
     }
 
     // Creates the arrow and label at the top of the HUD, again after the HUD is rebuilt for another world.

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.HudLayout;
 using BrudvikWhiteHilt.Pieces.Navigation;
 using BrudvikWhiteHilt.Pieces.Ships;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ namespace BrudvikWhiteHilt.Navigation.Weather;
 public static class StormWarning
 {
     private const float CheckInterval = 5f;
+    private const float AlertSeconds = 60f;
+
+    private static readonly Color stormColor = new(0.85f, 0.7f, 1f);
 
     private static float nextCheck;
     private static long warnedPeriod = -1L;
@@ -49,7 +53,7 @@ public static class StormWarning
 
         warnedPeriod = next;
         int minutes = Mathf.Max(1, Mathf.CeilToInt((float)periods[1].StartsIn / 60f));
-        player.Message(MessageHud.MessageType.Center, string.Format(Translations.Word("whitehilt_storm_coming"), minutes));
+        HudAlerts.Warn(player, string.Format(Translations.Word("whitehilt_storm_coming"), minutes), stormColor, AlertSeconds);
         if (ForecastSettings.StormBell.Value)
         {
             ShipBell.Ring(player.transform.position);
