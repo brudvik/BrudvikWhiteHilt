@@ -34,6 +34,7 @@ public class LayoutTests
         ("^dobbelgrind$", new[] { "leaf_left", "leaf_right" }),
         ("^bronnvipp$", new[] { "sweep", "bucket" }),
         ("^bekkekvern$", new[] { "wheel" }),
+        ("^utskaret_portal$", new[] { "leaf" }),
         ("^lem$", new[] { "lid" }),
     };
 

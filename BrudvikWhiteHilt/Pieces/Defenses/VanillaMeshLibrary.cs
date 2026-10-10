@@ -30,7 +30,8 @@ public static class VanillaMeshLibrary
     };
 
     // Keys that are models in the White Hilt asset bundle.
-    private static readonly HashSet<string> bundleModels = new() { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "shipanchor", "chains", "fishnet", "rushlight", "paintbucket" };
+    private static readonly HashSet<string> bundleModels = new() { "cartodesk", "sextant", "mapscroll", "seachart", "amulet", "shipanchor", "chains", "fishnet", "rushlight", "paintbucket",
+        "carve_flette", "carve_tau", "carve_ringkjede", "carve_slyng" };
 
     /// <summary>The texture key in the layout for the slate of the White Hilt slate roofs, as on the stone tower's roof.</summary>
     public const string SlateTexture = "roof_slate_albedo";

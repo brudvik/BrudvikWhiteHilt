@@ -41,17 +41,17 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.113.0
+## ✨ New in 0.114.0
+
+- **[Carvings](docs/carvings.md)**: friezes and post boards carved in plait, cable, ring chain and Urnes loops, whose strands pass over and under each other, a carved portal, and for the Decor Hammer a carved dragon head, the spiral stems of a Viking ship and the scanned Asferg runestone.
+
+### Also new in 0.113.0
 
 - **[Bridges, jetties & quays](docs/harbour.md)**: jetties on tarred piles with a jetty head and a stair down to the boats, stone quays with a fender, a ring, a bollard and steps down the face, and bridges of logs, of rope and of stone over an arch.
 
 ### Also new in 0.112.0
 
 - **[Arches, columns and finishing stone](docs/stonework.md#arches-columns-and-finishing-stone)** in stone, black marble and grausten: arched doorways and windows, a great arch, a wide stair, cornices, columns, balustrades and gables, the pieces Valheim's black marble and grausten lack.
-
-### Also new in 0.111.0
-
-- **[The farm](docs/farm.md)**: the grey skigard round the fields with gates that shut behind you, wattle fences, wattle-and-daub walls, a well sweep that dips its bucket, and a stream mill that grinds barley at full speed without wind.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -88,6 +88,11 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <td align="center" valign="top"><a href="docs/build-tools.md"><img src="docs/images/readme/tile_build_tools.png" height="110" alt=""></a><br><b><a href="docs/build-tools.md">Build camera & toolbar</a></b><br><sub>A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.</sub></td>
 <td align="center" valign="top"><a href="docs/decor.md"><img src="docs/images/decor_hearth.png" height="110" alt=""></a><br><b><a href="docs/decor.md">Decor Hammer</a></b><br><sub>460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.</sub></td>
 <td align="center" valign="top"><a href="docs/log-house.md"><img src="docs/images/log_lafthus.png" height="110" alt=""></a><br><b><a href="docs/log-house.md">Log house & stave walls</a></b><br><sub>Laft and stave walls, a svalgang and pieces after Borgund stave church, doors 3 m high, windows at eye height, stairs and a cellar.</sub></td>
+</tr>
+<tr>
+<td align="center" valign="top"><a href="docs/carvings.md"><img src="docs/images/carve_friser.png" height="110" alt=""></a><br><b><a href="docs/carvings.md">Carvings</a></b><br><sub>Carved friezes and post boards in four Norse patterns, a carved portal, a dragon head, ship stems and a runestone.</sub></td>
+<td></td>
+<td></td>
 </tr>
 </table>
 

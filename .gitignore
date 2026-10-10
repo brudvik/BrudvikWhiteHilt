@@ -384,3 +384,4 @@ BrudvikWhiteHilt/Assets/*.png
 
 # Poly Haven downloads for the decor models (AssetSource/Decor/prepare_decor.py).
 AssetSource/Decor/Download/
+AssetSource/Carvings/Work/

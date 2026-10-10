@@ -116,6 +116,12 @@ def height_map(pattern, length, width, ppm):
     return np.asarray(image, dtype=np.float32) / 255
 
 
+def detail(height, ppm, cell_m):
+    """What the mesh cannot show: the height map less its blur over one grid cell of the mesh, lifted to mid grey."""
+    image = Image.fromarray((np.clip(height, 0, 1) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(cell_m * ppm))
+    return height - np.asarray(image, dtype=np.float32) / 255
+
+
 def normal_map(height, ppm, depth_m):
     """Tangent-space normals from the height map, depth_m metres deep at height 1, in Unity's convention (y up)."""
     dz_dx = np.gradient(height, axis=1) * depth_m * ppm
@@ -140,9 +146,12 @@ def main():
     pattern, prefix = sys.argv[1], sys.argv[2]
     length, width = float(sys.argv[3]), float(sys.argv[4])
     ppm = int(sys.argv[5]) if len(sys.argv) > 5 else 1024
+    depth = float(sys.argv[6]) if len(sys.argv) > 6 else 0.03
+    cell = float(sys.argv[7]) if len(sys.argv) > 7 else 0.0
     height = height_map(pattern, length, width, ppm)
     Image.fromarray((height * 255).astype(np.uint8)).save(f"{prefix}_height.png")
-    Image.fromarray(normal_map(height, ppm, 0.03)).save(f"{prefix}_normal.png")
+    # With a mesh that carries the strands' shape (cell > 0), the normal map adds only the finer detail.
+    Image.fromarray(normal_map(detail(height, ppm, cell) if cell > 0 else height, ppm, depth)).save(f"{prefix}_normal.png")
     Image.fromarray(albedo(height)).save(f"{prefix}_albedo.png")
     print(f"{prefix}: {height.shape[1]} x {height.shape[0]} px")
 

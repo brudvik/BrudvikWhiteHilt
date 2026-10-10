@@ -945,6 +945,8 @@ def main():
     pieces += stone_building_pieces()
     from build_water import water_pieces
     pieces += water_pieces()
+    from build_carvings import carving_pieces
+    pieces += carving_pieces()
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")

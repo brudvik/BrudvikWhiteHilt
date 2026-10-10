@@ -6022,5 +6022,24 @@
   "piece_whitehilt_decor_asferg_runestone_small": "Asferg-steinen (liten)",
   "piece_whitehilt_decor_asferg_runestone_small_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden.",
   "piece_whitehilt_decor_asferg_runestone_large": "Asferg-steinen (stor)",
-  "piece_whitehilt_decor_asferg_runestone_large_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden."
+  "piece_whitehilt_decor_asferg_runestone_large_description": "En skanning av runesteinen fra Asferg på Jylland, med runer hogd for tusen år siden.",
+
+  "piece_whitehilt_frise_flette": "Utskåret frise, flette",
+  "piece_whitehilt_frise_flette_description": "Et bord 2 m langt og 0,3 m høyt skåret med flettebånd mellom to lister, til veggflaten, over en dør eller under takskjegget.",
+  "piece_whitehilt_stolpebord_flette": "Utskåret stolpebord, flette",
+  "piece_whitehilt_stolpebord_flette_description": "Et bord 2 m høyt og 0,3 m bredt skåret med flettebånd, til forsiden av en stolpe eller opp langs sidene av en døråpning.",
+  "piece_whitehilt_frise_tau": "Utskåret frise, tau",
+  "piece_whitehilt_frise_tau_description": "Et bord 2 m langt og 0,3 m høyt skåret med tauvridning mellom to lister, til veggflaten, over en dør eller under takskjegget.",
+  "piece_whitehilt_stolpebord_tau": "Utskåret stolpebord, tau",
+  "piece_whitehilt_stolpebord_tau_description": "Et bord 2 m høyt og 0,3 m bredt skåret med tauvridning, til forsiden av en stolpe eller opp langs sidene av en døråpning.",
+  "piece_whitehilt_frise_ringkjede": "Utskåret frise, ringkjede",
+  "piece_whitehilt_frise_ringkjede_description": "Et bord 2 m langt og 0,3 m høyt skåret med ringkjede mellom to lister, til veggflaten, over en dør eller under takskjegget.",
+  "piece_whitehilt_stolpebord_ringkjede": "Utskåret stolpebord, ringkjede",
+  "piece_whitehilt_stolpebord_ringkjede_description": "Et bord 2 m høyt og 0,3 m bredt skåret med ringkjede, til forsiden av en stolpe eller opp langs sidene av en døråpning.",
+  "piece_whitehilt_frise_slyng": "Utskåret frise, Urnes-slyng",
+  "piece_whitehilt_frise_slyng_description": "Et bord 2 m langt og 0,3 m høyt skåret med Urnes-slynger mellom to lister, til veggflaten, over en dør eller under takskjegget.",
+  "piece_whitehilt_stolpebord_slyng": "Utskåret stolpebord, Urnes-slyng",
+  "piece_whitehilt_stolpebord_slyng_description": "Et bord 2 m høyt og 0,3 m bredt skåret med Urnes-slynger, til forsiden av en stolpe eller opp langs sidene av en døråpning.",
+  "piece_whitehilt_utskaret_portal": "Utskåret portal",
+  "piece_whitehilt_utskaret_portal_description": "En døråpning 2 m bred og 3 m høy mellom brede stolper skåret med Urnes-slynger opp begge sider og en ringkjede over døren, som rundt stavkirkeportalene. Døren er 1,2 m bred og 2,6 m høy."
 }
