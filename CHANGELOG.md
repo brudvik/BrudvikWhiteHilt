@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.115.3 - 2026-10-10
 
 ### Added
 - **Switch accessories off where they lie.** Right-click a Megingjord, Wisplight, Wishbone or other accessory in one of the five accessory slots to switch it off: it stays in its slot, faded, and gives nothing until you right-click it again. It stays off across sessions; dragged out of the row it is on again when next worn. Taking an accessory off is now a drag out of its slot.
