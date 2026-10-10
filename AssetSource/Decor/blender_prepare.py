@@ -104,6 +104,20 @@ def main():
         mesh.to_mesh(model.data)
         mesh.free()
 
+    # "dropMaterials" deletes the faces of those materials (names without Blender's .001 suffixes): the flames Poly
+    # Haven models on its candles, which would burn as solid shapes inside the mod's own flames.
+    drop = set(spec.get("dropMaterials", []))
+    if drop:
+        slots = {index for index, slot in enumerate(model.material_slots)
+                 if slot.material is not None and base_name(slot.material.name) in drop}
+        if not slots:
+            raise RuntimeError(f"no material matches {sorted(drop)}")
+        mesh = bmesh.new()
+        mesh.from_mesh(model.data)
+        bmesh.ops.delete(mesh, geom=[face for face in mesh.faces if face.material_index in slots], context="FACES")
+        mesh.to_mesh(model.data)
+        mesh.free()
+
     triangles = sum(len(polygon.vertices) - 2 for polygon in model.data.polygons)
     target = spec.get("tris", 3000)
     # A scan of a million triangles takes more than one pass: each is held to 1 %, and the seams between a scan's
