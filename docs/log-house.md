@@ -1,6 +1,6 @@
 # 🪵 Log house and stave walls
 
-Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, hang doors 3 m high that you walk through upright, put in windows at eye height, go up by a stair, a spiral stair or a ladder, and down through a hatch to the cellar. Or build the other old way, with stave walls, and run a svalgang round a stave hall. Everything is built with the ordinary Hammer near a Workbench.
+Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, hang doors 3 m high that you walk through upright, put in windows at eye height, go up by a stair, a spiral stair or a ladder, and down through a hatch to the cellar. Or build the other old way, with stave walls, run a svalgang round a stave hall and dress it after Borgund stave church, with ridge dragons, a ridge turret, carved columns and a bell tower. Everything is built with the ordinary Hammer near a Workbench.
 
 <img src="images/log_lafthus.png" alt="A small log house on a stone foundation" title="A log house of 6 × 4 m: stone foundation and cornerstones, log walls, corners and gables, a plank door, and the vanilla 45° roof" height="260">
 
@@ -144,6 +144,46 @@ The **Svalgang** is the covered gallery round a stave church: a board floor, a l
 | **Svalgang** (`piece_whitehilt_svalgang`) | 2 m of covered gallery, 1.8 m deep | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
 | **Svalgang Corner** (`piece_whitehilt_svalgang_hjorne`) | The gallery's outer corner, 1.8 × 1.8 m | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
 
+## ⛪ AFTER BORGUND STAVE CHURCH
+
+<img src="images/log_borgund.png" alt="A stave hall dressed after Borgund" title="The stave hall with a ridge turret, ridge dragons and crests, and the bell tower beside it" height="260">
+
+[Borgund stave church](https://en.wikipedia.org/wiki/Borgund_Stave_Church) in Lærdal, built of timber felled in the winter of 1180/81, is the best kept of the stave churches. These pieces take after it: what stands on its roofs, the frame inside it, its svalgang and the bell tower beside it.
+
+<img src="images/log_monedrage.png" alt="Ridge Dragon" title="Ridge Dragon" height="140"> <img src="images/log_takrytter.png" alt="Ridge Turret" title="Ridge Turret" height="140"> <img src="images/log_monekam.png" alt="Ridge Crest" title="Ridge Crest" height="110"> <img src="images/log_gavlkors.png" alt="Gable Cross" title="Gable Cross" height="110">
+
+**On the roofs.** Dragon heads on tall curved necks look out from the ends of Borgund's ridges, like the prows of the old ships. The ridges carry carved crests of openwork, which Borgund is one of the few stave churches to have kept, the lower gables carry crosses, and where the roofs meet stands a turret with tiers of shingles, an open belfry and a tall spire. Set the **Ridge Dragon** on a ridge at the gable, the **Ridge Crest** along a ridge, the **Gable Cross** on the top of a gable and the **Ridge Turret** on the ridge.
+
+<img src="images/log_sponvegg.png" alt="Shingled Stave Wall" title="Shingled Stave Wall" height="140"> <img src="images/log_stavkirkeportal.png" alt="Stave Church Portal" title="Stave Church Portal" height="140">
+
+**Walls and portal.** Borgund's walls and gables are clad in pointed scale shingles; the **Shingled Stave Wall** is a stave wall clad in them. The **Stave Church Portal** has half-columns with a base and a capital either side of its round-headed door, as on the church's west portal.
+
+<img src="images/log_skipsstav.png" alt="Nave Column" title="Nave Column" height="140"> <img src="images/log_arkadebue.png" alt="Arcade Arch" title="Arcade Arch" height="110"> <img src="images/log_andreaskors.png" alt="St Andrew's Cross" title="St Andrew's Cross" height="110"> <img src="images/log_saksesperre.png" alt="Scissor Truss" title="Scissor Truss" height="110">
+
+**Inside.** Twelve round columns stand round Borgund's nave, with grotesque masks carved at their tops and round arches between them. Over the arcade, St Andrew's crosses with a sun in the middle and carved leaves down the arms brace the columns into a second storey, and scissor trusses carry the steep roof. Stand **Nave Columns** 2 m apart, set an **Arcade Arch** between each two at 3 m and a **St Andrew's Cross** on it, and put **Scissor Trusses** across the walls under a 45° roof.
+
+<img src="images/log_svalgang_inngang.png" alt="Svalgang Porch" title="Svalgang Porch" height="140"> <img src="images/log_stopul.png" alt="Bell Tower" title="Bell Tower" height="140"> <img src="images/log_vigselskors.png" alt="Consecration Cross" title="Consecration Cross" height="90">
+
+**Round the church.** Where a door opens onto the svalgang, the **Svalgang Porch** leaves a way in under a steep little gable with lattice and a cross. South of Borgund stands Norway's only stave-built free-standing bell tower, a *støpul*; the **Bell Tower** is one, and its bell rings like the [Alarm Bell](defences.md#-defending-the-walls): use it at the foot of the tower, and it rings by itself when a raid comes. Borgund's consecration crosses are still painted on its south wall; hang a **Consecration Cross** on yours.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Ridge Dragon** (`piece_whitehilt_monedrage`) | A dragon head on a tall curved neck for the end of a ridge | Hammer (Workbench) | Wood ×4, Fine Wood ×6 |
+| **Gable Cross** (`piece_whitehilt_gavlkors`) | A cross with round ends on a short post | Hammer (Workbench) | Wood ×3 |
+| **Ridge Crest** (`piece_whitehilt_monekam`) | 2 m of openwork crest for a ridge | Hammer (Workbench) | Wood ×2, Fine Wood ×2 |
+| **Ridge Turret** (`piece_whitehilt_takrytter`) | Three tiers, a belfry and a spire, 7.5 m high | Hammer (Workbench) | Wood ×24, Fine Wood ×8 |
+| **Shingled Stave Wall** (`piece_whitehilt_sponvegg`) | A stave wall clad in scale shingles, 2 × 2 m | Hammer (Workbench) | Wood ×10 |
+| **Tall Shingled Stave Wall** (`piece_whitehilt_sponvegg_hoy`) | The same, 2 × 4 m | Hammer (Workbench) | Wood ×20 |
+| **Nave Column** (`piece_whitehilt_skipsstav`) | A round column 4 m high with a capital and masks | Hammer (Workbench) | Wood ×6, Fine Wood ×2 |
+| **Arcade Arch** (`piece_whitehilt_arkadebue`) | A round arch 2 m wide between two columns | Hammer (Workbench) | Wood ×4 |
+| **St Andrew's Cross** (`piece_whitehilt_andreaskors`) | Crossed boards with a sun and leaves, 2 × 1 m | Hammer (Workbench) | Wood ×3, Fine Wood ×2 |
+| **Scissor Truss** (`piece_whitehilt_saksesperre`) | Crossed rafters under a 45° roof 4 m wide | Hammer (Workbench) | Wood ×6 |
+| **Svalgang Porch** (`piece_whitehilt_svalgang_inngang`) | 2 m of svalgang with a way in under a little gable | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
+| **Bell Tower** (`piece_whitehilt_stopul`) | A stave bell tower 3 × 3 m and 9.5 m high, with a bell that rings | Hammer (Workbench) | Wood ×40, Fine Wood ×10, Bronze ×6 |
+| **Consecration Cross** (`piece_whitehilt_vigselskors`) | A painted cross in a ring for the wall | Hammer (Furniture, Workbench) | Wood ×1, Raspberries ×2 |
+
+The carved work is put together from the game's own meshes, so it is carving in outline, not the interlace of the originals: the dragon head is the longship's, the masks are the skeleton trophy's skull in wood, and the shingles are the vanilla dark shingle roof stood upright.
+
 ## 🪜 STAIRS, LADDERS AND RAILINGS
 
 <img src="images/log_smal_trapp.png" alt="Narrow Stair" title="Narrow Stair" height="140"> <img src="images/log_vindeltrapp.png" alt="Spiral Stair" title="Spiral Stair" height="140"> <img src="images/log_stige.png" alt="Loft Ladder" title="Loft Ladder" height="140"> <img src="images/log_rekkverk.png" alt="Railing" title="Railing" height="140"> <img src="images/log_trapperekkverk.png" alt="Stair Railing" title="Stair Railing" height="140">
@@ -184,4 +224,4 @@ Dig out a cellar under the house with the pickaxe, line it with the **Cellar Wal
 
 ## Config
 
-The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables and windows, the Dragon Portal, the Stave Church Portal and the svalgang come with the Black Forest (core wood and fine wood need the bronze axe), the Hall Doors and the barred windows with the Swamp (iron); the stave walls, foundation, floors, the other doors, stairs, ladder, railings, hatch and cellar wall are there from the start.
+The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables and windows, the Dragon Portal, the Stave Church Portal, the svalgang and the carved Borgund pieces (those with fine wood) come with the Black Forest (core wood and fine wood need the bronze axe), the Hall Doors and the barred windows with the Swamp (iron); the stave walls, foundation, floors, the other doors, stairs, ladder, railings, hatch and cellar wall are there from the start.

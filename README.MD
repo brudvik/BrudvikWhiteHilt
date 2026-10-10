@@ -45,6 +45,7 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 
 - **[Doors you walk through upright](docs/log-house.md#-doors)**: a tall plank door, a double door, hall doors and a stave church portal, 3 m high like the vanilla gate, where the vanilla door leaves a hand over your 1.85 m.
 - **[Stave walls and the svalgang](docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
+- **[After Borgund stave church](docs/log-house.md#-after-borgund-stave-church)**: ridge dragons, a tiered ridge turret, carved ridge crests and gable crosses, shingled walls, nave columns with masks, arcade arches and St Andrew's crosses, scissor trusses, a svalgang porch and a stave bell tower whose bell rings.
 - **[Windows at eye height](docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
 
 ### Also new in 0.109.0
@@ -89,7 +90,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/build-tools.md"><img src="docs/images/readme/tile_build_tools.png" height="110" alt=""></a><br><b><a href="docs/build-tools.md">Build camera & toolbar</a></b><br><sub>A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.</sub></td>
 <td align="center" valign="top"><a href="docs/decor.md"><img src="docs/images/decor_hearth.png" height="110" alt=""></a><br><b><a href="docs/decor.md">Decor Hammer</a></b><br><sub>460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.</sub></td>
-<td align="center" valign="top"><a href="docs/log-house.md"><img src="docs/images/log_lafthus.png" height="110" alt=""></a><br><b><a href="docs/log-house.md">Log house & stave walls</a></b><br><sub>Laft and stave walls, gables, a svalgang, doors 3 m high, windows at eye height, stairs, a stone foundation and a cellar.</sub></td>
+<td align="center" valign="top"><a href="docs/log-house.md"><img src="docs/images/log_lafthus.png" height="110" alt=""></a><br><b><a href="docs/log-house.md">Log house & stave walls</a></b><br><sub>Laft and stave walls, a svalgang and pieces after Borgund stave church, doors 3 m high, windows at eye height, stairs and a cellar.</sub></td>
 </tr>
 </table>
 

@@ -22,7 +22,7 @@ public class LayoutTests
         ("^porttau$", new[] { "pull" }),
         ("^vindehus$", new[] { "wheel", "crank", "lever" }),
         ("^oljegryte$", new[] { "pot" }),
-        ("^alarmklokke$", new[] { "bell" }),
+        ("^(alarmklokke|stopul)$", new[] { "bell" }),
         ("^havnekran$", new[] { "jib", "fall", "hook" }),
         ("^(plankedor|dorportal)$", new[] { "leaf" }),
         ("^lavedor$", new[] { "leaf_left", "leaf_right" }),

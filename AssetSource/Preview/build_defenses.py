@@ -937,6 +937,8 @@ def main():
     pieces += inside_pieces()
     from build_stave import stave_pieces
     pieces += stave_pieces()
+    from build_borgund import borgund_pieces
+    pieces += borgund_pieces()
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")

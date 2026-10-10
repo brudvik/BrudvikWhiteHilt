@@ -279,6 +279,13 @@ def stave_church_portal():
         offset = -4.48 * 0.55
         parts.append(part("dragon_head", (neck[0] + side * offset, neck[1] - 1.2 * 0.55, neck[2]), (0, 0 if side < 0 else 180, 0),
                           (0.55, 0.55, 0.55), tint=[0.62, 0.5, 0.38]))
+    # Half-columns either side of the door on the outside, with a round base and a capital, as on Borgund's west
+    # portal.
+    for x in (-half - 0.06, half + 0.06):
+        z = STAVE_DEPTH / 2 + 0.09
+        parts.append(part("wood_pole_log", (x, 1.25, z), scale=(0.06 / 0.26, 2.1 / 2.22, 0.06 / 0.28), tint=[0.78, 0.62, 0.44]))
+        for y, radius in ((0.12, 0.09), (0.24, 0.075), (2.3, 0.08), (2.4, 0.1)):
+            parts.append(part("wood_pole_log", (x, y, z), scale=(radius / 0.26, 0.08 / 2.22, radius / 0.28), tint=[0.78, 0.62, 0.44], detail=True))
     leaf, collider = door_leaf("leaf", -half, half, rng, [0.7, 0.52, 0.36], height=spring - 0.02)
     leaf.append(part("Bell", (-half + 0.2, 1.1, 0.1), (90, 0, 0), (0.16, 0.03, 0.16), tint=BRONZE_TINT, group="leaf", detail=True))
     colliders = [box((x, TALL / 2, 0), (0.4, TALL, STAVE_DEPTH)) for x in (-0.8, 0.8)]
