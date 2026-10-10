@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.110.0 - 2026-10-10
 
 ### Added
 - **Doors 3 m high** (in [the log house](docs/log-house.md#-doors)), so you walk through upright: your character is 1.85 m tall, and the vanilla door's leaf 1.88 m. A tall plank door, a double door opening from the middle, hall doors 4 m wide with iron straps, and a stave church portal with a round-headed door and dragon heads. They snap in place of a wall and the metre over it, like the vanilla gate; a new low log wall fills over them.
