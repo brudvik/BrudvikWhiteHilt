@@ -24,6 +24,7 @@ public static class BackpackGui
     private const int PanelColumns = 5;
 
     private static readonly Color PlaceholderColor = new(1f, 1f, 1f, 0.2f);
+    private static readonly Color SwitchedOffTint = new(0.5f, 0.5f, 0.5f, 0.45f);
 
     private static readonly PanelSection[] sections =
     {
@@ -109,9 +110,9 @@ public static class BackpackGui
                     PlaceInPanel(element, size, step);
                     ShowPlaceholder(element, kind);
                     ShowFoodKey(element, kind);
-                    if (element.m_used && UtilitySlots.IsExtraSlot(pos))
+                    if (element.m_used && kind == SlotKind.Utility)
                     {
-                        element.m_equiped.enabled = true;
+                        ShowSwitchedOff(element, grid.m_inventory.GetItemAt(pos.x, pos.y), UtilitySlots.IsExtraSlot(pos));
                     }
 
                     break;
@@ -121,6 +122,26 @@ public static class BackpackGui
         grid.m_gridRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (rows + 1) * step + BarGap);
         UpdateBarLabel(grid, player, rows);
         UpdateFoodStats(player);
+    }
+
+    // An accessory in the accessory row: worn ones are marked as equipped (the extra slots are not equipped in the game's
+    // sense, so the mark is set here); one switched off is faded and unmarked.
+    private static void ShowSwitchedOff(InventoryElement element, ItemDrop.ItemData item, bool extraSlot)
+    {
+        bool off = UtilitySlots.IsOff(item);
+        if (extraSlot || off)
+        {
+            element.m_equiped.enabled = !off;
+        }
+
+        if (off)
+        {
+            element.m_icon.color = SwitchedOffTint;
+        }
+        else if (element.m_icon.color == SwitchedOffTint)
+        {
+            element.m_icon.color = Color.white;
+        }
     }
 
     private static Vector2i[] Row(int y, int fromX, int count)

@@ -128,7 +128,8 @@ public static class GearSlots
         foreach (Vector2i slot in slots)
         {
             ItemDrop.ItemData item = player.m_inventory.GetItemAt(slot.x, slot.y);
-            if (item == null || player.IsItemEquiped(item) || player.IsEquipActionQueued(item))
+            // An accessory switched off stays in its slot without being put on.
+            if (item == null || UtilitySlots.IsOff(item) || player.IsItemEquiped(item) || player.IsEquipActionQueued(item))
             {
                 lastTried.Remove(slot);
                 continue;

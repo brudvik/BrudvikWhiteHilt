@@ -127,7 +127,8 @@ public static class BackpackSlotPatches
     }
 
     /// <summary>
-    /// Right-clicking an item in a slot takes it out into the grid, and off.
+    /// Right-clicking an accessory in the accessory row switches it off or on where it lies; right-clicking any other
+    /// item in a slot takes it out into the grid, and off.
     /// </summary>
     /// <param name="__instance">The player.</param>
     /// <param name="item">The item.</param>
@@ -141,6 +142,13 @@ public static class BackpackSlotPatches
             || (!GearSlots.InSlot(item) && !UtilitySlots.IsExtraSlot(item.m_gridPos)))
         {
             return true;
+        }
+
+        if (UtilitySlots.IsKept(item))
+        {
+            UtilitySlots.Toggle(__instance, item);
+            __result = true;
+            return false;
         }
 
         if (GearSlots.MoveToGrid(__instance, item) && __instance.IsItemEquiped(item))
@@ -179,6 +187,7 @@ public static class BackpackSlotPatches
         if (player != null && BackpackLayout.IsLocalInventory(player.m_inventory))
         {
             GearSlots.AfterDrop(player, __state);
+            UtilitySlots.AfterDrop(__state);
         }
     }
 

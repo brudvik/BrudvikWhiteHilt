@@ -7,6 +7,7 @@ namespace BrudvikWhiteHilt.Backpack;
 /// Five accessory slots for belts, Wisplight, Wishbone and the like. The first is the game's own utility slot; the other
 /// four give their item's effects, stats and weight as if it were worn, without showing it on the character, and also
 /// take the White Hilt items registered with <see cref="AllowInExtraSlots"/>. Each kind of accessory can be worn once.
+/// Right-clicking an accessory in the row switches it off or on where it lies (<see cref="Toggle"/>).
 /// </summary>
 public static class UtilitySlots
 {
@@ -14,6 +15,10 @@ public static class UtilitySlots
     public const int Count = 5;
 
     private const float CheckSeconds = 1f;
+
+    // Set on an accessory switched off where it lies: it stays in its slot but gives nothing. Kept with the item, so it
+    // stays off across sessions.
+    private const string OffKey = "whitehilt_accessory_off";
 
     // The Swamp Key opens crypt doors from anywhere in the inventory, so it may be kept here out of the way.
     private static readonly HashSet<string> extraItems = new() { "$item_cryptkey" };
@@ -91,6 +96,58 @@ public static class UtilitySlots
     public static IReadOnlyList<ItemDrop.ItemData> Extras(Player player)
     {
         return player == wornBy ? worn : System.Array.Empty<ItemDrop.ItemData>();
+    }
+
+    /// <summary>
+    /// True if the accessory is switched off: it lies in its slot but is not worn.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>True when switched off.</returns>
+    public static bool IsOff(ItemDrop.ItemData item)
+    {
+        return item?.m_customData != null && item.m_customData.ContainsKey(OffKey);
+    }
+
+    /// <summary>
+    /// Switches an accessory in the accessory row off or on where it lies. One in the game's own slot is taken off or put
+    /// on; one in an extra slot stops or starts giving its effects with the next tick.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    /// <param name="item">An accessory in the accessory row.</param>
+    public static void Toggle(Player player, ItemDrop.ItemData item)
+    {
+        bool off = !IsOff(item);
+        SetOff(item, off);
+        if (item.m_gridPos.x == 0)
+        {
+            if (off && player.IsItemEquiped(item))
+            {
+                player.UnequipItem(item, false);
+            }
+            else if (!off && !player.IsItemEquiped(item))
+            {
+                player.EquipItem(item);
+            }
+        }
+
+        player.m_inventory.Changed();
+        player.Message(MessageHud.MessageType.Center,
+            Localization.instance.Localize(off ? "$whitehilt_accessory_switched_off" : "$whitehilt_accessory_switched_on", item.m_shared.m_name));
+    }
+
+    /// <summary>
+    /// Switches an accessory back on once it has left the accessory row, so it is worn again when next put there.
+    /// </summary>
+    /// <param name="items">Items the inventory window moved.</param>
+    public static void AfterDrop(params ItemDrop.ItemData[] items)
+    {
+        foreach (ItemDrop.ItemData item in items)
+        {
+            if (item != null && IsOff(item) && !IsKept(item))
+            {
+                SetOff(item, false);
+            }
+        }
     }
 
     /// <summary>
@@ -235,7 +292,7 @@ public static class UtilitySlots
         {
             for (int x = 1; x < Count; x++)
             {
-                ItemDrop.ItemData item = player.m_inventory.GetItemAt(x, BackpackLayout.UtilityRow);
+                ItemDrop.ItemData item = Active(player, x);
                 int index = x - 1;
                 ItemDrop.ItemData current = index < worn.Count ? worn[index] : null;
                 if (item != current)
@@ -287,7 +344,7 @@ public static class UtilitySlots
         bool active = BackpackLayout.IsLocalInventory(player.m_inventory) && !player.IsDead();
         for (int x = 1; x < Count; x++)
         {
-            worn.Add(active ? player.m_inventory.GetItemAt(x, BackpackLayout.UtilityRow) : null);
+            worn.Add(active ? Active(player, x) : null);
         }
 
         EitrRegen = 0f;
@@ -344,6 +401,25 @@ public static class UtilitySlots
 
         applied.Clear();
         applied.UnionWith(desired);
+    }
+
+    private static void SetOff(ItemDrop.ItemData item, bool off)
+    {
+        if (off)
+        {
+            item.m_customData[OffKey] = "1";
+        }
+        else
+        {
+            item.m_customData.Remove(OffKey);
+        }
+    }
+
+    // What an extra slot gives: its item, or nothing when the slot is empty or the item switched off.
+    private static ItemDrop.ItemData Active(Player player, int x)
+    {
+        ItemDrop.ItemData item = player.m_inventory.GetItemAt(x, BackpackLayout.UtilityRow);
+        return IsOff(item) ? null : item;
     }
 
     private static bool Matches(ItemDrop.ItemData item, string name, int quality, bool matchWorldLevel)
