@@ -33,19 +33,20 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.109.0
+## ✨ New in 0.110.0
 
-- **[Windows for the log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-windows)**: log walls with a window closed by two shutters that swing out and shut by themselves when rain or night comes, and log walls with a *glugg*, the small window of the oldest houses.
-- **[Stairs, a ladder and railings](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-stairs-ladders-and-railings)**: a narrow stair up to the loft in one piece, a spiral stair round a post, a loft ladder, railings and a stair railing.
-- **[A cellar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-cellar)**: a floor hatch whose lid lifts, with a ladder down, and a dry-laid cellar wall.
+- **[Doors you walk through upright](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-doors)**: a tall plank door, a double door, hall doors and a stave church portal, 3 m high like the vanilla gate, where the vanilla door leaves a hand over your 1.85 m.
+- **[Stave walls and the svalgang](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
+- **[After Borgund stave church](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-after-borgund-stave-church)**: ridge dragons, a tiered ridge turret, carved ridge crests and gable crosses, shingled walls, nave columns with masks, arcade arches and St Andrew's crosses, scissor trusses, a svalgang porch and a stave bell tower whose bell rings.
+- **[Windows at eye height](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
+
+### Also new in 0.109.0
+
+- **[Windows, stairs and a cellar for the log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)**: shuttered windows that close by themselves, a narrow stair and a spiral stair, a loft ladder, railings, and a floor hatch with a ladder down to the cellar.
 
 ### Also new in 0.108.0
 
 - **[The log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)**: build the Norwegian way, with *laft*. Log walls whose logs cross at the corners, log corners with the ends sticking out, log gables for the 26° and 45° roofs, a dry-laid stone foundation, plank floors of 4 × 4 m and more, and a plank door, a dragon portal and barn doors.
-
-### Also new in 0.107.0
-
-- **A recipe list you can find your way in**, at every station: search by name or material, a button for what you can craft now, tabs for weapons, armour, tools, ammunition, food and materials, and favourites that stay at the top.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -115,11 +116,11 @@ A free build camera, precise rotation, undo, area repair, blueprints and terrain
 
 460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.
 
-#### [Log house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)
+#### [Log house & stave walls](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)
 
-<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/log_lafthus.png" alt="Log house" height="120">
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/log_lafthus.png" alt="Log house & stave walls" height="120">
 
-Laft walls whose logs cross at the corners, gables, shuttered windows, stairs and a spiral stair, a stone foundation, large floors, doors and a cellar hatch.
+Laft and stave walls, a svalgang and pieces after Borgund stave church, doors 3 m high, windows at eye height, stairs and a cellar.
 
 ### ⛵ Sea & travel
 

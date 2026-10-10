@@ -2,6 +2,19 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.110.0 - 2026-10-10
+
+### Added
+- **Doors 3 m high** (in [the log house](docs/log-house.md#-doors)), so you walk through upright: your character is 1.85 m tall, and the vanilla door's leaf 1.88 m. A tall plank door, a double door opening from the middle, hall doors 4 m wide with iron straps, and a stave church portal with a round-headed door and dragon heads. They snap in place of a wall and the metre over it, like the vanilla gate; a new low log wall fills over them.
+- **[Stave walls](docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards on end between a sill and a wall plate, as on the stave churches, 1, 2 and 4 m long, 4 m high for a hall and 1 m high over a door; round corner staves; gables for the 26° and 45° roofs; a stave wall with a shuttered window and one with a round glugg high up.
+- **The svalgang**: the covered gallery round a stave church, with a low wall, an arcade of small posts and arches and a lean-to of dark shingles, and its outer corner.
+- **[After Borgund stave church](docs/log-house.md#-after-borgund-stave-church)**: a ridge dragon on a tall curved neck, a ridge turret with three tiers, a belfry and a spire, carved ridge crests and gable crosses; stave walls clad in scale shingles; nave columns with a capital and masks, arcade arches, St Andrew's crosses with a sun and leaves, and scissor trusses; a svalgang porch with lattice in its gable; a free-standing stave bell tower whose bell rings like the alarm bell, also by itself when a raid comes; and a painted consecration cross.
+- The Stave Church Portal has half-columns with a base and a capital, as on Borgund's west portal.
+- **More windows**: log walls with a narrow window and one shutter, and log walls with a window behind iron bars, in both kinds of wall.
+
+### Changed
+- **Windows at eye height**: the log walls' windows lie round a player's eyes, from 1 to 2 m in the plain wall and 0.77 to 1.73 m in the offset wall, instead of from 0.5 m; the gluggs sit high up, where the light comes in.
+
 ## v0.109.0 - 2026-10-10
 
 ### Added
