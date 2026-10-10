@@ -18,6 +18,7 @@ from build_log_house import (TAR_DOOR_TINT, WALL_DEPTH, WALL_VIEWS, courses, fou
 from build_stone_defenses import spans_with_hole
 
 FRAME_TINT = [0.9, 0.85, 0.8]
+WINDOW_CUT = {False: [1.25, 1.75], True: [1.0, 1.5]}  # the logs taken out for a window, by kind (offset or not)
 FRAME = 0.07  # thickness of a window frame's boards
 SHUTTER = 0.05  # thickness of a shutter
 
@@ -25,7 +26,8 @@ SHUTTER = 0.05  # thickness of a shutter
 def opening_heights(offset, cut):
     """The bottom and top of an opening where the logs centred at the heights in cut are taken out: the opening runs
     between the tops and bottoms of the logs left above and below it, which the frame covers."""
-    kept = [y for y in courses(offset, 2.0) if y not in cut] + [2.0]  # the next piece's lowest log closes the top
+    # The next piece's lowest log closes the top: at 2 m on an offset wall, at 2.25 m on a plain one.
+    kept = [y for y in courses(offset, 2.0) if y not in cut] + [2.0 + (0 if offset else 0.25)]
     below = max(y for y in kept if y < min(cut))
     above = min(y for y in kept if y > max(cut))
     return below + 0.25, above - 0.25
@@ -70,9 +72,11 @@ def shutter(group, x0, x1, bottom, top, z, rng):
 
 
 def window_wall(offset, seed):
-    """A 2 m log wall with a window 1 m wide, closed by two shutters on the outside (+z) that swing out."""
+    """A 2 m log wall with a window 1 m wide, closed by two shutters on the outside (+z) that swing out. The window lies
+    round the eyes of a player standing inside (1.85 m tall, the eyes at about 1.6 m): from 1 to 2 m in the plain wall,
+    from 0.77 to 1.73 m in the offset wall, as high as the logs let it."""
     rng = random.Random(seed + "_shutters")
-    cut = [0.75, 1.25] if not offset else [1.0, 1.5]
+    cut = WINDOW_CUT[offset]
     parts, colliders, snaps, (bottom, top) = wall_with_hole(offset, 0.5, cut, seed)
     z = WALL_DEPTH / 2 + 0.04
     left, left_collider = shutter("leaf_left", -0.5, 0.0, bottom, top, z, rng)
@@ -84,8 +88,9 @@ def window_wall(offset, seed):
 
 
 def glugg_wall(offset, seed):
-    """A 2 m log wall with a glugg: a small open window, one log high and 0.6 m wide, as in the oldest houses."""
-    cut = [1.25] if not offset else [1.0]
+    """A 2 m log wall with a glugg: a small open window, one log high and 0.6 m wide, as in the oldest houses, high up
+    where the light comes in and the smoke goes out (1.5 to 2 m, or 1.27 to 1.73 m in the offset wall)."""
+    cut = [1.75] if not offset else [1.5]
     parts, colliders, snaps, _ = wall_with_hole(offset, 0.3, cut, seed)
     return parts, colliders, snaps
 

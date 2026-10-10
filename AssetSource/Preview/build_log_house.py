@@ -224,9 +224,9 @@ LEAF_HEIGHT = 1.98
 LEAF_THICKNESS = 0.1
 
 
-def door_leaf(group, x0, x1, rng, tint, braces="z", hinge_side=1):
+def door_leaf(group, x0, x1, rng, tint, braces="z", hinge_side=1, height=LEAF_HEIGHT):
     """A board door from x0 to x1: vertical boards, battens on the inside (-z) and iron strap hinges and a ring on the
-    outside (+z). hinge_side is +1 when it hangs on its x1 edge."""
+    outside (+z). hinge_side is +1 when it hangs on its x1 edge; height is the leaf's."""
     parts = []
     width = x1 - x0
     boards = max(3, round(width / 0.25))
@@ -234,35 +234,35 @@ def door_leaf(group, x0, x1, rng, tint, braces="z", hinge_side=1):
         bx0 = x0 + width * i / boards
         bx1 = x0 + width * (i + 1) / boards
         shade = rng.choice((0.9, 1.0))
-        parts.append(part("wood_floor_1x1", ((bx0 + bx1) / 2, 0.03 + LEAF_HEIGHT / 2, 0), (90, 0, 0),
-                          ((bx1 - bx0) * 0.97, LEAF_THICKNESS / 0.22, LEAF_HEIGHT), tint=[tint[0] * shade, tint[1] * shade, tint[2] * shade],
+        parts.append(part("wood_floor_1x1", ((bx0 + bx1) / 2, 0.03 + height / 2, 0), (90, 0, 0),
+                          ((bx1 - bx0) * 0.97, LEAF_THICKNESS / 0.22, height), tint=[tint[0] * shade, tint[1] * shade, tint[2] * shade],
                           group=group))
     inside = -LEAF_THICKNESS / 2 - 0.03
-    for y in (0.3, 1.7):
+    for y in (0.3, height - 0.28):
         parts.append(plank((x0 + 0.05, y, inside), (x1 - 0.05, y, inside), 0.06, 0.16, group=group, tint=tint))
     if braces == "z":
         lean = 1 if hinge_side > 0 else -1
         low, high = (x1 - 0.12, x0 + 0.12) if lean > 0 else (x0 + 0.12, x1 - 0.12)
-        parts.append(plank((low, 0.4, inside), (high, 1.6, inside), 0.06, 0.14, group=group, tint=tint))
+        parts.append(plank((low, 0.4, inside), (high, height - 0.38, inside), 0.06, 0.14, group=group, tint=tint))
     outside = LEAF_THICKNESS / 2 + 0.015
     hinge = x1 if hinge_side > 0 else x0
-    for y in (0.35, 1.65):
+    for y in (0.35, height - 0.33):
         reach = min(width * 0.75, 1.0)
         a, b = (hinge - reach, hinge + 0.02) if hinge_side > 0 else (hinge - 0.02, hinge + reach)
         parts.append(plank((a, y, outside), (b, y, outside), 0.03, 0.07, group=group, tint=IRON_TINT, texture="metalwall", detail=True))
     handle = x0 + 0.15 if hinge_side > 0 else x1 - 0.15
     parts.append(part("Bell", (handle, 1.0, outside + 0.02), (90, 0, 0), (0.09, 0.02, 0.09), tint=IRON_TINT, group=group, detail=True))
-    collider = box(((x0 + x1) / 2, 0.03 + LEAF_HEIGHT / 2, 0), (width, LEAF_HEIGHT, LEAF_THICKNESS + 0.06), group=group)
+    collider = box(((x0 + x1) / 2, 0.03 + height / 2, 0), (width, height, LEAF_THICKNESS + 0.06), group=group)
     return parts, collider
 
 
-def door_frame(rng, post=0.25):
-    """Two hewn posts either side of the 1.5 m opening and a threshold, the wall's depth deep."""
+def door_frame(rng, post=0.25, height=2.0):
+    """Two hewn posts either side of the opening, height high, and a threshold, the wall's depth deep."""
     parts = []
     for x in (-1 + post / 2, 1 - post / 2):
-        parts.append(plank((x, 0, 0), (x, 2.0, 0), WALL_DEPTH, post, tint=[0.9, 0.85, 0.8]))
+        parts.append(plank((x, 0, 0), (x, height, 0), WALL_DEPTH, post, tint=[0.9, 0.85, 0.8]))
     parts.append(plank((-1 + post, 0.02, 0), (1 - post, 0.02, 0), WALL_DEPTH, 0.05, tint=[0.8, 0.75, 0.7]))
-    colliders = [box((x, 1.0, 0), (post, 2.0, WALL_DEPTH)) for x in (-1 + post / 2, 1 - post / 2)]
+    colliders = [box((x, height / 2, 0), (post, height, WALL_DEPTH)) for x in (-1 + post / 2, 1 - post / 2)]
     return parts, colliders
 
 

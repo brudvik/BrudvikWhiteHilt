@@ -41,19 +41,19 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.109.0
+## ✨ New in 0.110.0
 
-- **[Windows for the log house](docs/log-house.md#-windows)**: log walls with a window closed by two shutters that swing out and shut by themselves when rain or night comes, and log walls with a *glugg*, the small window of the oldest houses.
-- **[Stairs, a ladder and railings](docs/log-house.md#-stairs-ladders-and-railings)**: a narrow stair up to the loft in one piece, a spiral stair round a post, a loft ladder, railings and a stair railing.
-- **[A cellar](docs/log-house.md#-cellar)**: a floor hatch whose lid lifts, with a ladder down, and a dry-laid cellar wall.
+- **[Doors you walk through upright](docs/log-house.md#-doors)**: a tall plank door, a double door, hall doors and a stave church portal, 3 m high like the vanilla gate, where the vanilla door leaves a hand over your 1.85 m.
+- **[Stave walls and the svalgang](docs/log-house.md#-stave-walls-and-the-svalgang)**: tarred boards between sill and wall plate as on the stave churches, tall walls, corner staves and gables, and the covered gallery round a stave hall under dark shingles.
+- **[Windows at eye height](docs/log-house.md#-windows)**: every window now lies round your eyes, and there are narrow windows, barred windows and stave walls with a window or a round glugg.
+
+### Also new in 0.109.0
+
+- **[Windows, stairs and a cellar for the log house](docs/log-house.md)**: shuttered windows that close by themselves, a narrow stair and a spiral stair, a loft ladder, railings, and a floor hatch with a ladder down to the cellar.
 
 ### Also new in 0.108.0
 
 - **[The log house](docs/log-house.md)**: build the Norwegian way, with *laft*. Log walls whose logs cross at the corners, log corners with the ends sticking out, log gables for the 26° and 45° roofs, a dry-laid stone foundation, plank floors of 4 × 4 m and more, and a plank door, a dragon portal and barn doors.
-
-### Also new in 0.107.0
-
-- **A recipe list you can find your way in**, at every station: search by name or material, a button for what you can craft now, tabs for weapons, armour, tools, ammunition, food and materials, and favourites that stay at the top.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -89,7 +89,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/build-tools.md"><img src="docs/images/readme/tile_build_tools.png" height="110" alt=""></a><br><b><a href="docs/build-tools.md">Build camera & toolbar</a></b><br><sub>A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.</sub></td>
 <td align="center" valign="top"><a href="docs/decor.md"><img src="docs/images/decor_hearth.png" height="110" alt=""></a><br><b><a href="docs/decor.md">Decor Hammer</a></b><br><sub>460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones, kitchen and workshop things, furniture, cloth, lights and Norse pieces.</sub></td>
-<td align="center" valign="top"><a href="docs/log-house.md"><img src="docs/images/log_lafthus.png" height="110" alt=""></a><br><b><a href="docs/log-house.md">Log house</a></b><br><sub>Laft walls whose logs cross at the corners, gables, shuttered windows, stairs and a spiral stair, a stone foundation, large floors, doors and a cellar hatch.</sub></td>
+<td align="center" valign="top"><a href="docs/log-house.md"><img src="docs/images/log_lafthus.png" height="110" alt=""></a><br><b><a href="docs/log-house.md">Log house & stave walls</a></b><br><sub>Laft and stave walls, gables, a svalgang, doors 3 m high, windows at eye height, stairs, a stone foundation and a cellar.</sub></td>
 </tr>
 </table>
 

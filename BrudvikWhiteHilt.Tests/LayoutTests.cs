@@ -26,7 +26,10 @@ public class LayoutTests
         ("^havnekran$", new[] { "jib", "fall", "hook" }),
         ("^(plankedor|dorportal)$", new[] { "leaf" }),
         ("^lavedor$", new[] { "leaf_left", "leaf_right" }),
-        ("^laftvegg(_forskutt)?_vindu$", new[] { "leaf_left", "leaf_right" }),
+        ("^(laftvegg(_forskutt)?|stavvegg)_vindu$", new[] { "leaf_left", "leaf_right" }),
+        ("^laftvegg(_forskutt)?_smal_vindu$", new[] { "leaf_right" }),
+        ("^(hoy_plankedor|stavkirkeportal)$", new[] { "leaf" }),
+        ("^(dobbeldor|haldor)$", new[] { "leaf_left", "leaf_right" }),
         ("^lem$", new[] { "lid" }),
     };
 

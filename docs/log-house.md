@@ -1,6 +1,6 @@
-# 🪵 Log house
+# 🪵 Log house and stave walls
 
-Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, hang a plank door, a dragon portal or barn doors in the wall, put in shuttered windows, go up by a stair, a spiral stair or a ladder, and down through a hatch to the cellar. Everything is built with the ordinary Hammer near a Workbench.
+Build a house the Norwegian way: *laft*, core wood logs laid on top of each other and notched where the walls meet, so the log ends cross and stick out past the corners. Set it on a dry-laid stone foundation, lay the floors in large pieces, hang doors 3 m high that you walk through upright, put in windows at eye height, go up by a stair, a spiral stair or a ladder, and down through a hatch to the cellar. Or build the other old way, with stave walls, and run a svalgang round a stave hall. Everything is built with the ordinary Hammer near a Workbench.
 
 <img src="images/log_lafthus.png" alt="A small log house on a stone foundation" title="A log house of 6 × 4 m: stone foundation and cornerstones, log walls, corners and gables, a plank door, and the vanilla 45° roof" height="260">
 
@@ -76,30 +76,73 @@ Plank floors in more sizes, laid from the vanilla floor's boards, so they look t
 
 ## 🚪 DOORS
 
-<img src="images/log_plankedor.png" alt="Plank Door" title="Plank Door" height="140"> <img src="images/log_dorportal.png" alt="Dragon Portal" title="Dragon Portal" height="140"> <img src="images/log_lavedor.png" alt="Barn Doors" title="Barn Doors" height="140">
+<img src="images/log_hoy_plankedor.png" alt="Tall Plank Door" title="Tall Plank Door" height="140"> <img src="images/log_dobbeldor.png" alt="Double Door" title="Double Door" height="140"> <img src="images/log_haldor.png" alt="Hall Doors" title="Hall Doors" height="140"> <img src="images/log_stavkirkeportal.png" alt="Stave Church Portal" title="Stave Church Portal" height="140">
 
-The doors snap in place of a wall like the vanilla door: the Plank Door and the Dragon Portal in place of a 2 m wall, the Barn Doors in place of a 4 m wall. They fit log walls and vanilla walls alike. Open and close them with **Use**; they are [self-closing doors](base.md#-self-closing-doors) like every other door, so Shift + Use holds one open and they shut by themselves when a raid comes.
+<img src="images/log_plankedor.png" alt="Plank Door" title="Plank Door" height="110"> <img src="images/log_dorportal.png" alt="Dragon Portal" title="Dragon Portal" height="110"> <img src="images/log_lavedor.png" alt="Barn Doors" title="Barn Doors" height="110">
+
+**How high a door should be.** Your character stands 1.85 m tall and is nearly a metre wide (the game's capsule has a radius of 0.49 m). The vanilla door's leaf is 1.39 × 1.88 m in a 2 × 2 m piece: a hand over your head, and the camera behind you bumps into the wall over it. That is why so many build the vanilla gate instead, whose leaf is 1.68 × 3 m. The tall doors here are 3 m high like the gate, a metre over your head, and snap in its place: a 2 m wall and the metre above it. Fill over them with a **Low Log Wall** or a **Low Stave Wall** in a wall of two rows. The doors 2 m high are for low outbuildings and the barn.
+
+All doors snap in place of a wall like the vanilla door and fit log walls, stave walls and vanilla walls alike. Open and close them with **Use**; they are [self-closing doors](base.md#-self-closing-doors) like every other door, so Shift + Use holds one open and they shut by themselves when a raid comes.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
+| **Tall Plank Door** (`piece_whitehilt_hoy_plankedor`) | A board door 1.5 m wide and 3 m high between hewn posts, 2 × 3 m | Hammer (Workbench) | Wood ×8, Resin ×2 |
+| **Double Door** (`piece_whitehilt_dobbeldor`) | Two narrow leaves 3 m high opening from the middle, 1.6 m wide together, 2 × 3 m | Hammer (Workbench) | Wood ×10, Resin ×2 |
+| **Hall Doors** (`piece_whitehilt_haldor`) | Two leaves 1.7 m wide and 3 m high with long iron straps, 4 × 3 m | Hammer (Workbench) | Wood ×20, Iron ×2 |
+| **Stave Church Portal** (`piece_whitehilt_stavkirkeportal`) | Broad boards round a narrow door with a round head, 1.2 × 2.4 m, dragon heads and a bronze ring, 2 × 3 m | Hammer (Workbench) | Fine Wood ×10, Wood ×4, Bronze ×2 |
 | **Plank Door** (`piece_whitehilt_plankedor`) | A door of tarred boards on strap hinges between two hewn posts, 2 × 2 m | Hammer (Workbench) | Wood ×6, Resin ×2 |
 | **Dragon Portal** (`piece_whitehilt_dorportal`) | A door in a portal of broad boards with two dragon heads and a bronze ring, 2 × 2 m | Hammer (Workbench) | Fine Wood ×8, Wood ×4, Bronze ×1 |
 | **Barn Doors** (`piece_whitehilt_lavedor`) | Two tarred board doors, 4 × 2 m, wide enough for a cart | Hammer (Workbench) | Wood ×16, Resin ×4 |
+| **Low Log Wall** (`piece_whitehilt_laftvegg_lav`) | A plain log wall 2 m long and 1 m high, to fill over a tall door | Hammer (Workbench) | Core Wood ×2 |
 
 ## 🪟 WINDOWS
 
-<img src="images/log_laftvegg_vindu.png" alt="Log Wall with Window" title="Log Wall with Window" height="140"> <img src="images/log_laftvegg_glugg.png" alt="Log Wall with Glugg" title="Log Wall with Glugg" height="140">
+<img src="images/log_laftvegg_vindu.png" alt="Log Wall with Window" title="Log Wall with Window" height="140"> <img src="images/log_laftvegg_smal_vindu.png" alt="Log Wall with Narrow Window" title="Log Wall with Narrow Window" height="140"> <img src="images/log_laftvegg_sprosser.png" alt="Log Wall with Barred Window" title="Log Wall with Barred Window" height="140"> <img src="images/log_laftvegg_glugg.png" alt="Log Wall with Glugg" title="Log Wall with Glugg" height="140">
 
-The windows are log walls with an opening framed in boards, in both kinds of wall, and take the place of a 2 m wall. The **Log Wall with Window** has a window 1 m wide closed by two shutters on the outside. **Use** opens them: they always swing out against the wall, whichever side you open them from. They are windows to the [self-closing doors](base.md#-self-closing-doors), so they close when rain, a storm or night begins (and can be opened again while it lasts), and at once when a raid comes. The **Log Wall with Glugg** has a *glugg*, a small opening one log high and 0.6 m wide, as in the oldest houses, which let in light and let out smoke.
+The windows are walls with an opening framed in boards, in both kinds of log wall and in the stave wall, and take the place of a 2 m wall. They lie round your eyes, at about 1.6 m when you stand on the floor the wall stands on, as high as the logs let them: from 1 to 2 m in the plain log wall and from 0.77 to 1.73 m in the offset wall, where the logs lie half a log lower.
 
-The window lies where the logs are taken out, so it sits a little higher in the offset wall than in the plain one.
+The shutters open with **Use** and always swing out against the wall, whichever side you open them from. They are windows to the [self-closing doors](base.md#-self-closing-doors), so they close when rain, a storm or night begins (and can be opened again while it lasts), and at once when a raid comes. A *glugg* is the small opening of the oldest houses, high up, which let in light and let out smoke.
 
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
-| **Log Wall with Window** (`piece_whitehilt_laftvegg_vindu`) | Window 1 m wide with two shutters | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
-| **Offset Log Wall with Window** (`piece_whitehilt_laftvegg_forskutt_vindu`) | The same in the offset wall | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
-| **Log Wall with Glugg** (`piece_whitehilt_laftvegg_glugg`) | A small open window, one log high | Hammer (Workbench) | Core Wood ×4 |
-| **Offset Log Wall with Glugg** (`piece_whitehilt_laftvegg_forskutt_glugg`) | The same in the offset wall | Hammer (Workbench) | Core Wood ×4 |
+| **Log Wall with Window** (`piece_whitehilt_laftvegg_vindu`) | Window 1 m wide, from 1 to 2 m, with two shutters | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Offset Log Wall with Window** (`piece_whitehilt_laftvegg_forskutt_vindu`) | The same in the offset wall, from 0.77 to 1.73 m | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Log Wall with Narrow Window** (`piece_whitehilt_laftvegg_smal_vindu`) | Window 0.6 m wide from 0.5 m up to the top of the wall, one shutter | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Offset Log Wall with Narrow Window** (`piece_whitehilt_laftvegg_forskutt_smal_vindu`) | The same in the offset wall, from 0.77 to 1.73 m | Hammer (Workbench) | Core Wood ×4, Wood ×2 |
+| **Log Wall with Barred Window** (`piece_whitehilt_laftvegg_sprosser`) | Window 1 m wide behind iron bars, for a storehouse or a smithy | Hammer (Workbench) | Core Wood ×4, Iron ×1 |
+| **Offset Log Wall with Barred Window** (`piece_whitehilt_laftvegg_forskutt_sprosser`) | The same in the offset wall | Hammer (Workbench) | Core Wood ×4, Iron ×1 |
+| **Log Wall with Glugg** (`piece_whitehilt_laftvegg_glugg`) | A small open window one log high, from 1.5 to 2 m | Hammer (Workbench) | Core Wood ×4 |
+| **Offset Log Wall with Glugg** (`piece_whitehilt_laftvegg_forskutt_glugg`) | The same in the offset wall, from 1.27 to 1.73 m | Hammer (Workbench) | Core Wood ×4 |
+
+The stave wall's windows are under [Stave walls](#-stave-walls-and-the-svalgang).
+
+## ⛪ STAVE WALLS AND THE SVALGANG
+
+<img src="images/log_stavhall.png" alt="A stave hall with a svalgang" title="A stave hall of 6 × 4 m: tall stave walls and corner staves, a stave church portal, stave gables under dark shingles, and the svalgang along the front and round a corner" height="260">
+
+<img src="images/log_stavvegg.png" alt="Stave Wall" title="Stave Wall" height="140"> <img src="images/log_stavvegg_hoy.png" alt="Tall Stave Wall" title="Tall Stave Wall" height="140"> <img src="images/log_hjornestav.png" alt="Corner Stave" title="Corner Stave" height="140"> <img src="images/log_stavgavl_45.png" alt="Stave Gable 45°" title="Stave Gable 45°" height="140"> <img src="images/log_stavvegg_vindu.png" alt="Stave Wall with Window" title="Stave Wall with Window" height="140"> <img src="images/log_stavvegg_glugg.png" alt="Stave Wall with Round Glugg" title="Stave Wall with Round Glugg" height="140">
+
+The other old way of building in wood: tarred boards standing on end between a sill (*sville*) and a wall plate (*stavlegje*), as on the stave churches and the oldest halls. Stave walls are built from wood and resin, so they come before the log house, but are not as strong. They snap end to end and on each other like the vanilla walls; a **Corner Stave** covers the joint where two meet. The **Tall Stave Wall** is 4 m high, for a hall or a church, and the **Low Stave Wall** fills over a tall door. The gables are built like the log gables.
+
+<img src="images/log_svalgang.png" alt="Svalgang" title="Svalgang" height="140"> <img src="images/log_svalgang_hjorne.png" alt="Svalgang Corner" title="Svalgang Corner" height="140">
+
+The **Svalgang** is the covered gallery round a stave church: a board floor, a low wall, an arcade of small posts and round arches, and a lean-to of the vanilla dark shingles. Snap it to the foot of a wall on its outside; its roof meets the wall 3.15 m up, so it wants the Tall Stave Wall (or two rows of walls). The **Svalgang Corner** goes round an outer corner, under a hipped corner of shingles.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Stave Wall** (`piece_whitehilt_stavvegg`) | 2 m long, 2 m high | Hammer (Workbench) | Wood ×6, Resin ×1 |
+| **Stave Wall 1 m** (`piece_whitehilt_stavvegg_1m`) | 1 m long, 2 m high | Hammer (Workbench) | Wood ×3, Resin ×1 |
+| **Stave Wall 4 m** (`piece_whitehilt_stavvegg_4m`) | 4 m long, 2 m high | Hammer (Workbench) | Wood ×12, Resin ×2 |
+| **Tall Stave Wall** (`piece_whitehilt_stavvegg_hoy`) | 2 m long, 4 m high | Hammer (Workbench) | Wood ×12, Resin ×2 |
+| **Low Stave Wall** (`piece_whitehilt_stavvegg_lav`) | 2 m long, 1 m high | Hammer (Workbench) | Wood ×3, Resin ×1 |
+| **Corner Stave** (`piece_whitehilt_hjornestav`) | A round corner post 2 m high | Hammer (Workbench) | Wood ×4, Resin ×1 |
+| **Tall Corner Stave** (`piece_whitehilt_hjornestav_4m`) | A round corner post 4 m high | Hammer (Workbench) | Wood ×8, Resin ×1 |
+| **Stave Gable 26°** (`piece_whitehilt_stavgavl_26`) | 2 m wide, rising 1 m | Hammer (Workbench) | Wood ×3, Resin ×1 |
+| **Stave Gable 45°** (`piece_whitehilt_stavgavl_45`) | 2 m wide, rising 2 m | Hammer (Workbench) | Wood ×4, Resin ×1 |
+| **Stave Wall with Window** (`piece_whitehilt_stavvegg_vindu`) | Window 1 m wide from 1 m up to the wall plate, two shutters | Hammer (Workbench) | Wood ×8, Resin ×1 |
+| **Stave Wall with Round Glugg** (`piece_whitehilt_stavvegg_glugg`) | A small round window high up | Hammer (Workbench) | Wood ×6, Resin ×1 |
+| **Svalgang** (`piece_whitehilt_svalgang`) | 2 m of covered gallery, 1.8 m deep | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
+| **Svalgang Corner** (`piece_whitehilt_svalgang_hjorne`) | The gallery's outer corner, 1.8 × 1.8 m | Hammer (Workbench) | Wood ×10, Fine Wood ×4, Resin ×2 |
 
 ## 🪜 STAIRS, LADDERS AND RAILINGS
 
@@ -141,4 +184,4 @@ Dig out a cellar under the house with the pickaxe, line it with the **Cellar Wal
 
 ## Config
 
-The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables, windows and the Dragon Portal come with the Black Forest (core wood needs the bronze axe); the foundation, floors, doors, stairs, ladder, railings, hatch and cellar wall are there from the start.
+The log house pieces are switched on and off and priced in `[Content]` and `[Recipes]` like the other White Hilt pieces. With linear progression, the log walls, corners, gables and windows, the Dragon Portal, the Stave Church Portal and the svalgang come with the Black Forest (core wood and fine wood need the bronze axe), the Hall Doors and the barred windows with the Swamp (iron); the stave walls, foundation, floors, the other doors, stairs, ladder, railings, hatch and cellar wall are there from the start.
