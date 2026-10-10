@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.115.2 - 2026-10-10
 
 ### Fixed
 - **Friezes go onto the wall's face.** A carved frieze or post board snapped to a wall sat inside it, as Valheim's walls snap on their centre line and the frieze on its back. Snapped to a wall or a post it now moves out onto the face it faces, whatever the wall's thickness.
