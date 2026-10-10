@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[The farm](docs/farm.md)**:
+  - The skigard, the Norwegian round-pole fence, in 4 and 2 m: sections run on into each other without a seam, and the last one slopes down to the ground. A farm gate and a double gate 4 m wide for a cart, which shut by themselves like every door.
+  - A wattle fence, a wattle-and-daub wall in 2 and 1 m (the Paint Bench can whitewash it) and a bare wattle wall.
+  - A well sweep: use it and it dips its bucket straight down into the well.
+  - A stream mill: a little mill house on stone feet with a horizontal wheel under its floor. It grinds barley into flour like the windmill, at full speed whatever the wind, and its wheel turns while it grinds.
+- Swinging parts can turn less than the door that drives them, and a part can hang from another and follow it without turning, as the well's bucket does from the sweep.
+
 ## v0.110.0 - 2026-10-10
 
 ### Added

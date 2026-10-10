@@ -30,6 +30,10 @@ public class LayoutTests
         ("^laftvegg(_forskutt)?_smal_vindu$", new[] { "leaf_right" }),
         ("^(hoy_plankedor|stavkirkeportal)$", new[] { "leaf" }),
         ("^(dobbeldor|haldor)$", new[] { "leaf_left", "leaf_right" }),
+        ("^grind$", new[] { "leaf" }),
+        ("^dobbelgrind$", new[] { "leaf_left", "leaf_right" }),
+        ("^bronnvipp$", new[] { "sweep", "bucket" }),
+        ("^bekkekvern$", new[] { "wheel" }),
         ("^lem$", new[] { "lid" }),
     };
 

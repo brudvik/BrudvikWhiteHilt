@@ -36,6 +36,12 @@ public abstract class LogHouseDoorBase : DefensePieceBase
     /// </summary>
     protected virtual (string Group, Vector3 Axis)[] OneWaySwings => null;
 
+    /// <summary>
+    /// Groups that hang from one of the <see cref="OneWaySwings"/> and follow it without turning, each with the group it
+    /// hangs from, such as a well's bucket on the sweep.
+    /// </summary>
+    protected virtual (string Group, string From)[] Hangers => null;
+
     /// <inheritdoc/>
     protected override void CustomizePrefab(GameObject prefab, DefensePieceData data, IDictionary<string, Transform> groups)
     {
@@ -62,6 +68,9 @@ public abstract class LogHouseDoorBase : DefensePieceBase
             swing.m_door = door;
             swing.m_parts = OneWaySwings.Select(entry => groups.TryGetValue(entry.Group, out Transform part) ? part : null).ToArray();
             swing.m_axes = OneWaySwings.Select(entry => entry.Axis).ToArray();
+            (string Group, string From)[] hangers = Hangers ?? new (string, string)[0];
+            swing.m_hangers = hangers.Select(entry => groups.TryGetValue(entry.Group, out Transform part) ? part : null).ToArray();
+            swing.m_hangFrom = hangers.Select(entry => System.Array.FindIndex(OneWaySwings, swung => swung.Group == entry.From)).ToArray();
             return;
         }
 

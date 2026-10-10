@@ -5900,5 +5900,26 @@
   "piece_whitehilt_vigselskors": "Vigselskors",
   "piece_whitehilt_vigselskors_description": "Et rødt kors i en okergul ring, malt på en rund plate til veggen, som vigselskorsene som er bevart på sørveggen på Borgund.",
   "piece_whitehilt_stopul": "Støpul",
-  "piece_whitehilt_stopul_description": "Et frittstående klokketårn i stavverk, 3 × 3 m og 9,5 m høyt, som ved Borgund kirke: en bordkledd fot, en sponkledd midtdel, en åpen klokkestue og pyramidetak med kors. Klokken ringer som alarmklokken: bruk den ved foten av tårnet, og den ringer av seg selv når et raid kommer."
+  "piece_whitehilt_stopul_description": "Et frittstående klokketårn i stavverk, 3 × 3 m og 9,5 m høyt, som ved Borgund kirke: en bordkledd fot, en sponkledd midtdel, en åpen klokkestue og pyramidetak med kors. Klokken ringer som alarmklokken: bruk den ved foten av tårnet, og den ringer av seg selv når et raid kommer.",
+
+  "piece_whitehilt_skigard": "Skigard",
+  "piece_whitehilt_skigard_description": "Den norske skigarden, 4 m lang og 1,3 m høy: par av staurer bundet med vidjer, og grå skier lagt på skrå i båndene. Seksjonene snapper ende mot ende og går i ett uten skjøt; den siste skrår ned mot bakken.",
+  "piece_whitehilt_skigard_2m": "Skigard 2 m",
+  "piece_whitehilt_skigard_2m_description": "En skigard 2 m lang, til å fylle et hull.",
+  "piece_whitehilt_flettgjerde": "Flettgjerde",
+  "piece_whitehilt_flettgjerde_description": "Vidjer flettet ut og inn mellom staur, 2 m langt og 1 m høyt, rundt en hage eller en innhegning.",
+  "piece_whitehilt_bindingsverk": "Bindingsverk",
+  "piece_whitehilt_bindingsverk_description": "Et tømmerverk med skråbånd og leire klint på flettverk mellom stokkene, 2 m langt og 2 m høyt: den billigste veggen på Engene, til fjøs, smie eller hus. Malebenken kan kalke den hvit.",
+  "piece_whitehilt_bindingsverk_1m": "Bindingsverk 1 m",
+  "piece_whitehilt_bindingsverk_1m_description": "En vegg av bindingsverk 1 m lang og 2 m høy.",
+  "piece_whitehilt_flettverk": "Flettverksvegg",
+  "piece_whitehilt_flettverk_description": "Et tømmerverk med bart flettverk mellom stokkene, 2 m langt og 2 m høyt, til et skur eller en innhegning der vinden får blåse gjennom.",
+  "piece_whitehilt_grind": "Grind",
+  "piece_whitehilt_grind_description": "En grind av grå staur 2 m bred mellom to kraftige stolper, til skigarden. Som alle dører lukker den seg etter deg, så dyrene blir der de skal.",
+  "piece_whitehilt_dobbelgrind": "Dobbel grind",
+  "piece_whitehilt_dobbelgrind_description": "To grinder av grå staur som åpnes fra midten, 4 m brede, nok til å kjøre en kjerre inn på jordet.",
+  "piece_whitehilt_bronnvipp": "Brønnvippe",
+  "piece_whitehilt_bronnvipp_description": "En brønn med tømmerkarm og vippe: en lang stang på en kløftet stolpe med en stein i den korte enden. Bruk den, så dypper vippa bøtta ned i brønnen; litt etter løfter den seg igjen.",
+  "piece_whitehilt_bekkekvern": "Bekkekvern",
+  "piece_whitehilt_bekkekvern_description": "Et lite kvernhus på steinføtter med kallhjul under gulvet, slik gårdene hadde ved bekkene sine. Legg bygg i trakten bak og ta melet fra kista foran. Den maler som vindmøllen, men i full fart uansett vind; sett den ved en bekk."
 }

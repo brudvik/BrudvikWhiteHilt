@@ -33,6 +33,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Planting](planting.md) | Planting bushes, mushrooms, flowers and saplings with the cultivator |
 | [Animal husbandry](husbandry.md) | The Feeding Trough, favourite foods, the Tether Post, the Grooming Comb and produce |
 | [Fishing nets](fishing.md) | The Net Winch, shore nets, bait and mending |
+| [The farm](farm.md) | Skigard fences and gates, wattle fences, wattle-and-daub walls, a well sweep and a stream mill that grinds without wind |
 | [Dog](dog.md) | Raising a puppy into a companion, its tricks, gear and litters |
 
 ## ⚔️ Gear & crafting
