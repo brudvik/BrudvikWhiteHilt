@@ -102,6 +102,13 @@ public sealed class DecorEntry
     /// </summary>
     public float LightAt { get; private set; } = -1f;
 
+    /// <summary>
+    /// Where each flame sits, as shares of the model's bounds: x and z as in the glb (before Unity mirrors x), y from
+    /// the foot. Empty for one flame at <see cref="LightAt"/> in the middle. A candelabrum lists one per candle, a wall
+    /// candle the candle that stands out from its plate.
+    /// </summary>
+    public IReadOnlyList<(float X, float Y, float Z)> Flames { get; private set; } = Array.Empty<(float, float, float)>();
+
     /// <summary>Height of the seat in metres, or 0 for a piece that cannot be sat on.</summary>
     public float Seat { get; private set; }
 
@@ -215,6 +222,7 @@ public sealed class DecorEntry
             Seat = Number(json, "seat", 0f),
             SeatYaw = Number(json, "seatYaw", 0f),
             LightAt = Number(json, "lightAt", -1f),
+            Flames = Points(json, "flames"),
             Name = Text(json, "name"),
             Description = Text(json, "description"),
             Credit = Text(json, "credit"),
@@ -255,6 +263,21 @@ public sealed class DecorEntry
     private static float Number(IDictionary<string, object> json, string key, float fallback)
     {
         return json.TryGetValue(key, out object value) && value != null ? Convert.ToSingle(value, CultureInfo.InvariantCulture) : fallback;
+    }
+
+    // [[x, y, z], ...]
+    private static (float X, float Y, float Z)[] Points(IDictionary<string, object> json, string key)
+    {
+        if (!json.TryGetValue(key, out object value) || value is not IList<object> points)
+        {
+            return Array.Empty<(float, float, float)>();
+        }
+
+        return points.Select(point => point is IList<object> { Count: 3 } xyz
+                ? (Convert.ToSingle(xyz[0], CultureInfo.InvariantCulture), Convert.ToSingle(xyz[1], CultureInfo.InvariantCulture),
+                    Convert.ToSingle(xyz[2], CultureInfo.InvariantCulture))
+                : throw new InvalidDataException($"'{key}' holds a point that is not [x, y, z]"))
+            .ToArray();
     }
 
     private static bool Flag(IDictionary<string, object> json, string key, bool fallback)

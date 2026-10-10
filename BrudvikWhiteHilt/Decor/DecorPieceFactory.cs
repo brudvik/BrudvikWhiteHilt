@@ -421,19 +421,36 @@ public static class DecorPieceFactory
             DecorLight.Lantern => (0.5f, 0.15f, 6f, 1.3f),
             _ => (0.12f, 0.55f, 9f, 1.5f)
         };
-        Vector3 position = new(bounds.center.x, Mathf.Lerp(bounds.min.y, bounds.max.y, entry.LightAt >= 0f ? entry.LightAt : height), bounds.center.z);
-        Transform flames = FireEffects.AddFlames(root, "WhiteHiltDecorFlame", position, scale, scaleParticles: true);
-        foreach (Light light in flames.GetComponentsInChildren<Light>(true))
+        // Unity mirrors x when it imports the model, so the glb's share along x is counted from the other side.
+        List<Vector3> positions = entry.Flames.Count > 0
+            ? entry.Flames.Select(flame => new Vector3(Mathf.Lerp(bounds.max.x, bounds.min.x, flame.X),
+                Mathf.Lerp(bounds.min.y, bounds.max.y, flame.Y), Mathf.Lerp(bounds.min.z, bounds.max.z, flame.Z))).ToList()
+            : new List<Vector3> { new(bounds.center.x, Mathf.Lerp(bounds.min.y, bounds.max.y, entry.LightAt >= 0f ? entry.LightAt : height), bounds.center.z) };
+        Vector3 middle = positions.Aggregate(Vector3.zero, (sum, position) => sum + position) / positions.Count;
+        for (int index = 0; index < positions.Count; index++)
         {
-            light.range = range;
-            light.intensity = intensity;
-        }
-
-        if (entry.Light != DecorLight.Fire)
-        {
-            foreach (AudioSource sound in flames.GetComponentsInChildren<AudioSource>(true))
+            Transform flames = FireEffects.AddFlames(root, "WhiteHiltDecorFlame", positions[index], scale, scaleParticles: true);
+            foreach (Light light in flames.GetComponentsInChildren<Light>(true))
             {
-                UnityEngine.Object.DestroyImmediate(sound.gameObject);
+                // A candelabrum gets one light, in the middle of its candles, not one for each.
+                if (index > 0)
+                {
+                    UnityEngine.Object.DestroyImmediate(light.gameObject);
+                    continue;
+                }
+
+                light.range = range;
+                light.intensity = intensity;
+                // The light is a child of the flames, which are scaled.
+                light.transform.localPosition += (middle - positions[0]) / scale;
+            }
+
+            if (entry.Light != DecorLight.Fire)
+            {
+                foreach (AudioSource sound in flames.GetComponentsInChildren<AudioSource>(true))
+                {
+                    UnityEngine.Object.DestroyImmediate(sound.gameObject);
+                }
             }
         }
     }

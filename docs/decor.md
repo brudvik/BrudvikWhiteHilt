@@ -289,7 +289,7 @@ Tables, stools and chairs you can sit on, shelves, boxes and pots, from the mead
 | **Round Table** | A small round table. | Wood ×5 |  |
 | **Side Table** | A small table for the bedside. | Wood ×4 |  |
 | **Rough Table** | A heavy table of rough planks. | Wood ×6 |  |
-| **Low Table** | A low, broad table for sitting round on the floor. | Wood ×8 |  |
+| **Carved Stand** | A small carved table for a lamp, a jug or a candle. | Wood ×8 |  |
 | **Trestle Table** | A sturdy trestle table. | Wood ×6, Fine Wood ×2 |  |
 | **Carved Bull Head** | A carved bull's head for the wall. | Wood ×4, Leather Scraps ×2 |  |
 | **Carved Horse Head** | A carved horse's head for the wall. | Wood ×4, Leather Scraps ×2 |  |
@@ -385,7 +385,7 @@ Candles, lanterns, lamps, a chandelier and fires that burn without fuel. They gi
 | **Wall Candle** | A candle holder for the wall. | Iron ×1, Resin ×2 | light |
 | **Table Candle** | A candle in an iron holder. | Iron ×1, Resin ×2 | light |
 | **Brass Candelabrum** | A tall branched candlestick of brass. | Bronze ×2, Resin ×3 | light |
-| **Double Candlestick** | A brass candlestick for two candles. | Bronze ×1, Resin ×2 | light |
+| **Three-Armed Candlestick** | A brass candlestick with three candles. | Bronze ×1, Resin ×2 | light |
 | **Brass Candlestick** | A simple brass candlestick. | Bronze ×1, Resin ×1 | light |
 | **Tallow Candle** | A thick candle standing on its own. | Resin ×2 | light |
 | **Iron Chamberstick** | An iron candle holder with a dish, waiting for a candle. | Iron ×1 |  |

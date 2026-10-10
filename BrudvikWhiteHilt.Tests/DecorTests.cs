@@ -117,4 +117,15 @@ public class DecorTests
         Assert.True(catalog.Single(entry => entry.Id == "barrel_wine").Solid);
         Assert.False(catalog.Single(entry => entry.Id == "spoon").Solid);
     }
+
+    [Fact]
+    public void FlamesBurnOnLightsAndInsideTheirModels()
+    {
+        List<DecorEntry> withFlames = Catalog().Where(entry => entry.Flames.Count > 0).ToList();
+
+        Assert.Equal(7, withFlames.Single(entry => entry.Id == "candelabrum").Flames.Count);
+        Assert.All(withFlames, entry => Assert.NotEqual(DecorLight.None, entry.Light));
+        Assert.All(withFlames.SelectMany(entry => entry.Flames.Select(flame => (entry.Id, flame))), point =>
+            Assert.True(new[] { point.flame.X, point.flame.Y, point.flame.Z }.All(share => share >= 0f && share <= 1f), point.Id));
+    }
 }

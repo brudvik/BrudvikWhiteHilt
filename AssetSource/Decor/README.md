@@ -24,6 +24,7 @@ code.
 | `material` | `wood` (default), `stone`, `metal` or `cloth`: health, break effects and the piece material a model is lit with. |
 | `light` | `candle`, `lantern` or `fire`: a flame and a light that need no fuel. |
 | `lightAt` | Where the flame sits, as a share of the height from the foot (0 to 1); by default the top of a candle, the middle of a lantern and the bottom of a fire. |
+| `flames` | Where each flame sits, `[[x, y, z], ...]` as shares (0 to 1) of the model's bounds, x and z as in the glb, y from the foot; replaces `lightAt`. One point per candle, at the wick or at the foot of a flame the model has; the light goes in the middle of them. See **Flames** below. |
 | `seat` | Height of the seat surface in metres; makes it a chair. See **Chairs, stools and benches** below. |
 | `sizes` | Size copies to add as pieces of their own, `<id>_<size>`: `small` (0.6 times the size, half the cost), `large` (1.5 times, half again the cost) or `huge` (twice, double). Not for tools, seats or anything that has a real size. A copy's id must not be another entry's (`rock_mossy_small` is). Its Norwegian name is the decoration's with `(liten)`, `(stor)` or `(svær)`. |
 | `seatYaw` | Which way one sits, in degrees about the vertical from the model's +z (default 0). `180` for a chair whose back is on +z. |
@@ -40,6 +41,31 @@ code.
 4. `dotnet test BrudvikWhiteHilt.Tests` checks the ids, tabs, translations, models and credits.
 
 `Download/` holds Poly Haven's original files and is not committed.
+
+## Size
+
+`prepare_decor.py` fills in a model's real height, but Valheim is not built to life size, and a decoration at its real
+size looks lost next to the game's own things. Scale it as Valheim scales its own:
+
+- **Small things in the hand, on a table or a shelf**, about twice life size: Valheim's tankard is 0.26 m high, an onion
+  0.27 m, a mushroom 0.37 m. Mugs and cups 0.2 to 0.25 m, plates 0.4 to 0.5 m across, a spoon 0.45 m.
+- **Tools and weapons**, about one and a half times: the vanilla hammer is 0.47 m long, the flint knife 0.36 m, the
+  bronze axe 0.9 m, the iron sword 1.27 m.
+- **Furniture**, about a quarter more: the vanilla table is 0.83 m high and 2.5 m long, the bench 0.54 m high, the chest
+  1.65 m wide. See also the chairs below.
+- **Candles and lamps** between the two: a candlestick about 0.35 m, a wall candle 0.5 m, a lantern 0.6 m (the vanilla
+  wall torch is 0.95 m).
+
+A `small` copy is 0.6 times the size, so give `sizes` only to what is still worth placing at that size.
+
+## Flames
+
+Without `flames` the flame burns in the middle of the model's bounds, at `lightAt`. That is right for a candle on a
+round foot, but wrong for a wall candle (the plate behind it widens the bounds), a candelabrum (several candles and
+none in the middle) or a lantern with a tall handle. Find the candles with
+`python find_flames.py <id> <from> <to>`: it groups the model's vertices between two shares of its height by where they
+stand and prints each group's place as shares, ready for `flames`. Take the band just below the top of the candles; a
+Poly Haven candleholder has its own flame meshes, and the flame goes at their foot so the burning one covers them.
 
 ## Chairs, stools and benches
 
