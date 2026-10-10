@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.115.0 - 2026-10-10
 
 ### Changed
 - **Decor Hammer sizes after Valheim's own.** 84 decorations stood at their real size and looked lost beside the game's things, whose tankard is 0.26 m high and onion 0.27 m: tableware and food are now about twice life size, tools and weapons about one and a half, candles and lamps in between. The Carved Stand (once the Low Table, 0.3 m wide), the Low Stool, the Anvil, the Wall Plank and Moss were also too small.
