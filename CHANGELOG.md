@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.118.0 - 2026-10-11
 
 ### Added
 - **More in the White Hilt HUD.** Worn gear you have on shows among the status effects under a fifth of its durability, flashing red when broken (`ShowWear`, `WearWarning`), and your load from 85 % of what you can carry, red when too much (`ShowWeight`, `WeightWarning`). The strip over the console names the creature you fight with its stars, health and what it is weak to, resists and is immune to (`ShowTarget`), and the stations near you that have stopped, need you or are done (`ShowProduction`, `ProductionRange`).
