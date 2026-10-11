@@ -132,6 +132,34 @@ public static class NearbyContainerPatches
     }
 
     /// <summary>
+    /// Counts every chest while the recipe list is built. Vanilla builds it again from inside a crafting, while only the
+    /// chests handed over count; an upgrade paid from them then looked unaffordable and dropped out of a list filtered
+    /// to what can be crafted, until the tab was switched.
+    /// </summary>
+    /// <param name="__state">Whether paying was on.</param>
+    [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.UpdateCraftingPanel))]
+    [HarmonyPrefix]
+    public static void BeginCraftingPanel(out bool __state)
+    {
+        __state = paying;
+        paying = false;
+    }
+
+    /// <summary>
+    /// Restores the paying state after the recipe list is built.
+    /// </summary>
+    /// <param name="__state">Whether paying was on.</param>
+    /// <param name="__exception">The original error, if any.</param>
+    /// <returns>The unchanged original error.</returns>
+    [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.UpdateCraftingPanel))]
+    [HarmonyFinalizer]
+    public static Exception EndCraftingPanel(bool __state, Exception __exception)
+    {
+        paying = __state;
+        return __exception;
+    }
+
+    /// <summary>
     /// Before a piece is placed: as <see cref="BeginCrafting"/>, for the piece's resources. A placing that waited for
     /// the chests is clicked again by itself, and then refused if the items still did not suffice, so a piece is never
     /// placed half paid for.
