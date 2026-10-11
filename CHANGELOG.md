@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.124.0 - 2026-10-11
 
 ### Added
 - **`whitehilt_perf`**, a console command that measures the mod: `start` times all of its own code and counts this machine's network traffic per message, `report [rows]` shows the slowest methods (ms per second, calls, average and worst) and the busiest messages (bytes and messages per second, out and in), and `stop` ends it and removes every patch it added. The report also goes to the log. See [How the mod is built](docs/architecture.md#-performance-habits).

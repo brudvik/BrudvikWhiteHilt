@@ -41,14 +41,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.123.0
+## ✨ New in 0.124.0
+
+- **Lighter and faster**: the models are a file next to the DLL (55 → 11 MB) instead of being held in memory twice, the mod's own plants, props and pieces are hidden in the distance like Valheim's own, big bases load with less work, and the party list and the server's map lists send far less over the network. If you install by hand, copy all three files in `plugins/`.
+- **[Measure it yourself](docs/progression.md#graphics-and-diagnostics)**: `whitehilt_perf` shows which parts of the mod take time and which messages use the network, and a dedicated server can write the same report to its log.
+
+### Also new in 0.123.0
 
 - **[The White Dragon](docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side) is a force of nature**: bigger and louder, it breathes fire and frost by turns, each breath ending in a meteor-like blast. It arrives with a roar and a dive, slams into the ground by its foes, staggers them with a terror roar, goes after whatever hits you, blesses you while you are near, and grows stronger with every late boss slain. It fights bosses with you too.
-- **Ship holds count again** when building and crafting from nearby chests.
-
-### Also new in 0.122.0
-
-- **[Select a whole building at once](docs/build-tools.md#groups-blueprints-lines-and-areas)** for blueprints, **blueprints, roads and moats are built straight from the chests**, and the build line shows how much you have.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -60,7 +60,8 @@ See the [changelog](CHANGELOG.md) for everything else.
 
 1. Install [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) and [Jötunn](https://thunderstore.io/c/valheim/p/ValheimModding/Jotunn/).
 2. Download `BrudvikWhiteHilt.dll.zip` from the [latest release](https://github.com/brudvik/BrudvikWhiteHilt/releases/latest).
-3. Copy `plugins/BrudvikWhiteHilt.dll` into `BepInEx/plugins` in your Valheim folder, and start the game.
+3. Copy the three files in `plugins/` (`BrudvikWhiteHilt.dll`, `whitehilt_foraging` and `whitehilt_decor`) into a
+   folder `BepInEx/plugins/BrudvikWhiteHilt` in your Valheim folder, and start the game.
 
 On a server, the server and every player need the mod. The server's settings are synced to everyone.
 
@@ -179,6 +180,7 @@ White Hilt is a large, working Valheim mod under the [MIT No Attribution](LICENS
 - **[How the mod is built](docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
 - **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
 - **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+- **Measuring**: the console command `whitehilt_perf` times every patch and update of the mod and counts its network traffic per message, so you can see what a feature costs; [How the mod is built](docs/architecture.md#-performance-habits) shows how.
 - **Your mod in the White Hilt HUD**: status effects show by themselves; anything else goes in as a context line or an icon through `WhiteHiltHud`, see [For mod authors](docs/quality-of-life.md#for-mod-authors).
 - **[Videos](docs/videos.md)** on the [White Hilt YouTube channel](https://www.youtube.com/@WhiteHilt) go through the code one topic at a time, with the game running alongside and a real bug in every episode: the plugin, Harmony patches, items as classes, multiplayer, build pieces, the chests, Skidbladnir, portals and portraits.
 
@@ -201,7 +203,7 @@ The mod does not compile out of the box; read up on [Valheim mod development](ht
 
 The `Assets` folder is not part of the public source. The potion icons are bought from [Graphicriver](https://graphicriver.net/item/rpg-potion-icons/24972053), and the licence only allows shipping them in the pre-built mod. The chest icons (`Assets/strg_*.png`) come from [Fantasy Strategy Skills](https://graphicriver.net/item/fantasy-strategy-skills/35481040) under the same terms; without them the chests use the vanilla chest icon. To make a similar mod you would need your own licence.
 
-The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
+The 3D models are built into `BrudvikWhiteHilt/Assets/whitehilt_foraging` by `AssetSource/build_foraging_bundle.ps1`, and the build puts that file next to the DLL. It needs Python and Unity 6000.0.75f1 (the same version as Valheim), and creates the git-ignored Unity project `BrudvikWhiteHiltUnity` on first run. A `<model>.crop.json` next to a `.glb` in `AssetSource/Models` keeps only part of a model, for files that hold several objects in one mesh. Short `.wav` sounds in `AssetSource/Sounds` are added to the same bundle. Animated creatures (`AssetSource/Creatures/<name>.glb` with a `<name>.creature.json`) also need Blender: it turns each rigged model into an FBX, and Unity builds a prefab with an animator for it. `AssetSource/Preview/render_creatures.ps1` renders every animation of them without starting the game.
 
 The defences, the navigation pieces and the stonework are laid out by `AssetSource/Preview/build_defenses.py`, which writes `defenses.json`; the mod embeds that file and builds the pieces from Valheim's own meshes and the bundle's models at start-up. `AssetSource/Preview/render_preview.ps1` renders preview images of the same layout without starting the game (it extracts the vanilla meshes into the git-ignored Unity project; they are never committed).
 
