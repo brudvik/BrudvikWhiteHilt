@@ -41,7 +41,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.116.0
+## ✨ New in 0.117.0
+
+- **[Darkwood roof crosses](docs/building-pieces.md#darkwood-roof-crosses)** for the 26°, 45° and 67° roofs, and darkwood beams and poles of 1 m, so darkwood has every beam and roof the wooden family has.
+- **[Laft walls](docs/log-house.md)** close at the joints: no more notch between the logs where two walls meet.
+- **The White Hilt HUD** keeps the key hints beside the console, shows briefly what every status icon is, and lets its rings turn yellow and red. [Desert Dragons](docs/monsters.md#desert-dragons) come a third as often and give more when they do.
+
+### Also new in 0.116.0
 
 - **[The White Hilt HUD](docs/quality-of-life.md#-white-hilt-hud)**: your health, stamina, eitr, food, guardian power, hotbar and status effects in one console at the bottom centre, with countdown rings, a strip for the ship, the piece you build, raids and warnings, your dog and tamed animals under the party list, and a quiet screen that shows only what changes. The game's own HUD is one setting away.
 
@@ -52,10 +58,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 ### Also new in 0.114.0
 
 - **[Carvings](docs/carvings.md)**: friezes and post boards carved in plait, cable, ring chain and Urnes loops, whose strands pass over and under each other, a carved portal, and for the Decor Hammer a carved dragon head, the spiral stems of a Viking ship and the scanned Asferg runestone.
-
-### Also new in 0.113.0
-
-- **[Bridges, jetties & quays](docs/harbour.md)**: jetties on tarred piles with a jetty head and a stair down to the boats, stone quays with a fender, a ring, a bollard and steps down the face, and bridges of logs, of rope and of stone over an arch.
 
 See the [changelog](CHANGELOG.md) for everything else.
 

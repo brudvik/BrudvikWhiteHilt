@@ -37,6 +37,12 @@ public static class WhiteHiltConfig
         {
             ("Gear.Armor", "ArmorPerLevelBonus"),
         }),
+        ("dragon-0.117", new[]
+        {
+            ("Desert Dragon", "SpawnChance"),
+            ("Desert Dragon", "SpawnSeconds"),
+            ("Desert Dragon", "TrophyChance"),
+        }),
     };
 
     // Settings that no longer exist; they are removed from the config file so it does not keep dead entries.

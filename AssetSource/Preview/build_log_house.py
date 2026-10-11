@@ -16,7 +16,8 @@ Every wall lies along x, centred on the origin, from y 0 up, with its centre lin
 The doors are 2 x 2 m like the vanilla door and snap in its place. The log ends turn a little about their own axis
 (seeded, so every player sees the same) so the texture does not repeat from course to course.
 Vanilla mesh facts used below:
-  wood_pole_log    core wood log along y, 2.22 m long, radius 0.26 (x) by 0.28 (z); wood_pole_log_4 is 4.44 m long
+  wood_pole_log    core wood log along y, 2.22 m long (2 m of full log and a rounded 0.11 m end at each end), radius
+                   0.26 (x) by 0.28 (z); wood_pole_log_4 is 4.44 m long (4 m full)
   wood_floor       2 x 2 m of planks, top at y 0.08, 0.22 thick; wood_floor_1x1 is 1 x 1 m
   wood_beam        along x, 2 m long, 0.4 m square
   dragon_head      the longship's carved head, 0.58 m long along -x, its neck at x -4.48
@@ -47,7 +48,9 @@ BRONZE_TINT = [1.05, 0.72, 0.38]
 def log_x(x0, x1, y, rng, z=0.0, swell=1.0, **extra):
     """A laft log from x0 to x1 at height y, turned about its own axis by a seeded amount."""
     length = x1 - x0
-    mesh, mesh_length = ("wood_pole_log_4", 4.44) if length > 2.6 else ("wood_pole_log", 2.22)
+    # The vanilla logs are 2 m (4 m) of full log with a rounded end of 0.11 m beyond each end. The full part spans
+    # x0 to x1, so where two walls meet the ends lie inside the next wall's log instead of leaving a notch between.
+    mesh, mesh_length = ("wood_pole_log_4", 3.99) if length > 2.6 else ("wood_pole_log", 1.996)
     shade = rng.choice(LOG_SHADES)
     # (spin, yaw, 90): laid along x by the roll, then spun about the log's own axis.
     return part(mesh, ((x0 + x1) / 2, y, z), (rng.uniform(0, 360), 0, 90),

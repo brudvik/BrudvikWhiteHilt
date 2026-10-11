@@ -291,3 +291,81 @@ public class WoodIronBeam45 : BeamPieceBase
     /// <inheritdoc/>
     protected override float CostFactor => 1f;
 }
+
+/// <summary>
+/// Darkwood Beam, 1 m, as the wooden beam has one.
+/// </summary>
+public class DarkwoodBeam1 : BeamPieceBase
+{
+    /// <summary>
+    /// Registers the piece's text.
+    /// </summary>
+    /// <param name="instance">The piece manager.</param>
+    public DarkwoodBeam1(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Plains;
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_darkwood_beam_1";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Darkwood Beam 1 m";
+
+    /// <inheritdoc/>
+    protected override string Description => "A short darkwood beam, half the ordinary length.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "darkwood_beam";
+
+    /// <inheritdoc/>
+    protected override BeamShape Shape => BeamShape.Stretch;
+
+    /// <inheritdoc/>
+    protected override Vector3 Axis => Vector3.right;
+
+    /// <inheritdoc/>
+    protected override float LengthFactor => 0.5f;
+
+    /// <inheritdoc/>
+    protected override float CostFactor => 0.5f;
+}
+
+/// <summary>
+/// Darkwood Pole, 1 m, as the wooden pole has one.
+/// </summary>
+public class DarkwoodPole1 : BeamPieceBase
+{
+    /// <summary>
+    /// Registers the piece's text.
+    /// </summary>
+    /// <param name="instance">The piece manager.</param>
+    public DarkwoodPole1(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Plains;
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_darkwood_pole_1";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Darkwood Pole 1 m";
+
+    /// <inheritdoc/>
+    protected override string Description => "A short darkwood pole, half the ordinary length.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "darkwood_pole";
+
+    /// <inheritdoc/>
+    protected override BeamShape Shape => BeamShape.Stretch;
+
+    /// <inheritdoc/>
+    protected override Vector3 Axis => Vector3.up;
+
+    /// <inheritdoc/>
+    protected override float LengthFactor => 0.5f;
+
+    /// <inheritdoc/>
+    protected override float CostFactor => 0.5f;
+}

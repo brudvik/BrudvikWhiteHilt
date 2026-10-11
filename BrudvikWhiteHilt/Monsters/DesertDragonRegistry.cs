@@ -113,7 +113,8 @@ public static class DesertDragonRegistry
             Faction = Character.Faction.PlainsMonsters,
             DropConfigs = new[]
             {
-                MonsterRegistry.Drop(ScaleName, 2, 3, 100f),
+                MonsterRegistry.Drop(ScaleName, MonsterSettings.DragonScalesMin.Value,
+                    Mathf.Max(MonsterSettings.DragonScalesMin.Value, MonsterSettings.DragonScalesMax.Value), 100f),
                 MonsterRegistry.Drop("SurtlingCore", 1, 1, 50f),
                 MonsterRegistry.Drop(TrophyName, 1, 1, MonsterSettings.DragonTrophyChance.Value)
             },

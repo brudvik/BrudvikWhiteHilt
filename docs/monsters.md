@@ -85,9 +85,9 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
 | **Spider Silk** ×3–5 | Spider Nest | Always | As above |
-| **Desert Dragon Scale** ×2–3 | Desert Dragon | Always | Dragonscale Broth, Dragonfire Arrows (below) |
+| **Desert Dragon Scale** ×4–6 | Desert Dragon | Always | Dragonscale Broth, Dragonfire Arrows (below) |
 | **Surtling Core** | Desert Dragon | 50% | Vanilla recipes |
-| **Desert Dragon Trophy** | Desert Dragon | 10% | Your wall |
+| **Desert Dragon Trophy** | Desert Dragon | 35% | Your wall |
 
 ### Made from Desert Dragon Scales
 
@@ -147,8 +147,8 @@ Section `[Desert Dragon]`:
 |---|---|---|
 | `Enabled` | true | Desert Dragons over the Plains |
 | `RequiredKey` | defeated_dragon | Global key needed first; empty for none |
-| `SpawnChance` | 10 | Percent chance per spawn check; 0 = none |
-| `SpawnSeconds` | 300 | Seconds between two spawn checks |
+| `SpawnChance` | 5 | Percent chance per spawn check; 0 = none |
+| `SpawnSeconds` | 450 | Seconds between two spawn checks |
 | `SpawnMax` | 1 | Desert Dragons around a player at most |
 | `Health` | 1200 | Health (after a restart) |
 | `FireDamage` / `Flames` | 20 / 12 | Fire damage of each flame, and flames in one breath (after a restart) |
@@ -159,7 +159,8 @@ Section `[Desert Dragon]`:
 | `FlyHeightMin` / `FlyHeightMax` | 5 / 12 | Metres above the ground it flies at (after a restart) |
 | `Scale` | 1 | Size (1 = about 8 m from wingtip to wingtip; after a restart) |
 | `Sounds` | true | Own growls, roars and breath sounds, also on Black Dragons (after a restart) |
-| `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 35 | Percent chance of its trophy (after a restart) |
+| `ScalesMin` / `ScalesMax` | 4 / 6 | Desert Dragon Scales it drops (after a restart) |
 | `BurnsBuildings` | false | Its fire also damages the buildings it hits |
 | `GroundFire` | true | Dry terrain impacts leave short-lived flames; no spreading or terrain changes |
 | `GroundDamage` | 10 | Base fire damage per second before resistance, scaled like the final breath projectile; overlapping fields do not stack |
@@ -170,6 +171,8 @@ Section `[Desert Dragon]`:
 | `GroundMax` | 6 | Maximum active patches per dragon, including earlier breaths |
 
 On upgrade to 0.77.0, previous defaults (`Health` 800, `FireDamage` 15) move to 1200 and 20 once. The older health default 500 is also migrated. Other configured values are preserved. New creature prefabs need a restart; update both server and clients for ground fire. Its particle appearance, multiplayer ownership and performance still need in-game testing.
+
+On upgrade to 0.117.0, `SpawnChance`, `SpawnSeconds` and `TrophyChance` move to the new defaults (5, 450 and 35) once: about a third as many dragons, and their trophy more than three times as often. Other configured values are preserved.
 
 ## Console commands
 

@@ -161,6 +161,12 @@ public static class MonsterSettings
     /// <summary>Chance, in percent, that a Desert Dragon drops its trophy.</summary>
     public static ConfigEntry<float> DragonTrophyChance { get; private set; }
 
+    /// <summary>Fewest Desert Dragon scales a dragon drops.</summary>
+    public static ConfigEntry<int> DragonScalesMin { get; private set; }
+
+    /// <summary>Most Desert Dragon scales a dragon drops.</summary>
+    public static ConfigEntry<int> DragonScalesMax { get; private set; }
+
     /// <summary>Whether its fire also burns buildings.</summary>
     public static ConfigEntry<bool> DragonBurnsBuildings { get; private set; }
 
@@ -249,9 +255,9 @@ public static class MonsterSettings
         DragonEnabled = WhiteHiltConfig.BindAdminOnly(DragonSection, "Enabled", true, "Fire-breathing Desert Dragons fly over the Plains once Moder is slain.");
         DragonRequiredKey = WhiteHiltConfig.BindAdminOnly(DragonSection, "RequiredKey", "defeated_dragon",
             "Global key needed before Desert Dragons come (defeated_dragon = Moder is slain). Empty: from the start.");
-        DragonSpawnChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnChance", 10f, "Chance, in percent, per spawn check that a Desert Dragon comes. 0 = none.",
+        DragonSpawnChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnChance", 5f, "Chance, in percent, per spawn check that a Desert Dragon comes. 0 = none.",
             new AcceptableValueRange<float>(0f, 100f));
-        DragonSpawnSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnSeconds", 300f, "Seconds between two spawn checks for Desert Dragons.",
+        DragonSpawnSeconds = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnSeconds", 450f, "Seconds between two spawn checks for Desert Dragons.",
             new AcceptableValueRange<float>(10f, 3600f));
         DragonSpawnMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "SpawnMax", 1, "Desert Dragons around a player at most.", new AcceptableValueRange<int>(1, 10));
         DragonHealth = WhiteHiltConfig.BindAdminOnly(DragonSection, "Health", 1200f, "Health of a Desert Dragon. Applies after a restart.", new AcceptableValueRange<float>(10f, 20000f));
@@ -275,8 +281,12 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0.3f, 3f));
         DragonSounds = WhiteHiltConfig.BindAdminOnly(DragonSection, "Sounds", true,
             "Use the dragon's own growls, roars and breath for idle, alert, attack, injury and death. Black Dragons inherit these sounds. Applies after a restart.");
-        DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 10f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
+        DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 35f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
+        DragonScalesMin = WhiteHiltConfig.BindAdminOnly(DragonSection, "ScalesMin", 4, "Fewest Desert Dragon scales a dragon drops. Applies after a restart.",
+            new AcceptableValueRange<int>(0, 50));
+        DragonScalesMax = WhiteHiltConfig.BindAdminOnly(DragonSection, "ScalesMax", 6, "Most Desert Dragon scales a dragon drops. Applies after a restart.",
+            new AcceptableValueRange<int>(0, 50));
         DragonBurnsBuildings = WhiteHiltConfig.BindAdminOnly(DragonSection, "BurnsBuildings", false,
             "Its fire also damages the buildings it hits. Off: its fire only hurts players and creatures.");
         DragonGroundFire = WhiteHiltConfig.BindAdminOnly(DragonSection, "GroundFire", true,

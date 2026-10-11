@@ -31,6 +31,14 @@ More lengths and angles of the vanilla beams and poles, in the hammer right afte
 | **Wood iron pole 1m** | Wood iron pole | ×0.5 | Shortened |
 | **Wood iron beam 26°** | Wood iron beam | ×1 | Tilted to the 26° roof, snaps like the vanilla 26° wood beam |
 | **Wood iron beam 45°** | Wood iron beam | ×1 | Tilted to the 45° roof, snaps like the vanilla 45° wood beam |
+| **Darkwood Beam 1 m** | Darkwood beam | ×0.5 | Shortened, as the wood beam has one |
+| **Darkwood Pole 1 m** | Darkwood pole (2 m) | ×0.5 | Shortened, as the wood pole has one |
+
+### Darkwood roof crosses
+
+Valheim has the Wood Roof Cross (two beams crossed in an X, as wide as a wall and as high as the roof's rise) for the 26°, 45° and 67° roofs, but none in darkwood. The **Darkwood Roof Cross 26°, 45° and 67°** are the same crosses made of two carved darkwood beams: they snap, carry and sit in the build menu as the wooden ones, after the darkwood beams, and cost what a darkwood beam costs (Wood ×2, Tar ×1), as the wooden cross costs what a wooden beam does. Plains tier.
+
+Otherwise darkwood has every roof and beam the wooden family has: the Shingle Roof in all shapes at 26°, 45° and 67°, and the beams at 26°, 45° and 67°. White Hilt also gives Valheim's Darkwood Beam 67° the name it lacks in the game's own translations. Darkwood has no walls of its own, so the wooden walls at an angle have no darkwood match.
 
 ---
 
