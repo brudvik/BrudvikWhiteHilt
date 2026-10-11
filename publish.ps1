@@ -52,7 +52,8 @@ if ($Target.Equals("Debug")) {
     Write-Host "Copy $TargetAssembly to $plug"
     Copy-Item -Path "$TargetPath\$name.dll" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.pdb" -Destination "$plug" -Force
-    # The Decor Hammer's models are a bundle file next to the DLL (Decor/DecorAssets.cs).
+    # The asset bundles are files next to the DLL (Helpers/ForagingAssets.cs, Decor/DecorAssets.cs).
+    Copy-Item -Path "$TargetPath\whitehilt_foraging" -Destination "$plug" -Force
     if (Test-Path -Path "$TargetPath\whitehilt_decor") {
         Copy-Item -Path "$TargetPath\whitehilt_decor" -Destination "$plug" -Force
     }
@@ -69,6 +70,7 @@ if($Target.Equals("Release")) {
     Write-Host "$PackagePath\$TargetAssembly"
     New-Item -Type Directory -Path "$PackagePath\plugins" -Force
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
+    Copy-Item -Path "$TargetPath\whitehilt_foraging" -Destination "$PackagePath\plugins\whitehilt_foraging" -Force -ErrorAction Stop
     Copy-Item -Path "$TargetPath\whitehilt_decor" -Destination "$PackagePath\plugins\whitehilt_decor" -Force -ErrorAction Stop
     # Thunderstore shows the GitHub README's HTML poorly, so the package gets a plain markdown version of it.
     & "$ProjectPath\..\build_thunderstore_readme.ps1" -Source "$ProjectPath\..\README.MD" -Target "$PackagePath\README.md"

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Runes;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Navigation;
@@ -52,8 +53,8 @@ public class PortalMapService : MonoBehaviour
     private readonly List<Vector3> mapTables = new();
     private readonly List<Vector3> astrolabes = new();
     private readonly List<Vector3> anchors = new();
-    private readonly Dictionary<long, string> lastSent = new();
-    private readonly Dictionary<long, string> lastSentTravel = new();
+    private readonly Dictionary<long, ulong> lastSent = new();
+    private readonly Dictionary<long, ulong> lastSentTravel = new();
     private readonly List<PortalDestination> scanTravel = new();
     private readonly List<(ZDOID Id, PortalDestination Destination)> scanTravelShips = new();
 
@@ -407,12 +408,12 @@ public class PortalMapService : MonoBehaviour
             current.Add(peer.m_uid);
             if (TryGetChanged(peer.m_uid, playerID, out ZPackage package))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, package);
+                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, ServerLists.Pack(package));
             }
 
             if (TryGetTravelChanged(peer.m_uid, playerID, out ZPackage travelPackage))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, TravelRpcName, travelPackage);
+                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, TravelRpcName, ServerLists.Pack(travelPackage));
             }
         }
 
@@ -457,8 +458,8 @@ public class PortalMapService : MonoBehaviour
             })
             .ToList();
         package = PortalDestination.Write(visible);
-        string content = Convert.ToBase64String(package.GetArray());
-        if (lastSentTravel.TryGetValue(key, out string sent) && sent == content)
+        ulong content = ServerLists.Fingerprint(package);
+        if (lastSentTravel.TryGetValue(key, out ulong sent) && sent == content)
         {
             return false;
         }
@@ -475,8 +476,8 @@ public class PortalMapService : MonoBehaviour
             .Concat(ships.Select(ship => ship.Entry))
             .ToList();
         package = PortalMapEntry.Write(visible);
-        string content = Convert.ToBase64String(package.GetArray());
-        if (lastSent.TryGetValue(key, out string sent) && sent == content)
+        ulong content = ServerLists.Fingerprint(package);
+        if (lastSent.TryGetValue(key, out ulong sent) && sent == content)
         {
             return false;
         }
@@ -534,19 +535,19 @@ public class PortalMapService : MonoBehaviour
 
     private void RPC_PortalList(long sender, ZPackage package)
     {
-        if (sender == ZRoutedRpc.instance.GetServerPeerID())
+        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Unpack(package) is ZPackage list)
         {
-            PortalTravel.SetDestinations(PortalDestination.Read(package));
+            PortalTravel.SetDestinations(PortalDestination.Read(list));
         }
     }
 
     private void RPC_PortalMap(long sender, ZPackage package)
     {
-        if (sender != ZRoutedRpc.instance.GetServerPeerID())
+        if (sender != ZRoutedRpc.instance.GetServerPeerID() || ServerLists.Unpack(package) is not ZPackage list)
         {
             return;
         }
 
-        PortalMapPins.SetEntries(PortalMapEntry.Read(package));
+        PortalMapPins.SetEntries(PortalMapEntry.Read(list));
     }
 }

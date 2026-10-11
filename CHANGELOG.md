@@ -2,6 +2,23 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **`whitehilt_perf`**, a console command that measures the mod: `start` times all of its own code and counts this machine's network traffic per message, `report [rows]` shows the slowest methods (ms per second, calls, average and worst) and the busiest messages (bytes and messages per second, out and in), and `stop` ends it and removes every patch it added. The report also goes to the log. See [How the mod is built](docs/architecture.md#-performance-habits).
+- **Performance reports on a dedicated server**: `[Diagnostics] PerfLogMinutes` (off by default) measures all the time and writes the same report to the log every so many minutes, as a server has no console. The log also notes how long the mod took to start, and which items, pieces and plants were slowest to make. See [Settings](docs/progression.md#graphics-and-diagnostics).
+
+### Changed
+- **The models, textures and sounds are a file next to the DLL now**, `whitehilt_foraging`, like the Decor Hammer's `whitehilt_decor`. The DLL shrinks from 55 to 11 MB, and the game no longer keeps two extra copies of the 44 MB bundle in memory while it starts: it reads from the file what it needs. A mod manager installs it by itself; by hand, copy all three files in `plugins/` (see [Installation](README.MD#-installation)).
+- **The mod's own models are hidden in the distance**, as Valheim's own are: wild plants, props, decorations and pieces with a White Hilt model were drawn, with their shadows, as far as the game draws anything. They now disappear when smaller than 1.5% of the screen's height (`[Graphics] ModelCullSize`, 0 to never hide them).
+- **Less network traffic.** The party list sends health in whole numbers and without the player's name (the game's player list has it), about 26 bytes instead of 50, and stamina or eitr alone, which change all the time while running, at most every 1.5 seconds instead of twice a second. The server's lists of portals, map areas and Munin's finds are gzipped when they are larger than 1 KB. **The server and every player need this version**, as the messages changed.
+- **Big bases load with less work**: building pieces no longer each get a ship-furnishing part unless they stand on Skidbladnir, and paint and dye no longer register their own message on every piece; one message each now serves all pieces.
+- Creatures' AI no longer looks for dog, Kraken, Lindorm or Dread parts on every creature each frame while none of them are about.
+- Models, textures and sounds are looked up by name in a list made once, instead of listing the whole bundle for every one, which makes the start a little faster.
+
+### Fixed
+- The map's exploration overview no longer redraws itself every frame while it is open but still locked.
+
 ## v0.123.0 - 2026-10-11
 
 ### Added

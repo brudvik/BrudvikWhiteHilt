@@ -17,7 +17,8 @@ public static class RestPosePatch
     [HarmonyPostfix]
     private static void KeepResting(MonsterAI __instance)
     {
-        if (!__instance.TryGetComponent(out RestPose rest) || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner() || !rest.IsResting)
+        // Only dogs have a rest pose.
+        if (DogCompanion.All.Count == 0 || !__instance.TryGetComponent(out RestPose rest) || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner() || !rest.IsResting)
         {
             return;
         }

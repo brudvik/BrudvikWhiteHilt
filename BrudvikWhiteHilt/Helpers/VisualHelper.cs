@@ -1,5 +1,6 @@
 using Jotunn.Managers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -12,6 +13,7 @@ namespace BrudvikWhiteHilt.Helpers;
 public static class VisualHelper
 {
     private static readonly string[] unusedTextureProperties = { "_BumpMap", "_EmissionMap", "_MetallicGlossMap", "_OcclusionMap" };
+    private static readonly HashSet<LODGroup> ownGroups = new();
 
     /// <summary>
     /// True on a dedicated server, which has no graphics device and never shows any visuals.
@@ -77,6 +79,7 @@ public static class VisualHelper
         modelRenderer.sharedMaterial = material;
         modelRenderer.shadowCastingMode = renderers[0].shadowCastingMode;
         modelRenderer.receiveShadows = renderers[0].receiveShadows;
+        HideWhenSmall(model);
         return model;
     }
 
@@ -156,7 +159,47 @@ public static class VisualHelper
         Quaternion localRotation = rotation ?? Quaternion.identity;
         float scale = height / mesh.bounds.size.y;
         Vector3 position = basePosition - localRotation * (new Vector3(mesh.bounds.center.x, mesh.bounds.min.y, mesh.bounds.center.z) * scale);
-        return CreateModel(model.transform, mesh, texture, template, position, localRotation, scale);
+        GameObject created = CreateModel(model.transform, mesh, texture, template, position, localRotation, scale);
+        // Joins the model's distance hiding, if the model is one of ours and not a vanilla object with its own.
+        if (model.TryGetComponent(out LODGroup group) && ownGroups.Contains(group))
+        {
+            HideWhenSmall(model);
+        }
+
+        return created;
+    }
+
+    /// <summary>
+    /// Hides a model of the mod's own once it is smaller on screen than <c>[Graphics] ModelCullSize</c>, as Valheim's
+    /// own props are. A model that merely replaces a vanilla one is outside the prefab's level-of-detail group, so
+    /// without this it would be drawn, with its shadow, at any distance.
+    /// </summary>
+    /// <param name="model">The model; the renderers shown under it are hidden together.</param>
+    public static void HideWhenSmall(GameObject model)
+    {
+        float size = Diagnostics.PerformanceSettings.ModelCullSize?.Value ?? 0f;
+        LODGroup group = model.GetComponent<LODGroup>();
+        if (size <= 0f || (group != null && !ownGroups.Contains(group)))
+        {
+            return;
+        }
+
+        Renderer[] renderers = model.GetComponentsInChildren<Renderer>(true)
+            .Where(renderer => renderer.enabled && IsMeshRenderer(renderer) && IsActiveBelow(renderer.transform, model.transform))
+            .ToArray();
+        if (renderers.Length == 0)
+        {
+            return;
+        }
+
+        if (group == null)
+        {
+            group = model.AddComponent<LODGroup>();
+            ownGroups.Add(group);
+        }
+
+        group.SetLODs(new[] { new LOD(size, renderers) });
+        group.RecalculateBounds();
     }
 
     /// <summary>

@@ -25,6 +25,7 @@ public class KrakenTentacle : MonoBehaviour
 
     private ZNetView nview;
     private Character character;
+    private static int loaded;
     private float nextTick;
     private float born;
     private Transform visual;
@@ -37,12 +38,16 @@ public class KrakenTentacle : MonoBehaviour
     private long observedSweep;
     private float previousReach;
 
+    /// <summary>Whether any tentacle is loaded; lets the per-creature AI patch skip its lookup.</summary>
+    public static bool AnyLoaded => loaded > 0;
+
     /// <summary>Whether this tentacle is busy warning, sweeping or withdrawing.</summary>
     public bool IsSweeping => TryGetSweep(out _, out _, out _, out _, out _);
 
     // Notes the model's rest pose and size, for the sweep that stretches it.
     private void Awake()
     {
+        loaded++;
         nview = GetComponent<ZNetView>();
         character = GetComponent<Character>();
         born = Time.time;
@@ -59,6 +64,11 @@ public class KrakenTentacle : MonoBehaviour
             visualLength = bounds.size.y;
             visualWidth = Mathf.Max(bounds.size.x, bounds.size.z);
         }
+    }
+
+    private void OnDestroy()
+    {
+        loaded--;
     }
 
     // On the owner: dies when the body is gone or retreats, otherwise plans the next sweep.

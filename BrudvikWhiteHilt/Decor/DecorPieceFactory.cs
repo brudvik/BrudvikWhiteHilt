@@ -240,6 +240,7 @@ public static class DecorPieceFactory
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
 
+        VisualHelper.HideWhenSmall(model);
         return true;
     }
 

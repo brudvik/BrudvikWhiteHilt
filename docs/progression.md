@@ -14,6 +14,17 @@ Both lists support mouse-wheel scrolling at the same speed as the portal list.
 - When an admin saves server settings, they are sent to the server, which saves them in its own config file and passes them on to everyone online at once. Most take effect right away; settings marked *needs restart* apply after a restart.
 - The console command `whitehilt_config_missing` lists settings without a translation in the current language.
 
+### Graphics and diagnostics
+
+Each player's (and each server's) own settings:
+
+| Setting | Default | What it does |
+| --- | --- | --- |
+| `Graphics` → `ModelCullSize` | `0.015` | The mod's own models (plants, props, pieces) are hidden when they are smaller than this share of the screen's height, as Valheim's own are. `0` never hides them. Needs restart. |
+| `Diagnostics` → `PerfLogMinutes` | `0` | Measures the mod's time per frame and its network traffic all the time and writes a report to the log every so many minutes, like the console command `whitehilt_perf`. Meant for a dedicated server, which has no console. `0` is off. |
+
+`whitehilt_perf start` measures on your own machine: `report [rows]` shows the slowest methods and the busiest network messages, and `stop` ends it. The log also notes how long the mod took to start and which items, pieces and plants were slowest to make (`Start-up:` lines).
+
 ## ⚙️ PROGRESSION (CONFIG)
 
 Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settings window above. The rules below are admin-only and synced from the server; each feature page lists its own settings and says which ones are each player's own. Every value in the mod's config defaults to the mod's built-in behaviour.

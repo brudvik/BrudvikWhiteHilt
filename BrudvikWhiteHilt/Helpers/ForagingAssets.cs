@@ -1,19 +1,29 @@
+using BepInEx;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace BrudvikWhiteHilt.Helpers;
 
 /// <summary>
-/// Loads meshes and textures from the embedded foraging asset bundle.
+/// Loads meshes and textures from the main asset bundle, <c>whitehilt_foraging</c>, a file next to the mod's DLL.
 /// </summary>
+/// <remarks>
+/// The bundle used to be embedded in the DLL. Loading it from memory meant a managed copy and a native copy of the
+/// whole bundle; from a file, Unity reads only what it needs. Assets of a kind are listed once and then looked up by
+/// name, as LoadAllAssets is slow and the mod asks for a few hundred of them while it starts.
+/// </remarks>
 public static class ForagingAssets
 {
-    private const string ResourceName = "BrudvikWhiteHilt.Assets.whitehilt_foraging";
+    /// <summary>File name of the bundle.</summary>
+    public const string BundleName = "whitehilt_foraging";
 
     private static AssetBundle bundle;
     private static ILookup<string, Mesh> fragments;
+    private static readonly Dictionary<Type, Dictionary<string, Object>> byName = new();
 
     /// <summary>
     /// Loads a mesh from the bundle.
@@ -23,8 +33,7 @@ public static class ForagingAssets
     public static Mesh LoadMesh(string name)
     {
         // Meshes are sub-assets of the imported model, so they are not found by LoadAsset.
-        return GetBundle().LoadAllAssets<Mesh>().FirstOrDefault(mesh => mesh.name == name)
-            ?? throw new InvalidOperationException($"Mesh '{name}' not found in {ResourceName}.");
+        return Find<Mesh>(name) ?? throw new InvalidOperationException($"Mesh '{name}' not found in {BundleName}.");
     }
 
     /// <summary>
@@ -47,7 +56,7 @@ public static class ForagingAssets
     /// <returns>The texture.</returns>
     public static Texture2D LoadTexture(string name)
     {
-        return TryLoadTexture(name) ?? throw new InvalidOperationException($"Texture '{name}' not found in {ResourceName}.");
+        return TryLoadTexture(name) ?? throw new InvalidOperationException($"Texture '{name}' not found in {BundleName}.");
     }
 
     /// <summary>
@@ -57,7 +66,7 @@ public static class ForagingAssets
     /// <returns>The texture, or null.</returns>
     public static Texture2D TryLoadTexture(string name)
     {
-        return GetBundle().LoadAllAssets<Texture2D>().FirstOrDefault(texture => texture.name == name);
+        return Find<Texture2D>(name);
     }
 
     /// <summary>
@@ -67,8 +76,7 @@ public static class ForagingAssets
     /// <returns>The sound.</returns>
     public static AudioClip LoadAudio(string name)
     {
-        return GetBundle().LoadAllAssets<AudioClip>().FirstOrDefault(clip => clip.name == name)
-            ?? throw new InvalidOperationException($"Sound '{name}' not found in {ResourceName}.");
+        return Find<AudioClip>(name) ?? throw new InvalidOperationException($"Sound '{name}' not found in {BundleName}.");
     }
 
     /// <summary>
@@ -79,7 +87,7 @@ public static class ForagingAssets
     public static GameObject LoadPrefab(string name)
     {
         return GetBundle().LoadAsset<GameObject>(name)
-            ?? throw new InvalidOperationException($"Prefab '{name}' not found in {ResourceName}.");
+            ?? throw new InvalidOperationException($"Prefab '{name}' not found in {BundleName}.");
     }
 
     /// <summary>
@@ -89,22 +97,43 @@ public static class ForagingAssets
     /// <returns>The clip.</returns>
     public static AnimationClip LoadAnimation(string name)
     {
-        return GetBundle().LoadAllAssets<AnimationClip>().FirstOrDefault(clip => clip.name == name)
-            ?? throw new InvalidOperationException($"Animation '{name}' not found in {ResourceName}.");
+        return Find<AnimationClip>(name) ?? throw new InvalidOperationException($"Animation '{name}' not found in {BundleName}.");
+    }
+
+    // The first asset of a kind with the name, as LoadAllAssets lists them; the list is made on the first request.
+    private static T Find<T>(string name) where T : Object
+    {
+        if (!byName.TryGetValue(typeof(T), out Dictionary<string, Object> assets))
+        {
+            assets = new Dictionary<string, Object>();
+            foreach (T asset in GetBundle().LoadAllAssets<T>())
+            {
+                if (!assets.ContainsKey(asset.name))
+                {
+                    assets.Add(asset.name, asset);
+                }
+            }
+
+            byName[typeof(T)] = assets;
+        }
+
+        return assets.TryGetValue(name, out Object found) ? (T)found : null;
     }
 
     private static AssetBundle GetBundle()
     {
         if (bundle == null)
         {
-            // Not Jotunn's LoadAssetBundleFromResources: it disposes the stream, but Unity reads bundle data lazily from it.
-            using Stream stream = typeof(ForagingAssets).Assembly.GetManifestResourceStream(ResourceName)
-                ?? throw new InvalidOperationException($"Embedded resource '{ResourceName}' not found.");
-            using MemoryStream memory = new();
-            stream.CopyTo(memory);
+            BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(BrudvikWhiteHilt.PluginGUID, out PluginInfo plugin);
+            string folder = plugin != null ? Path.GetDirectoryName(plugin.Location) : Paths.PluginPath;
+            string path = Path.Combine(folder, BundleName);
+            if (!File.Exists(path))
+            {
+                throw new InvalidOperationException($"{path} is missing: copy every file in the release's plugins folder, not only the DLL.");
+            }
 
-            bundle = AssetBundle.LoadFromMemory(memory.ToArray())
-                ?? throw new InvalidOperationException($"Embedded asset bundle '{ResourceName}' could not be loaded.");
+            bundle = AssetBundle.LoadFromFile(path)
+                ?? throw new InvalidOperationException($"Asset bundle {path} could not be loaded.");
         }
 
         return bundle;

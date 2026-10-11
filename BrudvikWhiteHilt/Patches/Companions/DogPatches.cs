@@ -337,7 +337,7 @@ public static class DogPatches
     [HarmonyPostfix]
     private static void WalkToRest(MonsterAI __instance, float dt)
     {
-        if (__instance.m_nview.IsValid() && __instance.m_nview.IsOwner() && __instance.TryGetComponent(out DogCompanion dog))
+        if (DogCompanion.All.Count > 0 && __instance.m_nview.IsValid() && __instance.m_nview.IsOwner() && __instance.TryGetComponent(out DogCompanion dog))
         {
             dog.UpdateGoal(dt);
             dog.GetComponent<DogActivities>()?.UpdateActivity(dt);

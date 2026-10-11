@@ -19,6 +19,8 @@ public static class KrakenPatches
     [HarmonyPrefix]
     private static bool MonsterAIUpdatePrefix(MonsterAI __instance, ref bool __result)
     {
+        if (!KrakenTentacle.AnyLoaded)
+            return true;
         KrakenTentacle tentacle = __instance.GetComponent<KrakenTentacle>();
         if (tentacle == null || !tentacle.IsSweeping)
             return true;

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Difficulty;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Navigation.Areas;
 using BrudvikWhiteHilt.Navigation.Portraits;
 using BrudvikWhiteHilt.Painting;
@@ -148,6 +149,64 @@ public class MapAreaPackageTests
 
         Assert.Equal(1.5f * MapArea.CellSize, centre.x, 3);
         Assert.Equal(0.5f * MapArea.CellSize, centre.z, 3);
+    }
+}
+
+public class ServerListTests
+{
+    private static ZPackage List(int bytes)
+    {
+        ZPackage list = new();
+        for (int i = 0; i < bytes; i++)
+        {
+            list.Write((byte)(i % 7));
+        }
+
+        return list;
+    }
+
+    [Theory]
+    [InlineData(10)]
+    [InlineData(20000)]
+    public void ListsUnpackToWhatWasPacked(int bytes)
+    {
+        ZPackage list = List(bytes);
+
+        ZPackage unpacked = ServerLists.Unpack(new ZPackage(ServerLists.Pack(list).GetArray()));
+
+        Assert.NotNull(unpacked);
+        Assert.Equal(list.GetArray(), unpacked.GetArray());
+    }
+
+    [Fact]
+    public void LargeListsAreSmallerPacked()
+    {
+        ZPackage list = List(20000);
+
+        Assert.True(ServerLists.Pack(list).Size() < list.Size() / 4);
+    }
+
+    [Fact]
+    public void BrokenPackagesAreIgnored()
+    {
+        ZPackage unknown = new();
+        unknown.Write((byte)9);
+        unknown.Write(new byte[] { 1, 2, 3 });
+        Assert.Null(ServerLists.Unpack(new ZPackage(unknown.GetArray())));
+
+        ZPackage badGzip = new();
+        badGzip.Write((byte)1);
+        badGzip.Write(new byte[] { 1, 2, 3 });
+        Assert.Null(ServerLists.Unpack(new ZPackage(badGzip.GetArray())));
+
+        Assert.Null(ServerLists.Unpack(new ZPackage()));
+    }
+
+    [Fact]
+    public void FingerprintsTellListsApart()
+    {
+        Assert.Equal(ServerLists.Fingerprint(List(500)), ServerLists.Fingerprint(List(500)));
+        Assert.NotEqual(ServerLists.Fingerprint(List(500)), ServerLists.Fingerprint(List(501)));
     }
 }
 

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Navigation;
 using BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 using System;
@@ -50,6 +51,7 @@ public class DiscoveryService : MonoBehaviour
     private int exploredSize;
     private ZPackage package;
     private byte[] packageBytes;
+    private byte[] packedBytes;
     private int packageVersion;
     private int sectorIndex = -1;
     private float nextScan;
@@ -412,6 +414,7 @@ public class DiscoveryService : MonoBehaviour
         {
             package = newPackage;
             packageBytes = bytes;
+            packedBytes = ServerLists.Pack(newPackage).GetArray();
             packageVersion++;
         }
 
@@ -429,7 +432,7 @@ public class DiscoveryService : MonoBehaviour
             if (!lastSent.TryGetValue(peer.m_uid, out int sent) || sent != packageVersion)
             {
                 lastSent[peer.m_uid] = packageVersion;
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, new ZPackage(packageBytes));
+                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, new ZPackage(packedBytes));
             }
         }
 
@@ -575,9 +578,9 @@ public class DiscoveryService : MonoBehaviour
 
     private void RPC_Discoveries(long sender, ZPackage received)
     {
-        if (sender == ZRoutedRpc.instance.GetServerPeerID())
+        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Unpack(received) is ZPackage list)
         {
-            Apply(received);
+            Apply(list);
         }
     }
 

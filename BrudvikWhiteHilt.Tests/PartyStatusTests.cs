@@ -19,7 +19,7 @@ public class PartyStatusTests
     };
 
     [Fact]
-    public void StatusReadsBackTheSame()
+    public void StatusReadsBackAsTheListShowsIt()
     {
         ZPackage package = new();
         Sample().Write(package);
@@ -28,13 +28,23 @@ public class PartyStatusTests
         PartyStatus read = PartyStatus.Read(package);
 
         Assert.NotNull(read);
-        Assert.Equal("Kari", read.Name);
-        Assert.Equal(184.4f, read.Health);
+        Assert.Equal(string.Empty, read.Name);
+        Assert.Equal(185f, read.Health);
         Assert.Equal(250f, read.MaxHealth);
         Assert.Equal(96f, read.Stamina);
         Assert.Equal(110f, read.MaxStamina);
         Assert.Equal(new[] { 11, -22, 33 }, read.Effects);
-        Assert.False(read.DiffersFrom(Sample()));
+        Assert.Equal(PartyStatus.Amount(Sample().Health, Sample().MaxHealth), PartyStatus.Amount(read.Health, read.MaxHealth));
+    }
+
+    [Fact]
+    public void StatusIsSmall()
+    {
+        ZPackage package = new();
+        Sample().Write(package);
+
+        // Version, six amounts of two bytes, dead, effect count and three effects.
+        Assert.Equal(1 + 6 * 2 + 1 + 1 + 3 * 4, package.Size());
     }
 
     [Fact]
@@ -45,9 +55,15 @@ public class PartyStatusTests
         newer.SetPos(0);
         Assert.Null(PartyStatus.Read(newer));
 
+        ZPackage old = new();
+        old.Write((byte)1);
+        old.Write("Kari");
+        old.SetPos(0);
+        Assert.Null(PartyStatus.Read(old));
+
         ZPackage cut = new();
-        cut.Write((byte)1);
-        cut.Write("Kari");
+        cut.Write((byte)2);
+        cut.Write((ushort)184);
         cut.SetPos(0);
         Assert.Null(PartyStatus.Read(cut));
     }
@@ -63,14 +79,20 @@ public class PartyStatusTests
 
         now.Health += 1f;
         Assert.True(now.DiffersFrom(sent));
+        Assert.True(now.UrgentlyDiffersFrom(sent));
+
+        now = Sample();
+        now.Stamina -= 5f;
+        Assert.True(now.DiffersFrom(sent));
+        Assert.False(now.UrgentlyDiffersFrom(sent));
 
         now = Sample();
         now.Effects = new[] { 11, -22 };
-        Assert.True(now.DiffersFrom(sent));
+        Assert.True(now.UrgentlyDiffersFrom(sent));
 
         now = Sample();
         now.Dead = true;
-        Assert.True(now.DiffersFrom(sent));
+        Assert.True(now.UrgentlyDiffersFrom(sent));
         Assert.True(now.DiffersFrom(null));
     }
 

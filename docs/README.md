@@ -67,7 +67,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Clock, party list, sound & floating items](quality-of-life.md) | The HUD clock, the party list with your friends' health, muffled weather indoors and floating items |
 | [Skills & milestones](skills.md) | Skill milestones, the Foraging skill, starred food and crops and the Compost Bin |
 | [Saga](saga.md) | Each character's saga and renown |
-| [Settings & progression](progression.md) | The in-game settings window, progression modes, content switches, recipes and tiers |
+| [Settings & progression](progression.md) | The in-game settings window, progression modes, content switches, recipes and tiers, and the graphics and performance settings |
 
 ## 🧱 For modders
 

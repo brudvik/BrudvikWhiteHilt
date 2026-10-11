@@ -5,16 +5,17 @@ namespace BrudvikWhiteHilt.Party;
 
 /// <summary>
 /// What a player shares about themselves with the others for the party list: health, stamina and eitr with their
-/// maximums, whether they are dead, and a few status effects. Small enough to send twice a second.
+/// maximums, whether they are dead, and a few status effects. Sent to every player up to twice a second, so it is kept
+/// small: whole numbers as two bytes each, and no name, which the receiver takes from the game's player list.
 /// </summary>
 public sealed class PartyStatus
 {
     /// <summary>Most status effects sent per player.</summary>
     public const int MaxEffects = 4;
 
-    private const byte Version = 1;
+    private const byte Version = 2;
 
-    /// <summary>The player's name.</summary>
+    /// <summary>The player's name; not sent, filled in by the receiver.</summary>
     public string Name = string.Empty;
 
     /// <summary>Current health.</summary>
@@ -42,19 +43,18 @@ public sealed class PartyStatus
     public int[] Effects = Array.Empty<int>();
 
     /// <summary>
-    /// Writes the status to a package.
+    /// Writes the status to a package, the amounts as whole numbers the way the list shows them.
     /// </summary>
     /// <param name="package">The package to write to.</param>
     public void Write(ZPackage package)
     {
         package.Write(Version);
-        package.Write(Name ?? string.Empty);
-        package.Write(Health);
-        package.Write(MaxHealth);
-        package.Write(Stamina);
-        package.Write(MaxStamina);
-        package.Write(Eitr);
-        package.Write(MaxEitr);
+        package.Write(Current(Health));
+        package.Write(Maximum(MaxHealth));
+        package.Write(Current(Stamina));
+        package.Write(Maximum(MaxStamina));
+        package.Write(Current(Eitr));
+        package.Write(Maximum(MaxEitr));
         package.Write(Dead);
         int count = Math.Min(Effects?.Length ?? 0, MaxEffects);
         package.Write((byte)count);
@@ -80,13 +80,12 @@ public sealed class PartyStatus
 
             PartyStatus status = new()
             {
-                Name = package.ReadString(),
-                Health = package.ReadSingle(),
-                MaxHealth = package.ReadSingle(),
-                Stamina = package.ReadSingle(),
-                MaxStamina = package.ReadSingle(),
-                Eitr = package.ReadSingle(),
-                MaxEitr = package.ReadSingle(),
+                Health = package.ReadUShort(),
+                MaxHealth = package.ReadUShort(),
+                Stamina = package.ReadUShort(),
+                MaxStamina = package.ReadUShort(),
+                Eitr = package.ReadUShort(),
+                MaxEitr = package.ReadUShort(),
                 Dead = package.ReadBool()
             };
             int count = Math.Min((int)package.ReadByte(), MaxEffects);
@@ -112,12 +111,23 @@ public sealed class PartyStatus
     /// <returns>True when it should be sent.</returns>
     public bool DiffersFrom(PartyStatus sent)
     {
-        if (sent == null || sent.Dead != Dead || sent.Name != Name)
+        return UrgentlyDiffersFrom(sent) || Math.Abs(sent.Stamina - Stamina) >= 1f || Math.Abs(sent.Eitr - Eitr) >= 1f;
+    }
+
+    /// <summary>
+    /// Whether this status should be sent soon: a whole point of health, a new maximum, death or a change in the status
+    /// effects. Stamina and eitr alone change all the time while running or casting, so they may wait longer.
+    /// </summary>
+    /// <param name="sent">The status sent last, or null.</param>
+    /// <returns>True when it should be sent soon.</returns>
+    public bool UrgentlyDiffersFrom(PartyStatus sent)
+    {
+        if (sent == null || sent.Dead != Dead)
         {
             return true;
         }
 
-        if (Math.Abs(sent.Health - Health) >= 1f || Math.Abs(sent.Stamina - Stamina) >= 1f || Math.Abs(sent.Eitr - Eitr) >= 1f
+        if (Math.Abs(sent.Health - Health) >= 1f
             || Math.Abs(sent.MaxHealth - MaxHealth) >= 0.5f || Math.Abs(sent.MaxStamina - MaxStamina) >= 0.5f
             || Math.Abs(sent.MaxEitr - MaxEitr) >= 0.5f)
         {
@@ -151,7 +161,17 @@ public sealed class PartyStatus
     /// <returns>The text.</returns>
     public static string Amount(float value, float max)
     {
-        int now = Math.Max(0, (int)Math.Ceiling(value - 0.01f));
-        return now.ToString(CultureInfo.InvariantCulture) + "/" + ((int)Math.Round(max)).ToString(CultureInfo.InvariantCulture);
+        return Current(value).ToString(CultureInfo.InvariantCulture) + "/" + Maximum(max).ToString(CultureInfo.InvariantCulture);
+    }
+
+    // Rounded up, so a player with a sliver of health left never shows 0.
+    private static ushort Current(float value)
+    {
+        return (ushort)Math.Min(ushort.MaxValue, Math.Max(0, (int)Math.Ceiling(value - 0.01f)));
+    }
+
+    private static ushort Maximum(float value)
+    {
+        return (ushort)Math.Min(ushort.MaxValue, Math.Max(0, (int)Math.Round(value)));
     }
 }

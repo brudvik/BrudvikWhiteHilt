@@ -129,8 +129,9 @@ Almost every item and piece has a `TryApplyVisual` (or `ApplyLook`) method, and 
 
 > 🎬 On video: [EP05 · A Piece From a Pole](https://youtu.be/_5UT5RH4YnM)
 
-The 3D models, textures and sounds are in one asset bundle, `Assets/whitehilt_foraging`, which is embedded in the
-DLL and loaded by `ForagingAssets`. The bundle is built outside the game: `AssetSource/build_foraging_bundle.ps1`
+The 3D models, textures and sounds are in one asset bundle, `whitehilt_foraging`, a file next to the DLL that
+`ForagingAssets` loads with `AssetBundle.LoadFromFile`. Unity then reads from disk what it needs; an embedded bundle
+would be held in memory twice, once as a managed byte array and once by Unity. The bundle is built outside the game: `AssetSource/build_foraging_bundle.ps1`
 takes `.glb` models and `.wav` sounds and builds them with Unity, the same version as Valheim. The
 [README](../README.MD) has the details under *Building from source*.
 
@@ -144,8 +145,7 @@ The Decor Hammer goes one step further. Each of its decorations is one line in `
 the mod embeds, and `DecorPieceFactory` builds a piece from it. A decoration with a vanilla look copies only the visible
 parts of a vanilla prefab, so a decorative bush keeps Valheim's wind but cannot be chopped. One with a model takes it
 from a second bundle, `whitehilt_decor`, which `prepare_decor.py` and Blender fill from Poly Haven and downloaded
-models. That bundle is a file next to the DLL rather than embedded, so Unity reads it from disk instead of the mod
-keeping a copy in memory.
+models. That bundle is a second file next to the DLL, so a player without it still gets every other piece.
 
 > Read next: `Pieces/Defenses/DefenseLayout.cs`, `Pieces/Defenses/DefenseModelBuilder.cs`, `Helpers/ForagingAssets.cs`,
 > `Decor/DecorPieceFactory.cs` with `AssetSource/Decor/README.md`.
@@ -261,7 +261,21 @@ Valheim runs everything on one thread, and so does the mod. These habits recur:
 - **Cache and rebuild only on change.** Materials, textures and lookups by prefab are made once and kept. UI is
   rebuilt only when the data behind it has changed (for example `ShipRoute.Read` compares `DataRevision`).
 - **Draw less.** Meshes are combined per material (`DefenseModelBuilder`), and a bone animation is skipped while its
-  model is off screen (`DogExpression`).
+  model is off screen (`DogExpression`). A model that replaces a vanilla one is outside the prefab's level-of-detail
+  group, so `VisualHelper.HideWhenSmall` gives it its own, which hides it when it is small on screen.
+- **Skip early when there is nothing to do.** A patch that runs for every creature each frame first checks a static
+  count, such as `DogCompanion.All.Count` or `KrakenTentacle.AnyLoaded`, before it looks for a component.
+- **Send little.** The game's `ZDO.Set` already ignores a value that did not change, so what costs traffic is a value
+  that changes all the time. Messages carry whole numbers where the screen shows whole numbers (`PartyStatus`), and
+  the server's lists go out only when they changed, gzipped when large (`ServerLists`).
+- **Measure.** The console command `whitehilt_perf start` wraps every Harmony patch method and every `Update`,
+  `LateUpdate` and `FixedUpdate` of the mod with a timer, and counts the bytes of each network message;
+  `whitehilt_perf report` lists the slowest methods and the busiest messages, and `stop` removes it all again
+  (`Diagnostics/PerfMonitor.cs`). Times include what a method calls. `[Diagnostics] PerfLogMinutes` does the same
+  on a dedicated server and writes the report to the log, and `StartupTimer` logs how long each item, piece and plant
+  took to make.
+- **One message for many objects.** Registering an RPC on a network view costs a little on every object that loads.
+  Paint and dye register one routed RPC each, once, that names the piece (`PaintedPieces.RegisterRpc`).
 
 ## 🧪 Tests
 

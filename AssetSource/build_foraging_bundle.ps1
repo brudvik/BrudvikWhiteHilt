@@ -5,7 +5,8 @@
 .DESCRIPTION
     Converts the glTF models to OBJ/PNG, exports each creature with Blender to FBX, copies the .wav sounds, creates the
     Unity project in BrudvikWhiteHiltUnity (git-ignored) on first run, builds the asset bundle in batch mode and copies it
-    into the mod's embedded assets. Unity must be the same version as Valheim (see valheim_Data/../UnityPlayer.dll).
+    to BrudvikWhiteHilt/Assets, from where the build puts it next to the DLL. Unity must be the same version as Valheim
+    (see valheim_Data/../UnityPlayer.dll).
     -UnityOnly skips the model, sound and creature conversion and rebuilds the bundle from what is already in the Unity
     project, e.g. after changing only AssetSource/Unity/*.cs.
     The Decor Hammer's models (AssetSource/Decor/Models, made by AssetSource/Decor/prepare_decor.py) go into a second

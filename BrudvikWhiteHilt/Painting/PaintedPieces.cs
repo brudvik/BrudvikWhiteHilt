@@ -6,12 +6,13 @@ namespace BrudvikWhiteHilt.Painting;
 
 /// <summary>
 /// The colour of painted building pieces. It is kept in the piece's ZDO, so everyone sees it and it stays after a
-/// restart; a change is sent to everyone by RPC. Stain tints the vanilla material; paint swaps in a copy with a
-/// bleached texture and tints that. Without the mod, pieces simply look vanilla again.
+/// restart; a change is sent to everyone by one routed RPC naming the piece, registered once rather than on every
+/// piece. Stain tints the vanilla material; paint swaps in a copy with a bleached texture and tints that. Without the
+/// mod, pieces simply look vanilla again.
 /// </summary>
 public static class PaintedPieces
 {
-    private const string Rpc = "WhiteHiltPaint";
+    private const string Rpc = "WhiteHiltPaintPiece";
 
     private static readonly int paintKey = "whitehilt_paint".GetStableHashCode();
     private static readonly Dictionary<Material, Material> bleached = new();
@@ -43,26 +44,38 @@ public static class PaintedPieces
 
         nview.ClaimOwnership();
         nview.GetZDO().Set(paintKey, value);
-        nview.InvokeRPC(ZNetView.Everybody, Rpc, value);
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, Rpc, nview.GetZDO().m_uid, value);
     }
 
     /// <summary>
-    /// Listens for paint and shows the saved paint. Called when a piece wakes up.
+    /// Listens for paint on any piece. Call once per session, when the game starts.
+    /// </summary>
+    public static void RegisterRpc()
+    {
+        ZRoutedRpc.instance?.Register<ZDOID, int>(Rpc, RPC_Paint);
+    }
+
+    /// <summary>
+    /// Shows the saved paint. Called when a piece wakes up.
     /// </summary>
     /// <param name="piece">The piece.</param>
     public static void OnAwake(WearNTear piece)
     {
-        ZNetView nview = piece.m_nview;
-        if (nview == null || nview.GetZDO() == null)
-        {
-            return;
-        }
-
-        nview.Register<int>(Rpc, (_, value) => Show(piece, value));
-        int saved = nview.GetZDO().GetInt(paintKey);
+        ZDO zdo = piece.m_nview != null ? piece.m_nview.GetZDO() : null;
+        int saved = zdo != null ? zdo.GetInt(paintKey) : 0;
         if (saved != 0)
         {
             Show(piece, saved);
+        }
+    }
+
+    // On every machine with the piece loaded; the ZDO already holds the paint for those who load it later.
+    private static void RPC_Paint(long sender, ZDOID id, int value)
+    {
+        GameObject loaded = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(id) : null;
+        if (loaded != null && loaded.TryGetComponent(out WearNTear piece))
+        {
+            Show(piece, value);
         }
     }
 

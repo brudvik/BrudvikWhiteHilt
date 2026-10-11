@@ -26,6 +26,7 @@ public static class OverviewPanel
     private const float RowHeight = 22f;
     private const float FootHeight = 40f;
     private const float RefreshInterval = 2f;
+    private const float MeasuringRefreshInterval = 0.25f;
     private const float CollapsedHeight = Padding * 2f + HeaderHeight;
 
     private static readonly Color barBack = new(0f, 0f, 0f, 0.5f);
@@ -93,9 +94,11 @@ public static class OverviewPanel
             ExplorationOverview.Build(map);
         }
 
-        if (Time.unscaledTime >= nextRefresh || (expanded && !ExplorationOverview.Ready))
+        if (Time.unscaledTime >= nextRefresh)
         {
-            nextRefresh = Time.unscaledTime + RefreshInterval;
+            // While measuring, the progress shown follows the count more closely.
+            bool measuring = expanded && !locked && !ExplorationOverview.Ready;
+            nextRefresh = Time.unscaledTime + (measuring ? MeasuringRefreshInterval : RefreshInterval);
             Refresh(map, locked);
         }
     }

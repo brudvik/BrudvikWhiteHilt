@@ -30,6 +30,11 @@ public static class MonsterPatches
     [HarmonyPrefix]
     private static bool MonsterAIUpdatePrefix(MonsterAI __instance, ref bool __result)
     {
+        if (LindormBurrow.Instances.Count == 0)
+        {
+            return true;
+        }
+
         LindormBurrow burrow = __instance.GetComponent<LindormBurrow>();
         if (burrow == null || !burrow.IsHidden)
         {
@@ -45,6 +50,11 @@ public static class MonsterPatches
     [HarmonyPrefix]
     private static bool CharacterDamagePrefix(Character __instance)
     {
+        if (LindormBurrow.Instances.Count == 0)
+        {
+            return true;
+        }
+
         LindormBurrow burrow = __instance.GetComponent<LindormBurrow>();
         return burrow == null || !burrow.IsHidden;
     }

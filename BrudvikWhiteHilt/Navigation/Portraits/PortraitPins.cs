@@ -469,20 +469,34 @@ public static class PortraitPins
         public Text Name;
         public Image Heading;
 
+        private bool named;
+        private string shownName;
+        private Color nameTint;
+        private string letter;
+
         /// <summary>
         /// Shows a portrait, or a letter on a backdrop coloured from the name for players without one, with its name
         /// and heading ring.
         /// </summary>
         public void Show(Texture2D portrait, string name, float size, int fontSize, bool showName, Quaternion? heading, Color ringColour)
         {
+            // Called every frame: the name's colour and letter are worked out only when the name changes.
+            if (!named || shownName != name)
+            {
+                named = true;
+                shownName = name;
+                nameTint = Tint(name);
+                letter = string.IsNullOrEmpty(name) ? "?" : name.Substring(0, 1).ToUpperInvariant();
+            }
+
             ((RectTransform)transform).sizeDelta = new Vector2(size, size);
             Picture.texture = portrait;
             Picture.gameObject.SetActive(portrait != null);
             Letter.gameObject.SetActive(portrait == null);
-            Backdrop.color = portrait != null ? backdrop : Tint(name);
+            Backdrop.color = portrait != null ? backdrop : nameTint;
             if (portrait == null)
             {
-                Letter.text = string.IsNullOrEmpty(name) ? "?" : name.Substring(0, 1).ToUpperInvariant();
+                Letter.text = letter;
                 Letter.fontSize = Mathf.RoundToInt(size * 0.5f);
             }
 

@@ -55,7 +55,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     private void Awake()
     {
+        System.Diagnostics.Stopwatch awake = System.Diagnostics.Stopwatch.StartNew();
         WhiteHiltConfig.Initialize(Config);
+        Diagnostics.PerformanceSettings.Initialize();
         RanchingSettings.Initialize();
         LoxMilking.Initialize();
         NavigationSettings.Initialize();
@@ -173,6 +175,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Chests.Collection.CollectionPostComponent.Module = chests;
         Quartermaster.QuartermasterStore.Module = chests;
         Chests.ChestCensus.RegisterCommand();
+        Diagnostics.PerfMonitor.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
@@ -196,7 +199,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         var harmony = new Harmony(PluginGUID);
         harmony.PatchAll();
 
-        Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} has loaded!");
+        Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} has loaded! (start-up: Awake took {awake.Elapsed.TotalMilliseconds:0} ms)");
     }
 
     /// <summary>
@@ -208,6 +211,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Settings.ConfigWindow.CheckKey();
         Saga.SagaPanel.CheckKey();
         Storage.StorageSearch.Tick();
+        Diagnostics.PerfMonitor.Tick();
         chests?.Update();
         if (refreshPending)
         {
@@ -268,8 +272,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         try
         {
-            customItems.ForEach(customItem => customItem.Add());
-            customPieces.ForEach(customPiece => customPiece.Add());
+            Diagnostics.StartupTimer.Each("items", customItems, customItem => customItem.Add());
+            Diagnostics.StartupTimer.Each("pieces", customPieces, customPiece => customPiece.Add());
             ExplorationSkill.SetIconFromMapTable();
             HusbandrySkill.SetIconFromBoarTrophy();
             Mastery.ForagingSkill.SetIconFromMushroom();
@@ -295,7 +299,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     private void AddForageables()
     {
-        forageables.ForEach(forageable => forageable.Add());
+        Diagnostics.StartupTimer.Each("forageables", forageables, forageable => forageable.Add());
         PrefabManager.OnVanillaPrefabsAvailable -= AddForageables;
     }
 
@@ -304,7 +308,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     private void AddSaplings()
     {
-        Planting.Saplings.Create();
+        Diagnostics.StartupTimer.Step("saplings", Planting.Saplings.Create);
         PrefabManager.OnVanillaPrefabsAvailable -= AddSaplings;
     }
 

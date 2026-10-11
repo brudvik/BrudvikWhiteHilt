@@ -115,7 +115,7 @@ The other players in a compact list at the upper left, under the hotbar and the 
 
 Under the players come your companions: your own [dog](dog.md) and every tamed animal following you, nearest first, with name, distance and health; the name turns red under a quarter. They show while they are loaded, near enough for the game to have them.
 
-Each player sends their own health, stamina and eitr to the others, at most twice a second and only when something changed, so the list works however far apart you are.
+Each player sends their own health, stamina and eitr to the others, only when something changed, so the list works however far apart you are. Health, death and status effects go out at most twice a second; stamina and eitr alone, which change all the time while running, every 1.5 seconds. A status is about 26 bytes.
 
 The `Party` section sets whether it shows (`Enabled`), `ShowStamina`, `ShowEitr`, `ShowDistance`, `ShowEffects`, `ShowSelf` (off), `MaxPlayers` (8), `ShowCompanions` (on), `MaxCompanions` (6) and `Scale`; `Party.Keys` → `ToggleParty` binds a key to show and hide it. A server can turn it off for everyone with `AllowParty`, and then nothing is shared.
 

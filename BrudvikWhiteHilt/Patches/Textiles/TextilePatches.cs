@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Patches.Textiles;
 public static class TextilePatches
 {
     /// <summary>
-    /// Shows a piece's or ship's saved dye and listens for new dye.
+    /// Shows a piece's or ship's saved dye.
     /// </summary>
     /// <param name="__instance">The piece.</param>
     [HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake))]
@@ -18,6 +18,16 @@ public static class TextilePatches
     public static void WearNTearAwake(WearNTear __instance)
     {
         DyedCloth.OnAwake(__instance);
+    }
+
+    /// <summary>
+    /// Listens for new dye on any piece or ship.
+    /// </summary>
+    [HarmonyPatch(typeof(Game), nameof(Game.Start))]
+    [HarmonyPostfix]
+    public static void GameStart()
+    {
+        DyedCloth.RegisterRpc();
     }
 
     /// <summary>

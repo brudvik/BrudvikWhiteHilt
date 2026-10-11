@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ public class MapAreaService : MonoBehaviour
     private readonly List<MapWard> scanWards = new();
     private readonly List<(Vector2Int Cell, string Name)> signs = new();
     private readonly Dictionary<long, string> names = new();
-    private readonly Dictionary<long, string> lastSent = new();
+    private readonly Dictionary<long, ulong> lastSent = new();
 
     private Dictionary<int, Traits> traits;
     private List<MapArea> areas = new();
@@ -101,7 +102,7 @@ public class MapAreaService : MonoBehaviour
 
         try
         {
-            if (MapAreaPackage.Read(package, out List<MapArea> received, out List<MapWard> receivedWards))
+            if (ServerLists.Unpack(package) is ZPackage list && MapAreaPackage.Read(list, out List<MapArea> received, out List<MapWard> receivedWards))
             {
                 MapAreaOverlay.SetData(received, receivedWards);
             }
@@ -494,7 +495,7 @@ public class MapAreaService : MonoBehaviour
             current.Add(peer.m_uid);
             if (TryGetChanged(peer.m_uid, playerID, out ZPackage package))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, package);
+                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, ServerLists.Pack(package));
             }
         }
 
@@ -542,8 +543,8 @@ public class MapAreaService : MonoBehaviour
         }
 
         package = MapAreaPackage.Write(visible, visibleWards);
-        string content = Convert.ToBase64String(package.GetArray());
-        if (lastSent.TryGetValue(key, out string sent) && sent == content)
+        ulong content = ServerLists.Fingerprint(package);
+        if (lastSent.TryGetValue(key, out ulong sent) && sent == content)
         {
             return false;
         }

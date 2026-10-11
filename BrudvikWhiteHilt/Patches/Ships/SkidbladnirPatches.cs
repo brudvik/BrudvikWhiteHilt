@@ -65,15 +65,21 @@ public static class SkidbladnirPatches
         if (__instance.GetComponent<SkidbladnirShip>() != null) ShipFurniture.BeforeShipUnload(__instance.gameObject);
     }
 
-    /// <summary>Adds the saved attachment reader to ordinary networked building pieces.</summary>
+    /// <summary>Adds the saved attachment reader to networked building pieces that are fixed to a ship.</summary>
     /// <param name="__instance">Awakened piece.</param>
     [HarmonyPatch(typeof(Piece), nameof(Piece.Awake))]
     [HarmonyPostfix]
     public static void PieceAwake(Piece __instance)
     {
-        if (__instance.GetComponent<Ship>() == null && __instance.GetComponent<ZNetView>() != null
-            && __instance.GetComponent<ShipFurniture>() == null)
-            __instance.gameObject.AddComponent<ShipFurniture>();
+        ZNetView view = __instance.GetComponent<ZNetView>();
+        if (view == null || __instance.GetComponent<Ship>() != null || __instance.GetComponent<ShipFurniture>() != null)
+            return;
+        // Most pieces stand on land; a piece built aboard later gets the reader when it is attached. Without a ZDO yet,
+        // whether it is attached is not known, so it gets one and switches it off at Start.
+        ZDO data = view.GetZDO();
+        if (data != null && data.GetZDOID(ShipFurniture.ParentKey).IsNone())
+            return;
+        __instance.gameObject.AddComponent<ShipFurniture>();
     }
 
     /// <summary>Extends the vanilla placement ray to this specific ship, retaining range and collision checks.</summary>

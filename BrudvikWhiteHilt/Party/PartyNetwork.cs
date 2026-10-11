@@ -7,13 +7,15 @@ namespace BrudvikWhiteHilt.Party;
 /// <summary>
 /// Shares the local player's health, stamina and eitr with everyone for the party list, and keeps what the others
 /// share. Vanilla only syncs the health of players nearby and never their stamina, so each client sends its own
-/// status to all, at most twice a second and only when something changed, with a reminder every few seconds.
+/// status to all, only when something changed, with a reminder every few seconds: health, death and effects at most
+/// twice a second, stamina and eitr alone (which change all the time while running) less often.
 /// </summary>
 public class PartyNetwork : MonoBehaviour
 {
     private const string StatusRpc = "WhiteHiltPartyStatus";
     private const float CheckInterval = 0.25f;
     private const float MinSendInterval = 0.5f;
+    private const float ResourceSendInterval = 1.5f;
     private const float KeepAlive = 5f;
     private const float Forget = 12f;
     private const float ForgetDead = 120f;
@@ -86,8 +88,11 @@ public class PartyNetwork : MonoBehaviour
 
         PartyStatus status = Capture(player);
         float now = Time.unscaledTime;
-        bool changed = status.DiffersFrom(sent);
-        if ((!changed || now - lastSend < MinSendInterval) && now - lastSend < KeepAlive)
+        float since = now - lastSend;
+        bool due = since >= KeepAlive
+            || (since >= MinSendInterval && status.UrgentlyDiffersFrom(sent))
+            || (since >= ResourceSendInterval && status.DiffersFrom(sent));
+        if (!due)
         {
             return;
         }
@@ -103,7 +108,6 @@ public class PartyNetwork : MonoBehaviour
     {
         return new PartyStatus
         {
-            Name = player.GetPlayerName(),
             Health = player.GetHealth(),
             MaxHealth = player.GetMaxHealth(),
             Stamina = player.GetStamina(),
@@ -141,8 +145,29 @@ public class PartyNetwork : MonoBehaviour
         }
 
         entry.Previous = entry.Status;
+        status.Name = NameOf(sender) ?? entry.Previous?.Name ?? string.Empty;
         entry.Status = status;
         entry.Received = Time.unscaledTime;
+    }
+
+    // The name is not sent: the game's player list has it. A dead player is missing from it until they respawn, so the
+    // caller then keeps the name it had.
+    private static string NameOf(long sender)
+    {
+        if (sender == ZDOMan.GetSessionID())
+        {
+            return Player.m_localPlayer != null ? Player.m_localPlayer.GetPlayerName() : null;
+        }
+
+        foreach (ZNet.PlayerInfo info in ZNet.instance.GetPlayerList())
+        {
+            if (info.m_characterID.UserID == sender)
+            {
+                return info.m_name;
+            }
+        }
+
+        return null;
     }
 
     // Players who stopped sending have left or the server stopped allowing it. A dead player sends nothing until they

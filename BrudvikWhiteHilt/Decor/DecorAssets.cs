@@ -11,9 +11,9 @@ namespace BrudvikWhiteHilt.Decor;
 /// Loads the decor models from <c>whitehilt_decor</c>, an asset bundle kept as a file next to the mod's DLL.
 /// </summary>
 /// <remarks>
-/// The main bundle is embedded in the DLL. The decor bundle has many more models, so it is a separate file loaded
-/// straight from disk: Unity then reads what it needs from the file instead of keeping a copy of the whole bundle in
-/// memory. Meshes and textures are looked up by name once and kept in dictionaries, as LoadAllAssets is slow.
+/// Like the main bundle (<see cref="Helpers.ForagingAssets"/>) it is loaded straight from disk, but it is optional:
+/// without it the hammer offers only the vanilla-look pieces. Meshes and textures are looked up by name once and kept
+/// in dictionaries, as LoadAllAssets is slow.
 /// </remarks>
 public static class DecorAssets
 {

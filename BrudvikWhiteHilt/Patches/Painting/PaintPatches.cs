@@ -14,7 +14,7 @@ namespace BrudvikWhiteHilt.Patches.Painting;
 public static class PaintPatches
 {
     /// <summary>
-    /// Shows a piece's saved paint and listens for new paint.
+    /// Shows a piece's saved paint.
     /// </summary>
     /// <param name="__instance">The piece.</param>
     [HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake))]
@@ -22,6 +22,16 @@ public static class PaintPatches
     public static void WearNTearAwake(WearNTear __instance)
     {
         PaintedPieces.OnAwake(__instance);
+    }
+
+    /// <summary>
+    /// Listens for new paint on any piece.
+    /// </summary>
+    [HarmonyPatch(typeof(Game), nameof(Game.Start))]
+    [HarmonyPostfix]
+    public static void GameStart()
+    {
+        PaintedPieces.RegisterRpc();
     }
 
     /// <summary>

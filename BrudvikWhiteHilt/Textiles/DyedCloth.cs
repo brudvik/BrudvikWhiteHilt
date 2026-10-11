@@ -7,12 +7,12 @@ namespace BrudvikWhiteHilt.Textiles;
 
 /// <summary>
 /// Dyed cloth: the cloth parts of banners and the sails of ships, and whole capes, shown in a dye colour. A banner's or
-/// ship's dye lives in its ZDO and is sent to everyone by RPC; a cape's is on the item and its wearer's ZDO.
-/// The vanilla texture is bleached and the colour baked into a material copy, so only the cloth changes.
+/// ship's dye lives in its ZDO and is sent to everyone by one routed RPC naming it; a cape's is on the item and its
+/// wearer's ZDO. The vanilla texture is bleached and the colour baked into a material copy, so only the cloth changes.
 /// </summary>
 public static class DyedCloth
 {
-    private const string Rpc = "WhiteHiltDye";
+    private const string Rpc = "WhiteHiltDyePiece";
 
     private static readonly int dyeKey = "whitehilt_dye".GetStableHashCode();
     private static readonly Dictionary<(Material, int), Material> tinted = new();
@@ -41,26 +41,38 @@ public static class DyedCloth
 
         nview.ClaimOwnership();
         nview.GetZDO().Set(dyeKey, value);
-        nview.InvokeRPC(ZNetView.Everybody, Rpc, value);
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, Rpc, nview.GetZDO().m_uid, value);
     }
 
     /// <summary>
-    /// Listens for dye and shows the saved dye. Called when a piece or ship wakes up.
+    /// Listens for dye on any piece or ship. Call once per session, when the game starts.
+    /// </summary>
+    public static void RegisterRpc()
+    {
+        ZRoutedRpc.instance?.Register<ZDOID, int>(Rpc, RPC_Dye);
+    }
+
+    /// <summary>
+    /// Shows the saved dye. Called when a piece or ship wakes up.
     /// </summary>
     /// <param name="piece">The piece.</param>
     public static void OnAwake(WearNTear piece)
     {
-        ZNetView nview = piece.m_nview;
-        if (nview == null || nview.GetZDO() == null)
-        {
-            return;
-        }
-
-        nview.Register<int>(Rpc, (_, value) => Apply(piece.gameObject, value, false));
-        int saved = nview.GetZDO().GetInt(dyeKey);
+        ZDO zdo = piece.m_nview != null ? piece.m_nview.GetZDO() : null;
+        int saved = zdo != null ? zdo.GetInt(dyeKey) : 0;
         if (saved != 0)
         {
             Apply(piece.gameObject, saved, false);
+        }
+    }
+
+    // On every machine with the piece or ship loaded; the ZDO already holds the dye for those who load it later.
+    private static void RPC_Dye(long sender, ZDOID id, int value)
+    {
+        GameObject loaded = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(id) : null;
+        if (loaded != null)
+        {
+            Apply(loaded, value, false);
         }
     }
 

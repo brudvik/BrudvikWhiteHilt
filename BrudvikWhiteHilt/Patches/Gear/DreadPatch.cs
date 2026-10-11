@@ -24,7 +24,7 @@ public static class DreadPatch
     private static bool UpdateAI(MonsterAI __instance, float dt, ref bool __result)
     {
         Character character = __instance.m_character;
-        if (character == null || __instance.m_nview == null || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner()
+        if (!DreadEffect.AnyActive || character == null || __instance.m_nview == null || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner()
             || character.IsTamed() || !character.GetSEMan().HaveStatusEffect(DreadEffect.Hash))
         {
             return true;

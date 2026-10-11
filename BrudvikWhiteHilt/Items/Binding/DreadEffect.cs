@@ -20,6 +20,13 @@ public class DreadEffect : SE_Stats
     /// </summary>
     public static readonly int Hash = EffectName.GetStableHashCode();
 
+    private static float activeUntil = -1f;
+
+    /// <summary>
+    /// Whether a dread set up on this machine may still run; lets the per-creature AI patch skip its lookup.
+    /// </summary>
+    public static bool AnyActive => Time.time <= activeUntil;
+
     /// <summary>
     /// Registers the status effect and its English text. Call from the plugin's Awake, after the binding settings.
     /// </summary>
@@ -40,5 +47,13 @@ public class DreadEffect : SE_Stats
     {
         m_ttl = BindingSettings.DreadSeconds.Value;
         base.Setup(character);
+        activeUntil = Mathf.Max(activeUntil, Time.time + m_ttl);
+    }
+
+    /// <inheritdoc/>
+    public override void ResetTime()
+    {
+        base.ResetTime();
+        activeUntil = Mathf.Max(activeUntil, Time.time + m_ttl);
     }
 }
