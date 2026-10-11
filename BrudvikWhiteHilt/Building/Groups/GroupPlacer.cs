@@ -88,8 +88,9 @@ public static class GroupPlacer
     }
 
     /// <summary>
-    /// Brings what a group costs to hand before it is placed, fetching from chests other players hold
-    /// (<see cref="ChestCost.Gather"/>). Call right before <see cref="Place"/> with pay on, after <see cref="Check"/>.
+    /// Brings what a group costs to hand before it is placed: chests other players hold are handed over, as a large
+    /// build would not fit in the inventory (<see cref="ChestCost.Gather"/>). Call right before <see cref="Place"/>
+    /// with pay on, after <see cref="Check"/>.
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="items">The pieces.</param>
@@ -104,7 +105,7 @@ public static class GroupPlacer
 
         List<(string Name, int Amount)> needs = Cost(items.Select(item => item.Piece))
             .Select(cost => (cost.Key.m_itemData.m_shared.m_name, cost.Value)).ToList();
-        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again))
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again, handOver: true))
         {
             case ChestCost.Outcome.Ready:
                 return true;

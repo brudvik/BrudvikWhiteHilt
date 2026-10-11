@@ -301,8 +301,10 @@ public static class TerrainShapes
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="plan">The plan.</param>
+    /// <param name="resume">True to run the plan by itself once chests being handed over are here; false for callers
+    /// that try again themselves.</param>
     /// <returns>True if it was started.</returns>
-    public static bool Run(Player player, Plan plan)
+    public static bool Run(Player player, Plan plan, bool resume = true)
     {
         if (plan.Problem != null)
         {
@@ -310,7 +312,7 @@ public static class TerrainShapes
             return false;
         }
 
-        if (plan.Job.Ops.Count == 0 || !TerrainCost.TryPay(player, plan.Cost, () => Run(player, plan)))
+        if (plan.Job.Ops.Count == 0 || !TerrainCost.TryPay(player, plan.Cost, resume ? () => Run(player, plan) : null))
         {
             return false;
         }

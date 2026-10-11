@@ -10,8 +10,10 @@ namespace BrudvikWhiteHilt.Crafting;
 /// Fetches what a crafting or a piece lacks from the chests around the local player into the player's inventory,
 /// without moving the chests: the machine that holds a chest takes the items out and sends them, the way the game
 /// lets only a chest's owner change it. Two players using the same chests at once therefore never pull them back and
-/// forth. A chest this machine holds is taken from at once. When everything asked for has arrived, the crafting or
-/// placing the player clicked goes on by itself.
+/// forth. Chests this machine already holds are not fetched from: the payment takes from them directly. A large
+/// payment, such as a blueprint, asks for the other chests to be handed over instead, so its materials never pass
+/// through the inventory. When everything asked for is at hand, the crafting or placing the player clicked goes on by
+/// itself.
 /// </summary>
 public static class ChestWithdrawal
 {
@@ -44,15 +46,18 @@ public static class ChestWithdrawal
     public static bool Busy => continuation != null;
 
     /// <summary>
-    /// Fetches what the inventory lacks of each requirement from the chests in range, nearest first. Chests held here
-    /// are taken from at once; the others are asked for, and <paramref name="then"/> runs when they have answered.
+    /// Fetches what the inventory and the chests held here lack of each requirement from the other chests in range,
+    /// nearest first. They are asked for, and <paramref name="then"/> runs when they have answered.
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="use">Crafting or building, which decides the range.</param>
     /// <param name="requirements">What is needed, with the amount each wants.</param>
     /// <param name="then">What to do once the items have arrived, e.g. craft again.</param>
+    /// <param name="handOver">True to ask for the chests to be handed over rather than for their items, so nothing
+    /// passes through the inventory; for payments too large to carry.</param>
     /// <returns>True if the player must wait for other players' chests.</returns>
-    public static bool Fetch(Player player, NearbyContainers.Use use, IEnumerable<(string Name, int Amount)> requirements, Action then)
+    public static bool Fetch(Player player, NearbyContainers.Use use, IEnumerable<(string Name, int Amount)> requirements, Action then,
+        bool handOver = false)
     {
         if (player == null || !NearbyContainers.IsActive(use))
         {
@@ -78,13 +83,26 @@ public static class ChestWithdrawal
 
             if (view.IsOwner())
             {
-                Inventory scratch = Scratch();
-                Extract(view, entry.Value, playerId, scratch);
-                Deliver(view, scratch);
+                if (!handOver)
+                {
+                    Inventory scratch = Scratch();
+                    Extract(view, entry.Value, playerId, scratch);
+                    Deliver(view, scratch);
+                }
+
                 continue;
             }
 
-            Send(new Request(++nextRequestId, view, entry.Value, playerId));
+            Request request = new(++nextRequestId, view, entry.Value, playerId);
+            if (handOver)
+            {
+                AskHandover(request);
+            }
+            else
+            {
+                Send(request);
+            }
+
             waiting = true;
         }
 
@@ -135,9 +153,12 @@ public static class ChestWithdrawal
             if (HandedOver(request.View, request.PlayerId))
             {
                 pending.Remove(request.Id);
-                Inventory scratch = Scratch();
-                Extract(request.View, request.Wanted, request.PlayerId, scratch);
-                Deliver(request.View, scratch);
+                if (!request.HandOverOnly)
+                {
+                    Inventory scratch = Scratch();
+                    Extract(request.View, request.Wanted, request.PlayerId, scratch);
+                    Deliver(request.View, scratch);
+                }
             }
             else if (Time.time - request.HandoverAt >= timeout)
             {
@@ -193,15 +214,16 @@ public static class ChestWithdrawal
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, ReplyRpc, id, served, items);
     }
 
-    // How much to ask each chest for: what the inventory lacks of each requirement, from the nearest chests that have
-    // it. Chests on one network object (a ship's hold and sea chest) are asked together.
+    // How much to ask each chest for: what the inventory and the chests held here lack of each requirement, from the
+    // nearest other chests that have it. Chests on one network object (a ship's hold and sea chest) are asked together.
     private static Dictionary<ZNetView, List<(string Name, int Amount)>> Plan(Player player, NearbyContainers.Use use,
         IEnumerable<(string Name, int Amount)> requirements)
     {
         Dictionary<ZNetView, List<(string Name, int Amount)>> plan = new();
         foreach (IGrouping<string, (string Name, int Amount)> group in requirements.Where(requirement => requirement.Amount > 0).GroupBy(requirement => requirement.Name))
         {
-            int missing = group.Sum(requirement => requirement.Amount) - player.GetInventory().CountItems(group.Key);
+            int missing = group.Sum(requirement => requirement.Amount) - player.GetInventory().CountItems(group.Key)
+                - NearbyContainers.CountForCheck(use, group.Key, -1, true);
             if (missing <= 0 || NearbyContainers.IsExcluded(group.Key))
             {
                 continue;
@@ -209,6 +231,11 @@ public static class ChestWithdrawal
 
             foreach ((Container container, int available) in NearbyContainers.Suppliers(use, group.Key))
             {
+                if (ContainerHandoff.Held(container))
+                {
+                    continue;
+                }
+
                 int take = Mathf.Min(missing, available);
                 if (!plan.TryGetValue(container.m_nview, out List<(string Name, int Amount)> list))
                 {
@@ -337,6 +364,22 @@ public static class ChestWithdrawal
         }
 
         NearbyContainers.ForgetCounts();
+    }
+
+    // Asks a chest's holder to hand the chest itself over; Tick waits for it as for a chest that did not answer.
+    private static void AskHandover(Request request)
+    {
+        if (pending.Count >= MaxPending)
+        {
+            pending.Clear();
+        }
+
+        request.HandOverOnly = true;
+        request.HandingOver = true;
+        request.HandoverAt = Time.time;
+        request.Owner = request.View.GetZDO().GetOwner();
+        pending[request.Id] = request;
+        HandedOver(request.View, request.PlayerId);
     }
 
     private static void Send(Request request)
@@ -503,6 +546,8 @@ public static class ChestWithdrawal
         public long Owner { get; set; }
 
         public bool HandingOver { get; set; }
+
+        public bool HandOverOnly { get; set; }
 
         public float HandoverAt { get; set; }
 

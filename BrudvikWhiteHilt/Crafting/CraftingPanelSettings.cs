@@ -68,6 +68,8 @@ public static class CraftingPanelSettings
         Translations.AddEnglish("whitehilt_req_unlimited_elsewhere", "Unlimited in the {0}, but none is nearby");
         Translations.AddEnglish("whitehilt_req_unlimited_off", "Unlimited in the {0}, but using nearby chests is off");
         Translations.AddEnglish("whitehilt_req_unlock", "Unlimited after {0} more ({1}/{2} in the best chest)");
+        Translations.AddEnglish("whitehilt_req_have_short", "have {0}");
+        Translations.AddEnglish("whitehilt_req_unlimited_short", "unlimited");
         Translations.AddEnglish("whitehilt_recipes_search", "Search name or material...");
         Translations.AddEnglish("whitehilt_recipes_search_tip", "Finds recipes by name or by what they are made of. Right-click a recipe to make it a favourite; favourites stay at the top.");
         Translations.AddEnglish("whitehilt_recipes_craftable", "Craftable");

@@ -50,7 +50,7 @@ These work with any build tool, with or without the build camera. The right mous
 
 | Key | What it does |
 |-----|--------------|
-| Ctrl + A | Selection mode: click pieces to add or remove them, or Shift+click two corners to select everything in a box (PgUp / PgDn change its height). Selected pieces glow blue. Leaving selection mode (Ctrl + A again, right-click or putting the hammer away) clears the selection |
+| Ctrl + A | Selection mode: click pieces to add or remove them, double-click a piece to select it and every piece joined to it (a whole house with its roof, floors and furniture), or Shift+click two corners to select everything in a box (PgUp / PgDn change its height). Selected pieces glow blue. Leaving selection mode (Ctrl + A again, right-click or putting the hammer away) clears the selection |
 | Ctrl + C | Copy the selection and start placing the copy |
 | Ctrl + X | Move the selection: it is torn down and put up again where you place it, for free. Sign texts and portal names follow; chests and stands must be empty |
 | Ctrl + V | Place the last copy again |
@@ -63,6 +63,8 @@ These work with any build tool, with or without the build camera. The right mous
 While placing a group, a see-through preview shows where everything goes: blue when it can be placed, red when something is missing (the hint says what). The mouse wheel turns it, and the arrows and PgUp / PgDn shift it. A group is placed all or nothing, from the bottom up, with the usual rules: known recipes, crafting stations, wards and no-build zones. Ctrl + Z takes back a whole paste, move, line, area or tear-down.
 
 Blueprints are saved in `BepInEx/config/BrudvikWhiteHilt/blueprints/` in PlanBuild's `.blueprint` format, shared by all worlds. PlanBuild `.blueprint` and BuildShare `.vbuild` files put in that folder can be used too; pieces from mods you do not have are skipped. Terrain changes are not part of blueprints. The server can switch group building off and limit the number of pieces per group (`BuildTools.Groups`, no limit by default). `PasteReach` (30 m) is how far away copied pieces, lines and areas can be placed without the build camera.
+
+A double-click follows the building from piece to piece: pieces count as joined when they touch or lie within `JoinGap` (0.15 m) of each other, as the game reckons what holds a piece up. The ground joins nothing, so a separate shed on the same field stays out, and ships and carts are never taken along. One double-click selects at most `MaxJoined` (3000) pieces; the message says when the building goes on beyond that. Both are your own settings in `[BuildTools.Groups]`. To make a blueprint of a building: Ctrl + A, double-click a wall, Ctrl + S.
 
 ### Shared blueprints
 

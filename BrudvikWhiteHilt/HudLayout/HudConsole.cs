@@ -1,5 +1,7 @@
 using BepInEx.Configuration;
 using BrudvikWhiteHilt.Backpack;
+using BrudvikWhiteHilt.Crafting;
+using BrudvikWhiteHilt.Helpers;
 using Jotunn.Managers;
 using System.Collections.Generic;
 using System.Text;
@@ -242,7 +244,8 @@ public static class HudConsole
     }
 
     // The piece the build tool will place, bold, then each thing it costs with the amount in the game's own colour for
-    // it: red while there is too little, White Hilt's colour when nearby chests make up the rest. Read from the game's
+    // it: red while there is too little, White Hilt's colour when nearby chests make up the rest. After it, dimmed,
+    // how many you have or that a chest keeps it unlimited, as the build menu's icons show. Read from the game's
     // build panel, so other mods' changes to it come along.
     private static string BuildLine()
     {
@@ -274,6 +277,12 @@ public static class HudConsole
             if (amount != null && amount.gameObject.activeSelf && !string.IsNullOrEmpty(amount.text))
             {
                 line.Append(" <color=#").Append(ColorUtility.ToHtmlStringRGB(amount.color)).Append('>').Append(amount.text).Append("</color>");
+            }
+
+            if (RequirementOverlay.TryGetShown(item.transform, out int have, out bool unlimited))
+            {
+                string text = unlimited ? Translations.Word("whitehilt_req_unlimited_short") : string.Format(Translations.Word("whitehilt_req_have_short"), have);
+                line.Append(" <color=#").Append(ColorUtility.ToHtmlStringRGB(dimColor)).Append(">(").Append(text).Append(")</color>");
             }
         }
 

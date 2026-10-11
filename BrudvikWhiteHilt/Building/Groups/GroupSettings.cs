@@ -21,6 +21,12 @@ public static class GroupSettings
     /// <summary>How far away pieces may be pasted without the build camera, in metres.</summary>
     public static ConfigEntry<float> PasteReach { get; private set; }
 
+    /// <summary>How far away, in metres, from a piece another one may be and still count as joined to it.</summary>
+    public static ConfigEntry<float> JoinGap { get; private set; }
+
+    /// <summary>Most pieces one double-click selects as a building; 0 means no limit.</summary>
+    public static ConfigEntry<int> MaxJoined { get; private set; }
+
     /// <summary>Selection mode on and off.</summary>
     public static ConfigEntry<KeyboardShortcut> KeySelect { get; private set; }
 
@@ -59,6 +65,11 @@ public static class GroupSettings
             new AcceptableValueRange<int>(0, 100000));
         PasteReach = WhiteHiltConfig.BindAdminOnly(Section, "PasteReach", 30f,
             "How far away, in metres, copied pieces, lines and areas can be placed without the build camera.", new AcceptableValueRange<float>(5f, 100f));
+        JoinGap = WhiteHiltConfig.BindLocal(Section, "JoinGap", 0.15f,
+            "Double-clicking a piece in selection mode selects it and every piece joined to it. Pieces this far apart, in metres, or closer count as joined.",
+            new AcceptableValueRange<float>(0f, 1f));
+        MaxJoined = WhiteHiltConfig.BindLocal(Section, "MaxJoined", 3000, "Most pieces a double-click selects as one building. 0 means no limit.",
+            new AcceptableValueRange<int>(0, 100000));
 
         KeySelect = BindKey("Select", KeyCode.A, "Selection mode on and off.");
         KeyClear = BindKey("ClearSelection", KeyCode.D, "Clear the selection.");
@@ -90,7 +101,7 @@ public static class GroupSettings
         Translations.AddEnglish("whitehilt_build_tip_line", "Places a row of the held piece between two points, or fills an area with floors.");
         Translations.AddEnglish("whitehilt_build_tip_paste", "Places what you copied.");
         Translations.AddEnglish("whitehilt_group_hint_select",
-            "Selected: {0}   Click a piece: add or remove   Shift+click two corners: box (height {1} m, PgUp/PgDn)\n[{2}] copy   [{3}] move   [{4}] tear down   [{5}] save blueprint   [{6}] clear   Right mouse: done");
+            "Selected: {0}   Click a piece: add or remove   Double-click: the piece and all joined to it   Shift+click two corners: box (height {1} m, PgUp/PgDn)\n[{2}] copy   [{3}] move   [{4}] tear down   [{5}] save blueprint   [{6}] clear   Right mouse: done");
         Translations.AddEnglish("whitehilt_group_hint_paste",
             "{0}: {1} pieces   Click: place   Wheel: turn   Arrows, PgUp/PgDn: shift   Right mouse: stop\n{2}");
         Translations.AddEnglish("whitehilt_group_hint_line",
@@ -112,6 +123,8 @@ public static class GroupSettings
         Translations.AddEnglish("msg_whitehilt_group_disabled", "Group building is switched off on this server");
         Translations.AddEnglish("msg_whitehilt_group_nothing", "Nothing selected");
         Translations.AddEnglish("msg_whitehilt_group_copied", "{0} pieces copied");
+        Translations.AddEnglish("msg_whitehilt_group_joined", "{0} joined pieces selected");
+        Translations.AddEnglish("msg_whitehilt_group_joined_capped", "{0} joined pieces selected; the building goes on beyond the limit (MaxJoined)");
         Translations.AddEnglish("msg_whitehilt_group_saved", "Blueprint saved: {0}");
         Translations.AddEnglish("msg_whitehilt_group_removed", "{0} pieces torn down");
         Translations.AddEnglish("msg_whitehilt_group_skipped", "{0} pieces could not be torn down (ward, station or contents)");

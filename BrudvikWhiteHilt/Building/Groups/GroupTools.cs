@@ -14,6 +14,7 @@ public static class GroupTools
 {
     private const float CheckInterval = 0.25f;
     private const float FollowGroundBelowHeight = 1.6f;
+    private const float DoubleClickSeconds = 0.4f;
 
     private static readonly List<GroupPlacer.Item> items = new();
     private static readonly List<(Piece Piece, PieceSnapshot Snapshot)> pasteParts = new();
@@ -29,6 +30,8 @@ public static class GroupTools
     private static float nextCheck;
     private static int checkedCount = -1;
     private static float wheelAmount;
+    private static Piece lastClicked;
+    private static float lastClickTime;
 
     /// <summary>
     /// The group tool modes.
@@ -340,8 +343,8 @@ public static class GroupTools
         });
     }
 
-    // The select tool: a click adds or removes a piece, Shift with two clicks selects everything in a box, and
-    // PgUp/PgDn change the box's height.
+    // The select tool: a click adds or removes a piece, a double-click selects it with everything joined to it, Shift
+    // with two clicks selects everything in a box, and PgUp/PgDn change the box's height.
     private static void TickSelect(Player player)
     {
         bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -377,9 +380,9 @@ public static class GroupTools
             else if (Aim(player, player.m_removeRayMask, out RaycastHit pieceHit))
             {
                 Piece piece = pieceHit.collider.GetComponentInParent<Piece>();
-                if (piece != null && GroupPlacer.Resolve(Utils.GetPrefabName(piece.gameObject)) != null && !Planting.Plantables.IsWild(piece))
+                if (BuildSelection.CanSelect(piece))
                 {
-                    BuildSelection.Toggle(piece);
+                    ClickPiece(player, piece);
                 }
             }
         }
@@ -401,6 +404,24 @@ public static class GroupTools
         HintLine = string.Format(Localization.instance.Localize("$whitehilt_group_hint_select"), BuildSelection.Count,
             Mathf.RoundToInt(BuildSelection.BoxHeight), KeyName(GroupSettings.KeyCopy), KeyName(GroupSettings.KeyCut),
             KeyName(GroupSettings.KeyDelete), KeyName(GroupSettings.KeySave), KeyName(GroupSettings.KeyClear));
+    }
+
+    // The first click toggles the piece; a second on the same piece soon after selects the whole building it is part
+    // of, so a large build becomes a blueprint without clicking every piece.
+    private static void ClickPiece(Player player, Piece piece)
+    {
+        if (piece == lastClicked && Time.unscaledTime - lastClickTime <= DoubleClickSeconds)
+        {
+            lastClicked = null;
+            int count = BuildSelection.SelectJoined(piece, out bool capped);
+            player.Message(MessageHud.MessageType.TopLeft, string.Format(
+                Localization.instance.Localize(capped ? "$msg_whitehilt_group_joined_capped" : "$msg_whitehilt_group_joined"), count));
+            return;
+        }
+
+        BuildSelection.Toggle(piece);
+        lastClicked = piece;
+        lastClickTime = Time.unscaledTime;
     }
 
     // The paste tool: the copied pieces follow the aim, snapped to the grid if it is on, turned with the wheel and

@@ -2,6 +2,17 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Select a whole building at once.** In the group tools' selection mode, a double-click on a piece selects it and every piece joined to it, so a blueprint of a large house is Ctrl + A, a double-click and Ctrl + S instead of clicking every piece ([build tools](docs/build-tools.md#groups-blueprints-lines-and-areas), `JoinGap` and `MaxJoined` in `[BuildTools.Groups]`).
+- **The build line shows what you have.** In the White Hilt HUD, each cost of the piece you are about to build is followed by how many you have, counting the chests you may use, or *unlimited* when a chest nearby keeps it so.
+
+### Fixed
+- **Blueprints, roads and moats are built straight from the chests.** Placing a blueprint, a copy, a line or an area first moved everything it cost from the chests into your inventory, so a large build left you overencumbered, and what did not fit fell to the ground and was then missing. Chests you hold are now paid from directly, and the chests other players hold are handed over to you instead of sending their contents. Roads, the other terrain tools and the stakes of a staked ditch pay the same way. Crafting and single pieces no longer move materials into your inventory from chests you already hold either.
+- **A road goes on after it has waited.** A road that paused for want of stone, or while it waited for the chests, skipped the stretch it was on when you went on, and paused again at once. It now waits for the chests without pausing, and builds the stretch it could not pay for when you go on.
+- **The round minimap shows the map again.** Only the player, the pins and the areas were drawn on it, not the land; the map's zoom and position now reach the round map too.
+
 ## v0.121.0 - 2026-10-11
 
 ### Added

@@ -21,7 +21,7 @@ The White Hilt HUD gathers everything about yourself in one console at the botto
 - **A context strip** over the bars when there is something to say, up to three lines:
   - **Warnings**, for a while, instead of a message in the middle of the screen: night falling (orange) and, aboard a ship with a Navigator's Table, a storm coming (violet).
   - **A raid or other event** while it lasts, in red, instead of the game's event bar.
-  - **The piece you are about to build** and what it costs, each amount in the game's own colour for it: red while you have too little, and White Hilt's colour when [nearby chests](chests.md) make up the rest. The game's build panel at the bottom is hidden.
+  - **The piece you are about to build** and what it costs, each amount in the game's own colour for it: red while you have too little, and White Hilt's colour when [nearby chests](chests.md) make up the rest. After each amount, dimmed, how many you have (in your inventory and the chests you may use), or *unlimited* when a chest nearby keeps it so; this follows `ShowInBuildMenu` in `[CraftingPanel]`. The game's build panel at the bottom is hidden.
   - **The creature you fight**: the one under the crosshair, for a few seconds after you look away, or else the nearest one hunting you, with its stars, health and what it is weak to, resists and is immune to.
   - **The ship** while you steer it (or ride one sailing its route): speed, heading, depth, wind, held course and time to arrival, instead of under the wind indicator.
   - **Stations near you** (within 20 m) that have stopped, need you soon or are done, the most urgent first, as the [production overview](production.md) has them.

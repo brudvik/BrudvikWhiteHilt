@@ -1,4 +1,5 @@
 using BepInEx;
+using BrudvikWhiteHilt.Crafting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -250,8 +251,20 @@ public static class RoadBuilder
             {
                 TerrainShapes.Plan plan = TerrainShapes.Band(stretch, road.Width, RoadSkirt, road.Paint, road.Done);
                 plan.Job.Undoable = false;
-                if (plan.Problem != null || !TerrainShapes.Run(player, plan))
+                if (plan.Problem != null || (plan.Job.Ops.Count > 0 && !TerrainShapes.Run(player, plan, resume: false)))
                 {
+                    // Band marked the stretch's vertices done when it planned them; unpaid, they are planned again.
+                    foreach ((Vector3 point, TerrainOp.Settings _) in plan.Job.Ops)
+                    {
+                        road.Done.Remove(TerrainShapes.Key(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.z)));
+                    }
+
+                    // Chests are being handed over: the stretch is tried again on a later tick, not paused.
+                    if (plan.Problem == null && ChestWithdrawal.Busy)
+                    {
+                        return;
+                    }
+
                     road.Paused = true;
                     road.Blocker = plan.Problem ?? Localization.instance.Localize(TerrainCost.Stone?.m_itemData.m_shared.m_name ?? string.Empty);
                     player.Message(MessageHud.MessageType.Center,

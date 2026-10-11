@@ -75,8 +75,8 @@ public static class TerrainCost
 
     /// <summary>
     /// Takes a resource from the inventory first, then from nearby chests, as building does (<see cref="ChestCost"/>):
-    /// what lies in chests other players hold is fetched first, and <paramref name="again"/> does the work once it has
-    /// arrived. Without it the player clicks again.
+    /// chests other players hold are handed over first, as a road can cost more stone than can be carried, and
+    /// <paramref name="again"/> does the work once they are here. Without it the player clicks again.
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="item">The resource.</param>
@@ -92,7 +92,7 @@ public static class TerrainCost
 
         string name = item.m_itemData.m_shared.m_name;
         List<(string Name, int Amount)> needs = new() { (name, amount) };
-        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again))
+        switch (ChestCost.Gather(player, NearbyContainers.Use.Building, needs, again, handOver: true))
         {
             case ChestCost.Outcome.Ready:
                 ChestCost.Take(player, NearbyContainers.Use.Building, needs);

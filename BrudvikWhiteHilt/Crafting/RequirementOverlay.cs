@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -22,6 +23,9 @@ public static class RequirementOverlay
     private static readonly Color GoldColor = new(1f, 0.82f, 0.3f);
     private static readonly Color BarBackgroundColor = new(0f, 0f, 0f, 0.65f);
 
+    // The requirement elements are the game's own fixed slots, so this stays small.
+    private static readonly Dictionary<Transform, (int Total, bool Unlimited)> shown = new();
+
     /// <summary>
     /// Checks whether the overlay is on for this use.
     /// </summary>
@@ -31,6 +35,21 @@ public static class RequirementOverlay
     {
         return CraftingPanelSettings.ShowAvailable != null && CraftingPanelSettings.ShowAvailable.Value &&
                (use != NearbyContainers.Use.Building || CraftingPanelSettings.ShowInBuildMenu.Value);
+    }
+
+    /// <summary>
+    /// What the overlay of a requirement shows now, for places that show the requirement in their own way.
+    /// </summary>
+    /// <param name="elementRoot">The requirement element.</param>
+    /// <param name="total">How many the player has, in the inventory and the chests that may be used.</param>
+    /// <param name="unlimited">Whether a chest nearby keeps it unlimited.</param>
+    /// <returns>True if the overlay shows on this element.</returns>
+    public static bool TryGetShown(Transform elementRoot, out int total, out bool unlimited)
+    {
+        bool found = shown.TryGetValue(elementRoot, out (int Total, bool Unlimited) value);
+        total = value.Total;
+        unlimited = value.Unlimited;
+        return found;
     }
 
     /// <summary>
@@ -57,6 +76,7 @@ public static class RequirementOverlay
         TMP_Text amount = elementRoot.Find("res_amount")?.GetComponent<TMP_Text>();
         TMP_Text badge = GetBadge(elementRoot, amount);
         int total = own + inChests;
+        shown[elementRoot] = (total, unlimited);
         if (unlimited)
         {
             bool hasGlyph = badge.font == null || badge.font.HasCharacter(Infinity[0], true, true);
@@ -106,6 +126,7 @@ public static class RequirementOverlay
             return;
         }
 
+        shown.Remove(elementRoot);
         Transform badge = elementRoot.Find(BadgeName);
         if (badge != null)
         {

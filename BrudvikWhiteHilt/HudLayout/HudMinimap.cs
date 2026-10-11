@@ -38,6 +38,15 @@ public static class HudMinimap
     private static readonly Color northColor = new(1f, 0.54f, 0.48f);
     private static readonly Color waypointColor = new(0.91f, 0.64f, 0.24f);
     private static readonly string[] letterKeys = { "$whitehilt_compass_n", "$whitehilt_compass_e", "$whitehilt_compass_s", "$whitehilt_compass_w" };
+    private static readonly int[] mapTextures =
+    {
+        Shader.PropertyToID("_MainTex"), Shader.PropertyToID("_MaskTex"), Shader.PropertyToID("_HeightTex"), Shader.PropertyToID("_FogTex")
+    };
+
+    private static readonly int mapZoom = Shader.PropertyToID("_zoom");
+    private static readonly int mapPixelSize = Shader.PropertyToID("_pixelSize");
+    private static readonly int mapCenter = Shader.PropertyToID("_mapCenter");
+    private static readonly int mapSharedFade = Shader.PropertyToID("_SharedFade");
     private static readonly List<Graphic> hidden = new();
     private static readonly List<Graphic> found = new();
     private static readonly List<Image> marks = new();
@@ -79,6 +88,7 @@ public static class HudMinimap
         }
 
         Place(map);
+        SyncMaterial(map);
         if (Time.unscaledTime >= nextRefresh)
         {
             nextRefresh = Time.unscaledTime + RefreshSeconds;
@@ -163,6 +173,31 @@ public static class HudMinimap
         {
             VanillaPlacement.Move(name, space, new Vector2(around.center.x - box.center.x, around.yMin - NameGap - box.yMax));
         }
+    }
+
+    // Under the mask the map is drawn with a stencil copy of its material. The game sets the zoom, the centre and the
+    // textures on the original only, so they are copied over after the game's update.
+    private static void SyncMaterial(Minimap map)
+    {
+        Material source = map.m_mapSmallShader;
+        CanvasRenderer renderer = map.m_mapImageSmall.canvasRenderer;
+        Material drawn = renderer.materialCount > 0 ? renderer.GetMaterial() : null;
+        if (source == null || drawn == null || drawn == source)
+        {
+            return;
+        }
+
+        foreach (int id in mapTextures)
+        {
+            drawn.SetTexture(id, source.GetTexture(id));
+        }
+
+        // The zoom and centre are not declared by the shader, so they are worked out as the game does, not read back.
+        Rect uv = map.m_mapImageSmall.uvRect;
+        drawn.SetFloat(mapZoom, map.SmallZoom);
+        drawn.SetFloat(mapPixelSize, 200f / map.SmallZoom);
+        drawn.SetVector(mapCenter, map.MapPointToWorld(uv.center.x, uv.center.y));
+        drawn.SetFloat(mapSharedFade, source.GetFloat(mapSharedFade));
     }
 
     // Puts a rect on the centre of the map's image, as large as it times a factor, in its parent's space.

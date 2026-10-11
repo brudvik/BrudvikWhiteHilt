@@ -9,8 +9,9 @@ namespace BrudvikWhiteHilt.Crafting;
 /// Paying with what lies in the inventory and in the chests around the local player, the same way everywhere: the
 /// workbenches of the mod, its build and terrain tools and dyeing do it as crafting and building with the hammer do.
 /// What the player has counts every chest in range they may use, so nothing looks missing because another player's
-/// machine held a chest a moment ago. Paying first fetches what lies in such chests (<see cref="ChestWithdrawal"/>) and
-/// does the click again once it has arrived; then it takes from the inventory first and the chests after.
+/// machine held a chest a moment ago. Paying first brings what lies in other players' chests to hand
+/// (<see cref="ChestWithdrawal"/>) and does the click again once it is here; then it takes from the inventory first and
+/// the chests held here after.
 /// </summary>
 public static class ChestCost
 {
@@ -78,8 +79,11 @@ public static class ChestCost
     /// <param name="use">What it is for.</param>
     /// <param name="needs">Shared item names and amounts; a name may come more than once.</param>
     /// <param name="again">Does the click again once fetched items have arrived.</param>
+    /// <param name="handOver">True to have other players' chests handed over instead of their items sent, for payments
+    /// too large to carry (<see cref="ChestWithdrawal.Fetch"/>).</param>
     /// <returns>How it went.</returns>
-    public static Outcome Gather(Player player, NearbyContainers.Use use, IEnumerable<(string Name, int Amount)> needs, Action again)
+    public static Outcome Gather(Player player, NearbyContainers.Use use, IEnumerable<(string Name, int Amount)> needs, Action again,
+        bool handOver = false)
     {
         List<(string Name, int Amount)> total = Total(needs);
         if (total.Count == 0)
@@ -94,7 +98,7 @@ public static class ChestCost
                 return Outcome.Busy;
             }
 
-            if (ChestWithdrawal.Fetch(player, use, total, again ?? (() => { })))
+            if (ChestWithdrawal.Fetch(player, use, total, again ?? (() => { }), handOver))
             {
                 return Outcome.Fetching;
             }

@@ -303,9 +303,9 @@ public static class MoatBuilder
         return places;
     }
 
-    // Places vanilla sharp stakes along a staked ditch, paid like building them by hand. What lies in chests other
-    // players hold is fetched first, and the stakes are placed when it has arrived. When the materials run out it warns
-    // once and the ditch goes on without stakes.
+    // Places vanilla sharp stakes along a staked ditch, paid like building them by hand, straight from the chests:
+    // chests other players hold are handed over first, and the stakes are placed once they are here. When the
+    // materials run out it warns once and the ditch goes on without stakes.
     private static void PlaceStakes(Player player, List<(Vector3 Position, float Yaw)> stakes)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(StakePrefab) : null;
@@ -317,7 +317,7 @@ public static class MoatBuilder
 
         List<(string Name, int Amount)> each = Needs(template);
         if (!player.m_noPlacementCost && ChestCost.Gather(player, NearbyContainers.Use.Building,
-                each.Select(need => (need.Name, need.Amount * stakes.Count)), () => PlaceStakes(player, stakes)) == ChestCost.Outcome.Fetching)
+                each.Select(need => (need.Name, need.Amount * stakes.Count)), () => PlaceStakes(player, stakes), handOver: true) == ChestCost.Outcome.Fetching)
         {
             return;
         }
