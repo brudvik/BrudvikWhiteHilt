@@ -116,7 +116,10 @@ public static class BuildGizmos
 
         for (int i = used; i < rings.Count; i++)
         {
-            rings[i].gameObject.SetActive(false);
+            if (rings[i] != null)
+            {
+                rings[i].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -263,13 +266,18 @@ public static class BuildGizmos
         ringsUntil = 0f;
         foreach (LineRenderer ring in rings)
         {
-            ring.gameObject.SetActive(false);
+            if (ring != null)
+            {
+                ring.gameObject.SetActive(false);
+            }
         }
     }
 
+    // After a logout the lines were destroyed with the scene; touching them would throw in every Player.Update and
+    // stop the patches that run after this one (the equipment slots putting looted gear back on).
     private static void SetAxesActive(bool active)
     {
-        if (axes == null)
+        if (axes == null || root == null)
         {
             return;
         }

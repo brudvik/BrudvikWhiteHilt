@@ -6,6 +6,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ### Fixed
 - **The White Hilt Axe and Pickaxe work in every biome.** They kept the tool tier of the iron axe and pickaxe they are cloned from, so in the Mistlands the game said the wood and stone were too hard, and you needed the black metal ones. They now have the highest tier of the game's axes and pickaxes, as the [White Hilt tools](docs/equipment.md#-tools) are meant to last the whole game.
+- **Looted gear goes back on.** After logging out and in again without quitting the game, the build tools' axis lines threw an error every frame, which stopped the [equipment slots](docs/backpack.md) and food slots from doing their work. Armor taken back from your grave lay in its slots without being worn, and you had to take it out and put it on again. It is now worn as soon as it is back in its slot.
 
 ## v0.119.2 - 2026-10-11
 
