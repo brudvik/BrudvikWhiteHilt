@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.119.0 - 2026-10-11
 
 ### Added
 - **A round minimap.** In the White Hilt HUD the minimap is round, in a dark compass ring with N, E, S and W. Your pins, the bosses you know of, your death and the waypoint that lie beyond what the map shows sit on the ring in the direction they lie, and the biome's name stands under it. `Minimap` in `[HUD]` (`Round` or `Vanilla` for the game's square map), `MinimapRingMarkers` and `MinimapRingOpacity`.
