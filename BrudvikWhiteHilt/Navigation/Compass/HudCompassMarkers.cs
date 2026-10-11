@@ -9,6 +9,11 @@ public static class HudCompassMarkers
 {
     private static readonly List<Minimap.PinData> pins = new();
     private static readonly Dictionary<string, Target> custom = new();
+    // The dark disc behind each marker, so it reads against the sky; the marker's icon is its only child.
+    private const float BackScale = 1.45f;
+    private const float BackOpacity = 0.7f;
+    private static readonly Color backColor = new(0.03f, 0.04f, 0.04f, 1f);
+
     private static readonly List<Image> pool = new();
     private static RectTransform container;
     private static Minimap boundMap;
@@ -109,18 +114,26 @@ public static class HudCompassMarkers
         if (!CompassGeometry.Project(heading, CompassGeometry.Bearing(here, target), width, HudCompassSettings.VisibleDegrees.Value, out float position)) return;
         if (used == pool.Count)
         {
-            Image created = HudCompass.CreateImage(container, "WorldMarker");
+            Image back = HudCompass.CreateImage(container, "WorldMarker");
+            back.sprite = HudLayout.HudSprites.Disc;
+            back.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            Image created = HudCompass.CreateImage(back.transform, "Icon");
             created.preserveAspect = true;
-            created.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            pool.Add(created);
+            created.rectTransform.anchorMin = created.rectTransform.anchorMax = created.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            created.rectTransform.anchoredPosition = Vector2.zero;
+            pool.Add(back);
         }
-        Image icon = pool[used++];
-        if (!icon.gameObject.activeSelf) icon.gameObject.SetActive(true);
+        Image disc = pool[used++];
+        Image icon = disc.transform.GetChild(0).GetComponent<Image>();
+        if (!disc.gameObject.activeSelf) disc.gameObject.SetActive(true);
         icon.sprite = sprite;
         float size = Mathf.Min(HudCompassSettings.MarkerSize.Value, height * 0.28f);
+        float fade = HudCompass.Fade(position, width);
+        disc.rectTransform.sizeDelta = new Vector2(size, size) * BackScale;
+        disc.rectTransform.anchoredPosition = new Vector2(position, -height + size * BackScale / 2f + 1f);
+        disc.color = new Color(backColor.r, backColor.g, backColor.b, BackOpacity * fade);
         icon.rectTransform.sizeDelta = new Vector2(size, size);
-        icon.rectTransform.anchoredPosition = new Vector2(position, -height + size / 2f + 1f);
-        icon.color = new Color(1f, 1f, 1f, HudCompass.Fade(position, width));
+        icon.color = new Color(1f, 1f, 1f, fade);
     }
 
     private sealed class Target

@@ -14,9 +14,9 @@ namespace BrudvikWhiteHilt.HudLayout;
 /// and adrenaline as bars with numbers above it, the food and the guardian power to its left and the status effects to
 /// its right, other mods' effects and indicators among them. Over it all a strip shows the context lines, such as the
 /// ship's read-out while steering, the piece being built and its cost, and warnings. The game's own bars, food, status
-/// list, event bar and build panel are hidden while it shows. The console rises above the ship controls when they are
-/// in the way, keeps other mods' HUD elements clear of itself, and with <see cref="HudSettings.Calm"/> each part fades
-/// while nothing about it changes.
+/// list, event bar and build panel are hidden while it shows. The console always stays in its place at the bottom,
+/// keeps other mods' HUD elements clear of itself, and with <see cref="HudSettings.Calm"/> each part fades while
+/// nothing about it changes.
 /// </summary>
 public static class HudConsole
 {
@@ -31,8 +31,7 @@ public static class HudConsole
     private const float StatusSize = 34f;
     private const float StatusGap = 6f;
     private const float TimeHeight = 14f;
-    private const float ContextGap = 10f;
-    private const float StripGap = 6f;
+    private const float StripGap = 8f;
     private const float StripLine = 20f;
     private const float StripPadding = 14f;
     private const int StripLines = 3;
@@ -76,7 +75,6 @@ public static class HudConsole
 
     private static readonly List<RectTransform> keep = new();
     private static readonly List<RectTransform> hotbarSlots = new();
-    private static readonly List<RectTransform> context = new();
     private static readonly List<RectTransform> single = new();
     private static readonly List<StatusEffect> effects = new();
     private static readonly List<HudIndicator> indicators = new();
@@ -158,13 +156,13 @@ public static class HudConsole
         KeyboardShortcut showAll = HudSettings.KeyShowAll.Value;
         showAllHeld = showAll.MainKey != KeyCode.None && showAll.IsPressed() && !BackpackInput.Typing();
         float scale = Mathf.Clamp(HudSettings.Scale.Value, 0.6f, 1.6f);
-        Rect bar = PlaceHotbar(hud, scale);
+        Rect bar = PlaceHotbar(hud);
         float left = LayoutFood(player, bar, scale);
         left = PlaceGuardianPower(hud, left, bar);
         float top = LayoutVitals(player, bar, scale);
         Vector2 corner = LayoutStatus(player, bar, scale);
-        PlacePanel(Rect.MinMaxRect(left, bar.yMin, corner.x, Mathf.Max(top, corner.y)), scale);
-        top = Mathf.Max(LayoutStrip(bar, top, scale), corner.y);
+        float panelTop = PlacePanel(Rect.MinMaxRect(left, bar.yMin, corner.x, Mathf.Max(top, corner.y)), scale);
+        top = Mathf.Max(LayoutStrip(bar, Mathf.Max(top, panelTop), scale), corner.y);
         Rect console = Rect.MinMaxRect(left, bar.yMin, corner.x, top);
         AvoidForeign(hud, console);
         PlaceHints(player, console);
@@ -321,9 +319,9 @@ public static class HudConsole
         return hotbar;
     }
 
-    // Centres the hotbar at the bottom, raised above the ship controls when they are under it. Returns the
-    // box of its slots; with no slots yet, the box eight slots would take.
-    private static Rect PlaceHotbar(Hud hud, float scale)
+    // Centres the hotbar at the bottom, always in the same place. Returns the box of its slots; with no slots yet, the
+    // box eight slots would take.
+    private static Rect PlaceHotbar(Hud hud)
     {
         float width = root.rect.width;
         float bottom = HudSettings.BottomMargin.Value;
@@ -347,13 +345,6 @@ public static class HudConsole
             slots = new Rect(0f, 0f, space * FallbackSlots, FallbackSlotHeight);
         }
 
-        float half = slots.width / 2f + (FoodSize + StatusSize) * 4f * scale;
-        float lift = ContextTop(hud, width / 2f - half, width / 2f + half);
-        if (lift > 0f)
-        {
-            bottom = Mathf.Max(bottom, lift + ContextGap);
-        }
-
         Vector2 delta = new(width / 2f - slots.center.x, bottom - slots.yMin);
         if (measured && bar != null)
         {
@@ -362,32 +353,6 @@ public static class HudConsole
 
         slots.position += delta;
         return slots;
-    }
-
-    // The top of the game's ship controls where they overlap the console's width; 0 when none do.
-    private static float ContextTop(Hud hud, float left, float right)
-    {
-        // The build panel is hidden: its piece and cost are in the context strip.
-        context.Clear();
-        if (hud.m_shipHudRoot != null && hud.m_shipHudRoot.activeInHierarchy)
-        {
-            context.Add(hud.m_shipControlsRoot != null ? hud.m_shipControlsRoot.transform as RectTransform : null);
-            context.Add(hud.m_shipWindIndicatorRoot);
-        }
-
-        float top = 0f;
-        foreach (RectTransform rect in context)
-        {
-            single.Clear();
-            single.Add(rect);
-            if (VanillaPlacement.Bounds(root, single, out Rect box) && box.xMax > left && box.xMin < right
-                && box.yMin < root.rect.height / 2f)
-            {
-                top = Mathf.Max(top, box.yMax);
-            }
-        }
-
-        return top;
     }
 
     // The food the player has eaten, left of the hotbar: icon, a frame coloured by how much is left and the time under
@@ -586,8 +551,9 @@ public static class HudConsole
     }
 
     // The half dark rounded panel behind the console, from the guardian power to the status effects and from under the
-    // hotbar to over the bars, so they read against snow and sky; none with an opacity of 0.
-    private static void PlacePanel(Rect around, float scale)
+    // hotbar to over the bars, so they read against snow and sky; none with an opacity of 0. Returns the panel's top,
+    // or the top of what it would go round without it.
+    private static float PlacePanel(Rect around, float scale)
     {
         bool shown = HudSettings.PanelOpacity.Value > 0f;
         if (panel.gameObject.activeSelf != shown)
@@ -597,17 +563,18 @@ public static class HudConsole
 
         if (!shown)
         {
-            return;
+            return around.yMax;
         }
 
         float pad = PanelPadding * scale;
         Place(panel.rectTransform, new Vector2(around.xMin - pad, around.yMin - pad),
             new Vector2(around.width + 2f * pad, around.height + 2f * pad));
         panel.pixelsPerUnitMultiplier = HudSprites.RoundedBoxCorner / Mathf.Max(1f, HudSettings.PanelRadius.Value * scale);
+        return around.yMax + pad;
     }
 
-    // The context lines in a strip over the bars, centred on the hotbar; hidden when no line has anything to say.
-    // Returns the top of the strip, or of the bars without it.
+    // The context lines in a strip over the panel, clear of it, centred on the hotbar; hidden when no line has anything
+    // to say. Returns the top of the strip, or the given top without it.
     private static float LayoutStrip(Rect bar, float top, float scale)
     {
         WhiteHiltHud.ReadContexts(lines);
@@ -1255,6 +1222,8 @@ public static class HudConsole
         {
             root = Element(parent, "Context");
             back = Box(root, "Back", panelColor);
+            back.sprite = HudSprites.RoundedBox;
+            back.type = Image.Type.Sliced;
             text = Label(root, "Lines", TextAnchor.MiddleCenter);
             text.rectTransform.pivot = new Vector2(0.5f, 0.5f);
             text.rectTransform.anchorMin = text.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -1287,6 +1256,10 @@ public static class HudConsole
             float width = text.preferredWidth + 2f * StripPadding * scale;
             Place(root, new Vector2(bottomCentre.x - width / 2f, bottomCentre.y), new Vector2(width, height));
             Place(back.rectTransform, Vector2.zero, new Vector2(width, height));
+
+            // Rounded as the panel under it, at most half the strip's height.
+            float radius = Mathf.Min(HudSettings.PanelRadius.Value * scale, height / 2f);
+            back.pixelsPerUnitMultiplier = HudSprites.RoundedBoxCorner / Mathf.Max(1f, radius);
             text.rectTransform.anchoredPosition = Vector2.zero;
             text.rectTransform.sizeDelta = new Vector2(width, height);
             return bottomCentre.y + height;

@@ -19,6 +19,9 @@ public static class GameClock
 {
     private const float RefreshSeconds = 0.25f;
     private const float IconGap = 8f;
+
+    // The weather icon sits on a dark disc this much larger than itself, so it reads against a bright sky.
+    private const float IconBackScale = 1.35f;
     private const float Nightfall = 18f;
 
     private const float BossBarOffset = 80f;
@@ -26,6 +29,7 @@ public static class GameClock
 
     private static readonly Color dayColor = new(1f, 0.95f, 0.85f);
     private static readonly Color warningColor = new(1f, 0.6f, 0.2f);
+    private static readonly Color iconBackColor = new(0.03f, 0.04f, 0.04f, 0.7f);
     private static readonly Dictionary<string, Sprite> icons = new();
 
     private static RectTransform root;
@@ -34,6 +38,7 @@ public static class GameClock
     private static readonly Vector3[] hotbarCorners = new Vector3[4];
     private static Text label;
     private static Image icon;
+    private static Image iconBack;
     private static float nextRefresh;
     private static float lastHours = -1f;
 
@@ -143,14 +148,22 @@ public static class GameClock
 
         Sprite weather = ClockSettings.ShowWeather.Value ? WeatherIcon(hours) : null;
         icon.gameObject.SetActive(weather != null);
+        iconBack.gameObject.SetActive(weather != null);
         float size = label.fontSize * 1.4f;
+        float back = size * IconBackScale;
         float width = label.preferredWidth;
+        float total = width + 4f + (weather != null ? back + IconGap : 0f);
+
+        // The icon on its dark disc at the left end, inside the clock's own box, the time after it.
         if (weather != null)
         {
             icon.sprite = weather;
+            Vector2 centre = new(-total / 2f + back / 2f, 0f);
             icon.rectTransform.sizeDelta = new Vector2(size, size);
-            icon.rectTransform.anchoredPosition = new Vector2(-(width + size) / 2f - IconGap / 2f, 0f);
-            label.rectTransform.anchoredPosition = new Vector2((size + IconGap) / 2f, 0f);
+            icon.rectTransform.anchoredPosition = centre;
+            iconBack.rectTransform.sizeDelta = new Vector2(back, back);
+            iconBack.rectTransform.anchoredPosition = centre;
+            label.rectTransform.anchoredPosition = new Vector2(total / 2f - (width + 4f) / 2f, 0f);
         }
         else
         {
@@ -158,7 +171,7 @@ public static class GameClock
         }
 
         label.rectTransform.sizeDelta = new Vector2(width + 4f, size);
-        root.sizeDelta = new Vector2(width + 4f + (weather != null ? size + IconGap : 0f), size);
+        root.sizeDelta = new Vector2(total, weather != null ? back : size);
         UpdateLayout();
     }
 
@@ -318,6 +331,14 @@ public static class GameClock
         label.alignment = TextAnchor.MiddleCenter;
         label.horizontalOverflow = HorizontalWrapMode.Overflow;
         label.raycastTarget = false;
+
+        GameObject disc = new("WeatherBack", typeof(RectTransform), typeof(Image));
+        disc.transform.SetParent(root, false);
+        iconBack = disc.GetComponent<Image>();
+        iconBack.sprite = HudLayout.HudSprites.Disc;
+        iconBack.color = iconBackColor;
+        iconBack.raycastTarget = false;
+        iconBack.rectTransform.anchorMin = iconBack.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
         GameObject image = new("Weather", typeof(RectTransform), typeof(Image));
         image.transform.SetParent(root, false);
