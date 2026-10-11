@@ -33,7 +33,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.118.0
+## ✨ New in 0.119.0
+
+- **A round minimap** in the [White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud): the map in a dark compass ring, with the pins, bosses and waypoint beyond it on the ring in the direction they lie. The HUD also stays at the bottom on a ship, and the weather icon and compass markers sit on dark discs.
+
+### Also new in 0.118.0
 
 - **[The White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud)** reads against snow and sky: a half dark rounded panel behind the console and a band behind the compass, clock and waypoint (or a soft darkening from the top). It also shows worn gear and a heavy load among the status effects, the creature you fight with its weaknesses and the stations near you that need you in the strip, a red arc on the side a hit came from, and comes in Compact, Standard and Large layouts.
 - **Ridge Dragon, Ridge Turret, Dragon Portal and Stave Church Portal** are back in the hammer, and the log is free of the portal's "Missing prefab hash" flood and a few other warnings.
@@ -43,12 +47,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 - **[Darkwood roof crosses](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#darkwood-roof-crosses)** for the 26°, 45° and 67° roofs, and darkwood beams and poles of 1 m, so darkwood has every beam and roof the wooden family has.
 - **[Laft walls](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md)** close at the joints: no more notch between the logs where two walls meet.
 - **The White Hilt HUD** keeps the key hints beside the console, shows briefly what every status icon is, and lets its rings turn yellow and red. [Desert Dragons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#desert-dragons) come a third as often and give more when they do.
-
-### Also new in 0.116.0
-
-- **[The White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud)**: your health, stamina, eitr, food, guardian power, hotbar and status effects in one console at the bottom centre, with countdown rings, a strip for the ship, the piece you build, raids and warnings, your dog and tamed animals under the party list, and a quiet screen that shows only what changes. The game's own HUD is one setting away.
-
-![Concept drawing of the White Hilt HUD](https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/hud_console.png)
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
