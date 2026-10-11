@@ -56,13 +56,28 @@ These work with any build tool, with or without the build camera. The right mous
 | Ctrl + V | Place the last copy again |
 | Delete | Tear down the selection, giving back what the hammer would |
 | Ctrl + S | Save the selection as a blueprint |
-| Ctrl + O | Blueprint panel: search, cost against what you have (chests count), place, rename, delete |
+| Ctrl + O | Blueprint panel: search, cost against what you have (chests count), place, rename, delete, and [share](#shared-blueprints) |
 | Ctrl + L | Line and area with the held piece: click the start, then the end. Walls, fences and beams go in a row (a line carries on from where it ended; low pieces such as fences follow the ground), floors fill the area. Press again to switch between line, area and off |
 | Ctrl + D | Clear the selection |
 
 While placing a group, a see-through preview shows where everything goes: blue when it can be placed, red when something is missing (the hint says what). The mouse wheel turns it, and the arrows and PgUp / PgDn shift it. A group is placed all or nothing, from the bottom up, with the usual rules: known recipes, crafting stations, wards and no-build zones. Ctrl + Z takes back a whole paste, move, line, area or tear-down.
 
 Blueprints are saved in `BepInEx/config/BrudvikWhiteHilt/blueprints/` in PlanBuild's `.blueprint` format, shared by all worlds. PlanBuild `.blueprint` and BuildShare `.vbuild` files put in that folder can be used too; pieces from mods you do not have are skipped. Terrain changes are not part of blueprints. The server can switch group building off and limit the number of pieces per group (`BuildTools.Groups`, no limit by default). `PasteReach` (30 m) is how far away copied pieces, lines and areas can be placed without the build camera.
+
+### Shared blueprints
+
+The blueprint panel has two tabs. **Mine** holds your own blueprints, as before, with a **Share** button. **Shared** holds the blueprints everyone has shared in this world, kept on the server: choose one and press **Fetch** to put a copy among your own, then place it with the hammer as usual. Placing a shared blueprint costs the same as any other. Blueprints you shared show in green; only you can **Unshare** them (press twice to be sure). Sharing a blueprint again under the same name replaces your old one.
+
+By default you share and fetch at a [School Bench](school.md), the village's library: its window has a *Shared blueprints* button that opens the panel without the hammer. The server keeps each world's shared blueprints in `BepInEx/config/BrudvikWhiteHilt/blueprints/shared/<world>_<id>/`. It checks every blueprint it gets: its size, that it knows the pieces (unknown ones are left out), how many the player has shared and how often. The server needs the mod; without it the shared tab says the server does not answer.
+
+| Setting (`[BuildTools.SharedBlueprints]`) | Default | What it does |
+|---|---|---|
+| `Enabled` | true | Players can share blueprints on the server |
+| `NeedSchoolBench` | true | Sharing and fetching needs a School Bench nearby (`BlueprintRange` in `[School]`, 6 m) |
+| `MaxPerPlayer` | 25 | Most blueprints one player may share in a world |
+| `MaxPieces` | 5000 | Most pieces in a shared blueprint |
+| `MaxKilobytes` | 256 | Largest shared blueprint, packed, in kilobytes |
+| `ShareCooldownSeconds` | 10 | Seconds a player must wait between two shares |
 
 ### White Hilt hoe and cultivator
 

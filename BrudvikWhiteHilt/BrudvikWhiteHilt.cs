@@ -85,6 +85,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         BuildToolSettings.Initialize();
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
+        Building.Groups.SharedBlueprintSettings.Initialize();
+        School.SchoolSettings.Initialize();
         Building.Terrain.TerrainSettings.Initialize();
         Building.Moats.MoatSettings.Initialize();
         Items.Curing.CuringSettings.Initialize();

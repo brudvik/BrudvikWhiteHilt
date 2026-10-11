@@ -7,9 +7,12 @@ render_preview.ps1 into BrudvikWhiteHiltUnity/Preview/out/<name>.png.
 
 Spec (JSON):
   { "name": "paintbench",
-    "base": { "mesh": "painttable", "size": 2.2 },            # or "height": metres
-    "props": [ { "mesh": "palette", "base": [0.05, 1, -0.7], "height": 0.022, "yaw": 20 } ],
+    "base": { "mesh": "painttable", "size": 2.2 },            # or "height": metres; optional "position": metres
+    "props": [ { "mesh": "palette", "base": [0.05, 1, -0.7], "height": 0.022, "yaw": 20 } ],  # or "rotation": [x, y, z]
+    "parts": [ { "mesh": "bench01", "position": [0, 0, 0] } ],  # optional: meshes from Preview/vanilla, in metres
     "views": [ { "label": "front", "yaw": 90, "pitch": 15 } ] }  # optional; "focus"/"radius"/"zoom" as in PreviewRender
+
+Prop meshes named decor_<id> are read from the decor models (Assets/Decor).
 
 Usage: python compose_preview.py <spec.json> [--no-render]
 """
@@ -22,6 +25,7 @@ import sys
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 SOURCE = REPO / "BrudvikWhiteHiltUnity" / "Assets" / "Foraging"
+DECOR = REPO / "BrudvikWhiteHiltUnity" / "Assets" / "Decor"
 MESHES = REPO / "BrudvikWhiteHiltUnity" / "Preview" / "vanilla"
 LAYOUTS = REPO / "BrudvikWhiteHiltUnity" / "Preview"
 DEFAULT_VIEWS = [
@@ -35,7 +39,7 @@ def load_obj(name):
     """Reads a converted OBJ as Unity imports it: x negated, winding flipped back. One vertex per corner."""
     positions, uvs, normals = [], [], []
     vertices, out_normals, out_uvs, triangles = [], [], [], []
-    path = SOURCE / f"{name}.obj"
+    path = (DECOR if name.startswith("decor_") else SOURCE) / f"{name}.obj"
     if not path.exists():
         sys.exit(f"{path} not found; run AssetSource\\build_foraging_bundle.ps1 first")
     for line in path.read_text().splitlines():
@@ -71,7 +75,8 @@ def bounds(vertices):
 def write_mesh(name, vertices, normals, uvs, triangles):
     texture = f"{name}_albedo"
     (MESHES / "textures").mkdir(parents=True, exist_ok=True)
-    source = next((SOURCE / f"{texture}{ext}" for ext in (".png", ".jpg") if (SOURCE / f"{texture}{ext}").exists()), None)
+    folder = DECOR if name.startswith("decor_") else SOURCE
+    source = next((folder / f"{texture}{ext}" for ext in (".png", ".jpg") if (folder / f"{texture}{ext}").exists()), None)
     if source is None:
         print(f"  {name}: no texture, rendered untextured")
     elif source.suffix == ".png":
@@ -96,6 +101,15 @@ def rotate_y(vector, yaw):
     return (x * math.cos(radians) + z * math.sin(radians), y, -x * math.sin(radians) + z * math.cos(radians))
 
 
+def rotate(vector, euler):
+    """Unity's Quaternion.Euler(x, y, z) applied to a vector: z first, then x, then y."""
+    ax, ay, az = (math.radians(a) for a in euler)
+    x, y, z = vector
+    x, y = x * math.cos(az) - y * math.sin(az), x * math.sin(az) + y * math.cos(az)
+    y, z = y * math.cos(ax) - z * math.sin(ax), y * math.sin(ax) + z * math.cos(ax)
+    return rotate_y((x, y, z), math.degrees(ay))
+
+
 def main(spec_path, render):
     spec = json.loads(pathlib.Path(spec_path).read_text())
     base = spec["base"]
@@ -105,22 +119,24 @@ def main(spec_path, render):
     size = [h - l for l, h in zip(low, high)]
     # Like ReplaceMesh: the longest side to "size", or the height to "height"; the base stands at the origin.
     scale = base["size"] / max(size) if "size" in base else base["height"] / size[1]
-    origin = [-(low[0] + high[0]) / 2 * scale, -low[1] * scale, -(low[2] + high[2]) / 2 * scale]
+    offset = base.get("position", [0.0, 0.0, 0.0])
+    origin = [offset[0] - (low[0] + high[0]) / 2 * scale, offset[1] - low[1] * scale, offset[2] - (low[2] + high[2]) / 2 * scale]
     parts = [{"mesh": f"preview_{base['mesh']}", "position": origin, "scale": [scale] * 3}]
+    parts += spec.get("parts", [])
     print(f"{base['mesh']}: {[round(s * scale, 3) for s in size]} m, 1 unit = {scale:.3f} m")
 
     for prop in spec.get("props", []):
         mesh = load_obj(prop["mesh"])
         write_mesh(prop["mesh"], *mesh)
         low, high = bounds(mesh[0])
-        yaw = prop.get("yaw", 0.0)
+        euler = prop.get("rotation", [0.0, prop.get("yaw", 0.0), 0.0])
         # Like AddMesh: the prop's base (bottom centre) goes to "base", scaled to "height", both in base-model units.
         prop_scale = prop["height"] / (high[1] - low[1])
-        pivot = rotate_y(((low[0] + high[0]) / 2 * prop_scale, low[1] * prop_scale, (low[2] + high[2]) / 2 * prop_scale), yaw)
+        pivot = rotate(((low[0] + high[0]) / 2 * prop_scale, low[1] * prop_scale, (low[2] + high[2]) / 2 * prop_scale), euler)
         local = [b - p for b, p in zip(prop["base"], pivot)]
         position = [origin[a] + local[a] * scale for a in range(3)]
         world_scale = prop_scale * scale
-        parts.append({"mesh": f"preview_{prop['mesh']}", "position": position, "rotation": [0, yaw, 0], "scale": [world_scale] * 3})
+        parts.append({"mesh": f"preview_{prop['mesh']}", "position": position, "rotation": euler, "scale": [world_scale] * 3})
         print(f"{prop['mesh']}: {[round((h - l) * world_scale, 3) for l, h in zip(low, high)]} m, base at "
               f"{[round(origin[a] + prop['base'][a] * scale, 3) for a in range(3)]}")
 

@@ -15,7 +15,8 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Painting](painting.md) | The Paint Bench, paint pots and brush, dyeing banners, sails and capes, and the loom |
 | [Beams, poles & banners](building-pieces.md) | Longer and angled beams and poles, darkwood doors, walls, gables and a double gate, iron grates and White Hilt banners |
 | [Decor Hammer](decor.md) | 460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces |
-| [Build camera & toolbar](build-tools.md) | The free build camera, rotation and nudging, undo, area repair, photos, groups, blueprints and terrain tools |
+| [Build camera & toolbar](build-tools.md) | The free build camera, rotation and nudging, undo, area repair, photos, groups, blueprints shared on the server and terrain tools |
+| [School Bench](school.md) | Writing down what you know, reading what others know and studying their skills on the bench |
 
 ## ⛵ Sea & travel
 

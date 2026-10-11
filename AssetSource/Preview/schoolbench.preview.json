@@ -1,0 +1,32 @@
+{
+  "name": "schoolbench",
+  "base": { "mesh": "schoolbench", "size": 2.4, "position": [0, 0, 0.86] },
+  "parts": [ { "mesh": "bench01", "position": [0, 0, 0], "scale": [1, 1, 1] } ],
+  "props": [
+    { "mesh": "schoolscroll", "base": [-0.94, 1.0, -0.32], "height": 0.0433, "yaw": -6 },
+    { "mesh": "waxtablet", "base": [0.0, 1.0, -0.4], "height": 0.0164, "yaw": 3 },
+    { "mesh": "openbook", "base": [0.94, 1.0, -0.36], "height": 0.0258, "yaw": 4 },
+    { "mesh": "schoolscroll", "base": [0.42, 1.0, 0.12], "height": 0.0433, "yaw": 78 },
+    { "mesh": "inkhorn", "base": [-0.42, 1.0, -0.18], "height": 0.283, "yaw": 30 },
+    { "mesh": "runerack", "base": [-0.05, 1.0, 0.52], "height": 0.13, "yaw": 0 },
+    { "mesh": "mapscroll", "base": [-1.12, 1.0, 0.3], "height": 0.055, "yaw": 80 },
+    { "mesh": "mapscroll", "base": [-1.04, 1.0, 0.3], "height": 0.055, "yaw": 95 },
+    { "mesh": "mapscroll", "base": [-1.08, 1.05, 0.32], "height": 0.055, "yaw": 70 },
+    { "mesh": "treasuremap", "base": [0.88, 1.0, 0.45], "height": 0.07, "yaw": 20 },
+    { "mesh": "decor_candlestick", "base": [1.22, 1.0, 0.42], "height": 0.26, "yaw": 0 },
+    { "mesh": "decor_table_candle", "base": [-0.62, 1.0, 0.45], "height": 0.117, "yaw": 0 },
+    { "mesh": "decor_cup_wooden", "base": [0.68, 1.0, 0.18], "height": 0.111, "yaw": 0 },
+    { "mesh": "decor_jar_small", "base": [1.2, 1.0, -0.05], "height": 0.3, "yaw": 0 },
+    { "mesh": "inkhorn", "base": [0.5, 1.0, -0.22], "height": 0.283, "yaw": 200 },
+    { "mesh": "waxtablet", "base": [-0.15, 1.0, 0.16], "height": 0.0164, "yaw": -18 },
+    { "mesh": "openbook", "base": [-0.72, 1.0, 0.24], "height": 0.0258, "yaw": 165 },
+    { "mesh": "decor_scroll", "base": [0.1, 1.0, 0.3], "height": 0.025, "yaw": 75 },
+    { "mesh": "decor_scroll", "base": [0.14, 1.0, 0.36], "height": 0.025, "yaw": 95 },
+    { "mesh": "decor_scroll", "base": [1.18, 1.0, 0.15], "height": 0.025, "yaw": 10 }
+  ],
+  "views": [
+    { "label": "seat side", "yaw": 200, "pitch": 30, "focus": [0, 0.75, 0.6], "radius": 1.9 },
+    { "label": "far side", "yaw": 20, "pitch": 30, "focus": [0, 0.75, 0.6], "radius": 1.9 },
+    { "label": "top", "yaw": 180, "pitch": 80, "focus": [0, 0.85, 0.86], "radius": 1.5 }
+  ]
+}

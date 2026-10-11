@@ -138,6 +138,7 @@
     { "image": "leather_dog_collar", "models": ["dogcollarleather"] },
 
     { "image": "paint_bench", "compose": "paintbench.preview.json", "view": { "yaw": 140, "pitch": 30 } },
+    { "image": "school_bench", "compose": "schoolbench.preview.json", "view": { "yaw": 20, "pitch": 30 } },
     { "image": "white_hilt_paint_brush", "models": ["whpaintbrush"] },
     { "image": "paint_pot", "models": ["paintbucket"] },
 

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Building.Media;
+using BrudvikWhiteHilt.School;
 using Jotunn.Managers;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ using UnityEngine.UI;
 namespace BrudvikWhiteHilt.Building.Groups;
 
 /// <summary>
-/// The blueprint panel on the right: the saved blueprints with search, what the chosen one costs against what you have,
-/// and buttons to place, rename or delete it.
+/// The blueprint panel on the right, with two tabs. Mine: the saved blueprints with search, what the chosen one costs
+/// against what you have, and buttons to place, rename, delete or share it. Shared: the blueprints shared in this world
+/// on the server, to fetch a copy of or, for your own, to unshare. The hammer opens it; a School Bench opens it on the
+/// shared tab without one.
 /// </summary>
 public class BlueprintPanel : MonoBehaviour
 {
@@ -20,12 +23,14 @@ public class BlueprintPanel : MonoBehaviour
     private const float RowHeight = 30f;
     private const float RowGap = 4f;
     private const float ListHeight = 300f;
-    private const float DetailsHeight = 170f;
+    private const float DetailsHeight = 150f;
     private const float ConfirmSeconds = 3f;
+    private const float BenchLeaveMargin = 2f;
     private const int FontSize = 14;
 
     private static readonly Color selectedColor = new(1f, 0.8f, 0.4f);
     private static readonly Color lackingColor = new(1f, 0.45f, 0.35f);
+    private static readonly Color mineColor = new(0.6f, 0.9f, 0.6f);
 
     private static BlueprintPanel instance;
 
@@ -35,10 +40,20 @@ public class BlueprintPanel : MonoBehaviour
     private InputField search;
     private RectTransform listContent;
     private Text details;
-    private Text deleteLabel;
+    private Text mineTab;
+    private Text sharedTab;
+    private Text firstLabel;
+    private Text secondLabel;
+    private Text thirdLabel;
+    private GameObject secondButton;
+    private GameObject thirdButton;
+    private GameObject shareButton;
     private List<Blueprint> blueprints;
     private Blueprint selected;
-    private float deleteArmedUntil;
+    private SharedBlueprints.Entry selectedShared;
+    private SchoolBench openedAt;
+    private bool shared;
+    private float confirmUntil;
     private bool inputBlocked;
     private float nextRow;
 
@@ -84,8 +99,28 @@ public class BlueprintPanel : MonoBehaviour
         }
 
         MediaPanel.Close();
+        instance.openedAt = null;
         instance.panel.SetActive(true);
-        Reload();
+        instance.SetTab(instance.shared);
+    }
+
+    /// <summary>
+    /// Opens the panel on the shared tab from a School Bench; it stays open without a build tool while you are there.
+    /// </summary>
+    /// <param name="bench">The bench.</param>
+    public static void OpenShared(SchoolBench bench)
+    {
+        Ensure();
+        if (instance == null)
+        {
+            return;
+        }
+
+        MediaPanel.Close();
+        instance.openedAt = bench;
+        instance.panel.SetActive(true);
+        instance.SetTab(true);
+        instance.SetInputBlocked(true);
     }
 
     /// <summary>
@@ -96,12 +131,13 @@ public class BlueprintPanel : MonoBehaviour
         if (instance != null)
         {
             instance.panel.SetActive(false);
+            instance.openedAt = null;
             instance.SetInputBlocked(false);
         }
     }
 
     /// <summary>
-    /// Reads the blueprint folder again, e.g. after saving.
+    /// Reads the blueprint folder again, e.g. after saving or fetching.
     /// </summary>
     public static void Reload()
     {
@@ -116,8 +152,9 @@ public class BlueprintPanel : MonoBehaviour
         instance.RefreshList();
     }
 
-    // Closes the panel when the build tool is put away or the screen is cleared for a photo, keeps the game from
-    // reading keys while the search field has focus, and puts the delete button back after its confirmation time.
+    // Closes the panel when the build tool is put away (unless it was opened at a School Bench and you are still
+    // there) or the screen is cleared for a photo, keeps the game from reading keys while the search field has focus,
+    // and puts a confirming button back after its time.
     private void Update()
     {
         if (!IsOpen)
@@ -126,22 +163,31 @@ public class BlueprintPanel : MonoBehaviour
         }
 
         Player player = Player.m_localPlayer;
-        if (player == null || !player.InPlaceMode() || MediaMode.HideUi)
+        bool atBench = openedAt != null
+            && Vector3.Distance(player != null ? player.transform.position : Vector3.zero, openedAt.transform.position) <= SchoolSettings.BlueprintRange.Value + BenchLeaveMargin;
+        if (player == null || MediaMode.HideUi || (!player.InPlaceMode() && !atBench) || (openedAt != null && Input.GetKeyDown(KeyCode.Escape)))
         {
             Close();
             return;
         }
 
-        SetInputBlocked(search.isFocused);
-        if (deleteArmedUntil > 0f && Time.unscaledTime > deleteArmedUntil)
+        SetInputBlocked(search.isFocused || openedAt != null);
+        if (confirmUntil > 0f && Time.unscaledTime > confirmUntil)
         {
-            deleteArmedUntil = 0f;
-            deleteLabel.text = Localization.instance.Localize("$whitehilt_media_delete");
+            confirmUntil = 0f;
+            UpdateButtons();
+        }
+
+        // The answer from the server, or its silence, changes what the shared tab says.
+        if (shared && Time.frameCount % 30 == 0 && !SharedBlueprints.Answered)
+        {
+            RefreshDetails();
         }
     }
 
     private void OnDestroy()
     {
+        SharedBlueprints.Changed -= OnSharedChanged;
         SetInputBlocked(false);
         if (instance == this)
         {
@@ -149,11 +195,11 @@ public class BlueprintPanel : MonoBehaviour
         }
     }
 
-    // Builds the panel once: search field, list of blueprints, the chosen blueprint's details and the buttons to place,
-    // rename, delete and close.
+    // Builds the panel once: tabs, search field, list, the chosen blueprint's details and the buttons. The three
+    // buttons of the first row change with the tab.
     private void Build()
     {
-        panel = GUIManager.Instance.CreateWoodpanel(transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), Vector2.zero, PanelWidth, 700f, false);
+        panel = GUIManager.Instance.CreateWoodpanel(transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), Vector2.zero, PanelWidth, 760f, false);
         panel.name = "Panel";
         RectTransform rect = (RectTransform)panel.transform;
         rect.pivot = new Vector2(1f, 0.5f);
@@ -168,6 +214,12 @@ public class BlueprintPanel : MonoBehaviour
         title.font = GUIManager.Instance.AveriaSerifBold;
         title.alignment = TextAnchor.MiddleCenter;
         NextRow(26f);
+
+        mineTab = AddButton(0f, half, () => SetTab(false)).Label;
+        mineTab.text = Localization.instance.Localize("$whitehilt_blueprint_mine");
+        sharedTab = AddButton(half + RowGap, half, () => SetTab(true)).Label;
+        sharedTab.text = Localization.instance.Localize("$whitehilt_blueprint_shared");
+        NextRow(RowHeight);
 
         search = GUIManager.Instance.CreateInputField(panel.transform, new Vector2(0f, 1f), new Vector2(0f, 1f),
             new Vector2(Padding + full / 2f, -(nextRow + RowHeight / 2f)), InputField.ContentType.Standard,
@@ -197,22 +249,71 @@ public class BlueprintPanel : MonoBehaviour
         details.supportRichText = true;
         NextRow(DetailsHeight);
 
-        AddButton(0f, third, OnPlace).text = Localization.instance.Localize("$whitehilt_group_use");
-        AddButton(third + RowGap, third, OnRename).text = Localization.instance.Localize("$whitehilt_group_rename");
-        deleteLabel = AddButton((third + RowGap) * 2f, third, OnDelete);
-        deleteLabel.text = Localization.instance.Localize("$whitehilt_media_delete");
+        firstLabel = AddButton(0f, third, OnFirst).Label;
+        (secondButton, secondLabel) = AddButton(third + RowGap, third, OnSecond);
+        (thirdButton, thirdLabel) = AddButton((third + RowGap) * 2f, third, OnThird);
         NextRow(RowHeight);
-        AddButton((full - half) / 2f, half, Close).text = Localization.instance.Localize("$whitehilt_group_close");
+        Text shareLabel;
+        (shareButton, shareLabel) = AddButton(0f, half, OnShare);
+        shareLabel.text = Localization.instance.Localize("$whitehilt_blueprint_share");
+        AddButton(half + RowGap, half, Close).Label.text = Localization.instance.Localize("$whitehilt_group_close");
         NextRow(RowHeight);
 
         rect.sizeDelta = new Vector2(PanelWidth, nextRow - RowGap + Padding);
+        SharedBlueprints.Changed += OnSharedChanged;
         panel.SetActive(false);
     }
 
-    private void OnPlace()
+    // Switches between your own blueprints and the shared ones; the shared list is asked for anew each time.
+    private void SetTab(bool showShared)
     {
-        if (selected == null)
+        shared = showShared;
+        confirmUntil = 0f;
+        mineTab.color = shared ? Color.white : selectedColor;
+        sharedTab.color = shared ? selectedColor : Color.white;
+        if (shared)
         {
+            selectedShared = null;
+            SharedBlueprints.RequestIndex();
+            RefreshList();
+        }
+        else
+        {
+            Reload();
+        }
+    }
+
+    private void OnSharedChanged()
+    {
+        if (IsOpen && shared)
+        {
+            selectedShared = SharedBlueprints.Index.FirstOrDefault(entry => entry.Id == selectedShared?.Id);
+            RefreshList();
+        }
+    }
+
+    // Place a blueprint of your own, or fetch a shared one.
+    private void OnFirst()
+    {
+        Player player = Player.m_localPlayer;
+        if (shared)
+        {
+            if (selectedShared != null && CanUseServer(player))
+            {
+                SharedBlueprints.Fetch(selectedShared);
+            }
+
+            return;
+        }
+
+        if (selected == null || player == null)
+        {
+            return;
+        }
+
+        if (!player.InPlaceMode())
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_blueprint_hammer");
             return;
         }
 
@@ -220,8 +321,26 @@ public class BlueprintPanel : MonoBehaviour
         Close();
     }
 
-    private void OnRename()
+    // Rename a blueprint of your own, or unshare one you shared (on the second click within a few seconds).
+    private void OnSecond()
     {
+        if (shared)
+        {
+            if (selectedShared == null || !selectedShared.Mine)
+            {
+                return;
+            }
+
+            if (!Confirm())
+            {
+                return;
+            }
+
+            SharedBlueprints.Unshare(selectedShared);
+            selectedShared = null;
+            return;
+        }
+
         Blueprint blueprint = selected;
         if (blueprint == null)
         {
@@ -238,71 +357,168 @@ public class BlueprintPanel : MonoBehaviour
 
     // Deletes the chosen blueprint on the second click within a few seconds, so a blueprint is not lost to a slip of
     // the mouse.
-    private void OnDelete()
+    private void OnThird()
     {
-        if (selected == null)
+        if (shared || selected == null || !Confirm())
         {
             return;
         }
 
-        if (Time.unscaledTime > deleteArmedUntil)
-        {
-            deleteArmedUntil = Time.unscaledTime + ConfirmSeconds;
-            deleteLabel.text = Localization.instance.Localize("$whitehilt_media_confirm");
-            return;
-        }
-
-        deleteArmedUntil = 0f;
-        deleteLabel.text = Localization.instance.Localize("$whitehilt_media_delete");
         BlueprintStore.Delete(selected);
         selected = null;
         Reload();
     }
 
-    // Lists the saved blueprints that match the search, with their piece count; clicking one selects it.
+    private void OnShare()
+    {
+        if (!shared && selected != null && CanUseServer(Player.m_localPlayer))
+        {
+            SharedBlueprints.Share(selected);
+        }
+    }
+
+    // True on the second click of a button that asks to be sure.
+    private bool Confirm()
+    {
+        if (Time.unscaledTime > confirmUntil)
+        {
+            confirmUntil = Time.unscaledTime + ConfirmSeconds;
+            UpdateButtons();
+            return false;
+        }
+
+        confirmUntil = 0f;
+        UpdateButtons();
+        return true;
+    }
+
+    // Sharing and fetching must be switched on, and may need a School Bench nearby.
+    private static bool CanUseServer(Player player)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        if (!SharedBlueprintSettings.Enabled.Value)
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_blueprint_disabled");
+            return false;
+        }
+
+        if (SharedBlueprintSettings.NeedSchoolBench.Value && !SchoolBench.IsNear(player.transform.position))
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_blueprint_needbench");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void UpdateButtons()
+    {
+        bool confirming = confirmUntil > 0f;
+        string confirm = Localization.instance.Localize("$whitehilt_media_confirm");
+        if (shared)
+        {
+            firstLabel.text = Localization.instance.Localize("$whitehilt_blueprint_fetch");
+            secondLabel.text = confirming ? confirm : Localization.instance.Localize("$whitehilt_blueprint_unshare");
+            secondButton.SetActive(selectedShared != null && selectedShared.Mine);
+            thirdButton.SetActive(false);
+            shareButton.SetActive(false);
+            return;
+        }
+
+        firstLabel.text = Localization.instance.Localize("$whitehilt_group_use");
+        secondLabel.text = Localization.instance.Localize("$whitehilt_group_rename");
+        thirdLabel.text = confirming ? confirm : Localization.instance.Localize("$whitehilt_media_delete");
+        secondButton.SetActive(true);
+        thirdButton.SetActive(true);
+        shareButton.SetActive(SharedBlueprintSettings.Enabled.Value);
+    }
+
+    // Lists the blueprints of the tab that match the search; clicking one selects it.
     private void RefreshList()
     {
         rows.ForEach(Destroy);
         rows.Clear();
         float width = PanelWidth - Padding * 2f - 20f;
         string filter = search.text.Trim();
-        List<Blueprint> visible = (blueprints ?? new List<Blueprint>())
-            .Where(blueprint => filter.Length == 0 || blueprint.Name.IndexOf(filter, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
-        if (visible.Count == 0)
-        {
-            GameObject empty = GUIManager.Instance.CreateText(Localization.instance.Localize("$whitehilt_group_none"), listContent, Vector2.zero,
-                Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, FontSize, Color.white, true, Color.black, width, 80f, false);
-            empty.AddComponent<LayoutElement>().preferredHeight = 80f;
-            rows.Add(empty);
-        }
+        bool Matches(string name) => filter.Length == 0 || name.IndexOf(filter, StringComparison.CurrentCultureIgnoreCase) >= 0;
 
-        foreach (Blueprint blueprint in visible)
+        if (shared)
         {
-            string text = blueprint.Name + "   " + string.Format(Localization.instance.Localize("$whitehilt_group_pieces"), blueprint.Pieces.Count);
-            GameObject row = GUIManager.Instance.CreateButton(text, listContent, Vector2.zero, Vector2.zero, Vector2.zero, width, RowHeight);
-            row.AddComponent<LayoutElement>().preferredHeight = RowHeight;
-            Text label = row.GetComponentInChildren<Text>();
-            label.alignment = TextAnchor.MiddleLeft;
-            label.fontSize = FontSize;
-            label.color = blueprint == selected ? selectedColor : Color.white;
-            label.rectTransform.offsetMin = new Vector2(10f, 0f);
-            Blueprint chosen = blueprint;
-            row.GetComponent<Button>().onClick.AddListener(() =>
+            List<SharedBlueprints.Entry> visible = SharedBlueprints.Index.Where(entry => Matches(entry.Name)).ToList();
+            if (visible.Count == 0)
             {
-                selected = chosen;
-                RefreshList();
-            });
-            rows.Add(row);
+                AddEmptyRow(SharedBlueprints.Answered ? "$whitehilt_blueprint_none" : string.Empty, width);
+            }
+
+            foreach (SharedBlueprints.Entry entry in visible)
+            {
+                string text = $"{entry.Name}   {string.Format(Localization.instance.Localize("$whitehilt_group_pieces"), entry.Pieces)}   {entry.Creator}";
+                SharedBlueprints.Entry chosen = entry;
+                AddRow(text, width, entry == selectedShared ? selectedColor : entry.Mine ? mineColor : Color.white, () => selectedShared = chosen);
+            }
+        }
+        else
+        {
+            List<Blueprint> visible = (blueprints ?? new List<Blueprint>()).Where(blueprint => Matches(blueprint.Name)).ToList();
+            if (visible.Count == 0)
+            {
+                AddEmptyRow("$whitehilt_group_none", width);
+            }
+
+            foreach (Blueprint blueprint in visible)
+            {
+                string text = blueprint.Name + "   " + string.Format(Localization.instance.Localize("$whitehilt_group_pieces"), blueprint.Pieces.Count);
+                Blueprint chosen = blueprint;
+                AddRow(text, width, blueprint == selected ? selectedColor : Color.white, () => selected = chosen);
+            }
         }
 
+        UpdateButtons();
         RefreshDetails();
     }
 
-    // Shows the chosen blueprint: its name and maker, what it costs against what the player and the chests nearby have,
-    // and how many of its pieces this game does not know (from a mod not installed), which are skipped when placed.
+    private void AddEmptyRow(string token, float width)
+    {
+        GameObject empty = GUIManager.Instance.CreateText(token.Length > 0 ? Localization.instance.Localize(token) : string.Empty, listContent, Vector2.zero,
+            Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, FontSize, Color.white, true, Color.black, width, 80f, false);
+        empty.AddComponent<LayoutElement>().preferredHeight = 80f;
+        rows.Add(empty);
+    }
+
+    private void AddRow(string text, float width, Color color, Action select)
+    {
+        GameObject row = GUIManager.Instance.CreateButton(text, listContent, Vector2.zero, Vector2.zero, Vector2.zero, width, RowHeight);
+        row.AddComponent<LayoutElement>().preferredHeight = RowHeight;
+        Text label = row.GetComponentInChildren<Text>();
+        label.alignment = TextAnchor.MiddleLeft;
+        label.fontSize = FontSize;
+        label.color = color;
+        label.rectTransform.offsetMin = new Vector2(10f, 0f);
+        row.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            confirmUntil = 0f;
+            select();
+            RefreshList();
+        });
+        rows.Add(row);
+    }
+
+    // Shows the chosen blueprint. Your own: its name and maker, what it costs against what the player and the chests
+    // nearby have, and how many of its pieces this game does not know (from a mod not installed), which are skipped
+    // when placed. A shared one: who shared it and how many pieces it has, or what the server said.
     private void RefreshDetails()
     {
         Player player = Player.m_localPlayer;
+        if (shared)
+        {
+            details.text = SharedDetails();
+            return;
+        }
+
         if (selected == null || player == null)
         {
             details.text = string.Empty;
@@ -347,6 +563,32 @@ public class BlueprintPanel : MonoBehaviour
         details.text = text.ToString();
     }
 
+    private string SharedDetails()
+    {
+        if (!SharedBlueprints.Answered)
+        {
+            return Localization.instance.Localize(SharedBlueprints.Waiting ? "$whitehilt_blueprint_waiting" : "$whitehilt_blueprint_noserver");
+        }
+
+        StringBuilder text = new();
+        if (selectedShared != null)
+        {
+            text.Append("<b>").Append(selectedShared.Name).Append("</b>");
+            if (selectedShared.Mine)
+            {
+                text.Append("  ").Append(Localization.instance.Localize("$whitehilt_blueprint_yours"));
+            }
+
+            text.AppendLine();
+            text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_blueprint_by"), selectedShared.Creator));
+            text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_group_pieces"), selectedShared.Pieces));
+            text.AppendLine();
+        }
+
+        text.Append(Localization.instance.Localize("$whitehilt_blueprint_fetch_hint"));
+        return text.ToString();
+    }
+
     private void SetInputBlocked(bool block)
     {
         if (block != inputBlocked)
@@ -364,14 +606,14 @@ public class BlueprintPanel : MonoBehaviour
             width, height, false).GetComponent<Text>();
     }
 
-    private Text AddButton(float x, float width, Action onClick)
+    private (GameObject Button, Text Label) AddButton(float x, float width, Action onClick)
     {
         GameObject button = GUIManager.Instance.CreateButton(string.Empty, panel.transform, new Vector2(0f, 1f), new Vector2(0f, 1f),
             new Vector2(Padding + x + width / 2f, -(nextRow + RowHeight / 2f)), width, RowHeight);
         button.GetComponent<Button>().onClick.AddListener(() => onClick());
         Text label = button.GetComponentInChildren<Text>();
         label.fontSize = FontSize;
-        return label;
+        return (button, label);
     }
 
     private void NextRow(float height)

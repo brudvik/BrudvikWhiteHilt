@@ -178,6 +178,11 @@ portcullis, tip a cauldron or pose a dog.
 call (`SummoningHornService.RPC_Call`), stock reports from chests (`WorldProgress.OnServerReceive`) and portraits
 from other players (`PortraitNetwork.RPC_Data`, which compares the data with the hash that was announced).
 
+The sender id of a routed RPC is written by the sending client, and the game never checks it. Where it matters who
+sent a request (only the one who shared a blueprint may unshare it, `SharedBlueprints.RPC_Unshare`), the server asks
+`RoutedRpcSender.Verify`: a patch notes the connection each routed RPC came in on, and the id must belong to it.
+Packed data from another player is unpacked with `BoundedGzip`, which stops at a size limit.
+
 **Ownership can be handed over.** A chest that two players change at once loses items unless one of them owns it
 first. `ContainerHandoff` asks the owner to save the chest, send its newest data and pass ownership on, and the
 change waits until that has arrived. Ships do the same at the helm (`ShipAssist.UpdateHelmOwnership`): the
