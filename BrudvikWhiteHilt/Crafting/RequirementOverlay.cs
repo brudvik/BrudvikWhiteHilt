@@ -165,7 +165,10 @@ public static class RequirementOverlay
         background.color = BadgeColor;
         background.raycastTarget = false;
 
-        GameObject textObject = new("text", typeof(RectTransform), typeof(TextMeshProUGUI));
+        GameObject textObject = new("text", typeof(RectTransform));
+        // Inactive until the font is set; TextMeshPro otherwise looks for a default font the game does not ship.
+        textObject.SetActive(false);
+        textObject.AddComponent<TextMeshProUGUI>();
         RectTransform textRect = (RectTransform)textObject.transform;
         textRect.SetParent(rect, false);
         textRect.anchorMin = Vector2.zero;
@@ -178,6 +181,8 @@ public static class RequirementOverlay
             text.font = template.font;
             text.fontSharedMaterial = template.fontSharedMaterial;
         }
+
+        textObject.SetActive(true);
 
         text.enableAutoSizing = true;
         text.fontSizeMin = 8f;

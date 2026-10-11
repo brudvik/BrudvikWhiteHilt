@@ -202,6 +202,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
         private static TextMeshProUGUI CreateText(string name, Transform parent, TMP_FontAsset? font, float size, TextAlignmentOptions alignment)
         {
             var textObject = new GameObject(name, typeof(RectTransform));
+            // Inactive until the font is set; TextMeshPro otherwise looks for a default font the game does not ship.
+            textObject.SetActive(false);
             textObject.transform.SetParent(parent, false);
 
             var text = textObject.AddComponent<TextMeshProUGUI>();
@@ -210,6 +212,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
             text.alignment = alignment;
             text.textWrappingMode = TextWrappingModes.NoWrap;
             text.raycastTarget = false;
+            textObject.SetActive(true);
             return text;
         }
 

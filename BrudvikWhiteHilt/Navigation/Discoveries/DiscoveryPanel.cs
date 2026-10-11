@@ -272,7 +272,10 @@ public static class DiscoveryPanel
             badgeBackRect.pivot = new Vector2(0f, 1f);
             badgeBackRect.anchoredPosition = new Vector2(-2f, 3f);
             badgeBackRect.sizeDelta = new Vector2(23f, 18f);
-            GameObject badgeObject = new("Unlimited", typeof(RectTransform), typeof(TextMeshProUGUI));
+            GameObject badgeObject = new("Unlimited", typeof(RectTransform));
+            // Inactive until the font is set; TextMeshPro otherwise looks for a default font the game does not ship.
+            badgeObject.SetActive(false);
+            badgeObject.AddComponent<TextMeshProUGUI>();
             RectTransform badgeRect = (RectTransform)badgeObject.transform;
             badgeRect.SetParent(badgeBack.transform, false);
             badgeRect.anchorMin = Vector2.zero;
@@ -281,6 +284,7 @@ public static class DiscoveryPanel
             badgeRect.offsetMax = Vector2.zero;
             TextMeshProUGUI badge = badgeObject.GetComponent<TextMeshProUGUI>();
             badge.font = InventoryGui.instance != null ? InventoryGui.instance.m_containerName.font : TMP_Settings.defaultFontAsset;
+            badgeObject.SetActive(true);
             badge.text = badge.font != null && badge.font.HasCharacter('\u221E', true, true) ? "\u221E" : "MAX";
             badge.fontSize = badge.text == "MAX" ? 10f : 20f;
             badge.fontStyle = FontStyles.Bold;

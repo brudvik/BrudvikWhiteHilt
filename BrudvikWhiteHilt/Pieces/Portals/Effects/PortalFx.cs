@@ -217,6 +217,19 @@ public static class PortalFx
         }
 
         GameObject effect = PrefabManager.Instance.CreateClonedPrefab(name, source);
+
+        // Every client plays the sound itself, so it needs no network object; with the vanilla one each sound made a
+        // ZDO the other clients could not place ("Missing prefab hash"), as the clone is not a networked prefab.
+        foreach (ZSyncTransform sync in effect.GetComponentsInChildren<ZSyncTransform>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(sync);
+        }
+
+        foreach (ZNetView view in effect.GetComponentsInChildren<ZNetView>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(view);
+        }
+
         ZSFX sfx = effect.GetComponentInChildren<ZSFX>(true);
         sfx.m_audioClips = new[] { clip };
         sfx.m_minPitch = 1f;

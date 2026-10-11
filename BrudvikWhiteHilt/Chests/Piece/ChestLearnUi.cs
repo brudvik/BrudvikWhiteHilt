@@ -191,8 +191,12 @@ namespace BrudvikWhiteHilt.Chests.Piece
             rect.anchoredPosition = new Vector2(4f, -1f);
             rect.sizeDelta = new Vector2(16f, 24f);
 
+            // Inactive until the font is set; TextMeshPro otherwise looks for a default font the game does not ship.
+            bool active = marker.activeSelf;
+            marker.SetActive(false);
             var text = marker.AddComponent<TextMeshProUGUI>();
             if (element.m_amount != null) text.font = element.m_amount.font;
+            marker.SetActive(active);
             text.text = "!";
             text.fontSize = 22f;
             text.fontStyle = FontStyles.Bold;

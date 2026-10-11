@@ -200,7 +200,10 @@ public static class CraftAmountSelector
         down = CreateArrow(gui.m_qualityLevelDown, rect, "Down", "<", 0f, () => Change(-1));
         up = CreateArrow(gui.m_qualityLevelUp, rect, "Up", ">", 1f, () => Change(1));
 
-        GameObject labelObject = new("Amount", typeof(RectTransform), typeof(TextMeshProUGUI));
+        GameObject labelObject = new("Amount", typeof(RectTransform));
+        // Inactive until the font is set; TextMeshPro otherwise looks for a default font the game does not ship.
+        labelObject.SetActive(false);
+        labelObject.AddComponent<TextMeshProUGUI>();
         RectTransform labelRect = (RectTransform)labelObject.transform;
         labelRect.SetParent(rect, false);
         labelRect.anchorMin = Vector2.zero;
@@ -214,6 +217,8 @@ public static class CraftAmountSelector
             label.font = template.font;
             label.fontSharedMaterial = template.fontSharedMaterial;
         }
+
+        labelObject.SetActive(true);
 
         label.fontSize = 22f;
         label.alignment = TextAlignmentOptions.Center;

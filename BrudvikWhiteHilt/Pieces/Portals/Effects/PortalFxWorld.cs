@@ -257,9 +257,10 @@ public class PortalFxWorld : MonoBehaviour
         ParticleSystem.VelocityOverLifetimeModule velocity = system.velocityOverLifetime;
         velocity.enabled = true;
         velocity.space = ParticleSystemSimulationSpace.Local;
-        velocity.x = 0f;
+        // Unity wants x, y and z in the same mode; y is a range, so these are ranges too.
+        velocity.x = new ParticleSystem.MinMaxCurve(0f, 0f);
         velocity.y = new ParticleSystem.MinMaxCurve(1.2f * scale, 2.2f * scale);
-        velocity.z = 0f;
+        velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
         velocity.orbitalY = 1.5f;
         velocity.radial = -0.15f * scale;
         FadeOverLifetime(system);
@@ -309,9 +310,10 @@ public class PortalFxWorld : MonoBehaviour
         ParticleSystem.VelocityOverLifetimeModule velocity = system.velocityOverLifetime;
         velocity.enabled = true;
         velocity.space = ParticleSystemSimulationSpace.Local;
-        velocity.x = 0f;
+        // Unity wants x, y and z in the same mode; y is a range, so these are ranges too.
+        velocity.x = new ParticleSystem.MinMaxCurve(0f, 0f);
         velocity.y = new ParticleSystem.MinMaxCurve(0.1f, 0.4f);
-        velocity.z = 0f;
+        velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
         velocity.radial = new ParticleSystem.MinMaxCurve(1.5f * scale, 3f * scale);
         ParticleSystem.SizeOverLifetimeModule size = system.sizeOverLifetime;
         size.enabled = true;

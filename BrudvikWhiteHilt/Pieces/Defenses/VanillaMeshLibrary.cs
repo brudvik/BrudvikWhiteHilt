@@ -26,7 +26,15 @@ public static class VanillaMeshLibrary
         ["trophy_deer"] = ("TrophyDeer", null),
         ["trophy_skull"] = ("TrophySkeleton", null),
         ["gem_ruby"] = ("Ruby", null),
-        ["gem_amber"] = ("Amber", null)
+        ["gem_amber"] = ("Amber", null),
+        ["dragon_head"] = ("VikingShip", "ship/visual/unused/dragon_head")
+    };
+
+    // Keys whose own material does not work in the game and are drawn with another child's materials instead: the
+    // longship's unused carved head shows pink on its own and shares the hull's texture atlas.
+    private static readonly Dictionary<string, (string Prefab, string Child)> borrowedMaterials = new()
+    {
+        ["dragon_head"] = ("VikingShip", "ship/visual/hull_new/hull")
     };
 
     // Keys that are models in the White Hilt asset bundle.
@@ -101,7 +109,7 @@ public static class VanillaMeshLibrary
             }
 
             Matrix4x4 matrix = root.worldToLocalMatrix * renderer.transform.localToWorldMatrix;
-            Material[] materials = renderer.sharedMaterials;
+            Material[] materials = BorrowedMaterials(key) ?? renderer.sharedMaterials;
             for (int subMesh = 0; subMesh < Math.Min(mesh.subMeshCount, materials.Length); subMesh++)
             {
                 Material material = materials[subMesh];
@@ -119,6 +127,24 @@ public static class VanillaMeshLibrary
 
         meshes[key] = sources;
         return sources;
+    }
+
+    private static Material[] BorrowedMaterials(string key)
+    {
+        if (!borrowedMaterials.TryGetValue(key, out var from))
+        {
+            return null;
+        }
+
+        Transform child = PrefabManager.Instance.GetPrefab(from.Prefab)?.transform.Find(from.Child);
+        Material[] materials = child != null ? child.GetComponent<MeshRenderer>()?.sharedMaterials : null;
+        if (materials == null || materials.Length == 0)
+        {
+            Jotunn.Logger.LogWarning($"'{key}': {from.Prefab}/{from.Child} not found; its own material is used.");
+            return null;
+        }
+
+        return materials;
     }
 
     /// <summary>
