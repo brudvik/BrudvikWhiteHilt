@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **The Desert Dragon keeps flying while it breathes fire.** Its wings froze in a glide for the whole breath; they now keep beating while it lowers its head and opens its jaws. The Black Dragon, which is made from it, flaps too.
+- **The Desert Dragon roars.** Its idle, alert, attack, injury and death sounds are deep roars and growls made from CC0 recordings, slowed down and deepened, with the beat of its wings in its idle sound. The Black Dragon has them too.
+
 ## v0.120.0 - 2026-10-11
 
 ### Added

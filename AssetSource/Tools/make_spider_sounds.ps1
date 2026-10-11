@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-    Generates original monster effects as mono PCM WAV files; -AllMonsters includes Lindorm, Kraken and dragon.
+    Generates original monster effects as mono PCM WAV files; -AllMonsters includes Lindorm and Kraken. The dragon's
+    sounds are made from CC0 recordings by make_dragon_sounds.py.
 #>
 param([switch]$AllMonsters)
 
@@ -27,12 +28,7 @@ if ($AllMonsters) {
         @{ Name = 'krakenattack'; Seconds = 1.2; Tone = 85; Style = 'wet'; Noise = 0.75; Fall = 0.5 },
         @{ Name = 'krakenlash'; Seconds = 0.65; Tone = 240; Style = 'wet'; Noise = 0.95; Fall = 0.8 },
         @{ Name = 'krakenhit'; Seconds = 1.0; Tone = 100; Style = 'wet'; Noise = 0.55; Fall = 0.4 },
-        @{ Name = 'krakendeath'; Seconds = 3.0; Tone = 72; Style = 'wet'; Noise = 0.6; Fall = 0.8 },
-        @{ Name = 'dragonidle'; Seconds = 1.5; Tone = 95; Style = 'roar'; Noise = 0.2; Fall = 0.2 },
-        @{ Name = 'dragonalert'; Seconds = 2.1; Tone = 150; Style = 'roar'; Noise = 0.35; Fall = 0.3 },
-        @{ Name = 'dragonattack'; Seconds = 1.2; Tone = 110; Style = 'breath'; Noise = 0.9; Fall = 0.4 },
-        @{ Name = 'dragonhit'; Seconds = 0.9; Tone = 220; Style = 'roar'; Noise = 0.35; Fall = 0.5 },
-        @{ Name = 'dragondeath'; Seconds = 2.5; Tone = 165; Style = 'roar'; Noise = 0.5; Fall = 0.75 }
+        @{ Name = 'krakendeath'; Seconds = 3.0; Tone = 72; Style = 'wet'; Noise = 0.6; Fall = 0.8 }
     )
 }
 foreach ($sound in $sounds) {

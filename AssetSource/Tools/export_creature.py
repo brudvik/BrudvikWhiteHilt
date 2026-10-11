@@ -9,9 +9,10 @@ in submesh order, with their textures, colour and emission). The json spec (see 
   pose     {"take", "frame"}: the pose in which "eyes" positions are given (world space, Blender z up)
   eyes     glowing spheres skinned to one bone: {"bone", "radius", "positions": [[x,y,z], ...], "colour", "emission"}
   clips    [{"name", "take", "loop"}]: actions to keep, renamed; every other action is dropped
-  generate [{"name", "base": {"take", "frame"}, "keys": [{"frame", "rot": {bone prefix: [x, y, z] degrees}}]}]: new actions
-           for clips the model lacks, keyed at each key frame as the base pose plus local rotations of every bone whose
-           name starts with a prefix; list them in clips with take = name to keep them
+  generate [{"name", "base": {"take", "frame", "follow"}, "keys": [{"frame", "rot": {bone prefix: [x, y, z] degrees}}]}]: new
+           actions for clips the model lacks, keyed at each key frame as the base pose plus local rotations of every bone
+           whose name starts with a prefix; with "follow": true the base take keeps playing under the rotations (wings
+           keep flapping); list them in clips with take = name to keep them
   texture_size  largest texture side (default 1024)
 """
 import json
@@ -123,8 +124,13 @@ def join(body, meshes):
 
 
 def generate_clip(armature, clip):
-    """Keys a new action: the base pose with extra local rotations per key frame, smoothed by Blender's curves."""
+    """Keys a new action: the base pose with extra local rotations per key frame, smoothed by Blender's curves. With
+    "follow": true in the base, the base take keeps playing (looping) from its frame, so e.g. the wings keep flapping,
+    and the rotations are blended in between the keys and keyed on every frame."""
     base_action = bpy.data.actions[clip["base"]["take"]]
+    if clip["base"].get("follow"):
+        generate_following_clip(armature, clip, base_action)
+        return
     set_pose(armature, {"take": base_action.name, "frame": clip["base"].get("frame", 0)})
     bones = armature.pose.bones
     base = {bone.name: (bone.location.copy(), bone.rotation_quaternion.copy(), bone.scale.copy()) for bone in bones}
@@ -147,6 +153,58 @@ def generate_clip(armature, clip):
             bone.scale = scale
             for path in ("location", "rotation_quaternion", "scale"):
                 bone.keyframe_insert(path, frame=key["frame"])
+    action.use_fake_user = True
+    armature.animation_data.action = None
+
+
+def key_offsets(clip, frame):
+    """The extra rotations at a frame: each bone prefix's degrees eased between the keys around it (0 where unkeyed)."""
+    keys = sorted(clip["keys"], key=lambda key: key["frame"])
+    prefixes = {prefix for key in keys for prefix in key.get("rot", {})}
+    offsets = {}
+    for prefix in prefixes:
+        before = max((key for key in keys if key["frame"] <= frame), key=lambda key: key["frame"], default=keys[0])
+        after = min((key for key in keys if key["frame"] >= frame), key=lambda key: key["frame"], default=keys[-1])
+        a = before.get("rot", {}).get(prefix, [0, 0, 0])
+        b = after.get("rot", {}).get(prefix, [0, 0, 0])
+        span = after["frame"] - before["frame"]
+        t = 0.0 if span == 0 else (frame - before["frame"]) / span
+        t = t * t * (3 - 2 * t)
+        offsets[prefix] = [x + (y - x) * t for x, y in zip(a, b)]
+    return offsets
+
+
+def generate_following_clip(armature, clip, base_action):
+    start, end = (int(round(value)) for value in base_action.frame_range)
+    length = max(1, end - start)
+    first = int(clip["base"].get("frame", start))
+    last_key = max(key["frame"] for key in clip["keys"])
+    bones = armature.pose.bones
+
+    # The base take's pose at every frame, read before the new action replaces it on the armature.
+    poses = []
+    for frame in range(last_key + 1):
+        set_pose(armature, {"take": base_action.name, "frame": start + (first - start + frame) % length})
+        poses.append({bone.name: (bone.location.copy(), bone.rotation_quaternion.copy(), bone.scale.copy()) for bone in bones})
+
+    action = bpy.data.actions.new(clip["name"])
+    armature.animation_data.action = action
+    for frame in range(last_key + 1):
+        offsets = {}
+        for prefix, degrees in key_offsets(clip, frame).items():
+            matched = [name for name in poses[frame] if name.startswith(prefix)]
+            if not matched:
+                raise SystemExit(f"{clip['name']}: no bone starts with '{prefix}'")
+            for name in matched:
+                offsets[name] = mathutils.Euler([math.radians(angle) for angle in degrees]).to_quaternion()
+        for bone in bones:
+            location, rotation, scale = poses[frame][bone.name]
+            bone.rotation_mode = "QUATERNION"
+            bone.location = location
+            bone.rotation_quaternion = rotation @ offsets[bone.name] if bone.name in offsets else rotation
+            bone.scale = scale
+            for path in ("location", "rotation_quaternion", "scale"):
+                bone.keyframe_insert(path, frame=frame)
     action.use_fake_user = True
     armature.animation_data.action = None
 

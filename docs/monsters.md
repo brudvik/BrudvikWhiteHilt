@@ -59,7 +59,8 @@ Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip
 - Its fire only hurts players and creatures; buildings are safe unless `BurnsBuildings` is on.
 - It is immune to fire and spirit damage, weak to frost, resists poison and ignores chop and pickaxe damage. Bring a bow.
 - When slain it tumbles out of the sky and lies where it fell for a while.
-- It has its own growls, roars and fiery breath sounds for idle, alert, attack, injury and death. The Black Dragon inherits them too.
+- It keeps beating its wings while it breathes fire, lowering its head and opening its jaws into the stream.
+- It has deep roars and growls for idle (with the beat of its wings), alert, attack, injury and death, made from CC0 recordings slowed down and deepened (`AssetSource/Tools/make_dragon_sounds.py`). The Black Dragon inherits them, and its flapping breath, too.
 
 In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
 
@@ -158,7 +159,7 @@ Section `[Desert Dragon]`:
 | `FlySpeed` | 11 | Metres per second when it chases you (after a restart) |
 | `FlyHeightMin` / `FlyHeightMax` | 5 / 12 | Metres above the ground it flies at (after a restart) |
 | `Scale` | 1 | Size (1 = about 8 m from wingtip to wingtip; after a restart) |
-| `Sounds` | true | Own growls, roars and breath sounds, also on Black Dragons (after a restart) |
+| `Sounds` | true | Deep roars and growls, also on Black Dragons (after a restart) |
 | `TrophyChance` | 35 | Percent chance of its trophy (after a restart) |
 | `ScalesMin` / `ScalesMax` | 4 / 6 | Desert Dragon Scales it drops (after a restart) |
 | `BurnsBuildings` | false | Its fire also damages the buildings it hits |

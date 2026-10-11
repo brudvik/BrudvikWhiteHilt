@@ -3,7 +3,7 @@
   "generate": [
     {
       "name": "flame",
-      "base": { "take": "fly", "frame": 107 },
+      "base": { "take": "fly", "frame": 107, "follow": true },
       "keys": [
         { "frame": 0 },
         { "frame": 10, "rot": { "neck1": [-12, 0, 0], "neck2": [-12, 0, 0], "head1": [-10, 0, 0], "ago1": [-30, 0, 0] } },
