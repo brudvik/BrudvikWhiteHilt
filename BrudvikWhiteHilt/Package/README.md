@@ -33,16 +33,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.120.0
+## ✨ New in 0.121.0
 
-- **[The School Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md)**: write down what you know, read what others wrote to learn their materials, recipes and runestone texts, and sit on its bench to study their skills up to half their level.
-- **[Shared blueprints](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#shared-blueprints)**: share your blueprints on the server for everyone in the world to fetch.
-- **[Darkwood doors, walls and gables](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#darkwood-doors-walls--gables)** cut from the darkwood gate, and a darkwood double gate.
-- **The Gifts of the gods say what they do**, with the server's numbers, and the White Hilt Axe and Pickaxe now cut and mine everything, the Mistlands included. Looted gear goes back on after a relog.
+- **[The Dragon Horn](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side)**: once Moder is slain, buy it from the Bog Witch and blow it, and a five-star White Dragon flies in to fight at your side for a while before it flies off again. The horn then rests a game day.
+- **The Desert Dragon flaps its wings while it breathes fire, and roars** with deep sounds of its own.
 
-### Also new in 0.119.2
+### Also new in 0.120.0
 
-- **The [Mast Wisp](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md) clears the Mistlands mist again** round the whole ship; it sat too high on the mast for the mist to notice it. Its reach now grows with your Exploration, from 15 m to 30 m.
+- **[The School Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md)**, **[shared blueprints](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#shared-blueprints)** and **[darkwood doors, walls and gables](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#darkwood-doors-walls--gables)**.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -238,7 +236,7 @@ Weapons that swing in several styles, and the Rune Sword's own strike, thrust an
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Lindorm, spiders & dragons" height="120">
 
-A great worm in the forest at night, giant spiders round their nests and fire-breathing dragons.
+A great worm in the forest at night, giant spiders round their nests, fire-breathing dragons, and a White Dragon to call to your side.
 
 #### [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
@@ -383,6 +381,8 @@ The Thunderstore package gets a plain markdown version of this README (`BrudvikW
 - Treasure chest model: ["Treasure Chest"](https://polyhaven.com/a/treasure_chest) by Rico Cilliers, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Reduced to 5000 faces, converted to OBJ, rescaled and made double-sided for Valheim.
 - Roof textures: ["Leafy Grass"](https://polyhaven.com/a/leafy_grass), ["Roof Slates 02"](https://polyhaven.com/a/roof_slates_02), ["Thatch Roof Angled"](https://polyhaven.com/a/thatch_roof_angled), ["Reed Roof 04"](https://polyhaven.com/a/reed_roof_04), ["Dark Wooden Planks"](https://polyhaven.com/a/dark_wooden_planks) and ["Brown Mud Leaves 01"](https://polyhaven.com/a/brown_mud_leaves_01) from [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Regraded, the ridge band cut off the reed roof, and the shingles, scale shingles and turf edge drawn from the planks, mud and grass.
 - Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
+- Desert Dragon sounds: ["CC0 Deep Monster Roar"](https://opengameart.org/content/cc0-deep-monster-roar) by [trazzz123](https://opengameart.org/users/trazzz123), ["Dragon Flap"](https://opengameart.org/content/dragon-flap-0) by [VishwaJai](https://opengameart.org/users/vishwajai), and ["80 CC0 creature SFX"](https://opengameart.org/content/80-cc0-creature-sfx) and ["80 CC0 creture SFX #2"](https://opengameart.org/content/80-cc0-creture-sfx-2) by [rubberduck](https://opengameart.org/users/rubberduck), all released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Layered, slowed down, deepened and given a short reverb.
+- Dragon Horn call: ["Viking Horn in D.wav"](https://freesound.org/people/roemergruft/sounds/704440/) by [roemergruft](https://freesound.org/people/roemergruft/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Layered with itself detuned, an octave below and a fifth above, and given a long hall reverb (`AssetSource/Tools/make_dragon_horn_sound.py`).
 - White Hilt Sword model: ["Decorated Viking King Sword"](https://sketchfab.com/3d-models/decorated-viking-king-sword-401726ac11db416e91535caf2e81f865) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided and the hilt painted white for Valheim.
 - White Hilt Bow model: ["Bow of the Pack Hunter"](https://sketchfab.com/3d-models/bow-of-the-pack-hunter-8e27516a119941218def8076850800ec) by [Asylum Nox](https://sketchfab.com/peter.pottiez), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to OBJ, rescaled, made double-sided, the grip painted white and bent at runtime for Valheim.
 - White Hilt Buckler model: ["Worn Round Shield"](https://sketchfab.com/3d-models/worn-round-shield-d848db788bc041ddab8a51c7836979d2) by [iedalton](https://sketchfab.com/iedalton), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, textures downscaled, converted to OBJ, rescaled, made double-sided and the boards painted white for Valheim.
