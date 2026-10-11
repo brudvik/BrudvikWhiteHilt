@@ -21,6 +21,13 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     /// </summary>
     public const string MastWispName = "WhiteHiltMastWisp";
 
+    // The vanilla wisplight's force field with its Demister, inside the mast wisp. The Mistlands mist keeps clear of a
+    // sphere round it, as far as its range reaches; at the top of the mast that sphere hardly reached the deck and
+    // none of the water, so the mist stayed. It is held down at the ship instead, under the mast, this high above the
+    // ship's waterline, while the wisp's light stays at the top.
+    private const string MastWispFieldName = "Particle System Force Field";
+    private const float MastWispFieldHeight = 3f;
+
     /// <summary>
     /// Name of the anchor object added to the ship prefab.
     /// </summary>
@@ -89,6 +96,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private GameObject[] barrels = new GameObject[0];
     private GameObject[] tent = new GameObject[0];
     private GameObject mastWisp;
+    private Transform mastWispField;
+    private ParticleSystemForceField mastWispForce;
     private GameObject brazier;
     private GameObject tentColliders;
     private Container chest;
@@ -369,6 +378,8 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         barrels = storage != null ? storage.Cast<Transform>().Where(child => !child.name.StartsWith("Shield")).Select(child => child.gameObject).ToArray() : barrels;
         tent = customize != null ? customize.Cast<Transform>().Where(IsTentPart).Select(child => child.gameObject).ToArray() : tent;
         mastWisp = GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == MastWispName)?.gameObject;
+        mastWispField = mastWisp != null ? mastWisp.transform.Find(MastWispFieldName) : null;
+        mastWispForce = mastWispField != null ? mastWispField.GetComponent<ParticleSystemForceField>() : null;
         brazier = transform.Find(BrazierName)?.gameObject;
         tentColliders = transform.Find(ShipTentColliders.ObjectName)?.gameObject;
         chest = transform.Find(ChestName)?.GetComponent<Container>();
@@ -396,6 +407,36 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private void OnDestroy()
     {
         instances.Remove(this);
+    }
+
+    /// <summary>
+    /// How far the Mast Wisp keeps the mist and fog away for a player: from <see cref="ShipSettings.MastWispReach"/> at
+    /// Exploration 0 to <see cref="ShipSettings.MastWispReachMax"/> at 100.
+    /// </summary>
+    /// <param name="player">The player, normally the local one.</param>
+    /// <returns>The reach in metres.</returns>
+    public static float MastWispReach(Player player)
+    {
+        float low = ShipSettings.MastWispReach.Value;
+        float high = Mathf.Max(low, ShipSettings.MastWispReachMax.Value);
+        return Mathf.Lerp(low, high, Mathf.Clamp01(global::BrudvikWhiteHilt.Navigation.ExplorationSkill.GetLevel(player) / 100f));
+    }
+
+    // Holds the mast wisp's mist-clearing field down at the ship while the wisp is lit, after the ship has moved, with
+    // the reach of the local player's Exploration: every client clears its own mist.
+    private void LateUpdate()
+    {
+        if (mastWispField == null || !mastWispField.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        Vector3 under = mastWisp.transform.position;
+        mastWispField.position = new Vector3(under.x, transform.position.y + MastWispFieldHeight, under.z);
+        if (mastWispForce != null && Player.m_localPlayer != null)
+        {
+            mastWispForce.endRange = MastWispReach(Player.m_localPlayer);
+        }
     }
 
     // Switches the upgrades' parts on and off when the ship's upgrade mask changes, and checks the hold's size now and

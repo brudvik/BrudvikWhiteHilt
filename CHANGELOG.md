@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.119.2 - 2026-10-11
+
+### Fixed
+- **The Mast Wisp clears the Mistlands mist again.** The mist keeps clear of a sphere round a wisplight's force field, 15 m across its reach; at the top of the mast, 15 m up on the White Hilt Ship and 21 m on Skidbladnir, that sphere hardly reached the deck and none of the water, so the mist stayed. The light still sits at the top of the mast, but the part that keeps the mist away is held at the ship, 3 m over its waterline under the mast, so the mist clears round the whole hull as a wisplight clears it round you.
+
+### Changed
+- **The Mast Wisp reaches further with Exploration.** It keeps the mist away and thins the fog 15 m round the ship at Exploration 0, growing evenly to 30 m at 100 (`MastWispReach` and the new `MastWispReachMax` in `[Ships]`). Each player sees it by their own level.
+
 ## v0.119.1 - 2026-10-11
 
 ### Changed

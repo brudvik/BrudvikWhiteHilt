@@ -85,8 +85,11 @@ public static class ShipSettings
     /// <summary>Whether the White Hilt Ship's tent gives shelter.</summary>
     public static ConfigEntry<bool> TentShelter { get; private set; }
 
-    /// <summary>Distance in metres from the mast within which the Mast Wisp thins the fog.</summary>
+    /// <summary>Reach in metres of the Mast Wisp at Exploration 0: the mist and fog it clears round the ship.</summary>
     public static ConfigEntry<float> MastWispReach { get; private set; }
+
+    /// <summary>Reach in metres of the Mast Wisp at Exploration 100; in between it grows evenly.</summary>
+    public static ConfigEntry<float> MastWispReachMax { get; private set; }
 
     /// <summary>Whether the White Hilt Ship's deck portal can be used and is listed for travel.</summary>
     public static ConfigEntry<bool> AllowShipPortal { get; private set; }
@@ -316,8 +319,11 @@ public static class ShipSettings
         TentShelter = WhiteHiltConfig.BindAdminOnly(Section, "TentShelter", true,
             "The White Hilt Ship's tent gives shelter and keeps the rain off those under it.");
         MastWispReach = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReach", 15f,
-            "Distance in metres from the mast within which the Mast Wisp thins the ordinary fog. The Mistlands mist clearing is the wisp's own and does not change.",
+            "Reach in metres of the Mast Wisp at Exploration 0, as the vanilla wisplight's: it keeps the Mistlands mist away and thins the ordinary fog this far round the ship. Each player sees it by their own Exploration level.",
             new AcceptableValueRange<float>(0f, 100f));
+        MastWispReachMax = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReachMax", 30f,
+            "Reach in metres of the Mast Wisp at Exploration 100; in between it grows evenly with the level.",
+            new AcceptableValueRange<float>(0f, 150f));
         AllowShipPortal = WhiteHiltConfig.BindAdminOnly(Section, "ShipPortal", true,
             "The White Hilt Ship's deck portal can be used and is listed for travel. Off hides the rune circle; the upgrade, its name and privacy stay on the ship.");
         ShipRoutes = WhiteHiltConfig.BindAdminOnly(Section, "ShipRoutes", true,
