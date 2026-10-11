@@ -27,7 +27,8 @@ public static class DesertDragonRegistry
     private const string BaseCreature = "Hatchling";
     private const string BaseWeapon = "imp_fireball_attack";
     private const string BaseProjectile = "Imp_fireball_projectile";
-    private const string FlameName = "WhiteHilt_DesertDragonFlame";
+    /// <summary>Prefab name of the Desert Dragon's breath weapon.</summary>
+    internal const string FlameName = "WhiteHilt_DesertDragonFlame";
     private const string ProjectileName = "WhiteHilt_DesertDragonFlame_projectile";
     private const string CorpseName = "WhiteHilt_DesertDragonCorpse";
     private const string Model = "desertdragon";

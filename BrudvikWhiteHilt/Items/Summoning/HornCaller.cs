@@ -9,16 +9,19 @@ using UnityEngine.Audio;
 namespace BrudvikWhiteHilt.Items.Summoning;
 
 /// <summary>
-/// Synchronizes a horn call and poses the arms and horn at the mouth. Two horns are blown this way: the Horn of the
-/// Deep, which calls a beast, and the Gate Horn, a shorter and brighter call that opens or closes a gate.
+/// Synchronizes a horn call and poses the arms and horn at the mouth. Three horns are blown this way: the Horn of the
+/// Deep, which calls a beast, the Dragon Horn, a lower call that brings a White Dragon to your side, and the Gate Horn,
+/// a shorter and brighter call that opens or closes a gate.
 /// </summary>
 [DefaultExecutionOrder(200)]
 public class HornCaller : MonoBehaviour
 {
     private static AudioClip clip;
+    private static AudioClip dragonClip;
     private static AudioMixerGroup mixer;
     private Player player;
     private AudioSource audio;
+    private bool playingDragon;
     private long observedCall;
     private long requestedCall;
     private Transform horn;
@@ -26,10 +29,11 @@ public class HornCaller : MonoBehaviour
     private Quaternion hornRotation;
     private bool posed;
 
-    /// <summary>Loads the original horn tone and the game's sound mixer.</summary>
+    /// <summary>Loads the horn tones and the game's sound mixer.</summary>
     public static void LoadSound()
     {
         clip = ForagingAssets.LoadAudio("summoninghorn");
+        dragonClip = ForagingAssets.LoadAudio("dragonhorn");
         var effects = PrefabManager.Instance.GetPrefab("Wolf")?.GetComponent<MonsterAI>()?.m_alertedEffects.m_effectPrefabs;
         AudioSource template = effects?.Select(effect => effect.m_prefab?.GetComponentInChildren<AudioSource>(true)).FirstOrDefault(source => source != null);
         mixer = template?.outputAudioMixerGroup;
@@ -41,7 +45,7 @@ public class HornCaller : MonoBehaviour
     {
         if (!HoldingHorn())
             return false;
-        if (player != Player.m_localPlayer || (!HoldingGateHorn() && !SummoningHornService.Enabled.Value) || player.IsDead()
+        if (player != Player.m_localPlayer || SummoningDisabled() || player.IsDead()
             || !player.CanMove() || player.InAttack() || player.InDodge() || player.IsStaggering() || player.IsKnockedBack()
             || player.InMinorAction() || player.IsSwimming() || player.IsAttached() || player.IsAttachedToShip() || player.InInterior())
             return true;
@@ -50,6 +54,12 @@ public class HornCaller : MonoBehaviour
         long previous = player.m_nview.GetZDO().GetLong(SummoningHornService.CallKey);
         if (previous != 0 && previous != requestedCall)
             return true;
+        string problem = HoldingDragonHorn() ? DragonHorn.Problem(player) : null;
+        if (problem != null)
+        {
+            player.Message(MessageHud.MessageType.Center, problem);
+            return true;
+        }
         player.m_nview.GetZDO().Set(SummoningHornService.CallKey, ZNet.instance.GetTime().Ticks);
         ZDOMan.instance.ForceSendZDO(player.GetZDOID());
         return true;
@@ -57,13 +67,19 @@ public class HornCaller : MonoBehaviour
 
     private void Awake() => player = GetComponent<Player>();
 
-    private bool HoldingHorn() => HoldingGateHorn() || HoldingSummoningHorn();
+    private bool HoldingHorn() => HoldingGateHorn() || HoldingSummoningHorn() || HoldingDragonHorn();
+
+    private bool SummoningDisabled() => HoldingSummoningHorn() && !SummoningHornService.Enabled.Value;
+
+    private bool HoldingDragonHorn() => player.m_nview != null && player.m_nview.IsValid()
+        && player.m_nview.GetZDO().GetInt(ZDOVars.s_rightItem) == DragonHorn.ItemName.GetStableHashCode();
 
     private bool HoldingGateHorn() => player.m_nview != null && player.m_nview.IsValid()
         && player.m_nview.GetZDO().GetInt(ZDOVars.s_rightItem) == Pieces.Defenses.GateControl.GateHorn.ItemName.GetStableHashCode();
 
     // The gate horn is a short call; the summoning horn is blown until the beast answers.
-    private float Duration() => HoldingGateHorn() ? Pieces.Defenses.GateControl.GateMechanisms.HornSeconds.Value : SummoningHornService.BlowSeconds.Value;
+    private float Duration() => HoldingGateHorn() ? Pieces.Defenses.GateControl.GateMechanisms.HornSeconds.Value
+        : HoldingDragonHorn() ? DragonHorn.BlowSeconds.Value : SummoningHornService.BlowSeconds.Value;
 
     private bool HoldingSummoningHorn() => player.m_nview != null && player.m_nview.IsValid()
         && player.m_nview.GetZDO().GetInt(ZDOVars.s_rightItem) == SummoningHornService.HornName.GetStableHashCode();
@@ -83,12 +99,13 @@ public class HornCaller : MonoBehaviour
         float elapsed = Elapsed(start);
         float duration = Duration();
         bool gateHorn = HoldingGateHorn();
+        bool dragonHorn = HoldingDragonHorn();
         bool active = start != 0 && elapsed >= 0f && elapsed < duration && HoldingHorn() && !player.IsDead();
         if (player == Player.m_localPlayer && start != 0 && start != requestedCall)
         {
             if (!HoldingHorn() || player.IsDead() || player.IsSwimming() || player.m_moveDir != Vector3.zero
                 || !player.CanMove() || player.InAttack() || player.InDodge() || player.IsStaggering() || player.IsKnockedBack()
-                || player.InMinorAction() || player.IsAttached() || player.IsAttachedToShip() || (!gateHorn && !SummoningHornService.Enabled.Value))
+                || player.InMinorAction() || player.IsAttached() || player.IsAttachedToShip() || SummoningDisabled())
             {
                 zdo.Set(SummoningHornService.CallKey, 0L);
                 ZDOMan.instance.ForceSendZDO(player.GetZDOID());
@@ -99,6 +116,8 @@ public class HornCaller : MonoBehaviour
                 requestedCall = start;
                 if (gateHorn)
                     Pieces.Defenses.GateControl.GateHorn.Sounded(player);
+                else if (dragonHorn)
+                    DragonHorn.Sounded(player);
                 else
                     SummoningHornService.Request();
             }
@@ -120,16 +139,21 @@ public class HornCaller : MonoBehaviour
                     audio.rolloffMode = AudioRolloffMode.Linear;
                     audio.minDistance = 2f;
                 }
-                audio.maxDistance = gateHorn ? Pieces.Defenses.GateControl.GateMechanisms.HornRange.Value * 1.5f : SummoningHornService.SoundRange.Value;
+                playingDragon = dragonHorn && dragonClip != null;
+                audio.clip = playingDragon ? dragonClip : clip;
+                audio.maxDistance = gateHorn ? Pieces.Defenses.GateControl.GateMechanisms.HornRange.Value * 1.5f
+                    : dragonHorn ? DragonHorn.SoundRange.Value : SummoningHornService.SoundRange.Value;
                 audio.pitch = gateHorn ? 1.35f : 1f;
-                audio.time = Mathf.Min(elapsed, clip.length - 0.01f);
+                audio.time = Mathf.Min(elapsed, audio.clip.length - 0.01f);
                 audio.Play();
             }
         }
         if (audio != null)
         {
-            audio.volume = Mathf.Clamp01(elapsed / 0.4f) * Mathf.Clamp01((duration - elapsed) / 0.5f);
-            if (!active && audio.isPlaying)
+            // The Dragon Horn's call rings out in its hall after a finished call; a broken call is cut short.
+            bool ringing = playingDragon && start != 0 && start == observedCall;
+            audio.volume = Mathf.Clamp01(elapsed / 0.4f) * (ringing ? 1f : Mathf.Clamp01((duration - elapsed) / 0.5f));
+            if (!active && !ringing && audio.isPlaying)
                 audio.Stop();
         }
     }

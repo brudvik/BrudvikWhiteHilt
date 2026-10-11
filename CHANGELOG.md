@@ -4,6 +4,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **[The Dragon Horn](docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side)**, sold by the Bog Witch once Moder is slain. Blow it and a five-star White Dragon flies in from behind you and fights at your side for 3 game hours, then flies off out of sight. The horn then rests 24 game hours. The dragon's breath is weaker than a Desert Dragon's, it leaves no ground fire, never burns buildings, leaves bosses to you and drops nothing (`[DragonHorn]`). Its call is a real Viking horn, sounded as four horns at once in a long hall, which rings on after the call.
+
 ### Changed
 - **The Desert Dragon keeps flying while it breathes fire.** Its wings froze in a glide for the whole breath; they now keep beating while it lowers its head and opens its jaws. The Black Dragon, which is made from it, flaps too.
 - **The Desert Dragon roars.** Its idle, alert, attack, injury and death sounds are deep roars and growls made from CC0 recordings, slowed down and deepened, with the beat of its wings in its idle sound. The Black Dragon has them too.

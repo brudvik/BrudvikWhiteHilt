@@ -53,7 +53,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 
 | Page | What you find there |
 |------|---------------------|
-| [Lindorm, spiders & dragons](monsters.md) | The Lindorm, giant spiders and their nests, and the Desert Dragons |
+| [Lindorm, spiders & dragons](monsters.md) | The Lindorm, giant spiders and their nests, the Desert Dragons, and the Dragon Horn that calls a White Dragon to your side |
 | [Kraken & octopus](kraken.md) | Octopuses and the Kraken fight |
 | [Difficulty & blood moon](difficulty.md) | Stars, black beasts, the blood moon and the horn |
 | [Black Bestiary](bestiary.md) | The field guide to the black beasts and their material counters |

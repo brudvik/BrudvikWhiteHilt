@@ -154,6 +154,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterCommands.Register();
         Monsters.MonsterRegistry.Initialize();
         Monsters.DesertDragonRegistry.Initialize();
+        // After the Desert Dragon, which the horn's White Dragon is cloned from.
+        Items.Summoning.DragonHorn.Initialize();
+        Monsters.WhiteDragonRegistry.Initialize();
         // After the monsters: the Black Dragon is cloned from the Desert Dragon.
         Difficulty.Beasts.BeastRegistry.Initialize();
         Companions.CompanionRest.Initialize();
@@ -344,6 +347,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterRegistry.ApplyConfig();
         Monsters.DesertDragonRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
+        Items.Summoning.DragonHorn.ApplyConfig();
         Items.Roofing.RoofMaterials.ApplyConfig();
         Pieces.Roofs.RoofCatalog.ApplyConfig();
         Pieces.Cooking.DryingRack.ApplyCookTimes();

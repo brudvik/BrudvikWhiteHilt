@@ -52,12 +52,13 @@ public static class MonsterPatches
     [HarmonyPrefix]
     private static bool WearNTearDamagePrefix(HitData hit)
     {
-        if (MonsterSettings.DragonBurnsBuildings.Value)
+        Character attacker = hit.GetAttacker();
+        if (attacker == null || attacker.GetComponent<DragonFire>() == null)
         {
             return true;
         }
 
-        Character attacker = hit.GetAttacker();
-        return attacker == null || attacker.GetComponent<DragonFire>() == null;
+        // A tame dragon, such as the horn's White Dragon, never burns buildings.
+        return MonsterSettings.DragonBurnsBuildings.Value && !attacker.IsTamed();
     }
 }

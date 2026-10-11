@@ -21,12 +21,13 @@ public class DragonFire : MonoBehaviour
 	/// <param name="point">The terrain impact point.</param>
 	public void Ignite(Projectile projectile, Vector3 point)
 	{
-		if (!MonsterSettings.DragonGroundFire.Value || point.y <= ZoneSystem.instance.m_waterLevel)
+		Character source = projectile.m_owner;
+		// A tame dragon fights near its friends' homes, so it leaves no fire behind.
+		if (!MonsterSettings.DragonGroundFire.Value || point.y <= ZoneSystem.instance.m_waterLevel || source.IsTamed())
 		{
 			return;
 		}
 
-		Character source = projectile.m_owner;
 		float baseDamage = projectile.m_weapon?.m_shared.m_damages.m_fire ?? 0f;
 		float damage = DragonGroundFire.ScaledDamage(MonsterSettings.DragonGroundDamage.Value, projectile.m_damage.m_fire, baseDamage);
 		if (damage <= 0f)

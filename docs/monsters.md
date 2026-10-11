@@ -4,7 +4,7 @@
 
 <img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains.
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side.
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), not their internal `WhiteHilt_` prefab identifiers.
 
@@ -63,6 +63,23 @@ Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip
 - It has deep roars and growls for idle (with the beat of its wings), alert, attack, injury and death, made from CC0 recordings slowed down and deepened (`AssetSource/Tools/make_dragon_sounds.py`). The Black Dragon inherits them, and its flapping breath, too.
 
 In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
+
+### The Dragon Horn: a White Dragon at your side
+
+Once **Moder** is slain, the **Bog Witch** sells a **Dragon Horn** for 3000 coins. Blow it (attack with it in your hand and stand still for 3 seconds) and a pale **White Dragon** with five stars appears out of sight behind you, flies in and fights at your side. It follows you, burns what attacks you and keeps to you while you move on. After **3 game hours** (about 4 real minutes) it turns and flies off, and vanishes once no player is near enough to see it go. It also flies off if you get more than 100 m away from it or are gone for 10 seconds.
+
+The horn then rests **24 game hours** (one game day, 30 real minutes; sleeping passes the hours too). Blowing it before then tells you how many hours are left. One dragon at a time.
+
+Its call is a real Viking horn, sounded as four horns at once (one a little out of tune with it, one an octave below, one a fifth above that joins after half a second) in a long hall that rings on after the call. It is made from a CC0 recording by `AssetSource/Tools/make_dragon_horn_sound.py`.
+
+So that it helps without fighting for you:
+
+- Its breath is weaker than a Desert Dragon's: **8 flames of 8 fire** at most every 10 seconds before stars, against 12 flames of 20 every 8 seconds. Its five stars raise that to about 22 per flame with the default star settings.
+- It has **600 health** before stars (2700 with five stars by default).
+- It leaves **no ground fire** and never burns buildings, whatever `BurnsBuildings` says.
+- It **leaves bosses to you** (`FightsBosses`), and bosses leave it alone.
+- It drops nothing when it dies, and lies white where it fell.
+- Its fire never hurts players or tamed animals.
 
 With default settings, a 0/1/2-star Desert Dragon has **1200/2400/3600 health**, **20/30/40 fire damage per breath flame** and **10/15/20 ground fire damage per second** before resistance and any pressure bonuses. A naturally summoned **Black Dragon** has five stars and the existing beast bonuses: **8100 health**, **60 fire damage per breath flame** and **30 ground fire damage per second**, with damage capped by the difficulty settings. Changing difficulty settings changes these values; a plain devcommand spawn does not apply the natural beast encounter bonuses.
 
@@ -174,6 +191,27 @@ Section `[Desert Dragon]`:
 On upgrade to 0.77.0, previous defaults (`Health` 800, `FireDamage` 15) move to 1200 and 20 once. The older health default 500 is also migrated. Other configured values are preserved. New creature prefabs need a restart; update both server and clients for ground fire. Its particle appearance, multiplayer ownership and performance still need in-game testing.
 
 On upgrade to 0.117.0, `SpawnChance`, `SpawnSeconds` and `TrophyChance` move to the new defaults (5, 450 and 35) once: about a third as many dragons, and their trophy more than three times as often. Other configured values are preserved.
+
+Section `[DragonHorn]`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The Bog Witch sells the Dragon Horn, and it calls a White Dragon |
+| `Price` | 3000 | Coins it costs |
+| `RequiredKey` | defeated_dragon | Global key needed before it is sold and before it calls (Moder); empty for none |
+| `CooldownHours` | 24 | Game hours the horn rests after a call |
+| `StayHours` | 3 | Game hours the dragon fights at your side |
+| `BlowSeconds` | 3 | Seconds of blowing before the dragon is called |
+| `SoundRange` | 150 | Metres the horn is heard |
+| `Stars` | 5 | Stars of the dragon |
+| `Health` | 600 | Health before stars (after a restart) |
+| `FireDamage` / `Flames` | 8 / 8 | Fire damage of each flame before stars, and flames in one breath (after a restart) |
+| `BreathSeconds` | 10 | Seconds between two breaths at most (after a restart) |
+| `FightsBosses` | false | It also fights bosses |
+| `ArriveDistance` | 80 | Metres behind you it appears before it flies in |
+| `LeaveDistance` | 100 | Get further from it than this and it flies off |
+| `VanishDistance` | 90 | On its way off, it vanishes once no player is this close |
+| `FlightSeconds` | 30 | Longest time it takes to fly in or off |
 
 ## Console commands
 
