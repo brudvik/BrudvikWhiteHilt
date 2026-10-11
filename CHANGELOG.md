@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.123.0 - 2026-10-11
 
 ### Added
 - **The White Dragon has new powers** ([Dragon Horn](docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side), all in `[DragonHorn]`):
