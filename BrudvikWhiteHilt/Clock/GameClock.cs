@@ -37,6 +37,9 @@ public static class GameClock
     private static float nextRefresh;
     private static float lastHours = -1f;
 
+    /// <summary>The clock while it shows, for the White Hilt HUD's band behind the top; else null.</summary>
+    internal static RectTransform Shown => root != null && root.gameObject.activeInHierarchy ? root : null;
+
     internal static float BossOffset => EnemyHud.instance != null && EnemyHud.instance.ShowingBossHud() ? BossBarOffset : 0f;
 
     /// <summary>

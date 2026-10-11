@@ -30,5 +30,19 @@ public static class HudLayoutPatches
     public static void HudLateUpdate(Hud __instance)
     {
         HudConsole.Update(__instance);
+        HudTop.Update(__instance);
+        HudDamage.Update();
+    }
+
+    /// <summary>
+    /// Shows where a hit on the local player came from.
+    /// </summary>
+    /// <param name="__instance">The player hit.</param>
+    /// <param name="hit">The hit.</param>
+    [HarmonyPatch(typeof(Player), "OnDamaged")]
+    [HarmonyPostfix]
+    public static void PlayerDamaged(Player __instance, HitData hit)
+    {
+        HudDamage.Hit(__instance, hit);
     }
 }

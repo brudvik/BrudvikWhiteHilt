@@ -55,6 +55,7 @@ public static class HudConsole
     private const float RingHalf = 0.5f;
     private const float RingLow = 0.2f;
     private const float HiddenLinger = 0.1f;
+    private const float PanelPadding = 10f;
 
     private static readonly Color panelColor = new(0.04f, 0.05f, 0.05f, 0.72f);
     private static readonly Color textColor = new(1f, 0.95f, 0.85f);
@@ -99,6 +100,7 @@ public static class HudConsole
     private static Bar eitr;
     private static Bar adrenaline;
     private static Strip strip;
+    private static Image panel;
     private static Fader foodFader;
     private static Fader statusFader;
     private static Fader handsFader;
@@ -161,6 +163,7 @@ public static class HudConsole
         left = PlaceGuardianPower(hud, left, bar);
         float top = LayoutVitals(player, bar, scale);
         Vector2 corner = LayoutStatus(player, bar, scale);
+        PlacePanel(Rect.MinMaxRect(left, bar.yMin, corner.x, Mathf.Max(top, corner.y)), scale);
         top = Mathf.Max(LayoutStrip(bar, top, scale), corner.y);
         Rect console = Rect.MinMaxRect(left, bar.yMin, corner.x, top);
         AvoidForeign(hud, console);
@@ -582,6 +585,27 @@ public static class HudConsole
         return new Vector2(left + size + StatusGap * scale + names, bar.yMin + count * step);
     }
 
+    // The half dark rounded panel behind the console, from the guardian power to the status effects and from under the
+    // hotbar to over the bars, so they read against snow and sky; none with an opacity of 0.
+    private static void PlacePanel(Rect around, float scale)
+    {
+        bool shown = HudSettings.PanelOpacity.Value > 0f;
+        if (panel.gameObject.activeSelf != shown)
+        {
+            panel.gameObject.SetActive(shown);
+        }
+
+        if (!shown)
+        {
+            return;
+        }
+
+        float pad = PanelPadding * scale;
+        Place(panel.rectTransform, new Vector2(around.xMin - pad, around.yMin - pad),
+            new Vector2(around.width + 2f * pad, around.height + 2f * pad));
+        panel.pixelsPerUnitMultiplier = HudSprites.RoundedBoxCorner / Mathf.Max(1f, HudSettings.PanelRadius.Value * scale);
+    }
+
     // The context lines in a strip over the bars, centred on the hotbar; hidden when no line has anything to say.
     // Returns the top of the strip, or of the bars without it.
     private static float LayoutStrip(Rect bar, float top, float scale)
@@ -631,6 +655,10 @@ public static class HudConsole
         powerGroup = Group(powerGroup, hud.m_gpRoot != null ? hud.m_gpRoot.gameObject : null);
         if (hotbarGroup != null) hotbarGroup.alpha = handsFader.Alpha;
         if (powerGroup != null) powerGroup.alpha = handsFader.Alpha;
+
+        // The panel fades with the quiet screen once everything on it has faded.
+        float shown = Mathf.Max(Mathf.Max(health.Fader.Alpha, stamina.Fader.Alpha), Mathf.Max(foodFader.Alpha, Mathf.Max(statusFader.Alpha, handsFader.Alpha)));
+        panel.color = new Color(panelColor.r, panelColor.g, panelColor.b, Mathf.Clamp01(HudSettings.PanelOpacity.Value) * shown);
     }
 
     // The key hints beside the console: the game's (for fighting, building, the inventory, fishing) at its right and the
@@ -813,6 +841,9 @@ public static class HudConsole
         powerGroup = null;
         root = Layer(hud.m_rootObject.transform, "WhiteHiltConsole");
         root.SetAsFirstSibling();
+        panel = Box(root, "Panel", Color.clear);
+        panel.sprite = HudSprites.RoundedBox;
+        panel.type = Image.Type.Sliced;
         foodLayer = Layer(root, "Food");
         statusLayer = Layer(root, "Status");
         foodFader = new Fader(foodLayer.gameObject.AddComponent<CanvasGroup>());

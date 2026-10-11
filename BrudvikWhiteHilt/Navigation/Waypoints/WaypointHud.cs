@@ -86,6 +86,41 @@ public static class WaypointHud
         }
     }
 
+    /// <summary>
+    /// The box the arrow and its text take, measured as <see cref="HudLayout.VanillaPlacement.Bounds"/> measures, the
+    /// text by its own width rather than its wide frame.
+    /// </summary>
+    /// <param name="space">The space to measure in.</param>
+    /// <param name="bounds">The box.</param>
+    /// <returns>False when the arrow is not shown.</returns>
+    internal static bool Bounds(RectTransform space, out Rect bounds)
+    {
+        bounds = default;
+        if (root == null || !root.gameObject.activeInHierarchy || arrow == null)
+        {
+            return false;
+        }
+
+        if (!HudLayout.VanillaPlacement.Bounds(space, new[] { arrow.rectTransform }, out Rect box))
+        {
+            return false;
+        }
+
+        if (label != null && label.gameObject.activeInHierarchy && label.text.Length > 0
+            && HudLayout.VanillaPlacement.Bounds(space, new[] { label.rectTransform }, out Rect frame))
+        {
+            float scale = label.rectTransform.lossyScale.x / Mathf.Max(0.0001f, space.lossyScale.x);
+            float half = label.preferredWidth * scale / 2f;
+            float top = frame.yMax;
+            float bottom = top - label.preferredHeight * scale;
+            box = Rect.MinMaxRect(Mathf.Min(box.xMin, frame.center.x - half), Mathf.Min(box.yMin, bottom),
+                Mathf.Max(box.xMax, frame.center.x + half), Mathf.Max(box.yMax, top));
+        }
+
+        bounds = box;
+        return true;
+    }
+
     internal static void UpdateLayout()
     {
         if (root == null) return;

@@ -1,4 +1,7 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Clock;
+using BrudvikWhiteHilt.Navigation.Compass;
+using BrudvikWhiteHilt.Party;
 using BrudvikWhiteHilt.Progression;
 
 namespace BrudvikWhiteHilt.HudLayout;
@@ -33,6 +36,24 @@ public enum HudHints
 }
 
 /// <summary>
+/// A ready-made HUD layout that sets the sizes and the quiet screen at once.
+/// </summary>
+public enum HudPreset
+{
+    /// <summary>The settings as they are; choosing it changes nothing.</summary>
+    Custom,
+
+    /// <summary>Smaller, with the quiet screen on.</summary>
+    Compact,
+
+    /// <summary>The default sizes.</summary>
+    Standard,
+
+    /// <summary>Larger text and icons and the key hints always shown, for a TV or a large screen.</summary>
+    Large,
+}
+
+/// <summary>
 /// Each player's own HUD settings, section "HUD".
 /// </summary>
 public static class HudSettings
@@ -63,6 +84,48 @@ public static class HudSettings
     /// <summary>How much of a faded part still shows, with <see cref="Calm"/>.</summary>
     public static ConfigEntry<float> CalmOpacity { get; private set; }
 
+    /// <summary>Corner radius of the panel behind the console and the band behind the top, in pixels.</summary>
+    public static ConfigEntry<float> PanelRadius { get; private set; }
+
+    /// <summary>What sits behind the compass, clock and waypoint.</summary>
+    public static ConfigEntry<TopBackground> Top { get; private set; }
+
+    /// <summary>How dark the background behind the top is.</summary>
+    public static ConfigEntry<float> TopOpacity { get; private set; }
+
+    /// <summary>How far down the darkening reaches with <see cref="TopBackground.Fade"/>, in pixels.</summary>
+    public static ConfigEntry<float> TopFadeHeight { get; private set; }
+
+    /// <summary>How dark the rounded panel behind the console is; 0 for none.</summary>
+    public static ConfigEntry<float> PanelOpacity { get; private set; }
+
+    /// <summary>A ready-made layout; choosing one sets the sizes and the quiet screen.</summary>
+    public static ConfigEntry<HudPreset> Preset { get; private set; }
+
+    /// <summary>Whether worn gear shows among the status effects.</summary>
+    public static ConfigEntry<bool> ShowWear { get; private set; }
+
+    /// <summary>Durability share under which a piece of gear shows.</summary>
+    public static ConfigEntry<float> WearWarning { get; private set; }
+
+    /// <summary>Whether a heavy load shows among the status effects.</summary>
+    public static ConfigEntry<bool> ShowWeight { get; private set; }
+
+    /// <summary>Share of the carry weight from which the load shows.</summary>
+    public static ConfigEntry<float> WeightWarning { get; private set; }
+
+    /// <summary>Whether the creature you fight shows in the strip.</summary>
+    public static ConfigEntry<bool> ShowTarget { get; private set; }
+
+    /// <summary>Whether stations near you that need you show in the strip.</summary>
+    public static ConfigEntry<bool> ShowProduction { get; private set; }
+
+    /// <summary>Metres around you the stations in the strip are looked for.</summary>
+    public static ConfigEntry<float> ProductionRange { get; private set; }
+
+    /// <summary>Whether a red arc shows the side a hit came from.</summary>
+    public static ConfigEntry<bool> DamageDirection { get; private set; }
+
     /// <summary>When the key hints show.</summary>
     public static ConfigEntry<HudHints> KeyHints { get; private set; }
 
@@ -74,6 +137,35 @@ public static class HudSettings
 
     /// <summary>Shows every part of the console while held, with <see cref="Calm"/>.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyShowAll { get; private set; }
+
+    /// <summary>
+    /// Sets the sizes, the quiet screen and the key hints of a ready-made layout.
+    /// </summary>
+    /// <param name="preset">The layout; Custom leaves everything as it is.</param>
+    public static void ApplyPreset(HudPreset preset)
+    {
+        (float scale, float margin, int columns, int max, bool calm, HudHints hints, float compass, float party, int clock) = preset switch
+        {
+            HudPreset.Compact => (0.8f, 8f, 5, 10, true, HudHints.Brief, 0.85f, 0.85f, 17),
+            HudPreset.Standard => (1f, 16f, 4, 8, false, HudHints.Brief, 1f, 1f, 20),
+            HudPreset.Large => (1.35f, 24f, 3, 6, false, HudHints.Always, 1.3f, 1.3f, 26),
+            _ => (0f, 0f, 0, 0, false, HudHints.Brief, 0f, 0f, 0)
+        };
+        if (preset == HudPreset.Custom)
+        {
+            return;
+        }
+
+        Scale.Value = scale;
+        BottomMargin.Value = margin;
+        StatusColumns.Value = columns;
+        MaxStatusEffects.Value = max;
+        Calm.Value = calm;
+        KeyHints.Value = hints;
+        HudCompassSettings.Scale.Value = compass;
+        PartySettings.Scale.Value = party;
+        ClockSettings.FontSize.Value = clock;
+    }
 
     /// <summary>Whether the White Hilt console is the chosen HUD.</summary>
     public static bool WhiteHilt => Style != null && Style.Value == HudStyle.WhiteHilt;
@@ -100,6 +192,38 @@ public static class HudSettings
             new AcceptableValueRange<float>(1f, 30f));
         CalmOpacity = WhiteHiltConfig.BindLocal(Section, "CalmOpacity", 0f, "With Calm: how much of a faded part still shows; 0 hides it.",
             new AcceptableValueRange<float>(0f, 0.8f));
+        PanelOpacity = WhiteHiltConfig.BindLocal(Section, "PanelOpacity", 0.45f,
+            "How dark the rounded panel behind the console is, so the bars, numbers and icons read against snow and sky. 0 for no panel.",
+            new AcceptableValueRange<float>(0f, 0.9f));
+        PanelRadius = WhiteHiltConfig.BindLocal(Section, "PanelRadius", 14f,
+            "Corner radius, in pixels, of the panel behind the console and the band behind the top. 0 for square corners.",
+            new AcceptableValueRange<float>(0f, 40f));
+        Top = WhiteHiltConfig.BindLocal(Section, "TopBackground", TopBackground.Band,
+            "What sits behind the compass, clock and waypoint so they read against a bright sky: Band, one rounded band round them as the panel behind the console; Fade, the top of the screen darkened and fading out downwards; or None.");
+        TopOpacity = WhiteHiltConfig.BindLocal(Section, "TopOpacity", 0.45f, "How dark the band or the darkening behind the top is.",
+            new AcceptableValueRange<float>(0.05f, 0.9f));
+        TopFadeHeight = WhiteHiltConfig.BindLocal(Section, "TopFadeHeight", 140f,
+            "With TopBackground Fade: how far down from the top of the screen the darkening reaches, in pixels.",
+            new AcceptableValueRange<float>(40f, 600f));
+        ShowWear = WhiteHiltConfig.BindLocal(Section, "ShowWear", true,
+            "Show worn gear you have on among the status effects, with how much is left; it flashes red when broken.");
+        WearWarning = WhiteHiltConfig.BindLocal(Section, "WearWarning", 0.2f, "Gear shows when its durability is under this share.",
+            new AcceptableValueRange<float>(0.05f, 0.9f));
+        ShowWeight = WhiteHiltConfig.BindLocal(Section, "ShowWeight", true,
+            "Show your load among the status effects when it nears what you can carry; red when it is too much.");
+        WeightWarning = WhiteHiltConfig.BindLocal(Section, "WeightWarning", 0.85f, "The load shows from this share of what you can carry.",
+            new AcceptableValueRange<float>(0.5f, 1f));
+        ShowTarget = WhiteHiltConfig.BindLocal(Section, "ShowTarget", true,
+            "Show the creature under the crosshair, or the nearest one hunting you, in the strip over the console: its stars, health and what it is weak to, resists and is immune to.");
+        ShowProduction = WhiteHiltConfig.BindLocal(Section, "ShowProduction", true,
+            "Show kilns, smelters and other stations near you that have stopped, need you or are done in the strip over the console.");
+        ProductionRange = WhiteHiltConfig.BindLocal(Section, "ProductionRange", 20f, "Metres around you the stations in the strip are looked for.",
+            new AcceptableValueRange<float>(5f, 60f));
+        DamageDirection = WhiteHiltConfig.BindLocal(Section, "DamageDirection", true,
+            "Show a red arc at the edge of the screen on the side a hit came from, also from behind. With either HUD.");
+        Preset = WhiteHiltConfig.BindLocal(Section, "Preset", HudPreset.Custom,
+            "A ready-made layout: Compact (smaller, quiet screen), Standard or Large (for a TV or a large screen). Choosing one sets the console's, compass's, clock's and party list's sizes, the quiet screen and the key hints; Custom changes nothing.");
+        Preset.SettingChanged += (_, _) => ApplyPreset(Preset.Value);
         KeyHints = WhiteHiltConfig.BindLocal(Section, "KeyHints", HudHints.Brief,
             "When the key hints show beside the console: Brief, for a few seconds after taking out a tool or weapon; Always; or Hidden. They always show in the inventory and while the ShowAll key is held.");
         KeyHintSeconds = WhiteHiltConfig.BindLocal(Section, "KeyHintSeconds", 6f, "With Brief key hints: seconds they stay.",

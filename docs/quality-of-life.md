@@ -17,14 +17,18 @@ The White Hilt HUD gathers everything about yourself in one console at the botto
 - **The hotbar** in the middle, with the arrows, bolts, bait or staff casts over the slot that uses them.
 - **Health, stamina and eitr** over the hotbar as bars as wide as it, health the widest, each with its number, `212 / 260`; the health number turns red under a quarter. Eitr shows for those who have it, adrenaline while there is some.
 - **The food** to the left: each icon on a dark disc with a ring round it that empties as the food runs out, the time left under it, flashing when it can be eaten again. **The guardian power** to the left of the food.
-- **Status effects** to the right, four to a row, each with a ring that empties as its time runs out and its time under it: the game's, White Hilt's and other mods' alike. When there are more than fit, the last place goes through the ones left out in turn, with how many they are in its corner. In the inventory, or while you hold the `ShowAll` key, the status effects are a list instead, each with its name and time beside it, so you can see what every icon is.
-
-The rings of food and of meads and other timed effects turn yellow when less than half is left and red under a fifth, and the red ring pulses.
+- **Status effects** to the right, four to a row, each with a ring that empties as its time runs out and its time under it: the game's, White Hilt's and other mods' alike. When there are more than fit, the last place goes through the ones left out in turn, with how many they are in its corner. In the inventory, or while you hold the `ShowAll` key, the status effects are a list instead, each with its name and time beside it, so you can see what every icon is. Among them also show **worn gear** you have on, under a fifth of its durability, with how much is left (flashing red when broken), and **your load** from 85 % of what you can carry (red when it is too much).
 - **A context strip** over the bars when there is something to say, up to three lines:
   - **Warnings**, for a while, instead of a message in the middle of the screen: night falling (orange) and, aboard a ship with a Navigator's Table, a storm coming (violet).
   - **A raid or other event** while it lasts, in red, instead of the game's event bar.
   - **The piece you are about to build** and what it costs, each amount in the game's own colour for it: red while you have too little, and White Hilt's colour when [nearby chests](chests.md) make up the rest. The game's build panel at the bottom is hidden.
+  - **The creature you fight**: the one under the crosshair, for a few seconds after you look away, or else the nearest one hunting you, with its stars, health and what it is weak to, resists and is immune to.
   - **The ship** while you steer it (or ride one sailing its route): speed, heading, depth, wind, held course and time to arrival, instead of under the wind indicator.
+  - **Stations near you** (within 20 m) that have stopped, need you soon or are done, the most urgent first, as the [production overview](production.md) has them.
+
+A half dark panel with rounded corners lies behind the console, from the guardian power to the status effects and from under the hotbar to over the bars, so the numbers and icons read against snow and a bright sky; with the quiet screen it fades with the rest. At the top, one band of the same kind lies round the clock, the compass and the waypoint, or, as you choose, the top of the screen darkens and fades out downwards.
+
+The rings of food and of meads and other timed effects turn yellow when less than half is left and red under a fifth, and the red ring pulses. When you are hit, a soft red arc at the edge of the screen shows the side it came from, turning with the camera as it fades, also for hits from behind; this works with the game's HUD too.
 
 The [clock](#-clock) sits at the left end of the [HUD compass](navigation.md#horizontal-hud-compass) and the [waypoint arrow](navigation.md) at the right end; without the compass they go back to their own places. The [party list](#-party-list), with your dog and tamed animals under it, stands at the left, a third of the way down. When the ship controls are under the console, it rises above them.
 
@@ -56,6 +60,17 @@ The `HUD` section, each player's own:
 | `CalmOpacity` | 0 | How much of a faded part still shows |
 | `KeyHints` | `Brief` | When the key hints show: `Brief`, `Always` or `Hidden` |
 | `KeyHintSeconds` | 6 | Seconds `Brief` key hints stay |
+| `PanelOpacity` | 0.45 | How dark the rounded panel behind the console is; 0 for none |
+| `PanelRadius` | 14 | Corner radius of that panel and of the band behind the top, in pixels |
+| `TopBackground` | `Band` | Behind the compass, clock and waypoint: `Band` (one rounded band round them), `Fade` (the top of the screen darkened, fading out downwards) or `None` |
+| `TopOpacity` | 0.45 | How dark the band or the darkening at the top is |
+| `TopFadeHeight` | 140 | How far down the `Fade` darkening reaches, in pixels |
+| `Preset` | `Custom` | A ready-made layout: `Compact` (smaller, quiet screen on), `Standard` or `Large` (for a TV or a large screen). Choosing one sets `Scale`, `BottomMargin`, `StatusColumns`, `MaxStatusEffects`, `Calm`, `KeyHints`, the compass's and party list's `Scale` and the clock's `FontSize`; `Custom` changes nothing |
+| `ShowWear` / `WearWarning` | on / 0.2 | Worn gear among the status effects, under this share of its durability |
+| `ShowWeight` / `WeightWarning` | on / 0.85 | Your load among the status effects, from this share of what you can carry |
+| `ShowTarget` | on | The creature you fight in the strip |
+| `ShowProduction` / `ProductionRange` | on / 20 | Stations near you that need you in the strip, within this many metres |
+| `DamageDirection` | on | The red arc on the side a hit came from |
 
 `HUD.Keys` → `ToggleStyle` binds a key to switch between the White Hilt HUD and the game's own, and `ShowAll` one that, while held, shows the whole console, the key hints and the status effects as a list with names. Both are unbound at first.
 

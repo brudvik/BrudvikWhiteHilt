@@ -107,6 +107,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         HudLayout.HudSettings.Initialize();
         HudLayout.HudAlerts.Register();
         HudLayout.HudConsole.Register();
+        HudLayout.HudExtras.Register();
         Pieces.Ships.ShipHud.RegisterHud();
         Production.ProductionSettings.Initialize();
         Navigation.Portraits.PortraitSettings.Initialize();

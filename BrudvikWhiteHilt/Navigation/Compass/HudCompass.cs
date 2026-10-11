@@ -65,7 +65,8 @@ public static class HudCompass
         root.localScale = Vector3.one * scale;
         root.anchoredPosition = new Vector2(Mathf.Clamp(HudCompassSettings.HorizontalPosition.Value, -offsetLimit, offsetLimit), -HudCompassSettings.VerticalPosition.Value);
         group.alpha = HudCompassSettings.Opacity.Value;
-        background.color = new Color(0.08f, 0.07f, 0.05f, HudCompassSettings.BackgroundOpacity.Value);
+        // The White Hilt HUD's band behind the top is the tape's background then.
+        background.color = new Color(0.08f, 0.07f, 0.05f, HudLayout.HudTop.BandShown ? 0f : HudCompassSettings.BackgroundOpacity.Value);
         RebuildTicks();
 
         float heading = CompassGeometry.Normalize(Utils.GetMainCamera().transform.eulerAngles.y);
