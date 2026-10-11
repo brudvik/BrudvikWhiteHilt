@@ -26,8 +26,19 @@ internal static class PlaceSmokePatch
 
         foreach (GameObject effect in __result)
         {
-            if (effect != null && effect.GetComponentInChildren<ParticleSystem>(true) != null
-                && effect.GetComponentInChildren<AudioSource>(true) == null)
+            if (effect == null || effect.GetComponentInChildren<ParticleSystem>(true) == null
+                || effect.GetComponentInChildren<AudioSource>(true) != null)
+            {
+                continue;
+            }
+
+            // Some puffs (vfx_Place_wood_pole) are network objects: a plain Destroy leaves a dead view in ZNetScene,
+            // which then throws every frame once the player walks away and stops all unloading.
+            if (effect.GetComponent<ZNetView>() != null && ZNetScene.instance != null)
+            {
+                ZNetScene.instance.Destroy(effect);
+            }
+            else
             {
                 Object.Destroy(effect);
             }
