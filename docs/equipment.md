@@ -175,7 +175,8 @@ High-damage ammunition crafted in large quantities (200 per craft). Enhanced wit
 
 ## 🔧 TOOLS
 
-All tools are indestructible with reduced stamina usage (stamina modifier -1).
+All tools are indestructible with reduced stamina usage (stamina modifier -1). The White Hilt Axe and Pickaxe have the
+highest tool tier of the game's axes and pickaxes, so they chop and mine everything, the Mistlands included.
 
 | Item | Description | Crafting Station | Requirements |
 |------|-------------|------------------|--------------|

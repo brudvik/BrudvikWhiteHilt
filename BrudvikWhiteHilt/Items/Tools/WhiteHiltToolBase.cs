@@ -5,6 +5,7 @@ using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using System;
+using System.Linq;
 
 namespace BrudvikWhiteHilt.Items.Tools;
 
@@ -55,6 +56,12 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         new() { Item = "Stone", Amount = 5, Recover = false },
         new() { Item = "Resin", Amount = 5, Recover = false }
     };
+
+    /// <summary>
+    /// Whether the tool chops or mines everything: it gets the highest tool tier of the game's tools of the same skill,
+    /// so the White Hilt Axe and Pickaxe work in every biome without a later-biome copy.
+    /// </summary>
+    protected virtual bool ReachesEveryTier => false;
 
     /// <summary>
     /// Whether the tool is added to the game at all. A disabled one is skipped when the plugin starts, so it never
@@ -108,6 +115,11 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
             };
 
             IndestructibleItem item = new(BaseName, CopyFrom, itemConfig);
+            if (ReachesEveryTier)
+            {
+                item.ItemData.m_toolTier = HighestToolTier(item.ItemData.m_skillType, item.ItemData.m_toolTier);
+            }
+
             baseStaminaModifier = item.ItemData.m_homeItemsStaminaModifier;
             added = item;
             ApplyConfig();
@@ -135,6 +147,23 @@ public abstract class WhiteHiltToolBase : IWhiteHiltCustomItem, IWhiteHiltConfig
 
         added.ItemData.m_homeItemsStaminaModifier = baseStaminaModifier - staminaReduction.Value;
         added.ApplyConfig();
+    }
+
+    // Looks the tier up instead of hard-coding it, so a tool added by a later game update still sets the bar. Tiers of
+    // 1000 and more are markers, not tools (see RunePortalRules).
+    private static int HighestToolTier(Skills.SkillType skill, int clonedTier)
+    {
+        int highest = clonedTier;
+        foreach (ItemDrop tool in PrefabManager.Cache.GetPrefabs(typeof(ItemDrop)).Values.OfType<ItemDrop>())
+        {
+            ItemDrop.ItemData.SharedData shared = tool.m_itemData?.m_shared;
+            if (shared != null && shared.m_skillType == skill && shared.m_toolTier < 1000)
+            {
+                highest = Math.Max(highest, shared.m_toolTier);
+            }
+        }
+
+        return highest;
     }
 
     private static void BindConfig()

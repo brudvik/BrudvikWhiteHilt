@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **The White Hilt Axe and Pickaxe work in every biome.** They kept the tool tier of the iron axe and pickaxe they are cloned from, so in the Mistlands the game said the wood and stone were too hard, and you needed the black metal ones. They now have the highest tier of the game's axes and pickaxes, as the [White Hilt tools](docs/equipment.md#-tools) are meant to last the whole game.
+
 ## v0.119.2 - 2026-10-11
 
 ### Fixed

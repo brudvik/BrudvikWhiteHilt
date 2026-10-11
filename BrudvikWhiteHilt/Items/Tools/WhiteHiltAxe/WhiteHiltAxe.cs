@@ -27,5 +27,8 @@ public class WhiteHiltAxe : WhiteHiltToolBase
     protected override string CopyFrom => "AxeIron";
 
     /// <inheritdoc/>
+    protected override bool ReachesEveryTier => true;
+
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }

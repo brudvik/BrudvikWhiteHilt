@@ -27,5 +27,8 @@ public class WhiteHiltPickaxe : WhiteHiltToolBase
     protected override string CopyFrom => "PickaxeIron";
 
     /// <inheritdoc/>
+    protected override bool ReachesEveryTier => true;
+
+    /// <inheritdoc/>
     public override bool Enabled => true;
 }
