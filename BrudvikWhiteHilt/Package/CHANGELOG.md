@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.120.0 - 2026-10-11
+
+### Added
+- **[The School Bench](docs/school.md)**, the map table for what you know: a long table set with open scrolls, wax tablets, open books, inkhorns and rune staves, with a bench in front. *Write what I know* writes your skill levels, the materials and crafting stations you know and the runestone texts you have read in it; *Read* teaches you what others wrote, and with it their recipes and pieces. Sitting on the bench studies the skill you are furthest behind in, up to half the best level written (`[School]`). A material is only taught if you have been to a biome where it is found, so nobody skips the progression by reading. Black Forest tier.
+- **[Shared blueprints](docs/build-tools.md#shared-blueprints).** The blueprint panel has a *Shared* tab with the blueprints everyone has shared in this world, kept on the server: *Share* one of yours, *Fetch* a copy of someone else's, and *Unshare* your own (only the one who shared it can). By default this is done at a School Bench (`[BuildTools.SharedBlueprints]`). The server checks every blueprint's size, pieces and the sharer's quota.
+- **[Darkwood doors, walls and gables](docs/building-pieces.md#darkwood-doors-walls--gables)**, cut from the vanilla Darkwood Gate: the **Darkwood Door** 3 m and 4 m high (the gate's leaf with the arch straightened into three panels, its hinges and ring, on its post under a lintel), **Darkwood Walls** 2 m wide and 1 to 4 m high whose rails line up with the doors, and **Darkwood Gable Walls** for the 26°, 45° and 67° roofs. Plains tier.
+- **The Darkwood Double Gate**: both leaves of the darkwood gate under one arch as one piece, 4 m wide, so the two halves need not be placed against each other. Both leaves open together.
+
+### Fixed
+- **The White Hilt Axe and Pickaxe work in every biome.** They kept the tool tier of the iron axe and pickaxe they are cloned from, so in the Mistlands the game said the wood and stone were too hard, and you needed the black metal ones. They now have the highest tier of the game's axes and pickaxes, as the [White Hilt tools](docs/equipment.md#-tools) are meant to last the whole game.
+- **Looted gear goes back on.** After logging out and in again without quitting the game, the build tools' axis lines threw an error every frame, which stopped the [equipment slots](docs/backpack.md) and food slots from doing their work. Armor taken back from your grave lay in its slots without being worn, and you had to take it out and put it on again. It is now worn as soon as it is back in its slot.
+- **The Gifts of the gods say what they do.** Odin, Freya, Loki, Hugin and Munin showed only their own name as their effect, and most others a vague line such as "Enhanced crafting abilities". Every [potion](docs/potions.md)'s tooltip now names what the game does not list by itself, with the numbers from the server's settings: Fenrir's attack speed, stamina and life steal, Thor's chopping, mining and stamina, Kvasir's skill gain, Ullr's bow damage, Hel's trigger, Heimdall's and the Völva's reach, and so on. Hugin's and Munin's descriptions say what they give, and Loki's lost a stray word.
+- **An upgraded item no longer drops out of the upgrade list.** Right after an upgrade paid partly from chests, the list was rebuilt counting only the chests just taken from, so a next level the other chests could pay for looked unaffordable and vanished from a list filtered to Craftable (or sank to the bottom with `CraftableFirst`) until you switched tabs. The list now counts every chest around you again.
+- **The world unloads again after building.** Leaving out the puff of smoke when a piece is built removed some puffs (such as a wood pole's) the wrong way, as they are shared with the other players. Once you walked away, the game threw an error every frame and stopped unloading the world behind you. The puffs are now removed the way the game removes them.
+
 ## v0.119.2 - 2026-10-11
 
 ### Fixed

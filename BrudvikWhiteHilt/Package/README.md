@@ -33,17 +33,16 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.119.2
+## ✨ New in 0.120.0
+
+- **[The School Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md)**: write down what you know, read what others wrote to learn their materials, recipes and runestone texts, and sit on its bench to study their skills up to half their level.
+- **[Shared blueprints](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#shared-blueprints)**: share your blueprints on the server for everyone in the world to fetch.
+- **[Darkwood doors, walls and gables](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#darkwood-doors-walls--gables)** cut from the darkwood gate, and a darkwood double gate.
+- **The Gifts of the gods say what they do**, with the server's numbers, and the White Hilt Axe and Pickaxe now cut and mine everything, the Mistlands included. Looted gear goes back on after a relog.
+
+### Also new in 0.119.2
 
 - **The [Mast Wisp](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md) clears the Mistlands mist again** round the whole ship; it sat too high on the mast for the mist to notice it. Its reach now grows with your Exploration, from 15 m to 30 m.
-
-### Also new in 0.119.1
-
-- **The food places stay** in the [White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud) when you have not eaten: an empty one is a red ring with a red cross, pulsing when you have eaten nothing at all, so the console keeps its shape.
-
-### Also new in 0.119.0
-
-- **A round minimap** in the [White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud): the map in a dark compass ring, with the pins, bosses and waypoint beyond it on the ring in the direction they lie. The HUD also stays at the bottom on a ship, and the weather icon and compass markers sit on dark discs.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -99,13 +98,13 @@ Paint or stain any piece in a colour mixed from dyes, and dye banners, sails and
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_banners.png" alt="Beams, poles & banners" height="120">
 
-Longer and angled beams and poles, iron grates in more sizes and White Hilt banners.
+Longer and angled beams and poles, darkwood doors, walls and gables, iron grates in more sizes and White Hilt banners.
 
 #### [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_build_tools.png" alt="Build camera & toolbar" height="120">
 
-A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.
+A free build camera, precise rotation, undo, area repair, blueprints shared on the server and terrain tools.
 
 #### [Decor Hammer](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/decor.md)
 
@@ -124,6 +123,12 @@ Laft and stave walls, a svalgang and pieces after Borgund stave church, doors 3 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/carve_friser.png" alt="Carvings" height="120">
 
 Carved friezes and post boards in four Norse patterns, a carved portal, a dragon head, ship stems and a runestone.
+
+#### [School Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/school_bench.png" alt="School Bench" height="120">
+
+Write down what you know, learn what others know, sit and study their skills, and share blueprints.
 
 ### ⛵ Sea & travel
 
@@ -336,9 +341,9 @@ The Thunderstore package gets a plain markdown version of this README (`BrudvikW
 - Herb Tray model: ["Health Pack: Mortar and Pestle Herb Crafting Set"](https://sketchfab.com/3d-models/health-pack-mortar-and-pestle-herb-crafting-set-98c25d51e2d84fc48153adf1df7ed520) by [Michael Neocleous](https://sketchfab.com/mikegneo), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
 - Chain Bench vise: ["Medieval_Blacksmith_Vise"](https://sketchfab.com/3d-models/medieval-blacksmith-vise-27f9f65e020f4f88b65b42a510f5a433) by [GetDeadEntertainment](https://sketchfab.com/GetDeadEntertainment), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture, converted to OBJ, rescaled and made double-sided for Valheim.
 - Chain Bench chains: ["Hanging wall chains"](https://sketchfab.com/3d-models/hanging-wall-chains-97bc5d1699c94b619d0666f6eab79ea0) by [Karyu](https://sketchfab.com/karyu.lucca), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
-- Rune Forge model: ["Medieval Workbench"](https://sketchfab.com/3d-models/medieval-workbench-b9e0b742add340f28f3194d1dc022d26) by [Catsnap0006](https://sketchfab.com/Catsnap0006), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim.
+- Rune Forge model and School Bench table: ["Medieval Workbench"](https://sketchfab.com/3d-models/medieval-workbench-b9e0b742add340f28f3194d1dc022d26) by [Catsnap0006](https://sketchfab.com/Catsnap0006), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to OBJ, rescaled and made double-sided for Valheim; the School Bench table without its vise.
 - Rune model: ["Rune Ring"](https://sketchfab.com/3d-models/rune-ring-266ccf4f356c45a89fe7e8d344590446) by [Christopher Turner](https://sketchfab.com/TUR17002508), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and recoloured per metal for Valheim.
-- Rune Post plank: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
+- Rune Post plank and the School Bench's rune staves: ["Wooden hook rack"](https://sketchfab.com/3d-models/wooden-hook-rack-b7928bccdd1344b79c0b67e7a9878016) by [Sousinho](https://sketchfab.com/sousinho), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled and made double-sided for Valheim.
 - Ship figurehead: ["Dragon Winestopper"](https://sketchfab.com/3d-models/dragon-winestopper-fb547b2a57804d92a66df5da25abef11) by [PEDBRA](https://sketchfab.com/pedbra), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, turned to face forward and made double-sided for Valheim.
 - Valkyrie Stone model: ["Rune Stone"](https://sketchfab.com/3d-models/rune-stone-065bcefe36344914ba244c35b95610b6) by [Jadon_TheArtist](https://sketchfab.com/Jadon_TheArtist), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to OBJ, rescaled, made double-sided and its glow recoloured to gold for Valheim.
 - Waste Well model: ["Stone Well"](https://sketchfab.com/3d-models/stone-well-1498f53c9df54a289439f09ca89fc7d5) by [Andrew Jepson](https://sketchfab.com/ajepson), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh with a combined texture (tiling baked in), converted to OBJ, rescaled and made double-sided for Valheim.
