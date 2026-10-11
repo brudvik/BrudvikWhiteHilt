@@ -33,7 +33,7 @@ public class GiftOfFenrirEffect : SE_Stats
         m_startMessage = $"The wolf's fury surges through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Faster attacks, less attack stamina, faster movement, life steal";
+        m_tooltip = "Attacks are {0}% faster and cost {1}% less stamina. Heals {2}% of the damage you deal";
     }
 
     /// <summary>

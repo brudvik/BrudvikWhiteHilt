@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Progression;
+﻿using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -25,7 +26,10 @@ public class GiftOfHugin : PotionBase, IFullModeOnly
     protected override string FullName => "Gift of Hugin";
 
     /// <inheritdoc/>
-    protected override string Description => "Grants you maximum skill level";
+    protected override string Description => "Grants you the thought of Odin's raven, and mastery of every skill";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Number(PotionSettings.Hugin.SkillLevel.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfHugin.png";

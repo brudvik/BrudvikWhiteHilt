@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,14 @@ public class GiftOfFreyr : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the blessing of the god of fertility and peace";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Number(PotionSettings.Freyr.HealPerSecond.Value),
+        Translations.Number(PotionSettings.Freyr.StaminaPerSecond.Value),
+        Translations.Percent(1f - PotionSettings.Freyr.HomeItemStaminaMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfFreyr.png";

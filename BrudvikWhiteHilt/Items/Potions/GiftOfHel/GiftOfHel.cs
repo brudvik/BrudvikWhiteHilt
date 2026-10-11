@@ -37,6 +37,9 @@ public class GiftOfHel : PotionBase
     protected override string Description => "Grants you a second chance from the goddess of the underworld";
 
     /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(PotionSettings.Hel.TriggerHealthFraction.Value) };
+
+    /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfHel.png";
 
     /// <inheritdoc/>

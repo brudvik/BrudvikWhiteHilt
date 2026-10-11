@@ -27,7 +27,7 @@ namespace BrudvikWhiteHilt.Items.Potions.GiftOfMunin
         protected override string FullName => "Gift of Munin";
 
         /// <inheritdoc/>
-        protected override string Description => "Grants you all the knowledge";
+        protected override string Description => "Grants you the memory of Odin's raven, and knowledge of every material";
 
         /// <inheritdoc/>
         protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfMunin.png";

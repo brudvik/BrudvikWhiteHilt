@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,12 @@ public class GiftOfBaldur : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the unseen grace of the shining god";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Percent(1f - PotionSettings.Baldur.SneakStaminaMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfBaldur.png";

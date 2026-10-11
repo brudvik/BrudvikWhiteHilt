@@ -22,7 +22,7 @@ public class GiftOfLokiEffect : SE_Stats
         m_startMessage = $"The power of {effectName} has arrived!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "Fills your eitr when drunk, and eitr regenerates {0}x as fast. Only with eitr from food";
     }
 
     /// <summary>

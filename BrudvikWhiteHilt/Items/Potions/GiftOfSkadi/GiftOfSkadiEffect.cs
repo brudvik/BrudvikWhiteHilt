@@ -23,7 +23,7 @@ public class GiftOfSkadiEffect : SE_Stats
         m_startMessage = $"You embrace the cold with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Immune to frost and freezing";
+        m_tooltip = "You never get cold or freezing";
     }
 
     /// <summary>

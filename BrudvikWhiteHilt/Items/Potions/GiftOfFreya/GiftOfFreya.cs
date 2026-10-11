@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Progression;
+﻿using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -26,6 +27,9 @@ public class GiftOfFreya : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you immense stamina";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Number(1f + PotionSettings.Freya.StaminaRegenBonus.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfFreya.png";

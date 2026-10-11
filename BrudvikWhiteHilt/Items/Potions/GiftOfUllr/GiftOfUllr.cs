@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Foraging.Angelica;
 using BrudvikWhiteHilt.Items.Foraging.Juniper;
 using BrudvikWhiteHilt.Progression;
@@ -54,6 +55,9 @@ public class GiftOfUllr : PotionBase
     protected override string Description => "Grants you the eye and stride of Ullr, the hunter god of bow and ski";
 
     /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(BowDamage.Value) };
+
+    /// <inheritdoc/>
     protected override Color Tint => new(0.6f, 0.75f, 1f);
 
     /// <inheritdoc/>
@@ -96,7 +100,7 @@ public class GiftOfUllrEffect : SE_Stats
         m_startMessage = $"Ullr guides your hunt with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Bows hit harder, you move faster and are harder to notice";
+        m_tooltip = "Bows deal {0}% more damage, and enemies notice you less easily";
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Foraging.BogBean;
 using BrudvikWhiteHilt.Items.Foraging.SphagnumMoss;
 using BrudvikWhiteHilt.Progression;
@@ -48,6 +49,9 @@ public class GiftOfEir : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the care of Eir, the healer among the gods";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(HealShare.Value) };
 
     /// <inheritdoc/>
     protected override Color Tint => new(0.55f, 0.85f, 0.6f);

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,14 @@ public class GiftOfFenrir : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the ferocity of the mighty wolf";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Percent(PotionSettings.Fenrir.AttackSpeed.Value - 1f),
+        Translations.Percent(1f - PotionSettings.Fenrir.AttackStaminaMultiplier.Value),
+        Translations.Percent(PotionSettings.Fenrir.LifeSteal.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfFenrir.png";

@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Monsters;
+﻿using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,7 +27,10 @@ public class GiftOfLoki : PotionBase
     protected override string FullName => "Gift of Loki";
 
     /// <inheritdoc/>
-    protected override string Description => "Grants you endless of Eitr";
+    protected override string Description => "Grants you endless Eitr";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Number(1f + PotionSettings.Loki.EitrRegenBonus.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfLoki.png";

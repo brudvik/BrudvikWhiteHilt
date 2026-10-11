@@ -23,7 +23,7 @@ public class GiftOfThorEffect : SE_Stats
         m_startMessage = $"Thunder courses through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "{0}x chopping and {1}x mining damage, less building and attack stamina, immune to lightning";
+        m_tooltip = "{0}x chopping and {1}x mining damage. Attacks cost {2}% and building {3}% less stamina";
     }
 
     /// <summary>

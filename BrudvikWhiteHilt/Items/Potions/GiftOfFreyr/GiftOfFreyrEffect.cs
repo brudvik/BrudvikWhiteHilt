@@ -23,7 +23,7 @@ public class GiftOfFreyrEffect : SE_Stats
         m_startMessage = $"Peace and prosperity flow through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Enhanced comfort and peaceful activities";
+        m_tooltip = "Heals {0} health and restores {1} stamina every second. Building and using tools costs {2}% less stamina";
     }
 
     /// <summary>

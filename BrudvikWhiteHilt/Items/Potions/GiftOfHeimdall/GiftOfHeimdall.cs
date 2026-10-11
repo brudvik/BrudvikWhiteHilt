@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Foraging.Angelica;
 using BrudvikWhiteHilt.Items.Foraging.Crowberries;
 using BrudvikWhiteHilt.Mastery;
@@ -51,6 +52,9 @@ public class GiftOfHeimdall : PotionBase
     protected override string Description => "Grants you the senses of Heimdall, the watchman who hears the grass grow";
 
     /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Number(Radius.Value) };
+
+    /// <inheritdoc/>
     protected override Color Tint => new(1f, 0.9f, 0.55f);
 
     /// <inheritdoc/>
@@ -95,7 +99,7 @@ public class GiftOfHeimdallEffect : SE_Stats
         m_startMessage = $"You hear the grass grow with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Foes nearby show on the map";
+        m_tooltip = "Foes within {0} m show on the map";
     }
 
     /// <summary>

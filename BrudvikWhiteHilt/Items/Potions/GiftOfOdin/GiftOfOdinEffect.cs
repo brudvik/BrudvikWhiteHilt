@@ -30,7 +30,8 @@ public class GiftOfOdinEffect : SE_Stats
         m_startMessage = $"You feel immensely powerful with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = effectName;
+        m_tooltip = "+{0} max health. Heals fully when drunk, then {1} health every second and {2}x health regeneration. "
+            + "{3}% less fall damage. Weaker near the Kraken and black beasts";
     }
 
     /// <summary>

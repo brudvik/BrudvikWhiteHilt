@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,15 @@ public class GiftOfThor : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the strength of the thunder god";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Number(PotionSettings.Thor.ChopDamageMultiplier.Value),
+        Translations.Number(PotionSettings.Thor.PickaxeDamageMultiplier.Value),
+        Translations.Percent(1f - PotionSettings.Thor.AttackStaminaMultiplier.Value),
+        Translations.Percent(1f - PotionSettings.Thor.HomeItemStaminaMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfThor.png";

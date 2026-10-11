@@ -23,7 +23,7 @@ public class GiftOfSleipnirEffect : SE_Stats
         m_startMessage = $"You have been blessed with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Increased speed, no fall damage, higher jumps";
+        m_tooltip = "{0}% less fall damage";
     }
 
     /// <summary>

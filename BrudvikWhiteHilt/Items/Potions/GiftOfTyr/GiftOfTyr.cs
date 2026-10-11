@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,14 @@ public class GiftOfTyr : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the steadfastness of the one-handed war god";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Percent(1f - PotionSettings.Tyr.BlockStaminaMultiplier.Value),
+        Translations.Percent(1f - PotionSettings.Tyr.DodgeStaminaMultiplier.Value),
+        Translations.Percent(1f - PotionSettings.Tyr.PushForceMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfTyr.png";

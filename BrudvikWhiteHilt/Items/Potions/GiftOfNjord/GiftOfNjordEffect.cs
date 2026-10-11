@@ -23,7 +23,7 @@ public class GiftOfNjordEffect : SE_Stats
         m_startMessage = $"You have been blessed with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Swim faster, no swim stamina drain, cannot drown";
+        m_tooltip = "Swimming costs {0}% less stamina, and you cannot drown";
     }
 
     /// <summary>

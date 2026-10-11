@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Foraging.Angelica;
 using BrudvikWhiteHilt.Items.Foraging.Meadowsweet;
 using BrudvikWhiteHilt.Progression;
@@ -46,6 +47,9 @@ public class GiftOfKvasir : PotionBase
     protected override string Description => "Grants you a sip of the mead of poetry, brewed from the blood of wise Kvasir";
 
     /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(SkillGain.Value) };
+
+    /// <inheritdoc/>
     protected override Color Tint => new(0.95f, 0.55f, 0.4f);
 
     /// <inheritdoc/>
@@ -88,7 +92,7 @@ public class GiftOfKvasirEffect : SE_Stats
         m_startMessage = $"The words and wisdom of Kvasir fill you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Every skill rises faster";
+        m_tooltip = "Every skill rises {0}% faster";
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ public class GiftOfHuginEffect : SE_Stats
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
         m_startMessage = $"You have been bestowed the {effectName}!";
-        m_tooltip = effectName;
+        m_tooltip = "Raises every skill to level {0} for good";
     }
 
     /// <summary>

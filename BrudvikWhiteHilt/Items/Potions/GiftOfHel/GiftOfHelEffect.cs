@@ -28,7 +28,7 @@ public class GiftOfHelEffect : SE_Stats
         m_startMessage = $"Hel watches over you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Protects from death once";
+        m_tooltip = "Once, when a hit would kill you or your health falls below {0}%, you are healed to full instead";
     }
 
     /// <summary>

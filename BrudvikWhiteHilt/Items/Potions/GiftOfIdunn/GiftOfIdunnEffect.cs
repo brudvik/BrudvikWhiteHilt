@@ -23,7 +23,7 @@ public class GiftOfIdunnEffect : SE_Stats
         m_startMessage = $"Youth flows through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Enhanced regeneration and vitality";
+        m_tooltip = "Health, stamina and eitr regenerate faster";
     }
 
     /// <summary>

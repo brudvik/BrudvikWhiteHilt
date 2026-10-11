@@ -20,7 +20,7 @@ public class GiftOfEirEffect : SE_Stats
         m_startMessage = $"Eir tends your wounds with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Heals and cleanses once when drunk, faster health regeneration";
+        m_tooltip = "Heals {0}% of your health and ends poison, burning, frost, shock, tar and smoke once when drunk";
     }
 
     /// <summary>

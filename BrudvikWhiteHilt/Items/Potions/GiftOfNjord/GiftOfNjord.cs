@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,9 @@ public class GiftOfNjord : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the blessing of the god of seas and winds";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(1f - PotionSettings.Njord.SwimStaminaMultiplier.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfNjord.png";

@@ -23,7 +23,7 @@ public class GiftOfBaldurEffect : SE_Stats
         m_startMessage = $"You shimmer with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Enemies cannot detect you easily";
+        m_tooltip = "Enemies can barely notice you, and sneaking costs {0}% less stamina";
     }
 
     /// <summary>

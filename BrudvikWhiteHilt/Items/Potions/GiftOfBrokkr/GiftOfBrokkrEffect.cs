@@ -23,7 +23,7 @@ public class GiftOfBrokkrEffect : SE_Stats
         m_startMessage = $"The craft of the dwarves flows through you with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Enhanced crafting abilities";
+        m_tooltip = "+{0} to every skill, up to level {1}. Building and using tools costs {2}% less stamina";
     }
 
     /// <summary>

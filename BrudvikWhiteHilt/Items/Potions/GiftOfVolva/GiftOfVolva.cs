@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Foraging.Ergot;
 using BrudvikWhiteHilt.Items.Foraging.Henbane;
 using BrudvikWhiteHilt.Items.Foraging.RockLichen;
@@ -57,6 +58,13 @@ public class GiftOfVolva : PotionBase
     protected override string Description => "The seeress's draught. Henbane smoke and blighted grain open eyes that see what hides in the grass and under the earth";
 
     /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Number(SightRadius.Value),
+        Translations.Number(Mathf.Round(MaxPins.Value))
+    };
+
+    /// <inheritdoc/>
     protected override Color Tint => new(0.45f, 0.3f, 0.6f);
 
     /// <inheritdoc/>
@@ -105,7 +113,7 @@ public class GiftOfVolvaEffect : SE_Stats
         m_startMessage = $"Your eyes open with the {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"The {effectName} has faded!";
-        m_tooltip = "Things to pick and treasure nearby show on the map";
+        m_tooltip = "Things to pick within {0} m (the {1} nearest) and unopened treasure show on the map";
     }
 
     /// <summary>

@@ -25,7 +25,8 @@ public class GiftOfFreyaEffect : SE_Stats
         m_startMessage = $"You have been bestowed the {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} is no more!";
-        m_tooltip = effectName;
+        m_tooltip = "Fills your stamina when drunk. Running, jumping, attacking, blocking, dodging, swimming, building and "
+            + "sneaking restore a little stamina instead of using it. Stamina regenerates {0}x as fast. Weaker near the Kraken";
     }
 
     /// <summary>

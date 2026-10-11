@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,9 @@ public class GiftOfSleipnir : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the speed of Odin's eight-legged horse";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(1f - PotionSettings.Sleipnir.FallDamageMultiplier.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfSleipnir.png";

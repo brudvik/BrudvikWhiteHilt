@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,14 @@ public class GiftOfBrokkr : PotionBase, IFullModeOnly
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the skill of the legendary dwarf smith";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Number(PotionSettings.Brokkr.SkillBonus.Value),
+        Translations.Number(PotionSettings.Brokkr.MaxSkillLevel.Value),
+        Translations.Percent(1f - PotionSettings.Brokkr.HomeItemStaminaMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfBrokkr.png";

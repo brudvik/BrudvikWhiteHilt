@@ -106,6 +106,6 @@ One section per potion, `[Potions.GiftOf<Name>]` (e.g. `[Potions.GiftOfThor]`), 
 | Tyr | `CarryWeight` 100, `BlockStaminaMultiplier` 0, `DodgeStaminaMultiplier` 0.25, `PushForceMultiplier` 0.1 (knockback taken) |
 | Ullr | `BowDamage` 0.25, `SpeedModifier` 0.15, `StealthModifier` -0.3 |
 
-Changes apply on the next drink. The foraging meads are set in [Foraging & food](foraging.md).
+Changes apply on the next drink. A potion's tooltip shows its numbers as the server has set them. The foraging meads are set in [Foraging & food](foraging.md).
 
 On upgrade to 0.72.3, previous default Eir, Freya and Fenrir values move to the new defaults once. Other configured values are preserved.

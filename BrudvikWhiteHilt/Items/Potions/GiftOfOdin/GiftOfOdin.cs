@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Progression;
+﻿using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
 using UnityEngine;
@@ -26,6 +27,15 @@ public class GiftOfOdin : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Strengthens your health and mends your wounds";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[]
+    {
+        Translations.Number(PotionSettings.Odin.BonusMaxHealth.Value),
+        Translations.Number(PotionSettings.Odin.HealPerSecond.Value),
+        Translations.Number(1f + PotionSettings.Odin.HealthRegenBonus.Value),
+        Translations.Percent(1f - PotionSettings.Odin.FallDamageMultiplier.Value)
+    };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfOdin.png";

@@ -23,7 +23,7 @@ public class GiftOfTyrEffect : SE_Stats
         m_startMessage = $"You stand unshakeable with {effectName}!";
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
-        m_tooltip = "Enhanced blocking, no knockback";
+        m_tooltip = "Blocking costs {0}% and dodging {1}% less stamina, and you take {2}% less knockback";
     }
 
     /// <summary>

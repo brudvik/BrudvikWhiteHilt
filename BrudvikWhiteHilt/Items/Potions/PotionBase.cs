@@ -49,6 +49,12 @@ public abstract class PotionBase : IWhiteHiltCustomItem
     protected virtual Color Tint => Color.white;
 
     /// <summary>
+    /// Values for <c>{0}</c>, <c>{1}</c>... in the effect's tooltip, read from the settings each time it is shown; null
+    /// for none. The tooltip names what the game does not list by itself from the effect's fields.
+    /// </summary>
+    protected virtual object[] TooltipValues => null;
+
+    /// <summary>
     /// Whether the potion is added to the game at all. A disabled one is skipped when the plugin starts, so it never
     /// reaches ObjectDB or a recipe.
     /// </summary>
@@ -188,11 +194,8 @@ public abstract class PotionBase : IWhiteHiltCustomItem
             effect = CreateEffect();
             AddEnglishIfSet($"{EffectKey}_start", effect.m_startMessage);
             AddEnglishIfSet($"{EffectKey}_stop", effect.m_stopMessage);
-            if (effect.m_tooltip != FullName)
-            {
-                AddEnglishIfSet($"{EffectKey}_tooltip", effect.m_tooltip);
-            }
-
+            AddEnglishIfSet($"{EffectKey}_tooltip", effect.m_tooltip);
+            Translations.AddDynamic($"{EffectKey}_tooltip", () => TooltipValues);
             effectTextRegistered = true;
         }
         catch (Exception ex)
@@ -227,11 +230,7 @@ public abstract class PotionBase : IWhiteHiltCustomItem
             effect.m_stopMessage = Translations.Token($"{EffectKey}_stop");
         }
 
-        if (effect.m_tooltip == FullName)
-        {
-            effect.m_tooltip = Translations.Token(MeadKey);
-        }
-        else if (!string.IsNullOrEmpty(effect.m_tooltip))
+        if (!string.IsNullOrEmpty(effect.m_tooltip))
         {
             effect.m_tooltip = Translations.Token($"{EffectKey}_tooltip");
         }

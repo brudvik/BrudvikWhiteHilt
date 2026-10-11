@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Managers;
@@ -26,6 +27,9 @@ public class GiftOfRatatoskr : PotionBase
 
     /// <inheritdoc/>
     protected override string Description => "Grants you the agility of the squirrel that runs upon Yggdrasil";
+
+    /// <inheritdoc/>
+    protected override object[] TooltipValues => new object[] { Translations.Percent(1f - PotionSettings.Ratatoskr.SneakStaminaMultiplier.Value) };
 
     /// <inheritdoc/>
     protected override string IconPath => "BrudvikWhiteHilt.Assets.GiftOfRatatoskr.png";

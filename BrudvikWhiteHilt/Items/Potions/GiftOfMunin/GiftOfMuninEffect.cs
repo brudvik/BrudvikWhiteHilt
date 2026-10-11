@@ -25,7 +25,7 @@ public class GiftOfMuninEffect : SE_Stats
         m_name = effectName;
         m_startMessageType = MessageHud.MessageType.Center;
         m_startMessage = $"You have been bestowed the {effectName}!";
-        m_tooltip = effectName;
+        m_tooltip = "Teaches you every material for good, so every recipe made from them can be found";
     }
 
     /// <summary>
