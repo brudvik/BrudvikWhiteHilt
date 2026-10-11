@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.122.0 - 2026-10-11
 
 ### Added
 - **Select a whole building at once.** In the group tools' selection mode, a double-click on a piece selects it and every piece joined to it, so a blueprint of a large house is Ctrl + A, a double-click and Ctrl + S instead of clicking every piece ([build tools](docs/build-tools.md#groups-blueprints-lines-and-areas), `JoinGap` and `MaxJoined` in `[BuildTools.Groups]`).
