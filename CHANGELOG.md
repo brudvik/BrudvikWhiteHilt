@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.117.0 - 2026-10-11
 
 ### Added
 - **Darkwood Roof Cross 26°, 45° and 67°.** Valheim has the Wood Roof Cross for each roof pitch but none in darkwood: these are the same crosses of two carved darkwood beams, snapping and carrying as the wooden ones, for Wood ×2 and Tar ×1, after the darkwood beams in the hammer.
