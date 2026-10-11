@@ -18,6 +18,7 @@ public static class CompassPatches
     public static void MinimapUpdate(Minimap __instance)
     {
         MapCompass.Update(__instance);
+        global::BrudvikWhiteHilt.HudLayout.HudMinimap.Update(__instance);
     }
 
     /// <summary>Scrolls the HUD tape after the camera and its camera effects have updated.</summary>

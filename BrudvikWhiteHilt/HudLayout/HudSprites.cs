@@ -14,6 +14,7 @@ internal static class HudSprites
     private static Sprite disc;
     private static Sprite ring;
     private static Sprite roundedBox;
+    private static Sprite wideRing;
 
     /// <summary>Pixels of a corner of <see cref="RoundedBox"/>, its border for slicing.</summary>
     internal const int RoundedBoxCorner = 32;
@@ -23,6 +24,9 @@ internal static class HudSprites
 
     /// <summary>A filled disc.</summary>
     internal static Sprite Disc => disc != null ? disc : disc = Make(0f);
+
+    /// <summary>A wide ring, its hole 84 % of its width, for the round minimap's compass ring.</summary>
+    internal static Sprite WideRing => wideRing != null ? wideRing : wideRing = Make(Size / 2f * 0.84f);
 
     /// <summary>A ring, for an image of the Filled type.</summary>
     internal static Sprite Ring => ring != null ? ring : ring = Make(Size / 2f - RingWidth);

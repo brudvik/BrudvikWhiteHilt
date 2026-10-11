@@ -99,6 +99,15 @@ public static class HudSettings
     /// <summary>How dark the rounded panel behind the console is; 0 for none.</summary>
     public static ConfigEntry<float> PanelOpacity { get; private set; }
 
+    /// <summary>The minimap in the White Hilt HUD: round with a compass ring, or the game's own.</summary>
+    public static ConfigEntry<MinimapStyle> Minimap { get; private set; }
+
+    /// <summary>Whether pins and the waypoint beyond the round map show on its ring.</summary>
+    public static ConfigEntry<bool> MinimapRingMarkers { get; private set; }
+
+    /// <summary>How dark the round map's ring is.</summary>
+    public static ConfigEntry<float> MinimapRingOpacity { get; private set; }
+
     /// <summary>A ready-made layout; choosing one sets the sizes and the quiet screen.</summary>
     public static ConfigEntry<HudPreset> Preset { get; private set; }
 
@@ -205,6 +214,12 @@ public static class HudSettings
         TopFadeHeight = WhiteHiltConfig.BindLocal(Section, "TopFadeHeight", 140f,
             "With TopBackground Fade: how far down from the top of the screen the darkening reaches, in pixels.",
             new AcceptableValueRange<float>(40f, 600f));
+        Minimap = WhiteHiltConfig.BindLocal(Section, "Minimap", MinimapStyle.Round,
+            "The minimap in the White Hilt HUD: Round, in a dark compass ring with N, E, S and W and what lies beyond the map on the ring; or Vanilla, the game's own square map.");
+        MinimapRingMarkers = WhiteHiltConfig.BindLocal(Section, "MinimapRingMarkers", true,
+            "With the round minimap: show your pins, bosses, your death and the waypoint that lie beyond what the map shows on its ring, in the direction they lie.");
+        MinimapRingOpacity = WhiteHiltConfig.BindLocal(Section, "MinimapRingOpacity", 0.8f, "How dark the round minimap's ring is.",
+            new AcceptableValueRange<float>(0.2f, 1f));
         ShowWear = WhiteHiltConfig.BindLocal(Section, "ShowWear", true,
             "Show worn gear you have on among the status effects, with how much is left; it flashes red when broken.");
         WearWarning = WhiteHiltConfig.BindLocal(Section, "WearWarning", 0.2f, "Gear shows when its durability is under this share.",

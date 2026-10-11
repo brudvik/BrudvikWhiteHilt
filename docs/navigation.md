@@ -117,7 +117,7 @@ A ring around each portrait shows the heading: a point sticks out of the ring an
 
 ## 🧭 Compass on the map
 
-A brass compass sits in the bottom-right corner of the minimap and the top-left corner of the large map. The map is always north up, so the letters stay put and the red end of the needle points where you look, with the bearing in degrees under it (0 is north, 90 east). The letters follow the game's language: N, Ø, S, V in Norwegian, N, E, S, W otherwise.
+A brass compass sits in the bottom-right corner of the minimap and the top-left corner of the large map (with the [White Hilt HUD](quality-of-life.md#-white-hilt-hud)'s round minimap, which has a compass ring of its own, only on the large map). The map is always north up, so the letters stay put and the red end of the needle points where you look, with the bearing in degrees under it (0 is north, 90 east). The letters follow the game's language: N, Ø, S, V in Norwegian, N, E, S, W otherwise.
 
 | Setting (section `Map.Compass`) | Default | Description |
 |-----------------|---------|-------------|

@@ -50,7 +50,8 @@ public static class MapCompass
         Camera camera = Utils.GetMainCamera();
         bool known = camera != null && Player.m_localPlayer != null;
         float yaw = known ? camera.transform.eulerAngles.y : 0f;
-        small = Show(small, map.m_smallRoot.transform, known && CompassSettings.Minimap.Value, CompassSettings.MinimapSize.Value,
+        // The round minimap of the White Hilt HUD has its own compass ring.
+        small = Show(small, map.m_smallRoot.transform, known && CompassSettings.Minimap.Value && !HudLayout.HudMinimap.Round, CompassSettings.MinimapSize.Value,
             new Vector2(1f, 0f), new Vector2(-SmallMargin, SmallMargin), yaw);
         large = Show(large, map.m_largeRoot.transform, known && CompassSettings.LargeMap.Value, CompassSettings.LargeMapSize.Value,
             new Vector2(0f, 1f), new Vector2(LargeMargin, -LargeMargin), yaw);

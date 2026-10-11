@@ -140,6 +140,20 @@ internal static class VanillaPlacement
     }
 
     /// <summary>
+    /// Puts one element back where the game had it, if it was moved or hidden.
+    /// </summary>
+    /// <param name="rect">The element.</param>
+    internal static void Restore(RectTransform rect)
+    {
+        if (rect != null && originals.TryGetValue(rect, out Original original))
+        {
+            rect.anchoredPosition = original.Position;
+            rect.localScale = original.Scale;
+            originals.Remove(rect);
+        }
+    }
+
+    /// <summary>
     /// Puts every moved and hidden element back where the game had it.
     /// </summary>
     internal static void RestoreAll()

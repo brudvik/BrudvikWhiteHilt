@@ -2,6 +2,16 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **A round minimap.** In the White Hilt HUD the minimap is round, in a dark compass ring with N, E, S and W. Your pins, the bosses you know of, your death and the waypoint that lie beyond what the map shows sit on the ring in the direction they lie, and the biome's name stands under it. `Minimap` in `[HUD]` (`Round` or `Vanilla` for the game's square map), `MinimapRingMarkers` and `MinimapRingOpacity`.
+
+### Fixed
+- **The White Hilt HUD stays at the bottom on a ship.** At the helm the console rose to the middle of the screen, as it measured the game's ship controls by their container, which spans far more of the screen than the rudder and sail icons in it. It no longer moves at all: it stays at the bottom on a ship as on land, where the rudder and wind indicator at the lower right leave it room.
+- **The strip over the console sits clear of it.** The line for the ship, the piece you build, the creature you fight and warnings lay a few pixels into the panel behind the console; it now stands just above the panel, with rounded corners like it (`PanelRadius`).
+- **The weather icon is inside the band.** The clock placed its weather icon half outside its own box, so it sat on the left edge of the band behind the top. It now sits within it, on a dark disc of its own, and the markers on the compass (pins, bosses, your death) sit on dark discs too, so they read against a bright sky.
+
 ## v0.118.0 - 2026-10-11
 
 ### Added

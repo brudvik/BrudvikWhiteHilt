@@ -30,7 +30,9 @@ A half dark panel with rounded corners lies behind the console, from the guardia
 
 The rings of food and of meads and other timed effects turn yellow when less than half is left and red under a fifth, and the red ring pulses. When you are hit, a soft red arc at the edge of the screen shows the side it came from, turning with the camera as it fades, also for hits from behind; this works with the game's HUD too.
 
-The [clock](#-clock) sits at the left end of the [HUD compass](navigation.md#horizontal-hud-compass) and the [waypoint arrow](navigation.md) at the right end; without the compass they go back to their own places. The [party list](#-party-list), with your dog and tamed animals under it, stands at the left, a third of the way down. When the ship controls are under the console, it rises above them.
+**The minimap is round**, in a dark ring with N, E, S and W on it. The map is north up, as the game's, so the ring stands still and the player's arrow turns. Your pins, the bosses you know of, your death and the [waypoint](navigation.md) that lie beyond what the map shows sit on the ring in the direction they lie, so the ring tells what is where further off. The biome's name stands under the ring. `Minimap` = `Vanilla` gives the game's square map back; the round one also has its own compass ring, so the brass compass of the map stays on the large map only.
+
+The [clock](#-clock) sits at the left end of the [HUD compass](navigation.md#horizontal-hud-compass) and the [waypoint arrow](navigation.md) at the right end; without the compass they go back to their own places. The [party list](#-party-list), with your dog and tamed animals under it, stands at the left, a third of the way down. The console always stays in its place at the bottom, on a ship as on land.
 
 **Key hints** get their own places: the game's (for fighting, building, the inventory and fishing) at the right of the console, and the build tools' at its left, each made smaller to fit, or over the console when the screen is too narrow. By default (`KeyHints` = `Brief`) they show for a few seconds after you take out a tool or weapon, then fade; `Always` keeps them, `Hidden` shows them only on demand. They always show in the inventory and while you hold the `ShowAll` key.
 
@@ -65,6 +67,9 @@ The `HUD` section, each player's own:
 | `TopBackground` | `Band` | Behind the compass, clock and waypoint: `Band` (one rounded band round them), `Fade` (the top of the screen darkened, fading out downwards) or `None` |
 | `TopOpacity` | 0.45 | How dark the band or the darkening at the top is |
 | `TopFadeHeight` | 140 | How far down the `Fade` darkening reaches, in pixels |
+| `Minimap` | `Round` | `Round`, the minimap in a dark compass ring, or `Vanilla`, the game's own square one |
+| `MinimapRingMarkers` | on | Pins, bosses, your death and the waypoint beyond the round map on its ring |
+| `MinimapRingOpacity` | 0.8 | How dark the round map's ring is |
 | `Preset` | `Custom` | A ready-made layout: `Compact` (smaller, quiet screen on), `Standard` or `Large` (for a TV or a large screen). Choosing one sets `Scale`, `BottomMargin`, `StatusColumns`, `MaxStatusEffects`, `Calm`, `KeyHints`, the compass's and party list's `Scale` and the clock's `FontSize`; `Custom` changes nothing |
 | `ShowWear` / `WearWarning` | on / 0.2 | Worn gear among the status effects, under this share of its durability |
 | `ShowWeight` / `WeightWarning` | on / 0.85 | Your load among the status effects, from this share of what you can carry |
