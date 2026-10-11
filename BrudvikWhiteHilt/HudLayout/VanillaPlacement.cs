@@ -74,6 +74,37 @@ internal static class VanillaPlacement
     }
 
     /// <summary>
+    /// Scales an element to a share of the size it had before the console touched it.
+    /// </summary>
+    /// <param name="rect">The element.</param>
+    /// <param name="share">Its size as a share of its own; 1 for as it was.</param>
+    internal static void Scale(RectTransform rect, float share)
+    {
+        if (rect == null)
+        {
+            return;
+        }
+
+        Remember(rect);
+        rect.localScale = originals[rect].Scale * share;
+    }
+
+    /// <summary>
+    /// An element's size now as a share of the size it had before the console touched it.
+    /// </summary>
+    /// <param name="rect">The element.</param>
+    /// <returns>The share; 1 for an element the console has not scaled.</returns>
+    internal static float ScaleOf(RectTransform rect)
+    {
+        if (rect == null || !originals.TryGetValue(rect, out Original original) || Mathf.Approximately(original.Scale.x, 0f))
+        {
+            return 1f;
+        }
+
+        return rect.localScale.x / original.Scale.x;
+    }
+
+    /// <summary>
     /// The box around elements in a space, measured from the space's lower left corner.
     /// </summary>
     /// <param name="space">The space.</param>

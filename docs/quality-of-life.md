@@ -16,8 +16,10 @@ The White Hilt HUD gathers everything about yourself in one console at the botto
 
 - **The hotbar** in the middle, with the arrows, bolts, bait or staff casts over the slot that uses them.
 - **Health, stamina and eitr** over the hotbar as bars as wide as it, health the widest, each with its number, `212 / 260`; the health number turns red under a quarter. Eitr shows for those who have it, adrenaline while there is some.
-- **The food** to the left: each icon on a dark disc with a ring round it that empties as the food runs out, going from green through yellow to red, the time left under it, flashing when it can be eaten again. **The guardian power** to the left of the food.
-- **Status effects** to the right, four to a row, each with a ring that empties as its time runs out and its time under it: the game's, White Hilt's and other mods' alike. When there are more than fit, the last place says how many are left out.
+- **The food** to the left: each icon on a dark disc with a ring round it that empties as the food runs out, the time left under it, flashing when it can be eaten again. **The guardian power** to the left of the food.
+- **Status effects** to the right, four to a row, each with a ring that empties as its time runs out and its time under it: the game's, White Hilt's and other mods' alike. When there are more than fit, the last place goes through the ones left out in turn, with how many they are in its corner. In the inventory, or while you hold the `ShowAll` key, the status effects are a list instead, each with its name and time beside it, so you can see what every icon is.
+
+The rings of food and of meads and other timed effects turn yellow when less than half is left and red under a fifth, and the red ring pulses.
 - **A context strip** over the bars when there is something to say, up to three lines:
   - **Warnings**, for a while, instead of a message in the middle of the screen: night falling (orange) and, aboard a ship with a Navigator's Table, a storm coming (violet).
   - **A raid or other event** while it lasts, in red, instead of the game's event bar.
@@ -25,6 +27,8 @@ The White Hilt HUD gathers everything about yourself in one console at the botto
   - **The ship** while you steer it (or ride one sailing its route): speed, heading, depth, wind, held course and time to arrival, instead of under the wind indicator.
 
 The [clock](#-clock) sits at the left end of the [HUD compass](navigation.md#horizontal-hud-compass) and the [waypoint arrow](navigation.md) at the right end; without the compass they go back to their own places. The [party list](#-party-list), with your dog and tamed animals under it, stands at the left, a third of the way down. When the ship controls are under the console, it rises above them.
+
+**Key hints** get their own places: the game's (for fighting, building, the inventory and fishing) at the right of the console, and the build tools' at its left, each made smaller to fit, or over the console when the screen is too narrow. By default (`KeyHints` = `Brief`) they show for a few seconds after you take out a tool or weapon, then fade; `Always` keeps them, `Hidden` shows them only on demand. They always show in the inventory and while you hold the `ShowAll` key.
 
 Other mods that put something of their own on the HUD where the console is get it lifted into a band over the console, stacked if there are several, so nothing covers the bars or the hotbar. Their status effects need nothing; they are in the console with the rest.
 
@@ -50,8 +54,10 @@ The `HUD` section, each player's own:
 | `Calm` | off | The quiet screen |
 | `CalmSeconds` | 4 | Seconds a part stays after it last changed (status effects three times as long) |
 | `CalmOpacity` | 0 | How much of a faded part still shows |
+| `KeyHints` | `Brief` | When the key hints show: `Brief`, `Always` or `Hidden` |
+| `KeyHintSeconds` | 6 | Seconds `Brief` key hints stay |
 
-`HUD.Keys` → `ToggleStyle` binds a key to switch between the White Hilt HUD and the game's own, and `ShowAll` one that shows the whole console while held, with `Calm`. Both are unbound at first.
+`HUD.Keys` → `ToggleStyle` binds a key to switch between the White Hilt HUD and the game's own, and `ShowAll` one that, while held, shows the whole console, the key hints and the status effects as a list with names. Both are unbound at first.
 
 With the White Hilt HUD the label beside the hotbar that tells the travel bar from the build bar is left out, as the food is there; the message when the bar switches still shows. The game's own bars, food and status list are hidden by size, not switched off, so the game and other mods go on updating them, and they come back as they were with `Vanilla`.
 
@@ -64,7 +70,7 @@ Status effects need nothing: every effect the game shows on its HUD is in the co
 WhiteHiltHud.RegisterContext("mymod.fishing", 50, () => fishing ? $"Line {depth:0} m · {bites} bites" : null);
 
 // An icon among the status effects, after them.
-WhiteHiltHud.RegisterIndicator("mymod.quiver", 0, () => new HudIndicator { Icon = quiverIcon, Text = arrows.ToString() });
+WhiteHiltHud.RegisterIndicator("mymod.quiver", 0, () => new HudIndicator { Icon = quiverIcon, Name = "Quiver", Text = arrows.ToString() });
 
 WhiteHiltHud.Unregister("mymod.fishing");
 ```

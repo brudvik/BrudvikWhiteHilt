@@ -13,6 +13,9 @@ public sealed class HudIndicator
     /// <summary>The icon; without one the indicator is not shown.</summary>
     public Sprite Icon;
 
+    /// <summary>The name, shown beside the icon when the status effects are listed (in the inventory); may be empty.</summary>
+    public string Name;
+
     /// <summary>Short text under the icon, such as a count or a time; may be empty.</summary>
     public string Text;
 

@@ -17,6 +17,22 @@ public enum HudStyle
 }
 
 /// <summary>
+/// When the key hints show in the White Hilt HUD: the game's, at the right of the console, and the build tools', at
+/// its left.
+/// </summary>
+public enum HudHints
+{
+    /// <summary>A few seconds after taking out a tool or weapon, or opening the inventory, then they fade.</summary>
+    Brief,
+
+    /// <summary>Whenever the game would show them.</summary>
+    Always,
+
+    /// <summary>Only while the show-all key is held, and in the inventory.</summary>
+    Hidden,
+}
+
+/// <summary>
 /// Each player's own HUD settings, section "HUD".
 /// </summary>
 public static class HudSettings
@@ -46,6 +62,12 @@ public static class HudSettings
 
     /// <summary>How much of a faded part still shows, with <see cref="Calm"/>.</summary>
     public static ConfigEntry<float> CalmOpacity { get; private set; }
+
+    /// <summary>When the key hints show.</summary>
+    public static ConfigEntry<HudHints> KeyHints { get; private set; }
+
+    /// <summary>Seconds the key hints stay, with <see cref="HudHints.Brief"/>.</summary>
+    public static ConfigEntry<float> KeyHintSeconds { get; private set; }
 
     /// <summary>Switches between the White Hilt HUD and the game's own.</summary>
     public static ConfigEntry<KeyboardShortcut> KeyToggleStyle { get; private set; }
@@ -78,6 +100,10 @@ public static class HudSettings
             new AcceptableValueRange<float>(1f, 30f));
         CalmOpacity = WhiteHiltConfig.BindLocal(Section, "CalmOpacity", 0f, "With Calm: how much of a faded part still shows; 0 hides it.",
             new AcceptableValueRange<float>(0f, 0.8f));
+        KeyHints = WhiteHiltConfig.BindLocal(Section, "KeyHints", HudHints.Brief,
+            "When the key hints show beside the console: Brief, for a few seconds after taking out a tool or weapon; Always; or Hidden. They always show in the inventory and while the ShowAll key is held.");
+        KeyHintSeconds = WhiteHiltConfig.BindLocal(Section, "KeyHintSeconds", 6f, "With Brief key hints: seconds they stay.",
+            new AcceptableValueRange<float>(1f, 30f));
         KeyToggleStyle = WhiteHiltConfig.BindLocal(Section + ".Keys", "ToggleStyle", KeyboardShortcut.Empty,
             "Switch between the White Hilt HUD and the game's own.");
         KeyShowAll = WhiteHiltConfig.BindLocal(Section + ".Keys", "ShowAll", KeyboardShortcut.Empty,

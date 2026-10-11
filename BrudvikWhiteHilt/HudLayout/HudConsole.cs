@@ -45,6 +45,16 @@ public static class HudConsole
     private const string BuildId = "whitehilt.build";
     private const int BuildPriority = 120;
     private const string BuildSeparator = "   ·   ";
+    private const float HintGap = 12f;
+    private const float HintMargin = 16f;
+    private const float MinHintScale = 0.6f;
+    private const float NameWidth = 190f;
+    private const float CycleSeconds = 1.5f;
+    private const int MaxListed = 16;
+    private const float PulseSpeed = 6f;
+    private const float RingHalf = 0.5f;
+    private const float RingLow = 0.2f;
+    private const float HiddenLinger = 0.1f;
 
     private static readonly Color panelColor = new(0.04f, 0.05f, 0.05f, 0.72f);
     private static readonly Color textColor = new(1f, 0.95f, 0.85f);
@@ -75,6 +85,10 @@ public static class HudConsole
     private static readonly List<StatusSlot> statusSlots = new();
     private static readonly HashSet<Transform> native = new();
     private static readonly HashSet<RectTransform> foreign = new();
+    private static readonly List<GameObject> hintGroups = new();
+    private static readonly List<Graphic> graphics = new();
+    private static readonly List<RectTransform> drawn = new();
+    private static readonly Dictionary<GameObject, CanvasGroup> hintAlphas = new();
 
     private static RectTransform root;
     private static RectTransform foodLayer;
@@ -96,6 +110,12 @@ public static class HudConsole
     private static int lastTray;
     private static ItemDrop.ItemData lastRight;
     private static ItemDrop.ItemData lastLeft;
+    private static Fader hintFader;
+    private static int lastHintKey;
+    private static bool showAllHeld;
+
+    /// <summary>The build tools' key hint, placed left of the console in the White Hilt HUD.</summary>
+    internal static Text BuildHint { get; set; }
 
     /// <summary>
     /// Lays out the console, or gives the game its own HUD back. Called after the game's HUD late update, so it wins over
@@ -133,6 +153,8 @@ public static class HudConsole
         }
 
         SetVisible(true);
+        KeyboardShortcut showAll = HudSettings.KeyShowAll.Value;
+        showAllHeld = showAll.MainKey != KeyCode.None && showAll.IsPressed() && !BackpackInput.Typing();
         float scale = Mathf.Clamp(HudSettings.Scale.Value, 0.6f, 1.6f);
         Rect bar = PlaceHotbar(hud, scale);
         float left = LayoutFood(player, bar, scale);
@@ -140,7 +162,9 @@ public static class HudConsole
         float top = LayoutVitals(player, bar, scale);
         Vector2 corner = LayoutStatus(player, bar, scale);
         top = Mathf.Max(LayoutStrip(bar, top, scale), corner.y);
-        AvoidForeign(hud, Rect.MinMaxRect(left, bar.yMin, corner.x, top));
+        Rect console = Rect.MinMaxRect(left, bar.yMin, corner.x, top);
+        AvoidForeign(hud, console);
+        PlaceHints(player, console);
         Fade(hud, player);
     }
 
@@ -457,9 +481,11 @@ public static class HudConsole
 
     // The status effects right of the hotbar, rows growing upwards, each with its time under it; the game's, White
     // Hilt's and other mods' alike, then the indicators other mods registered. When they do not all fit, the last place
-    // says how many are left out. Returns the tray's upper right corner.
+    // goes through the ones left out, with how many they are. In the inventory and while the show-all key is held,
+    // they are a list instead, each with its name and time. Returns the tray's upper right corner.
     private static Vector2 LayoutStatus(Player player, Rect bar, float scale)
     {
+        bool listed = InventoryGui.IsVisible() || showAllHeld;
         effects.Clear();
         player.GetSEMan().GetHUDStatusEffects(effects);
         WhiteHiltHud.ReadIndicators(indicators);
@@ -470,19 +496,24 @@ public static class HudConsole
             if (effect != null && !effect.m_hidden)
             {
                 float remaining = effect.m_ttl > 0f ? Mathf.Clamp01(1f - effect.m_time / effect.m_ttl) : -1f;
-                tray.Add(new TrayItem(effect.m_icon, effect.GetIconText(), Color.white, effect.m_flashIcon, remaining));
+                string name = listed ? Localization.instance.Localize(effect.m_name) : null;
+                tray.Add(new TrayItem(effect.m_icon, effect.GetIconText(), Color.white, effect.m_flashIcon, remaining, name));
                 flashing |= effect.m_flashIcon;
             }
         }
 
         foreach (HudIndicator indicator in indicators)
         {
-            tray.Add(new TrayItem(indicator.Icon, indicator.Text, indicator.Tint, indicator.Flash, -1f));
+            tray.Add(new TrayItem(indicator.Icon, indicator.Text, indicator.Tint, indicator.Flash, -1f, indicator.Name));
             flashing |= indicator.Flash;
         }
 
         statusFader.Wake(flashing || tray.Count != lastTray);
         lastTray = tray.Count;
+        if (listed)
+        {
+            return ListStatus(bar, scale);
+        }
 
         int max = Mathf.Max(2, HudSettings.MaxStatusEffects.Value);
         int columns = Mathf.Max(1, HudSettings.StatusColumns.Value);
@@ -510,7 +541,9 @@ public static class HudConsole
             Vector2 position = new(left + i % columns * step, bottom + i / columns * rowStep);
             if (overflow && i == shown - 1)
             {
-                statusSlots[i].ShowMore(tray.Count - shown + 1, position, size, scale);
+                int hidden = tray.Count - shown + 1;
+                int turn = Mathf.FloorToInt(Time.unscaledTime / CycleSeconds) % hidden;
+                statusSlots[i].ShowMore(tray[shown - 1 + turn], hidden, position, size, scale);
             }
             else
             {
@@ -520,6 +553,33 @@ public static class HudConsole
 
         int rows = shown == 0 ? 0 : (shown - 1) / columns + 1;
         return new Vector2(left + Mathf.Min(shown, columns) * step, bottom + rows * rowStep);
+    }
+
+    // Every status effect and indicator in a column right of the hotbar, each with its name and time beside it.
+    // Returns the list's upper right corner.
+    private static Vector2 ListStatus(Rect bar, float scale)
+    {
+        int count = Mathf.Min(tray.Count, MaxListed);
+        while (statusSlots.Count < count)
+        {
+            statusSlots.Add(new StatusSlot(statusLayer));
+        }
+
+        float size = StatusSize * scale;
+        float step = size + StatusGap * scale;
+        float left = bar.xMax + WingGap * scale;
+        float names = NameWidth * scale;
+        for (int i = 0; i < statusSlots.Count; i++)
+        {
+            bool used = i < count;
+            statusSlots[i].SetActive(used);
+            if (used)
+            {
+                statusSlots[i].ShowListed(tray[i], new Vector2(left, bar.yMin + i * step), size, scale, names);
+            }
+        }
+
+        return new Vector2(left + size + StatusGap * scale + names, bar.yMin + count * step);
     }
 
     // The context lines in a strip over the bars, centred on the hotbar; hidden when no line has anything to say.
@@ -539,9 +599,7 @@ public static class HudConsole
     // the inventory is open. The vitals wake themselves while they are not full.
     private static void Fade(Hud hud, Player player)
     {
-        KeyboardShortcut showAll = HudSettings.KeyShowAll.Value;
-        bool held = showAll.MainKey != KeyCode.None && showAll.IsPressed() && !BackpackInput.Typing();
-        bool calm = HudSettings.Calm.Value && !InventoryGui.IsVisible() && !held;
+        bool calm = HudSettings.Calm.Value && !InventoryGui.IsVisible() && !showAllHeld;
         float now = Time.unscaledTime;
         float linger = Mathf.Max(1f, HudSettings.CalmSeconds.Value);
         float floor = Mathf.Clamp01(HudSettings.CalmOpacity.Value);
@@ -575,6 +633,117 @@ public static class HudConsole
         if (powerGroup != null) powerGroup.alpha = handsFader.Alpha;
     }
 
+    // The key hints beside the console: the game's (for fighting, building, the inventory, fishing) at its right and the
+    // build tools' at its left, each made smaller to fit, or over the console when there is too little room. As set,
+    // they show for a few seconds after taking out a tool or weapon, always, or only on demand; always in the
+    // inventory and while the show-all key is held.
+    private static void PlaceHints(Player player, Rect console)
+    {
+        HudHints mode = HudSettings.KeyHints.Value;
+        bool inventory = InventoryGui.IsVisible();
+        string buildText = BuildHint != null && BuildHint.gameObject.activeInHierarchy ? BuildHint.text : string.Empty;
+        int key = (player.InPlaceMode() ? 1 : 0) + (inventory ? 2 : 0) + 4 * (player.GetCurrentWeapon()?.GetHashCode() ?? 0)
+            + 31 * buildText.GetHashCode();
+        hintFader.Wake(key != lastHintKey || inventory || showAllHeld);
+        lastHintKey = key;
+        float linger = mode == HudHints.Hidden ? HiddenLinger : Mathf.Max(1f, HudSettings.KeyHintSeconds.Value);
+        hintFader.Apply(mode != HudHints.Always, Time.unscaledTime, mode == HudHints.Always ? float.MaxValue : linger, 0f);
+
+        KeyHints hints = KeyHints.instance;
+        hintGroups.Clear();
+        if (hints != null)
+        {
+            hintGroups.Add(hints.m_buildHints);
+            hintGroups.Add(hints.m_combatHints);
+            hintGroups.Add(hints.m_inventoryHints);
+            hintGroups.Add(hints.m_inventoryWithContainerHints);
+            hintGroups.Add(hints.m_fishingHints);
+            hintGroups.Add(hints.m_barberHints);
+        }
+
+        foreach (GameObject group in hintGroups)
+        {
+            if (group == null || !group.activeInHierarchy || group.transform is not RectTransform rect)
+            {
+                continue;
+            }
+
+            // Measured by what is drawn in it, as a hint group may be a row as wide as the screen.
+            drawn.Clear();
+            group.GetComponentsInChildren(false, graphics);
+            foreach (Graphic graphic in graphics)
+            {
+                if (graphic.enabled && graphic.color.a > 0f)
+                {
+                    drawn.Add(graphic.rectTransform);
+                }
+            }
+
+            if (VanillaPlacement.Bounds(root, drawn, out Rect box) && box.width > 1f && box.height > 1f)
+            {
+                Fit(rect, box, console, true);
+            }
+
+            HintAlpha(group).alpha = hintFader.Alpha;
+        }
+
+        if (buildText.Length > 0)
+        {
+            RectTransform rect = BuildHint.rectTransform;
+            float ratio = rect.lossyScale.x / Mathf.Max(0.0001f, root.lossyScale.x);
+            Vector2 corner = (Vector2)root.InverseTransformPoint(rect.position) - root.rect.min;
+            Fit(rect, new Rect(corner, new Vector2(BuildHint.preferredWidth, BuildHint.preferredHeight) * ratio), console, false);
+            HintAlpha(BuildHint.gameObject).alpha = hintFader.Alpha;
+        }
+    }
+
+    // Fits a box of hints beside the console, at its right or left, its bottom on the console's, made smaller to fit
+    // the room there; with too little room, over the console instead. Scales first and moves on the next frame, as the
+    // box is measured at the scale it has.
+    private static void Fit(RectTransform mover, Rect box, Rect console, bool right)
+    {
+        float share = VanillaPlacement.ScaleOf(mover);
+        float width = box.width / share;
+        float screen = root.rect.width;
+        float from = right ? console.xMax + HintGap : HintMargin;
+        float to = right ? screen - HintMargin : console.xMin - HintGap;
+        float target = Mathf.Min(1f, (to - from) / width);
+        Vector2 corner;
+        if (target >= MinHintScale)
+        {
+            corner = new Vector2(right ? from : to - width * target, console.yMin);
+        }
+        else
+        {
+            target = Mathf.Min(1f, (screen / 2f - HintMargin) / width);
+            corner = new Vector2(right ? console.xMax - width * target : console.xMin, console.yMax + HintGap);
+        }
+
+        if (Mathf.Abs(target - share) > 0.01f)
+        {
+            VanillaPlacement.Scale(mover, target);
+            return;
+        }
+
+        VanillaPlacement.Move(mover, root, corner - box.min);
+    }
+
+    private static CanvasGroup HintAlpha(GameObject owner)
+    {
+        if (!hintAlphas.TryGetValue(owner, out CanvasGroup group) || group == null)
+        {
+            group = owner.GetComponent<CanvasGroup>();
+            if (group == null)
+            {
+                group = owner.AddComponent<CanvasGroup>();
+            }
+
+            hintAlphas[owner] = group;
+        }
+
+        return group;
+    }
+
     private static bool HotbarPressed()
     {
         for (int i = 1; i <= HotbarKeys; i++)
@@ -590,7 +759,7 @@ public static class HudConsole
 
     private static CanvasGroup Group(CanvasGroup group, GameObject owner)
     {
-        if (group != null || owner == null)
+        if (owner == null || (group != null && group.gameObject == owner))
         {
             return group;
         }
@@ -604,6 +773,10 @@ public static class HudConsole
     {
         if (hotbarGroup != null) hotbarGroup.alpha = 1f;
         if (powerGroup != null) powerGroup.alpha = 1f;
+        foreach (CanvasGroup group in hintAlphas.Values)
+        {
+            if (group != null) group.alpha = 1f;
+        }
     }
 
     private static void SetVisible(bool visible)
@@ -645,6 +818,7 @@ public static class HudConsole
         foodFader = new Fader(foodLayer.gameObject.AddComponent<CanvasGroup>());
         statusFader = new Fader(statusLayer.gameObject.AddComponent<CanvasGroup>());
         handsFader = new Fader(null);
+        hintFader = new Fader(null);
         health = new Bar(root, "Health", healthColor, healthBack);
         stamina = new Bar(root, "Stamina", staminaColor, staminaBack);
         eitr = new Bar(root, "Eitr", eitrColor, eitrBack);
@@ -706,6 +880,23 @@ public static class HudConsole
         ring.fillOrigin = (int)Image.Origin360.Top;
         ring.fillClockwise = true;
         return ring;
+    }
+
+    // A countdown's colour: its own while more than half is left, yellow under half, red under a fifth, the red
+    // pulsing.
+    private static Color Countdown(Color full, float share)
+    {
+        if (share > RingHalf)
+        {
+            return full;
+        }
+
+        if (share > RingLow)
+        {
+            return foodHalf;
+        }
+
+        return new Color(foodLow.r, foodLow.g, foodLow.b, 0.55f + 0.45f * Mathf.Sin(Time.time * PulseSpeed));
     }
 
     private static Color Faint(Color color)
@@ -777,13 +968,17 @@ public static class HudConsole
         // Share of the time left, for the countdown ring; below 0 for none.
         internal readonly float Remaining;
 
-        internal TrayItem(Sprite icon, string text, Color tint, bool flash, float remaining)
+        // The name, shown in the list; null when only the icons show.
+        internal readonly string Name;
+
+        internal TrayItem(Sprite icon, string text, Color tint, bool flash, float remaining, string name)
         {
             Icon = icon;
             Text = text ?? string.Empty;
             Tint = tint;
             Flash = flash;
             Remaining = remaining;
+            Name = name ?? string.Empty;
         }
     }
 
@@ -880,7 +1075,7 @@ public static class HudConsole
 
             float burn = food.m_item?.m_shared?.m_foodBurnTime ?? 0f;
             float share = burn > 0f ? Mathf.Clamp01(food.m_time / burn) : 1f;
-            Color color = share > 0.5f ? foodFull : share > 0.2f ? foodHalf : foodLow;
+            Color color = Countdown(foodFull, share);
             ring.color = color;
             ring.fillAmount = share;
             track.color = Faint(color);
@@ -905,8 +1100,8 @@ public static class HudConsole
         }
     }
 
-    // One place in the tray: an icon on a dark disc, flashing when it asks for it, a ring round it that empties as its
-    // time runs out, and its text under it.
+    // One place in the tray: an icon on a dark disc, flashing when it asks for it, a ring round it that empties and
+    // turns yellow and red as its time runs out, and its text under it; in the list, its name and time beside it.
     private sealed class StatusSlot
     {
         private readonly RectTransform root;
@@ -915,6 +1110,7 @@ public static class HudConsole
         private readonly Image icon;
         private readonly Text more;
         private readonly Text time;
+        private readonly Text name;
 
         internal StatusSlot(Transform parent)
         {
@@ -924,8 +1120,9 @@ public static class HudConsole
             ring = Ring(root, "Ring", ringColor);
             icon = Box(root, "Icon", Color.white);
             icon.preserveAspect = true;
-            more = Label(root, "More", TextAnchor.MiddleCenter);
+            more = Label(root, "More", TextAnchor.UpperRight);
             time = Label(root, "Time", TextAnchor.UpperCenter);
+            name = Label(root, "Name", TextAnchor.MiddleLeft);
         }
 
         internal void SetActive(bool active)
@@ -939,12 +1136,34 @@ public static class HudConsole
         internal void Show(TrayItem item, Vector2 position, float size, float scale)
         {
             Layout(position, size, scale);
-            if (!icon.gameObject.activeSelf)
-            {
-                icon.gameObject.SetActive(true);
-                more.gameObject.SetActive(false);
-            }
+            SetText(more, false, string.Empty);
+            SetText(name, false, string.Empty);
+            Fill(item, item.Text);
+        }
 
+        // The place for the effects left out: one of them in turn, with how many they are in its corner.
+        internal void ShowMore(TrayItem item, int count, Vector2 position, float size, float scale)
+        {
+            Layout(position, size, scale);
+            SetText(more, true, "+" + count);
+            SetText(name, false, string.Empty);
+            Fill(item, item.Text);
+        }
+
+        // A row of the list: the icon with its name and time beside it.
+        internal void ShowListed(TrayItem item, Vector2 position, float size, float scale, float width)
+        {
+            Layout(position, size, scale);
+            SetText(more, false, string.Empty);
+            Place(name.rectTransform, new Vector2(size + StatusGap * scale, 0f), new Vector2(width, size));
+            name.fontSize = Mathf.RoundToInt(14f * scale);
+            string text = item.Text.Length > 0 ? $"{item.Name}  <color=#{Hex(dimColor)}>{item.Text}</color>" : item.Name;
+            SetText(name, true, text);
+            Fill(item, string.Empty);
+        }
+
+        private void Fill(TrayItem item, string under)
+        {
             if (icon.sprite != item.Icon)
             {
                 icon.sprite = item.Icon;
@@ -958,24 +1177,24 @@ public static class HudConsole
             }
 
             ring.fillAmount = timed ? item.Remaining : 0f;
-            if (time.text != item.Text)
+            ring.color = timed ? Countdown(ringColor, item.Remaining) : ringColor;
+            if (time.text != under)
             {
-                time.text = item.Text;
+                time.text = under;
             }
         }
 
-        internal void ShowMore(int count, Vector2 position, float size, float scale)
+        private static void SetText(Text text, bool shown, string value)
         {
-            Layout(position, size, scale);
-            if (icon.gameObject.activeSelf)
+            if (text.gameObject.activeSelf != shown)
             {
-                icon.gameObject.SetActive(false);
-                ring.gameObject.SetActive(false);
-                more.gameObject.SetActive(true);
-                time.text = string.Empty;
+                text.gameObject.SetActive(shown);
             }
 
-            more.text = "+" + count;
+            if (shown && text.text != value)
+            {
+                text.text = value;
+            }
         }
 
         private void Layout(Vector2 position, float size, float scale)
@@ -985,9 +1204,9 @@ public static class HudConsole
             Place(back.rectTransform, Vector2.zero, new Vector2(size, size));
             Place(ring.rectTransform, Vector2.zero, new Vector2(size, size));
             Place(icon.rectTransform, new Vector2(inset, inset), new Vector2(size - 2f * inset, size - 2f * inset));
-            Place(more.rectTransform, Vector2.zero, new Vector2(size, size));
+            Place(more.rectTransform, new Vector2(size * 0.3f, size * 0.55f), new Vector2(size, size * 0.6f));
             Place(time.rectTransform, new Vector2(0f, -TimeHeight * scale), new Vector2(size, TimeHeight * scale));
-            more.fontSize = Mathf.RoundToInt(15f * scale);
+            more.fontSize = Mathf.RoundToInt(12f * scale);
             time.fontSize = Mathf.RoundToInt(11f * scale);
             time.color = dimColor;
         }

@@ -208,6 +208,7 @@ public class BuildToolbar : MonoBehaviour
         hintRect.pivot = Vector2.zero;
         hintRect.anchoredPosition = new Vector2(360f, 30f);
         hint.alignment = TextAnchor.LowerLeft;
+        HudLayout.HudConsole.BuildHint = hint;
 
         ApplyCollapsed();
         panel.SetActive(false);
