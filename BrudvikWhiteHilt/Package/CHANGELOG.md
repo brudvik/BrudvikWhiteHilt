@@ -2,6 +2,20 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.118.0 - 2026-10-11
+
+### Added
+- **More in the White Hilt HUD.** Worn gear you have on shows among the status effects under a fifth of its durability, flashing red when broken (`ShowWear`, `WearWarning`), and your load from 85 % of what you can carry, red when too much (`ShowWeight`, `WeightWarning`). The strip over the console names the creature you fight with its stars, health and what it is weak to, resists and is immune to (`ShowTarget`), and the stations near you that have stopped, need you or are done (`ShowProduction`, `ProductionRange`).
+- **Where a hit came from.** A soft red arc at the edge of the screen shows the side a hit came from, also from behind, turning with the camera as it fades; with either HUD (`DamageDirection`).
+- **A panel behind the console.** A half dark rectangle with rounded corners lies behind the White Hilt HUD's bars, food, hotbar and status effects, so they read against snow and a bright sky; it fades with the quiet screen. `PanelOpacity` in `[HUD]` (0.45; 0 for none).
+- **A band behind the top.** The clock, the compass and the waypoint sit on one rounded, half dark band, as the console does, so they read against a bright sky (`TopBackground` = `Band`); `Fade` darkens the top of the screen instead, fading out downwards over `TopFadeHeight`, and `None` leaves it clear. `TopOpacity` sets how dark, and `PanelRadius` the corners of both the band and the console's panel.
+- **Ready-made HUD layouts.** `Preset` in `[HUD]`: Compact (smaller, with the quiet screen), Standard and Large (larger text and icons and the key hints always shown, for a TV or a large screen) set the console's, compass's, clock's and party list's sizes at once; Custom changes nothing.
+
+### Fixed
+- **The Ridge Dragon, Ridge Turret, Dragon Portal and Stave Church Portal load again.** They use the longship's carved dragon head, which the piece builder could not find in the game, so the four pieces were missing from the hammer with an error in the log.
+- **No more "Missing prefab hash" in the log** after travelling through a White Hilt portal: its arrival and departure sounds carried a network object that no other client could place, hundreds of warnings a session.
+- **No more "Particle Velocity curves must all be in the same mode"** from the portal's rising sparks and dust, nor "LiberationSans SDF Font Asset was not found" from the craft amount, the requirement counts, the chest panels and the discovery badges.
+
 ## v0.117.0 - 2026-10-11
 
 ### Added
