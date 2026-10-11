@@ -33,14 +33,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.121.0
+## ✨ New in 0.122.0
 
-- **[The Dragon Horn](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side)**: once Moder is slain, buy it from the Bog Witch and blow it, and a five-star White Dragon flies in to fight at your side for a while before it flies off again. The horn then rests a game day.
-- **The Desert Dragon flaps its wings while it breathes fire, and roars** with deep sounds of its own.
+- **[Select a whole building at once](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#groups-blueprints-lines-and-areas)**: double-click a piece in selection mode to select it with everything joined to it, so a blueprint of a large house is Ctrl + A, a double-click and Ctrl + S.
+- **Blueprints, roads and moats are built straight from the chests**, without first loading you down with everything they cost.
+- **The build line in the White Hilt HUD shows how much you have** of each material, or that a chest keeps it unlimited, and the **round minimap shows the map again**.
 
-### Also new in 0.120.0
+### Also new in 0.121.0
 
-- **[The School Bench](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md)**, **[shared blueprints](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#shared-blueprints)** and **[darkwood doors, walls and gables](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#darkwood-doors-walls--gables)**.
+- **[The Dragon Horn](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side)**: once Moder is slain, a five-star White Dragon flies in to fight at your side.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
