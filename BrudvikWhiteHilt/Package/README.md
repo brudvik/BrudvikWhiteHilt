@@ -33,18 +33,17 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.119.1
+## ✨ New in 0.119.2
+
+- **The [Mast Wisp](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md) clears the Mistlands mist again** round the whole ship; it sat too high on the mast for the mist to notice it. Its reach now grows with your Exploration, from 15 m to 30 m.
+
+### Also new in 0.119.1
 
 - **The food places stay** in the [White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud) when you have not eaten: an empty one is a red ring with a red cross, pulsing when you have eaten nothing at all, so the console keeps its shape.
 
 ### Also new in 0.119.0
 
 - **A round minimap** in the [White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud): the map in a dark compass ring, with the pins, bosses and waypoint beyond it on the ring in the direction they lie. The HUD also stays at the bottom on a ship, and the weather icon and compass markers sit on dark discs.
-
-### Also new in 0.118.0
-
-- **[The White Hilt HUD](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-white-hilt-hud)** reads against snow and sky: a half dark rounded panel behind the console and a band behind the compass, clock and waypoint (or a soft darkening from the top). It also shows worn gear and a heavy load among the status effects, the creature you fight with its weaknesses and the stations near you that need you in the strip, a red arc on the side a hit came from, and comes in Compact, Standard and Large layouts.
-- **Ridge Dragon, Ridge Turret, Dragon Portal and Stave Church Portal** are back in the hammer, and the log is free of the portal's "Missing prefab hash" flood and a few other warnings.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
