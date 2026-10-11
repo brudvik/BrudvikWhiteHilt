@@ -28,6 +28,11 @@ public static class HudConsole
     private const float FoodSize = 42f;
     private const float FoodGap = 6f;
     private const float IconInset = 0.2f;
+
+    // The game lets you eat three foods; a mod that allows more gets more places.
+    private const int FoodPlaces = 3;
+    private const float CrossLength = 0.42f;
+    private const float CrossWidth = 3f;
     private const float StatusSize = 34f;
     private const float StatusGap = 6f;
     private const float TimeHeight = 14f;
@@ -357,10 +362,13 @@ public static class HudConsole
 
     // The food the player has eaten, left of the hotbar: icon, a frame coloured by how much is left and the time under
     // it, flashing when it can be eaten again. Returns the left edge of the row.
+    // Every place for food stays, so the console keeps its shape: an empty one is a red ring with a red cross, and
+    // with nothing eaten at all the red rings pulse.
     private static float LayoutFood(Player player, Rect bar, float scale)
     {
         List<Player.Food> foods = player.GetFoods();
-        while (foodSlots.Count < foods.Count)
+        int places = Mathf.Max(FoodPlaces, foods.Count);
+        while (foodSlots.Count < places)
         {
             foodSlots.Add(new FoodSlot(foodLayer));
         }
@@ -368,22 +376,32 @@ public static class HudConsole
         float size = FoodSize * scale;
         float gap = FoodGap * scale;
         float right = bar.xMin - WingGap * scale;
-        float left = right - foods.Count * size - Mathf.Max(0, foods.Count - 1) * gap;
+        float left = right - places * size - (places - 1) * gap;
         float y = bar.yMin + TimeHeight * scale;
-        bool hungry = foods.Count != lastFoods;
+        bool hungry = foods.Count != lastFoods || foods.Count < places;
         lastFoods = foods.Count;
         for (int i = 0; i < foodSlots.Count; i++)
         {
-            bool used = i < foods.Count;
+            bool used = i < places;
             foodSlots[i].SetActive(used);
-            if (used)
+            if (!used)
             {
-                hungry |= foodSlots[i].Show(foods[i], new Vector2(left + i * (size + gap), y), size, scale);
+                continue;
+            }
+
+            Vector2 position = new(left + i * (size + gap), y);
+            if (i < foods.Count)
+            {
+                hungry |= foodSlots[i].Show(foods[i], position, size, scale);
+            }
+            else
+            {
+                foodSlots[i].ShowEmpty(position, size, scale, foods.Count == 0);
             }
         }
 
         foodFader.Wake(hungry);
-        return foods.Count > 0 ? left : right + WingGap * scale;
+        return left;
     }
 
     // The game's guardian power, moved left of the food with its bottom on the hotbar's. Returns the console's left
@@ -1037,6 +1055,8 @@ public static class HudConsole
         private readonly Image track;
         private readonly Image ring;
         private readonly Image icon;
+        private readonly Image crossA;
+        private readonly Image crossB;
         private readonly Text time;
 
         internal FoodSlot(Transform parent)
@@ -1049,6 +1069,17 @@ public static class HudConsole
             ring = Ring(root, "Ring", foodFull);
             icon = Box(root, "Icon", Color.white);
             icon.preserveAspect = true;
+            crossA = Box(root, "Cross", foodLow);
+            crossB = Box(root, "Cross", foodLow);
+            foreach (Image bar in new[] { crossA, crossB })
+            {
+                bar.rectTransform.anchorMin = bar.rectTransform.anchorMax = bar.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            }
+
+            crossA.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            crossB.rectTransform.localRotation = Quaternion.Euler(0f, 0f, -45f);
+            crossA.gameObject.SetActive(false);
+            crossB.gameObject.SetActive(false);
             time = Label(root, "Time", TextAnchor.UpperCenter);
         }
 
@@ -1060,17 +1091,34 @@ public static class HudConsole
             }
         }
 
+        // A place with no food in it: the dark disc in a red ring, a red cross over it and no time under it. The ring
+        // pulses when nothing at all is eaten.
+        internal void ShowEmpty(Vector2 position, float size, float scale, bool starving)
+        {
+            Layout(position, size, scale);
+            SetEmpty(true);
+            Color color = starving
+                ? new Color(foodLow.r, foodLow.g, foodLow.b, 0.55f + 0.45f * Mathf.Sin(Time.time * PulseSpeed * 0.5f))
+                : new Color(foodLow.r, foodLow.g, foodLow.b, 0.8f);
+            ring.color = color;
+            ring.fillAmount = 1f;
+            track.color = Faint(foodLow);
+            float length = size * CrossLength;
+            float width = Mathf.Max(2f, CrossWidth * scale);
+            crossA.rectTransform.sizeDelta = crossB.rectTransform.sizeDelta = new Vector2(length, width);
+            crossA.rectTransform.anchoredPosition = crossB.rectTransform.anchoredPosition = Vector2.zero;
+            crossA.color = crossB.color = color;
+            if (time.text.Length > 0)
+            {
+                time.text = string.Empty;
+            }
+        }
+
         // Returns whether the food asks for attention: half gone or more, or ready to be eaten again.
         internal bool Show(Player.Food food, Vector2 position, float size, float scale)
         {
-            float inset = IconInset * size;
-            Place(root, position, new Vector2(size, size));
-            Place(back.rectTransform, Vector2.zero, new Vector2(size, size));
-            Place(track.rectTransform, Vector2.zero, new Vector2(size, size));
-            Place(ring.rectTransform, Vector2.zero, new Vector2(size, size));
-            Place(icon.rectTransform, new Vector2(inset, inset), new Vector2(size - 2f * inset, size - 2f * inset));
-            Place(time.rectTransform, new Vector2(0f, -TimeHeight * scale), new Vector2(size, TimeHeight * scale));
-
+            Layout(position, size, scale);
+            SetEmpty(false);
             float burn = food.m_item?.m_shared?.m_foodBurnTime ?? 0f;
             float share = burn > 0f ? Mathf.Clamp01(food.m_time / burn) : 1f;
             Color color = Countdown(foodFull, share);
@@ -1095,6 +1143,27 @@ public static class HudConsole
             }
 
             return again || share <= 0.5f;
+        }
+
+        private void Layout(Vector2 position, float size, float scale)
+        {
+            float inset = IconInset * size;
+            Place(root, position, new Vector2(size, size));
+            Place(back.rectTransform, Vector2.zero, new Vector2(size, size));
+            Place(track.rectTransform, Vector2.zero, new Vector2(size, size));
+            Place(ring.rectTransform, Vector2.zero, new Vector2(size, size));
+            Place(icon.rectTransform, new Vector2(inset, inset), new Vector2(size - 2f * inset, size - 2f * inset));
+            Place(time.rectTransform, new Vector2(0f, -TimeHeight * scale), new Vector2(size, TimeHeight * scale));
+        }
+
+        private void SetEmpty(bool empty)
+        {
+            if (icon.gameObject.activeSelf == empty)
+            {
+                icon.gameObject.SetActive(!empty);
+                crossA.gameObject.SetActive(empty);
+                crossB.gameObject.SetActive(empty);
+            }
         }
     }
 

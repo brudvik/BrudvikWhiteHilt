@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **Empty food places stay.** The White Hilt HUD keeps three places for food whether you have eaten or not, so the console keeps its shape: an empty place is a dark disc in a red ring with a red cross, and with nothing eaten at all the red rings pulse slowly. Empty places show even with the quiet screen.
+
 ## v0.119.0 - 2026-10-11
 
 ### Added
