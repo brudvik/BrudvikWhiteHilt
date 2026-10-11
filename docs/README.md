@@ -13,7 +13,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Carvings](carvings.md) | Carved friezes and post boards in plait, cable, ring chain and Urnes loops, a carved portal, and carved dragon heads, ship stems and a runestone for the Decor Hammer |
 | [Roofs](roofs.md) | Turf, reed, straw, shingle and slate roofs, smoke holes, dragon gables and their materials |
 | [Painting](painting.md) | The Paint Bench, paint pots and brush, dyeing banners, sails and capes, and the loom |
-| [Beams, poles & banners](building-pieces.md) | Longer and angled beams and poles, iron grates and White Hilt banners |
+| [Beams, poles & banners](building-pieces.md) | Longer and angled beams and poles, darkwood doors, walls, gables and a double gate, iron grates and White Hilt banners |
 | [Decor Hammer](decor.md) | 460 decorations, many in a small and a large size: trees and plants that sway in the wind, stones and stumps, kitchen and workshop things, furniture, cloth, lights and Norse pieces |
 | [Build camera & toolbar](build-tools.md) | The free build camera, rotation and nudging, undo, area repair, photos, groups, blueprints and terrain tools |
 

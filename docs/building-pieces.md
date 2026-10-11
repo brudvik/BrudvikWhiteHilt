@@ -38,7 +38,37 @@ More lengths and angles of the vanilla beams and poles, in the hammer right afte
 
 Valheim has the Wood Roof Cross (two beams crossed in an X, as wide as a wall and as high as the roof's rise) for the 26°, 45° and 67° roofs, but none in darkwood. The **Darkwood Roof Cross 26°, 45° and 67°** are the same crosses made of two carved darkwood beams: they snap, carry and sit in the build menu as the wooden ones, after the darkwood beams, and cost what a darkwood beam costs (Wood ×2, Tar ×1), as the wooden cross costs what a wooden beam does. Plains tier.
 
-Otherwise darkwood has every roof and beam the wooden family has: the Shingle Roof in all shapes at 26°, 45° and 67°, and the beams at 26°, 45° and 67°. White Hilt also gives Valheim's Darkwood Beam 67° the name it lacks in the game's own translations. Darkwood has no walls of its own, so the wooden walls at an angle have no darkwood match.
+Otherwise darkwood has every roof and beam the wooden family has: the Shingle Roof in all shapes at 26°, 45° and 67°, and the beams at 26°, 45° and 67°. White Hilt also gives Valheim's Darkwood Beam 67° the name it lacks in the game's own translations. For walls, doors and gables in darkwood, see below.
+
+### Darkwood doors, walls & gables
+
+<img src="images/darkwood_facade.png" alt="Darkwood walls, gables, doors and the double gate" title="Darkwood walls, gable walls, the 3 m and 4 m doors and the double gate" height="200">
+
+<img src="images/darkwood_door_3.png" alt="Darkwood Door 3 m" title="Darkwood Door 3 m" height="140"> <img src="images/darkwood_door_4.png" alt="Darkwood Door 4 m" title="Darkwood Door 4 m" height="140"> <img src="images/darkwood_gate_double.png" alt="Darkwood Double Gate" title="Darkwood Double Gate" height="140"> <img src="images/darkwood_wall_2x2.png" alt="Darkwood Wall 2×2" title="Darkwood Wall 2×2" height="140"> <img src="images/darkwood_wall_2x4.png" alt="Darkwood Wall 2×4" title="Darkwood Wall 2×4" height="140"> <img src="images/darkwood_wall_45.png" alt="Darkwood Gable Wall 45°" title="Darkwood Gable Wall 45°" height="140">
+
+Valheim's Darkwood Gate is half a gate: two of them, the one turned round, make the arched double gate, and there is no darkwood door or wall. These pieces are cut from that gate, so they have its wood, boards, iron and colours:
+
+- **The doors** are the gate's leaf with the arch straightened out: three panels of diagonal boards between the rails, the gate's two hinges and its ring, on the gate's post under a lintel. The panels share the leaf equally; the rails, hinges and ring keep their size. The 3 m door suits the walls of a house, the 4 m door stands beside the gate and the double gate.
+- **The walls** are the same post and leaf without iron, fixed, under the same lintel, so the rails of a wall line up with those of a door of the same height. Walls 2 m wide and 1, 2, 3 and 4 m high.
+- **The gable walls** are walls cut under a beam that slopes as the 26°, 45° and 67° roofs, rising 1, 2 and 4 m over their 2 m like the vanilla wooden gable walls; turn one round for the other slope.
+- **The Darkwood Double Gate** is the vanilla gate twice, as one piece 4 m wide: no more placing two halves against each other. Both leaves open and close together, and close on their own as other gates do.
+
+| Piece | Description | Crafting Station | Requirements |
+|-------|-------------|------------------|--------------|
+| **Darkwood Door 3 m** | 2 × 3 m, three panels, hinges and ring | Forge | Wood ×12, Iron ×3, Tar ×2 |
+| **Darkwood Door 4 m** | 2 × 4 m, as high as the gate | Forge | Wood ×16, Iron ×4, Tar ×2 |
+| **Darkwood Double Gate** | Both leaves of the gate under one arch, 4 × 4 m | Forge | Wood ×32, Iron ×8, Tar ×4 |
+| **Darkwood Wall 2×1** | One panel | Workbench | Wood ×4, Tar ×1 |
+| **Darkwood Wall 2×2** | Two panels | Workbench | Wood ×8, Tar ×1 |
+| **Darkwood Wall 2×3** | Three panels, beside the 3 m door | Workbench | Wood ×12, Tar ×2 |
+| **Darkwood Wall 2×4** | Three panels, beside the 4 m door | Workbench | Wood ×16, Tar ×2 |
+| **Darkwood Gable Wall 26°** | Rises 1 m over 2 m | Workbench | Wood ×2, Tar ×1 |
+| **Darkwood Gable Wall 45°** | Rises 2 m over 2 m | Workbench | Wood ×4, Tar ×1 |
+| **Darkwood Gable Wall 67°** | Rises 4 m over 2 m | Workbench | Wood ×8, Tar ×1 |
+
+The doors and the double gate are built at the forge for their iron, as the vanilla gate is, and cost what it costs for their size; the walls cost the gate's wood and tar for their area. All are Plains tier (Tar) and sit in the hammer right after the Darkwood Gate. They snap every metre up both sides; the doors and walls also at their top corners, the gables at their foot and up their post.
+
+The pieces are made when the game starts from the gate's own models, so the mod ships no model of them and nothing of the game's. A dedicated server builds only their colliders and snap points. `AssetSource/Preview/render_darkwood.ps1` renders them offline with the same code. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_darkwood_door_3`, `_door_4`, `_gate_double`, `_wall_2x1` to `_wall_2x4` and `_wall_26`, `_wall_45` and `_wall_67`. Not yet tested in the game.
 
 ---
 

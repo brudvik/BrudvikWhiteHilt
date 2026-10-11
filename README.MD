@@ -82,7 +82,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/roofs.md"><img src="docs/images/roof_turf.png" height="110" alt=""></a><br><b><a href="docs/roofs.md">Roofs</a></b><br><sub>Turf, reed, straw, tarred shingles and slate in every shape, with smoke holes and dragon gables.</sub></td>
 <td align="center" valign="top"><a href="docs/painting.md"><img src="docs/images/paint_bench.png" height="110" alt=""></a><br><b><a href="docs/painting.md">Painting</a></b><br><sub>Paint or stain any piece in a colour mixed from dyes, and dye banners, sails and capes.</sub></td>
-<td align="center" valign="top"><a href="docs/building-pieces.md"><img src="docs/images/readme/tile_banners.png" height="110" alt=""></a><br><b><a href="docs/building-pieces.md">Beams, poles & banners</a></b><br><sub>Longer and angled beams and poles, iron grates in more sizes and White Hilt banners.</sub></td>
+<td align="center" valign="top"><a href="docs/building-pieces.md"><img src="docs/images/readme/tile_banners.png" height="110" alt=""></a><br><b><a href="docs/building-pieces.md">Beams, poles & banners</a></b><br><sub>Longer and angled beams and poles, darkwood doors, walls and gables, iron grates in more sizes and White Hilt banners.</sub></td>
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/build-tools.md"><img src="docs/images/readme/tile_build_tools.png" height="110" alt=""></a><br><b><a href="docs/build-tools.md">Build camera & toolbar</a></b><br><sub>A free build camera, precise rotation, undo, area repair, blueprints and terrain tools.</sub></td>

@@ -4,6 +4,10 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **[Darkwood doors, walls and gables](docs/building-pieces.md#darkwood-doors-walls--gables)**, cut from the vanilla Darkwood Gate: the **Darkwood Door** 3 m and 4 m high (the gate's leaf with the arch straightened into three panels, its hinges and ring, on its post under a lintel), **Darkwood Walls** 2 m wide and 1 to 4 m high whose rails line up with the doors, and **Darkwood Gable Walls** for the 26°, 45° and 67° roofs. Plains tier.
+- **The Darkwood Double Gate**: both leaves of the darkwood gate under one arch as one piece, 4 m wide, so the two halves need not be placed against each other. Both leaves open together.
+
 ### Fixed
 - **The White Hilt Axe and Pickaxe work in every biome.** They kept the tool tier of the iron axe and pickaxe they are cloned from, so in the Mistlands the game said the wood and stone were too hard, and you needed the black metal ones. They now have the highest tier of the game's axes and pickaxes, as the [White Hilt tools](docs/equipment.md#-tools) are meant to last the whole game.
 - **Looted gear goes back on.** After logging out and in again without quitting the game, the build tools' axis lines threw an error every frame, which stopped the [equipment slots](docs/backpack.md) and food slots from doing their work. Armor taken back from your grave lay in its slots without being worn, and you had to take it out and put it on again. It is now worn as soon as it is back in its slot.
