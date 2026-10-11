@@ -23,6 +23,7 @@ public static class MonsterPatches
     private static void BreathPrefix(Attack __instance)
     {
         __instance.m_character?.GetComponent<DragonFire>()?.BeginBreath();
+        __instance.m_character?.GetComponent<DragonBlast>()?.BeginBreath();
     }
 
     [HarmonyPatch(typeof(MonsterAI), nameof(MonsterAI.UpdateAI))]

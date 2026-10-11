@@ -29,11 +29,11 @@ public static class DesertDragonRegistry
     private const string BaseProjectile = "Imp_fireball_projectile";
     /// <summary>Prefab name of the Desert Dragon's breath weapon.</summary>
     internal const string FlameName = "WhiteHilt_DesertDragonFlame";
-    private const string ProjectileName = "WhiteHilt_DesertDragonFlame_projectile";
+    internal const string ProjectileName = "WhiteHilt_DesertDragonFlame_projectile";
     private const string CorpseName = "WhiteHilt_DesertDragonCorpse";
     private const string Model = "desertdragon";
     private const string AttackTrigger = "dragon_flame";
-    private const string MouthBone = "head2_13";
+    internal const string MouthBone = "head2_13";
     private const float FlameSpeed = 25f;
 
     // The Surtling fireball's trailing flames are about 0.7 m wide; at 0.7 times that they fill the dragon's open mouth.

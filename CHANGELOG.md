@@ -4,6 +4,20 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **The White Dragon has new powers** ([Dragon Horn](docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side), all in `[DragonHorn]`):
+  - **An entrance**: it arrives with a roar and dives at once at the foe nearest to you.
+  - **Frost breath**: it breathes fire and frost by turns (`Breath`, `FrostDamage`), the frost from Moder's own ice shards. Frost slows what it hits and bites on foes that shrug off fire; its blast then bursts like the Deep North's frost meteor.
+  - **Dives**: every 20 seconds it swoops low and fast at its foe and slams into the ground beside it, 600 damage before stars to every enemy within 10 m (`Dive*`).
+  - **Terror roar**: every 30 seconds while foes are near, every foe within 20 m staggers and moves 60% slower for 4 seconds (`Roar*`).
+  - **It guards you**: whatever hits you is its foe for the next 10 seconds (`GuardSeconds`).
+  - **Dragon's Blessing**: within 30 m of your dragon you take a quarter less physical damage, and your health and stamina come back half as fast again (`Blessing*`).
+  - **It grows with the world**: each of Yagluth, the Queen and Fader slain gives a dragon called afterwards 25% more health and damage (`PowerKeys`, `PowerPerKey`).
+  - **A cold aura**: a pale light on its body and frost mist from its mouth (`Aura`).
+
+### Changed
+- **[The White Dragon](docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side) hits hard.** Its breath is 12 flames of 25 fire every 5 seconds (was 8 flames of 8 every 10), it has 1500 health before stars (was 600), and **each breath ends in a blast** where it first strikes: a burst like one of Yagluth's meteors that shakes the ground, deals 450 damage before stars to every enemy within 7 m, half its breath's element and half blunt, and throws them back (`BlastDamage`, `BlastRadius`, `BlastPush` in `[DragonHorn]`). It is half as big again as a Desert Dragon (`Size`) and roars twice as loud, heard twice as far (`RoarLoudness`). Players, tamed animals and buildings are still spared. It now **fights bosses** at your side too (`FightsBosses`, was off). Unchanged old defaults move to the new ones once.
+
 ### Fixed
 - **Ship holds count again when building and crafting.** A ship or cart hold you had once asked for, and then came to own another way, such as by boarding the ship, never counted as yours again, so its materials were left out. It now counts as soon as it is yours. Blueprints, roads and moats no longer try to take a ship or cart over to pay from its hold; its owner sends what is needed instead, as the game passes a ship to whoever is aboard.
 

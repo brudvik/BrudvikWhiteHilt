@@ -13,6 +13,21 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Items.Summoning;
 
 /// <summary>
+/// The White Dragon's breath.
+/// </summary>
+public enum DragonBreath
+{
+    /// <summary>Fire, like the Desert Dragon.</summary>
+    Fire,
+
+    /// <summary>Frost shards that slow what they hit.</summary>
+    Frost,
+
+    /// <summary>Fire and frost by turns.</summary>
+    Both
+}
+
+/// <summary>
 /// The Dragon Horn, sold by the Bog Witch once Moder is slain. Blown like the other horns, it calls a White Dragon that
 /// flies in, fights at the caller's side for a while and flies off again. Then the horn must rest a game day.
 /// </summary>
@@ -63,6 +78,78 @@ public static class DragonHorn
     /// <summary>Seconds between two breaths at most.</summary>
     public static ConfigEntry<float> BreathSeconds { get; private set; }
 
+    /// <summary>Damage of the blast where a breath first strikes, half fire and half blunt, before stars.</summary>
+    public static ConfigEntry<float> BlastDamage { get; private set; }
+
+    /// <summary>Radius of the blast in metres.</summary>
+    public static ConfigEntry<float> BlastRadius { get; private set; }
+
+    /// <summary>How hard the blast throws enemies back.</summary>
+    public static ConfigEntry<float> BlastPush { get; private set; }
+
+    /// <summary>Size of the White Dragon, as a multiple of a Desert Dragon's.</summary>
+    public static ConfigEntry<float> Size { get; private set; }
+
+    /// <summary>How much louder the White Dragon roars than a Desert Dragon, and how much further it is heard.</summary>
+    public static ConfigEntry<float> RoarLoudness { get; private set; }
+
+    /// <summary>Which breath the White Dragon uses.</summary>
+    public static ConfigEntry<DragonBreath> Breath { get; private set; }
+
+    /// <summary>Frost damage of each shard of its frost breath before stars.</summary>
+    public static ConfigEntry<float> FrostDamage { get; private set; }
+
+    /// <summary>Seconds between two dives at most.</summary>
+    public static ConfigEntry<float> DiveSeconds { get; private set; }
+
+    /// <summary>Damage of the slam at the end of a dive, before stars; 0 means no dives.</summary>
+    public static ConfigEntry<float> DiveDamage { get; private set; }
+
+    /// <summary>Radius of the slam in metres.</summary>
+    public static ConfigEntry<float> DiveRadius { get; private set; }
+
+    /// <summary>How hard the slam throws enemies back.</summary>
+    public static ConfigEntry<float> DivePush { get; private set; }
+
+    /// <summary>How much faster than its normal flight the dragon dives.</summary>
+    public static ConfigEntry<float> DiveSpeed { get; private set; }
+
+    /// <summary>How far away, in metres, the dragon dives at a foe.</summary>
+    public static ConfigEntry<float> DiveRange { get; private set; }
+
+    /// <summary>Seconds between two terror roars at most; 0 means none.</summary>
+    public static ConfigEntry<float> RoarSeconds { get; private set; }
+
+    /// <summary>Radius of the terror roar in metres.</summary>
+    public static ConfigEntry<float> RoarRadius { get; private set; }
+
+    /// <summary>How much slower the roar leaves enemies, as a share of their speed.</summary>
+    public static ConfigEntry<float> RoarSlow { get; private set; }
+
+    /// <summary>Seconds the roar slows enemies.</summary>
+    public static ConfigEntry<float> RoarSlowSeconds { get; private set; }
+
+    /// <summary>Seconds the dragon keeps after something that hit its caller; 0 means it picks its own foes.</summary>
+    public static ConfigEntry<float> GuardSeconds { get; private set; }
+
+    /// <summary>The caller is blessed within this many metres of the dragon; 0 means no blessing.</summary>
+    public static ConfigEntry<float> BlessingRange { get; private set; }
+
+    /// <summary>How the blessed caller takes blunt, slash and pierce damage.</summary>
+    public static ConfigEntry<HitData.DamageModifier> BlessingResistance { get; private set; }
+
+    /// <summary>Health and stamina regeneration of the blessed caller, as a multiple.</summary>
+    public static ConfigEntry<float> BlessingRegen { get; private set; }
+
+    /// <summary>Global keys that each make the dragon stronger.</summary>
+    public static ConfigEntry<string> PowerKeys { get; private set; }
+
+    /// <summary>Extra health and damage for each of <see cref="PowerKeys"/> set, as a share.</summary>
+    public static ConfigEntry<float> PowerPerKey { get; private set; }
+
+    /// <summary>Whether a cold light and frost mist surround the dragon.</summary>
+    public static ConfigEntry<bool> Aura { get; private set; }
+
     /// <summary>Whether the dragon fights bosses.</summary>
     public static ConfigEntry<bool> FightsBosses { get; private set; }
 
@@ -101,14 +188,59 @@ public static class DragonHorn
             new AcceptableValueRange<float>(10f, 500f));
         Stars = WhiteHiltConfig.BindAdminOnly(Section, "Stars", 5, "Stars of the White Dragon. Stars give it more health, damage and size.",
             new AcceptableValueRange<int>(0, 5));
-        Health = WhiteHiltConfig.BindAdminOnly(Section, "Health", 600f, "Health of the White Dragon before stars. Applies after a restart.",
+        Health = WhiteHiltConfig.BindAdminOnly(Section, "Health", 1500f, "Health of the White Dragon before stars. Applies after a restart.",
             new AcceptableValueRange<float>(10f, 20000f));
-        FireDamage = WhiteHiltConfig.BindAdminOnly(Section, "FireDamage", 8f, "Fire damage of each flame in its breath before stars. Applies after a restart.",
+        FireDamage = WhiteHiltConfig.BindAdminOnly(Section, "FireDamage", 25f, "Fire damage of each flame in its breath before stars. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 200f));
-        Flames = WhiteHiltConfig.BindAdminOnly(Section, "Flames", 8, "Flames in one breath. Applies after a restart.", new AcceptableValueRange<int>(1, 30));
-        BreathSeconds = WhiteHiltConfig.BindAdminOnly(Section, "BreathSeconds", 10f, "Seconds between two breaths at most. Applies after a restart.",
+        Flames = WhiteHiltConfig.BindAdminOnly(Section, "Flames", 12, "Flames in one breath. Applies after a restart.", new AcceptableValueRange<int>(1, 30));
+        BreathSeconds = WhiteHiltConfig.BindAdminOnly(Section, "BreathSeconds", 5f, "Seconds between two breaths at most. Applies after a restart.",
             new AcceptableValueRange<float>(2f, 60f));
-        FightsBosses = WhiteHiltConfig.BindAdminOnly(Section, "FightsBosses", false, "The White Dragon also fights bosses; off, it leaves them to you.");
+        BlastDamage = WhiteHiltConfig.BindAdminOnly(Section, "BlastDamage", 450f,
+            "Damage of the blast where each breath first strikes, half the breath's fire or frost and half blunt, before stars. It falls to half at the edge. 0 turns the blast off.",
+            new AcceptableValueRange<float>(0f, 2000f));
+        BlastRadius = WhiteHiltConfig.BindAdminOnly(Section, "BlastRadius", 7f, "Radius of the blast in metres.", new AcceptableValueRange<float>(1f, 20f));
+        BlastPush = WhiteHiltConfig.BindAdminOnly(Section, "BlastPush", 80f, "How hard the blast throws enemies back.", new AcceptableValueRange<float>(0f, 300f));
+        Size = WhiteHiltConfig.BindAdminOnly(Section, "Size", 1.5f, "Size of the White Dragon, as a multiple of a Desert Dragon's. Applies after a restart.",
+            new AcceptableValueRange<float>(0.5f, 3f));
+        RoarLoudness = WhiteHiltConfig.BindAdminOnly(Section, "RoarLoudness", 2f,
+            "How much louder the White Dragon roars than a Desert Dragon, and how many times further it is heard. 1 = as loud. Applies after a restart.",
+            new AcceptableValueRange<float>(1f, 4f));
+        Breath = WhiteHiltConfig.BindAdminOnly(Section, "Breath", DragonBreath.Both,
+            "Which breath the White Dragon uses: Fire, Frost, or Both by turns. Frost slows what it hits and bites on fire-proof foes. Applies after a restart.");
+        FrostDamage = WhiteHiltConfig.BindAdminOnly(Section, "FrostDamage", 25f, "Frost damage of each shard of its frost breath before stars. Applies after a restart.",
+            new AcceptableValueRange<float>(0f, 200f));
+        DiveSeconds = WhiteHiltConfig.BindAdminOnly(Section, "DiveSeconds", 20f, "Seconds between two dives at a foe.", new AcceptableValueRange<float>(5f, 120f));
+        DiveDamage = WhiteHiltConfig.BindAdminOnly(Section, "DiveDamage", 600f,
+            "Damage of the slam when the dragon dives into the ground by a foe, half its breath's element and half blunt, before stars. It falls to half at the edge. 0 = no dives.",
+            new AcceptableValueRange<float>(0f, 5000f));
+        DiveRadius = WhiteHiltConfig.BindAdminOnly(Section, "DiveRadius", 10f, "Radius of the slam in metres.", new AcceptableValueRange<float>(2f, 25f));
+        DivePush = WhiteHiltConfig.BindAdminOnly(Section, "DivePush", 150f, "How hard the slam throws enemies back.", new AcceptableValueRange<float>(0f, 400f));
+        DiveSpeed = WhiteHiltConfig.BindAdminOnly(Section, "DiveSpeed", 1.8f, "How many times faster than its normal flight the dragon dives.",
+            new AcceptableValueRange<float>(1f, 4f));
+        DiveRange = WhiteHiltConfig.BindAdminOnly(Section, "DiveRange", 40f, "How far away, in metres, a foe may be for the dragon to dive at it.",
+            new AcceptableValueRange<float>(10f, 100f));
+        RoarSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RoarSeconds", 30f,
+            "Seconds between two terror roars while foes are near. It also roars when it arrives. 0 = no terror roar.", new AcceptableValueRange<float>(0f, 300f));
+        RoarRadius = WhiteHiltConfig.BindAdminOnly(Section, "RoarRadius", 20f, "Metres around the dragon its roar staggers and slows foes.",
+            new AcceptableValueRange<float>(5f, 60f));
+        RoarSlow = WhiteHiltConfig.BindAdminOnly(Section, "RoarSlow", 0.6f, "How much slower the roar leaves foes (0.6 = 60% slower).",
+            new AcceptableValueRange<float>(0f, 0.9f));
+        RoarSlowSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RoarSlowSeconds", 4f, "Seconds the roar slows foes.", new AcceptableValueRange<float>(0f, 20f));
+        GuardSeconds = WhiteHiltConfig.BindAdminOnly(Section, "GuardSeconds", 10f,
+            "Seconds the dragon goes after whatever hit you, before it picks its own foes again. 0 = it does not guard you.",
+            new AcceptableValueRange<float>(0f, 60f));
+        BlessingRange = WhiteHiltConfig.BindAdminOnly(Section, "BlessingRange", 30f,
+            "While you are within this many metres of your dragon, it blesses you. 0 = no blessing.", new AcceptableValueRange<float>(0f, 100f));
+        BlessingResistance = WhiteHiltConfig.BindAdminOnly(Section, "BlessingResistance", HitData.DamageModifier.SlightlyResistant,
+            "How you take blunt, slash and pierce damage while blessed.");
+        BlessingRegen = WhiteHiltConfig.BindAdminOnly(Section, "BlessingRegen", 1.5f, "Health and stamina regeneration while blessed, as a multiple.",
+            new AcceptableValueRange<float>(1f, 3f));
+        PowerKeys = WhiteHiltConfig.BindAdminOnly(Section, "PowerKeys", "defeated_goblinking,defeated_queen,defeated_fader",
+            "Comma-separated global keys that each make the dragon stronger when it is called (Yagluth, the Queen, Fader).");
+        PowerPerKey = WhiteHiltConfig.BindAdminOnly(Section, "PowerPerKey", 0.25f,
+            "Extra health and damage for each of PowerKeys that is set (0.25 = +25% each).", new AcceptableValueRange<float>(0f, 2f));
+        Aura = WhiteHiltConfig.BindAdminOnly(Section, "Aura", true, "A cold light and frost mist surround the dragon. Applies after a restart.");
+        FightsBosses = WhiteHiltConfig.BindAdminOnly(Section, "FightsBosses", true, "The White Dragon also fights bosses; off, it leaves them to you.");
         ArriveDistance = WhiteHiltConfig.BindAdminOnly(Section, "ArriveDistance", 80f, "Metres away, out of sight behind you, the dragon appears before it flies in.",
             new AcceptableValueRange<float>(30f, 200f));
         LeaveDistance = WhiteHiltConfig.BindAdminOnly(Section, "LeaveDistance", 100f, "If you get further than this from the dragon, in metres, it flies off.",
@@ -131,10 +263,12 @@ public static class DragonHorn
     }
 
     /// <summary>
-    /// Applies changed settings to the Bog Witch's goods, also for Bog Witches already in the world.
+    /// Applies changed settings to the Bog Witch's goods, also for Bog Witches already in the world, and to the White
+    /// Dragon's blessing and roar.
     /// </summary>
     public static void ApplyConfig()
     {
+        WhiteDragonRegistry.ApplyConfig();
         if (ZNetScene.instance == null)
         {
             return;

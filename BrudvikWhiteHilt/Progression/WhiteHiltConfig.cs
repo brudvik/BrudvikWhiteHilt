@@ -332,6 +332,7 @@ public static class WhiteHiltConfig
             (Id: "lindorm-0.72.2", Section: "Lindorm", Values: new[] { ("Scale", 1.3f), ("Damage", 55f) }),
             (Id: "dragon-0.72.3", Section: "Desert Dragon", Values: new[] { ("Health", 500f) }),
             (Id: "dragon-0.77.0", Section: "Desert Dragon", Values: new[] { ("Health", 800f), ("FireDamage", 15f) }),
+            (Id: "dragonhorn-0.123.0", Section: "DragonHorn", Values: new[] { ("Health", 600f), ("FireDamage", 8f), ("Flames", 8f), ("BreathSeconds", 10f), ("FightsBosses", 0f) }),
             (Id: "kraken-0.79.0", Section: "Kraken", Values: new[] { ("Tentacles", 4f), ("BodyHealth", 4000f), ("TentacleHealth", 500f), ("BodyDamage", 90f), ("TentacleDamage", 45f), ("ShipDamagePercent", 30f) }),
             (Id: "ship-lantern-0.80.6", Section: "Ships", Values: new[] { ("LanternBrightness", 2.5f), ("LanternRange", 2f) }),
             (Id: "freya-0.72.3", Section: "Potions.GiftOfFreya", Values: new[] { ("DurationMinutes", 20f) }),
@@ -350,7 +351,8 @@ public static class WhiteHiltConfig
                 {
                     ConfigEntryBase entry = configFile[definition];
                     if ((entry.BoxedValue is float value && value == previous)
-                        || (entry.BoxedValue is int count && count == previous))
+                        || (entry.BoxedValue is int count && count == previous)
+                        || (entry.BoxedValue is bool flag && (flag ? 1f : 0f) == previous))
                     {
                         entry.BoxedValue = entry.DefaultValue;
                     }

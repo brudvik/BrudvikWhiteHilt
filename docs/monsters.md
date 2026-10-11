@@ -72,14 +72,23 @@ The horn then rests **24 game hours** (one game day, 30 real minutes; sleeping p
 
 Its call is a real Viking horn, sounded as four horns at once (one a little out of tune with it, one an octave below, one a fifth above that joins after half a second) in a long hall that rings on after the call. It is made from a CC0 recording by `AssetSource/Tools/make_dragon_horn_sound.py`.
 
-So that it helps without fighting for you:
+What it brings to a fight:
 
-- Its breath is weaker than a Desert Dragon's: **8 flames of 8 fire** at most every 10 seconds before stars, against 12 flames of 20 every 8 seconds. Its five stars raise that to about 22 per flame with the default star settings.
-- It has **600 health** before stars (2700 with five stars by default).
-- It leaves **no ground fire** and never burns buildings, whatever `BurnsBuildings` says.
-- It **leaves bosses to you** (`FightsBosses`), and bosses leave it alone.
+- **An entrance**: when it reaches you it roars, the ground bursts under it, and it dives at once at the foe nearest to you.
+- **Fire and frost by turns** (`Breath`): **12 flames of 25 fire**, or 12 shards of 25 frost from Moder's own ice, at most every 5 seconds before stars, against the Desert Dragon's 12 flames of 20 every 8 seconds. Its five stars raise that to about 69 per flame. Frost slows what it hits and bites on foes that shrug off fire.
+- **A blast where each breath first strikes**: it bursts like one of Yagluth's meteors, or the Deep North's frost meteor for a frost breath, shaking the ground. Every enemy within 7 m takes **450 damage** before stars (about 1240 with five stars), half the breath's element and half blunt, so even fire-proof foes feel it, falling to half at the edge, and is thrown back.
+- **A dive** every 20 seconds: it swoops low and fast at its foe and slams into the ground beside it, **600 damage** before stars (about 1650 with five stars) to every enemy within 10 m, which are thrown hard.
+- **A terror roar** every 30 seconds while foes are near: every foe within 20 m staggers and moves 60% slower for 4 seconds (*Dragon Terror*).
+- **It guards you**: whatever hits you becomes its foe for the next 10 seconds, and it dives at that one first.
+- **Its blessing**: while you are within 30 m of your dragon, *Dragon's Blessing* makes you take a quarter less blunt, slash and pierce damage, and your health and stamina come back half as fast again.
+- **It grows with the world**: each of Yagluth, the Queen and Fader slain gives a dragon called after it 25% more health and damage.
+- A cold light shines from its body, and frost mist drifts from its mouth.
+- It is **half as big again as a Desert Dragon**, about 12 m from wingtip to wingtip, and its roar is **twice as loud** and heard twice as far.
+- It has **1500 health** before stars (6750 with five stars by default).
+- It leaves **no ground fire** and never burns buildings, whatever `BurnsBuildings` says. Its blasts, dives and roar spare buildings too.
+- It **fights bosses at your side** too; with `FightsBosses` off it leaves them to you, and they leave it alone.
 - It drops nothing when it dies, and lies white where it fell.
-- Its fire never hurts players or tamed animals.
+- Nothing it does ever hurts players or tamed animals.
 
 With default settings, a 0/1/2-star Desert Dragon has **1200/2400/3600 health**, **20/30/40 fire damage per breath flame** and **10/15/20 ground fire damage per second** before resistance and any pressure bonuses. A naturally summoned **Black Dragon** has five stars and the existing beast bonuses: **8100 health**, **60 fire damage per breath flame** and **30 ground fire damage per second**, with damage capped by the difficulty settings. Changing difficulty settings changes these values; a plain devcommand spawn does not apply the natural beast encounter bonuses.
 
@@ -204,14 +213,38 @@ Section `[DragonHorn]`:
 | `BlowSeconds` | 3 | Seconds of blowing before the dragon is called |
 | `SoundRange` | 150 | Metres the horn is heard |
 | `Stars` | 5 | Stars of the dragon |
-| `Health` | 600 | Health before stars (after a restart) |
-| `FireDamage` / `Flames` | 8 / 8 | Fire damage of each flame before stars, and flames in one breath (after a restart) |
-| `BreathSeconds` | 10 | Seconds between two breaths at most (after a restart) |
-| `FightsBosses` | false | It also fights bosses |
+| `Health` | 1500 | Health before stars (after a restart) |
+| `FireDamage` / `Flames` | 25 / 12 | Fire damage of each flame before stars, and flames in one breath (after a restart) |
+| `BreathSeconds` | 5 | Seconds between two breaths at most (after a restart) |
+| `BlastDamage` | 450 | Damage of the blast where each breath first strikes, half the breath's element and half blunt, before stars; half at the edge; 0 = no blast |
+| `BlastRadius` | 7 | Metres the blast reaches |
+| `BlastPush` | 80 | How hard the blast throws enemies back |
+| `Size` | 1.5 | Size as a multiple of a Desert Dragon's (after a restart) |
+| `RoarLoudness` | 2 | How much louder it roars than a Desert Dragon, and how many times further it is heard; 1 = as loud (after a restart) |
+| `Breath` | Both | Fire, Frost, or Both by turns (after a restart) |
+| `FrostDamage` | 25 | Frost damage of each shard of the frost breath before stars (after a restart) |
+| `DiveSeconds` | 20 | Seconds between two dives |
+| `DiveDamage` | 600 | Damage of the slam at the end of a dive, half the breath's element and half blunt, before stars; half at the edge; 0 = no dives |
+| `DiveRadius` / `DivePush` | 10 / 150 | Metres the slam reaches, and how hard it throws |
+| `DiveSpeed` | 1.8 | How many times faster than its normal flight it dives |
+| `DiveRange` | 40 | Metres away a foe may be for it to dive at it |
+| `RoarSeconds` | 30 | Seconds between two terror roars while foes are near; 0 = none (it still roars as it arrives) |
+| `RoarRadius` | 20 | Metres around it the roar staggers and slows foes |
+| `RoarSlow` / `RoarSlowSeconds` | 0.6 / 4 | How much slower the roar leaves foes, and for how long |
+| `GuardSeconds` | 10 | Seconds it goes after whatever hit you; 0 = it picks its own foes |
+| `BlessingRange` | 30 | You are blessed within this many metres of it; 0 = no blessing |
+| `BlessingResistance` | SlightlyResistant | How you take blunt, slash and pierce damage while blessed |
+| `BlessingRegen` | 1.5 | Health and stamina regeneration while blessed |
+| `PowerKeys` | defeated_goblinking, defeated_queen, defeated_fader | Global keys that each make a dragon called afterwards stronger |
+| `PowerPerKey` | 0.25 | Extra health and damage for each of them |
+| `Aura` | true | A cold light and frost mist around it (after a restart) |
+| `FightsBosses` | true | It also fights bosses; off, it leaves them to you |
 | `ArriveDistance` | 80 | Metres behind you it appears before it flies in |
 | `LeaveDistance` | 100 | Get further from it than this and it flies off |
 | `VanishDistance` | 90 | On its way off, it vanishes once no player is this close |
 | `FlightSeconds` | 30 | Longest time it takes to fly in or off |
+
+On upgrade to 0.123.0, the previous defaults (`Health` 600, `FireDamage` 8, `Flames` 8, `BreathSeconds` 10, `FightsBosses` false) move to the new ones once. Other configured values are preserved.
 
 ## Console commands
 

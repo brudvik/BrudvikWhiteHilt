@@ -53,8 +53,13 @@ public class DragonFlame : MonoBehaviour
 
     private void OnHit(Collider collider, Vector3 point, bool water)
     {
-        if (!water && collider != null && collider.GetComponent<Heightmap>() != null &&
-            projectile.m_nview.IsValid() && projectile.m_nview.IsOwner() && projectile.m_owner != null)
+        if (!projectile.m_nview.IsValid() || !projectile.m_nview.IsOwner() || projectile.m_owner == null)
+        {
+            return;
+        }
+
+        projectile.m_owner.GetComponent<DragonBlast>()?.Strike(projectile, point);
+        if (!water && collider != null && collider.GetComponent<Heightmap>() != null)
         {
             projectile.m_owner.GetComponent<DragonFire>()?.Ignite(projectile, point);
         }
