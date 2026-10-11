@@ -2,6 +2,19 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.117.0 - 2026-10-11
+
+### Added
+- **Darkwood Roof Cross 26°, 45° and 67°.** Valheim has the Wood Roof Cross for each roof pitch but none in darkwood: these are the same crosses of two carved darkwood beams, snapping and carrying as the wooden ones, for Wood ×2 and Tar ×1, after the darkwood beams in the hammer.
+- **Darkwood Beam 1 m and Darkwood Pole 1 m**, as the wooden beam and pole have, at half the cost. With the crosses, darkwood now has every beam and roof the wooden family has. Valheim's own Darkwood Beam 67° gets the name it lacks in the game's translations.
+
+### Changed
+- **Laft walls close at the joints.** The logs of the laft walls, corners, gables and the stream mill were scaled so their rounded ends met where two walls meet, leaving a notch between every pair of logs. The full log now runs from end to end of the wall, and the rounded ends lie inside the next wall's logs, so a row of walls reads as one wall. Snap points are unchanged.
+- **Fewer Desert Dragons, more from each.** A dragon comes over the Plains about a third as often (`SpawnChance` 5 instead of 10, every 450 s instead of 300), drops its trophy at 35 % instead of 10 % and 4 to 6 scales instead of 2 to 3, set with the new `ScalesMin` and `ScalesMax` in `[Desert Dragon]`. Existing configs move to the new spawn and trophy defaults once.
+- **Key hints beside the console.** In the White Hilt HUD the game's key hints for fighting, building, the inventory and fishing no longer lie over the hotbar and the status effects when you take out a bow or a tool: they stand at the right of the console, and the build tools' hint at its left, each made smaller to fit, or over the console on a narrow screen. They show for a few seconds after you take out a tool or weapon and then fade (`KeyHints` = `Brief` in `[HUD]`, with `KeyHintSeconds`); `Always` keeps them and `Hidden` shows them only in the inventory and while the `ShowAll` key is held.
+- **What the icons are.** The last place of a full status tray goes through the effects left out in turn, with how many they are in its corner, instead of only "+3". In the inventory, and while the `ShowAll` key is held, the status effects are a list with each one's name and time.
+- **Rings that warn.** The rings of meads and other timed effects, like the food's, turn yellow when less than half is left and red under a fifth, and a red ring pulses.
+
 ## v0.116.0 - 2026-10-10
 
 ### Added
