@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **Ship holds count again when building and crafting.** A ship or cart hold you had once asked for, and then came to own another way, such as by boarding the ship, never counted as yours again, so its materials were left out. It now counts as soon as it is yours. Blueprints, roads and moats no longer try to take a ship or cart over to pay from its hold; its owner sends what is needed instead, as the game passes a ship to whoever is aboard.
+
 ## v0.122.0 - 2026-10-11
 
 ### Added

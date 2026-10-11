@@ -455,6 +455,26 @@ public static class NearbyContainers
         return taken;
     }
 
+    /// <summary>
+    /// Describes the ship and cart holds near a point for the log: distance, owner, whether held and how many stacks.
+    /// </summary>
+    /// <param name="from">The player's position.</param>
+    /// <param name="reach">How far to look, in metres.</param>
+    /// <returns>One entry per hold, or "none".</returns>
+    public static string DescribeVehicles(Vector3 from, float reach)
+    {
+        List<string> found = Registered()
+            .Where(container => container.m_nview != null && container.m_nview.IsValid() && container.GetInventory() != null
+                && (container.GetComponentInParent<Ship>() != null || container.GetComponentInParent<Vagon>() != null)
+                && Vector3.Distance(from, container.transform.position) <= reach)
+            .Select(container => $"{Utils.GetPrefabName(container.m_nview.gameObject)}/{container.name} "
+                + $"{Vector3.Distance(from, container.transform.position):0} m owner="
+                + $"{(container.m_nview.IsOwner() ? "me" : container.m_nview.GetZDO().GetOwner().ToString())} "
+                + $"held={ContainerHandoff.Held(container)} stacks={container.GetInventory().NrOfItems()}")
+            .ToList();
+        return found.Count == 0 ? "none" : string.Join(", ", found);
+    }
+
     // Both would take the same items from the chests. Checked in game, when every plugin has loaded.
     private static bool IsOtherModInstalled()
     {

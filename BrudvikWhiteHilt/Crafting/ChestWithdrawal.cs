@@ -94,7 +94,9 @@ public static class ChestWithdrawal
             }
 
             Request request = new(++nextRequestId, view, entry.Value, playerId);
-            if (handOver)
+
+            // The game passes a ship or cart to whoever is aboard or pulling it, so its hold is sent from, not handed over.
+            if (handOver && view.GetComponent<Ship>() == null && view.GetComponent<Vagon>() == null)
             {
                 AskHandover(request);
             }

@@ -160,11 +160,24 @@ internal sealed class ContainerHandoff : MonoBehaviour
         return view != null && view.IsValid() && !InUse() && Settle() && view.IsOwner();
     }
 
-    // Loads the contents once the handed-over data has arrived. False while still waiting for it.
+    // Loads the contents once the handed-over data has arrived. False while still waiting for it. A container this
+    // machine came to own another way while it waited (a ship passed to whoever is aboard) gets no answer, as only the
+    // owner answers; it is taken as it is then, or it would never count as held again.
     private bool Settle()
     {
         if (!pending)
         {
+            return true;
+        }
+
+        if (revision < 0 && view.IsOwner())
+        {
+            foreach (Container container in Containers())
+            {
+                container.Load();
+            }
+
+            pending = false;
             return true;
         }
 

@@ -246,7 +246,8 @@ public static class NearbyContainerPatches
                 + $"kept={kept} "
                 + $"chestsHeld={NearbyContainers.Count(NearbyContainers.Use.Building, name)} chestsAll={NearbyContainers.CountAll(NearbyContainers.Use.Building, name)}";
         }));
-        Jotunn.Logger.LogWarning($"Cannot build {piece.name}: station {station}; {resources}; paying={paying}; at {__instance.transform.position}");
+        Jotunn.Logger.LogWarning($"Cannot build {piece.name}: station {station}; {resources}; paying={paying}; at {__instance.transform.position}; "
+            + $"ship and cart holds within 60 m: {NearbyContainers.DescribeVehicles(__instance.transform.position, 60f)}");
     }
 
     /// <summary>
