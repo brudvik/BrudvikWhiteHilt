@@ -41,17 +41,16 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.119.2
+## ✨ New in 0.120.0
+
+- **[The School Bench](docs/school.md)**: write down what you know, read what others wrote to learn their materials, recipes and runestone texts, and sit on its bench to study their skills up to half their level.
+- **[Shared blueprints](docs/build-tools.md#shared-blueprints)**: share your blueprints on the server for everyone in the world to fetch.
+- **[Darkwood doors, walls and gables](docs/building-pieces.md#darkwood-doors-walls--gables)** cut from the darkwood gate, and a darkwood double gate.
+- **The Gifts of the gods say what they do**, with the server's numbers, and the White Hilt Axe and Pickaxe now cut and mine everything, the Mistlands included. Looted gear goes back on after a relog.
+
+### Also new in 0.119.2
 
 - **The [Mast Wisp](docs/ships.md) clears the Mistlands mist again** round the whole ship; it sat too high on the mast for the mist to notice it. Its reach now grows with your Exploration, from 15 m to 30 m.
-
-### Also new in 0.119.1
-
-- **The food places stay** in the [White Hilt HUD](docs/quality-of-life.md#-white-hilt-hud) when you have not eaten: an empty one is a red ring with a red cross, pulsing when you have eaten nothing at all, so the console keeps its shape.
-
-### Also new in 0.119.0
-
-- **A round minimap** in the [White Hilt HUD](docs/quality-of-life.md#-white-hilt-hud): the map in a dark compass ring, with the pins, bosses and waypoint beyond it on the ring in the direction they lie. The HUD also stays at the bottom on a ship, and the weather icon and compass markers sit on dark discs.
 
 See the [changelog](CHANGELOG.md) for everything else.
 

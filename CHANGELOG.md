@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.120.0 - 2026-10-11
 
 ### Added
 - **[The School Bench](docs/school.md)**, the map table for what you know: a long table set with open scrolls, wax tablets, open books, inkhorns and rune staves, with a bench in front. *Write what I know* writes your skill levels, the materials and crafting stations you know and the runestone texts you have read in it; *Read* teaches you what others wrote, and with it their recipes and pieces. Sitting on the bench studies the skill you are furthest behind in, up to half the best level written (`[School]`). A material is only taught if you have been to a biome where it is found, so nobody skips the progression by reading. Black Forest tier.
