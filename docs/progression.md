@@ -40,7 +40,7 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 | `[Foraging.<Name>] GroupsPerZoneMin` / `GroupsPerZoneMax` | 0–20 | Fewest and most groups in each zone (64 × 64 m) where the ground suits the plant; the generator keeps trying spots until they are placed. |
 | `[Foraging.<Name>] ExtraDropChance` | 0–1 | Chance that picking the matching vanilla plant also gives the ingredient. 0 turns it off. |
 | `[Foraging.Crowberries] CreatureDropChance` | 0–1 | Chance that a Wolf drops 1–2 Crowberries. |
-| `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish. Changes also apply to food already in inventories. |
+| `[Food.<Name>] Health`, `Stamina`, `DurationMinutes`, `Regen` | numbers | Values of each Stone Pot dish; the eitr dishes (Lady's Mantle Broth, Ash Morel Broth) also have `Eitr`. Changes also apply to food already in inventories. |
 | `[OldLand] Enabled` | `true` (default)/`false` | When the server starts, land generated before a spider nest, slate outcrop or forageable came gets its share, once per world and kind, by the same rules as new land. |
 | `[OldLand] BuildingDistance` | 0–200 (default 50) | Metres anything placed in old land keeps from anything built. |
 
@@ -52,7 +52,7 @@ Foraging and food settings take effect without a restart.
 
 | Tier | Unlocked by | Extra cost | Default items |
 |------|-------------|------------|---------------|
-| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Root Dowser, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb, Dog House, Dog Bed, Dog Bowl, Dog Water Bowl, Dog's Grave, White Hilt banners, Wood beam 4m, Wood pole 4m, Compost Bin, Net Winch, Shore Net, Waste Well |
+| Start | – | – | Hammer, Axe, Pickaxe, Hoe, Cultivator, Root Dowser, Stone Pot, all Stone Pot food, Lingonberry Mead, Roseroot Mead, Cranberry Mead, Sweet Gale Ale, Crowberry Wine, Mistletoe Mead, Dewberry Wine, Rowan Brew, Fireweed Ale, Rampart Stairs, Feeding Trough, Tether Post, Grooming Comb, Dog House, Dog Bed, Dog Bowl, Dog Water Bowl, Dog's Grave, White Hilt banners, Wood beam 4m, Wood pole 4m, Compost Bin, Net Winch, Shore Net, Waste Well |
 | Black Forest | Bronze | Bronze ×5 | Sword, Palisade Rampart, Rampart Corner, Rampart Bend, Gatehouse, all watchtowers, Cheval de Frise, Cartographer's Desk, Navigator's Table, Pathfinder's Amulet, White Hilt Portal, White Hilt Rune Circle, Surt's Brazier, White Hilt Banner Cape, Paint Bench, Paint Brush, Paint Pot, Repair Anvil · Ratatoskr, Tyr, Freyr, Idunn |
 | Swamp | Iron | Iron ×5 | Ship, all ship upgrades, Chain Bench, Rune Forge, Rune Post, all runes, Home Stone, Valkyrie Stone, Portal Astrolabe, Harbour Anchor, Mooring Post, Munin's Perch, Pathfinder's Ruby Amulet, Stone Dowser, Bow, Crossbow, Knife, Mace, Atgeir, Spear, Battleaxe, Sledge, Buckler, Tower Shield, all armor and uniforms, Arrows, Bolts, Belt Pouch, the wood iron beams and poles · Fenrir, Skadi, Njord |
 | Mountain | Silver | Silver ×5 | Staff of Fire, Staff of Ice, Megingjord · Freya, Odin, Thor |

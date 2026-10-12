@@ -25,7 +25,7 @@ public static class BuildForagingBundle
     };
 
     // Tiling roof textures whose one tile covers 2-3 m of roof.
-    private static readonly string[] LargeTiles = { "roof_slate_albedo", "roof_straw_albedo", "roof_turf_albedo" };
+    private static readonly string[] LargeTiles = { "roof_slate_albedo", "roof_straw_albedo", "roof_turf_albedo", "roof_marble_albedo", "roof_grausten_albedo" };
 
     /// <summary>
     /// Configures the importers and writes the bundle to the project's AssetBundles folder.

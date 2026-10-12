@@ -36,7 +36,7 @@ The normal `[Content] WhiteHiltRootDowser` and `[Recipes] WhiteHiltRootDowser` e
 
 ### Growing Ingredients
 
-New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, the **Mountains** and the **Plains**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. All recipes are available from the start; you only need the ingredients.
+New ingredients grow in the **Meadows**, the **Black Forest**, the **Swamp**, the **Mountains**, the **Plains**, the **Mistlands** and the **Ashlands**. They are cooked in the **Stone Pot**, which is built from Meadows materials and must stand over a fire. Each biome's dishes are better than the last, so you can eat well before you move on. The Mountain dishes need a **Herb Tray** next to the pot (Stone Pot level 2), and the smoked dishes a **Smoke Oven** as well (level 3). Smoked dishes also give a small buff for the first half of the meal, so it has worn off when you can eat the dish again. The Mistlands and Ashlands dishes need the **Soapstone Cauldron** as well (level 4), and the Ashlands plants never grow on lava. All recipes are available from the start; you only need the ingredients.
 
 Some food is cured instead of cooked: hams, sausages and coral cod hang on a **Drying Rack** for game days until they are cured, and pike in a **Rakfisk Tub** ferments into rakfisk in the vanilla fermenter. Cured food lasts an hour or more and gives a buff for the first half. The rack needs no fire, never burns anything and shows its time left with the production timers.
 
@@ -44,11 +44,11 @@ Dropped procedural ingredients, including Rock Lichen, fit the longest side of t
 
 Yarrow has longer flowering stems and a base height of 0.72 m before natural spawn-size variation, keeping its white flower heads higher above Plains grass. Existing plants get the updated look after the area reloads or the game restarts; their saved positions, yield and regrowth are unchanged.
 
-Caraway likewise has a longer main stem and a base height of 0.74 m rather than 0.54 m. Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat have 0.1 m of configurable ground clearance to help keep these low models above the terrain; their models and pick colliders move together. Moss, lichen and creeping plants keep their existing placement.
+Caraway likewise has a longer main stem and a base height of 0.74 m rather than 0.54 m. Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat, and Lady's Mantle, Beard Lichen, Mistletoe, Ash Morel and Fire Moss, have 0.1 m of configurable ground clearance to help keep these low models above the terrain; their models and pick colliders move together. Moss, lichen and creeping plants keep their existing placement.
 
 Bog Iron (about 0.22 m high) and Peat (a stack about 0.3 m high) are large enough to show above the Swamp's grass, and also have a model-aligned pick target. Existing occurrences get the clearance when their area reloads or the game restarts, without changing their saved positions, yield or regrowth. The clearance reduces burial by small terrain differences, but does not compensate for large terrain raising. New Bog Iron grows at most ankle-deep (0.3 m) in water; lumps placed deeper by earlier versions stay where they are. For the same reason Sphagnum Moss is about 0.2 m high, Iceland Moss 0.15 m and Madder 0.45 m, and new Reed stands at most 0.5 m deep in water.
 
-The plants spawn as new land is generated: every zone of their biome with suitable ground gets one or more groups (Chanterelle, Porcini and Reed up to three; Ergot, Henbane, Wild Hops and Wolf Lichen one). Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). Plants placed there by earlier versions that lie buried or float, mostly Bog Iron and Peat at the edges of the Swamp, move onto the ground when their area loads. On top of that:
+The plants spawn as new land is generated: every zone of their biome with suitable ground gets one or more groups (Chanterelle, Porcini and Reed up to three; Ergot, Henbane, Wild Hops, Wolf Lichen, Beard Lichen, Mistletoe and Rowanberries one). Land generated before a plant came gets its share once, when the server starts, at least 50 m from anything built (`[OldLand]`, see [Progression](progression.md)). Plants placed there by earlier versions that lie buried or float, mostly Bog Iron and Peat at the edges of the Swamp, move onto the ground when their area loads. On top of that:
 - a vanilla **Mushroom** has a 30% chance to also give a Chanterelle in the Meadows, or a Porcini in the Black Forest, and a 40% chance to give Cranberries in the Swamp, and a 25% chance to give Sphagnum Moss there
 - a vanilla **Dandelion** has a 30% chance to also give Wild Garlic
 - a vanilla wild **Turnip** in the Swamp has a 30% chance to also give Bog Bean, and a 20% chance each to give Cattail and Meadowsweet
@@ -60,8 +60,12 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 - a vanilla wild **Flax** on the Plains has a 20% chance to also give Yarrow, and a 15% chance to give Woad
 - a vanilla wild **Barley** on the Plains has a 20% chance to also give Caraway, a 15% chance to give Ergot and a 10% chance to give Henbane
 - a vanilla wild **Onion** in the Mountains has a 25% chance to also give Mountain Sorrel, a 20% chance each to give Juniper Berries and Angelica, and a 15% chance to give Iceland Moss
+- a vanilla **Jotun Puffs** mushroom in the Mistlands has a 25% chance to also give Dewberries, and a vanilla **Magecap** there a 20% chance to give Lady's Mantle
+- **Hares** have a 15% chance to drop 1–2 Beard Lichen
+- a vanilla **Fiddlehead** in the Ashlands has a 25% chance to also give Fireweed, and a vanilla **Smoke Puff** there a 25% chance to give Ash Morel
+- **Voltures** have a 15% chance to drop 1–2 Rowanberries
 
-<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/soapstone_cauldron.png" alt="Soapstone Cauldron" title="Soapstone Cauldron" height="140"> <img src="images/drying_rack.png" alt="Drying Rack" title="Drying Rack" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140"> <img src="images/yarrow.png" alt="Yarrow" title="Yarrow" height="140"> <img src="images/caraway.png" alt="Caraway" title="Caraway" height="140"> <img src="images/woad.png" alt="Woad" title="Woad" height="140"> <img src="images/madder.png" alt="Madder" title="Madder" height="140"> <img src="images/henbane.png" alt="Henbane" title="Henbane" height="140"> <img src="images/ergot.png" alt="Ergot" title="Ergot" height="140"> <img src="images/wild_hops.png" alt="Hop Cones" title="Hop Cones" height="140">
+<img src="images/chanterelle.png" alt="Chanterelle" title="Chanterelle" height="140"> <img src="images/porcini.png" alt="Porcini" title="Porcini" height="140"> <img src="images/stone_pot.png" alt="Stone Pot" title="Stone Pot" height="140"> <img src="images/herb_tray.png" alt="Herb Tray" title="Herb Tray" height="140"> <img src="images/smoke_oven.png" alt="Smoke Oven" title="Smoke Oven" height="140"> <img src="images/soapstone_cauldron.png" alt="Soapstone Cauldron" title="Soapstone Cauldron" height="140"> <img src="images/drying_rack.png" alt="Drying Rack" title="Drying Rack" height="140"> <img src="images/sphagnum_moss.png" alt="Sphagnum Moss" title="Sphagnum Moss" height="140"> <img src="images/bog_bean.png" alt="Bog Bean" title="Bog Bean" height="140"> <img src="images/labrador_tea.png" alt="Labrador Tea" title="Labrador Tea" height="140"> <img src="images/cattail.png" alt="Cattail" title="Cattail" height="140"> <img src="images/meadowsweet.png" alt="Meadowsweet" title="Meadowsweet" height="140"> <img src="images/bog_iron.png" alt="Bog Iron" title="Bog Iron" height="140"> <img src="images/peat.png" alt="Peat" title="Peat" height="140"> <img src="images/juniper.png" alt="Juniper Berries" title="Juniper Berries" height="140"> <img src="images/angelica.png" alt="Angelica" title="Angelica" height="140"> <img src="images/iceland_moss.png" alt="Iceland Moss" title="Iceland Moss" height="140"> <img src="images/wolf_lichen.png" alt="Wolf Lichen" title="Wolf Lichen" height="140"> <img src="images/mountain_sorrel.png" alt="Mountain Sorrel" title="Mountain Sorrel" height="140"> <img src="images/rock_lichen.png" alt="Rock Lichen" title="Rock Lichen" height="140"> <img src="images/rosehips.png" alt="Rosehips" title="Rosehips" height="140"> <img src="images/yarrow.png" alt="Yarrow" title="Yarrow" height="140"> <img src="images/caraway.png" alt="Caraway" title="Caraway" height="140"> <img src="images/woad.png" alt="Woad" title="Woad" height="140"> <img src="images/madder.png" alt="Madder" title="Madder" height="140"> <img src="images/henbane.png" alt="Henbane" title="Henbane" height="140"> <img src="images/ergot.png" alt="Ergot" title="Ergot" height="140"> <img src="images/wild_hops.png" alt="Hop Cones" title="Hop Cones" height="140"> <img src="images/dewberries.png" alt="Dewberries" title="Dewberries" height="140"> <img src="images/ladys_mantle.png" alt="Lady's Mantle" title="Lady's Mantle" height="140"> <img src="images/beard_lichen.png" alt="Beard Lichen" title="Beard Lichen" height="140"> <img src="images/mistletoe.png" alt="Mistletoe" title="Mistletoe" height="140"> <img src="images/fireweed.png" alt="Fireweed" title="Fireweed" height="140"> <img src="images/ash_morel.png" alt="Ash Morel" title="Ash Morel" height="140"> <img src="images/fire_moss.png" alt="Fire Moss" title="Fire Moss" height="140"> <img src="images/rowanberries.png" alt="Rowanberries" title="Rowanberries" height="140">
 
 | Item | Description | Found / Crafted | Requirements |
 |------|-------------|-----------------|--------------|
@@ -95,6 +99,14 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 | **Henbane** | Sticky weed with pale, purple-veined flowers, for visions and madness | Plains fields, or extra drop from wild Barley there | – |
 | **Ergot** | Black horns of a barley blight that bring dread | Blighted wild barley on the Plains, or extra drop from wild Barley there | – |
 | **Hop Cones** | Bitter green cones of the wild hop vine | Old stakes on the Plains, or extra drop from Cloudberry bush there | – |
+| **Dewberries** | Blue-black berries with a misty bloom, from a low bramble | Mistlands, or extra drop from Jotun Puffs there | – |
+| **Lady's Mantle** | Round, pleated leaves that hold pearls of dew | Mistlands, or extra drop from Magecap there | – |
+| **Beard Lichen** | Pale strands that hang from dead branches | Dead branches in the Mistlands, or dropped by Hares | – |
+| **Mistletoe** | A ball of forked twigs and white berries | Fallen branches in the Mistlands | – |
+| **Fireweed** | Tall spikes of magenta flowers, the first green on burnt ground | Ashlands, or extra drop from Fiddlehead there | – |
+| **Ash Morel** | Honeycomb-capped mushroom that springs up in the ash | Ashlands, or extra drop from Smoke Puff there | – |
+| **Fire Moss** | Dark moss cushion under a haze of red stalks | Burnt ground in the Ashlands | – |
+| **Rowanberries** | Orange-red berries of a young rowan | Ashlands, or dropped by Voltures | – |
 | **Stone Pot** | Cooking station for foraged food (place over a fire) | Hammer (near Workbench) | Stone ×10, Flint ×4, Wood ×4 |
 | **Herb Tray** | Stone Pot extension with a mortar and herbs, gives level 2 | Hammer (next to the Stone Pot) | Fine Wood ×2, Stone ×5, Bronze ×1, Thistle ×3 |
 | **Smoke Oven** | Stone Pot extension, a clay oven for smoking fish and meat, gives level 3 together with the Herb Tray | Hammer (next to the Stone Pot) | Stone ×10, Wood ×6, Iron ×2, Resin ×5 |
@@ -124,6 +136,14 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 | **Fish Soup** | Plains: 62 health, 52 stamina, 45 min | Stone Pot level 4 | Giant Herring ×1, Tuna ×1, Barley Flour ×1, Caraway ×1 |
 | **Juniper Lox Pot** | Plains: 74 health, 38 stamina, 45 min | Stone Pot level 4 | Lox Meat ×2, Juniper Berries ×2, Onion ×1, Mountain Sorrel ×1 |
 | **Cloudberry Porridge** | Plains: 38 health, 74 stamina, 45 min | Stone Pot level 4 | Barley Flour ×2, Cloudberries ×2, Angelica ×1, Honey ×1 |
+| **Hare and Dewberry Pot** | Mistlands: 82 health, 30 stamina, 30 min | Stone Pot level 4 | Hare Meat ×1, Dewberries ×3, Onion ×1 |
+| **Dewberry Cake** | Mistlands: 30 health, 82 stamina, 30 min | Stone Pot level 4 | Dewberries ×4, Barley Flour ×2, Egg ×1, Honey ×1 |
+| **Lady's Mantle Broth** | Mistlands: 26 health, 13 stamina, 80 eitr, 30 min | Stone Pot level 4 | Lady's Mantle ×3, Jotun Puffs ×2, Sap ×1 |
+| **Lichen Bread** | Mistlands: 32 health, 76 stamina, 30 min. Buff: eitr regenerates 25% faster | Stone Pot level 4 | Beard Lichen ×3, Barley Flour ×2, Honey ×1 |
+| **Asksvin Stew with Fireweed** | Ashlands: 98 health, 34 stamina, 30 min | Stone Pot level 4 | Asksvin Meat ×1, Fireweed ×2, Ash Morel ×1, Onion ×1 |
+| **Rowanberry Jelly** | Ashlands: 34 health, 98 stamina, 30 min | Stone Pot level 4 | Rowanberries ×4, Vineberry ×2, Honey ×2 |
+| **Ash Morel Broth** | Ashlands: 30 health, 15 stamina, 92 eitr, 30 min | Stone Pot level 4 | Ash Morel ×3, Smoke Puff ×2, Fiddlehead ×1 |
+| **Rowan-Smoked Volture** | Ashlands: 96 health, 32 stamina, 30 min. Buff: stamina regenerates 25% faster | Stone Pot level 4 | Volture Meat ×1, Rowanberries ×2, Fire Moss ×1 |
 | **Kraken Feast** | Ocean: 70 health, 40 stamina, 40 min. Buff: health and stamina regenerate 25% faster | Stone Pot level 3 | Kraken Tentacle ×1, Kraken Ink ×1, Turnip ×2, Roseroot ×1 |
 | **Drying Rack** | A rack of poles where meat and fish hang in the wind for days to cure. Needs no fire; eight places | Hammer (Workbench) | Wood ×10, Core Wood ×4, Leather Scraps ×2 |
 | **Seasoned Ham** | Black Forest: a ham ready to cure | Stone Pot | Raw Meat ×2, Wild Garlic ×1, Thistle ×1 |
@@ -145,6 +165,10 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 | **Yarrow Gruit** | Below half health, health regenerates 2.5 times as fast, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Yarrow ×8, Barley ×5, Honey ×3 |
 | **Hop Ale** | Rested lasts 50% longer, also a Rested you already have, 30 min. The base ferments into 6 ales | Cauldron, then Fermenter | Hop Cones ×8, Barley ×6, Honey ×2 |
 | **Henbane Beer** | Berserkergang, 5 min: 30% more blunt, slash and pierce damage, no stagger, half armor; you lose 20% health when it ends (never fatal). The base ferments into 6 beers | Cauldron, then Fermenter | Henbane ×4, Barley ×6, Honey ×4 |
+| **Mistletoe Mead** | Eitr regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Mistletoe ×5, Dewberries ×5 |
+| **Dewberry Wine** | You make 50% less noise, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Dewberries ×10, Lady's Mantle ×3 |
+| **Rowan Brew** | Lightning resistance, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Rowanberries ×10, Fire Moss ×3 |
+| **Fireweed Ale** | Running uses 25% less stamina and you move 10% faster, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Fireweed ×8, Barley ×5, Honey ×3 |
 
 ## Config
 
@@ -161,9 +185,9 @@ Section `[Curing]`:
 | `StockfishDays` | 2 | Game days a coral cod hangs |
 | `RakfiskYield` | 4 | Rakfisk from one tub in the fermenter; takes effect after a restart |
 
-The cured foods have their own `[Food.<Name>]` sections like the Stone Pot dishes.
+The cured foods have their own `[Food.<Name>]` sections like the Stone Pot dishes. The eitr dishes (Lady's Mantle Broth 80, Ash Morel Broth 92) also have an `Eitr` setting there.
 
-Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`):
+Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`; an apostrophe is left out, `[Foraging.LadysMantle]`):
 
 | Setting | Default | What it does |
 |---|---|---|
@@ -171,7 +195,7 @@ Each forageable has a section `[Foraging.<Name>]` (e.g. `[Foraging.WildGarlic]`)
 | `GroupSizeMin` / `GroupSizeMax` | per plant (below) | Plants in one group |
 | `RegrowMinutes` | 0 | Minutes before a picked plant grows back; 0 = as the vanilla plant it copies |
 | `PickAmount` | 0 | Items per pick; 0 = as the vanilla plant |
-| `GroundClearance` | 0.2 in the Mountains; 0.1 for Caraway, Yarrow, Bog Bean, Henbane, Bog Iron and Peat | Lift the plant and its pick colliders above the saved terrain point, in metres; available for these plants |
+| `GroundClearance` | 0.2 in the Mountains; 0.1 for Caraway, Yarrow, Bog Bean, Henbane, Bog Iron, Peat, Lady's Mantle, Beard Lichen, Mistletoe, Ash Morel and Fire Moss | Lift the plant and its pick colliders above the saved terrain point, in metres; available for these plants |
 | `MinimumPickHeight` | 0.4 | Minimum height of the model-aligned pick target, in metres; available for the same plants |
 | `FuelValue` | 2 | Peat only: how much wood one brick is worth in a wood fire |
 
@@ -179,12 +203,13 @@ Mountain plants and the six forageables listed above have a pick target fitted t
 
 | Forageable | Group size |
 |---|---|
-| Chanterelle, Porcini, Cranberries, Crowberries, Labrador Tea, Angelica, Rosehips, Woad, Madder Root, Henbane | 1–3 |
+| Chanterelle, Porcini, Cranberries, Crowberries, Labrador Tea, Angelica, Rosehips, Woad, Madder Root, Henbane, Dewberries, Ash Morel, Fire Moss | 1–3 |
 | Lingonberries | 1–2 |
-| Bog Iron, Peat, Juniper Berries, Wolf Lichen, Rock Lichen, Hop Cones | 1–2 |
+| Bog Iron, Peat, Juniper Berries, Wolf Lichen, Rock Lichen, Hop Cones, Beard Lichen, Rowanberries | 1–2 |
+| Mistletoe | 1 |
 | Roseroot, Sweet Gale, Sphagnum Moss, Meadowsweet, Iceland Moss, Caraway, Ergot | 2–4 |
 | Wild Garlic | 3–6 |
-| Bog Bean, Mountain Sorrel, Yarrow | 2–5 |
+| Bog Bean, Mountain Sorrel, Yarrow, Lady's Mantle, Fireweed | 2–5 |
 | Reed, Cattail | 3–6 |
 
 Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `DurationMinutes` (10, the Bog Bean Bitter 3, the Hop Ale 30, the Henbane Beer 5), plus:
@@ -199,5 +224,8 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Yarrow Gruit | `WoundedBelow`, `WoundedRegenMultiplier` | 0.5, 2.5 |
 | Hop Ale | `RestedBonus` | 0.5 |
 | Henbane Beer | `DamageBonus`, `ArmorPenalty`, `CrashHealthShare` | 0.3, 0.5, 0.2 |
+| Mistletoe Mead | `EitrRegenMultiplier` | 1.5 |
+| Dewberry Wine | `NoiseReduction` | 0.5 |
+| Fireweed Ale | `RunStaminaReduction`, `SpeedBonus` | 0.25, 0.1 |
 
 Mead changes apply on the next drink.

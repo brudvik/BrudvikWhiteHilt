@@ -20,6 +20,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     private readonly ConfigEntry<float> stamina;
     private readonly ConfigEntry<float> durationMinutes;
     private readonly ConfigEntry<float> regen;
+    private readonly ConfigEntry<float> eitr;
     private ItemDrop.ItemData.SharedData shared;
     private SE_Stats buff;
 
@@ -79,6 +80,11 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected virtual float Regen => 2f;
 
     /// <summary>
+    /// Default maximum eitr gained while the food is active. Only foods with eitr get the setting.
+    /// </summary>
+    protected virtual float Eitr => 0f;
+
+    /// <summary>
     /// Stone Pot level needed to cook the food. Each extension next to the pot, such as the Herb Tray, adds a level.
     /// </summary>
     protected virtual int MinStationLevel => 1;
@@ -122,13 +128,18 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     {
         this.instance = instance;
 
-        string section = $"Food.{FullName.Replace(" ", string.Empty)}";
+        // BepInEx refuses ' in section names.
+        string section = $"Food.{FullName.Replace(" ", string.Empty).Replace("'", string.Empty)}";
         WhiteHiltConfig.SetSectionLabel(section, Translations.Token(NameKey));
         health = WhiteHiltConfig.BindAdminOnly(section, "Health", Health, "Maximum health gained.", new AcceptableValueRange<float>(0f, 200f));
         stamina = WhiteHiltConfig.BindAdminOnly(section, "Stamina", Stamina, "Maximum stamina gained.", new AcceptableValueRange<float>(0f, 200f));
         durationMinutes = WhiteHiltConfig.BindAdminOnly(section, "DurationMinutes", DurationSeconds / 60f, "How long the food lasts.",
             new AcceptableValueRange<float>(1f, 120f));
         regen = WhiteHiltConfig.BindAdminOnly(section, "Regen", Regen, "Health regenerated per tick.", new AcceptableValueRange<float>(0f, 20f));
+        if (Eitr > 0f)
+        {
+            eitr = WhiteHiltConfig.BindAdminOnly(section, "Eitr", Eitr, "Maximum eitr gained.", new AcceptableValueRange<float>(0f, 200f));
+        }
 
         Translations.AddEnglish(NameKey, FullName);
         Translations.AddEnglish($"{NameKey}_description", Description);
@@ -202,6 +213,7 @@ public abstract class WhiteHiltFoodBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         shared.m_foodStamina = stamina.Value;
         shared.m_foodBurnTime = durationMinutes.Value * 60f;
         shared.m_foodRegen = regen.Value;
+        shared.m_foodEitr = eitr != null ? eitr.Value : 0f;
         if (buff != null)
         {
             buff.m_ttl = shared.m_foodBurnTime / 2f;

@@ -209,7 +209,7 @@ public static class RoofCatalog
     }
 
     // Points the piece's wear states at the one built visual, as the vanilla wear meshes are gone, and gives it the
-    // covering's health; slate and turf do not burn.
+    // covering's health; slate and turf do not burn, and a grausten roof resists the Ashlands' ash rain.
     private static void SetUpWearNTear(GameObject prefab, GameObject visual, RoofFamily family)
     {
         WearNTear wearNTear = prefab.GetComponent<WearNTear>() ?? throw new InvalidOperationException($"{prefab.name} has no WearNTear.");
@@ -226,6 +226,11 @@ public static class RoofCatalog
         {
             wearNTear.m_burnable = false;
             wearNTear.m_damages.m_fire = HitData.DamageModifier.VeryResistant;
+        }
+
+        if (family.AshResistant)
+        {
+            wearNTear.m_ashDamageResist = true;
         }
     }
 

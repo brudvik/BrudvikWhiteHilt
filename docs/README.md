@@ -73,7 +73,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 
 | Page | What you find there |
 |------|---------------------|
-| [Ideas for new content](ideas.md) | What could come next: Mistlands and Ashlands food and roofs, more beasts, horns and companions, sharing at the School Bench and settings presets |
+| [Ideas for new content](ideas.md) | What could come next: more beasts, horns and companions, sharing at the School Bench and settings presets |
 
 ## 🧱 For modders
 

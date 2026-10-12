@@ -2,9 +2,9 @@
 
 [← Back to the README](../README.MD)
 
-Six roof coverings from the Viking age, each in every shape and pitch of the vanilla wooden roof: turf over birch bark, reed and straw thatch, tarred shingles (plain and dragon-scale), and slate. They come with smoke holes that open and close, dragon gables for the ridge ends, and new materials from the Meadows to the Plains. Roseroot can be planted on a turf roof, as it was on the sod roofs of old.
+Eight roof coverings from the Viking age, each in every shape and pitch of the vanilla wooden roof: turf over birch bark, reed and straw thatch, tarred shingles (plain and dragon-scale), slate, black marble and grausten. They come with smoke holes that open and close, dragon gables for the ridge ends, and new materials from the Meadows to the Ashlands. Roseroot can be planted on a turf roof, as it was on the sod roofs of old.
 
-<img src="images/roof_turf.png" alt="Turf roof" title="Turf roof" height="140"> <img src="images/roof_reed.png" alt="Reed thatch" title="Reed thatch" height="140"> <img src="images/roof_shingle.png" alt="Shingle roof" title="Shingle roof" height="140"> <img src="images/roof_scaleshingle.png" alt="Scale shingle roof" title="Scale shingle roof" height="140"> <img src="images/roof_slate.png" alt="Slate roof" title="Slate roof" height="140"> <img src="images/roof_straw.png" alt="Straw thatch" title="Straw thatch" height="140">
+<img src="images/roof_turf.png" alt="Turf roof" title="Turf roof" height="140"> <img src="images/roof_reed.png" alt="Reed thatch" title="Reed thatch" height="140"> <img src="images/roof_shingle.png" alt="Shingle roof" title="Shingle roof" height="140"> <img src="images/roof_scaleshingle.png" alt="Scale shingle roof" title="Scale shingle roof" height="140"> <img src="images/roof_slate.png" alt="Slate roof" title="Slate roof" height="140"> <img src="images/roof_straw.png" alt="Straw thatch" title="Straw thatch" height="140"> <img src="images/roof_marble.png" alt="Black marble roof" title="Black marble roof" height="140"> <img src="images/roof_grausten.png" alt="Grausten roof" title="Grausten roof" height="140">
 
 ## 🏠 THE ROOFS
 
@@ -16,12 +16,15 @@ Every covering comes at **26°, 45° and 67°**, in five shapes: the roof itself
 | **Reed thatch** | Thick thatch of grey swamp reed | Swamp | Wood ×1, Reed ×3 | 450 | Yes |
 | **Shingle roof** | Hand-split pine shingles brushed with pine tar, with ridge boards, as on the stave churches | Black Forest | Fine Wood ×2, Pine Tar ×1 | 500 | Yes |
 | **Scale shingle roof** | Tarred shingles with rounded ends that lie like dragon scales | Black Forest | Fine Wood ×2, Pine Tar ×1, Resin ×1 | 500 | Yes |
-| **Slate roof** | Heavy slate slabs laid in courses, as in the fjords of the west; the strongest roof | Mountains | Wood ×2, Slate ×3 | 800 | No |
+| **Slate roof** | Heavy slate slabs laid in courses, as in the fjords of the west | Mountains | Wood ×2, Slate ×3 | 800 | No |
 | **Straw thatch** | Thick, golden thatch of barley and flax straw | Plains | Wood ×1, Straw ×3 | 450 | Yes |
+| **Black marble roof** | Thin slabs of black marble laid in courses, as the dvergr build in the mist | Mistlands | Yggdrasil Wood ×1, Black Marble ×2 | 900 | No |
+| **Grausten roof** | Tiles of grey ash stone laid in courses; the strongest roof, and the ash rain wears it least | Ashlands | Blackwood ×1, Grausten ×3 | 1000 | No |
 
 - **Eaves**: the lowest row of a roof reaches past the eave, and a turf roof has its turf log there. Where the roof goes on downhill, the overhang and the log are hidden, so they only show at the bottom.
-- **Quiet roofs**: under turf, slate, reed and straw the wind and rain are muffled even more than under other roofs (see [Clock, sound & floating items](quality-of-life.md)).
-- **Fire**: turf and slate roofs do not catch fire.
+- **Quiet roofs**: under turf, slate, reed, straw, black marble and grausten the wind and rain are muffled even more than under other roofs (see [Clock, sound & floating items](quality-of-life.md)).
+- **Fire**: turf, slate, black marble and grausten roofs do not catch fire.
+- **Ash rain**: in the Ashlands every roof open to the sky wears away in the ash rain; a grausten roof only down to a tenth of its health.
 
 ### Smoke hole (ljore)
 
@@ -62,7 +65,7 @@ Reed and slate outcrops appear as new land is generated, and once, when the serv
 
 Admin only, synced from the server.
 
-Each covering has a section `[Roofs.<Covering>]` (`Turf`, `Reed`, `Shingle`, `ScaleShingle`, `Slate`, `Straw`):
+Each covering has a section `[Roofs.<Covering>]` (`Turf`, `Reed`, `Shingle`, `ScaleShingle`, `Slate`, `Straw`, `Marble`, `Grausten`):
 
 | Setting | Default | What it does |
 |---|---|---|
@@ -77,7 +80,7 @@ Section `[Roofs]`:
 | `SmokeHoleExtra` | Wood:2 | What a smoke hole costs on top of its covering's recipe |
 | `HatchFollowsRain` | true | Hatches close when rain starts and open when it stops, unless a fire burns below |
 | `HatchFireRange` | 6 | How far below a smoke hole, in metres, a burning fire keeps the hatch open in the rain |
-| `QuietRoofBonus` | 0.25 | How much more the weather is muffled under turf, slate, reed and straw (0 to 1) |
+| `QuietRoofBonus` | 0.25 | How much more the weather is muffled under turf, slate, straw, reed, black marble and grausten (0 to 1) |
 | `EaveCheckSeconds` | 3 | Seconds between checks whether the roof goes on below an eave |
 
 Section `[Roofs.Gable]`: `Enabled` (true) and `Recipe` (FineWood:4, WhiteHilt_LindormScale:2, WhiteHilt_PineTar:1).

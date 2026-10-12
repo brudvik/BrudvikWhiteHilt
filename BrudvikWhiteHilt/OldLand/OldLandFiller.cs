@@ -113,11 +113,13 @@ public class OldLandFiller : MonoBehaviour
         }
     }
 
-    // Rules that need the zone's heightmap or its neighbours' vegetation cannot be judged from the world generator.
+    // Rules that need the zone's heightmap or its neighbours' vegetation cannot be judged from the world generator;
+    // the Ashlands' lava mask is the exception, as it can be read from the biome (see Fits).
     private static bool Supported(ZoneSystem.ZoneVegetation vegetation)
     {
         return !vegetation.m_snapToWater && !vegetation.m_snapToStaticSolid && !vegetation.m_surroundCheckVegetation
-            && vegetation.m_minOceanDepth.Equals(vegetation.m_maxOceanDepth) && vegetation.m_minVegetation.Equals(vegetation.m_maxVegetation)
+            && vegetation.m_minOceanDepth.Equals(vegetation.m_maxOceanDepth)
+            && (vegetation.m_minVegetation.Equals(vegetation.m_maxVegetation) || vegetation.m_biome == Heightmap.Biome.AshLands)
             && vegetation.m_terrainDeltaRadius <= 0f && vegetation.m_minDistanceFromCenter <= 0f && vegetation.m_maxDistanceFromCenter <= 0f;
     }
 
@@ -315,6 +317,16 @@ public class OldLandFiller : MonoBehaviour
         if (altitude < vegetation.m_minAltitude || altitude > vegetation.m_maxAltitude)
         {
             return false;
+        }
+
+        if (!vegetation.m_minVegetation.Equals(vegetation.m_maxVegetation))
+        {
+            // The Ashlands' lava is the alpha of the biome's mask, as ZoneSystem.IsLavaPreHeightmap reads it.
+            world.GetBiomeHeight(Heightmap.Biome.AshLands, point.x, point.z, out Color mask);
+            if (mask.a < vegetation.m_minVegetation || mask.a > vegetation.m_maxVegetation)
+            {
+                return false;
+            }
         }
 
         normal = new Vector3(TerrainHeight(point.x - 1f, point.z) - TerrainHeight(point.x + 1f, point.z), 2f,

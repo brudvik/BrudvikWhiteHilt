@@ -113,7 +113,7 @@ public static class RoofSettings
         HatchFireRange = WhiteHiltConfig.BindAdminOnly(Section, "HatchFireRange", 6f,
             "How far below a smoke hole, in metres, a burning fire keeps its hatch open in the rain.", new AcceptableValueRange<float>(0f, 20f));
         QuietRoofBonus = WhiteHiltConfig.BindAdminOnly(Section, "QuietRoofBonus", 0.25f,
-            "How much more the weather is muffled under turf, slate, straw and reed (0 to 1, on top of the usual muffling under a roof).",
+            "How much more the weather is muffled under turf, slate, straw, reed, black marble and grausten (0 to 1, on top of the usual muffling under a roof).",
             new AcceptableValueRange<float>(0f, 1f));
         EaveCheckSeconds = WhiteHiltConfig.BindAdminOnly(Section, "EaveCheckSeconds", 3f,
             "Seconds between checks whether the roof goes on below an eave; there the overhang and the turf log are hidden.",

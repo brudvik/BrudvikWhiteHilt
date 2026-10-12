@@ -41,15 +41,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.124.1
+## ✨ New in 0.125.0
+
+- **[Foraging in the Mistlands and the Ashlands](docs/foraging.md)**: eight new plants (dewberries, lady's mantle, beard lichen, mistletoe, fireweed, ash morel, fire moss and rowanberries), eight Stone Pot dishes at the strength of those biomes, two of them with eitr, and four brews. Ashlands plants keep off the lava.
+- **[Two new roofs](docs/roofs.md)**: black marble from the Mistlands and grausten from the Ashlands, in every shape and pitch. The ash rain wears a grausten roof only down to a tenth of its health.
+
+### Also new in 0.124.1
 
 - **Norwegian texts for every setting**: the party list, the Necromancer's Staff, the crafting panel's search and sorting, the hit and death log, the chest search range, the build smoke and the Desert Dragon's scales had no Norwegian name or description in the settings window.
-- **What could come next**: a new page, [Ideas for new content](docs/ideas.md), lists the gaps and ideas, from Mistlands and Ashlands food and roofs to more beasts and settings presets.
-
-### Also new in 0.124.0
-
-- **Lighter and faster**: the models are a file next to the DLL (55 → 11 MB) instead of being held in memory twice, the mod's own plants, props and pieces are hidden in the distance like Valheim's own, big bases load with less work, and the party list and the server's map lists send far less over the network. If you install by hand, copy all three files in `plugins/`.
-- **[Measure it yourself](docs/progression.md#graphics-and-diagnostics)**: `whitehilt_perf` shows which parts of the mod take time and which messages use the network, and a dedicated server can write the same report to its log.
+- **What could come next**: a new page, [Ideas for new content](docs/ideas.md), lists the gaps and ideas, from more beasts and horns to settings presets.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -79,7 +79,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <td align="center" width="33%" valign="top"><a href="docs/stonework.md"><img src="docs/images/memorial_stone.png" height="110" alt=""></a><br><b><a href="docs/stonework.md">Stonework</a></b><br><sub>Memorial stones, slate floors, dry stone walls, and arches, columns, stairs and cornices in stone, black marble and grausten.</sub></td>
 </tr>
 <tr>
-<td align="center" valign="top"><a href="docs/roofs.md"><img src="docs/images/roof_turf.png" height="110" alt=""></a><br><b><a href="docs/roofs.md">Roofs</a></b><br><sub>Turf, reed, straw, tarred shingles and slate in every shape, with smoke holes and dragon gables.</sub></td>
+<td align="center" valign="top"><a href="docs/roofs.md"><img src="docs/images/roof_turf.png" height="110" alt=""></a><br><b><a href="docs/roofs.md">Roofs</a></b><br><sub>Turf, reed, straw, tarred shingles, slate, black marble and grausten in every shape, with smoke holes and dragon gables.</sub></td>
 <td align="center" valign="top"><a href="docs/painting.md"><img src="docs/images/paint_bench.png" height="110" alt=""></a><br><b><a href="docs/painting.md">Painting</a></b><br><sub>Paint or stain any piece in a colour mixed from dyes, and dye banners, sails and capes.</sub></td>
 <td align="center" valign="top"><a href="docs/building-pieces.md"><img src="docs/images/readme/tile_banners.png" height="110" alt=""></a><br><b><a href="docs/building-pieces.md">Beams, poles & banners</a></b><br><sub>Longer and angled beams and poles, darkwood doors, walls and gables, iron grates in more sizes and White Hilt banners.</sub></td>
 </tr>
@@ -114,7 +114,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 
 <table>
 <tr>
-<td align="center" width="33%" valign="top"><a href="docs/foraging.md"><img src="docs/images/stone_pot.png" height="110" alt=""></a><br><b><a href="docs/foraging.md">Foraging & food</a></b><br><sub>Wild herbs, berries and lichens, the Stone Pot and its extensions, meads, ales and cured food.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/foraging.md"><img src="docs/images/stone_pot.png" height="110" alt=""></a><br><b><a href="docs/foraging.md">Foraging & food</a></b><br><sub>Wild herbs, berries and lichens from the Meadows to the Ashlands, the Stone Pot and its extensions, meads, ales and cured food.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/planting.md"><img src="docs/images/readme/tile_planting.png" height="110" alt=""></a><br><b><a href="docs/planting.md">Planting</a></b><br><sub>Plant berry bushes, mushrooms, flowers, debris and saplings with the cultivator.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/husbandry.md"><img src="docs/images/feeding_trough.png" height="110" alt=""></a><br><b><a href="docs/husbandry.md">Animal husbandry</a></b><br><sub>The Feeding Trough, favourite foods, the Tether Post, the Grooming Comb and a husbandry skill.</sub></td>
 </tr>
@@ -267,7 +267,7 @@ The Thunderstore package gets a plain markdown version of this README (`BrudvikW
 - Dog snoring: ["Dog Sleeping_1.wav"](https://freesound.org/people/Ddustin99/sounds/462926/) by [Ddustin99](https://freesound.org/people/Ddustin99/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 - Map compass: ["Seadogs Compass"](https://polyhaven.com/a/seadogs_compass) by Benny Weimer, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Dial and needle rendered from above, printed letters painted out and the needle's north end painted red.
 - Treasure chest model: ["Treasure Chest"](https://polyhaven.com/a/treasure_chest) by Rico Cilliers, [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Reduced to 5000 faces, converted to OBJ, rescaled and made double-sided for Valheim.
-- Roof textures: ["Leafy Grass"](https://polyhaven.com/a/leafy_grass), ["Roof Slates 02"](https://polyhaven.com/a/roof_slates_02), ["Thatch Roof Angled"](https://polyhaven.com/a/thatch_roof_angled), ["Reed Roof 04"](https://polyhaven.com/a/reed_roof_04), ["Dark Wooden Planks"](https://polyhaven.com/a/dark_wooden_planks) and ["Brown Mud Leaves 01"](https://polyhaven.com/a/brown_mud_leaves_01) from [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Regraded, the ridge band cut off the reed roof, and the shingles, scale shingles and turf edge drawn from the planks, mud and grass.
+- Roof textures: ["Leafy Grass"](https://polyhaven.com/a/leafy_grass), ["Roof Slates 02"](https://polyhaven.com/a/roof_slates_02), ["Thatch Roof Angled"](https://polyhaven.com/a/thatch_roof_angled), ["Reed Roof 04"](https://polyhaven.com/a/reed_roof_04), ["Dark Wooden Planks"](https://polyhaven.com/a/dark_wooden_planks), ["Brown Mud Leaves 01"](https://polyhaven.com/a/brown_mud_leaves_01), ["Grey Roof Tiles 02"](https://polyhaven.com/a/grey_roof_tiles_02) and ["Volcanic Rock Tiles"](https://polyhaven.com/a/volcanic_rock_tiles) from [Poly Haven](https://polyhaven.com), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Regraded (the grey roof tiles darkened to black marble, the volcanic rock tiles to grausten), the ridge band cut off the reed roof, and the shingles, scale shingles and turf edge drawn from the planks, mud and grass.
 - Ship's bell: ["Striking a bell 15cm large"](https://commons.wikimedia.org/wiki/File:Striking_a_bell_15cm_large.ogg) by stephan (pdsounds.org), released into the public domain. Two strikes cut out, faded and normalized.
 - Desert Dragon sounds: ["CC0 Deep Monster Roar"](https://opengameart.org/content/cc0-deep-monster-roar) by [trazzz123](https://opengameart.org/users/trazzz123), ["Dragon Flap"](https://opengameart.org/content/dragon-flap-0) by [VishwaJai](https://opengameart.org/users/vishwajai), and ["80 CC0 creature SFX"](https://opengameart.org/content/80-cc0-creature-sfx) and ["80 CC0 creture SFX #2"](https://opengameart.org/content/80-cc0-creture-sfx-2) by [rubberduck](https://opengameart.org/users/rubberduck), all released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Layered, slowed down, deepened and given a short reverb.
 - Dragon Horn call: ["Viking Horn in D.wav"](https://freesound.org/people/roemergruft/sounds/704440/) by [roemergruft](https://freesound.org/people/roemergruft/), released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). Layered with itself detuned, an octave below and a fifth above, and given a long hall reverb (`AssetSource/Tools/make_dragon_horn_sound.py`).

@@ -4,18 +4,11 @@ Things that would fit the mod and are not built yet. They are ideas, not promise
 
 Everything below follows the [biome rule](../.github/copilot-instructions.md#game-balance-guidelines): content belongs to the biome where it is found, and a recipe never uses materials from a later biome.
 
-## 🍄 Mistlands and Ashlands food, plants and roofs
-
-The [foraging page](foraging.md) and the [roof page](roofs.md) have nothing past the Plains, while White Hilt gear, stonework, decor and the black beasts already reach the Ashlands.
-
-- **Foraging and dishes.** Wild plants in the Mistlands and the Ashlands, and Stone Pot dishes, meads and ales made from them, at the strength of the biome's own food.
-- **Roof coverings.** A Mistlands covering (black marble tiles) and an Ashlands one (grausten or charred shingle), with the five shapes and three pitches every other roof has.
-
 ## 🐉 More beasts
 
 The mod's own creatures are the [Lindorm, the giant spiders, the Desert Dragons](monsters.md) and the [Kraken](kraken.md). The [black beasts](bestiary.md) cover every biome, but the Mistlands and the Ashlands have no creature of their own.
 
-- A creature for each of the two biomes, with its own model, sounds and drops that feed the recipes above.
+- A creature for each of the two biomes, with its own model, sounds and drops that feed new recipes.
 - A sea creature besides the Kraken, so the ocean has more than one encounter.
 
 ## 📯 Horns and companions

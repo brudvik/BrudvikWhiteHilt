@@ -22,14 +22,21 @@ public sealed class RoofFamily
             "Tarred shingles with rounded ends that lie like the scales of a dragon, as on the finest stave churches.",
             "FineWood:2, WhiteHilt_PineTar:1, Resin:1", 500f, fireproof: false, quiet: false),
         new(RoofCovering.Slate, "Slate roof",
-            "Heavy slabs of slate laid in courses on roof boards, as in the fjords of the west. It does not burn, keeps the weather out well and is the strongest roof of all.",
+            "Heavy slabs of slate laid in courses on roof boards, as in the fjords of the west. It does not burn and keeps the weather out well.",
             "Wood:2, WhiteHilt_Slate:3", 800f, fireproof: true, quiet: true),
         new(RoofCovering.Straw, "Straw thatch",
             "Thick, golden thatch of barley and flax straw. It burns, but keeps the weather out well.",
-            "Wood:1, WhiteHilt_Straw:3", 450f, fireproof: false, quiet: true)
+            "Wood:1, WhiteHilt_Straw:3", 450f, fireproof: false, quiet: true),
+        new(RoofCovering.Marble, "Black marble roof",
+            "Thin slabs of black marble laid in courses on roof boards, as the dvergr build in the mist. It does not burn and keeps the weather out well.",
+            "YggdrasilWood:1, BlackMarble:2", 900f, fireproof: true, quiet: true),
+        new(RoofCovering.Grausten, "Grausten roof",
+            "Tiles of grey ash stone from the burning lands, laid in courses. It does not burn, the ash rain wears it far less than other roofs, and it is the strongest roof of all.",
+            "Blackwood:1, Grausten:3", 1000f, fireproof: true, quiet: true, ashResistant: true)
     };
 
-    private RoofFamily(RoofCovering covering, string englishName, string englishDescription, string defaultRecipe, float defaultHealth, bool fireproof, bool quiet)
+    private RoofFamily(RoofCovering covering, string englishName, string englishDescription, string defaultRecipe, float defaultHealth, bool fireproof, bool quiet,
+        bool ashResistant = false)
     {
         Covering = covering;
         EnglishName = englishName;
@@ -38,6 +45,7 @@ public sealed class RoofFamily
         DefaultHealth = defaultHealth;
         Fireproof = fireproof;
         Quiet = quiet;
+        AshResistant = ashResistant;
     }
 
     /// <summary>The covering.</summary>
@@ -60,6 +68,9 @@ public sealed class RoofFamily
 
     /// <summary>True if the weather sounds more muffled under it.</summary>
     public bool Quiet { get; }
+
+    /// <summary>True if the Ashlands' ash rain wears it only down to a tenth of its health.</summary>
+    public bool AshResistant { get; }
 
     /// <summary>Translation key of the name.</summary>
     public string NameKey => $"whitehilt_roof_{RoofCoverings.Id(Covering)}";

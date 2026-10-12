@@ -24,6 +24,9 @@ public abstract class ForageableBase
     // Raised when the placement rules change so much that land filled before gets another go (OldLandFiller).
     private const int OldLandRound = 2;
 
+    // Highest vegetation mask a plant may stand on in the Ashlands; the game counts more than 0.6 as lava.
+    private const float MaxLavaMask = 0.5f;
+
     private readonly ConfigEntry<bool> spawn;
     private readonly ConfigEntry<int> groupsPerZoneMin;
     private readonly ConfigEntry<int> groupsPerZoneMax;
@@ -108,6 +111,11 @@ public abstract class ForageableBase
     protected virtual float DefaultGroundClearance => (Vegetation.Biome & Heightmap.Biome.Mountain) != 0 ? 0.2f : 0f;
 
     /// <summary>
+    /// Whether the plant keeps off lava. True for plants that grow in the Ashlands.
+    /// </summary>
+    protected virtual bool AvoidLava => (Vegetation.Biome & Heightmap.Biome.AshLands) != 0;
+
+    /// <summary>
     /// Prefab name of the pickable plant.
     /// </summary>
     public string PickableName => $"Pickable_{BaseName}";
@@ -119,7 +127,8 @@ public abstract class ForageableBase
     /// </summary>
     protected ForageableBase()
     {
-        string section = $"Foraging.{FullName.Replace(" ", string.Empty)}";
+        // BepInEx refuses ' in section names.
+        string section = $"Foraging.{FullName.Replace(" ", string.Empty).Replace("'", string.Empty)}";
         WhiteHiltConfig.SetSectionLabel(section, Translations.Token(NameKey));
         AcceptableValueRange<float> chance = new(0f, 1f);
 
@@ -423,6 +432,11 @@ public abstract class ForageableBase
         vegetation.m_forcePlacement = true;
         vegetation.m_groupSizeMin = groupSizeMin.Value;
         vegetation.m_groupSizeMax = Mathf.Max(groupSizeMin.Value, groupSizeMax.Value);
+        if (AvoidLava)
+        {
+            vegetation.m_minVegetation = 0f;
+            vegetation.m_maxVegetation = MaxLavaMask;
+        }
     }
 
     // Edits the prefab, so plants already loaded keep their values until they load again.

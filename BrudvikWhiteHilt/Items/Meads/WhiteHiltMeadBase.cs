@@ -91,9 +91,9 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     public string GatedPrefabName => MeadBaseName;
 
     /// <summary>
-    /// Config section of the mead, e.g. <c>Meads.CrowberryWine</c>.
+    /// Config section of the mead, e.g. <c>Meads.CrowberryWine</c>. A name's apostrophe is left out, as BepInEx refuses it.
     /// </summary>
-    protected string ConfigSection => $"Meads.{FullName.Replace(" ", string.Empty)}";
+    protected string ConfigSection => $"Meads.{FullName.Replace(" ", string.Empty).Replace("'", string.Empty)}";
 
     private string MeadBaseName => $"{BaseName}Base";
 

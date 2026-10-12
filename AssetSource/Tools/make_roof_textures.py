@@ -94,6 +94,18 @@ def greener(pixels):
     return np.clip(grey + (graded - grey) * 1.1, 0.0, 1.0)
 
 
+def black_marble(pixels):
+    """Black marble slabs: the grey tiles darkened to blue-black with a cool sheen."""
+    grey = pixels.mean(axis=2, keepdims=True)
+    return np.clip(grey * 0.3 * np.array([0.9, 0.95, 1.15]), 0.0, 1.0)
+
+
+def grausten(pixels):
+    """Grey ash stone: the photo a little darker and greyer."""
+    darker = pixels * 0.85
+    return np.clip(darker * 0.7 + darker.mean(axis=2, keepdims=True) * 0.3, 0.0, 1.0)
+
+
 def shingles(name, wood, wood_normal, rounded, tint):
     """Tarred pine shingles, 4 courses per tile (one tile = 1 m). Grain runs down the roof (texture v)."""
     courses = 4
@@ -179,6 +191,8 @@ def turf_edge(grass, soil, wood):
 def main():
     photo("turf", "leafy_grass", greener)
     photo("slate", "roof_slates_02")
+    photo("marble", "grey_roof_tiles_02", black_marble)
+    photo("grausten", "volcanic_rock_tiles", grausten)
     photo("reed", "thatch_roof_angled")
     # The golden thatch photo has a ridge band along its top; it is cut off so the straw tiles down the roof.
     save("straw", "albedo", seamless_rows(poly_haven("reed_roof_04", "Diffuse"), 80, 96))
@@ -192,7 +206,8 @@ def main():
     turf_edge(greener(poly_haven("leafy_grass", "Diffuse")), poly_haven("brown_mud_leaves_01", "Diffuse"), wood)
 
     sizes = {}
-    for asset in ("leafy_grass", "roof_slates_02", "thatch_roof_angled", "reed_roof_04", "dark_wooden_planks", "brown_mud_leaves_01"):
+    for asset in ("leafy_grass", "roof_slates_02", "thatch_roof_angled", "reed_roof_04", "dark_wooden_planks", "brown_mud_leaves_01",
+                  "grey_roof_tiles_02", "volcanic_rock_tiles"):
         info = json.loads(fetch(f"{API}/info/{asset}"))
         sizes[asset] = [round(d / 1000.0, 2) for d in info.get("dimensions", [0, 0])]
     print("tile size in metres:", json.dumps(sizes))

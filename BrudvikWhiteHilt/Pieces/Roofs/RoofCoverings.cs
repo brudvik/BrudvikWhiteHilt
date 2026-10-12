@@ -21,7 +21,13 @@ public enum RoofCovering
     Straw,
 
     /// <summary>Thatch of swamp reed (rørtak).</summary>
-    Reed
+    Reed,
+
+    /// <summary>Black marble slabs, as the dvergr build.</summary>
+    Marble,
+
+    /// <summary>Tiles of grey ash stone.</summary>
+    Grausten
 }
 
 /// <summary>
@@ -32,7 +38,8 @@ public static class RoofCoverings
     /// <summary>All coverings, in the order they appear in the hammer.</summary>
     public static readonly RoofCovering[] All =
     {
-        RoofCovering.Turf, RoofCovering.Reed, RoofCovering.Shingle, RoofCovering.ScaleShingle, RoofCovering.Slate, RoofCovering.Straw
+        RoofCovering.Turf, RoofCovering.Reed, RoofCovering.Shingle, RoofCovering.ScaleShingle, RoofCovering.Slate, RoofCovering.Straw,
+        RoofCovering.Marble, RoofCovering.Grausten
     };
 
     /// <summary>
@@ -62,6 +69,14 @@ public static class RoofCoverings
             {
                 Thickness = 0.32f, TileWidth = 2.3f, TileHeight = 2.3f, Overhang = 0.3f, Crest = RoofCrest.Roll, EdgeTile = 2.3f
             },
+            RoofCovering.Marble => new RoofStyle
+            {
+                Thickness = 0.08f, TileWidth = 1.5f, TileHeight = 1.5f, Overhang = 0.18f, Crest = RoofCrest.Cap, EdgeTile = 1.5f
+            },
+            RoofCovering.Grausten => new RoofStyle
+            {
+                Thickness = 0.12f, TileWidth = 1.8f, TileHeight = 1.8f, Overhang = 0.18f, Crest = RoofCrest.Cap, EdgeTile = 1.8f
+            },
             _ => new RoofStyle
             {
                 Thickness = 0.28f, TileWidth = 0.8f, TileHeight = 0.8f, Overhang = 0.3f, Crest = RoofCrest.Roll, EdgeTile = 0.8f
@@ -83,6 +98,8 @@ public static class RoofCoverings
             RoofCovering.ScaleShingle => "roof_scale",
             RoofCovering.Slate => "roof_slate",
             RoofCovering.Straw => "roof_straw",
+            RoofCovering.Marble => "roof_marble",
+            RoofCovering.Grausten => "roof_grausten",
             _ => "roof_reed"
         };
     }

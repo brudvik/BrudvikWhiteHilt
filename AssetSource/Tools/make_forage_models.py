@@ -983,6 +983,265 @@ def build_rushlight(geo, rng, np):
     geo.blob(socket, 0.007, "iron", subdivisions=1, squash=(1, 1, 0.4))
 
 
+# ---------------------------------------------------------------------------------------------------------------- mistlands and ashlands
+
+def along(points, t):
+    """The point a fraction t of the way along a polyline."""
+    position = t * (len(points) - 1)
+    i = min(int(position), len(points) - 2)
+    return points[i] + (points[i + 1] - points[i]) * (position - i)
+
+
+def around(heading, angle):
+    """A unit vector at right angles to heading, turned angle radians about it."""
+    side = heading.orthogonal().normalized()
+    return side * math.cos(angle) + heading.cross(side) * math.sin(angle)
+
+
+def trifoliate(geo, rng, start, direction, length, leaflet, swatch, stalk_swatch):
+    """A leaf of three leaflets on a short stalk, as on a bramble."""
+    V = geo.Vector
+    stalk = curve(start, direction, length, 0.3, 2)
+    geo.tube(stalk, [0.0022] * 3, stalk_swatch, segments=3, cap=False)
+    heading = (stalk[-1] - stalk[-2]).normalized()
+    side = heading.cross(V((0, 0, 1)))
+    side = side.normalized() if side.length > 1e-3 else heading.orthogonal().normalized()
+    geo.leaf(stalk[-1], heading, (0, 0, 1), leaflet * 1.15, leaflet * 0.7, swatch, profile="ovate", segments=3, fold=0.25, droop=0.2)
+    for sign in (-1, 1):
+        geo.leaf(stalk[-1], side * sign + heading * 0.4, (0, 0, 1), leaflet, leaflet * 0.65, swatch, profile="ovate", segments=3,
+                 fold=0.25, droop=0.2)
+
+
+@model("dewberry", "Dewberry bramble with fruit")
+def build_dewberry(geo, rng, np):
+    V = geo.Vector
+    clusters = []
+    for direction in spread_directions(9, rng, 0.3, jitter=0.35):
+        length = rng.uniform(0.4, 0.55)
+        cane = curve((0, 0, 0), direction, length, 0.75, 7)
+        geo.tube(cane, [0.006 * (1 - 0.6 * i / 7) for i in range(8)], "cane", segments=4)
+        for i in range(1, 8):
+            heading = (cane[i] - cane[i - 1]).normalized()
+            for k in range(3):
+                out = (around(heading, rng.uniform(0, 2 * math.pi)) + V((0, 0, 0.6))).normalized()
+                trifoliate(geo, rng, cane[i], out, 0.04, 0.07, "leaf", "cane")
+            if i >= 3 and rng.random() < 0.85:
+                clusters.append(cane[i] + V((0, 0, -0.012)))
+    geo.target = "fruit"
+    for point in clusters:
+        geo.tube([point + V((0, 0, 0.012)), point + V((0, 0, -0.02))], [0.0015, 0.0012], "cane", segments=3, cap=False)
+        for n in range(int(rng.integers(6, 11))):
+            offset = V((rng.normal(0, 0.013), rng.normal(0, 0.013), rng.normal(-0.03, 0.012)))
+            geo.blob(point + offset, rng.uniform(0.0095, 0.0115), "berry", subdivisions=1)
+    geo.target = "main"
+
+
+@model("ladysmantle", "Lady's mantle")
+def build_ladysmantle(geo, rng, np):
+    V = geo.Vector
+    # A rosette of round, pleated leaves on long stalks; each holds a pearl of dew in its middle.
+    for direction in spread_directions(8, rng, 1.0, jitter=0.3):
+        stalk = curve((0, 0, 0.01), direction, rng.uniform(0.12, 0.17), 0.45, 4)
+        geo.tube(stalk, [0.0035, 0.003, 0.0028, 0.0025, 0.0022], "stalk", segments=4, cap=False)
+        heading = (stalk[-1] - stalk[-2]).normalized()
+        flat = V((heading.x, heading.y, 0.12)).normalized()
+        size = rng.uniform(0.12, 0.15)
+        geo.leaf(stalk[-1], flat, (0, 0, 1), size, size * 1.15, "leaf", profile="round", segments=6, fold=0.55, droop=0.1)
+        middle = stalk[-1] + flat * size * 0.5 + V((0, 0, 0.004))
+        geo.blob(middle, rng.uniform(0.006, 0.009), "dew", subdivisions=1, squash=(1, 1, 0.75))
+    # Loose sprays of tiny yellow-green flowers above the leaves.
+    for k in range(4):
+        lean = (rng.normal(0, 0.25), rng.normal(0, 0.25), 1.0)
+        stem = curve((rng.normal(0, 0.02), rng.normal(0, 0.02), 0.01), lean, rng.uniform(0.24, 0.3), 0.15, 5)
+        geo.tube(stem, [0.0025] * 6, "stalk", segments=3)
+        top = stem[-1]
+        for j in range(5):
+            out = V((math.cos(j * 1.256), math.sin(j * 1.256), 0.9)).normalized()
+            branch = curve(top - V((0, 0, rng.uniform(0.0, 0.03))), out, rng.uniform(0.04, 0.07), 0.2, 2)
+            geo.tube(branch, [0.0013] * 3, "stalk", segments=3, cap=False)
+            for n in range(6):
+                point = branch[-1] + V((rng.normal(0, 0.011), rng.normal(0, 0.011), rng.normal(0.004, 0.008)))
+                geo.blob(point, 0.0045, "flower", subdivisions=1)
+
+
+def lichen_strand(geo, rng, start, outward, length, swatch):
+    """A pale strand of beard lichen that droops from start and forks twice, as Usnea does."""
+    V = geo.Vector
+    strand = curve(start, outward * 0.7 + V((0, 0, -0.5)), length, 1.2, 5)
+    radius = rng.uniform(0.0042, 0.0055)
+    geo.tube(strand, [radius * (1 - 0.6 * i / 5) for i in range(6)], swatch, segments=3)
+    for start_index in (2, 3):
+        fork = curve(strand[start_index], (strand[start_index + 1] - strand[start_index]) + outward * 0.5, length * 0.4, 1.0, 3)
+        geo.tube(fork, [radius * 0.6, radius * 0.5, radius * 0.4, radius * 0.25], swatch, segments=3)
+
+
+@model("beardlichen", "Beard lichen hanging from a dead branch")
+def build_beardlichen(geo, rng, np):
+    V = geo.Vector
+    # A leaning dead branch with a few bare twigs; the lichen hangs from them.
+    trunk = curve((0, 0, 0), (0.15, 0.03, 1.0), 0.34, 0.1, 6)
+    geo.tube(trunk, [0.012 * (1 - 0.65 * i / 6) for i in range(7)], "deadwood", segments=6)
+    anchors = [trunk[i] for i in (3, 4, 5, 6)]
+    for i in (2, 3, 4, 5):
+        out = around((trunk[i] - trunk[i - 1]).normalized(), i * 1.9 + rng.uniform(-0.3, 0.3)) + V((0, 0, 0.45))
+        twig = curve(trunk[i], out, rng.uniform(0.1, 0.16), 0.3, 3)
+        geo.tube(twig, [0.007, 0.0055, 0.004, 0.0028], "deadwood", segments=4)
+        anchors += [twig[2], twig[3]]
+    geo.target = "fruit"
+    for k in range(34):
+        anchor = anchors[k % len(anchors)]
+        outward = V((anchor.x + rng.normal(0, 0.05), anchor.y + rng.normal(0, 0.1), 0.0))
+        outward = outward.normalized() if outward.length > 1e-3 else V((0, 1, 0))
+        length = min(rng.uniform(0.1, 0.18), max(anchor.z - 0.01, 0.04) / 0.85)
+        lichen_strand(geo, rng, anchor, outward, length, "lichen")
+    geo.target = "main"
+
+
+@model("beardlichenitem", "A tangle of beard lichen")
+def build_beardlichenitem(geo, rng, np):
+    V = geo.Vector
+    for k in range(40):
+        start = V((rng.normal(0, 0.014), rng.normal(0, 0.014), rng.uniform(0.02, 0.05)))
+        outward = V((rng.normal(0, 1), rng.normal(0, 1), rng.uniform(0.2, 1.0))).normalized()
+        strand = curve(start, outward, rng.uniform(0.05, 0.085), rng.uniform(1.2, 2.2), 5)
+        geo.tube(strand, [0.003 * (1 - 0.5 * i / 5) for i in range(6)], "lichen", segments=3)
+
+
+def forked_twigs(geo, rng, point, heading, length, depth):
+    """Yellow-green twigs that fork again and again, with narrow leaves and white berries at the tips, as on mistletoe."""
+    V = geo.Vector
+    heading = V(heading).normalized()
+    end = point + heading * length
+    radius = 0.0021 + 0.0013 * depth
+    geo.tube([point, end], [radius * 1.15, radius], "twig", segments=4)
+    if depth == 0:
+        for sign in (-1, 1):
+            out = around(heading, 0.0)
+            geo.leaf(end, heading * 0.8 + out * sign * 0.6, heading.cross(out), 0.075, 0.024, "leaf", profile="lance", segments=3,
+                     fold=0.2, droop=0.1)
+        if rng.random() < 0.6:
+            geo.blob(end + around(heading, 1.5) * 0.008 - heading * 0.004, 0.0065, "berry", subdivisions=1)
+        return
+    turn = rng.uniform(0, 2 * math.pi)
+    for sign in (-1, 1):
+        out = around(heading, turn)
+        child = heading * math.cos(0.55) + out * sign * math.sin(0.55)
+        forked_twigs(geo, rng, end, child, length * 0.78, depth - 1)
+
+
+@model("mistletoe", "Mistletoe on a fallen branch")
+def build_mistletoe(geo, rng, np):
+    V = geo.Vector
+    snag(geo, rng, 0.75, 0.035)
+    geo.target = "fruit"
+    centre = V((0.0, 0.0, 0.2))
+    geo.tube([V((0, 0, 0.03)), centre], [0.009, 0.006], "twig", segments=5)
+    count = 11
+    for k in range(count):
+        # Directions fanned over the upper part of a sphere, so the ball sits on the branch.
+        phi = math.acos(1 - 1.85 * (k + 0.5) / count)
+        theta = k * 2.4
+        heading = V((math.sin(phi) * math.cos(theta), math.sin(phi) * math.sin(theta), math.cos(phi)))
+        forked_twigs(geo, rng, centre, heading, 0.065, 2)
+    geo.target = "main"
+
+
+@model("mistletoeitem", "A sprig of mistletoe")
+def build_mistletoeitem(geo, rng, np):
+    forked_twigs(geo, rng, geo.Vector((0, 0, 0)), (0.05, 0.02, 1.0), 0.07, 2)
+    forked_twigs(geo, rng, geo.Vector((0, 0, 0)), (-0.4, 0.1, 0.9), 0.05, 1)
+
+
+@model("fireweed", "Fireweed in flower")
+def build_fireweed(geo, rng, np):
+    V = geo.Vector
+    for direction in spread_directions(6, rng, 1.1, jitter=0.4):
+        geo.leaf((0, 0, 0.02), direction, (0, 0, 1), rng.uniform(0.15, 0.22), 0.035, "leaf", profile="linear", segments=4, fold=0.25, droop=0.35)
+    for k in range(3):
+        lean = (rng.normal(0, 0.05), rng.normal(0, 0.05), 1.0)
+        height = rng.uniform(1.0, 1.25)
+        stem = curve((rng.normal(0, 0.03), rng.normal(0, 0.03), 0), lean, height, 0.07, 10)
+        geo.tube(stem, [0.011 - 0.006 * i / 10 for i in range(11)], "stem", segments=5)
+        # Narrow willow-like leaves all the way up, smaller towards the top.
+        for i in range(1, 10):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            out = around(heading, i * 2.4 + k)
+            geo.leaf(stem[i], out + heading * 0.5, heading, 0.2 - 0.012 * i, 0.03, "leaf", profile="linear", segments=3, fold=0.3, droop=0.25)
+        # The tall raceme: open magenta flowers below, dark buds at the tip.
+        top_heading = (stem[-1] - stem[-2]).normalized()
+        for n in range(22):
+            t = 0.56 + 0.44 * n / 21
+            point = along(stem, t)
+            out = around(top_heading, n * 2.4)
+            geo.tube([point, point + out * 0.022], [0.0022, 0.0018], "stem", segments=3, cap=False)
+            if t < 0.9:
+                geo.flower(point + out * 0.025, out * 0.8 + top_heading * 0.4, 0.032, 4, "flower", "bud", cup=0.3)
+            else:
+                geo.blob(point + out * 0.016, 0.009, "bud", subdivisions=1, squash=(1, 1, 1.5))
+        geo.blob(stem[-1] + top_heading * 0.012, 0.008, "bud", subdivisions=1, squash=(1, 1, 1.6))
+
+
+@model("ashmorel", "Ash morels")
+def build_ashmorel(geo, rng, np):
+    V = geo.Vector
+    geo.blob((0, 0, 0), 0.07, "ash", subdivisions=3, squash=(1.0, 0.85, 0.1), rng=rng, bumps=0.12, flat_bottom=-0.006)
+    for k in range(3):
+        angle = k * 2.1 + rng.uniform(-0.4, 0.4)
+        distance = 0.0 if k == 0 else rng.uniform(0.035, 0.055)
+        base = V((math.cos(angle) * distance, math.sin(angle) * distance, 0.0))
+        height = rng.uniform(0.06, 0.085) if k else 0.09
+        geo.tube([base, base + V((0.004, 0, height * 0.5)), base + V((0.0, 0.003, height))], [0.0125, 0.011, 0.0105], "stalk", segments=7, cap=False)
+        # A tall cone of a cap, pitted like a honeycomb.
+        size = rng.uniform(0.019, 0.024) if k else 0.026
+        geo.blob(base + V((0.0, 0.003, height + size * 1.35)), size, "cap", subdivisions=3, squash=(1.0, 1.0, 1.85), rng=rng, bumps=0.07)
+
+
+@model("firemoss", "Fire moss with red stalks")
+def build_firemoss(geo, rng, np):
+    V = geo.Vector
+    geo.blob((0, 0, -0.01), 0.14, "moss", subdivisions=3, squash=(1.0, 0.85, 0.35), rng=rng, bumps=0.06, flat_bottom=-0.05)
+    for k in range(48):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.125 * math.sqrt(rng.random())
+        base = V((math.cos(angle) * distance, math.sin(angle) * distance * 0.85, 0.03))
+        height = rng.uniform(0.055, 0.095)
+        lean = V((rng.normal(0, 0.18), rng.normal(0, 0.18), 1.0))
+        seta = curve(base, lean, height, 0.15, 3, gravity=(rng.normal(0, 1), rng.normal(0, 1), 0.0))
+        geo.tube(seta, [0.0012, 0.001, 0.0009, 0.0008], "seta", segments=3, cap=False)
+        tip = (seta[-1] - seta[-2]).normalized()
+        geo.blob(seta[-1] + tip * 0.003, 0.0033, "capsule", subdivisions=1, squash=(1.0, 1.0, 1.5))
+
+
+@model("rowan", "Young rowan with berries")
+def build_rowan(geo, rng, np):
+    V = geo.Vector
+    clusters = []
+    trunk = curve((0, 0, 0), (0.03, 0.02, 1.0), 1.5, 0.08, 8)
+    geo.tube(trunk, [0.03 - 0.019 * i / 8 for i in range(9)], "bark", segments=6)
+
+    def leaf_at(point, direction):
+        pinnate(geo, rng, point, direction, 0.34, 5, 0.062, "leaf", "bark", droop=0.35)
+
+    for n, i in enumerate((2, 3, 4, 5, 6, 7)):
+        heading = (trunk[i] - trunk[i - 1]).normalized()
+        out = around(heading, n * 2.4 + 0.5) + V((0, 0, 0.9))
+        branch = curve(trunk[i], out, rng.uniform(0.4, 0.55), 0.35, 4)
+        geo.tube(branch, [0.012 * (1 - 0.7 * j / 4) for j in range(5)], "bark", segments=5)
+        for j in (1, 2, 3, 4):
+            branch_heading = (branch[j] - branch[j - 1]).normalized()
+            leaf_at(branch[j], around(branch_heading, j * 2.0 + n) + branch_heading * 0.8 + V((0, 0, 0.3)))
+        clusters.append((branch[-1] + V((0, 0, 0.04)), 0.095))
+        clusters.append((branch[3] + V((0, 0, 0.08)), 0.08))
+    for j in range(5):
+        leaf_at(trunk[-1], V((math.cos(j * 1.256), math.sin(j * 1.256), 0.9)))
+    clusters.append((trunk[-1] + V((0, 0, 0.06)), 0.08))
+    geo.target = "fruit"
+    for top, radius in clusters:
+        geo.tube([top - V((0, 0, 0.03)), top], [0.0028, 0.0025], "bark", segments=3, cap=False)
+        corymb(geo, rng, top, radius, 24, "berry", 0.0125)
+    geo.target = "main"
+
+
 SWATCHES = {
     "bogbean": {
         "leaf": {"bottom": (0.12, 0.26, 0.08), "top": (0.3, 0.48, 0.16)},
@@ -1127,6 +1386,54 @@ SWATCHES["rushlight"] = {
     "rush": {"bottom": (0.7, 0.62, 0.4), "top": (0.84, 0.77, 0.52), "noise": 0.12, "streaks": 0.5},
     "char": {"bottom": (0.05, 0.04, 0.03), "top": (0.12, 0.08, 0.05), "noise": 0.2},
 }
+SWATCHES.update({
+    "dewberry": {
+        "cane": {"bottom": (0.3, 0.22, 0.2), "top": (0.35, 0.4, 0.2)},
+        "leaf": {"bottom": (0.12, 0.26, 0.12), "top": (0.24, 0.4, 0.18)},
+        "berry": {"bottom": (0.1, 0.1, 0.22), "top": (0.38, 0.42, 0.6), "noise": 0.12, "cells": (4, 2),
+                  "spots": (0.62, 0.65, 0.8), "spot_share": 0.18, "spot_cells": (4, 2)},
+    },
+    "ladysmantle": {
+        "leaf": {"bottom": (0.25, 0.4, 0.18), "top": (0.42, 0.55, 0.28)},
+        "stalk": {"bottom": (0.35, 0.42, 0.2), "top": (0.42, 0.5, 0.26)},
+        "dew": {"bottom": (0.82, 0.88, 0.94), "top": (0.95, 0.97, 1.0), "noise": 0.03},
+        "flower": {"bottom": (0.65, 0.7, 0.25), "top": (0.8, 0.82, 0.4), "noise": 0.1},
+    },
+    "beardlichen": {
+        "deadwood": {"bottom": (0.34, 0.3, 0.26), "top": (0.52, 0.48, 0.42), "streaks": 0.6, "noise": 0.2},
+        "lichen": {"bottom": (0.55, 0.62, 0.5), "top": (0.78, 0.84, 0.7), "noise": 0.12, "cells": (4, 2)},
+    },
+    "mistletoe": {
+        "deadwood": {"bottom": (0.34, 0.3, 0.26), "top": (0.52, 0.48, 0.42), "streaks": 0.6, "noise": 0.2},
+        "twig": {"bottom": (0.45, 0.52, 0.2), "top": (0.6, 0.66, 0.3)},
+        "leaf": {"bottom": (0.5, 0.58, 0.22), "top": (0.66, 0.72, 0.32)},
+        "berry": {"bottom": (0.88, 0.88, 0.8), "top": (0.97, 0.97, 0.92), "noise": 0.04},
+    },
+    "fireweed": {
+        "stem": {"bottom": (0.35, 0.25, 0.25), "top": (0.45, 0.3, 0.3)},
+        "leaf": {"bottom": (0.16, 0.3, 0.12), "top": (0.28, 0.42, 0.18)},
+        "flower": {"bottom": (0.72, 0.18, 0.5), "top": (0.92, 0.4, 0.72), "noise": 0.08},
+        "bud": {"bottom": (0.42, 0.08, 0.28), "top": (0.62, 0.16, 0.42)},
+    },
+    "ashmorel": {
+        "stalk": {"bottom": (0.8, 0.75, 0.62), "top": (0.9, 0.86, 0.74), "streaks": 0.4},
+        "cap": {"bottom": (0.3, 0.22, 0.14), "top": (0.45, 0.34, 0.22), "noise": 0.2, "cells": (6, 3),
+                "spots": (0.08, 0.06, 0.05), "spot_share": 0.4, "spot_cells": (5, 3)},
+        "ash": {"bottom": (0.3, 0.3, 0.3), "top": (0.42, 0.41, 0.4), "noise": 0.3, "cells": (12, 5, 2)},
+    },
+    "firemoss": {
+        "moss": {"bottom": (0.12, 0.2, 0.08), "top": (0.22, 0.32, 0.12), "noise": 0.35, "cells": (4, 2)},
+        "seta": {"bottom": (0.45, 0.1, 0.15), "top": (0.72, 0.24, 0.28)},
+        "capsule": {"bottom": (0.3, 0.12, 0.1), "top": (0.45, 0.2, 0.14)},
+    },
+    "rowan": {
+        "bark": {"bottom": (0.4, 0.4, 0.38), "top": (0.55, 0.54, 0.5), "streaks": 0.4},
+        "leaf": {"bottom": (0.16, 0.32, 0.12), "top": (0.3, 0.46, 0.18)},
+        "berry": {"bottom": (0.82, 0.22, 0.05), "top": (0.96, 0.45, 0.1), "noise": 0.1},
+    },
+})
+SWATCHES["beardlichenitem"] = SWATCHES["beardlichen"]
+SWATCHES["mistletoeitem"] = SWATCHES["mistletoe"]
 
 
 # ---------------------------------------------------------------------------------------------------------------- export
