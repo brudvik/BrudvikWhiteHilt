@@ -2,6 +2,20 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.125.0 - 2026-10-12
+
+### Added
+- **Mistlands and Ashlands foraging.** Eight new plants: Dewberries, Lady's Mantle, Beard Lichen and Mistletoe in the Mistlands, and Fireweed, Ash Morel, Fire Moss and Rowanberries in the Ashlands. Each has its own generated model, grows in new land and (once) in land generated before, and has an extra drop from a vanilla plant or a beast.
+- **Eight Stone Pot dishes** from them, cooked at level 4 (the Soapstone Cauldron): Hare and Dewberry Pot, Dewberry Cake, Lady's Mantle Broth, Lichen Bread, Asksvin Stew with Fireweed, Rowanberry Jelly, Ash Morel Broth and Rowan-Smoked Volture. Lichen Bread and the smoked Volture have a buff.
+- **Four brews:** Mistletoe Mead (eitr regenerates faster), Dewberry Wine (less noise), Rowan Brew (lightning resistance) and Fireweed Ale (cheaper running, faster movement).
+- **Two roof coverings** in every shape and pitch: a black marble roof (Mistlands) and a grausten roof (Ashlands), which the ash rain wears only down to a tenth of its health.
+- **Eitr on food.** Stone Pot dishes can give eitr; the two eitr dishes have an `Eitr` setting.
+- Ashlands plants keep off lava, and old land gets them too.
+
+### Changed
+- The slate roof's description no longer calls it the strongest roof (the grausten roof is stronger).
+- The `QuietRoofBonus` setting text lists black marble and grausten.
+
 ## v0.124.1 - 2026-10-12
 
 ### Changed
