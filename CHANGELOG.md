@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.127.0 - 2026-10-12
 
 ### Added
 - **Five wild monsters**, each with its own animated model and sounds: the **Mist Stag** (a pale stag that charges and stomps), the **Nidhogg Spawn** (a dark dragon's brood with a poisonous bite, which roars once when it sees you; at night in the Mistlands), the **Yggdrasil Warden** (a tree that stands dormant like a dead tree until you come within 8 m, very weak to fire), the **Garm Hound** (fire-biting packs of 2-3 in the Ashlands at night) and the **Greenland Shark** (a slow shark in the open sea, once Bonemass is slain, that also bites boats). Every number is a setting in `[Monsters.<Name>]`.
