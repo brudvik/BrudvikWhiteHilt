@@ -69,6 +69,12 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Saga](saga.md) | Each character's saga and renown |
 | [Settings & progression](progression.md) | The in-game settings window, progression modes, content switches, recipes and tiers, and the graphics and performance settings |
 
+## 🗺️ Ahead
+
+| Page | What you find there |
+|------|---------------------|
+| [Ideas for new content](ideas.md) | What could come next: Mistlands and Ashlands food and roofs, more beasts, horns and companions, sharing at the School Bench and settings presets |
+
 ## 🧱 For modders
 
 | Page | What you find there |

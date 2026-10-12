@@ -141,7 +141,8 @@ The version is in three places, which must agree:
 - **PATCH**: Bug fixes, balance adjustments
 
 Changes go under `## Unreleased` in `CHANGELOG.md` as they are made; a release renames that heading to
-`## vX.Y.Z - YYYY-MM-DD` and bumps the three version numbers.
+`## vX.Y.Z - YYYY-MM-DD` and bumps the three version numbers. `tools/publishing/` does it: `bump-version.ps1 -Version
+X.Y.Z`, then `build-release.ps1`, then `release.ps1 -Title "..."` (commit, tag, GitHub release and package notes).
 
 ## README.MD Maintenance
 

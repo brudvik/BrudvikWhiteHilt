@@ -2,6 +2,14 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **For modders:** the four largest classes (`DogRegistry`, `DogCompanion`, `HudConsole` and `QuartermasterPanel`) are split into partial files by concern, and the release scripts are now in `tools/publishing/` (bump the version, build the package, publish it on GitHub). A new page, [Ideas for new content](docs/ideas.md), lists what could come next.
+
+### Fixed
+- **Norwegian texts for the settings that had none.** The party list, the Necromancer's Staff, the crafting panel's search and sorting, the hit and death log, the chest search range, the build smoke and the Desert Dragon's scales showed their English names and descriptions in the settings window, with no Norwegian section for the party list and the staff.
+
 ## v0.124.0 - 2026-10-11
 
 ### Added

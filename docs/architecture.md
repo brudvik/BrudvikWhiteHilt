@@ -21,8 +21,11 @@ Back to the [documentation](README.md) · [Main page](../README.MD)
 | `Translations/Norwegian.json` | Every text in Norwegian; English is registered in code next to where it is used |
 | `../AssetSource/` | Python and Unity scripts that build the asset bundle and the defence layout |
 | `../BrudvikWhiteHilt.Tests/` | Tests for everything that runs without the game |
+| `../tools/publishing/` | Scripts that bump the version, build the Release package and publish it on GitHub |
 
 Namespaces follow the folders, so `Pieces/Ships/Skidbladnir/SkidbladnirShip.cs` is `BrudvikWhiteHilt.Pieces.Ships.Skidbladnir`.
+
+A class that grows past a thousand lines is split into partial class files by concern, named `Class.Part.cs`: `DogRegistry` into `.Setup`, `.Items`, `.Coat` and `.Gameplay`, `HudConsole` into `.Layout`, `.Widgets` and `.Parts`. Constants and fields stay in the main file.
 
 ## 🚀 Start-up
 
