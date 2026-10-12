@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace BrudvikWhiteHilt.Quartermaster;
@@ -18,33 +17,56 @@ namespace BrudvikWhiteHilt.Quartermaster;
 /// Everything taken goes into the bag, or into a cart or ship hold within range when one is chosen. Before anything
 /// is moved, the chests it touches are handed over with their newest contents (<see cref="ContainerHandoff"/>).
 /// </summary>
-public class QuartermasterPanel : MonoBehaviour
+public partial class QuartermasterPanel : MonoBehaviour
 {
     private const float Width = 860f;
+
     private const float Height = 740f;
+
     private const float Padding = 24f;
+
     private const float RowHeight = 30f;
+
     private const float LineHeight = 28f;
+
     private const float Gap = 6f;
+
     private const float Slot = 60f;
+
     private const float FilterWidth = 128f;
+
     private const float FilterHeight = 26f;
+
     private const float StoreHeight = 268f;
+
     private const float BagHeight = 70f;
+
     private const float BuildListWidth = 300f;
+
     private const float MaxDistance = 6f;
+
     private const float HandoffSeconds = 3f;
+
     private const float ConfirmSeconds = 3f;
+
     private const int FontSize = 14;
+
     private const int MaxCopies = 50;
+
     private const int Step = 10;
+
     private const string Infinity = "\u221E";
 
     private static readonly Color slotColor = new(0f, 0f, 0f, 0.45f);
+
     private static readonly Color slotHoverColor = new(1f, 0.8f, 0.4f, 0.3f);
+
     private static readonly Color unlimitedColor = new(1f, 0.8f, 0.4f);
+
     private static readonly Color selectedColor = new(1f, 0.8f, 0.4f);
+
     private static readonly Color lackingColor = new(1f, 0.45f, 0.35f);
+
     private static readonly Color subtleColor = new(0.75f, 0.75f, 0.75f);
 
     private static QuartermasterPanel instance;
@@ -65,48 +87,85 @@ public class QuartermasterPanel : MonoBehaviour
 
     // Item slots are kept when hidden and filled anew, rather than built again at every refresh.
     private readonly List<ItemSlot> storeSlots = new();
+
     private readonly List<ItemSlot> bagSlots = new();
+
     private GameObject bagEmpty;
+
     private readonly List<GameObject> filterButtons = new();
+
     private readonly List<GameObject> buildRows = new();
+
     private readonly List<GameObject> costRows = new();
+
     private readonly List<GameObject> watchRows = new();
 
     private QuartermasterSite stand;
+
     private List<Container> containers = new();
+
     private List<QuartermasterStore.Entry> entries = new();
+
     private List<KeyValuePair<string, int>> watches = new();
+
     private List<StockWatch.Low> low = new();
+
     private Container target;
+
     private string group;
+
     private Page page;
+
     private Job job;
 
     private Build build = Build.Hammer;
+
     private List<Blueprint> blueprints = new();
+
     private List<PackList> packLists = new();
+
     private string blueprintFile;
+
     private int listIndex = -1;
+
     private int copies = 1;
+
     private float deleteArmedUntil;
 
     private Text subtitle;
+
     private Text status;
+
     private Text targetLabel;
+
     private readonly Text[] tabs = new Text[3];
+
     private GameObject[] pages;
+
     private InputField search;
+
     private RectTransform filters;
+
     private RectTransform storeContent;
+
     private RectTransform bagContent;
+
     private RectTransform buildContent;
+
     private RectTransform costContent;
+
     private RectTransform watchContent;
+
     private InputField listName;
+
     private Text copiesLabel;
+
     private Text deleteLabel;
+
     private Text watchHint;
+
     private GameObject unloadButton;
+
     private Text unloadLabel;
 
     // Something to do once the chests it touches are handed over.
@@ -331,699 +390,6 @@ public class QuartermasterPanel : MonoBehaviour
         Player.m_localPlayer?.Message(MessageHud.MessageType.TopLeft, text);
     }
 
-    private static string Describe(QuartermasterStore.Entry entry)
-    {
-        string name = Localization.instance.Localize(entry.Name);
-        return entry.Quality > 1 ? $"{name} ({entry.Quality})" : name;
-    }
-
-    private static int StepSize()
-    {
-        return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 1 : Step;
-    }
-
-    private static ItemDrop ItemOf(string prefab)
-    {
-        return ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(prefab)?.GetComponent<ItemDrop>() : null;
-    }
-
-    // ---- Store page ------------------------------------------------------------------------------------------------
-
-    private void RefreshFilters()
-    {
-        filterButtons.ForEach(Destroy);
-        filterButtons.Clear();
-        AddFilter(Localization.instance.Localize("$whitehilt_qm_all"), null);
-        foreach (string name in entries.Select(entry => entry.Group).Distinct())
-        {
-            AddFilter(name, name);
-        }
-    }
-
-    private void AddFilter(string label, string value)
-    {
-        GameObject button = GUIManager.Instance.CreateButton(label, filters, Vector2.zero, Vector2.zero, Vector2.zero, FilterWidth, FilterHeight);
-        Text text = button.GetComponentInChildren<Text>();
-        text.resizeTextForBestFit = true;
-        text.resizeTextMinSize = 9;
-        text.resizeTextMaxSize = 12;
-        text.color = group == value ? selectedColor : Color.white;
-        button.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            group = value;
-            RefreshFilters();
-            RefreshStore();
-        });
-        filterButtons.Add(button);
-    }
-
-    // Fills the store page from the listed entries, filtered by the chosen group and the search text. Slots are reused
-    // (ShowSlot) rather than rebuilt, as this runs on every keystroke in the search field. An entry is coloured red
-    // when a stock watch says it runs low and gold when a chest keeps it without limit.
-    private void RefreshStore()
-    {
-        int shown = 0;
-        string filter = (search.text ?? string.Empty).Trim();
-        HashSet<string> watched = new(watches.Select(watch => watch.Key));
-        HashSet<string> lowItems = new(low.Select(line => line.Prefab));
-        foreach (QuartermasterStore.Entry entry in entries)
-        {
-            if ((group != null && entry.Group != group)
-                || (filter.Length > 0 && Localization.instance.Localize(entry.Name).IndexOf(filter, StringComparison.CurrentCultureIgnoreCase) < 0))
-            {
-                continue;
-            }
-
-            string prefab = entry.Sample.m_dropPrefab.name;
-            Color color = lowItems.Contains(prefab) ? lackingColor : entry.Unlimited ? unlimitedColor : Color.white;
-            string description = Describe(entry) + "  -  " + entry.Group
-                + (watched.Contains(prefab) ? "  -  " + Localization.instance.Localize("$whitehilt_qm_watched") : string.Empty);
-            QuartermasterStore.Entry chosen = entry;
-            ShowSlot(storeSlots, storeContent, shown++, entry.Sample, entry.Unlimited ? Infinity : entry.Count.ToString(), color, description,
-                shift => OnStoreClick(chosen, shift), () => ToggleWatch(prefab));
-        }
-
-        HideSlots(storeSlots, shown);
-
-        status.text = job != null ? status.text : Localization.instance.Localize(entries.Count == 0 ? "$whitehilt_qm_empty" : "$whitehilt_qm_take_hint");
-    }
-
-    // Shows what the player, or the chosen cart or ship hold, carries that belongs in a chest around, so it can be put
-    // back with a click.
-    private void RefreshBag()
-    {
-        List<QuartermasterStore.Entry> bag = QuartermasterStore.Returnable(Player.m_localPlayer, containers);
-        for (int i = 0; i < bag.Count; i++)
-        {
-            QuartermasterStore.Entry chosen = bag[i];
-            ShowSlot(bagSlots, bagContent, i, chosen.Sample, chosen.Count.ToString(), Color.white, Describe(chosen), _ => OnPutBack(chosen), null);
-        }
-
-        HideSlots(bagSlots, bag.Count);
-        if (bagEmpty == null)
-        {
-            bagEmpty = GUIManager.Instance.CreateText(Localization.instance.Localize("$whitehilt_qm_bag_empty"), bagContent, Vector2.zero,
-                Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, FontSize, subtleColor, true, Color.black, 400f, Slot, false);
-            bagEmpty.GetComponent<Text>().alignment = TextAnchor.MiddleLeft;
-        }
-
-        bagEmpty.SetActive(bag.Count == 0);
-        bagEmpty.transform.SetAsLastSibling();
-    }
-
-    // Takes a stack of an entry, or with Shift adds it to the selected pack list. The chests holding it and the target
-    // are first handed over to this player (Begin), and the entry is read again once they are: another player may have
-    // taken some while the request was on its way.
-    private void OnStoreClick(QuartermasterStore.Entry entry, bool shift)
-    {
-        if (shift)
-        {
-            AddToList(entry);
-            return;
-        }
-
-        if (QuartermasterStore.Takeable(entry) <= 0)
-        {
-            Message(Localization.instance.Localize("$whitehilt_qm_kept"));
-            return;
-        }
-
-        string name = entry.Name;
-        int quality = entry.Quality;
-        Container into = target;
-        List<Container> needed = QuartermasterStore.Holding(Sources(), new[] { name });
-        needed.Add(into);
-        Begin(needed, ready =>
-        {
-            List<Container> sources = ready.Where(container => container != into).ToList();
-            QuartermasterStore.Entry fresh = QuartermasterStore.List(sources).FirstOrDefault(candidate => candidate.Name == name && candidate.Quality == quality);
-            int taken = fresh != null && QuartermasterStore.Takeable(fresh) > 0
-                ? QuartermasterStore.Take(Player.m_localPlayer, sources, fresh, fresh.Sample.m_shared.m_maxStackSize, into)
-                : 0;
-            Message(taken > 0
-                ? string.Format(Localization.instance.Localize("$whitehilt_qm_taken"), Localization.instance.Localize(name), taken)
-                : Localization.instance.Localize(fresh == null || QuartermasterStore.Takeable(fresh) <= 0 ? "$whitehilt_qm_kept" : "$whitehilt_qm_bag_full"));
-        });
-    }
-
-    private void OnPutBack(QuartermasterStore.Entry entry)
-    {
-        string name = entry.Name;
-        int quality = entry.Quality;
-        Vector3 table = stand.transform.position;
-        Begin(QuartermasterStore.Receiving(containers, entry.Sample), ready =>
-        {
-            int returned = QuartermasterStore.PutBack(Player.m_localPlayer, ready, table, name, quality);
-            Message(returned > 0
-                ? string.Format(Localization.instance.Localize("$whitehilt_qm_returned"), Localization.instance.Localize(name), returned)
-                : Localization.instance.Localize("$whitehilt_qm_no_room"));
-        });
-    }
-
-    // Puts everything in the chosen cart or ship hold back into the chests, the same way the Collection Post sorts.
-    private void OnUnload()
-    {
-        Container cargo = target;
-        if (cargo == null)
-        {
-            return;
-        }
-
-        Vector3 site = stand.transform.position;
-        List<Container> chests = Sources();
-        List<Container> needed = cargo.GetInventory().GetAllItems().SelectMany(item => QuartermasterStore.Receiving(chests, item)).Distinct().ToList();
-        needed.Add(cargo);
-        Begin(needed, ready =>
-        {
-            int moved = QuartermasterStore.Unload(cargo, ready.Where(container => container != cargo).ToList(), site);
-            Message(moved > 0
-                ? string.Format(Localization.instance.Localize("$whitehilt_qm_unloaded"), moved)
-                : Localization.instance.Localize("$whitehilt_qm_no_room"));
-        });
-    }
-
-    // Shift + click: a stack more of the item in the pack list chosen on the pack page.
-    private void AddToList(QuartermasterStore.Entry entry)
-    {
-        if (build != Build.List || listIndex < 0 || listIndex >= packLists.Count)
-        {
-            Message(Localization.instance.Localize("$whitehilt_qm_no_list"));
-            return;
-        }
-
-        PackList list = packLists[listIndex];
-        int stack = entry.Sample.m_shared.m_maxStackSize;
-        list.Add(entry.Sample.m_dropPrefab.name, stack);
-        PackListStore.SaveAll(packLists);
-        Message(string.Format(Localization.instance.Localize("$whitehilt_qm_added"), Localization.instance.Localize(entry.Name), stack, list.Name));
-    }
-
-    // Right click: watch the item, starting at a stack, or stop watching it.
-    private void ToggleWatch(string prefab)
-    {
-        int index = watches.FindIndex(watch => watch.Key == prefab);
-        if (index >= 0)
-        {
-            watches.RemoveAt(index);
-            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_unwatched"), QuartermasterSite.ItemName(prefab)));
-        }
-        else
-        {
-            ItemDrop item = ItemOf(prefab);
-            watches.Add(new KeyValuePair<string, int>(prefab, Mathf.Max(1, item != null ? item.m_itemData.m_shared.m_maxStackSize : Step)));
-            Message(string.Format(Localization.instance.Localize("$whitehilt_qm_watching"), QuartermasterSite.ItemName(prefab)));
-        }
-
-        stand.SetWatches(watches);
-        Refresh();
-    }
-
-    // ---- Pack page -------------------------------------------------------------------------------------------------
-
-    // Lists what the pack page can pack for: the build table of the hammer in hand, the saved pack lists and the saved
-    // blueprints, and keeps the selection valid when the hammer is put away or a list is deleted.
-    private void RefreshBuilds()
-    {
-        buildRows.ForEach(Destroy);
-        buildRows.Clear();
-        blueprints = BlueprintStore.LoadAll();
-        packLists = PackListStore.LoadAll();
-        Piece hammer = HammerPiece();
-        if (build == Build.Hammer && hammer == null)
-        {
-            build = packLists.Count > 0 ? Build.List : Build.Blueprint;
-            listIndex = packLists.Count > 0 ? Mathf.Clamp(listIndex, 0, packLists.Count - 1) : -1;
-        }
-
-        if (hammer != null)
-        {
-            AddBuildRow(string.Format(Localization.instance.Localize("$whitehilt_qm_hammer"), Localization.instance.Localize(hammer.m_name)),
-                build == Build.Hammer, () => build = Build.Hammer);
-        }
-
-        for (int index = 0; index < packLists.Count; index++)
-        {
-            int chosen = index;
-            AddBuildRow(string.Format(Localization.instance.Localize("$whitehilt_qm_list"), packLists[index].Name), build == Build.List && listIndex == index, () =>
-            {
-                build = Build.List;
-                listIndex = chosen;
-            });
-        }
-
-        foreach (Blueprint blueprint in blueprints)
-        {
-            string file = blueprint.File;
-            string label = blueprint.Name + "   " + string.Format(Localization.instance.Localize("$whitehilt_group_pieces"), blueprint.Pieces.Count);
-            AddBuildRow(label, build == Build.Blueprint && blueprintFile == file, () =>
-            {
-                build = Build.Blueprint;
-                blueprintFile = file;
-            });
-        }
-
-        if (buildRows.Count == 0)
-        {
-            GameObject empty = GUIManager.Instance.CreateText(Localization.instance.Localize("$whitehilt_qm_no_blueprints"), buildContent, Vector2.zero,
-                Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, FontSize, Color.white, true, Color.black, BuildListWidth - 20f, 80f, false);
-            empty.AddComponent<LayoutElement>().preferredHeight = 80f;
-            buildRows.Add(empty);
-        }
-
-        PackList list = SelectedList();
-        listName.gameObject.SetActive(list != null);
-        listName.SetTextWithoutNotify(list?.Name ?? string.Empty);
-        copiesLabel.text = $"{Localization.instance.Localize("$whitehilt_qm_count")}: {copies}";
-        RefreshCost();
-    }
-
-    private void AddBuildRow(string label, bool selected, Action choose)
-    {
-        GameObject row = GUIManager.Instance.CreateButton(label, buildContent, Vector2.zero, Vector2.zero, Vector2.zero, BuildListWidth - 20f, RowHeight);
-        row.AddComponent<LayoutElement>().preferredHeight = RowHeight;
-        Text text = row.GetComponentInChildren<Text>();
-        text.alignment = TextAnchor.MiddleLeft;
-        text.fontSize = FontSize;
-        text.color = selected ? selectedColor : Color.white;
-        text.rectTransform.offsetMin = new Vector2(10f, 0f);
-        row.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            choose();
-            RefreshBuilds();
-        });
-        buildRows.Add(row);
-    }
-
-    private PackList SelectedList()
-    {
-        return build == Build.List && listIndex >= 0 && listIndex < packLists.Count ? packLists[listIndex] : null;
-    }
-
-    // What the chosen build costs for one copy, per item prefab name, in a steady order.
-    private List<KeyValuePair<string, int>> BaseCost()
-    {
-        if (build == Build.List)
-        {
-            return SelectedList()?.Items.ToList() ?? new List<KeyValuePair<string, int>>();
-        }
-
-        List<Piece> pieces = new();
-        if (build == Build.Hammer)
-        {
-            Piece piece = HammerPiece();
-            if (piece != null)
-            {
-                pieces.Add(piece);
-            }
-        }
-        else
-        {
-            Blueprint blueprint = blueprints.FirstOrDefault(candidate => candidate.File == blueprintFile);
-            if (blueprint != null)
-            {
-                pieces.AddRange(blueprint.Pieces.Select(snapshot => GroupPlacer.Resolve(snapshot.Prefab)).Where(piece => piece != null));
-            }
-        }
-
-        return GroupPlacer.Cost(pieces)
-            .OrderBy(pair => Localization.instance.Localize(pair.Key.m_itemData.m_shared.m_name))
-            .Select(pair => new KeyValuePair<string, int>(pair.Key.name, pair.Value)).ToList();
-    }
-
-    private string BuildName()
-    {
-        return build switch
-        {
-            Build.Hammer => Localization.instance.Localize(HammerPiece()?.m_name ?? string.Empty),
-            Build.List => SelectedList()?.Name ?? string.Empty,
-            _ => blueprints.FirstOrDefault(candidate => candidate.File == blueprintFile)?.Name ?? string.Empty
-        };
-    }
-
-    // Shows what the selected build needs times the number of copies, against what the player or the target holds and
-    // what the chests can give. A row is red when there is not enough; on a pack list each row has buttons to change or
-    // remove the item.
-    private void RefreshCost()
-    {
-        costRows.ForEach(Destroy);
-        costRows.Clear();
-        Player player = Player.m_localPlayer;
-        if (player == null)
-        {
-            return;
-        }
-
-        Inventory inventory = target != null ? target.GetInventory() : player.GetInventory();
-        List<QuartermasterStore.Entry> store = QuartermasterStore.List(Sources());
-        bool editable = build == Build.List;
-        float width = Width - Padding * 2f - BuildListWidth - Gap * 3f - 20f;
-        foreach (KeyValuePair<string, int> item in BaseCost())
-        {
-            ItemDrop drop = ItemOf(item.Key);
-            if (drop == null)
-            {
-                continue;
-            }
-
-            string name = drop.m_itemData.m_shared.m_name;
-            int need = item.Value * copies;
-            int have = inventory.CountItems(name);
-            List<QuartermasterStore.Entry> matching = store.Where(entry => entry.Name == name).ToList();
-            bool unlimited = matching.Any(entry => entry.Unlimited);
-            int available = matching.Where(entry => !entry.Unlimited).Sum(QuartermasterStore.Takeable);
-            string inStore = unlimited ? Localization.instance.Localize("$whitehilt_qm_unlimited") : available.ToString();
-            string line = $"<b>{Localization.instance.Localize(name)}</b>  "
-                + string.Format(Localization.instance.Localize("$whitehilt_qm_need"), need, have, inStore);
-            bool enough = unlimited || have + available >= need;
-            string prefab = item.Key;
-            costRows.Add(CreateLine(costContent, width, enough ? line : $"<color=#{ColorUtility.ToHtmlStringRGB(lackingColor)}>{line}</color>",
-                editable ? () => ChangeListItem(prefab, -StepSize()) : null,
-                editable ? () => ChangeListItem(prefab, StepSize()) : null,
-                editable ? () => ChangeListItem(prefab, -int.MaxValue / 2) : null));
-        }
-
-        if (costRows.Count == 0 && editable)
-        {
-            costRows.Add(CreateLine(costContent, width, $"<color=#{ColorUtility.ToHtmlStringRGB(subtleColor)}>"
-                + Localization.instance.Localize("$whitehilt_qm_list_empty") + "</color>", null, null, null));
-        }
-    }
-
-    private void ChangeListItem(string prefab, int change)
-    {
-        PackList list = SelectedList();
-        if (list == null)
-        {
-            return;
-        }
-
-        int current = list.Items.FirstOrDefault(item => item.Key == prefab).Value;
-        list.Add(prefab, Mathf.Max(change, -current));
-        PackListStore.SaveAll(packLists);
-        RefreshCost();
-    }
-
-    // Packs what the selected build needs into the inventory or the chosen cart or ship hold, once every chest holding
-    // any of it has been handed over. Says whether all of it was there.
-    private void OnPack()
-    {
-        List<KeyValuePair<ItemDrop, int>> cost = BaseCost()
-            .Select(item => new KeyValuePair<ItemDrop, int>(ItemOf(item.Key), item.Value * copies))
-            .Where(item => item.Key != null).ToList();
-        if (cost.Count == 0)
-        {
-            return;
-        }
-
-        string buildName = BuildName();
-        Container into = target;
-        HashSet<string> names = new(cost.Select(item => item.Key.m_itemData.m_shared.m_name));
-        List<Container> needed = QuartermasterStore.Holding(Sources(), names);
-        needed.Add(into);
-        Begin(needed, ready =>
-        {
-            bool complete = true;
-            foreach (KeyValuePair<ItemDrop, int> item in cost)
-            {
-                complete &= QuartermasterStore.Pack(Player.m_localPlayer, ready, item.Key.m_itemData.m_shared.m_name, item.Value, into);
-            }
-
-            Message(string.Format(Localization.instance.Localize(complete ? "$whitehilt_qm_packed" : "$whitehilt_qm_packed_short"), buildName));
-        });
-    }
-
-    private void OnNewList()
-    {
-        packLists = PackListStore.LoadAll();
-        packLists.Add(new PackList { Name = string.Format(Localization.instance.Localize("$whitehilt_qm_list_default"), packLists.Count + 1) });
-        PackListStore.SaveAll(packLists);
-        build = Build.List;
-        listIndex = packLists.Count - 1;
-        RefreshBuilds();
-        listName.ActivateInputField();
-    }
-
-    // Saves the chosen piece or blueprint, times the copies, as a new pack list.
-    private void OnSaveAsList()
-    {
-        if (build == Build.List)
-        {
-            return;
-        }
-
-        List<KeyValuePair<string, int>> cost = BaseCost();
-        if (cost.Count == 0)
-        {
-            return;
-        }
-
-        PackList list = new() { Name = BuildName() };
-        foreach (KeyValuePair<string, int> item in cost)
-        {
-            list.Add(item.Key, item.Value * copies);
-        }
-
-        packLists = PackListStore.LoadAll();
-        packLists.Add(list);
-        PackListStore.SaveAll(packLists);
-        build = Build.List;
-        listIndex = packLists.Count - 1;
-        copies = 1;
-        RefreshBuilds();
-    }
-
-    // Deletes the selected pack list on the second click within a few seconds, so a list is not lost to a slip of the
-    // mouse.
-    private void OnDeleteList()
-    {
-        PackList list = SelectedList();
-        if (list == null)
-        {
-            return;
-        }
-
-        if (Time.unscaledTime > deleteArmedUntil)
-        {
-            deleteArmedUntil = Time.unscaledTime + ConfirmSeconds;
-            deleteLabel.text = Localization.instance.Localize("$whitehilt_qm_confirm");
-            return;
-        }
-
-        deleteArmedUntil = 0f;
-        deleteLabel.text = Localization.instance.Localize("$whitehilt_qm_delete");
-        packLists.RemoveAt(listIndex);
-        PackListStore.SaveAll(packLists);
-        listIndex = Mathf.Min(listIndex, packLists.Count - 1);
-        build = listIndex >= 0 ? Build.List : Build.Hammer;
-        RefreshBuilds();
-    }
-
-    private void OnRenameList(string name)
-    {
-        PackList list = SelectedList();
-        if (list == null || string.IsNullOrWhiteSpace(name) || name.Trim() == list.Name)
-        {
-            return;
-        }
-
-        list.Name = name.Trim();
-        PackListStore.SaveAll(packLists);
-        RefreshBuilds();
-    }
-
-    private void ChangeCopies(int change)
-    {
-        copies = Mathf.Clamp(copies + change, 1, MaxCopies);
-        copiesLabel.text = $"{Localization.instance.Localize("$whitehilt_qm_count")}: {copies}";
-        RefreshCost();
-    }
-
-    // The piece selected in the hammer the player holds, or else in the first build tool in the inventory.
-    private static Piece HammerPiece()
-    {
-        Player player = Player.m_localPlayer;
-        if (player == null)
-        {
-            return null;
-        }
-
-        PieceTable table = player.m_buildPieces
-            ?? player.GetInventory().GetAllItems().Select(item => item.m_shared.m_buildPieces).FirstOrDefault(pieces => pieces != null);
-        Piece piece = table != null ? table.GetSelectedPiece() : null;
-        return piece != null && GroupPlacer.Resolve(global::Utils.GetPrefabName(piece.gameObject)) != null ? piece : null;
-    }
-
-    // ---- Watch page ------------------------------------------------------------------------------------------------
-
-    // Shows every stock watch with what the chests hold now; a watch below its threshold is red. The same counts drive
-    // the warning on the table's hover text.
-    private void RefreshWatches()
-    {
-        watchRows.ForEach(Destroy);
-        watchRows.Clear();
-        List<Container> sources = Sources();
-        float width = Width - Padding * 2f - 20f;
-        foreach (KeyValuePair<string, int> watch in watches)
-        {
-            QuartermasterStore.CountStock(sources, watch.Key, out int have, out bool unlimited);
-            string amount = unlimited ? Localization.instance.Localize("$whitehilt_qm_unlimited") : have.ToString();
-            string line = $"<b>{QuartermasterSite.ItemName(watch.Key)}</b>  "
-                + string.Format(Localization.instance.Localize("$whitehilt_qm_watch_line"), amount, watch.Value);
-            bool isLow = !unlimited && have < watch.Value;
-            string prefab = watch.Key;
-            watchRows.Add(CreateLine(watchContent, width, isLow ? $"<color=#{ColorUtility.ToHtmlStringRGB(lackingColor)}>{line}</color>" : line,
-                () => ChangeWatch(prefab, -StepSize()), () => ChangeWatch(prefab, StepSize()), () => ChangeWatch(prefab, -int.MaxValue / 2)));
-        }
-
-        watchHint.text = Localization.instance.Localize(watches.Count == 0 ? "$whitehilt_qm_watch_empty" : "$whitehilt_qm_watch_hint");
-    }
-
-    // Raises or lowers a watch's threshold, removing the watch at zero, and saves the watches on the table so every
-    // player sees them.
-    private void ChangeWatch(string prefab, int change)
-    {
-        int index = watches.FindIndex(watch => watch.Key == prefab);
-        if (index < 0)
-        {
-            return;
-        }
-
-        int threshold = watches[index].Value + change;
-        if (threshold <= 0)
-        {
-            watches.RemoveAt(index);
-        }
-        else
-        {
-            watches[index] = new KeyValuePair<string, int>(prefab, threshold);
-        }
-
-        stand.SetWatches(watches);
-        Refresh();
-    }
-
-    // ---- Building blocks -------------------------------------------------------------------------------------------
-
-    // Shows the slot at an index of a list, built if there are not yet so many, with the given item.
-    private void ShowSlot(List<ItemSlot> slots, Transform parent, int index, ItemDrop.ItemData item, string amount, Color amountColor,
-        string description, Action<bool> onClick, Action onRightClick)
-    {
-        if (index >= slots.Count)
-        {
-            slots.Add(CreateSlot(parent));
-        }
-
-        ItemSlot slot = slots[index];
-        slot.gameObject.SetActive(true);
-        slot.Background.color = slotColor;
-        slot.Icon.sprite = item.GetIcon();
-        slot.Count.text = amount == Infinity && slot.Count.font != null && !slot.Count.font.HasCharacter(Infinity[0]) ? "MAX" : amount;
-        slot.Count.color = amountColor;
-        slot.Description = description;
-        slot.OnClick = onClick;
-        slot.OnRightClick = onRightClick;
-    }
-
-    private static void HideSlots(List<ItemSlot> slots, int shown)
-    {
-        for (int i = shown; i < slots.Count; i++)
-        {
-            slots[i].gameObject.SetActive(false);
-        }
-    }
-
-    // Builds one item slot of the store or the bag: background, icon and amount. Its click and hover handlers read the
-    // slot's current item, so a slot can be filled anew (ShowSlot) instead of built again.
-    private ItemSlot CreateSlot(Transform parent)
-    {
-        GameObject slotObject = new("Slot", typeof(RectTransform));
-        slotObject.transform.SetParent(parent, false);
-        ItemSlot slot = slotObject.AddComponent<ItemSlot>();
-        Image background = slotObject.AddComponent<Image>();
-        background.color = slotColor;
-        slot.Background = background;
-
-        GameObject iconObject = new("Icon", typeof(RectTransform));
-        iconObject.transform.SetParent(slotObject.transform, false);
-        Image icon = iconObject.AddComponent<Image>();
-        icon.preserveAspect = true;
-        slot.Icon = icon;
-        icon.raycastTarget = false;
-        RectTransform iconRect = icon.rectTransform;
-        iconRect.anchorMin = Vector2.zero;
-        iconRect.anchorMax = Vector2.one;
-        iconRect.offsetMin = new Vector2(6f, 6f);
-        iconRect.offsetMax = new Vector2(-6f, -6f);
-
-        Text count = GUIManager.Instance.CreateText(string.Empty, slotObject.transform, new Vector2(1f, 0f), new Vector2(1f, 0f),
-            new Vector2(-Slot / 2f + 1f, 10f), GUIManager.Instance.AveriaSerifBold, 14, Color.white, true, Color.black, Slot - 6f, 20f, false).GetComponent<Text>();
-        count.alignment = TextAnchor.LowerRight;
-        count.raycastTarget = false;
-        slot.Count = count;
-
-        // Clicks come through an event trigger, not a button, to tell the left and the right mouse button apart.
-        EventTrigger trigger = slotObject.AddComponent<EventTrigger>();
-        EventTrigger.Entry click = new() { eventID = EventTriggerType.PointerClick };
-        click.callback.AddListener(data =>
-        {
-            PointerEventData pointer = data as PointerEventData;
-            if (pointer != null && pointer.button == PointerEventData.InputButton.Right)
-            {
-                slot.OnRightClick?.Invoke();
-            }
-            else if (pointer == null || pointer.button == PointerEventData.InputButton.Left)
-            {
-                slot.OnClick?.Invoke(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            }
-        });
-        EventTrigger.Entry enter = new() { eventID = EventTriggerType.PointerEnter };
-        enter.callback.AddListener(_ =>
-        {
-            background.color = slotHoverColor;
-            if (job == null)
-            {
-                status.text = slot.Description;
-            }
-        });
-        EventTrigger.Entry exit = new() { eventID = EventTriggerType.PointerExit };
-        exit.callback.AddListener(_ => background.color = slotColor);
-        trigger.triggers.Add(click);
-        trigger.triggers.Add(enter);
-        trigger.triggers.Add(exit);
-        return slot;
-    }
-
-    // A text line with optional minus, plus and remove buttons on the right.
-    private static GameObject CreateLine(Transform parent, float width, string text, Action minus, Action plus, Action remove)
-    {
-        GameObject row = new("Line", typeof(RectTransform));
-        row.transform.SetParent(parent, false);
-        row.AddComponent<LayoutElement>().preferredHeight = LineHeight;
-        float buttons = minus != null ? (LineHeight + 4f) * 3f : 0f;
-        Text label = GUIManager.Instance.CreateText(text, row.transform, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-            new Vector2((width - buttons) / 2f + 6f, 0f), GUIManager.Instance.AveriaSerif, FontSize, Color.white, true, Color.black,
-            width - buttons - 12f, LineHeight, false).GetComponent<Text>();
-        label.alignment = TextAnchor.MiddleLeft;
-        label.supportRichText = true;
-        label.horizontalOverflow = HorizontalWrapMode.Overflow;
-        if (minus != null)
-        {
-            AddLineButton(row.transform, "-", width - buttons, minus);
-            AddLineButton(row.transform, "+", width - buttons + LineHeight + 4f, plus);
-            AddLineButton(row.transform, "x", width - buttons + (LineHeight + 4f) * 2f, remove);
-        }
-
-        return row;
-    }
-
-    private static void AddLineButton(Transform row, string text, float x, Action onClick)
-    {
-        GameObject button = GUIManager.Instance.CreateButton(text, row, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-            new Vector2(x + LineHeight / 2f, 0f), LineHeight, LineHeight - 2f);
-        button.GetComponent<Button>().onClick.AddListener(() => onClick());
-        button.GetComponentInChildren<Text>().fontSize = FontSize;
-    }
-
     private static QuartermasterPanel Create()
     {
         GameObject panel = GUIManager.Instance.CreateWoodpanel(GUIManager.CustomGUIFront.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
@@ -1032,201 +398,6 @@ public class QuartermasterPanel : MonoBehaviour
         QuartermasterPanel window = panel.AddComponent<QuartermasterPanel>();
         window.BuildContents(panel.transform);
         return window;
-    }
-
-    // Builds the window once: title, the three tabs, the target button that picks inventory, cart or ship, the three
-    // pages, the status line and the close button.
-    private void BuildContents(Transform panel)
-    {
-        float inner = Width - Padding * 2f;
-        float y = Padding;
-        Text title = AddText(panel, Localization.instance.Localize("$whitehilt_qm_title"), 0f, y, inner, 32f, 26);
-        title.font = GUIManager.Instance.AveriaSerifBold;
-        title.color = GUIManager.Instance.ValheimOrange;
-        title.alignment = TextAnchor.MiddleCenter;
-        y += 32f;
-        subtitle = AddText(panel, string.Empty, 0f, y, inner, 22f, FontSize);
-        subtitle.alignment = TextAnchor.MiddleCenter;
-        y += 22f + Gap;
-
-        float tabWidth = 170f;
-        string[] tabNames = { "$whitehilt_qm_tab_store", "$whitehilt_qm_tab_pack", "$whitehilt_qm_tab_watch" };
-        for (int index = 0; index < tabNames.Length; index++)
-        {
-            Page chosen = (Page)index;
-            tabs[index] = AddButton(panel, Localization.instance.Localize(tabNames[index]), index * (tabWidth + Gap), y, tabWidth, () =>
-            {
-                page = chosen;
-                Refresh();
-            });
-        }
-
-        float targetWidth = inner - 3f * (tabWidth + Gap) - Gap;
-        targetLabel = AddButton(panel, string.Empty, inner - targetWidth, y, targetWidth, NextTarget);
-        targetLabel.resizeTextForBestFit = true;
-        targetLabel.resizeTextMinSize = 10;
-        targetLabel.resizeTextMaxSize = FontSize;
-        y += RowHeight + Gap * 2f;
-
-        pages = new[] { AddPage(panel, "Store"), AddPage(panel, "Pack"), AddPage(panel, "Watch") };
-        float bottom = Height - Padding - RowHeight - Gap;
-        BuildStorePage(pages[0].transform, y, inner);
-        BuildPackPage(pages[1].transform, y, inner, bottom - 22f - Gap);
-        BuildWatchPage(pages[2].transform, y, inner, bottom - 22f - Gap);
-
-        status = AddText(panel, string.Empty, 0f, bottom - 22f, inner, 22f, FontSize);
-        status.alignment = TextAnchor.MiddleLeft;
-        status.color = subtleColor;
-        AddButton(panel, Localization.instance.Localize("$whitehilt_qm_close"), (inner - 160f) / 2f, Height - Padding - RowHeight, 160f, Close);
-    }
-
-    // Builds the store page: the search field, the group filters, the grid of what the chests hold, and the bag with
-    // its unload button.
-    private void BuildStorePage(Transform page, float y, float inner)
-    {
-        search = GUIManager.Instance.CreateInputField(page, Vector2.zero, Vector2.zero, Vector2.zero, InputField.ContentType.Standard,
-            Localization.instance.Localize("$whitehilt_qm_search"), FontSize, 260f, RowHeight).GetComponent<InputField>();
-        Place((RectTransform)search.transform, 0f, y, 260f, RowHeight);
-        search.onValueChanged.AddListener(_ => RefreshStore());
-        y += RowHeight + Gap;
-
-        GameObject filterArea = new("Filters", typeof(RectTransform));
-        filterArea.transform.SetParent(page, false);
-        filters = (RectTransform)filterArea.transform;
-        float filterHeight = FilterHeight * 3f + Gap * 2f;
-        Place(filters, 0f, y, inner, filterHeight);
-        GridLayoutGroup filterGrid = filterArea.AddComponent<GridLayoutGroup>();
-        filterGrid.cellSize = new Vector2(FilterWidth, FilterHeight);
-        filterGrid.spacing = new Vector2(Gap, Gap);
-        y += filterHeight + Gap;
-
-        storeContent = AddGrid(page, y, inner, StoreHeight);
-        y += StoreHeight + Gap;
-        Text bagTitle = AddText(page, Localization.instance.Localize("$whitehilt_qm_bag"), 0f, y, inner - 230f, 22f, FontSize);
-        bagTitle.color = GUIManager.Instance.ValheimOrange;
-        bagTitle.alignment = TextAnchor.MiddleLeft;
-        unloadLabel = AddButton(page, string.Empty, inner - 220f, y - 6f, 220f, OnUnload);
-        unloadButton = unloadLabel.transform.parent.gameObject;
-        y += 22f;
-        bagContent = AddGrid(page, y, inner, BagHeight);
-    }
-
-    // Builds the pack page: the list of builds with buttons to make, save and delete pack lists, the cost list, and the
-    // copies counter with the pack button.
-    private void BuildPackPage(Transform page, float y, float inner, float bottom)
-    {
-        float listHeight = bottom - y - (RowHeight + Gap) * 2f;
-        buildContent = AddList(page, 0f, y, BuildListWidth, listHeight);
-        float half = (BuildListWidth - Gap) / 2f;
-        AddButton(page, Localization.instance.Localize("$whitehilt_qm_new_list"), 0f, y + listHeight + Gap, half, OnNewList);
-        AddButton(page, Localization.instance.Localize("$whitehilt_qm_save_list"), half + Gap, y + listHeight + Gap, half, OnSaveAsList);
-        deleteLabel = AddButton(page, Localization.instance.Localize("$whitehilt_qm_delete"), 0f, y + listHeight + RowHeight + Gap * 2f, half, OnDeleteList);
-
-        float x = BuildListWidth + Gap * 3f;
-        float width = inner - x;
-        listName = GUIManager.Instance.CreateInputField(page, Vector2.zero, Vector2.zero, Vector2.zero, InputField.ContentType.Standard,
-            Localization.instance.Localize("$whitehilt_qm_list_name"), FontSize, width, RowHeight).GetComponent<InputField>();
-        Place((RectTransform)listName.transform, x, y, width, RowHeight);
-        listName.onEndEdit.AddListener(OnRenameList);
-        y += RowHeight + Gap;
-
-        float costHeight = bottom - y - RowHeight - Gap;
-        costContent = AddList(page, x, y, width, costHeight);
-        y += costHeight + Gap;
-
-        AddButton(page, "-", x, y, RowHeight + 10f, () => ChangeCopies(-1));
-        copiesLabel = AddText(page, string.Empty, x + RowHeight + 10f + Gap, y, 120f, RowHeight, FontSize);
-        copiesLabel.alignment = TextAnchor.MiddleCenter;
-        AddButton(page, "+", x + RowHeight + 10f + Gap * 2f + 120f, y, RowHeight + 10f, () => ChangeCopies(1));
-        AddButton(page, Localization.instance.Localize("$whitehilt_qm_pack"), inner - 180f, y, 180f, OnPack);
-    }
-
-    private void BuildWatchPage(Transform page, float y, float inner, float bottom)
-    {
-        watchHint = AddText(page, string.Empty, 0f, y, inner, 22f, FontSize);
-        watchHint.alignment = TextAnchor.MiddleLeft;
-        watchHint.color = subtleColor;
-        y += 22f + Gap;
-        watchContent = AddList(page, 0f, y, inner, bottom - y);
-    }
-
-    private static GameObject AddPage(Transform panel, string name)
-    {
-        GameObject page = new(name, typeof(RectTransform));
-        page.transform.SetParent(panel, false);
-        RectTransform rect = (RectTransform)page.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        return page;
-    }
-
-    // A scroll view whose content stacks rows.
-    private static RectTransform AddList(Transform parent, float x, float y, float width, float height)
-    {
-        RectTransform content = AddScroll(parent, x, y, width, height).GetComponentInChildren<ScrollRect>().content;
-        VerticalLayoutGroup layout = content.GetComponent<VerticalLayoutGroup>();
-        layout.spacing = 4f;
-        layout.childControlHeight = true;
-        layout.childForceExpandHeight = false;
-        layout.childControlWidth = true;
-        layout.childForceExpandWidth = true;
-        return content;
-    }
-
-    // A scroll view whose content lays out item slots in a grid.
-    private static RectTransform AddGrid(Transform parent, float y, float width, float height)
-    {
-        RectTransform content = AddScroll(parent, 0f, y, width, height).GetComponentInChildren<ScrollRect>().content;
-        DestroyImmediate(content.GetComponent<VerticalLayoutGroup>());
-        GridLayoutGroup grid = content.gameObject.AddComponent<GridLayoutGroup>();
-        grid.cellSize = new Vector2(Slot, Slot);
-        grid.spacing = new Vector2(4f, 4f);
-        grid.padding = new RectOffset(4, 4, 4, 4);
-        if (!content.TryGetComponent(out ContentSizeFitter fitter))
-        {
-            fitter = content.gameObject.AddComponent<ContentSizeFitter>();
-        }
-
-        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-        return content;
-    }
-
-    private static GameObject AddScroll(Transform parent, float x, float y, float width, float height)
-    {
-        GameObject scroll = GUIManager.Instance.CreateScrollView(parent, false, true, 8f, 4f, GUIManager.Instance.ValheimScrollbarHandleColorBlock,
-            new Color(0f, 0f, 0f, 0.35f), width, height);
-        Place((RectTransform)scroll.transform, x, y, width, height);
-        return scroll;
-    }
-
-    private static Text AddText(Transform parent, string text, float x, float y, float width, float height, int fontSize)
-    {
-        Text label = GUIManager.Instance.CreateText(text, parent, Vector2.zero, Vector2.zero, Vector2.zero, GUIManager.Instance.AveriaSerif, fontSize,
-            Color.white, true, Color.black, width, height, false).GetComponent<Text>();
-        Place(label.rectTransform, x, y, width, height);
-        return label;
-    }
-
-    private static Text AddButton(Transform parent, string text, float x, float y, float width, Action onClick)
-    {
-        GameObject button = GUIManager.Instance.CreateButton(text, parent, Vector2.zero, Vector2.zero, Vector2.zero, width, RowHeight);
-        Place((RectTransform)button.transform, x, y, width, RowHeight);
-        button.GetComponent<Button>().onClick.AddListener(() => onClick());
-        Text label = button.GetComponentInChildren<Text>();
-        label.fontSize = FontSize;
-        return label;
-    }
-
-    // Places a rect by its top-left corner: x from the panel's inner left edge, y from the panel's top.
-    private static void Place(RectTransform rect, float x, float y, float width, float height)
-    {
-        rect.anchorMin = new Vector2(0f, 1f);
-        rect.anchorMax = new Vector2(0f, 1f);
-        rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = new Vector2(Padding + x, -y);
-        rect.sizeDelta = new Vector2(width, height);
     }
 }
 
