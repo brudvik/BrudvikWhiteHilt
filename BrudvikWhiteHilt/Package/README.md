@@ -33,14 +33,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.124.0
+## ✨ New in 0.124.1
+
+- **Norwegian texts for every setting**: the party list, the Necromancer's Staff, the crafting panel's search and sorting, the hit and death log, the chest search range, the build smoke and the Desert Dragon's scales had no Norwegian name or description in the settings window.
+- **What could come next**: a new page, [Ideas for new content](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ideas.md), lists the gaps and ideas, from Mistlands and Ashlands food and roofs to more beasts and settings presets.
+
+### Also new in 0.124.0
 
 - **Lighter and faster**: the models are a file next to the DLL (55 → 11 MB) instead of being held in memory twice, the mod's own plants, props and pieces are hidden in the distance like Valheim's own, big bases load with less work, and the party list and the server's map lists send far less over the network. If you install by hand, copy all three files in `plugins/`.
 - **[Measure it yourself](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md#graphics-and-diagnostics)**: `whitehilt_perf` shows which parts of the mod take time and which messages use the network, and a dedicated server can write the same report to its log.
-
-### Also new in 0.123.0
-
-- **[The White Dragon](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-dragon-horn-a-white-dragon-at-your-side) is a force of nature**: bigger and louder, it breathes fire and frost by turns, each breath ending in a meteor-like blast. It arrives with a roar and a dive, slams into the ground by its foes, staggers them with a terror roar, goes after whatever hits you, blesses you while you are near, and grows stronger with every late boss slain. It fights bosses with you too.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -297,7 +298,7 @@ An in-game settings window (F7), linear or full progression, and per-item switch
 
 ## 📚 Documentation
 
-The [documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting.
+The [documentation](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/README.md) has a page for every feature: what it does, how to build or craft it, and every setting. [Ideas for new content](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ideas.md) lists what could come next.
 
 ## 🧱 For modders
 
@@ -306,6 +307,7 @@ White Hilt is a large, working Valheim mod under the [MIT No Attribution](https:
 - **[How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md)** walks through the source: start-up, cloning vanilla items and pieces, assets and data-driven building pieces, multiplayer (ZDOs, owners, RPCs, server checks), Harmony patches, settings, translations, performance and tests. It ends with which file to read to learn what.
 - **Every longer method** has a comment saying what it does and why, and every public type and member is documented, so the reasons behind the code are next to it.
 - **Tests** in `BrudvikWhiteHilt.Tests` show how to test the parts of a mod that run without the game.
+- **Releasing**: `tools/publishing/` has the scripts that bump the version, build the Release package and publish it on GitHub.
 - **Measuring**: the console command `whitehilt_perf` times every patch and update of the mod and counts its network traffic per message, so you can see what a feature costs; [How the mod is built](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/architecture.md#-performance-habits) shows how.
 - **Your mod in the White Hilt HUD**: status effects show by themselves; anything else goes in as a context line or an icon through `WhiteHiltHud`, see [For mod authors](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#for-mod-authors).
 - **[Videos](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/videos.md)** on the [White Hilt YouTube channel](https://www.youtube.com/@WhiteHilt) go through the code one topic at a time, with the game running alongside and a real bug in every episode: the plugin, Harmony patches, items as classes, multiplayer, build pieces, the chests, Skidbladnir, portals and portraits.
