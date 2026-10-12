@@ -1,0 +1,30 @@
+{
+  "source": "Hellhound by Kolbaca, CC BY 4.0, https://sketchfab.com/3d-models/hellhound-2b661389de024343b17cab26e75c108f",
+  "pose": { "take": "idle01", "frame": 0 },
+  "eyes": {
+    "bone": "Bip01 Head_06",
+    "radius": 0.0003,
+    "positions": [[0.00085, -0.0101, 0.0077], [-0.00085, -0.0101, 0.0077]],
+    "colour": [1.0, 0.3, 0.04],
+    "emission": 5.0
+  },
+  "clips": [
+    { "name": "idle", "take": "idle01", "loop": true },
+    { "name": "walk", "take": "walk_7", "loop": true },
+    { "name": "run", "take": "run_fast", "loop": true },
+    { "name": "bite", "take": "attack01", "loop": false },
+    { "name": "hit", "take": "hit01", "loop": false },
+    { "name": "die", "take": "death_1_1", "loop": false }
+  ],
+  "front_bone": "Bip01 Head_06",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 4,
+    "run": "run",
+    "run_speed": 10,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "garm_bite", "clip": "bite", "hit": 0.54 } ],
+    "always_animate": true
+  }
+}

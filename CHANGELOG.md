@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Five wild monsters**, each with its own animated model and sounds: the **Mist Stag** (a pale stag that charges and stomps), the **Nidhogg Spawn** (a dark dragon's brood with a poisonous bite, which roars once when it sees you; at night in the Mistlands), the **Yggdrasil Warden** (a tree that stands dormant like a dead tree until you come within 8 m, very weak to fire), the **Garm Hound** (fire-biting packs of 2-3 in the Ashlands at night) and the **Greenland Shark** (a slow shark in the open sea, once Bonemass is slain, that also bites boats). Every number is a setting in `[Monsters.<Name>]`.
+- **Loot and what it makes:** Mist Stag Meat roasts on the iron cooking station into **Roast Mist Stag**; Shark Meat ferments into **Hákarl**; Brood Scales make the **Brood Scale Charm** (armor and poison resistance, an accessory); Living Heartwood makes the **Heartwood Draught** (health regenerates twice as fast); Garm Fangs make **Garm Fang Arrows**. Each monster also drops a trophy. The settings are in `[Monsters.Loot]` and `[Meads.HeartwoodDraught]`.
+
+### Changed
+- The Monsters page is now called "Monsters" and describes the new beasts; "More beasts" is gone from the ideas page.
+
 ## v0.126.0 - 2026-10-12
 
 ### Added

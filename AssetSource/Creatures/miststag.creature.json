@@ -1,0 +1,55 @@
+{
+  "source": "Deer by KhmerTeach (chemchamroeun1988), CC BY 4.0, https://sketchfab.com/3d-models/deer-144b33ab9e3345cb92b41bf297a38b7d",
+  "drop": ["Icosphere"],
+  "pose": { "take": "DEERALL_Idle", "frame": 0 },
+  "eyes": {
+    "bone": "ElkScull_044",
+    "radius": 0.022,
+    "positions": [[0.078, 0.929, 1.262], [-0.078, 0.929, 1.262]],
+    "colour": [0.55, 0.85, 1.0],
+    "emission": 5.0
+  },
+  "generate": [
+    {
+      "name": "hit",
+      "base": { "take": "DEERALL_Idle", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 3, "rot": { "ElkSpine2_036_": [10, 0, 0], "ElkNeck1_039_": [20, 0, 0], "ElkNeck2_040_": [20, 0, 0], "ElkNeck4_042_": [15, 0, 0], "ElkJaw_046_": [-30, 0, 0] } },
+        { "frame": 14 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "DEERALL_Idle", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 12, "rot": { "Hips_021_": [0, 55, 0], "ElkNeck1_039_": [-15, 0, 0], "ElkNeck2_040_": [-15, 0, 0], "ElkRHumerus_051_": [-30, 0, 0], "ElkLHumerus_057_": [-30, 0, 0], "ElkRFemur_025_": [25, 0, 0], "ElkLFemur_030_": [25, 0, 0] }, "loc": { "Hips_021_": [0, 0, -0.35] } },
+        { "frame": 30, "rot": { "Hips_021_": [0, 90, 0], "ElkNeck1_039_": [-20, 0, 0], "ElkNeck2_040_": [-20, 0, 0], "ElkNeck3_041_": [-10, 0, 0], "ElkRHumerus_051_": [-45, 0, 0], "ElkLHumerus_057_": [-45, 0, 0], "ElkRRadius_052_": [-40, 0, 0], "ElkLRadius_058_": [-40, 0, 0], "ElkRFemur_025_": [35, 0, 0], "ElkLFemur_030_": [35, 0, 0], "ElkJaw_046_": [-35, 0, 0] }, "loc": { "Hips_021_": [0, 0, -0.68] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "DEERALL_Idle", "loop": true },
+    { "name": "walk", "take": "DEERALL_WalkForward", "loop": true },
+    { "name": "run", "take": "DEERALL_Gallop", "loop": true },
+    { "name": "charge", "take": "DEERALL_Charge", "loop": false },
+    { "name": "stomp", "take": "DEERALL_RearUp", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "ElkScull_044",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 3,
+    "run": "run",
+    "run_speed": 9,
+    "stagger": "hit",
+    "attacks": [
+      { "trigger": "stag_charge", "clip": "charge", "hit": 0.6 },
+      { "trigger": "stag_stomp", "clip": "stomp", "hit": 0.8 }
+    ],
+    "always_animate": true
+  }
+}

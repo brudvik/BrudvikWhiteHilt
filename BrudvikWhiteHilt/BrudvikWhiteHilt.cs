@@ -156,6 +156,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterCommands.Register();
         Monsters.MonsterRegistry.Initialize();
         Monsters.DesertDragonRegistry.Initialize();
+        Monsters.WildMonsterRegistry.Initialize();
         // After the Desert Dragon, which the horn's White Dragon is cloned from.
         Items.Summoning.DragonHorn.Initialize();
         Monsters.WhiteDragonRegistry.Initialize();
@@ -350,6 +351,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         forageables.ForEach(forageable => forageable.ApplyConfig());
         Monsters.MonsterRegistry.ApplyConfig();
         Monsters.DesertDragonRegistry.ApplyConfig();
+        Monsters.WildMonsterRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
         Items.Summoning.DragonHorn.ApplyConfig();
         Items.Roofing.RoofMaterials.ApplyConfig();

@@ -12,7 +12,8 @@ using UnityEngine;
 /// </summary>
 public static class CreaturePreview
 {
-    private const int Tile = 256;
+    // 256 pixels per tile, or -previewTile <pixels> for a closer look.
+    private static readonly int Tile = TileFromArguments();
     private const int Moments = 4;
 
     /// <summary>
@@ -67,6 +68,7 @@ public static class CreaturePreview
                 // Skinning does not update between renders in batch mode, so the sampled pose is baked into plain meshes.
                 GameObject baked = Bake(instance);
                 Bounds bounds = Measure(baked);
+                Debug.Log($"[WhiteHilt] Preview bounds {clip.name} #{moment}: centre {bounds.center}, size {bounds.size}");
                 float size = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z) * 1.1f;
                 camera.orthographicSize = size / 2f;
                 camera.farClipPlane = size * 6f;
@@ -137,6 +139,8 @@ public static class CreaturePreview
             skinned.enabled = false;
             Mesh mesh = new();
             skinned.BakeMesh(mesh, true);
+            // The baked mesh keeps the bounds of the bind pose (a spread-out T-pose), which would shrink the picture.
+            mesh.RecalculateBounds();
             GameObject part = new(skinned.name);
             part.transform.SetParent(baked.transform, false);
             part.transform.SetPositionAndRotation(skinned.transform.position, skinned.transform.rotation);
@@ -157,6 +161,13 @@ public static class CreaturePreview
         }
 
         return bounds;
+    }
+
+    private static int TileFromArguments()
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        int index = Array.IndexOf(args, "-previewTile");
+        return index >= 0 && index + 1 < args.Length ? int.Parse(args[index + 1]) : 256;
     }
 
     private static string Argument(string name)

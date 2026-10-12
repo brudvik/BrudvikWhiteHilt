@@ -1,0 +1,63 @@
+{
+  "source": "Four Legged Predator by Timsblends, CC BY 4.0, https://sketchfab.com/3d-models/four-legged-predator-7f68f9daa698433299092bfecaae4e9e",
+  "drop": ["Object_13", "Object_15", "Eyes", "Eyes.001"],
+  "scale_translations": 100,
+  "decimate": 0.55,
+  "prune_bones": true,
+  "pose": { "take": "rig|Idle", "frame": 0 },
+  "eyes": {
+    "bone": "DEF-spine.006_014",
+    "radius": 800.0,
+    "positions": [[2300.0, -14500.0, 27500.0], [-2300.0, -14500.0, 27500.0]],
+    "colour": [1.0, 0.04, 0.02],
+    "emission": 6.0
+  },
+  "generate": [
+    { "name": "bite_t", "base": { "take": "rig|attack", "frame": 0, "follow": true }, "keys": [ { "frame": 0 }, { "frame": 30 } ] },
+    { "name": "crush_t", "base": { "take": "rig|Powerfull_attack", "frame": 0, "follow": true }, "keys": [ { "frame": 0 }, { "frame": 42 } ] },
+    { "name": "roar_t", "base": { "take": "rig|Roar", "frame": 0, "follow": true }, "keys": [ { "frame": 0 }, { "frame": 56 } ] },
+    {
+      "name": "hit",
+      "base": { "take": "rig|Idle", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 3, "rot": { "DEF-spine_08": [5, 0, 0], "DEF-spine.003": [-12, 0, 0], "DEF-spine.004": [-16, 0, 0], "DEF-spine.005": [-16, 0, 0], "DEF-spine.006": [-10, 0, 0], "DEF-tail.004": [0, 0, 14], "DEF-tail.003": [0, 0, 14], "DEF-tail.002": [0, 0, 14], "DEF-tail.001": [0, 0, 14] } },
+        { "frame": 14 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "rig|Idle", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 14, "rot": { "root_07": [0, 40, 0], "DEF-spine.003": [14, 0, 0], "DEF-spine.004": [18, 0, 0], "DEF-spine.005": [18, 0, 0], "DEF-spine.006": [14, 0, 0] }, "loc": { "root_07": [0, 0, 1500] } },
+        { "frame": 34, "rot": { "root_07": [0, 80, 0], "DEF-spine.003": [18, 0, 0], "DEF-spine.004": [22, 0, 0], "DEF-spine.005": [22, 0, 0], "DEF-spine.006": [18, 0, 0], "DEF-tail.004": [0, 0, -10], "DEF-tail.003": [0, 0, -10], "DEF-tail.002": [0, 0, -10], "DEF-tail.001": [0, 0, -10] }, "loc": { "root_07": [0, 0, 4500] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "rig|Idle", "loop": true },
+    { "name": "walk", "take": "rig|walk", "loop": true },
+    { "name": "run", "take": "rig|Run", "loop": true },
+    { "name": "bite", "take": "bite_t", "loop": false },
+    { "name": "crush", "take": "crush_t", "loop": false },
+    { "name": "roar", "take": "roar_t", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "DEF-f_pinky.03.L_0250",
+  "front_origin_bone": "DEF-spine.003_011",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 2.5,
+    "run": "run",
+    "run_speed": 8,
+    "stagger": "hit",
+    "attacks": [
+      { "trigger": "spawn_bite", "clip": "bite", "hit": 0.57 },
+      { "trigger": "spawn_crush", "clip": "crush", "hit": 0.64 }
+    ],
+    "always_animate": true
+  }
+}

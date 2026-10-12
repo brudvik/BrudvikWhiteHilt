@@ -69,6 +69,8 @@ public static class BuildCreatures
         public string normal;
         public float[] colour;
         public float[] emission;
+        public string emission_map;
+        public bool cutout;
     }
 
     [Serializable]
@@ -114,6 +116,7 @@ public static class BuildCreatures
         {
             ConfigureTexture(material.albedo, false);
             ConfigureTexture(material.normal, true);
+            ConfigureTexture(material.emission_map, false);
         }
     }
 
@@ -304,6 +307,24 @@ public static class BuildCreatures
             {
                 material.SetColor("_EmissionColor", new Color(spec.emission[0], spec.emission[1], spec.emission[2]));
                 material.EnableKeyword("_EMISSION");
+            }
+
+            if (!string.IsNullOrEmpty(spec.emission_map))
+            {
+                material.SetTexture("_EmissionMap", AssetDatabase.LoadAssetAtPath<Texture2D>($"{Folder}/{spec.emission_map}.png"));
+            }
+
+            if (spec.cutout)
+            {
+                // The Standard shader's Cutout mode, set by hand because the editor's material inspector is not running.
+                material.SetFloat("_Mode", 1f);
+                material.SetOverrideTag("RenderType", "TransparentCutout");
+                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                material.SetInt("_ZWrite", 1);
+                material.SetFloat("_Cutoff", 0.5f);
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.renderQueue = 2450;
             }
 
             string path = $"{Folder}/{name}_{spec.name}.mat";

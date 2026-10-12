@@ -4,8 +4,8 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Monsters;
 
 /// <summary>
-/// Hooks the Lindorm service onto the game object, keeps a Lindorm still and unhurt while it is below ground, and keeps
-/// dragon fire off buildings unless the config allows it.
+/// Hooks the Lindorm service onto the game object, keeps a Lindorm still and unhurt while it is below ground and a
+/// Nidhogg Spawn still while it roars, and keeps dragon fire off buildings unless the config allows it.
 /// </summary>
 [HarmonyPatch]
 public static class MonsterPatches
@@ -30,13 +30,15 @@ public static class MonsterPatches
     [HarmonyPrefix]
     private static bool MonsterAIUpdatePrefix(MonsterAI __instance, ref bool __result)
     {
-        if (LindormBurrow.Instances.Count == 0)
+        if (LindormBurrow.Instances.Count == 0 && SpawnRoar.RoaringCount == 0)
         {
             return true;
         }
 
+        // A Lindorm below ground and a Nidhogg Spawn in its roar both stand still.
         LindormBurrow burrow = __instance.GetComponent<LindormBurrow>();
-        if (burrow == null || !burrow.IsHidden)
+        bool hidden = burrow != null && burrow.IsHidden;
+        if (!hidden && !SpawnRoar.IsRoaring(__instance))
         {
             return true;
         }

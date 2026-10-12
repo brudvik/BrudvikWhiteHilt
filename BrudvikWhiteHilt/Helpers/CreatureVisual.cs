@@ -87,6 +87,20 @@ public static class CreatureVisual
             material.color = source.color;
         }
 
+        // Leaf cards: the template's shader clips by _Cutoff, and they are seen from both sides.
+        if (source.IsKeywordEnabled("_ALPHATEST_ON"))
+        {
+            if (material.HasProperty("_Cutoff"))
+            {
+                material.SetFloat("_Cutoff", source.GetFloat("_Cutoff"));
+            }
+
+            if (material.HasProperty("_Cull"))
+            {
+                material.SetFloat("_Cull", 0f);
+            }
+        }
+
         if (material.HasProperty("_EmissionColor"))
         {
             bool glows = source.IsKeywordEnabled("_EMISSION");
@@ -96,7 +110,9 @@ public static class CreatureVisual
                 material.EnableKeyword("_EMISSION");
                 if (material.HasProperty("_EmissionMap"))
                 {
-                    material.SetTexture("_EmissionMap", Texture2D.whiteTexture);
+                    // A model with an emission map (the Yggdrasil Warden's runes) glows only where the map does.
+                    Texture map = source.HasProperty("_EmissionMap") ? source.GetTexture("_EmissionMap") : null;
+                    material.SetTexture("_EmissionMap", map != null ? map : Texture2D.whiteTexture);
                 }
             }
         }

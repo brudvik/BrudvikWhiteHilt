@@ -153,6 +153,8 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 | **Stockfish** | Ocean: 30 health, 50 stamina, 75 min. Buff: stamina regenerates 20% faster | Drying Rack, 2 game days | Coral Cod |
 | **Rakfisk Tub** | Black Forest: pike laid down to ferment | Stone Pot | Pike ×2, Honey ×1 |
 | **Rakfisk** | Black Forest: 40 health, 34 stamina, 50 min. Buff: poison damage taken is halved. A tub ferments into 4 | Fermenter | Rakfisk Tub |
+| **Roast Mist Stag** | Mistlands: 66 health, 22 stamina, 25 min, regen 5. Mist Stag Meat roasts in 30 s | Iron cooking station | Mist Stag Meat ([Monsters](monsters.md#the-wild-beasts)) |
+| **Hákarl** | Swamp (the ocean counts as Swamp): 46 health, 40 stamina, 60 min, regen 3. One Shark Meat ferments into 2 | Fermenter | Shark Meat ([Monsters](monsters.md#the-wild-beasts)) |
 | **Lingonberry Mead** | Frost resistance (keeps Cold and Freezing away), 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Lingonberries ×10, Sweet Gale ×3 |
 | **Roseroot Mead** | Stamina regenerates 50% faster, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Roseroot ×5, Crowberries ×5 |
 | **Cranberry Mead** | Poison resistance, 10 min. The base ferments into 6 meads | Cauldron, then Fermenter | Honey ×10, Cranberries ×10, Lingonberries ×3 |
@@ -169,6 +171,7 @@ The plants spawn as new land is generated: every zone of their biome with suitab
 | **Dewberry Wine** | You make 50% less noise, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Dewberries ×10, Lady's Mantle ×3 |
 | **Rowan Brew** | Lightning resistance, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Rowanberries ×10, Fire Moss ×3 |
 | **Fireweed Ale** | Running uses 25% less stamina and you move 10% faster, 10 min. The base ferments into 6 ales | Cauldron, then Fermenter | Fireweed ×8, Barley ×5, Honey ×3 |
+| **Heartwood Draught** | Mistlands: health regenerates 100% faster, 10 min. The base ferments into 6 bottles | Cauldron, then Fermenter | Honey ×10, Living Heartwood ×2, Sap ×5 (Living Heartwood: [Yggdrasil Warden](monsters.md#yggdrasil-warden)) |
 
 ## Config
 
@@ -184,6 +187,8 @@ Section `[Curing]`:
 | `SausageDays` | 2 | Game days a raw sausage hangs |
 | `StockfishDays` | 2 | Game days a coral cod hangs |
 | `RakfiskYield` | 4 | Rakfisk from one tub in the fermenter; takes effect after a restart |
+
+The roast and the hákarl (`RoastSeconds`, `HakarlYield`) have their settings in `[Monsters.Loot]`, see [Monsters](monsters.md#config).
 
 The cured foods have their own `[Food.<Name>]` sections like the Stone Pot dishes. The eitr dishes (Lady's Mantle Broth 80, Ash Morel Broth 92) also have an `Eitr` setting there.
 
@@ -217,6 +222,7 @@ Each mead has a section `[Meads.<Name>]` (e.g. `[Meads.SweetGaleAle]`) with `Dur
 | Mead | Setting | Default |
 |---|---|---|
 | Crowberry Wine | `HealthRegenMultiplier` | 1.5 |
+| Heartwood Draught | `HealthRegenMultiplier` | 2 |
 | Roseroot Mead | `StaminaRegenMultiplier` | 1.5 |
 | Sweet Gale Ale | `CarryWeight` | 75 |
 | Meadowsweet Mead | `ArmorMultiplier`, `StaggerReduction` | 0.15, 0.25 |

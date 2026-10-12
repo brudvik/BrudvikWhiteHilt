@@ -1,0 +1,78 @@
+{
+  "source": "Treant - Week 2 by Batuhan13, CC BY 4.0, https://sketchfab.com/3d-models/treant-week-2-aa60f5de1ed94b2e96e46ad08cde4d5a",
+  "drop": ["Icosphere"],
+  "generate": [
+    {
+      "name": "walk",
+      "base": { "take": "Armature|ArmatureAction", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 9, "wrot": { "Leg_L_": [-26, 0, 0], "Leg_R_": [26, 0, 0], "BackLeg_L_": [9, 0, 0], "BackLeg_R_": [-9, 0, 0], "BackLeg_040": [-6, 0, 0], "Root.001": [0, 0, 6], "Arm1_L_": [14, 0, 0], "Arm1_R_": [0, 0, 0] }, "loc": { "Root_01": [0, 0, -0.12] } },
+        { "frame": 18 },
+        { "frame": 27, "wrot": { "Leg_L_": [26, 0, 0], "Leg_R_": [-26, 0, 0], "BackLeg_L_": [-9, 0, 0], "BackLeg_R_": [9, 0, 0], "BackLeg_040": [6, 0, 0], "Root.001": [0, 0, -6], "Arm1_L_": [-14, 0, 0] }, "loc": { "Root_01": [0, 0, -0.12] } },
+        { "frame": 36 }
+      ]
+    },
+    {
+      "name": "slam",
+      "base": { "take": "Armature|ArmatureAction", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 12, "wrot": { "Arm1_L_": [-105, 0, 0], "Arm1_R_": [0, 100, 0], "Root.001": [-14, 0, 0], "Root.002": [-12, 0, 0], "Head_04": [-10, 0, 0] } },
+        { "frame": 15, "wrot": { "Arm1_L_": [28, 0, 0], "Arm1_R_": [0, -25, 0], "Root.001": [20, 0, 0], "Root.002": [16, 0, 0], "Head_04": [14, 0, 0], "Leg_L_": [-8, 0, 0], "Leg_R_": [-8, 0, 0] }, "loc": { "Root_01": [0, -0.15, -0.2] } },
+        { "frame": 19, "wrot": { "Arm1_L_": [28, 0, 0], "Arm1_R_": [0, -25, 0], "Root.001": [20, 0, 0], "Root.002": [16, 0, 0], "Head_04": [14, 0, 0], "Leg_L_": [-8, 0, 0], "Leg_R_": [-8, 0, 0] }, "loc": { "Root_01": [0, -0.15, -0.2] } },
+        { "frame": 28 }
+      ]
+    },
+    {
+      "name": "hit",
+      "base": { "take": "Armature|ArmatureAction", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 3, "wrot": { "Root.001": [-12, 0, 0], "Root.002": [-10, 0, 0], "Head_04": [-20, 0, 0], "Arm1_L_": [-40, 0, 0], "Arm1_R_": [0, 40, 0] } },
+        { "frame": 14 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "Armature|ArmatureAction", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 10, "wrot": { "_rootJoint": [10, 0, 0], "Arm1_L_": [-50, 0, 0], "Arm1_R_": [0, 50, 0] } },
+        { "frame": 20, "wrot": { "_rootJoint": [55, 0, 0], "Arm1_L_": [-70, 0, 0], "Arm1_R_": [0, 70, 0] } },
+        { "frame": 28, "wrot": { "_rootJoint": [96, 0, 0], "Arm1_L_": [-40, 0, 0], "Arm1_R_": [0, 40, 0] } },
+        { "frame": 32, "wrot": { "_rootJoint": [86, 0, 0], "Arm1_L_": [-30, 0, 0], "Arm1_R_": [0, 30, 0] } },
+        { "frame": 38, "wrot": { "_rootJoint": [91, 0, 0], "Arm1_L_": [-30, 0, 0], "Arm1_R_": [0, 30, 0] } }
+      ]
+    },
+    {
+      "name": "dormant",
+      "base": { "take": "Armature|ArmatureAction", "frame": 0 },
+      "keys": [
+        { "frame": 0, "wrot": { "Arm1_L_": [-75, 0, 0], "Arm1_R_": [0, 75, 0], "Head_04": [22, 0, 0], "Root.002": [8, 0, 0] } },
+        { "frame": 30, "wrot": { "Arm1_L_": [-75, 0, 0], "Arm1_R_": [0, 75, 0], "Head_04": [22, 0, 0], "Root.002": [8, 0, 0], "Root.001": [0, 0, 1.5] } },
+        { "frame": 60, "wrot": { "Arm1_L_": [-75, 0, 0], "Arm1_R_": [0, 75, 0], "Head_04": [22, 0, 0], "Root.002": [8, 0, 0] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "Armature|ArmatureAction", "loop": true },
+    { "name": "walk", "take": "walk", "loop": true },
+    { "name": "slam", "take": "slam", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false },
+    { "name": "dormant", "take": "dormant", "loop": true }
+  ],
+  "front_bone": "Head_04",
+  "front_origin_bone": "Root_01",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 1.2,
+    "run": "walk",
+    "run_speed": 2.5,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "warden_slam", "clip": "slam", "hit": 0.54 } ],
+    "always_animate": true
+  }
+}

@@ -157,6 +157,7 @@ White Hilt weapons, shields and armor (the uniforms included) go past quality 4:
 | **White Hilt Megingjord** | Belt of Dyrnwyn - +700 carry weight | Forge (Level 2) | Iron ×10, Ymir Remains ×10, Megingjord ×1 |
 | **Megingjord upgrade** | The trader's Megingjord can be upgraded to quality 4. Each level adds +50 carry weight on top of its own +150 (+300 at quality 4); the tooltip shows the total | Forge (level 2, 3 and 4) | Per level: Iron ×8, Chain ×1, Troll Hide ×3, Surtling Core ×1 |
 | **Belt Pouch** | Use it once for one more inventory row for good (one per character). The row is a vanilla row, so it stays without the mod | Workbench (Level 2) | Troll Hide ×6, Leather Scraps ×10, Iron ×4 |
+| **Brood Scale Charm** | Mistlands: worn as an accessory, +8 armor and poison damage taken is halved. From the Nidhogg Spawn's scales, see [Monsters](monsters.md#made-from-the-wild-beasts-loot) | Galdr Table (Level 1) | Brood Scale ×4, Black Marble ×2, Eitr ×2 |
 
 The upgrade can be switched off (`Megingjord` → `Upgrades`) and the carry weight per level changed (`CarryWeightPerLevel`).
 
@@ -170,6 +171,7 @@ High-damage ammunition crafted in large quantities (200 per craft). Enhanced wit
 |------|-------------|------------------|--------------|
 | **White Hilt Arrows** | Indestructible Arrows of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×5, Wood ×10 |
 | **White Hilt Bolts** | Indestructible Bolts of Dyrnwyn | Forge (Level 2) | Iron ×2, Feathers ×3, Wood ×5 |
+| **Garm Fang Arrow** ×20 | Ashlands: 82 pierce and 25 fire damage. From the Garm Hound's fangs, see [Monsters](monsters.md#made-from-the-wild-beasts-loot) | Workbench (Level 2) | Blackwood ×8, Garm Fang ×2, Feathers ×2 |
 
 ---
 

@@ -11,6 +11,7 @@
 param(
     [string]$Out = '',
     [string]$Creature = '',
+    [int]$Tile = 256,
     [string]$UnityPath = "C:\Program Files\Unity\Hub\Editor\6000.0.75f1\Editor\Unity.exe"
 )
 
@@ -35,6 +36,7 @@ Copy-Item (Join-Path $repoRoot 'BrudvikWhiteHilt\Kraken\KrakenAppearance.cs') $e
 $arguments = @('-batchmode', '-quit', '-projectPath', "`"$project`"", '-executeMethod', 'CreaturePreview.Render',
     '-previewOut', "`"$Out`"", '-logFile', "`"$logFile`"")
 if ($Creature) { $arguments += @('-previewCreature', $Creature) }
+$arguments += @('-previewTile', $Tile)
 $process = Start-Process -FilePath $UnityPath -ArgumentList $arguments -Wait -PassThru -NoNewWindow
 Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-Host $_.Line }
 if ($process.ExitCode -ne 0) {

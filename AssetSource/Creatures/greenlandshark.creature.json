@@ -1,0 +1,48 @@
+{
+  "source": "Stylized Shark by kasperromer, CC BY 4.0, https://sketchfab.com/3d-models/stylized-shark-50b7659bcd4a4ca7b123a50618840332",
+  "drop": ["Object_11"],
+  "pose": { "take": "Idle", "frame": 0 },
+  "eyes": {
+    "bone": "Head_02",
+    "radius": 0.12,
+    "positions": [[0.68, -2.1, 0.5], [-0.68, -2.1, 0.5]],
+    "colour": [0.82, 0.88, 0.84],
+    "emission": 0.7
+  },
+  "generate": [
+    {
+      "name": "hit",
+      "base": { "take": "Swim", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 3, "rot": { "Main Control": [0, 0, 35], "Spine 2": [0, 0, 30], "Spine 1": [0, 0, -18], "Tail_06": [0, 0, 12], "Tail.002": [0, 0, 14], "Tail.001": [0, 0, 16], "Tail.003_09": [0, 0, 18], "Lower Jaw": [-25, 0, 0] } },
+        { "frame": 12 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "Swim", "frame": 0 },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 14, "rot": { "Main Control": [10, 0, 100], "Lower Jaw": [-30, 0, 0], "Tail_06": [0, 0, -4], "Tail.002": [0, 0, -4], "Tail.001": [0, 0, -5], "Tail.003_09": [0, 0, -5] }, "loc": { "Main Control": [0, 0, -0.3] } },
+        { "frame": 34, "rot": { "Main Control": [18, 0, 172], "Spine 2": [0, 0, 8], "Lower Jaw": [-42, 0, 0], "Tail_06": [0, 0, -6], "Tail.002": [0, 0, -6], "Tail.001": [0, 0, -8], "Tail.003_09": [0, 0, -8] }, "loc": { "Main Control": [0, 0, -1.1] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "Idle", "loop": true },
+    { "name": "swim", "take": "Swim", "loop": true },
+    { "name": "bite", "take": "Bite", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "Head_02",
+  "controller": {
+    "idle": "idle",
+    "move": "swim",
+    "move_speed": 4,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "shark_bite", "clip": "bite", "hit": 0.55 } ],
+    "always_animate": true
+  }
+}

@@ -344,9 +344,10 @@ public static class MonsterRegistry
 
     /// <summary>
     /// Gives a creature its own sounds from the bundle: clones of a vanilla sound effect with the clip swapped, so the
-    /// game's volume and mixing apply to them.
+    /// game's volume and mixing apply to them. A creature with a second attack gives it its own sound too.
     /// </summary>
-    internal static void AddCreatureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon, string prefix, string attack = "attack")
+    internal static void AddCreatureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon, string prefix, string attack = "attack",
+        CustomItem secondWeapon = null, string secondAttack = null)
     {
         GameObject source = (ai.m_alertedEffects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
             .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
@@ -360,7 +361,7 @@ public static class MonsterRegistry
         }
 
         Dictionary<string, GameObject> sounds = new();
-        foreach (string action in new[] { "idle", "alert", attack, "hit", "death" })
+        foreach (string action in new[] { "idle", "alert", attack, "hit", "death", secondAttack }.Where(action => action != null))
         {
             string name = prefix + action;
             if (!creatureSounds.TryGetValue(name, out GameObject effect))
@@ -378,11 +379,21 @@ public static class MonsterRegistry
         humanoid.m_hitEffects = ReplaceSound(humanoid.m_hitEffects, sounds["hit"]);
         humanoid.m_critHitEffects = ReplaceSound(humanoid.m_critHitEffects, sounds["hit"]);
         humanoid.m_deathEffects = ReplaceSound(humanoid.m_deathEffects, sounds["death"]);
+        SetAttackSound(weapon, sounds[attack]);
+        if (secondWeapon != null && secondAttack != null)
+        {
+            SetAttackSound(secondWeapon, sounds[secondAttack]);
+        }
+    }
+
+    // Clears the weapon's inherited sounds and plays the creature's own when the attack lands.
+    private static void SetAttackSound(CustomItem weapon, GameObject sound)
+    {
         ItemDrop.ItemData.SharedData shared = weapon.ItemDrop.m_itemData.m_shared;
         shared.m_startEffect = RemoveSounds(shared.m_startEffect);
         shared.m_attack.m_startEffect = RemoveSounds(shared.m_attack.m_startEffect);
         shared.m_attack.m_triggerEffect = RemoveSounds(shared.m_attack.m_triggerEffect);
-        shared.m_triggerEffect = ReplaceSound(shared.m_triggerEffect, sounds[attack]);
+        shared.m_triggerEffect = ReplaceSound(shared.m_triggerEffect, sound);
     }
 
     private static EffectList ReplaceSound(EffectList effects, GameObject sound)
@@ -529,10 +540,16 @@ public static class MonsterRegistry
     // trigger.
     private static CustomItem AddWeapon(string name, string trigger, HitData.DamageTypes damages, float range, float height, float angle, float rayWidth, float interval)
     {
+        return AddWeapon(name, trigger, damages, range, height, angle, rayWidth, interval, 40f);
+    }
+
+    // Same, with the force a hit pushes its target with.
+    internal static CustomItem AddWeapon(string name, string trigger, HitData.DamageTypes damages, float range, float height, float angle, float rayWidth, float interval, float force)
+    {
         CustomItem weapon = new(name, BaseWeapon);
         ItemDrop.ItemData.SharedData shared = weapon.ItemDrop.m_itemData.m_shared;
         shared.m_damages = damages;
-        shared.m_attackForce = 40f;
+        shared.m_attackForce = force;
         shared.m_aiAttackRange = range * 0.85f;
         shared.m_aiAttackInterval = interval;
         shared.m_aiAttackMaxAngle = 25f;

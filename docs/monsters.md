@@ -1,12 +1,12 @@
-# 🕷️ Lindorm, giant spiders & Desert Dragons
+# 🕷️ Monsters
 
 [← Back to the README](../README.MD)
 
-<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140">
+<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side.
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side.
 
-Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), not their internal `WhiteHilt_` prefab identifiers.
+Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
 ## The Lindorm
 
@@ -101,6 +101,40 @@ With default settings, a 0/1/2-star Desert Dragon has **1200/2400/3600 health**,
 
 The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is immune to spirit damage. Spiders ignore chop and pickaxe damage and are immune to poison.
 
+## The wild beasts
+
+Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there.
+
+| | Where | When | Health | Attacks | Speed (walk / run) |
+|---|---|---|---|---|---|
+| **Mist Stag** | Mistlands | Day and night | 900 | Charge, 80 pierce (hard knock-back); stomp, 100 blunt | 3 / 9 |
+| **Nidhogg Spawn** | Mistlands | Night only | 1800 | Bite, 95 slash + 30 poison; crushing blow, 150 blunt | 2.5 / 8 |
+| **Yggdrasil Warden** | Mistlands | Day and night | 3000 | Slam, 160 blunt, long reach | 1.2 / 2.5 |
+| **Garm Hound** | Ashlands | Night only, in packs of 2–3 | 500 | Bite, 60 slash + 45 fire | 4 / 10 |
+| **Greenland Shark** | Open sea, after **Bonemass** | Day and night | 450 | Bite, 60 pierce | swims at 6 |
+
+### Mist Stag
+
+One of the stags that gnaw at Yggdrasil: pale as mist, with glowing eyes and huge antlers, about **2.6 m** to the antler tips. It grazes until you come close (it notices you from about 14 m), then **charges**, rearing up to stomp if you stay near. Spirit damage hurts it most; pierce and frost damage barely scratch it. It drops Mist Stag Meat, which you roast on the iron cooking station into **Roast Mist Stag**.
+
+### Nidhogg Spawn
+
+A dark scaled brood of the dragon that gnaws Yggdrasil's roots: **about 5 m long**, with red eyes. It hunts at night. The first time it sees you it **roars**: everyone near sees it, hears the alert and the beast stands still for about two seconds before it comes for you. Its bite poisons, and its heavy blow throws you back. Slash and pierce barely hurt it, poison does nothing, and fire hurts it most. Its drop, Brood Scale, becomes a **Brood Scale Charm** (see Loot).
+
+### Yggdrasil Warden
+
+A tree grown from a fallen branch of Yggdrasil, about **4 m tall**, with glowing runes. It **stands dormant like a dead tree** until a player comes within **8 m** (`WakeRange`), or until something hurts it. Then it wakes, and slams down on whatever is in reach. It is slow and very tough, resists pierce and frost, is immune to poison, and is **very weak to fire**. It drops Living Heartwood.
+
+### Garm Hound
+
+Whelps of Garm, the hound of Hel: charcoal-black, with yellow eyes, about 1.5 m at the head and **2.6 m long**. They hunt in **packs of 2–3** at night in the Ashlands and circle their prey before they bite. Their bite is slash and **fire**, so it sets you burning. They are immune to fire and weak to frost and spirit. They drop Garm Fangs.
+
+### Greenland Shark
+
+A slow, grey, dead-eyed shark about **5 m long**, in the open sea, once **Bonemass** is slain (`RequiredKey`, the ocean counts as Swamp). It hunts swimmers and bites boats like the serpents do. It is immune to frost and weak to lightning. Its meat, put in a fermenter, turns into **Hákarl**.
+
+Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn`, `WhiteHilt_YggdrasilWarden`, `WhiteHilt_GarmHound` and `WhiteHilt_GreenlandShark` (with `devcommands`).
+
 ## Loot
 
 | Item | From | Chance | Used for |
@@ -115,6 +149,16 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 | **Desert Dragon Scale** ×4–6 | Desert Dragon | Always | Dragonscale Broth, Dragonfire Arrows (below) |
 | **Surtling Core** | Desert Dragon | 50% | Vanilla recipes |
 | **Desert Dragon Trophy** | Desert Dragon | 35% | Your wall |
+| **Mist Stag Meat** ×2–3 | Mist Stag | Always | Roast Mist Stag (below) |
+| **Mist Stag Trophy** | Mist Stag | 10% | Your wall |
+| **Brood Scale** ×2–3 | Nidhogg Spawn | Always | Brood Scale Charm (below) |
+| **Nidhogg Spawn Trophy** | Nidhogg Spawn | 10% | Your wall |
+| **Living Heartwood** ×1–2 | Yggdrasil Warden | Always | Heartwood Draught (below) |
+| **Yggdrasil Warden Trophy** | Yggdrasil Warden | 10% | Your wall |
+| **Garm Fang** ×1–2 | Garm Hound | Always | Garm Fang Arrow (below) |
+| **Garm Hound Trophy** | Garm Hound | 10% | Your wall |
+| **Shark Meat** ×2–4 | Greenland Shark | Always | Hákarl (below) |
+| **Greenland Shark Trophy** | Greenland Shark | 10% | Your wall |
 
 ### Made from Desert Dragon Scales
 
@@ -123,7 +167,49 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 | **Dragonscale Broth** | Plains: 50 health, 30 stamina, 40 min. Buff: fire damage taken is halved | Stone Pot level 2 ([Foraging](foraging.md)) | Desert Dragon Scale ×1, Onion ×2, Barley ×2 |
 | **Dragonfire Arrow** ×20 | Fire arrows with 30 pierce and 60 fire damage (the vanilla Fire Arrow has 11 and 22). Set in `[Gear.WhiteHiltDragonfireArrow]` `Pierce` and `Fire` | Workbench level 2 | Wood ×8, Feathers ×2, Desert Dragon Scale ×1 |
 
+### Made from the wild beasts' loot
+
+| Item | Description | Where | Requirements |
+|------|-------------|-------|--------------|
+| **Roast Mist Stag** | Mistlands: 66 health, 22 stamina, 25 min, regen 5 ([Foraging](foraging.md)) | Iron cooking station, 30 s (`RoastSeconds`) | Mist Stag Meat ×1 |
+| **Hákarl** | Swamp: 46 health, 40 stamina, 60 min, regen 3 ([Foraging](foraging.md)) | Fermenter, **2** per Shark Meat (`HakarlYield`) | Shark Meat ×1 |
+| **Brood Scale Charm** | An accessory: **+8 armor** and **poison Resistant** while worn (`CharmArmor`, `CharmPoison`; [White Hilt gear](equipment.md)) | Galdr Table level 1 | Brood Scale ×4, Black Marble ×2, Eitr ×2 |
+| **Garm Fang Arrow** ×20 | Charred arrows with 82 pierce (as much as the vanilla Charred Arrow) and 25 fire damage (`ArrowPierce`, `ArrowFire`) | Workbench level 2 | Blackwood ×8, Garm Fang ×2, Feathers ×2 |
+| **Heartwood Draught** | Mistlands mead: health regenerates 100% faster for 10 min (`HealthRegenMultiplier` 2; [Foraging & food](foraging.md)) | Cauldron (base), then the fermenter, 6 per base | Honey ×10, Living Heartwood ×2, Sap ×5 |
+
 ## Config
+
+Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilWarden]`, `[Monsters.GarmHound]` and `[Monsters.GreenlandShark]` (admin only, synced from the server). They share the same keys:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The monster spawns |
+| `Health` | 900 / 1800 / 3000 / 500 / 450 | Health (after a restart) |
+| `Damage` | 80 / 95 / 160 / 60 / 60 | Damage of the first attack: the stag's charge, the Spawn's and the Garm Hound's bite, the Warden's slam, the shark's bite (after a restart) |
+| `SecondDamage` | 100 / 150 | Blunt damage of the second attack, for the stag (stomp) and the Spawn (crushing blow) (after a restart) |
+| `ExtraDamage` | 30 / 45 | Poison (Spawn) or fire (Garm Hound) added to the bite (after a restart) |
+| `Scale` | 1 | Size (1 = the sizes above; after a restart) |
+| `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
+| `SpawnChance` | 15 / 10 / 6 / 15 / 8 | Percent chance per spawn check; 0 = none |
+| `SpawnSeconds` | 300 / 400 / 600 / 250 / 300 | Seconds between two spawn checks |
+| `MaxSpawned` | 1 / 1 / 1 / 3 / 1 | Most around a player |
+| `GroupMin` / `GroupMax` | 2 / 3 | Garm Hound only: pack size |
+| `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
+| `Sounds` | true | Own sounds for idle, alert, attack, injury and death (after a restart) |
+| `WakeRange` | 8 | Yggdrasil Warden only: metres at which a player wakes it (after a restart) |
+| `RequiredKey` | defeated_bonemass | Greenland Shark only: global key needed first; empty for none |
+
+Section `[Monsters.Loot]`:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `RoastSeconds` | 30 | Seconds Mist Stag Meat takes on the iron cooking station (after a restart) |
+| `HakarlYield` | 2 | Hákarl from one Shark Meat (after a restart) |
+| `CharmArmor` | 8 | Armor of the Brood Scale Charm |
+| `CharmPoison` | Resistant | How the charm changes poison damage taken |
+| `ArrowPierce` / `ArrowFire` | 82 / 25 | Pierce and fire damage of a Garm Fang Arrow |
+
+Section `[Meads.HeartwoodDraught]` has `DurationMinutes` and `HealthRegenMultiplier` (2), as the other meads do.
 
 Section `[Lindorm]` (admin only, synced from the server):
 

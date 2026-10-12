@@ -4,14 +4,7 @@ Things that would fit the mod and are not built yet. They are ideas, not promise
 
 Everything below follows the [biome rule](../.github/copilot-instructions.md#game-balance-guidelines): content belongs to the biome where it is found, and a recipe never uses materials from a later biome.
 
-## 🐉 More beasts
-
-The mod's own creatures are the [Lindorm, the giant spiders, the Desert Dragons](monsters.md) and the [Kraken](kraken.md). The [black beasts](bestiary.md) cover every biome, but the Mistlands and the Ashlands have no creature of their own.
-
-- A creature for each of the two biomes, with its own model, sounds and drops that feed new recipes.
-- A sea creature besides the Kraken, so the ocean has more than one encounter.
-
-## 📯 Horns and companions
+##  Horns and companions
 
 The [Dragon Horn](monsters.md#the-dragon-horn-a-white-dragon-at-your-side) calls a White Dragon, and the [Summoning Horn](difficulty.md) calls the black beasts.
 
