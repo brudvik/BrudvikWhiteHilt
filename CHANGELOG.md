@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.124.1 - 2026-10-12
 
 ### Changed
 - **For modders:** the four largest classes (`DogRegistry`, `DogCompanion`, `HudConsole` and `QuartermasterPanel`) are split into partial files by concern, and the release scripts are now in `tools/publishing/` (bump the version, build the package, publish it on GitHub). A new page, [Ideas for new content](docs/ideas.md), lists what could come next.
