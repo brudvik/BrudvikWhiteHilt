@@ -19,10 +19,6 @@ The [Dragon Horn](monsters.md#the-dragon-horn-a-white-dragon-at-your-side) calls
 - Letting the [dog](dog.md) and the dragon share progress with the [Saga](saga.md) and the [Bestiary](bestiary.md).
 - More for the dog to do: new tricks and small jobs at home.
 
-## 🎓 More to share at the School Bench
-
-The [School Bench](school.md) shares skills, materials, stations and runestone texts, and [blueprints](build-tools.md#shared-blueprints) are shared on the server. Map pins and discoveries could be shared the same way.
-
 ## ⚙️ Settings presets
 
 Every setting can be changed, and there are many of them. The HUD already has a `Preset`. A preset for the whole mod (*Vanilla+*, *Standard*, *Hardcore*) would set many values at once in the [settings window](progression.md), with the server deciding.

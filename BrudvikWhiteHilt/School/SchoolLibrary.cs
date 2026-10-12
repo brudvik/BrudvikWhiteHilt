@@ -16,13 +16,22 @@ public sealed class SchoolLibrary
     /// <summary>Most bytes a library may unpack to.</summary>
     public const int MaxBytes = 4 * 1024 * 1024;
 
-    private const int Version = 1;
+    private const int Version = 2;
+    private const int MaxPins = 4000;
     private const int MaxSkills = 512;
     private const int MaxMaterials = 8000;
     private const int MaxStations = 500;
     private const int MaxTexts = 2000;
     private const int MaxTextLength = 4000;
     private const int MaxNameLength = 200;
+
+    // The pin types a bench shares: marks a player set and places they found, never deaths, beds or pings.
+    private static readonly HashSet<int> sharedPinTypes = new()
+    {
+        (int)Minimap.PinType.Icon0, (int)Minimap.PinType.Icon1, (int)Minimap.PinType.Icon2, (int)Minimap.PinType.Icon3,
+        (int)Minimap.PinType.Icon4, (int)Minimap.PinType.Boss, (int)Minimap.PinType.Hildir1, (int)Minimap.PinType.Hildir2,
+        (int)Minimap.PinType.Hildir3
+    };
 
     /// <summary>Those who wrote, oldest first.</summary>
     public readonly List<Writer> Writers = new();
@@ -38,6 +47,9 @@ public sealed class SchoolLibrary
 
     /// <summary>Known texts: label and text.</summary>
     public readonly Dictionary<string, string> Texts = new(StringComparer.Ordinal);
+
+    /// <summary>Map pins written in the bench, by the writer who set them.</summary>
+    public readonly List<Pin> Pins = new();
 
     /// <summary>
     /// One who wrote in the bench.
@@ -86,6 +98,46 @@ public sealed class SchoolLibrary
     }
 
     /// <summary>
+    /// One map pin written in the bench.
+    /// </summary>
+    public readonly struct Pin
+    {
+        /// <summary>
+        /// Creates a pin.
+        /// </summary>
+        /// <param name="type">The pin type, as its number.</param>
+        /// <param name="name">The text on the pin.</param>
+        /// <param name="position">Where it is in the world.</param>
+        /// <param name="author">The writer who set it.</param>
+        public Pin(int type, string name, Vector3 position, string author)
+        {
+            Type = type;
+            Name = name;
+            Position = position;
+            Author = author;
+        }
+
+        /// <summary>The pin type, as its number.</summary>
+        public int Type { get; }
+
+        /// <summary>The text on the pin.</summary>
+        public string Name { get; }
+
+        /// <summary>Where it is in the world.</summary>
+        public Vector3 Position { get; }
+
+        /// <summary>The writer who set it.</summary>
+        public string Author { get; }
+    }
+
+    /// <summary>
+    /// Whether a bench shares pins of a type.
+    /// </summary>
+    /// <param name="type">The pin type, as its number.</param>
+    /// <returns>True for marks and found places.</returns>
+    public static bool IsSharedPinType(int type) => sharedPinTypes.Contains(type);
+
+    /// <summary>
     /// What a player knows, ready to be written in a bench.
     /// </summary>
     /// <param name="player">The player.</param>
@@ -115,6 +167,17 @@ public sealed class SchoolLibrary
             library.Texts[text.Key] = text.Value;
         }
 
+        if (Minimap.instance != null)
+        {
+            foreach (Minimap.PinData pin in Minimap.instance.m_pins)
+            {
+                if (pin.m_save && pin.m_ownerID == 0L && IsSharedPinType((int)pin.m_type) && library.Pins.Count < MaxPins)
+                {
+                    library.Pins.Add(new Pin((int)pin.m_type, Clip(pin.m_name ?? string.Empty, MaxNameLength), pin.m_pos, name));
+                }
+            }
+        }
+
         return library;
     }
 
@@ -136,7 +199,8 @@ public sealed class SchoolLibrary
         try
         {
             ZPackage package = new(data);
-            if (package.ReadInt() != Version)
+            int version = package.ReadInt();
+            if (version < 1 || version > Version)
             {
                 return library;
             }
@@ -195,6 +259,22 @@ public sealed class SchoolLibrary
                     library.Texts[label] = text;
                 }
             }
+
+            if (version >= 2)
+            {
+                int pins = package.ReadInt();
+                for (int i = 0; i < pins; i++)
+                {
+                    int type = package.ReadInt();
+                    string name = package.ReadString();
+                    Vector3 position = package.ReadVector3();
+                    string author = package.ReadString();
+                    if (library.Pins.Count < MaxPins && IsSharedPinType(type) && name.Length <= MaxNameLength && author.Length <= MaxNameLength && IsInWorld(position))
+                    {
+                        library.Pins.Add(new Pin(type, name, position, author));
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -248,6 +328,15 @@ public sealed class SchoolLibrary
             package.Write(text.Value ?? string.Empty);
         }
 
+        package.Write(Pins.Count);
+        foreach (Pin pin in Pins)
+        {
+            package.Write(pin.Type);
+            package.Write(pin.Name ?? string.Empty);
+            package.Write(pin.Position);
+            package.Write(pin.Author ?? string.Empty);
+        }
+
         return Utils.Compress(package.GetArray());
     }
 
@@ -257,7 +346,9 @@ public sealed class SchoolLibrary
     /// </summary>
     /// <param name="other">What is written now.</param>
     /// <param name="maxWriters">Most writers kept.</param>
-    public void Merge(SchoolLibrary other, int maxWriters)
+    /// <param name="maxPins">Most pins kept.</param>
+    /// <param name="pinMergeDistance">A pin of the same type closer than this many metres counts as the same.</param>
+    public void Merge(SchoolLibrary other, int maxWriters, int maxPins = MaxPins, float pinMergeDistance = 5f)
     {
         foreach (Writer writer in other.Writers)
         {
@@ -298,6 +389,29 @@ public sealed class SchoolLibrary
                 Texts[text.Key] = text.Value;
             }
         }
+
+        // A writer's pins replace what they wrote before, so a pin they removed leaves the bench too.
+        HashSet<string> rewriting = new(other.Writers.Select(writer => writer.Name), StringComparer.Ordinal);
+        Pins.RemoveAll(pin => rewriting.Contains(pin.Author));
+        foreach (Pin pin in other.Pins)
+        {
+            if (Pins.Count >= Mathf.Min(maxPins, MaxPins))
+            {
+                break;
+            }
+
+            if (!Pins.Any(existing => existing.Type == pin.Type && Utils.DistanceXZ(existing.Position, pin.Position) < pinMergeDistance))
+            {
+                Pins.Add(pin);
+            }
+        }
+    }
+
+    // Bytes may come from another player, so a position must be a real point inside the world.
+    private static bool IsInWorld(Vector3 position)
+    {
+        return !float.IsNaN(position.x) && !float.IsInfinity(position.x) && !float.IsNaN(position.y) && !float.IsInfinity(position.y)
+            && !float.IsNaN(position.z) && !float.IsInfinity(position.z) && Mathf.Abs(position.x) <= 20000f && Mathf.Abs(position.z) <= 20000f;
     }
 
     private static string Clip(string text, int length)

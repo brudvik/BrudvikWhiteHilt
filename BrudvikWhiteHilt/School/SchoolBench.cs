@@ -88,12 +88,15 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
     /// <param name="materials">Materials.</param>
     /// <param name="stations">Crafting stations and their levels.</param>
     /// <param name="texts">Texts.</param>
-    public void FindNew(Player player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts)
+    /// <param name="pins">Map pins the reader does not have, and may have.</param>
+    public void FindNew(Player player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts,
+        out List<SchoolLibrary.Pin> pins)
     {
         SchoolLibrary library = Library();
         materials = new List<string>();
         stations = new List<KeyValuePair<string, int>>();
         texts = new List<KeyValuePair<string, string>>();
+        pins = new List<SchoolLibrary.Pin>();
         if (SchoolSettings.TeachRecipes.Value)
         {
             IEnumerable<string> unknown = library.Materials.Where(material => !player.m_knownMaterial.Contains(material));
@@ -114,6 +117,18 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
         {
             texts = library.Texts.Where(text => !player.m_knownTexts.ContainsKey(text.Key)).ToList();
         }
+
+        if (SchoolSettings.TeachPins.Value && Minimap.instance != null && WorldGenerator.instance != null)
+        {
+            Heightmap.Biome visited = KnownBiomes.Of(player);
+            string reader = player.GetPlayerName();
+            float distance = SchoolSettings.PinMergeDistance.Value;
+            pins = library.Pins.Where(pin => pin.Author != reader
+                    && (!SchoolSettings.BiomeRule.Value || (WorldGenerator.instance.GetBiome(pin.Position.x, pin.Position.z) & visited) != 0)
+                    && !Minimap.instance.m_pins.Any(existing => existing.m_save && (int)existing.m_type == pin.Type
+                        && Utils.DistanceXZ(existing.m_pos, pin.Position) < distance))
+                .ToList();
+        }
     }
 
     /// <summary>
@@ -127,8 +142,8 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
-        FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts);
-        if (materials.Count + stations.Count + texts.Count == 0)
+        FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts, out List<SchoolLibrary.Pin> pins);
+        if (materials.Count + stations.Count + texts.Count + pins.Count == 0)
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_school_nothing");
             return;
@@ -145,10 +160,16 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
             player.m_knownTexts[text.Key] = text.Value;
         }
 
+        foreach (SchoolLibrary.Pin pin in pins)
+        {
+            // Own pins: a pin with a foreign owner is removed by the next map table read.
+            Minimap.instance.AddPin(pin.Position, (Minimap.PinType)pin.Type, pin.Name, save: true, isChecked: false, ownerID: 0L);
+        }
+
         player.UpdateKnownRecipesList();
         MessageHud.instance?.m_unlockMsgQueue.Clear();
         player.Message(MessageHud.MessageType.Center,
-            string.Format(Localization.instance.Localize("$msg_whitehilt_school_learned"), materials.Count, stations.Count, texts.Count));
+            string.Format(Localization.instance.Localize("$msg_whitehilt_school_learned"), materials.Count, stations.Count, texts.Count, pins.Count));
     }
 
     /// <summary>
@@ -243,8 +264,8 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
             studying = true;
             caughtUpShown = false;
             nextStudy = Time.time + SchoolSettings.StudySeconds.Value;
-            FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts);
-            if (materials.Count + stations.Count + texts.Count > 0)
+            FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts, out List<SchoolLibrary.Pin> pins);
+            if (materials.Count + stations.Count + texts.Count + pins.Count > 0)
             {
                 ReadLocalPlayer();
             }
@@ -305,8 +326,16 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
             written.Writers.RemoveRange(1, written.Writers.Count - 1);
         }
 
+        // Pins are set in the writer's name only, so one write cannot remove or add pins for someone else.
+        string writerName = written.Writers.Count > 0 ? written.Writers[0].Name : string.Empty;
+        List<SchoolLibrary.Pin> pins = written.Writers.Count > 0
+            ? written.Pins.Select(pin => new SchoolLibrary.Pin(pin.Type, pin.Name, pin.Position, writerName)).ToList()
+            : new List<SchoolLibrary.Pin>();
+        written.Pins.Clear();
+        written.Pins.AddRange(pins);
+
         SchoolLibrary library = SchoolLibrary.FromBytes(nview.GetZDO().GetByteArray(libraryKey));
-        library.Merge(written, SchoolSettings.MaxWriters.Value);
+        library.Merge(written, SchoolSettings.MaxWriters.Value, SchoolSettings.MaxPins.Value, SchoolSettings.PinMergeDistance.Value);
         nview.GetZDO().Set(libraryKey, library.ToBytes());
         SchoolPanel.Refresh(this);
     }

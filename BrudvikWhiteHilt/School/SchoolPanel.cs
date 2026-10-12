@@ -124,9 +124,9 @@ public class SchoolPanel : MonoBehaviour
         }
 
         text.AppendLine();
-        text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_school_knowledge"), library.Materials.Count, library.Stations.Count, library.Texts.Count));
-        bench.FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts);
-        text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_school_new"), materials.Count, stations.Count, texts.Count));
+        text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_school_knowledge"), library.Materials.Count, library.Stations.Count, library.Texts.Count, library.Pins.Count));
+        bench.FindNew(player, out List<string> materials, out List<KeyValuePair<string, int>> stations, out List<KeyValuePair<string, string>> texts, out List<SchoolLibrary.Pin> pins);
+        text.AppendLine(string.Format(Localization.instance.Localize("$whitehilt_school_new"), materials.Count, stations.Count, texts.Count, pins.Count));
         text.AppendLine();
         text.AppendLine($"<color=#E8B04B><b>{Localization.instance.Localize("$whitehilt_school_writers_title")}</b></color>");
         if (library.Writers.Count == 0)
