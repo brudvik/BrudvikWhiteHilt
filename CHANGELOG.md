@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.126.0 - 2026-10-12
 
 ### Added
 - **The School Bench shares map pins.** Writing also writes your own pins (the marks you set and the places you found, such as Vegvisir boss stones and Hildir's quests; never deaths, beds or pings), and reading gives you the pins you do not have, in biomes you have been to. Writing again replaces your own pins. Three new `[School]` settings: `TeachPins`, `MaxPins` and `PinMergeDistance`.
