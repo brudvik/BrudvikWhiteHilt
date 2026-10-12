@@ -33,15 +33,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.125.0
+## ✨ New in 0.126.0
+
+- **[The School Bench shares map pins](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/school.md#map-pins)**: writing at the bench also writes the places you marked and found (Vegvisir boss stones, Hildir's quests), and reading gives others the pins they do not have, in the biomes they have been to. Everyone needs this version.
+
+### Also new in 0.125.0
 
 - **[Foraging in the Mistlands and the Ashlands](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)**: eight new plants (dewberries, lady's mantle, beard lichen, mistletoe, fireweed, ash morel, fire moss and rowanberries), eight Stone Pot dishes at the strength of those biomes, two of them with eitr, and four brews. Ashlands plants keep off the lava.
 - **[Two new roofs](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/roofs.md)**: black marble from the Mistlands and grausten from the Ashlands, in every shape and pitch. The ash rain wears a grausten roof only down to a tenth of its health.
-
-### Also new in 0.124.1
-
-- **Norwegian texts for every setting**: the party list, the Necromancer's Staff, the crafting panel's search and sorting, the hit and death log, the chest search range, the build smoke and the Desert Dragon's scales had no Norwegian name or description in the settings window.
-- **What could come next**: a new page, [Ideas for new content](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ideas.md), lists the gaps and ideas, from more beasts and horns to settings presets.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
