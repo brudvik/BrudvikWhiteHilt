@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.125.0 - 2026-10-12
 
 ### Added
 - **Mistlands and Ashlands foraging.** Eight new plants: Dewberries, Lady's Mantle, Beard Lichen and Mistletoe in the Mistlands, and Fireweed, Ash Morel, Fire Moss and Rowanberries in the Ashlands. Each has its own generated model, grows in new land and (once) in land generated before, and has an extra drop from a vanilla plant or a beast.
