@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.129.0 - 2026-10-13
 
 ### Added
 - **[Holes, flooding, patching and bailing](docs/sea-battles.md#damage-at-sea)**: in a sea battle a heavy hit on a hull (at least 60 damage) knocks a hole at the waterline, and a ram always does. Holes let water in: the ship lies lower, sails slower and, unless it is indestructible, breaks up when full. The White Hilt ships flood and slow down but never sink. Look at a hole and press Use to patch it (2 wood and 1 resin), press Shift + Use aboard to bail (costs stamina). The water in the hull shows at the helm. Settings in `[SeaBattles.Damage]`.
