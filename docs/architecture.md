@@ -275,6 +275,11 @@ Valheim runs everything on one thread, and so does the mod. These habits recur:
 - **Send little.** The game's `ZDO.Set` already ignores a value that did not change, so what costs traffic is a value
   that changes all the time. Messages carry whole numbers where the screen shows whole numbers (`PartyStatus`), and
   the server's lists go out only when they changed, gzipped when large (`ServerLists`).
+- **No message over 512 KB.** Steam refuses a larger message, and the game then retries that one message every frame,
+  so nothing behind it reaches the player again. `ServerLists.Send` cuts a large list into pieces and sends each once
+  the connection has room, and `MessageSizeGuard` drops (and logs) any message that is still too large, so one bad
+  message costs that message and not the whole connection. Data kept in a ZDO, such as the School Bench library, has
+  its own cap well below the limit.
 - **Measure.** The console command `whitehilt_perf start` wraps every Harmony patch method and every `Update`,
   `LateUpdate` and `FixedUpdate` of the mod with a timer, and counts the bytes of each network message;
   `whitehilt_perf report` lists the slowest methods and the busiest messages, and `stop` removes it all again

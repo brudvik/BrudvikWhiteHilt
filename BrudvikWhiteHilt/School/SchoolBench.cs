@@ -15,8 +15,8 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
 {
     private const string WriteRpc = "WhiteHilt_SchoolWrite";
 
-    // A written library is far smaller; anything bigger is not from this mod.
-    private const int MaxPacked = 1024 * 1024;
+    // A written library is far smaller; the bench's ZDO must stay well under Steam's 512 KB per message.
+    private const int MaxPacked = 384 * 1024;
 
     private static readonly int libraryKey = "whitehilt_school_library".GetStableHashCode();
     private static readonly List<SchoolBench> benches = new();
@@ -336,7 +336,14 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
 
         SchoolLibrary library = SchoolLibrary.FromBytes(nview.GetZDO().GetByteArray(libraryKey));
         library.Merge(written, SchoolSettings.MaxWriters.Value, SchoolSettings.MaxPins.Value, SchoolSettings.PinMergeDistance.Value);
-        nview.GetZDO().Set(libraryKey, library.ToBytes());
+        byte[] merged = library.ToBytes();
+        if (merged.Length > MaxPacked)
+        {
+            Jotunn.Logger.LogWarning($"School Bench: the library would grow to {merged.Length:N0} bytes, more than {MaxPacked:N0}; the write was not kept.");
+            return;
+        }
+
+        nview.GetZDO().Set(libraryKey, merged);
         SchoolPanel.Refresh(this);
     }
 

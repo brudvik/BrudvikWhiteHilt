@@ -102,7 +102,7 @@ public class MapAreaService : MonoBehaviour
 
         try
         {
-            if (ServerLists.Unpack(package) is ZPackage list && MapAreaPackage.Read(list, out List<MapArea> received, out List<MapWard> receivedWards))
+            if (ServerLists.Receive(sender, RpcName, package) is ZPackage list && MapAreaPackage.Read(list, out List<MapArea> received, out List<MapWard> receivedWards))
             {
                 MapAreaOverlay.SetData(received, receivedWards);
             }
@@ -495,7 +495,7 @@ public class MapAreaService : MonoBehaviour
             current.Add(peer.m_uid);
             if (TryGetChanged(peer.m_uid, playerID, out ZPackage package))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, ServerLists.Pack(package));
+                ServerLists.Send(peer.m_uid, RpcName, package);
             }
         }
 

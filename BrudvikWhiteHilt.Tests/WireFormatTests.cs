@@ -208,6 +208,70 @@ public class ServerListTests
         Assert.Equal(ServerLists.Fingerprint(List(500)), ServerLists.Fingerprint(List(500)));
         Assert.NotEqual(ServerLists.Fingerprint(List(500)), ServerLists.Fingerprint(List(501)));
     }
+
+    private static byte[] Noise(int bytes)
+    {
+        byte[] data = new byte[bytes];
+        new System.Random(7).NextBytes(data);
+        return data;
+    }
+
+    private static ZPackage Received(ZPackage sent) => new(sent.GetArray());
+
+    [Theory]
+    [InlineData(10)]
+    [InlineData(ServerLists.PieceBytes)]
+    [InlineData(ServerLists.PieceBytes + 1)]
+    [InlineData(1_300_000)]
+    public void SplitListsComeBackWhole(int bytes)
+    {
+        byte[] packed = Noise(bytes);
+        List<ZPackage> pieces = ServerLists.Split(packed, 3);
+        ServerLists.Assembler assembler = new();
+
+        byte[] result = null;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            result = assembler.Add(Received(pieces[i]));
+            Assert.True(i == pieces.Count - 1 || result == null);
+        }
+
+        Assert.Equal(packed, result);
+    }
+
+    [Fact]
+    public void EveryPieceFitsInOneSteamMessage()
+    {
+        // The routed call around a piece adds well under a kilobyte.
+        Assert.All(ServerLists.Split(Noise(2_000_000), 1), piece => Assert.True(piece.Size() < 500 * 1024));
+    }
+
+    [Fact]
+    public void ANewerListReplacesOneCutShort()
+    {
+        List<ZPackage> older = ServerLists.Split(Noise(500_000), 1);
+        byte[] newer = Noise(300_000);
+        List<ZPackage> newerPieces = ServerLists.Split(newer, 2);
+        ServerLists.Assembler assembler = new();
+
+        Assert.Equal(2, newerPieces.Count);
+        Assert.Null(assembler.Add(Received(older[0])));
+        Assert.Null(assembler.Add(Received(newerPieces[0])));
+        Assert.Null(assembler.Add(Received(older[1])));
+        Assert.Equal(newer, assembler.Add(Received(newerPieces[1])));
+    }
+
+    [Fact]
+    public void PiecesOutOfOrderAreDropped()
+    {
+        List<ZPackage> pieces = ServerLists.Split(Noise(600_000), 1);
+        ServerLists.Assembler assembler = new();
+
+        Assert.Null(assembler.Add(Received(pieces[0])));
+        Assert.Null(assembler.Add(Received(pieces[2])));
+        Assert.Null(assembler.Add(Received(pieces[1])));
+        Assert.Null(assembler.Add(Received(pieces[2])));
+    }
 }
 
 public class DifficultyStateTests

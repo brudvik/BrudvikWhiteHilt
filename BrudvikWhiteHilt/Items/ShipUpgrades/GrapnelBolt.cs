@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Items.Foraging.BogIron;
 using BrudvikWhiteHilt.Pieces.Ships.Ballista;
 using BrudvikWhiteHilt.SeaBattles.Weapons;
 using Jotunn.Configs;
@@ -48,7 +49,7 @@ public class GrapnelBolt : ShipAmmoBase
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {
         new() { Item = "Iron", Amount = 2, Recover = false },
-        new() { Item = "BogIron", Amount = 1, Recover = false },
+        new() { Item = BogIron.PrefabName, Amount = 1, Recover = false },
         new() { Item = "DeerHide", Amount = 1, Recover = false }
     };
 

@@ -408,12 +408,12 @@ public class PortalMapService : MonoBehaviour
             current.Add(peer.m_uid);
             if (TryGetChanged(peer.m_uid, playerID, out ZPackage package))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, ServerLists.Pack(package));
+                ServerLists.Send(peer.m_uid, RpcName, package);
             }
 
             if (TryGetTravelChanged(peer.m_uid, playerID, out ZPackage travelPackage))
             {
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, TravelRpcName, ServerLists.Pack(travelPackage));
+                ServerLists.Send(peer.m_uid, TravelRpcName, travelPackage);
             }
         }
 
@@ -540,7 +540,7 @@ public class PortalMapService : MonoBehaviour
 
     private void RPC_PortalList(long sender, ZPackage package)
     {
-        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Unpack(package) is ZPackage list)
+        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Receive(sender, TravelRpcName, package) is ZPackage list)
         {
             PortalTravel.SetDestinations(PortalDestination.Read(list));
         }
@@ -548,7 +548,7 @@ public class PortalMapService : MonoBehaviour
 
     private void RPC_PortalMap(long sender, ZPackage package)
     {
-        if (sender != ZRoutedRpc.instance.GetServerPeerID() || ServerLists.Unpack(package) is not ZPackage list)
+        if (sender != ZRoutedRpc.instance.GetServerPeerID() || ServerLists.Receive(sender, RpcName, package) is not ZPackage list)
         {
             return;
         }

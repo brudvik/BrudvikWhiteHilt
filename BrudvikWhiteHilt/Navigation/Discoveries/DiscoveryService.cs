@@ -432,7 +432,7 @@ public class DiscoveryService : MonoBehaviour
             if (!lastSent.TryGetValue(peer.m_uid, out int sent) || sent != packageVersion)
             {
                 lastSent[peer.m_uid] = packageVersion;
-                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, RpcName, new ZPackage(packedBytes));
+                ServerLists.SendPacked(peer.m_uid, RpcName, packedBytes);
             }
         }
 
@@ -578,7 +578,7 @@ public class DiscoveryService : MonoBehaviour
 
     private void RPC_Discoveries(long sender, ZPackage received)
     {
-        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Unpack(received) is ZPackage list)
+        if (sender == ZRoutedRpc.instance.GetServerPeerID() && ServerLists.Receive(sender, RpcName, received) is ZPackage list)
         {
             Apply(list);
         }
