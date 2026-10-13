@@ -204,7 +204,10 @@ public static class Lookout
         {
             if (ship != null && Vector3.Distance(ship.transform.position, origin) <= radius && !ship.IsPlayerInBoat(player))
             {
-                TemporaryPins.Add(ship.transform.position, Minimap.PinType.Icon4, Localization.instance.Localize("$whitehilt_lookout_ship"), PinSeconds);
+                // A Nail Ship is a sea monster to the lookout, not a friendly ship.
+                bool raider = SeaBattles.RaiderShip.Is(ship);
+                TemporaryPins.Add(ship.transform.position, raider ? Minimap.PinType.Icon3 : Minimap.PinType.Icon4,
+                    Localization.instance.Localize(raider ? "$whitehilt_nailship" : "$whitehilt_lookout_ship"), PinSeconds);
             }
         }
     }

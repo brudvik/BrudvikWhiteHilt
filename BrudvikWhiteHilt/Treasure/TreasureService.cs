@@ -274,7 +274,7 @@ public class TreasureService : MonoBehaviour
     }
 
     // Anything a player has built has its creator set.
-    private static bool IsNearBuilding(Vector3 point, float radius)
+    internal static bool IsNearBuilding(Vector3 point, float radius)
     {
         if (radius <= 0f)
         {

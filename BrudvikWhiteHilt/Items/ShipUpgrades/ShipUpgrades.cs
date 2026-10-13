@@ -413,3 +413,55 @@ public class ShipPortalUpgrade : WhiteHiltShipUpgradeBase
     /// <inheritdoc/>
     public override bool Enabled => true;
 }
+
+/// <summary>
+/// Mounts a ballista on the forecastle of the White Hilt Ship or Skidbladnir. A player mans it, aims with the camera and
+/// shoots Ship Bolts.
+/// </summary>
+public class ShipBallistaUpgrade : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the ballista in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 9;
+
+    /// <summary>
+    /// Prefab name of the upgrade item.
+    /// </summary>
+    public const string ItemName = "WhiteHiltShipBallista";
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipBallistaUpgrade(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => ItemName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Ship Ballista";
+
+    /// <inheritdoc/>
+    protected override string Description => "A ballista for the forecastle of the White Hilt Ship or Skidbladnir. Use it on the mast; then use the ballista to man it and shoot Ship Bolts.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "Chain";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "FineWood", Amount = 12, Recover = false },
+        new() { Item = "Iron", Amount = 4, Recover = false },
+        new() { Item = "Chain", Amount = 2, Recover = false },
+        new() { Item = BogIron.PrefabName, Amount = 4, Recover = false },
+        new() { Item = RoofMaterials.PineTar, Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}

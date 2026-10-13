@@ -707,7 +707,8 @@ public static class NearbyContainers
                 || !container.CheckAccess(playerId)
                 || (container.m_checkGuardStone && !PrivateArea.CheckAccess(containerPosition, 0f, flash: false))
                 || excludedContainerSet.Contains(Utils.GetPrefabName(container.m_nview.gameObject))
-                || container.GetComponent<Pieces.Waste.WasteWellComponent>() != null)
+                || container.GetComponent<Pieces.Waste.WasteWellComponent>() != null
+                || SeaBattles.RaiderShip.CrewHolds(container.m_nview.GetComponent<Ship>()))
             {
                 continue;
             }

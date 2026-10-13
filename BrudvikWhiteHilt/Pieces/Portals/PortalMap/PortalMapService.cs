@@ -508,6 +508,11 @@ public class PortalMapService : MonoBehaviour
             {
                 portalPrefabs.Add(hash);
             }
+            else if (prefab.GetComponent<SeaBattles.RaiderShip>() != null)
+            {
+                // A Nail Ship is nobody's ship: it never shows on the map of the Harbour Anchor.
+                continue;
+            }
             else if (prefab.GetComponent<Ship>() != null)
             {
                 shipPrefabs.Add(hash);

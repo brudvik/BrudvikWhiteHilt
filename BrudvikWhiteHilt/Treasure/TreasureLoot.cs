@@ -47,9 +47,20 @@ public static class TreasureLoot
             inventory.AddItem(trophies[Random.Range(0, trophies.Count)], 1);
         }
 
-        List<Entry> entries = Parse(TreasureSettings.Loot.Value);
+        Roll(inventory, TreasureSettings.Loot.Value, lootRolls);
+    }
+
+    /// <summary>
+    /// Draws from a loot list ("Item:min-max:weight, ...") into an inventory. Unknown items are skipped.
+    /// </summary>
+    /// <param name="inventory">Where the loot goes.</param>
+    /// <param name="list">The loot list text.</param>
+    /// <param name="rolls">Draws from the list.</param>
+    public static void Roll(Inventory inventory, string list, int rolls)
+    {
+        List<Entry> entries = Parse(list);
         float total = entries.Sum(entry => entry.Weight);
-        for (int i = 0; i < lootRolls && total > 0f; i++)
+        for (int i = 0; i < rolls && total > 0f; i++)
         {
             float pick = Random.Range(0f, total);
             Entry chosen = entries.Last();

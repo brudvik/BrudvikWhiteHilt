@@ -66,6 +66,7 @@ public static class WhiteHiltShipUpgradeSetup
         AddChest(ship.transform, container);
         Transform portal = AddPortal(ship.transform);
         AddLanternInteraction(ship.transform);
+        Ballista.BallistaModel.Build(ship.transform);
 
         if (!VisualHelper.IsHeadless)
         {
@@ -161,7 +162,7 @@ public static class WhiteHiltShipUpgradeSetup
         return new Vector3(all.center.x, DeckHeight, all.max.z + BrazierClearance + radius);
     }
 
-    private static Bounds RootBounds(Transform root, MeshFilter filter)
+    internal static Bounds RootBounds(Transform root, MeshFilter filter)
     {
         Bounds mesh = filter.sharedMesh.bounds;
         Bounds result = new(root.InverseTransformPoint(filter.transform.TransformPoint(mesh.center)), Vector3.zero);
@@ -320,7 +321,7 @@ public static class WhiteHiltShipUpgradeSetup
 
     // The hull's renderer, whose material and shadow mode the added models copy. The first renderer under ship/visual
     // is the mast's inactive cloth-collider helper, not a visible part of the ship.
-    private static Renderer HullTemplate(Transform root)
+    internal static Renderer HullTemplate(Transform root)
     {
         Renderer hull = root.Find("ship/visual/hull_new/hull")?.GetComponent<MeshRenderer>();
         if (hull != null && hull.sharedMaterial != null)
@@ -334,7 +335,7 @@ public static class WhiteHiltShipUpgradeSetup
     }
 
     // Deck parts block players like the longship's own crates do.
-    private static int CrateLayer(Transform root)
+    internal static int CrateLayer(Transform root)
     {
         Transform crate = root.Find("ship/visual/Customize/storage")?.GetComponentsInChildren<Collider>(true).FirstOrDefault()?.transform;
         return crate != null ? crate.gameObject.layer : root.gameObject.layer;

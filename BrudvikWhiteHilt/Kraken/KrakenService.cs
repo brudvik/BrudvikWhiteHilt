@@ -91,7 +91,7 @@ public class KrakenService : MonoBehaviour
     {
         Player player = Player.m_localPlayer;
         if (!KrakenSettings.Enabled.Value || player == null || player.IsDead() || ship == null || ship.m_nview == null
-            || !ship.m_nview.IsValid() || !ship.m_nview.IsOwner() || KrakenBody.Instances.Count > 0)
+            || !ship.m_nview.IsValid() || !ship.m_nview.IsOwner() || KrakenBody.Instances.Count > 0 || SeaBattles.RaiderShip.Is(ship))
         {
             return false;
         }

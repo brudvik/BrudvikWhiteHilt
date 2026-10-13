@@ -99,6 +99,7 @@ public static class ShipAssistPatches
             Pieces.Navigation.ShipRoutePlanner.Tick(__instance);
             Pieces.Ships.WhiteHiltShip.ShipPortalArrival.Tick(__instance);
             ManOverboard.Tick(__instance);
+            global::BrudvikWhiteHilt.SeaBattles.BoardingLeap.Tick(__instance);
         }
     }
 
@@ -113,7 +114,7 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
-    /// Shows the lifeline prompt under the crosshair.
+    /// Shows the lifeline prompt, or else the boarding leap prompt, under the crosshair.
     /// </summary>
     /// <param name="__instance">The HUD.</param>
     /// <param name="player">The local player.</param>
@@ -121,6 +122,9 @@ public static class ShipAssistPatches
     [HarmonyPostfix]
     public static void UpdateCrosshair(Hud __instance, Player player)
     {
-        ManOverboard.UpdateCrosshair(__instance, player);
+        if (!ManOverboard.UpdateCrosshair(__instance, player))
+        {
+            global::BrudvikWhiteHilt.SeaBattles.BoardingLeap.UpdateCrosshair(__instance, player);
+        }
     }
 }

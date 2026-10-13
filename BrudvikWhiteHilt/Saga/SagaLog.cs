@@ -29,7 +29,13 @@ public enum SagaKind
     Biome,
 
     /// <summary>A skill milestone.</summary>
-    Skill
+    Skill,
+
+    /// <summary>A Nail Ship taken or sunk.</summary>
+    SeaBattle,
+
+    /// <summary>A draugr harbour sacked.</summary>
+    Raid
 }
 
 /// <summary>
@@ -242,6 +248,8 @@ public static class SagaLog
             SagaKind.Beast => SagaSettings.RenownBeast.Value,
             SagaKind.Monster => SagaSettings.RenownMonster.Value,
             SagaKind.Treasure => SagaSettings.RenownTreasure.Value,
+            SagaKind.SeaBattle => SagaSettings.RenownSeaBattle.Value,
+            SagaKind.Raid => SagaSettings.RenownRaid.Value,
             _ => 0
         };
         Add(player, deed, name, string.Empty, renown);

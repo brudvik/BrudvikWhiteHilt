@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Nail Ships](docs/sea-battles.md)**: after Bonemass is slain, a dark longship crewed by draugr may hunt your ship on the open sea (deep ocean with no land near, at most one every 45 minutes in the world). A horn sounds, it lies alongside while its archers shoot, then closes in so its warriors leap aboard. It flees when its crew or hull is nearly gone. The crew grows with the world's progress (fulings after Yagluth) and with the players aboard. Settings in `[SeaBattles]`.
+- **Prize ships**: when the whole crew is dead the Nail Ship is yours: open its hold, take the helm and sail it. Its nails do not hold, so it sinks after 10 minutes and the hold drops as a cargo crate.
+- **Boarding leap**: standing on any ship, look at another ship within 10 m and press Use to leap aboard.
+- **[Raid Charts and draugr harbours](docs/sea-battles.md#raids)**: a Nail Ship's hold may carry a Raid Chart. Using it marks a draugr harbour on a coast you have explored: a moored Nail Ship, guards on the shore and a hoard chest that only opens once the guards are dead. Settings in `[SeaBattles.Raids]`.
+- **Two [saga](docs/saga.md) deeds**: a Nail Ship taken or sunk (25 renown) and a draugr harbour sacked (40), with the settings `RenownSeaBattle` and `RenownRaid`.
+- **`whitehilt_seabattle [status|summon|raid]`**, a console command: everyone can see the conditions for a Nail Ship; admins can send one after their ship or make a harbour near them.
+- **Ship Ballista** (a new ship upgrade for the White Hilt Ship and Skidbladnir) and **Ship Bolts**. The ballista stands on the forecastle: look at it and press Use to man it, aim with the camera and shoot with the attack button. The bolts are made at the Shipwright's Bench and are not turret bolts. Everything is a setting in `[Ships.Ballista]`, including the firing arc, reload time and damage. See [Ships](docs/ships.md#the-ship-ballista).
+
+### Changed
+- The Harbour Anchor's map and the Lookout treat a Nail Ship as nobody's ship: it never shows on the anchor's map, and the Lookout shows it as a sea monster.
+- The server and every player need this version: the Nail Ships and the raids add new network messages.
+
 ## v0.127.0 - 2026-10-12
 
 ### Added

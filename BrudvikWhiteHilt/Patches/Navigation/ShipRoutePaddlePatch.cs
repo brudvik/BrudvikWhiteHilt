@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Pieces.Navigation;
+using BrudvikWhiteHilt.SeaBattles;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
@@ -36,13 +37,13 @@ public static class ShipRoutePaddlePatch
     }
 
     /// <summary>
-    /// True when someone holds the helm, or the ship rows its route.
+    /// True when someone holds the helm, the ship rows its route, or a Nail Ship sails itself.
     /// </summary>
     /// <param name="ship">The ship.</param>
     /// <returns>True if the ship is steered.</returns>
     public static bool Steered(Ship ship)
     {
-        if (ship.HaveControllingPlayer())
+        if (ship.HaveControllingPlayer() || RaiderShip.Sails(ship))
         {
             return true;
         }

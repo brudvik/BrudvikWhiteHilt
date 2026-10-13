@@ -118,7 +118,8 @@ internal static class SkidbladnirModel
     internal static Bounds LowerDeck => new(At(0f, 0.85f, 2f), new Vector3(5.68f, 2.9f, 11.1f));
     private static readonly string[] UpgradeObjects =
     {
-        WhiteHiltShipUpgrades.BrazierName, WhiteHiltShipUpgrades.AnchorName, WhiteHiltShipUpgrades.MastWispName, ShipTentColliders.ObjectName
+        WhiteHiltShipUpgrades.BrazierName, WhiteHiltShipUpgrades.AnchorName, WhiteHiltShipUpgrades.MastWispName, ShipTentColliders.ObjectName,
+        Ballista.ShipBallista.ObjectName
     };
     // Slopes of the source model's quarterdeck and poop deck, both rising towards the stern.
     internal static readonly Quaternion QuarterdeckTilt = Quaternion.Euler(5.06f, 0f, 0f);

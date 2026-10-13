@@ -35,6 +35,12 @@ public static class SagaSettings
     /// <summary>Renown for a treasure dug up.</summary>
     public static ConfigEntry<int> RenownTreasure { get; private set; }
 
+    /// <summary>Renown for a Nail Ship taken or sunk.</summary>
+    public static ConfigEntry<int> RenownSeaBattle { get; private set; }
+
+    /// <summary>Renown for a draugr harbour sacked.</summary>
+    public static ConfigEntry<int> RenownRaid { get; private set; }
+
     /// <summary>Renown for a new biome.</summary>
     public static ConfigEntry<int> RenownBiome { get; private set; }
 
@@ -71,6 +77,8 @@ public static class SagaSettings
         RenownBeast = BindRenown("RenownBeast", 3, "a slain black beast");
         RenownMonster = BindRenown("RenownMonster", 5, "a slain creature from the Creatures list");
         RenownTreasure = BindRenown("RenownTreasure", 3, "a treasure dug up");
+        RenownSeaBattle = BindRenown("RenownSeaBattle", 25, "a Nail Ship taken or sunk");
+        RenownRaid = BindRenown("RenownRaid", 40, "a draugr harbour sacked");
         RenownBiome = BindRenown("RenownBiome", 2, "the first steps into a biome");
         RenownSkill = BindRenown("RenownSkill", 1, "a skill reaching 25, 50, 75 or 100");
         RenownPerRank = WhiteHiltConfig.BindAdminOnly(Section, "RenownPerRank", 20, "Renown for each rank.", new AcceptableValueRange<int>(1, 500));
@@ -93,6 +101,8 @@ public static class SagaSettings
         Translations.AddEnglish("whitehilt_saga_beast", "A black beast was slain: {0}");
         Translations.AddEnglish("whitehilt_saga_monster", "{0} was slain");
         Translations.AddEnglish("whitehilt_saga_treasure", "A treasure was dug up");
+        Translations.AddEnglish("whitehilt_saga_seabattle", "A Nail Ship was taken");
+        Translations.AddEnglish("whitehilt_saga_raid", "A draugr harbour was sacked");
         Translations.AddEnglish("whitehilt_saga_biome", "First steps into {0}");
         Translations.AddEnglish("whitehilt_saga_skill", "{0} reached {1}");
         Translations.AddEnglish("whitehilt_saga_close", "Close");

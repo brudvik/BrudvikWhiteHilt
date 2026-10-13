@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
+using BrudvikWhiteHilt.SeaBattles;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships;
@@ -116,6 +117,13 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     /// <returns>The hover text, empty when the ship can not be pushed.</returns>
     public string GetHoverText()
     {
+        // A Nail Ship is never pushed; its own text (the prize and the minutes left) is shown instead.
+        RaiderShip raider = RaiderShip.Of(ship);
+        if (raider != null)
+        {
+            return raider.HoverText();
+        }
+
         return CanPush(Player.m_localPlayer) ? Localization.instance.Localize("[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_ship_push") : string.Empty;
     }
 
@@ -160,8 +168,9 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private bool CanPush(Player player)
     {
-        return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !ship.IsPlayerInBoat(player)
-            && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);
+        return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !RaiderShip.Is(ship)
+            && player.GetStandingOnShip() == null
+            && !ship.IsPlayerInBoat(player) && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);
     }
 
     private void ToggleCourse(Player player)
@@ -466,8 +475,9 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     /// </summary>
     /// <param name="course">The heading to sweep, in degrees from north.</param>
     /// <param name="distance">How far ahead of the bow.</param>
+    /// <param name="ignore">A body that does not count, such as the ship a Nail Ship is closing in on.</param>
     /// <returns>True if something is in the way.</returns>
-    public bool Blocked(float course, float distance)
+    public bool Blocked(float course, float distance, Rigidbody ignore = null)
     {
         if (ZoneSystem.instance == null)
         {
@@ -489,7 +499,8 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             QueryTriggerInteraction.Ignore))
         {
             // Zero distance means the box started inside it: the ship's own hull, or ground it already lies beside.
-            if (hit.distance <= 0f || hit.collider.transform.IsChildOf(transform) || (body != null && hit.collider.attachedRigidbody == body))
+            if (hit.distance <= 0f || hit.collider.transform.IsChildOf(transform) || (body != null && hit.collider.attachedRigidbody == body)
+                || (ignore != null && hit.collider.attachedRigidbody == ignore))
             {
                 continue;
             }

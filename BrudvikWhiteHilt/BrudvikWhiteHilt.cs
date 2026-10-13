@@ -106,6 +106,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Planting.PlantingSettings.Initialize();
         Backpack.BackpackSettings.Initialize();
         Pieces.Ships.ShipSettings.Initialize();
+        Pieces.Ships.Ballista.BallistaSettings.Initialize();
         Pieces.Ships.Skidbladnir.SkidbladnirSettings.Initialize();
         Clock.ClockSettings.Initialize();
         HudLayout.HudSettings.Initialize();
@@ -148,9 +149,12 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Runes.ColourRunes.RegisterTranslations();
         Items.Weapons.WeaponFlame.RegisterTranslations();
         Kraken.KrakenSettings.Initialize();
+        SeaBattles.SeaBattleSettings.Initialize();
         Items.Summoning.SummoningHornService.Initialize();
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();
+        SeaBattles.SeaBattleCommands.Register();
+        SeaBattles.NailShipRegistry.Initialize();
         Monsters.MonsterSettings.Initialize();
         OldLand.OldLandSettings.Initialize();
         Monsters.MonsterCommands.Register();

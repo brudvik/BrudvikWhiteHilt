@@ -34,7 +34,7 @@ Use the port-side boarding ladder amidships, at the gap in the rail, to get aboa
 
 Rails and walls follow the model's balustrades and new railings along the waist and the deck edges, so you cannot walk off. The stair opening has its own railing, open at the top of the stair and for a short stretch beside the main mast. The lower room is closed by bulkheads at both ends and lined with planking along both sides, so wall drawers hang on a visible wall. With the Ship Lantern upgrade, two stern lanterns on posts and three lamps under the lower deck's beams light together with the deck lantern; any of them switches all of them. The rudder on the sternpost turns with the helm, and the main course carries the White Hilt logo, readable from both sides.
 
-Like the longship, Skidbladnir has places to sit or hold on, so you stay aboard in rough seas: two stools by the port rail of the quarterdeck, one beside the helm, two facing each other on the forecastle, a holdfast at the main mast and one at the forecastle's front rail. Use the mast ladder to reach the intermediate platform and top lookout. Ladder Use climbs to the next stop; alternate Use descends, like the White Hilt watchtowers. Skidbladnir supports all nine upgrades below, the Navigator's Table, routes and deck-portal arrival at their own positions.
+Like the longship, Skidbladnir has places to sit or hold on, so you stay aboard in rough seas: two stools by the port rail of the quarterdeck, one beside the helm, two facing each other on the forecastle, a holdfast at the main mast and one at the forecastle's front rail. Use the mast ladder to reach the intermediate platform and top lookout. Ladder Use climbs to the next stop; alternate Use descends, like the White Hilt watchtowers. Skidbladnir supports all ten upgrades below, the Navigator's Table, routes and deck-portal arrival at their own positions.
 
 Horizontal speed is capped at half the White Hilt Ship's calculated ideal full-sail terminal speed on flat water with tailwind, using its configured sail force and drag. The cap also applies to rowing and autopilot; vertical wave and Kraken movement is retained. It is not a comparison with another ship's instantaneous speed. Sail force is reduced as well, and the separate sails furl visibly. Geometry and sailing balance can be adjusted after testing.
 
@@ -90,6 +90,7 @@ A sturdy workbench with a ship's anchor leaning on one end, an anchor chain, a c
 | **Deck Brazier** | An iron brazier on the starboard deck under the tent that burns without fuel. It keeps those near it warm and counts as a fire for resting | Bog Iron ×4, Stone ×10, Peat ×10, Surtling Core ×1 |
 | **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Bog Iron ×2, Pine Tar ×1, Sphagnum Moss ×3 |
 | **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×8, Pine Tar ×2, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
+| **Ship Ballista** | A ballista on the forecastle, a little behind the bow holdfast, on the White Hilt Ship and on Skidbladnir. Look at it and press **Use** to man it, then aim with the camera and shoot Ship Bolts with the attack button. See [The Ship Ballista](#the-ship-ballista) | Fine Wood ×12, Iron ×4, Chain ×2, Bog Iron ×4, Pine Tar ×2 |
 
 The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it. The drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm (`Ships` → `AutoAnchor`, on by default).
 
@@ -105,7 +106,7 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 - **Man overboard**: fall into the water from a ship moving at 2 m/s or more, and everyone aboard gets *Man overboard: Kjell!*, the ship's bell, a pin on the map and an arrow on the minimap's edge pointing to you. You get a pin and an arrow toward the ship. A ship that sails its route or holds its course stops; a ship someone steers is left to them. It ends when you are out of the water, die, or after 5 minutes.
 - **Lifeline**: standing on the deck of that ship within 25 m of the one in the water, press **E** (*Throw a lifeline to Kjell* under the crosshair). A moment later they are pulled aboard next to you.
 
-**Harbour Anchor:** a standing iron anchor built next to a map table, within reach of a Shipwright's Bench. While one stands near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
+**Harbour Anchor:** a standing iron anchor built next to a map table, within reach of a Shipwright's Bench. While one stands near a map table (`[Navigation] MapTableRange`, 5 m; see [Around the map table](navigation.md#around-the-map-table)), every ship in the world (rafts, Karves, Longships, Drakkars, the White Hilt Ship and ships from other mods; not the [Nail Ships](sea-battles.md)) shows on everyone's map and minimap with its own build icon. Positions follow sailing ships every 2 seconds. Point at a ship on the large map to see its type and, if they are online, who built it.
 
 <img src="images/harbour_anchor.png" alt="Harbour Anchor" title="Harbour Anchor" height="140">
 
@@ -121,6 +122,20 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 |------|-----|------------------|--------------|
 | **Mooring Post** | Moors the nearest ship | Hammer (Shipwright's Bench) | Fine Wood ×4, Iron ×1, Leather Scraps ×4 |
 
+### The Ship Ballista
+
+A ballista on the forecastle, built from the vanilla ballista's own parts at a smaller size. It is made for the dark longships of Naglfar's fleet that hunt ships at sea: see [Sea battles & raids](sea-battles.md). It stands on the deck behind the bow holdfast, the same on the White Hilt Ship and on Skidbladnir. Use the **Ship Ballista** on the mast to install it; use the mast to take it off again.
+
+- **Man it:** look at the ballista and press **Use** (*Man the ballista*, with the number of Ship Bolts you carry). You stand behind it, holding on. Only one player can man it at a time.
+- **Aim:** the ballista turns with the camera. It can turn `YawArc` degrees to either side of straight ahead, `PitchMin` degrees down and `PitchMax` degrees up; it stops at the limits.
+- **Shoot:** press the **attack button**. It takes one Ship Bolt from your inventory (*No Ship Bolts* when there is none) and needs `ReloadSeconds` to load again; the loaded bolt shows on the ballista. The bolt is yours: kills count for you, and damage follows the PvP rules. It hurts serpents and the Kraken like any other weapon.
+- **Let go:** move, jump, crouch, block or use the secondary attack, and you step away from it.
+- **Others:** everyone sees the ballista turn and the bolt fly. The aim is kept on the gunner's own player, so nobody needs to own the ship to shoot.
+
+| Item | Effect | Crafting Station | Requirements |
+|------|--------|------------------|--------------|
+| **Ship Bolt** (`WhiteHiltShipBolt`) | A heavy iron-tipped bolt for the Ship Ballista, made `BoltsPerCraft` at a time. It has an ammo type of its own, so the Mistlands turret can not shoot it and the ballista can not shoot turret bolts | Shipwright's Bench | Wood ×4, Iron ×1, Feathers ×2 |
+
 ## Config
 
 Section `[Ships.Skidbladnir]` (admin only, synced from the server, except `LowerDeckCameraDistance`):
@@ -135,6 +150,19 @@ Section `[Ships.Skidbladnir]` (admin only, synced from the server, except `Lower
 | `FurnitureSyncSeconds` | 1 | Seconds between ownership-side saved world-position updates for furnishings; range 0.1 to 5 |
 | `SailSeconds` | 2 | Seconds to deploy or furl the sails; range 0.5 to 10 |
 | `LowerDeckCameraDistance` | 2 | Each player's own: below deck the camera comes in to this distance in metres and stays inside the hull; 0 keeps the vanilla camera; range 0 to 8 |
+
+Section `[Ships.Ballista]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The Ship Ballista upgrade and Ship Bolts can be made, and the ballista used. Off: none of them can be made and a ballista can not be manned; ones already made are kept |
+| `Damage` | 80 | Pierce damage of a Ship Bolt; range 1 to 1000 |
+| `ReloadSeconds` | 4 | Seconds between two shots; range 0.5 to 30 |
+| `BoltSpeed` | 60 | Speed of a bolt in metres per second; range 10 to 150 |
+| `Accuracy` | 1 | Random spread of a shot in degrees; 0 is dead on; range 0 to 10 |
+| `YawArc` | 70 | Degrees the ballista can turn to either side of straight ahead; range 10 to 170 |
+| `PitchMin` / `PitchMax` | -10 / 25 | Degrees the ballista can aim down and up; range -45 to 60 |
+| `BoltsPerCraft` | 10 | Ship Bolts made at once; range 1 to 50 |
 
 Section `[Ships]` (admin only, synced from the server):
 

@@ -39,6 +39,25 @@ public class HornCaller : MonoBehaviour
         mixer = template?.outputAudioMixerGroup;
     }
 
+    /// <summary>Plays the Dragon Horn's call once at a place in the world, heard up to a range. Does nothing on a dedicated server.</summary>
+    /// <param name="position">Where the horn sounds.</param>
+    /// <param name="range">The distance it can be heard from.</param>
+    public static void PlayAt(Vector3 position, float range)
+    {
+        if (VisualHelper.IsHeadless || dragonClip == null)
+            return;
+        GameObject sound = new("WhiteHiltHornCall") { transform = { position = position } };
+        AudioSource source = sound.AddComponent<AudioSource>();
+        source.clip = dragonClip;
+        source.outputAudioMixerGroup = mixer;
+        source.spatialBlend = 1f;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.minDistance = 2f;
+        source.maxDistance = range;
+        source.Play();
+        Destroy(sound, dragonClip.length + 0.5f);
+    }
+
     /// <summary>Starts a call if the local player is holding the horn.</summary>
     /// <returns>Whether the attack was handled as a horn call.</returns>
     public bool Begin()

@@ -18,7 +18,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
     /// <summary>
     /// Number of upgrades.
     /// </summary>
-    public const int Count = 9;
+    public const int Count = 10;
 
     private const string Section = "Gear.ShipUpgrades";
 

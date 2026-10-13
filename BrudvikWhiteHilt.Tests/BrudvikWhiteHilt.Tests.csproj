@@ -37,6 +37,13 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(ModOutput)UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <!-- The Nail Ship's transpiler is tried on the game's own code, without applying it. -->
+    <Reference Include="0Harmony">
+      <HintPath>$(ModOutput)0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>$(ModOutput)Mono.Cecil.dll</HintPath>
+    </Reference>
     <!-- Everything the mod needs at run time, including Unity's netstandard 2.1, which .NET Framework does not have. -->
     <None Include="$(ModOutput)*.dll" Exclude="$(ModOutput)BrudvikWhiteHilt.dll" Visible="false">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

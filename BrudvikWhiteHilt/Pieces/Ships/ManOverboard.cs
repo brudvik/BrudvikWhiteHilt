@@ -87,13 +87,17 @@ public static class ManOverboard
     /// </summary>
     /// <param name="hud">The HUD.</param>
     /// <param name="player">The local player.</param>
-    public static void UpdateCrosshair(Hud hud, Player player)
+    /// <returns>True when the lifeline prompt was shown.</returns>
+    public static bool UpdateCrosshair(Hud hud, Player player)
     {
         if (player != null && ShipSettings.ManOverboard.Value && TryGetLifelineTarget(player, out _, out string name))
         {
             hud.m_hoverName.text = string.Format(Localization.instance.Localize("[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_overboard_lifeline"), name);
             hud.m_crosshair.color = Color.yellow;
+            return true;
         }
+
+        return false;
     }
 
     // Notices the local player falling off a moving ship: swimming within moments of being aboard, while the ship went
@@ -103,6 +107,13 @@ public static class ManOverboard
     {
         float now = Time.time;
         Ship current = Ship.GetLocalShip();
+
+        // A fall from a Nail Ship, boarded as a prize or leapt aboard, is no man overboard.
+        if (SeaBattles.RaiderShip.Is(current))
+        {
+            current = null;
+        }
+
         if (current != null && !player.IsSwimming())
         {
             if (current != lastShip)

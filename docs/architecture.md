@@ -223,6 +223,10 @@ All patches live in `Patches/`, in folders named after the features they serve. 
   value from the prefix to the postfix (`ForagingDropPatch` uses it to know that a pick really happened).
 - **Every patch class carries `[HarmonyPatch]`**, even when each method names its own target. `PatchAll` skips a
   class without it and says nothing; `PatchTests` fails if one slips through.
+- **A transpiler changes a method from the inside.** `Patches/SeaBattles/RaiderShipPatches.cs` swaps the two reads of
+  `m_players.Count` in `Ship.CustomFixedUpdate` for a call to `RaiderShip.CrewCount`, so a Nail Ship with nobody aboard
+  is not stopped. It logs a warning if it replaces nothing, and a test reads the game's code to see that the count is
+  still read where it expects.
 
 > Read next: `Patches/Chests/ContainerPatch.cs` with `Chests/ChestModule.cs`, `Patches/Foraging/PeatFuelPatch.cs`,
 > `Patches/Foraging/ForagingDropPatch.cs`.

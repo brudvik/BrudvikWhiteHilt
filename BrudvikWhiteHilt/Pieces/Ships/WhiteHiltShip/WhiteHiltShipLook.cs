@@ -286,7 +286,7 @@ public static class WhiteHiltShipLook
         PaintMaterials(root.GetComponentsInChildren<Renderer>(true), matches, paint);
     }
 
-    private static void PaintMaterials(Renderer[] renderers, Func<string, bool> matches, Func<Texture, Texture2D> paint)
+    internal static void PaintMaterials(Renderer[] renderers, Func<string, bool> matches, Func<Texture, Texture2D> paint)
     {
         PaintMaterials(renderers, matches, (_, source) => paint(source));
     }

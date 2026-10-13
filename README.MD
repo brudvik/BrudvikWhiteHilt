@@ -105,7 +105,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/treasure.md"><img src="docs/images/treasure_chest.png" height="110" alt=""></a><br><b><a href="docs/treasure.md">Treasure maps</a></b><br><sub>Buy a map from Hildir, match its scrap of land to your own map and dig up the chest.</sub></td>
 <td align="center" valign="top"><a href="docs/harbour.md"><img src="docs/images/water_havn.png" height="110" alt=""></a><br><b><a href="docs/harbour.md">Bridges, jetties & quays</a></b><br><sub>Jetties on piles, stone quays with steps down to the water, and log, rope and stone bridges.</sub></td>
-<td></td>
+<td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, with a ballista to answer, boarding leaps, prize ships and raid charts that lead to a draugr harbour to sack.</sub></td>
 </tr>
 </table>
 
