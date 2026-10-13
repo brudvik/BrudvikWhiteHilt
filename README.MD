@@ -41,14 +41,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.127.0
+## ✨ New in 0.128.0
 
-- **[Five new monsters](docs/monsters.md)**, each with its own animations and sounds: the **Mist Stag** that charges out of the Mistlands' fog, the **Nidhogg Spawn** that roars before it hunts, the **Yggdrasil Warden** that stands like a dead tree until you come too close, packs of **Garm Hounds** with burning bites in the Ashlands at night, and the **Greenland Shark** in the deep sea.
-- **What they leave**: Roast Mist Stag, hákarl from shark meat, the Heartwood Draught, the Brood Scale Charm and Garm Fang Arrows.
+- **[Sea battles and raids](docs/sea-battles.md)**: after Bonemass, **Nail Ships** from Naglfar's fleet hunt ships on the open sea. Their draugr archers shoot from alongside before the warriors leap aboard. Kill the crew and the ship is your prize for a while, hold and all.
+- **[Ship Ballista](docs/ships.md)**: a new upgrade for the White Hilt Ship and Skidbladnir that you man and aim yourself, with Ship Bolts from the Shipwright's Bench. **Boarding leap**: jump from deck to deck.
+- **Raid Charts** from a Nail Ship's hold mark a draugr harbour on a coast you know: guards on the shore and a hoard that opens when they are dead. Both are new deeds in the [Saga](docs/saga.md). Everyone needs this version.
 
-### Also new in 0.126.0
+### Also new in 0.127.0
 
-- **[The School Bench shares map pins](docs/school.md#map-pins)**: writing at the bench also writes the places you marked and found (Vegvisir boss stones, Hildir's quests), and reading gives others the pins they do not have, in the biomes they have been to. Everyone needs this version.
+- **[Five new monsters](docs/monsters.md)**, each with its own animations and sounds: the **Mist Stag**, the **Nidhogg Spawn**, the **Yggdrasil Warden**, packs of **Garm Hounds** and the **Greenland Shark**.
 
 See the [changelog](CHANGELOG.md) for everything else.
 

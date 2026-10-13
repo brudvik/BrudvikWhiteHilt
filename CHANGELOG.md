@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.128.0 - 2026-10-13
 
 ### Added
 - **[Nail Ships](docs/sea-battles.md)**: after Bonemass is slain, a dark longship crewed by draugr may hunt your ship on the open sea (deep ocean with no land near, at most one every 45 minutes in the world). A horn sounds, it lies alongside while its archers shoot, then closes in so its warriors leap aboard. It flees when its crew or hull is nearly gone. The crew grows with the world's progress (fulings after Yagluth) and with the players aboard. Settings in `[SeaBattles]`.
