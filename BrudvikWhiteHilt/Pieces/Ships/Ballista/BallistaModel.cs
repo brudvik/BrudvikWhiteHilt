@@ -28,7 +28,8 @@ internal static class BallistaModel
     /// Adds the ballista part to a ship prefab. A failure leaves the ship without it and logs a warning.
     /// </summary>
     /// <param name="root">The ship prefab's root.</param>
-    internal static void Build(Transform root)
+    /// <returns>The ballista on the new part, or null when the part could not be built.</returns>
+    internal static ShipBallista Build(Transform root)
     {
         GameObject part = new(ShipBallista.ObjectName) { layer = WhiteHiltShipUpgradeSetup.CrateLayer(root) };
         part.transform.SetParent(root, false);
@@ -46,11 +47,13 @@ internal static class BallistaModel
             gunner.transform.localPosition = behind;
             ballista.m_attachPoint = gunner.transform;
             part.SetActive(false);
+            return ballista;
         }
         catch (Exception ex)
         {
             UnityEngine.Object.DestroyImmediate(part);
             Jotunn.Logger.LogWarning($"{root.name}: the ship ballista has no part: {ex.Message}");
+            return null;
         }
     }
 

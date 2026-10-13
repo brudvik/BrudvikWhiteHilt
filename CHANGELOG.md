@@ -2,6 +2,22 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Holes, flooding, patching and bailing](docs/sea-battles.md#damage-at-sea)**: in a sea battle a heavy hit on a hull (at least 60 damage) knocks a hole at the waterline, and a ram always does. Holes let water in: the ship lies lower, sails slower and, unless it is indestructible, breaks up when full. The White Hilt ships flood and slow down but never sink. Look at a hole and press Use to patch it (2 wood and 1 resin), press Shift + Use aboard to bail (costs stamina). The water in the hull shows at the helm. Settings in `[SeaBattles.Damage]`.
+- **[Deck fires and Pitch Pots](docs/sea-battles.md#fire-on-deck)**: a Pitch Pot (Workbench: Pine Tar, Resin, Leather Scraps) that lands on a deck sets it alight. The fire burns players and the hull for 30 seconds, half that in rain, and is stamped out with Use. See [The Pitch Pot](docs/sea-battles.md#the-pitch-pot).
+- **[The Nail Ship fights back](docs/sea-battles.md#the-nail-ship-fights-back)**: its crew throw pitch pots at your deck, and once Moder is slain it carries a ballista of its own that shoots Ship Bolts at your hull. Settings in `[SeaBattles.Weapons]`.
+- **[Chain Shot](docs/ships.md#the-ship-ballista)**: ammunition for the Ship Ballista that tears the sail of the ship it hits, so it sails at half force for 45 seconds.
+- **[Grapnel Bolt](docs/ships.md#the-ship-ballista)**: ammunition for the Ship Ballista that binds the ship it hits to yours with a rope and pulls the two together, so you can board. A bound Nail Ship cannot flee. Look at the rope on your rail and press Use to cut it.
+- **Ammunition choice**: while manning the ballista, the secondary attack switches between the Ship Bolts, Chain Shots and Grapnel Bolts you carry. The crosshair shows which and how many. New keys in `[Ships.Ballista]`.
+- **[Ram Prow](docs/ships.md#the-ram-prow)**: a new ship upgrade for the White Hilt Ship and Skidbladnir (Shipwright's Bench: Iron, Bog Iron, Fine Wood, Chain). Striking a ship or a creature bow-first hurts it in proportion to your speed, and always knocks a hole in a ship. Settings in `[Ships.Ram]`.
+- **`whitehilt_seabattle hole [n]`**, a console command (needs cheats): knocks holes in the ship you stand on, to try flooding and patching.
+
+### Changed
+- The secondary attack no longer makes you let go of the ballista: it switches ammunition.
+- The server and every player need this version: holes, fires and ropes add new network messages.
+
 ## v0.128.0 - 2026-10-13
 
 ### Added

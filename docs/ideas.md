@@ -16,6 +16,40 @@ The [Dragon Horn](monsters.md#the-dragon-horn-a-white-dragon-at-your-side) calls
 
 Every setting can be changed, and there are many of them. The HUD already has a `Preset`. A preset for the whole mod (*Vanilla+*, *Standard*, *Hardcore*) would set many values at once in the [settings window](progression.md), with the server deciding.
 
+## ⚓ More for the sea battles
+
+Ideas that build on the [sea battles](sea-battles.md): the Nail Ships, their crew, the Ship Ballista, the boarding leap and the raid harbours.
+
+**The fight**
+
+- **More enemy tactics.** Nail Ships that ram, burning fire rafts drifting toward you, ambushes in fog, and Nail Ships that lie in wait along your saved routes.
+- **The Kraken attacks everyone.** A Kraken that rises in the middle of a battle goes after the Nail Ship as well, so you can lure them into each other.
+
+**Bigger enemies**
+
+- **Fleets.** Two or three Nail Ships in formation at later tiers, led by a flagship.
+- **Naglfar as a world boss.** A huge ship with a draugr jarl on deck, called with its own horn. It drops Naglfar's nails, used for hull plating on your own ship.
+- **Fleets of later biomes.** Ice ships in the Deep North and charred ships in the Ashlands sea, with that biome's crew and loot.
+
+**Your own fleet**
+
+- **Keep the prize.** Rebuild a captured Nail Ship at the Shipwright's Bench (nails and materials) into a Naglfar longship of your own.
+- **A crew of the dead.** The Necromancer's Staff raises draugr that row, man the ballista or hold the deck. The dog comes along as a lookout and barks at sails.
+- **Trophies on the ship.** The Nail Ship's dragon head mounted as your own figurehead, with a small bonus.
+
+**On land and in harbour**
+
+- **Harbour raids.** Nail Ships come for your jetties and mooring posts like a raid, met with the alarm bell, the oil cauldron and a shore ballista among the defences.
+- **Fuller raid harbours.** A jarl guarding the hoard, huts and fires, a captive to free who becomes a trader, and waves of guards when the harbour's horn sounds.
+- **Escorts.** Haldor's or Hildir's trading ship sails between two places, and you guard it against Nail Ships.
+
+**Navigation, saga and multiplayer**
+
+- **A spyglass.** See sails far out before they see you, with the Lookout and Munin's Perch, and slip away if you want.
+- **Fame at sea.** Saga titles such as *Sea-king* by the number of ships taken, and a bounty board for Nail Ships.
+- **Wrecks and flotsam.** A sunk Nail Ship leaves flotsam that the fishing net or a boat hook picks up.
+- **Holmgang at sea.** An agreed duel between two player ships, with its own saga deed.
+
 ## 🏛️ The world and its people
 
 - **The Thing.** A thing stone where players vote on the laws of the server: blood moons, death penalty, PvP, a settings preset. A law that passes becomes a world modifier, which gives the settings presets above a place in the game.

@@ -52,8 +52,9 @@ public readonly struct RaiderInput
     /// <param name="secondsInState">Seconds since the state last changed.</param>
     /// <param name="side">-1 to lie on the target's port side, 1 on its starboard side.</param>
     /// <param name="hasMelee">Whether any melee crew is alive.</param>
+    /// <param name="grappled">Whether a grapnel rope binds the Nail Ship to another ship; it cannot run then.</param>
     public RaiderInput(RaiderState state, Vector2 self, float selfHeading, Vector2 target, Vector2 targetVelocity,
-        float targetHeading, float crewShare, float hullShare, float secondsInState, int side, bool hasMelee)
+        float targetHeading, float crewShare, float hullShare, float secondsInState, int side, bool hasMelee, bool grappled = false)
     {
         State = state;
         Self = self;
@@ -66,6 +67,7 @@ public readonly struct RaiderInput
         SecondsInState = secondsInState;
         Side = side;
         HasMelee = hasMelee;
+        Grappled = grappled;
     }
 
     /// <summary>The state now.</summary>
@@ -100,6 +102,9 @@ public readonly struct RaiderInput
 
     /// <summary>Whether any melee crew is alive.</summary>
     public bool HasMelee { get; }
+
+    /// <summary>Whether a grapnel rope binds the Nail Ship to another ship; it cannot run then.</summary>
+    public bool Grappled { get; }
 }
 
 /// <summary>What the tactics ask for.</summary>
@@ -174,7 +179,7 @@ public static class RaiderTactics
     private const float LeadSecondsMax = 15f;
 
     /// <summary>
-    /// Decides the state, course and sail. Flee wins over everything; Prize and Moored only stop.
+    /// Decides the state, course and sail. Flee wins over everything but a grapnel rope; Prize and Moored only stop.
     /// </summary>
     /// <param name="input">What the ship knows.</param>
     /// <param name="tuning">The settings.</param>
@@ -250,9 +255,15 @@ public static class RaiderTactics
         return Wrap(Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg);
     }
 
-    // Works out the state: Flee wins; Approach turns into Broadside when near; Broadside into Board after its time.
+    // Works out the state: Flee wins; Approach turns into Broadside when near; Broadside into Board after its time. A ship
+    // that a grapnel rope binds never flees, even one already fleeing, and goes straight to boarding when it has warriors.
     private static RaiderState NextState(RaiderInput input, RaiderTuning tuning, float distance)
     {
+        if (input.Grappled)
+        {
+            return input.HasMelee ? RaiderState.Board : RaiderState.Broadside;
+        }
+
         if (input.State == RaiderState.Flee || input.CrewShare <= tuning.FleeCrewShare || input.HullShare <= tuning.FleeHullShare)
         {
             return RaiderState.Flee;

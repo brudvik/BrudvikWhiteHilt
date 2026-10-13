@@ -18,7 +18,7 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
     /// <summary>
     /// Number of upgrades.
     /// </summary>
-    public const int Count = 10;
+    public const int Count = 11;
 
     private const string Section = "Gear.ShipUpgrades";
 
@@ -59,6 +59,12 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
     protected abstract RequirementConfig[] Requirements { get; }
 
     /// <summary>
+    /// Whether the constructor registers the English name and description. An upgrade whose texts are registered with the
+    /// other texts of its feature returns false, so each text is registered once.
+    /// </summary>
+    protected virtual bool RegistersTexts => true;
+
+    /// <summary>
     /// Indicates whether the upgrade is enabled.
     /// </summary>
     public abstract bool Enabled { get; }
@@ -96,7 +102,10 @@ public abstract class WhiteHiltShipUpgradeBase : IWhiteHiltCustomItem, IWhiteHil
         all[Index] = this;
         weight ??= WhiteHiltConfig.BindAdminOnly(Section, "Weight", 5f, "Weight of each White Hilt Ship upgrade item.",
             new AcceptableValueRange<float>(0f, 50f));
-        Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
+        if (RegistersTexts)
+        {
+            Translations.AddEnglishNameAndDescription(NameKey, FullName, Description);
+        }
     }
 
     /// <summary>

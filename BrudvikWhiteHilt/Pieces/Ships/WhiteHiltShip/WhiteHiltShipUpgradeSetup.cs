@@ -67,6 +67,8 @@ public static class WhiteHiltShipUpgradeSetup
         Transform portal = AddPortal(ship.transform);
         AddLanternInteraction(ship.transform);
         Ballista.BallistaModel.Build(ship.transform);
+        ship.AddComponent<Ram.ShipRam>();
+        Ram.RamProw.Build(ship.transform);
 
         if (!VisualHelper.IsHeadless)
         {

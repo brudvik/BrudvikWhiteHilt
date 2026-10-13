@@ -4,6 +4,7 @@ using BrudvikWhiteHilt.Items.Foraging.Peat;
 using BrudvikWhiteHilt.Items.Foraging.Reed;
 using BrudvikWhiteHilt.Items.Foraging.SphagnumMoss;
 using BrudvikWhiteHilt.Items.Roofing;
+using BrudvikWhiteHilt.Pieces.Ships.Ram;
 using Jotunn.Configs;
 using Jotunn.Managers;
 
@@ -460,6 +461,55 @@ public class ShipBallistaUpgrade : WhiteHiltShipUpgradeBase
         new() { Item = "Chain", Amount = 2, Recover = false },
         new() { Item = BogIron.PrefabName, Amount = 4, Recover = false },
         new() { Item = RoofMaterials.PineTar, Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+}
+
+/// <summary>
+/// Shoes the bow of the White Hilt Ship or Skidbladnir with iron. A ship with the prow rams what it strikes bow-first.
+/// </summary>
+public class ShipRamUpgrade : WhiteHiltShipUpgradeBase
+{
+    /// <summary>
+    /// Bit of the Ram Prow in the ship's upgrade mask.
+    /// </summary>
+    public const int Bit = 10;
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public ShipRamUpgrade(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    public override int Index => Bit;
+
+    /// <inheritdoc/>
+    protected override string BaseName => RamSettings.UpgradeName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Ram Prow";
+
+    // The name and description are registered with the other texts of the sea weapons, in WeaponSettings.
+    /// <inheritdoc/>
+    protected override string Description => string.Empty;
+
+    /// <inheritdoc/>
+    protected override bool RegistersTexts => false;
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "Iron";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "Iron", Amount = 6, Recover = false },
+        new() { Item = BogIron.PrefabName, Amount = 4, Recover = false },
+        new() { Item = "FineWood", Amount = 8, Recover = false },
+        new() { Item = "Chain", Amount = 2, Recover = false }
     };
 
     /// <inheritdoc/>

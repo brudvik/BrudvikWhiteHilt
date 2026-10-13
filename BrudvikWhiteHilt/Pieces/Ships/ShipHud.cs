@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.HudLayout;
 using BrudvikWhiteHilt.Pieces.Navigation;
+using BrudvikWhiteHilt.SeaBattles.Damage;
 using Jotunn.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -127,6 +128,12 @@ public static class ShipHud
         if (sailingRoute)
         {
             text += "\n" + string.Format(Localization.instance.Localize("$whitehilt_shiphud_eta"), Eta(route.Remaining(), speed));
+        }
+
+        string water = ShipDamage.FloodLine(ship);
+        if (water != null)
+        {
+            text += "\n" + water;
         }
 
         if (console)

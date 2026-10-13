@@ -188,7 +188,7 @@ public static class SeaBattleSettings
         Translations.AddEnglish("msg_whitehilt_raider_hold_guarded", "The crew guards the hold.");
         Translations.AddEnglish("whitehilt_boarding_leap", "Leap aboard");
         Translations.AddEnglish("whitehilt_ballista_man", "Man the ballista");
-        Translations.AddEnglish("msg_whitehilt_ballista_noammo", "No Ship Bolts");
+        Translations.AddEnglish("msg_whitehilt_ballista_noammo", "No ship ammunition");
         Translations.AddEnglish("msg_whitehilt_raid_marked", "A draugr harbour is marked on your map.");
         Translations.AddEnglish("msg_whitehilt_raid_nosite", "No coast on this chart is known to you.");
         Translations.AddEnglish("msg_whitehilt_raid_guarded", "The guards still live.");

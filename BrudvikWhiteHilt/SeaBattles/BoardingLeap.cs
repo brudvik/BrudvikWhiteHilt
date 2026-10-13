@@ -191,6 +191,8 @@ public static class BoardingLeap
 
     private static bool UsePressed()
     {
-        return !BackpackInput.Typing() && (ZInput.GetButtonDown("Use") || ZInput.GetButtonDown("JoyUse"));
+        // Patching a hole and bailing take Use first, and bailing holds the alternative key.
+        return !BackpackInput.Typing() && (ZInput.GetButtonDown("Use") || ZInput.GetButtonDown("JoyUse"))
+            && Damage.ShipDamageInput.HandledFrame != Time.frameCount && !Damage.ShipDamageInput.AltHeld();
     }
 }

@@ -1,5 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Pieces.Ships.Ballista;
 using BrudvikWhiteHilt.SeaBattles.Raids;
+using BrudvikWhiteHilt.SeaBattles.Weapons;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -66,6 +68,7 @@ public static class NailShipRegistry
             prefab.GetComponent<ZNetView>().m_persistent = false;
 
             prefab.AddComponent<RaiderShip>();
+            AddWeapons(prefab);
             NailShipLook.Apply(prefab);
             PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
             Jotunn.Logger.LogInfo("Nail Ship added!");
@@ -98,6 +101,19 @@ public static class NailShipRegistry
     {
         Ship ship = prefab.GetComponent<Ship>();
         ship.m_sailForceFactor *= SeaBattleSettings.SailForceFactor.Value;
+    }
+
+    // The ship's weapons, and the player ballista's part on its bow, built for show: nobody can man it, it stays hidden until
+    // the world has reached the stage from which Nail Ships carry one, and the crew's weapons run from NailShipWeapons.
+    private static void AddWeapons(GameObject prefab)
+    {
+        ShipBallista ballista = BallistaModel.Build(prefab.transform);
+        if (ballista != null)
+        {
+            ballista.m_decor = true;
+        }
+
+        prefab.AddComponent<NailShipWeapons>();
     }
 
     // The Raid Chart is a scrap of leather drawn as the treasure maps are, in the green-grey of Naglfar's fleet. It has

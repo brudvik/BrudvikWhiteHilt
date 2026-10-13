@@ -1,6 +1,8 @@
 using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using BrudvikWhiteHilt.SeaBattles;
+using BrudvikWhiteHilt.SeaBattles.Damage;
+using BrudvikWhiteHilt.SeaBattles.Weapons;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Pieces.Ships;
@@ -169,6 +171,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
     private bool CanPush(Player player)
     {
         return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !RaiderShip.Is(ship)
+            && !ShipDamageInput.IsAimedAt(ship) && !DeckFireInput.IsAimedAt(ship) && !GrappleInput.IsAimedAt(ship)
             && player.GetStandingOnShip() == null
             && !ship.IsPlayerInBoat(player) && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);
     }

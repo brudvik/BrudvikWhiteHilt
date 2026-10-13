@@ -1,5 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
+using BrudvikWhiteHilt.SeaBattles.Damage;
+using BrudvikWhiteHilt.SeaBattles.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,8 @@ namespace BrudvikWhiteHilt.Pieces.Ships.Ballista;
 /// The ballista on the forecastle of a ship with the Ship Ballista upgrade. A player mans it with Use, aims it with the
 /// camera and shoots a Ship Bolt with the attack button. The aim lives on the gunner's own player ZDO, so nobody needs to
 /// own the ship to shoot and every other client can pose the ballista from it. The bolt is fired as the vanilla turret
-/// fires, but with the gunner as its owner, so kills count for the gunner and damage obeys PvP rules.
+/// fires, but with the gunner as its owner, so kills count for the gunner and damage obeys PvP rules. The gunner chooses
+/// between the kinds of ammunition they carry with the secondary attack (see <see cref="RequestSwitch"/>).
 /// </summary>
 public class ShipBallista : MonoBehaviour, Hoverable, Interactable
 {
@@ -33,7 +36,12 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     private const float AimInterval = 0.1f;
     private const float PoseSmoothing = 12f;
     private const float NeverShot = -100000f;
-    private const string VanillaBallista = "piece_turret";
+
+    // A decorative ballista turns all the way round: nobody stands behind it to be hurt by the swing of the bow.
+    private const float DecorYawArc = 180f;
+
+    // The ammunition, in the order the secondary attack cycles through it. All of it has the Ship Bolt's ammo type.
+    private static readonly string[] AmmoOrder = { ShipBolts.PrefabName, BallistaSettings.ChainShotName, BallistaSettings.GrapnelBoltName };
 
     private static readonly KeyValuePair<int, int> ShipKey = ZDO.GetHashZDOID("whitehilt_ballista_ship");
     private static readonly int AimKey = "whitehilt_ballista_aim".GetStableHashCode();
@@ -44,7 +52,10 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     private static bool isManning;
     private static bool hidItems;
     private static bool fireRequested;
-    private static Turret vanillaBallista;
+    private static bool switchRequested;
+
+    // The kind of ammunition the local gunner has chosen; the Ship Bolt until they choose another.
+    private static string selectedAmmo = ShipBolts.PrefabName;
 
     /// <summary>
     /// Where the gunner stands, behind the ballista. Set when the prefab is built.
@@ -71,20 +82,71 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     /// </summary>
     public GameObject m_bolt;
 
+    /// <summary>
+    /// True for a ballista that is only for show, such as the Nail Ship's: nobody can man it, and it turns to the point it is
+    /// given with <see cref="AimAt"/> instead of to a gunner's aim. Set when the prefab is built.
+    /// </summary>
+    public bool m_decor;
+
     private ZNetView shipView;
+    private Ship ship;
     private Rigidbody shipBody;
     private Quaternion neckRest = Quaternion.identity;
     private Quaternion bodyRest = Quaternion.identity;
     private float poseYaw;
     private float posePitch;
     private float nextWrite;
+    private Vector3 decorTarget;
+    private bool hasDecorTarget;
 
     /// <summary>
     /// Whether the local player is manning a ballista now.
     /// </summary>
     public static bool LocalManned => isManning && manned != null;
 
-    private static string BoltName => Translations.Token(Translations.ItemKey(ShipBolts.PrefabName));
+    /// <summary>
+    /// True when the ballista found no deck to stand on and hid itself, so whoever switches it on again should not.
+    /// </summary>
+    public bool PlaceFailed { get; private set; }
+
+    /// <summary>
+    /// Where the bolts leave, in world space; the ballista's own place when the model has no muzzle.
+    /// </summary>
+    public Vector3 MuzzlePosition => m_muzzle != null ? m_muzzle.position : transform.position;
+
+    /// <summary>
+    /// Asks the ballista the local player mans to switch to the next kind of ammunition they carry. Called from the player's
+    /// controls, which would otherwise take the secondary attack button for a dismount.
+    /// </summary>
+    public static void RequestSwitch()
+    {
+        if (LocalManned)
+        {
+            switchRequested = true;
+        }
+    }
+
+    /// <summary>
+    /// Writes the line with the chosen ammunition, and how to change it, under the crosshair while the local player mans a
+    /// ballista. Called after the game's crosshair update.
+    /// </summary>
+    /// <param name="hud">The HUD.</param>
+    public static void UpdateCrosshair(Hud hud)
+    {
+        if (!LocalManned || Player.m_localPlayer == null)
+        {
+            return;
+        }
+
+        Inventory inventory = Player.m_localPlayer.GetInventory();
+        string line = AmmoLine(inventory);
+        if (AmmoChoice.KindsCarried(AmmoOrder, name => Carried(inventory, name) > 0) > 1)
+        {
+            line += "\n" + Localization.instance.Localize("[<color=yellow><b>$KEY_SecondaryAttack</b></color>] $whitehilt_ballista_switch");
+        }
+
+        ShipDamageInput.Append(hud, line);
+    }
 
     /// <summary>
     /// Asks the ballista the local player mans to fire. Called from the player's controls, which would otherwise take
@@ -125,17 +187,28 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         Release(player);
     }
 
+    /// <summary>
+    /// Turns a decorative ballista (see <see cref="m_decor"/>) towards a point, or back to rest. Called every frame on every
+    /// client by whatever owns the ballista.
+    /// </summary>
+    /// <param name="world">The point to aim at, in world space.</param>
+    /// <param name="aiming">False to let it rest.</param>
+    public void AimAt(Vector3 world, bool aiming)
+    {
+        decorTarget = world;
+        hasDecorTarget = aiming;
+    }
+
     /// <inheritdoc/>
     public string GetHoverText()
     {
-        if (!BallistaSettings.Enabled.Value)
+        if (m_decor || !BallistaSettings.Enabled.Value)
         {
             return string.Empty;
         }
 
-        string bolts = BoltName;
-        int carried = Player.m_localPlayer != null ? Player.m_localPlayer.GetInventory().CountItems(bolts) : 0;
-        return Localization.instance.Localize($"{GetHoverName()}\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_ballista_man\n{bolts}: {carried}");
+        string bolts = Player.m_localPlayer != null ? AmmoLine(Player.m_localPlayer.GetInventory()) : string.Empty;
+        return Localization.instance.Localize($"{GetHoverName()}\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_ballista_man\n{bolts}");
     }
 
     /// <inheritdoc/>
@@ -147,7 +220,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     /// <inheritdoc/>
     public bool Interact(Humanoid user, bool hold, bool alt)
     {
-        if (hold || !BallistaSettings.Enabled.Value || user is not Player player || manned == this || shipView == null || !shipView.IsValid())
+        if (hold || m_decor || !BallistaSettings.Enabled.Value || user is not Player player || manned == this || shipView == null || !shipView.IsValid())
         {
             return false;
         }
@@ -174,6 +247,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         manned = this;
         isManning = true;
         fireRequested = false;
+        switchRequested = false;
         nextWrite = 0f;
         player.m_nview.GetZDO().Set(ShipKey, shipView.GetZDO().m_uid);
         return false;
@@ -188,6 +262,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         manned = null;
         isManning = false;
         fireRequested = false;
+        switchRequested = false;
         if (player.m_nview != null && player.m_nview.IsValid())
         {
             player.m_nview.GetZDO().Set(ShipKey, ZDOID.None);
@@ -225,6 +300,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         }
 
         shipView = GetComponentInParent<ZNetView>();
+        ship = GetComponentInParent<Ship>();
         shipBody = GetComponentInParent<Rigidbody>();
         neckRest = m_neck != null ? m_neck.localRotation : Quaternion.identity;
         bodyRest = m_body != null ? m_body.localRotation : Quaternion.identity;
@@ -236,6 +312,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     {
         if (!Place())
         {
+            PlaceFailed = true;
             Jotunn.Logger.LogWarning($"{transform.root.name}: no deck found for the ship ballista, it stays hidden.");
             gameObject.SetActive(false);
         }
@@ -251,6 +328,12 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         }
 
         bool ready = true;
+        if (m_decor)
+        {
+            PoseDecor();
+            return;
+        }
+
         if (isManning && manned == this && Player.m_localPlayer != null)
         {
             ready = AimAndFire(Player.m_localPlayer);
@@ -308,6 +391,12 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
             TryFire(player, zdo);
         }
 
+        if (switchRequested)
+        {
+            switchRequested = false;
+            SwitchAmmo(player.GetInventory());
+        }
+
         return IsReady(zdo.GetFloat(ShotKey, NeverShot));
     }
 
@@ -316,7 +405,8 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         return ZNet.instance == null || ZNet.instance.GetTimeSeconds() >= shotAt + BallistaSettings.ReloadSeconds.Value;
     }
 
-    // Takes a bolt from the gunner's inventory and fires it, once the ballista has been reloaded.
+    // Takes the chosen ammunition from the gunner's inventory and fires it, once the ballista has been reloaded. The chosen
+    // kind is used if the gunner carries it, otherwise the first kind they do carry.
     private void TryFire(Player player, ZDO zdo)
     {
         if (!IsReady(zdo.GetFloat(ShotKey, NeverShot)))
@@ -325,7 +415,8 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         }
 
         Inventory inventory = player.GetInventory();
-        ItemDrop.ItemData ammo = inventory.GetAmmoItem(ShipBolts.AmmoType);
+        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo);
+        ItemDrop.ItemData ammo = prefab != null ? inventory.GetAmmoItem(ShipBolts.AmmoType, prefab) : null;
         if (ammo == null)
         {
             player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ballista_noammo");
@@ -337,57 +428,61 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         zdo.Set(ShotKey, (float)ZNet.instance.GetTimeSeconds());
     }
 
-    // Fires the bolt as Turret.ShootProjectile does: a little random spread, the bolt's own damage, push and stagger, and
-    // the vanilla ballista's shot effect and noise. The gunner owns the projectile.
+    // Moves to the next kind of ammunition the gunner carries; with one kind or none there is nothing to switch to.
+    private static void SwitchAmmo(Inventory inventory)
+    {
+        string next = AmmoChoice.Next(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo);
+        if (next != null)
+        {
+            selectedAmmo = next;
+        }
+    }
+
+    // How many of a kind of ammunition an inventory holds.
+    private static int Carried(Inventory inventory, string prefab)
+    {
+        return inventory.CountItems(Translations.Token(Translations.ItemKey(prefab)));
+    }
+
+    // The line that names the ammunition a shot would use now and how many of it the gunner carries.
+    private static string AmmoLine(Inventory inventory)
+    {
+        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo) ?? selectedAmmo;
+        Localization text = Localization.instance;
+        return string.Format(text.Localize("$whitehilt_ballista_ammo"), text.Localize(Translations.Token(Translations.ItemKey(prefab))),
+            Carried(inventory, prefab));
+    }
+
+    // Fires the bolt as the vanilla turret does (see ShipShot); the gunner owns the projectile. The shot is told which ship
+    // it came from and where the ballista stands, for a grapnel bolt that must find the rope's end on this ship's rail.
     private void Shoot(Player player, ItemDrop.ItemData ammo)
     {
         Transform muzzle = m_muzzle != null ? m_muzzle : transform;
-        Turret template = VanillaTemplate();
-        if (template != null && template.m_shootEffect != null)
+        GameObject shot = ShipShot.Fire(muzzle.position, muzzle.forward, ammo, player, -1f);
+        if (shot != null && ship != null)
         {
-            template.m_shootEffect.Create(muzzle.position, muzzle.rotation);
+            shot.GetComponent<ShotHits>()?.SetShooter(ship, ship.transform.InverseTransformPoint(transform.position));
         }
-
-        Attack attack = ammo.m_shared.m_attack;
-        Vector3 forward = muzzle.forward;
-        Vector3 axis = Vector3.Cross(forward, Vector3.up);
-        float accuracy = attack.m_projectileAccuracy;
-        forward = Quaternion.AngleAxis(UnityEngine.Random.Range(-accuracy, accuracy), axis) * forward;
-        forward = Quaternion.AngleAxis(UnityEngine.Random.Range(-accuracy, accuracy), Vector3.up) * forward;
-
-        GameObject projectile = Instantiate(attack.m_attackProjectile, muzzle.position, muzzle.rotation);
-        HitData hit = new()
-        {
-            m_toolTier = (short)ammo.m_shared.m_toolTier,
-            m_pushForce = ammo.m_shared.m_attackForce,
-            m_backstabBonus = ammo.m_shared.m_backstabBonus,
-            m_staggerMultiplier = attack.m_staggerMultiplier,
-            m_blockable = ammo.m_shared.m_blockable,
-            m_dodgeable = ammo.m_shared.m_dodgeable,
-            m_skill = ammo.m_shared.m_skillType,
-            m_itemWorldLevel = (byte)Game.m_worldLevel,
-            m_hitType = HitData.HitType.Turret
-        };
-        hit.m_damage.Add(ammo.GetDamage());
-        if (ammo.m_shared.m_attackStatusEffect != null)
-        {
-            hit.m_statusEffectHash = ammo.m_shared.m_attackStatusEffect.NameHash();
-        }
-
-        float noise = template != null ? template.m_hitNoise : -1f;
-        projectile.GetComponent<IProjectile>()?.Setup(player, forward * attack.m_projectileVel, noise, hit, null, ammo);
     }
 
-    // The vanilla ballista's component, for its shot effect and hit noise, found once the game's prefabs exist.
-    private static Turret VanillaTemplate()
+    // A ballista for show turns all the way round towards its target, loaded, and eases back to rest without one.
+    private void PoseDecor()
     {
-        if (vanillaBallista == null && ZNetScene.instance != null)
+        float yaw = 0f;
+        float pitch = 0f;
+        if (hasDecorTarget && m_body != null)
         {
-            GameObject prefab = ZNetScene.instance.GetPrefab(VanillaBallista);
-            vanillaBallista = prefab != null ? prefab.GetComponent<Turret>() : null;
+            Vector3 local = transform.InverseTransformDirection(decorTarget - m_body.position);
+            (yaw, pitch) = BallistaAim.FromDirection(local.x, local.y, local.z);
+            (yaw, pitch) = BallistaAim.Clamp(yaw, pitch, DecorYawArc, BallistaSettings.PitchMin.Value, BallistaSettings.PitchMax.Value);
         }
 
-        return vanillaBallista;
+        float k = 1f - Mathf.Exp(-PoseSmoothing * Time.deltaTime);
+        SetPose(Mathf.LerpAngle(poseYaw, yaw, k), Mathf.Lerp(posePitch, pitch, k));
+        if (m_bolt != null && !m_bolt.activeSelf)
+        {
+            m_bolt.SetActive(true);
+        }
     }
 
     private void SetPose(float yaw, float pitch)

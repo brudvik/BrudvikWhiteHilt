@@ -11,8 +11,8 @@ namespace BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 /// <summary>
 /// Holds the upgrades used on a White Hilt Ship and switches the matching parts on: a lantern that lights at night,
 /// barrels with a bigger cargo hold, a tent that gives shelter, a mast wisp that clears the mist, a fishing net that
-/// fills the hold while sailing, an anchor that holds the ship still, a brazier that keeps the crew warm and a ballista
-/// that a player mans.
+/// fills the hold while sailing, an anchor that holds the ship still, a brazier that keeps the crew warm, a ballista
+/// that a player mans and an iron ram prow.
 /// The upgrades are a bit mask in the ship's ZDO, so every player sees the same ship.
 /// </summary>
 public class WhiteHiltShipUpgrades : MonoBehaviour
@@ -101,6 +101,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     private ParticleSystemForceField mastWispForce;
     private GameObject brazier;
     private GameObject ballista;
+    private GameObject ramProw;
     private GameObject tentColliders;
     private Container chest;
     private ShipPortal portal;
@@ -384,6 +385,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
         mastWispForce = mastWispField != null ? mastWispField.GetComponent<ParticleSystemForceField>() : null;
         brazier = transform.Find(BrazierName)?.gameObject;
         ballista = transform.Find(Ballista.ShipBallista.ObjectName)?.gameObject;
+        ramProw = transform.Find(Ram.RamProw.ObjectName)?.gameObject;
         tentColliders = transform.Find(ShipTentColliders.ObjectName)?.gameObject;
         chest = transform.Find(ChestName)?.GetComponent<Container>();
         portal = transform.Find(ShipPortal.ObjectName)?.GetComponent<ShipPortal>();
@@ -471,6 +473,7 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
             SetActive(mastWisp, Has(ShipMastWisp.Bit));
             SetActive(anchor?.gameObject, Has(ShipDriftAnchor.Bit));
             SetActive(brazier, Has(ShipBrazier.Bit));
+            SetActive(ramProw, Has(ShipRamUpgrade.Bit));
             SetActive(ballista, Has(ShipBallistaUpgrade.Bit));
             SetActive(chest?.gameObject, Has(ShipChestUpgrade.Bit));
             holdCheckTimer = 0f;

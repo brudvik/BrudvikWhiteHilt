@@ -4,7 +4,7 @@
 
 ## ⛵ SHIPS
 
-Both White Hilt ships are indestructible, immune to all damage types and Ashlands-ready. Tailwind is enabled by default.
+Both White Hilt ships are indestructible, immune to all damage types and Ashlands-ready. Tailwind is enabled by default. In a [sea battle](sea-battles.md#damage-at-sea) they can still be holed and take in water, which slows them, but they never sink.
 
 <img src="images/skidbladnir.png" alt="Skidbladnir" title="Skidbladnir" height="140">
 
@@ -34,7 +34,7 @@ Use the port-side boarding ladder amidships, at the gap in the rail, to get aboa
 
 Rails and walls follow the model's balustrades and new railings along the waist and the deck edges, so you cannot walk off. The stair opening has its own railing, open at the top of the stair and for a short stretch beside the main mast. The lower room is closed by bulkheads at both ends and lined with planking along both sides, so wall drawers hang on a visible wall. With the Ship Lantern upgrade, two stern lanterns on posts and three lamps under the lower deck's beams light together with the deck lantern; any of them switches all of them. The rudder on the sternpost turns with the helm, and the main course carries the White Hilt logo, readable from both sides.
 
-Like the longship, Skidbladnir has places to sit or hold on, so you stay aboard in rough seas: two stools by the port rail of the quarterdeck, one beside the helm, two facing each other on the forecastle, a holdfast at the main mast and one at the forecastle's front rail. Use the mast ladder to reach the intermediate platform and top lookout. Ladder Use climbs to the next stop; alternate Use descends, like the White Hilt watchtowers. Skidbladnir supports all ten upgrades below, the Navigator's Table, routes and deck-portal arrival at their own positions.
+Like the longship, Skidbladnir has places to sit or hold on, so you stay aboard in rough seas: two stools by the port rail of the quarterdeck, one beside the helm, two facing each other on the forecastle, a holdfast at the main mast and one at the forecastle's front rail. Use the mast ladder to reach the intermediate platform and top lookout. Ladder Use climbs to the next stop; alternate Use descends, like the White Hilt watchtowers. Skidbladnir supports all eleven upgrades below, the Navigator's Table, routes and deck-portal arrival at their own positions.
 
 Horizontal speed is capped at half the White Hilt Ship's calculated ideal full-sail terminal speed on flat water with tailwind, using its configured sail force and drag. The cap also applies to rowing and autopilot; vertical wave and Kraken movement is retained. It is not a comparison with another ship's instantaneous speed. Sail force is reduced as well, and the separate sails furl visibly. Geometry and sailing balance can be adjusted after testing.
 
@@ -59,6 +59,7 @@ Console prefab names: `WhiteHiltShipHammer`, `piece_whitehilt_shipworkbench`, `p
 **Ship Features:**
 - Immune to fire, blunt, slash, pierce, chop, pickaxe, spirit, frost, lightning, and poison damage
 - Ashlands damage immune and resistant
+- Holes and flooding from a [sea battle](sea-battles.md#damage-at-sea) slow it down and make it lie lower, but take no health and never sink it
 - Always has tailwind (full sail speed regardless of wind direction) (`Ships` → `AlwaysTailwind`)
 - Sails five times harder than the vanilla code default (`Ships` → `SailForce`, 0.5)
 - During manual sailing, the helmsman is preferred as network owner of the White Hilt Ship (`HelmOwnership`). Ownership stays with a player using the cargo hold or sea chest until both are closed and the open-request grace period has elapsed. Both inventories and current motion are saved before handing ownership back. Speed and sail force are unchanged; this does not remove network latency or passenger-side movement corrections.
@@ -90,7 +91,8 @@ A sturdy workbench with a ship's anchor leaning on one end, an anchor chain, a c
 | **Deck Brazier** | An iron brazier on the starboard deck under the tent that burns without fuel. It keeps those near it warm and counts as a fire for resting | Bog Iron ×4, Stone ×10, Peat ×10, Surtling Core ×1 |
 | **Sea Chest** | A chest by the helm that holds 4 × 2 besides the cargo hold, e.g. for gear | Fine Wood ×10, Bog Iron ×2, Pine Tar ×1, Sphagnum Moss ×3 |
 | **Ship Portal** | A small rune circle on the starboard deck between mast and helm. The ship shows in every White Hilt portal's travel list and travellers arrive on its deck wherever it has sailed; the circle itself opens the travel map (Shift + Use names it). The usual rules for ore and metal apply | Fine Wood ×8, Pine Tar ×2, Bronze ×2, Surtling Core ×2, Greydwarf Eye ×10 |
-| **Ship Ballista** | A ballista on the forecastle, a little behind the bow holdfast, on the White Hilt Ship and on Skidbladnir. Look at it and press **Use** to man it, then aim with the camera and shoot Ship Bolts with the attack button. See [The Ship Ballista](#the-ship-ballista) | Fine Wood ×12, Iron ×4, Chain ×2, Bog Iron ×4, Pine Tar ×2 |
+| **Ship Ballista** | A ballista on the forecastle, a little behind the bow holdfast, on the White Hilt Ship and on Skidbladnir. Look at it and press **Use** to man it, then aim with the camera and shoot Ship Bolts, Chain Shots or Grapnel Bolts with the attack button. See [The Ship Ballista](#the-ship-ballista) | Fine Wood ×12, Iron ×4, Chain ×2, Bog Iron ×4, Pine Tar ×2 |
+| **Ram Prow** | An iron-shod prow on the bow of the White Hilt Ship and Skidbladnir. Striking a ship or a creature bow-first hurts it in proportion to your speed, and always knocks a hole in a ship. See [The Ram Prow](#the-ram-prow) | Iron ×6, Bog Iron ×4, Fine Wood ×8, Chain ×2 |
 
 The barrels can only be taken off when the extra cargo slots are empty, and the sea chest when it is empty. Taking the anchor off also raises it. The drift anchor drops by itself when the last person leaves a still ship, and is weighed when someone takes the helm (`Ships` → `AutoAnchor`, on by default).
 
@@ -126,15 +128,31 @@ The barrels can only be taken off when the extra cargo slots are empty, and the 
 
 A ballista on the forecastle, built from the vanilla ballista's own parts at a smaller size. It is made for the dark longships of Naglfar's fleet that hunt ships at sea: see [Sea battles & raids](sea-battles.md). It stands on the deck behind the bow holdfast, the same on the White Hilt Ship and on Skidbladnir. Use the **Ship Ballista** on the mast to install it; use the mast to take it off again.
 
-- **Man it:** look at the ballista and press **Use** (*Man the ballista*, with the number of Ship Bolts you carry). You stand behind it, holding on. Only one player can man it at a time.
+- **Man it:** look at the ballista and press **Use** (*Man the ballista*, with the ammunition you would shoot and how many of it you carry). You stand behind it, holding on. Only one player can man it at a time.
 - **Aim:** the ballista turns with the camera. It can turn `YawArc` degrees to either side of straight ahead, `PitchMin` degrees down and `PitchMax` degrees up; it stops at the limits.
-- **Shoot:** press the **attack button**. It takes one Ship Bolt from your inventory (*No Ship Bolts* when there is none) and needs `ReloadSeconds` to load again; the loaded bolt shows on the ballista. The bolt is yours: kills count for you, and damage follows the PvP rules. It hurts serpents and the Kraken like any other weapon.
-- **Let go:** move, jump, crouch, block or use the secondary attack, and you step away from it.
+- **Shoot:** press the **attack button**. It takes one piece of the chosen ammunition from your inventory (*No ship ammunition* when you carry none of the three kinds) and needs `ReloadSeconds` to load again; the loaded bolt shows on the ballista. The bolt is yours: kills count for you, and damage follows the PvP rules. It hurts serpents and the Kraken like any other weapon, and a heavy hit on a ship's hull knocks a [hole](sea-battles.md#holes) in it.
+- **Choose ammunition:** press the **secondary attack** (the right mouse button by default). It moves on to the next kind you carry, in the order Ship Bolt, Chain Shot, Grapnel Bolt. While you man the ballista the crosshair shows *Ammunition: Ship Bolt (12)* and, when you carry two or more kinds, a line with the key that switches. A shot uses the chosen kind; if you no longer carry it, it uses the first kind you do. The choice is not saved: the Ship Bolt is chosen again when the game starts.
+- **Cut a grapnel rope:** look at the end of the rope on the rail of the ship the bolt was shot from and press **Use** (*Grapnel rope*, *Cut the rope*), within reach of that ship. The ships are let go. The rope can be cut only there, not from the other ship's deck.
+- **Let go:** move, jump, crouch or block, and you step away from it.
 - **Others:** everyone sees the ballista turn and the bolt fly. The aim is kept on the gunner's own player, so nobody needs to own the ship to shoot.
 
 | Item | Effect | Crafting Station | Requirements |
 |------|--------|------------------|--------------|
 | **Ship Bolt** (`WhiteHiltShipBolt`) | A heavy iron-tipped bolt for the Ship Ballista, made `BoltsPerCraft` at a time. It has an ammo type of its own, so the Mistlands turret can not shoot it and the ballista can not shoot turret bolts | Shipwright's Bench | Wood ×4, Iron ×1, Feathers ×2 |
+| **Chain Shot** (`WhiteHiltChainShot`) | Two iron balls on a chain, made `ChainShotsPerCraft` (5) at a time. It does little damage (`ChainShotDamage`, 20 pierce), but a hit on another ship tears its sail: the ship loses `SailTearShare` (half) of its sail force for `SailTearSeconds` (45) seconds, and a new hit starts the time again. Those aboard see *The sail is torn!* A hit on the ship you shoot from does nothing | Shipwright's Bench | Chain ×1, Iron ×1 |
+| **Grapnel Bolt** (`WhiteHiltGrapnelBolt`) | A hooked bolt on a rope, made `GrapnelsPerCraft` (3) at a time. It does little damage (`GrapnelDamage`, 10 pierce). A hit on another ship no more than `GrappleBreak` (60) m from yours binds it to the ship you shoot from: a rope runs from your rail to the other deck, and the ships are pulled together to about `GrappleLength` (6) m apart. Both crews see *The ships are bound together!* A new grapnel replaces the old rope. A bound [Nail Ship](sea-battles.md#the-nail-ship-fights-back) cannot flee. The rope snaps (*The rope snaps.*) when the ships are more than `GrappleBreak` m apart, and frays after `GrappleSeconds` (90) seconds | Shipwright's Bench | Iron ×2, Bog Iron ×1, Deer Hide ×1 |
+
+The rope pulls only while it is taut, with a pull of `GrapplePull` for every metre it is stretched beyond `GrappleLength`, less `GrappleDamping` for every m/s the ships close in on each other. Each ship's owner pulls its own ship, half the pull each, so the ships draw together and bump alongside.
+
+### The Ram Prow
+
+Use the **Ram Prow** on the mast of the White Hilt Ship or Skidbladnir, like the other upgrades: an iron V with a fin and a beak shows on the bow, and use the mast to take it off. A ship with the prow rams what it strikes bow-first:
+
+- **What counts:** a collision with another ship, or with a creature (not a player, a tamed creature or a dead one), in the foremost quarter of the hull, at a closing speed of at least `MinSpeed` (3) m/s. The same target can be rammed again after `Cooldown` (1.5) seconds.
+- **A ship:** it takes `DamagePerSpeed` (40) damage for every m/s of closing speed, half blunt and half chop, so 5 m/s is 200 before the hull's resistances. A ram **always knocks a hole** in the hull, also in one that takes no damage, such as another White Hilt ship: see [Damage at sea](sea-battles.md#damage-at-sea).
+- **A creature:** it takes the same damage as blunt damage and is pushed `PushPerSpeed` (20) for every m/s; a heavy creature moves less. A creature killed counts for the player aboard.
+- **The ramming ship** takes `SelfDamageShare` (10%) of the damage if it can be destroyed. The White Hilt ships are indestructible, so they take none.
+- A splash and a thud play where the ships meet, and the one who owns the ship feels the camera shake.
 
 ## Config
 
@@ -155,7 +173,7 @@ Section `[Ships.Ballista]` (admin only, synced from the server):
 
 | Setting | Default | What it does |
 |---|---|---|
-| `Enabled` | true | The Ship Ballista upgrade and Ship Bolts can be made, and the ballista used. Off: none of them can be made and a ballista can not be manned; ones already made are kept |
+| `Enabled` | true | The Ship Ballista upgrade, Ship Bolts, Chain Shots and Grapnel Bolts can be made, and the ballista used. Off: none of them can be made and a ballista can not be manned; ones already made are kept |
 | `Damage` | 80 | Pierce damage of a Ship Bolt; range 1 to 1000 |
 | `ReloadSeconds` | 4 | Seconds between two shots; range 0.5 to 30 |
 | `BoltSpeed` | 60 | Speed of a bolt in metres per second; range 10 to 150 |
@@ -163,6 +181,28 @@ Section `[Ships.Ballista]` (admin only, synced from the server):
 | `YawArc` | 70 | Degrees the ballista can turn to either side of straight ahead; range 10 to 170 |
 | `PitchMin` / `PitchMax` | -10 / 25 | Degrees the ballista can aim down and up; range -45 to 60 |
 | `BoltsPerCraft` | 10 | Ship Bolts made at once; range 1 to 50 |
+| `ChainShotDamage` | 20 | Pierce damage of a Chain Shot; range 0 to 1000 |
+| `SailTearShare` | 0.5 | Share of its sail force a ship loses while its sail is torn by a Chain Shot; range 0 to 1 |
+| `SailTearSeconds` | 45 | Seconds a sail stays torn; range 1 to 600 |
+| `ChainShotsPerCraft` | 5 | Chain Shots made at once; range 1 to 50 |
+| `GrapnelDamage` | 10 | Pierce damage of a Grapnel Bolt; range 0 to 1000 |
+| `GrappleLength` | 6 | Metres the rope pulls the two ships to; range 2 to 30 |
+| `GrappleBreak` | 60 | Metres between the ships at which the rope snaps, and the farthest a grapnel bolt can bind; range 10 to 200 |
+| `GrappleSeconds` | 90 | Seconds the rope holds before it frays; range 5 to 600 |
+| `GrapplePull` | 1.5 | Pull of the rope: acceleration, in metres per second squared, for each metre it is stretched beyond `GrappleLength`; range 0 to 10 |
+| `GrappleDamping` | 0.5 | How hard the rope holds back a ship that closes in fast on the other one, per second; 0 lets the ships swing past each other; range 0 to 5 |
+| `GrapnelsPerCraft` | 3 | Grapnel Bolts made at once; range 1 to 50 |
+
+Section `[Ships.Ram]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The Ram Prow can be made and works. Off: it cannot be made and a ship with one rams nothing; ones already made are kept |
+| `MinSpeed` | 3 | Least closing speed for a ram, in metres per second; range 0 to 20 |
+| `DamagePerSpeed` | 40 | Blunt and chop damage per metre per second of closing speed; range 0 to 1000 |
+| `SelfDamageShare` | 0.1 | Share of the ram's damage that the ramming ship takes. The White Hilt ships are indestructible and take none; range 0 to 1 |
+| `PushPerSpeed` | 20 | Push on a rammed creature per metre per second of closing speed; a heavy creature is moved less; range 0 to 500 |
+| `Cooldown` | 1.5 | Seconds before the same target can be rammed again; range 0.1 to 10 |
 
 Section `[Ships]` (admin only, synced from the server):
 

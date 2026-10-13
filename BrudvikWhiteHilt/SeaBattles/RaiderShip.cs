@@ -2,6 +2,7 @@ using BrudvikWhiteHilt.Difficulty;
 using BrudvikWhiteHilt.Kraken;
 using BrudvikWhiteHilt.Pieces.Ships;
 using BrudvikWhiteHilt.Saga;
+using BrudvikWhiteHilt.SeaBattles.Weapons;
 using BrudvikWhiteHilt.Treasure;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,12 @@ public class RaiderShip : MonoBehaviour
     }
 
     /// <summary>
+    /// The hunted ship's velocity over the water, as its owner has measured it from the ship's movement. Zero on a machine
+    /// that does not own the Nail Ship, which does not measure it.
+    /// </summary>
+    public Vector3 TargetVelocity => new(targetVelocity.x, 0f, targetVelocity.y);
+
+    /// <summary>
     /// Whether a ship is a Nail Ship.
     /// </summary>
     /// <param name="ship">The ship, or null.</param>
@@ -126,6 +133,26 @@ public class RaiderShip : MonoBehaviour
     public static RaiderShip Of(Ship ship)
     {
         return ship != null && byShip.TryGetValue(ship, out RaiderShip raider) ? raider : null;
+    }
+
+    /// <summary>
+    /// Whether a Nail Ship that is still a danger, one that is not a prize, is loaded within reach of a point. A ship
+    /// near one is in a sea battle.
+    /// </summary>
+    /// <param name="position">The point, in world space.</param>
+    /// <param name="range">How far, in metres.</param>
+    /// <returns>True if such a ship is within range.</returns>
+    public static bool AnyNear(Vector3 position, float range)
+    {
+        foreach (RaiderShip raider in byShip.Values)
+        {
+            if (raider != null && raider.State != RaiderState.Prize && Vector3.Distance(raider.transform.position, position) <= range)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -778,7 +805,8 @@ public class RaiderShip : MonoBehaviour
         TrackTarget(targetPosition);
         float crewShare = Mathf.Clamp01(alive / (float)Mathf.Max(1, CrewSize()));
         RaiderInput input = new(state, Flat(transform.position), ShipAssist.Heading(transform), Flat(targetPosition), targetVelocity,
-            ShipAssist.Heading(target.transform), crewShare, HullShare(zdo), Time.time - stateSince, zdo.GetInt(RaiderKeys.Side, 1), melee > 0);
+            ShipAssist.Heading(target.transform), crewShare, HullShare(zdo), Time.time - stateSince, zdo.GetInt(RaiderKeys.Side, 1), melee > 0,
+            GrappleLink.IsBound(ship));
         RaiderOrder order = RaiderTactics.Decide(input, SeaBattleSettings.Tuning());
         if (order.State != state)
         {

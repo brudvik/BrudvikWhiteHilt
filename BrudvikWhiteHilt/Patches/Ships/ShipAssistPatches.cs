@@ -19,6 +19,9 @@ public static class ShipAssistPatches
     {
         ShipAssist.Attach(__instance);
         ShipMooring.Attach(__instance);
+        global::BrudvikWhiteHilt.SeaBattles.Damage.ShipDamage.Attach(__instance);
+        global::BrudvikWhiteHilt.SeaBattles.Damage.DeckFires.Attach(__instance);
+        global::BrudvikWhiteHilt.SeaBattles.Weapons.GrappleLink.Attach(__instance);
     }
 
     /// <summary>Restores authoritative controls and checks ownership before the ship's physics update.</summary>
@@ -99,6 +102,9 @@ public static class ShipAssistPatches
             Pieces.Navigation.ShipRoutePlanner.Tick(__instance);
             Pieces.Ships.WhiteHiltShip.ShipPortalArrival.Tick(__instance);
             ManOverboard.Tick(__instance);
+            global::BrudvikWhiteHilt.SeaBattles.Damage.ShipDamageInput.Tick(__instance);
+            global::BrudvikWhiteHilt.SeaBattles.Damage.DeckFireInput.Tick(__instance);
+            global::BrudvikWhiteHilt.SeaBattles.Weapons.GrappleInput.Tick(__instance);
             global::BrudvikWhiteHilt.SeaBattles.BoardingLeap.Tick(__instance);
         }
     }
@@ -114,7 +120,8 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
-    /// Shows the lifeline prompt, or else the boarding leap prompt, under the crosshair.
+    /// Shows the lifeline prompt, or else the boarding leap prompt, under the crosshair, and after them the prompts for
+    /// patching a hole, bailing, stamping out a fire and cutting a grapnel rope.
     /// </summary>
     /// <param name="__instance">The HUD.</param>
     /// <param name="player">The local player.</param>
@@ -126,5 +133,9 @@ public static class ShipAssistPatches
         {
             global::BrudvikWhiteHilt.SeaBattles.BoardingLeap.UpdateCrosshair(__instance, player);
         }
+
+        global::BrudvikWhiteHilt.SeaBattles.Damage.ShipDamageInput.UpdateCrosshair(__instance, player);
+        global::BrudvikWhiteHilt.SeaBattles.Damage.DeckFireInput.UpdateCrosshair(__instance, player);
+        global::BrudvikWhiteHilt.SeaBattles.Weapons.GrappleInput.UpdateCrosshair(__instance, player);
     }
 }
