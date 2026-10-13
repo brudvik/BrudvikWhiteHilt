@@ -2,6 +2,12 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.131.0 - 2026-10-13
+
+### Fixed
+- **Players cut off from the server**: Steam refuses a message over 512 KB, and the game then tries that message again and again, so nothing else reaches the player: they see no world around them and are dropped, and so is everyone who joins after. The server's lists of discoveries, map areas and portals, which grow as a world is explored, now go out in pieces; any message that is still too large is dropped and logged (with what it was) instead of blocking the connection; and the School Bench keeps its library well under the limit.
+- **Grapnel Bolt**: its recipe now asks for Bog Iron as intended; the Bog Iron was left out, so it cost only Iron and Deer Hide.
+
 ## v0.130.0 - 2026-10-13
 
 ### Added

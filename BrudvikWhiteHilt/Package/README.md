@@ -33,10 +33,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.130.0
+## ✨ New in 0.131.0
+
+- **No more players cut off on big worlds**: the server's lists of discoveries, map areas and portals now go out in pieces, and a message too large for Steam is dropped and logged instead of stopping everything behind it. Server and players all need this version.
+
+### Also new in 0.130.0
 
 - **[Nail Ship fleets](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#fleets)**: after Moder a Nail Ship may come with company, two ships and after Yagluth three, sailing in a wedge behind a red-sailed **flagship** that breaks off to attack from both sides. The flagship has a stronger hull, a bigger crew, always a ballista and richer loot.
-- **[The Draugr Jarl](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#draugr-jarl)** leads the flagship: a huge undead viking with a great axe who grows stronger with every boss you slay. When he falls or his flagship is taken, the fleet breaks and runs, a new deed in the [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md). Everyone needs this version.
+- **[The Draugr Jarl](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#draugr-jarl)** leads the flagship: a huge undead viking with a great axe who grows stronger with every boss you slay. When he falls or his flagship is taken, the fleet breaks and runs, a new deed in the [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md).
 
 ### Also new in 0.129.0
 
