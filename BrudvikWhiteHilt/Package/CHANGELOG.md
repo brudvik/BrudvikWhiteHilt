@@ -2,6 +2,20 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.130.0 - 2026-10-13
+
+### Added
+- **[Nail Ship fleets](docs/sea-battles.md#fleets)**: after Moder (35% of the encounters) and Yagluth (50%), a Nail Ship may come with company: two ships, or three after Yagluth. They sail up in a wedge behind a **flagship**, break formation when the flagship is within 80 m, and come at your ship from both sides. Settings in `[SeaBattles.Fleets]`.
+- **[The Nail Flagship](docs/sea-battles.md#the-flagship)**: a Nail Ship with a blood-red sail, a stronger hull (2000 health), a bigger crew with more stars, the ballista on its bow always, a fuller hold and always a Raid Chart.
+- **[The Draugr Jarl](docs/monsters.md#draugr-jarl)**: a huge undead viking with a fur cloak, a great axe and glowing eyes, a creature of his own with his own model and animations. He leads the flagship's crew, leaps across last, and always drops his trophy. He grows with the world: two stars after Moder, up to five after Fader (`[SeaBattles.Fleets] JarlLevels`). He never spawns in the wild. Settings in `[Monsters.DraugrJarl]`.
+- **[Morale](docs/sea-battles.md#morale)**: when the jarl is slain or the flagship is taken or sunk, the other ships of the fleet turn and run (`FleeWhenJarlFalls`, `FleeWhenFlagshipFalls`).
+- **A new [saga](docs/saga.md) deed**, *A Nail fleet was broken* (40 renown, `RenownFleet`), when a flagship is taken or sunk. The Draugr Jarl is a listed creature, so slaying him is a deed too; an existing config file needs `WhiteHilt_DraugrJarl` added to `[Saga] Creatures` by hand.
+- **`whitehilt_seabattle fleet [2|3]`**, a console command for admins: sends a whole fleet after your ship. `status` now shows whether each Nail Ship sails alone, as a flagship or as an escort.
+
+### Changed
+- The server and every player need this version: the messages that raise and announce a Nail Ship changed to carry the fleet size.
+- The Monsters, Saga and Sea battles pages describe the fleets and the jarl, and "Fleets" is gone from the ideas page.
+
 ## v0.129.1 - 2026-10-13
 
 ### Fixed
