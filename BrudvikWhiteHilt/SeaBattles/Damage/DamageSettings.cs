@@ -138,6 +138,7 @@ public static class DamageSettings
         Translations.AddEnglish("msg_whitehilt_ship_holed", "The hull is holed!");
         Translations.AddEnglish("msg_whitehilt_ship_sinking", "She is going down!");
         Translations.AddEnglish("msg_whitehilt_ship_nopatch", "You need wood and resin to patch it");
+        Translations.AddEnglish("msg_whitehilt_ship_tired", "You are too tired");
         Translations.AddEnglish("whitehilt_ship_fire", "Fire on deck");
         Translations.AddEnglish("msg_whitehilt_ship_fire", "Fire on deck!");
         Translations.AddEnglish("whitehilt_ship_stamp", "Stamp out");

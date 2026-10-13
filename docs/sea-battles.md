@@ -108,7 +108,7 @@ A ship that was left alone for a long time does not flood all at once when it lo
 ### Patching and bailing
 
 - **Patch:** look at the hole, or at the water spraying in, and press **Use**: *Patch (2 wood, 1 resin)*. The wood and resin come from your inventory (`PatchWood`, `PatchResin`); without them you see *You need wood and resin to patch it*. The hole is gone, and a hull that is not indestructible mends **10%** of its health (`PatchRepair`). You can patch from the deck, or from a boat alongside. Use goes to the helm, a hold or a door first if you look at one of them.
-- **Bail:** on a flooded ship, press **Shift + Use** (the alternative use key) anywhere aboard: *Bail water*. Each bail takes **4%** of a full ship out (`BailAmount`) and costs **8** stamina (`BailStamina`), no faster than every **0.6** seconds (`BailSeconds`).
+- **Bail:** on a flooded ship, press **Shift + Use** (the alternative use key) anywhere aboard: *Bail water*. Each bail takes **4%** of a full ship out (`BailAmount`) and costs **8** stamina (`BailStamina`), no faster than every **0.6** seconds (`BailSeconds`). Without enough stamina the stamina bar flashes and you are told you are too tired.
 
 The crew of a Nail Ship never patches or bails.
 

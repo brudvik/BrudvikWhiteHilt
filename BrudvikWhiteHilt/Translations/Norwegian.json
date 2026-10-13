@@ -1305,6 +1305,7 @@
   "msg_whitehilt_ship_holed": "Skroget er slått hull på!",
   "msg_whitehilt_ship_sinking": "Hun går ned!",
   "msg_whitehilt_ship_nopatch": "Du trenger ved og kvae for å tette det",
+  "msg_whitehilt_ship_tired": "Du er for sliten",
   "whitehilt_ship_fire": "Brann på dekk",
   "msg_whitehilt_ship_fire": "Det brenner på dekk!",
   "whitehilt_ship_stamp": "Trå ut",

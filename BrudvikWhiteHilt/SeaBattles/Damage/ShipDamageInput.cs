@@ -26,6 +26,7 @@ public static class ShipDamageInput
     private static ShipDamage aimedShip;
     private static int aimedIndex = -1;
     private static float nextBail;
+    private static float nextTired;
     private static float nextPatch;
     private static bool failed;
 
@@ -263,12 +264,27 @@ public static class ShipDamageInput
         float stamina = DamageSettings.BailStamina.Value;
         if (!player.HaveStamina(stamina))
         {
+            TooTired(player);
             return;
         }
 
         nextBail = Time.time + DamageSettings.BailSeconds.Value;
         player.UseStamina(stamina);
         damage.RequestBail();
+    }
+
+    /// <summary>
+    /// Flashes the stamina bar as the game does and says why nothing happened, at most once per bail delay.
+    /// </summary>
+    /// <param name="player">The local player.</param>
+    internal static void TooTired(Player player)
+    {
+        Hud.instance?.StaminaBarEmptyFlash();
+        if (Time.time >= nextTired)
+        {
+            nextTired = Time.time + DamageSettings.BailSeconds.Value;
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ship_tired");
+        }
     }
 
     internal static void Append(Hud hud, string text)

@@ -14,10 +14,11 @@ namespace BrudvikWhiteHilt.Pieces.Ships.Ram;
 /// </summary>
 public class ShipRam : MonoBehaviour
 {
-    // The camera shake of a ram, felt on the machine that rams: it reaches this far and is full at 10 m/s.
+    // The camera shake of a ram, felt by everyone near: it reaches this far and is full at 10 m/s.
     private const float ShakeRange = 40f;
     private const float ShakeFullSpeed = 10f;
     private const float ShakeLeast = 0.2f;
+    private const string ShakeRpc = "WhiteHiltShipRamShake";
 
     // Old entries of the cooldown list are dropped when it holds this many.
     private const int CooldownListSize = 32;
@@ -36,6 +37,10 @@ public class ShipRam : MonoBehaviour
         ship = GetComponent<Ship>();
         hull = GetComponent<WearNTear>();
         upgrades = GetComponent<WhiteHiltShipUpgrades>();
+        if (nview != null && nview.GetZDO() != null)
+        {
+            nview.Register<Vector3, float>(ShakeRpc, RPC_Shake);
+        }
     }
 
     // The game sends this to the ship's root for every body the hull strikes, on every machine that simulates it; only the
@@ -187,19 +192,24 @@ public class ShipRam : MonoBehaviour
         hull.ApplyDamage(damage * share);
     }
 
-    // The ship's own water-impact effect (splash and a thud, as when it slams onto a wave) at the contact, and a camera shake
-    // for the local player. The struck hull plays its own hit effect when it takes the damage. A dedicated server shows nothing.
+    // The ship's own water-impact effect (splash and a thud, as when it slams onto a wave) at the contact, played by the owner
+    // as the game plays it, and a camera shake sent to every machine, so all who are near feel the blow. The struck hull plays
+    // its own hit effect when it takes the damage.
     private void Effects(Vector3 contact, float speed)
     {
-        if (VisualHelper.IsHeadless)
+        if (!VisualHelper.IsHeadless)
         {
-            return;
+            ship.m_waterImpactEffect.Create(contact, Quaternion.identity);
         }
 
-        ship.m_waterImpactEffect.Create(contact, Quaternion.identity);
-        if (GameCamera.instance != null)
+        nview.InvokeRPC(ZNetView.Everybody, ShakeRpc, contact, Mathf.Clamp(speed / ShakeFullSpeed, ShakeLeast, 1f));
+    }
+
+    private static void RPC_Shake(long sender, Vector3 contact, float strength)
+    {
+        if (!VisualHelper.IsHeadless && GameCamera.instance != null)
         {
-            GameCamera.instance.AddShake(contact, ShakeRange, Mathf.Clamp(speed / ShakeFullSpeed, ShakeLeast, 1f), false);
+            GameCamera.instance.AddShake(contact, ShakeRange, Mathf.Clamp01(strength), false);
         }
     }
 }

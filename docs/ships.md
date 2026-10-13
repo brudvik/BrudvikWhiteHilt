@@ -131,7 +131,7 @@ A ballista on the forecastle, built from the vanilla ballista's own parts at a s
 - **Man it:** look at the ballista and press **Use** (*Man the ballista*, with the ammunition you would shoot and how many of it you carry). You stand behind it, holding on. Only one player can man it at a time.
 - **Aim:** the ballista turns with the camera. It can turn `YawArc` degrees to either side of straight ahead, `PitchMin` degrees down and `PitchMax` degrees up; it stops at the limits.
 - **Shoot:** press the **attack button**. It takes one piece of the chosen ammunition from your inventory (*No ship ammunition* when you carry none of the three kinds) and needs `ReloadSeconds` to load again; the loaded bolt shows on the ballista. The bolt is yours: kills count for you, and damage follows the PvP rules. It hurts serpents and the Kraken like any other weapon, and a heavy hit on a ship's hull knocks a [hole](sea-battles.md#holes) in it.
-- **Choose ammunition:** press the **secondary attack** (the right mouse button by default). It moves on to the next kind you carry, in the order Ship Bolt, Chain Shot, Grapnel Bolt. While you man the ballista the crosshair shows *Ammunition: Ship Bolt (12)* and, when you carry two or more kinds, a line with the key that switches. A shot uses the chosen kind; if you no longer carry it, it uses the first kind you do. The choice is not saved: the Ship Bolt is chosen again when the game starts.
+- **Choose ammunition:** press the **secondary attack** (the right mouse button by default). It moves on to the next kind you carry, in the order Ship Bolt, Chain Shot, Grapnel Bolt. While you man the ballista the crosshair shows *Ammunition: Ship Bolt (12)* and, when you carry two or more kinds, a line with the key that switches. A shot uses the chosen kind; if you no longer carry it, it uses the first kind you do. The choice is kept with your character, so it is still chosen after you log out.
 - **Cut a grapnel rope:** look at the end of the rope on the rail of the ship the bolt was shot from and press **Use** (*Grapnel rope*, *Cut the rope*), within reach of that ship. The ships are let go. The rope can be cut only there, not from the other ship's deck.
 - **Let go:** move, jump, crouch or block, and you step away from it.
 - **Others:** everyone sees the ballista turn and the bolt fly. The aim is kept on the gunner's own player, so nobody needs to own the ship to shoot.
@@ -152,7 +152,7 @@ Use the **Ram Prow** on the mast of the White Hilt Ship or Skidbladnir, like the
 - **A ship:** it takes `DamagePerSpeed` (40) damage for every m/s of closing speed, half blunt and half chop, so 5 m/s is 200 before the hull's resistances. A ram **always knocks a hole** in the hull, also in one that takes no damage, such as another White Hilt ship: see [Damage at sea](sea-battles.md#damage-at-sea).
 - **A creature:** it takes the same damage as blunt damage and is pushed `PushPerSpeed` (20) for every m/s; a heavy creature moves less. A creature killed counts for the player aboard.
 - **The ramming ship** takes `SelfDamageShare` (10%) of the damage if it can be destroyed. The White Hilt ships are indestructible, so they take none.
-- A splash and a thud play where the ships meet, and the one who owns the ship feels the camera shake.
+- A splash and a thud play where the ships meet, and everyone near feels the camera shake.
 
 ## Config
 

@@ -169,6 +169,7 @@ public static class DeckFireInput
         float stamina = DamageSettings.StampStamina.Value;
         if (!player.HaveStamina(stamina))
         {
+            ShipDamageInput.TooTired(player);
             return;
         }
 

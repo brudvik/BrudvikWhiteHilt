@@ -40,6 +40,9 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     // A decorative ballista turns all the way round: nobody stands behind it to be hurt by the swing of the bow.
     private const float DecorYawArc = 180f;
 
+    // The chosen ammunition is kept on the character, so it is still chosen after logging out.
+    private const string AmmoChoiceKey = "whitehilt_ballista_ammo";
+
     // The ammunition, in the order the secondary attack cycles through it. All of it has the Ship Bolt's ammo type.
     private static readonly string[] AmmoOrder = { ShipBolts.PrefabName, BallistaSettings.ChainShotName, BallistaSettings.GrapnelBoltName };
 
@@ -53,9 +56,6 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     private static bool hidItems;
     private static bool fireRequested;
     private static bool switchRequested;
-
-    // The kind of ammunition the local gunner has chosen; the Ship Bolt until they choose another.
-    private static string selectedAmmo = ShipBolts.PrefabName;
 
     /// <summary>
     /// Where the gunner stands, behind the ballista. Set when the prefab is built.
@@ -113,6 +113,20 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     /// Where the bolts leave, in world space; the ballista's own place when the model has no muzzle.
     /// </summary>
     public Vector3 MuzzlePosition => m_muzzle != null ? m_muzzle.position : transform.position;
+
+    // The kind of ammunition the local gunner has chosen; the Ship Bolt until they choose another.
+    private static string SelectedAmmo
+    {
+        get => Player.m_localPlayer != null && Player.m_localPlayer.m_customData.TryGetValue(AmmoChoiceKey, out string name)
+            && !string.IsNullOrEmpty(name) ? name : ShipBolts.PrefabName;
+        set
+        {
+            if (Player.m_localPlayer != null)
+            {
+                Player.m_localPlayer.m_customData[AmmoChoiceKey] = value;
+            }
+        }
+    }
 
     /// <summary>
     /// Asks the ballista the local player mans to switch to the next kind of ammunition they carry. Called from the player's
@@ -415,7 +429,7 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
         }
 
         Inventory inventory = player.GetInventory();
-        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo);
+        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, SelectedAmmo);
         ItemDrop.ItemData ammo = prefab != null ? inventory.GetAmmoItem(ShipBolts.AmmoType, prefab) : null;
         if (ammo == null)
         {
@@ -431,10 +445,10 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     // Moves to the next kind of ammunition the gunner carries; with one kind or none there is nothing to switch to.
     private static void SwitchAmmo(Inventory inventory)
     {
-        string next = AmmoChoice.Next(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo);
+        string next = AmmoChoice.Next(AmmoOrder, name => Carried(inventory, name) > 0, SelectedAmmo);
         if (next != null)
         {
-            selectedAmmo = next;
+            SelectedAmmo = next;
         }
     }
 
@@ -447,7 +461,8 @@ public class ShipBallista : MonoBehaviour, Hoverable, Interactable
     // The line that names the ammunition a shot would use now and how many of it the gunner carries.
     private static string AmmoLine(Inventory inventory)
     {
-        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, selectedAmmo) ?? selectedAmmo;
+        string selected = SelectedAmmo;
+        string prefab = AmmoChoice.Resolve(AmmoOrder, name => Carried(inventory, name) > 0, selected) ?? selected;
         Localization text = Localization.instance;
         return string.Format(text.Localize("$whitehilt_ballista_ammo"), text.Localize(Translations.Token(Translations.ItemKey(prefab))),
             Carried(inventory, prefab));
