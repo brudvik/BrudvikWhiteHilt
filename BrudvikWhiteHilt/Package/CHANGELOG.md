@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.129.1 - 2026-10-13
+
+### Fixed
+- Bailing water or stamping out a deck fire without enough stamina now flashes the stamina bar and says *You are too tired*; before, nothing happened.
+- The [ballista](docs/ships.md#the-ship-ballista)'s chosen ammunition is kept with your character, so it is still chosen after you log out.
+- Everyone near a [ram](docs/ships.md#the-ram-prow) feels the camera shake, not only the player whose game controls the ship.
+
 ## v0.129.0 - 2026-10-13
 
 ### Added
