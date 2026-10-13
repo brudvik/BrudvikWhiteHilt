@@ -10,10 +10,10 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
-/// Makes the five wild monsters (see <see cref="WildMonsters"/>) and their loot. They are clones of vanilla creatures
+/// Makes the six wild monsters (see <see cref="WildMonsters"/>) and their loot. They are clones of vanilla creatures
 /// with their own animated models, so they all go through one code path; what only one of them does is in the
 /// <c>Configure</c> methods at the end, and in small components. Each is made in its own try block, so one failure does
-/// not cost the player the other four.
+/// not cost the player the others.
 /// </summary>
 internal static class WildMonsterRegistry
 {
@@ -135,6 +135,22 @@ internal static class WildMonsterRegistry
         parts.AI.m_avoidWater = false;
     }
 
+    /// <summary>
+    /// Draugr Jarl: he stands on the deck of a flagship as part of its crew, and the crew's component holds him on his
+    /// post. Once he fights he does not flee, as a jarl does not leave his men, and he fights whoever is aboard.
+    /// </summary>
+    /// <param name="parts">The jarl being made.</param>
+    internal static void ConfigureJarl(WildMonsterParts parts)
+    {
+        parts.AI.m_viewRange = 30f;
+        parts.AI.m_hearRange = 30f;
+        parts.AI.m_alertRange = 20f;
+        parts.AI.m_circulateWhileCharging = false;
+        parts.AI.m_enableHuntPlayer = true;
+        parts.AI.m_fleeIfLowHealth = 0f;
+        parts.AI.m_fleeIfHurtWhenTargetCantBeReached = false;
+    }
+
     private static void Add()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= Add;
@@ -176,6 +192,7 @@ internal static class WildMonsterRegistry
         AddItemText(WildMonsters.GarmTrophy, "Garm Hound Trophy", "Whelp of the hound at the gate of Hel.");
         AddItemText(WildMonsters.SharkMeat, "Shark Meat", "Raw, it will poison you. Hang it and wait, and it turns into food.");
         AddItemText(WildMonsters.SharkTrophy, "Greenland Shark Trophy", "It had seen five hundred winters. It did not see you.");
+        AddItemText(WildMonsters.JarlTrophy, "Draugr Jarl Trophy", "The rotting head of a jarl who sailed with Naglfar.");
     }
 
     private static void AddItemText(string prefab, string name, string description)
@@ -196,6 +213,7 @@ internal static class WildMonsterRegistry
         MonsterRegistry.AddItem(WildMonsters.GarmTrophy, "TrophyWolf", prefab => VisualHelper.Recolor(prefab, Tone(0.03f, 0.6f, 0.35f)));
         MonsterRegistry.AddItem(WildMonsters.SharkMeat, "SerpentMeat", prefab => VisualHelper.Tint(prefab, new Color(0.75f, 0.8f, 0.8f)));
         MonsterRegistry.AddItem(WildMonsters.SharkTrophy, "TrophySerpent", prefab => VisualHelper.Recolor(prefab, Tone(0.5f, 0.12f, 0.55f)));
+        MonsterRegistry.AddItem(WildMonsters.JarlTrophy, "TrophyDraugrElite", prefab => VisualHelper.Recolor(prefab, Tone(0.4f, 0.22f, 0.75f)));
     }
 
     // Moves every pixel towards a hue and a saturation, and scales its brightness.
@@ -236,7 +254,7 @@ internal static class WildMonsterRegistry
             Faction = monster.Faction,
             DropConfigs = monster.Drops.Select(drop => MonsterRegistry.Drop(drop.Item, drop.Min, drop.Max, 100f))
                 .Append(MonsterRegistry.Drop(monster.Trophy, 1, 1, settings.TrophyChance.Value)).ToArray(),
-            SpawnConfigs = new[] { SpawnOf(monster, settings) }
+            SpawnConfigs = monster.Spawns ? new[] { SpawnOf(monster, settings) } : Array.Empty<SpawnConfig>()
         });
 
         GameObject prefab = creature.Prefab;
@@ -276,7 +294,7 @@ internal static class WildMonsterRegistry
             Dress(model, monster.Look);
         }
 
-        if (settings.Sounds.Value)
+        if (monster.SoundPrefix != null && settings.Sounds.Value)
         {
             bool two = weapons.Length > 1;
             MonsterRegistry.AddCreatureSounds(humanoid, ai, weapons[0], monster.SoundPrefix, "attack", two ? weapons[1] : null, two ? "attack2" : null);
@@ -284,7 +302,12 @@ internal static class WildMonsterRegistry
 
         monster.Configure?.Invoke(new WildMonsterParts { Settings = settings, Prefab = prefab, Humanoid = humanoid, AI = ai, Model = model });
         CreatureManager.Instance.AddCreature(creature);
-        spawns[monster.Id] = creature.Spawns.FirstOrDefault();
+        SpawnSystem.SpawnData spawn = creature.Spawns?.FirstOrDefault();
+        if (spawn != null)
+        {
+            spawns[monster.Id] = spawn;
+        }
+
         ApplyConfig();
     }
 

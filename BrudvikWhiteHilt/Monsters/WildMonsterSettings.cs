@@ -6,13 +6,14 @@ namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
 /// Config of one wild monster, in the section <c>Monsters.&lt;Name&gt;</c>. Admin only, synced from the server. The keys
-/// are the same for all five, so their names and descriptions are translated once, under the family <c>Monsters</c>.
+/// are the same for all of them, so their names and descriptions are translated once, under the family <c>Monsters</c>.
+/// A monster that does not spawn in the wild has no spawn settings, and one with no sounds of its own has no Sounds setting.
 /// </summary>
 internal sealed class WildMonsterSettings
 {
     private static readonly Dictionary<string, WildMonsterSettings> settings = new();
 
-    /// <summary>Whether the monster spawns.</summary>
+    /// <summary>Whether the monster spawns, or null when it does not spawn in the wild.</summary>
     public ConfigEntry<bool> Enabled { get; }
 
     /// <summary>Health.</summary>
@@ -51,7 +52,7 @@ internal sealed class WildMonsterSettings
     /// <summary>Chance, in percent, that the trophy drops.</summary>
     public ConfigEntry<float> TrophyChance { get; }
 
-    /// <summary>Whether it uses its own sounds.</summary>
+    /// <summary>Whether it uses its own sounds, or null when it has none of its own.</summary>
     public ConfigEntry<bool> Sounds { get; }
 
     /// <summary>Metres at which it wakes, or null when it never sleeps.</summary>
@@ -66,7 +67,11 @@ internal sealed class WildMonsterSettings
         string section = monster.Section;
         string name = monster.EnglishName;
         WhiteHiltConfig.SetSectionLabel(section, Helpers.Translations.Token(monster.NameKey));
-        Enabled = WhiteHiltConfig.BindAdminOnly(section, "Enabled", true, $"The {name} spawns in the wild. Off: no new ones.");
+        if (monster.Spawns)
+        {
+            Enabled = WhiteHiltConfig.BindAdminOnly(section, "Enabled", true, $"The {name} spawns in the wild. Off: no new ones.");
+        }
+
         Health = WhiteHiltConfig.BindAdminOnly(section, "Health", monster.Health, $"Health of the {name}. Applies after a restart.",
             new AcceptableValueRange<float>(10f, 20000f));
         WildAttack first = monster.Attacks[0];
@@ -87,14 +92,18 @@ internal sealed class WildMonsterSettings
 
         Scale = WhiteHiltConfig.BindAdminOnly(section, "Scale", 1f, $"Size of the {name} (1 = {monster.SizeText}). Applies after a restart.",
             new AcceptableValueRange<float>(0.3f, 3f));
-        StarScale = WhiteHiltConfig.BindAdminOnly(section, "StarScale", 0.15f,
+        StarScale = WhiteHiltConfig.BindAdminOnly(section, "StarScale", monster.StarScale,
             "Visual growth per star up to two stars (0.15 = +15% / +30%). Applies after a restart.", new AcceptableValueRange<float>(0f, 0.5f));
-        SpawnChance = WhiteHiltConfig.BindAdminOnly(section, "SpawnChance", monster.SpawnChance,
-            $"Chance, in percent, per spawn check that a {name} comes. 0 = none.", new AcceptableValueRange<float>(0f, 100f));
-        SpawnSeconds = WhiteHiltConfig.BindAdminOnly(section, "SpawnSeconds", monster.SpawnSeconds, $"Seconds between two spawn checks for the {name}.",
-            new AcceptableValueRange<float>(10f, 3600f));
-        MaxSpawned = WhiteHiltConfig.BindAdminOnly(section, "MaxSpawned", monster.MaxSpawned, $"Most {name}s around a player.",
-            new AcceptableValueRange<int>(1, 10));
+        if (monster.Spawns)
+        {
+            SpawnChance = WhiteHiltConfig.BindAdminOnly(section, "SpawnChance", monster.SpawnChance,
+                $"Chance, in percent, per spawn check that a {name} comes. 0 = none.", new AcceptableValueRange<float>(0f, 100f));
+            SpawnSeconds = WhiteHiltConfig.BindAdminOnly(section, "SpawnSeconds", monster.SpawnSeconds, $"Seconds between two spawn checks for the {name}.",
+                new AcceptableValueRange<float>(10f, 3600f));
+            MaxSpawned = WhiteHiltConfig.BindAdminOnly(section, "MaxSpawned", monster.MaxSpawned, $"Most {name}s around a player.",
+                new AcceptableValueRange<int>(1, 10));
+        }
+
         if (monster.InGroups)
         {
             GroupMin = WhiteHiltConfig.BindAdminOnly(section, "GroupMin", monster.GroupMin, $"Fewest {name}s in a group.", new AcceptableValueRange<int>(1, 10));
@@ -103,8 +112,12 @@ internal sealed class WildMonsterSettings
 
         TrophyChance = WhiteHiltConfig.BindAdminOnly(section, "TrophyChance", monster.TrophyChance,
             $"Chance, in percent, that the {name} drops its trophy. Applies after a restart.", new AcceptableValueRange<float>(0f, 100f));
-        Sounds = WhiteHiltConfig.BindAdminOnly(section, "Sounds", true,
-            $"Use the {name}'s own sounds for idle, alert, attack, injury and death. Applies after a restart.");
+        if (monster.SoundPrefix != null)
+        {
+            Sounds = WhiteHiltConfig.BindAdminOnly(section, "Sounds", true,
+                $"Use the {name}'s own sounds for idle, alert, attack, injury and death. Applies after a restart.");
+        }
+
         if (monster.WakeRange > 0f)
         {
             WakeRange = WhiteHiltConfig.BindAdminOnly(section, "WakeRange", monster.WakeRange,

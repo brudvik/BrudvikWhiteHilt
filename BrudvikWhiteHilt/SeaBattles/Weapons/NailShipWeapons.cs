@@ -112,12 +112,12 @@ public class NailShipWeapons : MonoBehaviour
         }
     }
 
-    // Switches the ballista's model on or off with the world's key, on every client. A ship whose model found no deck stays
-    // without one, and a dedicated server keeps the state without a model.
+    // Switches the ballista's model on or off with the world's key, on every client; a flagship always has it. A ship whose
+    // model found no deck stays without one, and a dedicated server keeps the state without a model.
     private void RefreshBallista()
     {
-        ballistaOn = WeaponSettings.NailBallista.Value && WeaponRules.KeyReached(WeaponSettings.NailBallistaKey.Value,
-            key => ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key));
+        ballistaOn = WeaponRules.BallistaOn(WeaponSettings.NailBallista.Value, raider.IsFlagship,
+            WeaponRules.KeyReached(WeaponSettings.NailBallistaKey.Value, key => ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key)));
         if (ballista != null && !VisualHelper.IsHeadless && !ballista.PlaceFailed && ballista.gameObject.activeSelf != ballistaOn)
         {
             ballista.gameObject.SetActive(ballistaOn);

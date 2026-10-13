@@ -46,6 +46,19 @@ public static class WeaponRules
     }
 
     /// <summary>
+    /// Whether a Nail Ship carries its ballista: the setting is on, and either the ship is a flagship, which always does,
+    /// or the world has reached the key.
+    /// </summary>
+    /// <param name="enabled">The setting <c>NailBallista</c>.</param>
+    /// <param name="flagship">Whether the ship is a flagship.</param>
+    /// <param name="keyReached">Whether the world has reached the ballista's key.</param>
+    /// <returns>True if the ballista is carried.</returns>
+    public static bool BallistaOn(bool enabled, bool flagship, bool keyReached)
+    {
+        return enabled && (flagship || keyReached);
+    }
+
+    /// <summary>
     /// Whether a target is within range of a weapon.
     /// </summary>
     /// <param name="distance">Metres to the target.</param>

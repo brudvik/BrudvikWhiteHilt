@@ -2,9 +2,9 @@
 
 [← Back to the README](../README.MD)
 
-<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140">
+<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side.
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
@@ -103,7 +103,7 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 
 ## The wild beasts
 
-Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there.
+Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there. The Draugr Jarl is the exception: he has no sounds of his own and never spawns in the wild.
 
 | | Where | When | Health | Attacks | Speed (walk / run) |
 |---|---|---|---|---|---|
@@ -112,6 +112,7 @@ Five more monsters, each with its own animated model, own sounds and own loot. T
 | **Yggdrasil Warden** | Mistlands | Day and night | 3000 | Slam, 160 blunt, long reach | 1.2 / 2.5 |
 | **Garm Hound** | Ashlands | Night only, in packs of 2–3 | 500 | Bite, 60 slash + 45 fire | 4 / 10 |
 | **Greenland Shark** | Open sea, after **Bonemass** | Day and night | 450 | Bite, 60 pierce | swims at 6 |
+| **Draugr Jarl** | The deck of a Nail flagship only | Never in the wild | 600 per level | Chop, 70 slash; sweep, 45 slash | 1.4 / 2.5 |
 
 ### Mist Stag
 
@@ -133,7 +134,17 @@ Whelps of Garm, the hound of Hel: charcoal-black, with yellow eyes, about 1.5 m 
 
 A slow, grey, dead-eyed shark about **5 m long**, in the open sea, once **Bonemass** is slain (`RequiredKey`, the ocean counts as Swamp). It hunts swimmers and bites boats like the serpents do. It is immune to frost and weak to lightning. Its meat, put in a fermenter, turns into **Hákarl**.
 
-Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn`, `WhiteHilt_YggdrasilWarden`, `WhiteHilt_GarmHound` and `WhiteHilt_GreenlandShark` (with `devcommands`).
+### Draugr Jarl
+
+A huge undead viking with a fur cloak, glowing blue-green eyes and a great axe, about **2.3 m tall**, who sailed with Naglfar. He **never spawns in the wild**: he only appears as the leader of the crew of a Nail Ship **flagship**, where he keeps a post near the mast, leaps across last of all and does not flee (see [Fleets](sea-battles.md#fleets) and [The draugr jarl](sea-battles.md#the-draugr-jarl)). He is of the undead faction like his crew, and he keeps the sounds of the Draugr Elite he is cloned from.
+
+- **Attacks:** an overhead **chop** of 70 slash damage (reach 3 m, every 3 seconds, a hard knock-back) and a wide **sweep** of 45 slash damage (reach 3.2 m, a 140° arc, every 5 seconds).
+- **Strength:** 600 health and the damage above are **per level**, and his level grows with the world (`[SeaBattles.Fleets] JarlLevels`): level 3 (two stars) after Moder, 4 after Yagluth, 5 after the Queen and 6 after Fader. That is about **1800 / 2400 / 3000 / 3600 health**, and his attacks hit 2, 2.5, 3 and 3.5 times the numbers above, before pressure bonuses (see [Difficulty](difficulty.md)). Each star makes him 8% bigger up to two stars, so about 2.7 m from level 3; higher stars also use the difficulty size settings.
+- **Resistances:** resists pierce, is weak to fire and spirit, immune to poison, and ignores chop and pickaxe damage.
+- **Loot:** only his trophy, the **Draugr Jarl Trophy**, always (100%). His body sinks after 10 seconds.
+- Slaying him is a [saga](saga.md) deed (a listed creature).
+
+Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn`, `WhiteHilt_YggdrasilWarden`, `WhiteHilt_GarmHound`, `WhiteHilt_GreenlandShark` and `WhiteHilt_DraugrJarl` (with `devcommands`).
 
 ## Loot
 
@@ -159,6 +170,7 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Garm Hound Trophy** | Garm Hound | 10% | Your wall |
 | **Shark Meat** ×2–4 | Greenland Shark | Always | Hákarl (below) |
 | **Greenland Shark Trophy** | Greenland Shark | 10% | Your wall |
+| **Draugr Jarl Trophy** | Draugr Jarl | Always | Your wall |
 
 ### Made from Desert Dragon Scales
 
@@ -198,6 +210,19 @@ Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilW
 | `Sounds` | true | Own sounds for idle, alert, attack, injury and death (after a restart) |
 | `WakeRange` | 8 | Yggdrasil Warden only: metres at which a player wakes it (after a restart) |
 | `RequiredKey` | defeated_bonemass | Greenland Shark only: global key needed first; empty for none |
+
+Section `[Monsters.DraugrJarl]` (admin only, synced from the server) has no `Enabled`, spawn, `Sounds` or `RequiredKey` settings, as he never spawns in the wild:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Health` | 600 | Health per level (after a restart) |
+| `Damage` | 70 | Slash damage of the overhead chop, per level (after a restart) |
+| `SecondDamage` | 45 | Slash damage of the sideways sweep, per level (after a restart) |
+| `Scale` | 1 | Size (1 = about 2.3 m tall; after a restart) |
+| `StarScale` | 0.08 | Visual growth per star up to two stars (+8% / +16%; after a restart) |
+| `TrophyChance` | 100 | Percent chance of his trophy (after a restart) |
+
+His level, and the crew around him, are set in `[SeaBattles.Fleets]`, see [Sea battles & raids](sea-battles.md#config).
 
 Section `[Monsters.Loot]`:
 

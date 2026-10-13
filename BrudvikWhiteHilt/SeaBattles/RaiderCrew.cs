@@ -31,6 +31,7 @@ public class RaiderCrew : MonoBehaviour
     private ZDOID shipId = ZDOID.None;
     private Vector3 post;
     private bool archer;
+    private bool jarl;
     private int index = -1;
     private string siteId = string.Empty;
     private RaiderShip ship;
@@ -51,6 +52,9 @@ public class RaiderCrew : MonoBehaviour
 
     /// <summary>Whether this creature shoots from its post.</summary>
     public bool Archer => archer;
+
+    /// <summary>Whether this creature is the draugr jarl of a flagship.</summary>
+    public bool Jarl => jarl;
 
     /// <summary>A melee crew member's number among the ship's melee crew, from 0; -1 for others.</summary>
     public int Index => index;
@@ -156,6 +160,7 @@ public class RaiderCrew : MonoBehaviour
         shipId = zdo.GetZDOID(RaiderKeys.Ship);
         post = zdo.GetVec3(RaiderKeys.Post, Vector3.zero);
         archer = zdo.GetInt(RaiderKeys.Role) == 1;
+        jarl = zdo.GetBool(RaiderKeys.Jarl);
         index = zdo.GetInt(RaiderKeys.Index, -1);
         siteId = zdo.GetString(RaiderKeys.Site, string.Empty);
     }

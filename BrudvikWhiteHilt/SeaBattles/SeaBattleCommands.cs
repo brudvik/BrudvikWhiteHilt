@@ -8,7 +8,8 @@ namespace BrudvikWhiteHilt.SeaBattles;
 
 /// <summary>
 /// Console command whitehilt_seabattle: shows the conditions for a Nail Ship and the ones that are loaded, or (admins)
-/// asks the server to send one after the ship the local player is aboard, or to make a draugr harbour on the coast
+/// asks the server to send one after the ship the local player is aboard, or a whole fleet (<c>fleet [2|3]</c>), or to
+/// make a draugr harbour on the coast
 /// nearest the player. The services on the server do the work, so the same checks and the same ship come as in a natural
 /// encounter, only without the roll and the cooldown. With cheats on, <c>hole</c> rams the ship the player stands on as a
 /// ram would, to try flooding and patching without a fight.
@@ -27,7 +28,7 @@ public static class SeaBattleCommands
     {
         public override string Name => "whitehilt_seabattle";
 
-        public override string Help => "[status|summon|raid|hole [count]] Shows the conditions for a Nail Ship; admins can send one after their ship or make a draugr harbour on the nearest coast; with cheats on, hole knocks holes in the ship you stand on.";
+        public override string Help => "[status|summon|fleet [2|3]|raid|hole [count]] Shows the conditions for a Nail Ship; admins can send one or a fleet after their ship or make a draugr harbour on the nearest coast; with cheats on, hole knocks holes in the ship you stand on.";
 
         public override void Run(string[] args)
         {
@@ -43,6 +44,12 @@ public static class SeaBattleCommands
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "fleet")
+            {
+                SeaBattleService.SummonFleet(args.Length > 1 && int.TryParse(args[1], out int size) ? Mathf.Clamp(size, 2, 3) : 2);
+                return;
+            }
+
             if (args.Length > 0 && args[0] == "raid")
             {
                 RaidService.RequestAdmin();
@@ -54,7 +61,7 @@ public static class SeaBattleCommands
 
         public override List<string> CommandOptionList()
         {
-            return new List<string> { "status", "summon", "raid", "hole" };
+            return new List<string> { "status", "summon", "fleet", "raid", "hole" };
         }
 
         // A blow of the kind a ram gives, sent to the ship's hull as the game sends any hit, so the owner makes the holes

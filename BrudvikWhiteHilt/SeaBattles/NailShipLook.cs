@@ -25,6 +25,11 @@ internal static class NailShipLook
     // Bone.
     private const float BoneHue = 0.12f;
 
+    // The flagship's sail: blood red.
+    private const float FlagshipSailHue = 0.99f;
+    private const float FlagshipSailSaturation = 0.8f;
+    private const float FlagshipSailValue = 1.9f;
+
     /// <summary>
     /// Changes the look of the cloned ship prefab.
     /// </summary>
@@ -51,6 +56,30 @@ internal static class NailShipLook
         TryStep("shields", () => ShowShields(visual));
     }
 
+    /// <summary>
+    /// Gives the flagship, a clone of the finished Nail Ship, a blood-red sail. Only the sail's material copy changes: the
+    /// painted texture of the Nail Ship is recoloured again, so the grain of the cloth stays.
+    /// </summary>
+    /// <param name="flagship">The cloned flagship prefab.</param>
+    public static void ApplyFlagship(GameObject flagship)
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        Transform visual = flagship.transform.Find("ship/visual");
+        if (visual == null)
+        {
+            Jotunn.Logger.LogWarning("Nail Flagship: ship/visual not found, keeping the Nail Ship's sail.");
+            return;
+        }
+
+        TryStep("flagship sail", () => WhiteHiltShipLook.PaintMaterials(
+            visual.GetComponentsInChildren<Renderer>(true).Where(renderer => renderer is SkinnedMeshRenderer).ToArray(),
+            name => name.StartsWith("sail_diffuse", StringComparison.Ordinal), PaintFlagshipSail));
+    }
+
     private static void TryStep(string part, Action step)
     {
         try
@@ -70,6 +99,12 @@ internal static class NailShipLook
         string hull = WhiteHiltShipUpgradeSetup.HullTemplate(root).sharedMaterial.mainTexture.name;
         WhiteHiltShipLook.PaintMaterials(renderers, name => name == hull,
             source => VisualHelper.RecolorTexture(source, pixel => Recolour(pixel, HullHue, 0.4f, 0.12f, HullValue, 0f)));
+    }
+
+    // Blood red: the Nail Ship's grey-green cloth gets a red hue, a fixed saturation and its light brought back up.
+    private static Texture2D PaintFlagshipSail(Texture source)
+    {
+        return VisualHelper.RecolorTexture(source, pixel => Recolour(pixel, FlagshipSailHue, 0f, FlagshipSailSaturation, FlagshipSailValue, 0.04f));
     }
 
     private static Texture2D PaintSail(Texture source)

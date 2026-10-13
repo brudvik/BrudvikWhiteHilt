@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Ships.Ballista;
+using BrudvikWhiteHilt.SeaBattles.Fleets;
 using BrudvikWhiteHilt.SeaBattles.Raids;
 using BrudvikWhiteHilt.SeaBattles.Weapons;
 using Jotunn.Configs;
@@ -14,12 +15,16 @@ namespace BrudvikWhiteHilt.SeaBattles;
 /// <summary>
 /// Registers the Nail Ship: a clone of the vanilla longship with a hull of its own health, a sail that pulls as hard as
 /// the settings say, no way for the hammer to take it apart, the dark look of Naglfar's fleet and the
-/// <see cref="RaiderShip"/> that sails it. It also registers the Raid Chart and the hoard chest of a draugr harbour.
+/// <see cref="RaiderShip"/> that sails it. It also registers the flagship of a fleet (a clone of that ship with a red sail
+/// and a stronger hull), the Raid Chart and the hoard chest of a draugr harbour.
 /// </summary>
 public static class NailShipRegistry
 {
     /// <summary>Prefab name of the Nail Ship.</summary>
     public const string ShipName = "WhiteHilt_NailShip";
+
+    /// <summary>Prefab name of the flagship of a fleet: a Nail Ship with a red sail, a stronger hull and a jarl.</summary>
+    public const string FlagshipName = "WhiteHilt_NailFlagship";
 
     /// <summary>Prefab name of the Raid Chart.</summary>
     public const string RaidChartName = "WhiteHiltRaidChart";
@@ -34,6 +39,39 @@ public static class NailShipRegistry
     // The bundle's treasure map is stored one unit long; the chart is drawn as long as the treasure maps are.
     private const float ChartLength = 0.35f;
     private static readonly Color chartTint = new(0.55f, 0.68f, 0.62f);
+    private static readonly int shipHash = ShipName.GetStableHashCode();
+    private static readonly int flagshipHash = FlagshipName.GetStableHashCode();
+
+    /// <summary>
+    /// Whether a prefab hash (as the network data of an object carries it) is a Nail Ship or a flagship. Every test for
+    /// "a Nail Ship" by prefab goes through here, so the flagship counts as one.
+    /// </summary>
+    /// <param name="prefabHash">The stable hash of the prefab name.</param>
+    /// <returns>True for either kind.</returns>
+    public static bool IsNailShip(int prefabHash)
+    {
+        return prefabHash == shipHash || prefabHash == flagshipHash;
+    }
+
+    /// <summary>
+    /// Whether a prefab name is a Nail Ship or a flagship.
+    /// </summary>
+    /// <param name="prefabName">The prefab name, without "(Clone)".</param>
+    /// <returns>True for either kind.</returns>
+    public static bool IsNailShip(string prefabName)
+    {
+        return prefabName == ShipName || prefabName == FlagshipName;
+    }
+
+    /// <summary>
+    /// Whether a ship is a flagship.
+    /// </summary>
+    /// <param name="ship">The ship's object, or null.</param>
+    /// <returns>True for a flagship.</returns>
+    public static bool IsFlagship(GameObject ship)
+    {
+        return ship != null && Utils.GetPrefabName(ship) == FlagshipName;
+    }
 
     /// <summary>
     /// Registers the prefab once the vanilla prefabs can be cloned. Call from the plugin's Awake, after the Kraken's.
@@ -72,10 +110,32 @@ public static class NailShipRegistry
             NailShipLook.Apply(prefab);
             PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
             Jotunn.Logger.LogInfo("Nail Ship added!");
+            AddFlagship(prefab);
         }
         catch (Exception ex)
         {
             Jotunn.Logger.LogError("Nail Ship failed to load!");
+            Jotunn.Logger.LogError(ex);
+        }
+    }
+
+    // The flagship is a clone of the finished Nail Ship, so it shares the hull and its textures and has the same
+    // components, and only differs in what is set here. It has its own try, so a failure costs the fleets and not the
+    // plain Nail Ship.
+    private static void AddFlagship(GameObject nailShip)
+    {
+        try
+        {
+            GameObject prefab = PrefabManager.Instance.CreateClonedPrefab(FlagshipName, nailShip);
+            prefab.GetComponent<Piece>().m_name = Translations.Token("whitehilt_nailflagship");
+            prefab.GetComponent<WearNTear>().m_health = FleetSettings.FlagshipHullHealth.Value;
+            NailShipLook.ApplyFlagship(prefab);
+            PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
+            Jotunn.Logger.LogInfo("Nail Flagship added!");
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogError("Nail Flagship failed to load!");
             Jotunn.Logger.LogError(ex);
         }
     }

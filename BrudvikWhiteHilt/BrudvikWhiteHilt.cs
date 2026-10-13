@@ -153,6 +153,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         SeaBattles.SeaBattleSettings.Initialize();
         SeaBattles.Damage.DamageSettings.Initialize();
         SeaBattles.Weapons.WeaponSettings.Initialize();
+        SeaBattles.Fleets.FleetSettings.Initialize();
         Items.Summoning.SummoningHornService.Initialize();
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();

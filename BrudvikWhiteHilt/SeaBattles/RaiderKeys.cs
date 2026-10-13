@@ -12,6 +12,9 @@ internal static class RaiderKeys
     /// <summary>The Nail Ship a crew member belongs to (a ZDOID, stored under this name).</summary>
     public const string Ship = "whitehilt_raider_ship";
 
+    /// <summary>The flagship of the fleet a Nail Ship belongs to (a ZDOID, stored under this name); the flagship's own id on the flagship, none for a lone ship.</summary>
+    public const string Fleet = "whitehilt_raider_fleet";
+
     /// <summary>The Nail Ship's <see cref="RaiderState"/>.</summary>
     public static readonly int State = "whitehilt_raider_state".GetStableHashCode();
 
@@ -56,4 +59,16 @@ internal static class RaiderKeys
 
     /// <summary>The crew member has leapt onto another ship.</summary>
     public static readonly int Boarded = "whitehilt_raider_boarded".GetStableHashCode();
+
+    /// <summary>A ship's place in its fleet: 0 the flagship, 1 and 2 the escorts.</summary>
+    public static readonly int Rank = "whitehilt_raider_rank".GetStableHashCode();
+
+    /// <summary>On a creature: it is the jarl. On a flagship: it carries a jarl.</summary>
+    public static readonly int Jarl = "whitehilt_raider_jarl".GetStableHashCode();
+
+    /// <summary>On the flagship: its jarl has been slain.</summary>
+    public static readonly int JarlFallen = "whitehilt_raider_jarlfallen".GetStableHashCode();
+
+    /// <summary>On the flagship: the fleet is broken (the flagship is a prize or sunk) and the saga deed has been given.</summary>
+    public static readonly int Broken = "whitehilt_raider_broken".GetStableHashCode();
 }

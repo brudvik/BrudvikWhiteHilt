@@ -163,6 +163,16 @@ public readonly struct RaiderTuning
 
     /// <summary>It flees when this share of its hull is left.</summary>
     public float FleeHullShare { get; }
+
+    /// <summary>
+    /// The same tuning with another distance alongside, for an escort that keeps farther off than the flagship.
+    /// </summary>
+    /// <param name="broadsideDistance">Metres it keeps alongside.</param>
+    /// <returns>The new tuning.</returns>
+    public RaiderTuning WithBroadside(float broadsideDistance)
+    {
+        return new RaiderTuning(broadsideDistance, BroadsideSeconds, BoardDistance, FleeCrewShare, FleeHullShare);
+    }
 }
 
 /// <summary>

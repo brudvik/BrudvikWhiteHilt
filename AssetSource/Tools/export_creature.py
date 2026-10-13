@@ -17,13 +17,20 @@ spec (see AssetSource/Creatures/*.creature.json):
            axes are tilted), and optionally moved by a world-space offset (Blender axes, z up; "wrot" and "loc" not with
            "follow"); with "follow": true the base take keeps playing
            under the rotations (wings keep flapping), and a following clip also trims a long take: it lasts until its
-           last key frame and starts at base.frame; list them in clips with take = name to keep them
+           last key frame and starts at base.frame; list them in clips with take = name to keep them.
+           base.borrow [{"take", "frame", "bones": [prefix, ...]}] copies the local pose of those bones from another take
+           and frame before the keys are applied (an arm carried one way under a body that stands another; not with
+           "follow"). "hold" {"bone", "to", "from": {"take", "frame"}, "shift": [x, y, z], "turn": [x, y, z]} keeps a prop
+           bone fixed to a hand bone on every frame of the clip, in the relation it has in the "from" take and frame
+           (shift in the hand bone's units, turn its local degrees); the prop's own keys are replaced
   decimate     ratio (0..1): collapse-decimates every skinned mesh of 300 or more faces before the eyes are added
   scale_translations  factor: multiplies every animation translation in the glb before import; for a glb whose mesh and rest
                pose come into Blender 100 times larger than its animation translations (the mesh stretches when a bone moves)
   prune_bones  true: deletes every bone that has no weights and no weighted descendant (Rigify control bones), which
                makes the FBX and its clips a fraction of the size; "generate" prefixes then need kept bones
   texture_size  largest texture side (default 1024)
+  albedo_recolour  {"saturation", "tint": [r, g, b], "value"}: greys, tints and darkens every albedo texture (the undead
+               look of the draugr jarl); the same factors apply to every pixel, shading included
 Shape keys are baked at their current values first (morph targets cannot be decimated and Unity ignores them).
 """
 import json
@@ -37,6 +44,7 @@ import tempfile
 import bmesh
 import bpy
 import mathutils
+import numpy
 
 # How the glb leaves every bone: an unkeyed bone keeps this pose in every clip (a root bone often holds the model's
 # upright rotation).
@@ -94,7 +102,7 @@ def main():
     for clip in spec.get("generate", []):
         generate_clip(armature, clip)
     keep_clips(spec.get("clips", []))
-    materials = export_materials(body, name, out, spec.get("texture_size", 1024))
+    materials = export_materials(body, name, out, spec.get("texture_size", 1024), spec.get("albedo_recolour"))
     with open(os.path.join(out, f"{name}.materials.json"), "w", encoding="utf-8") as handle:
         json.dump({"materials": materials}, handle, indent=1)
 
@@ -289,13 +297,26 @@ def generate_clip(armature, clip):
     armature.animation_data.action = None
     restore_imported_pose(armature)
     if clip["base"].get("follow"):
-        if any("loc" in key or "wrot" in key for key in clip["keys"]):
-            raise SystemExit(f"{clip['name']}: \"loc\" and \"wrot\" are not supported with \"follow\"")
+        if any("loc" in key or "wrot" in key for key in clip["keys"]) or clip["base"].get("borrow") or clip.get("hold"):
+            raise SystemExit(f"{clip['name']}: \"loc\", \"wrot\", \"borrow\" and \"hold\" are not supported with \"follow\"")
         generate_following_clip(armature, clip, base_action)
         return
+    hold = hold_relation(armature, clip.get("hold"))
     set_pose(armature, {"take": base_action.name, "frame": clip["base"].get("frame", 0)})
     bones = armature.pose.bones
     base = {bone.name: (bone.location.copy(), bone.rotation_quaternion.copy(), bone.scale.copy()) for bone in bones}
+    for borrow in clip["base"].get("borrow", []):
+        set_pose(armature, {"take": borrow["take"], "frame": borrow.get("frame", 0)})
+        for bone in bones:
+            if any(bone.name.startswith(prefix) for prefix in borrow["bones"]):
+                base[bone.name] = (bone.location.copy(), bone.rotation_quaternion.copy(), bone.scale.copy())
+    if clip["base"].get("borrow"):
+        # The world rotations and shifts below are worked out from the pose the clip starts in, so pose it first.
+        armature.animation_data.action = None
+        for bone in bones:
+            bone.rotation_mode = "QUATERNION"
+            bone.location, bone.rotation_quaternion, bone.scale = (value.copy() for value in base[bone.name])
+        bpy.context.view_layer.update()
 
     matrices = {bone.name: bone.matrix.copy() for bone in bones}
     action = bpy.data.actions.new(clip["name"])
@@ -331,8 +352,34 @@ def generate_clip(armature, clip):
             bone.scale = scale
             for path in ("location", "rotation_quaternion", "scale"):
                 bone.keyframe_insert(path, frame=key["frame"])
+    if hold:
+        apply_hold(armature, action, clip["hold"], hold, min(key["frame"] for key in clip["keys"]),
+                   max(key["frame"] for key in clip["keys"]))
     action.use_fake_user = True
     armature.animation_data.action = None
+
+
+def hold_relation(armature, hold):
+    """The matrix of a prop bone in its hand bone's space, as it is in the take and frame the hold is taken from."""
+    if not hold:
+        return None
+    set_pose(armature, hold["from"])
+    bones = armature.pose.bones
+    relation = bones[hold["to"]].matrix.inverted() @ bones[hold["bone"]].matrix
+    turn = mathutils.Euler([math.radians(angle) for angle in hold.get("turn", [0, 0, 0])]).to_matrix().to_4x4()
+    return mathutils.Matrix.Translation(hold.get("shift", [0, 0, 0])) @ turn @ relation
+
+
+def apply_hold(armature, action, hold, relation, first, last):
+    """Keys the prop bone on every frame of the clip so it stays in the hand, whatever the arm does."""
+    armature.animation_data.action = action
+    prop, hand = armature.pose.bones[hold["bone"]], armature.pose.bones[hold["to"]]
+    prop.rotation_mode = "QUATERNION"
+    for frame in range(first, last + 1):
+        bpy.context.scene.frame_set(frame)
+        prop.matrix = hand.matrix @ relation
+        for path in ("location", "rotation_quaternion", "scale"):
+            prop.keyframe_insert(path, frame=frame)
 
 
 def local_shift(armature, bone, matrices, metres):
@@ -410,18 +457,19 @@ def generate_following_clip(armature, clip, base_action):
 
 def keep_clips(clips):
     wanted = {clip["take"]: clip["name"] for clip in clips}
+    # Drop the others first: a generated take renamed to a name an unwanted action still holds would become "name.001".
     for action in list(bpy.data.actions):
-        if action.name in wanted:
-            action.name = wanted[action.name]
-            action.use_fake_user = True
-        else:
+        if action.name not in wanted:
             bpy.data.actions.remove(action)
+    for action in list(bpy.data.actions):
+        action.name = wanted[action.name]
+        action.use_fake_user = True
     missing = [take for take in wanted if take not in [a.name for a in bpy.data.actions] and wanted[take] not in [a.name for a in bpy.data.actions]]
     if missing:
         raise SystemExit(f"Takes not found: {missing}")
 
 
-def export_materials(body, name, out, size):
+def export_materials(body, name, out, size, recolour=None):
     materials = []
     for slot in body.material_slots:
         material = slot.material
@@ -435,7 +483,7 @@ def export_materials(body, name, out, size):
             entry["colour"] = [round(c, 4) for c in bsdf.inputs["Base Color"].default_value]
             image = linked_image(bsdf.inputs["Base Color"])
             if image is not None:
-                entry["albedo"] = save_image(image, f"{name}_{key}_albedo", out, size)
+                entry["albedo"] = save_image(image, f"{name}_{key}_albedo", out, size, recolour)
                 entry["colour"] = [1, 1, 1, 1]
             normal_input = bsdf.inputs.get("Normal")
             if normal_input is not None and normal_input.is_linked:
@@ -475,7 +523,7 @@ def linked_image(socket):
     return None
 
 
-def save_image(image, file_name, out, size):
+def save_image(image, file_name, out, size, recolour=None):
     copy = image.copy()
     width, height = copy.size
     if max(width, height) > size:
@@ -484,7 +532,16 @@ def save_image(image, file_name, out, size):
     # Images from a .glb are packed; a fresh image with the same pixels saves straight to a file, without colour management.
     width, height = copy.size
     target = bpy.data.images.new(file_name, width, height, alpha=True)
-    target.pixels.foreach_set(tuple(copy.pixels))
+    if recolour:
+        pixels = numpy.empty(width * height * 4, dtype=numpy.float32)
+        copy.pixels.foreach_get(pixels)
+        pixels = pixels.reshape(-1, 4)
+        grey = (pixels[:, :3] @ numpy.array([0.299, 0.587, 0.114], dtype=numpy.float32))[:, None]
+        colour = grey + (pixels[:, :3] - grey) * recolour.get("saturation", 1.0)
+        pixels[:, :3] = numpy.clip(colour * numpy.array(recolour.get("tint", [1, 1, 1]), dtype=numpy.float32) * recolour.get("value", 1.0), 0, 1)
+        target.pixels.foreach_set(pixels.ravel())
+    else:
+        target.pixels.foreach_set(tuple(copy.pixels))
     path = os.path.join(out, file_name + ".png")
     target.filepath_raw = path
     target.file_format = "PNG"

@@ -27,7 +27,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Portals & travel](portals.md) | Metal-carrying runes, the portal network and travel map, the Home Stone, the Valkyrie Stone and the Portal Astrolabe |
 | [Bridges, jetties & quays](harbour.md) | Jetties on piles with a jetty head, stone quays with a corner and steps, and log, rope and stone bridges |
 | [Treasure maps](treasure.md) | Hildir's treasure maps, buried chests and treasure hunts |
-| [Sea battles & raids](sea-battles.md) | Nail Ships that hunt ships at sea, holes, flooding and fire on deck, boarding leaps, prize ships, Raid Charts and draugr harbours to sack |
+| [Sea battles & raids](sea-battles.md) | Nail Ships that hunt ships at sea, alone or in a fleet behind a flagship and a draugr jarl, holes, flooding and fire on deck, boarding leaps, prize ships, Raid Charts and draugr harbours to sack |
 
 ## 🍄 Farm & food
 

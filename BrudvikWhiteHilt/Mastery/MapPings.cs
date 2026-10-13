@@ -207,7 +207,7 @@ public static class Lookout
                 // A Nail Ship is a sea monster to the lookout, not a friendly ship.
                 bool raider = SeaBattles.RaiderShip.Is(ship);
                 TemporaryPins.Add(ship.transform.position, raider ? Minimap.PinType.Icon3 : Minimap.PinType.Icon4,
-                    Localization.instance.Localize(raider ? "$whitehilt_nailship" : "$whitehilt_lookout_ship"), PinSeconds);
+                    Localization.instance.Localize(raider ? SeaBattles.RaiderShip.Of(ship).NameToken : "$whitehilt_lookout_ship"), PinSeconds);
             }
         }
     }

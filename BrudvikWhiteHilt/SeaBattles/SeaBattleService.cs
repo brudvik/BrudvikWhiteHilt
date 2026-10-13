@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Summoning;
 using BrudvikWhiteHilt.Kraken;
+using BrudvikWhiteHilt.SeaBattles.Fleets;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,14 +10,16 @@ namespace BrudvikWhiteHilt.SeaBattles;
 /// <summary>
 /// Runs on the <see cref="Game"/> object and decides when a Nail Ship comes. The client that owns a ship at sea asks the
 /// server once a minute while every condition holds; the server checks the request again, rolls the chance, keeps the
-/// world-wide cooldown and picks the crew from the global keys; the client then raises the ship. Admins can call one
-/// with whitehilt_seabattle summon, which skips the chance and the cooldown. Every number is a setting.
+/// world-wide cooldown, picks the crew from the global keys and the fleet size from the fleet tiers; the client then raises
+/// the ship, or the whole fleet. Admins can call one with whitehilt_seabattle summon, or a fleet with fleet, which skip the
+/// chance and the cooldown. Every number is a setting.
 /// </summary>
 public class SeaBattleService : MonoBehaviour
 {
     private const string RequestRpc = "WhiteHiltSeaBattleRequest";
     private const string SpawnRpc = "WhiteHiltSeaBattleSpawn";
     private const string AdminRpc = "WhiteHiltSeaBattleAdmin";
+    private const string FleetRpc = "WhiteHiltSeaBattleFleet";
     private const string ReplyRpc = "WhiteHiltSeaBattleReply";
     private const string SightedRpc = "WhiteHiltSeaBattleSighted";
     private const float CheckInterval = 60f;
@@ -45,6 +48,22 @@ public class SeaBattleService : MonoBehaviour
         }
 
         ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), AdminRpc, ship.m_nview.GetZDO().m_uid);
+    }
+
+    /// <summary>
+    /// Asks the server, as an admin, to send a whole fleet of Nail Ships after the ship the local player is aboard now.
+    /// </summary>
+    /// <param name="size">The number of ships, 2 or 3.</param>
+    public static void SummonFleet(int size)
+    {
+        Ship ship = Ship.GetLocalShip();
+        if (ZRoutedRpc.instance == null || ship == null || ship.m_nview == null || !ship.m_nview.IsValid() || RaiderShip.Is(ship))
+        {
+            Print("Board a ship at sea first.");
+            return;
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), FleetRpc, ship.m_nview.GetZDO().m_uid, size);
     }
 
     /// <summary>
@@ -110,10 +129,11 @@ public class SeaBattleService : MonoBehaviour
     private void Start()
     {
         ZRoutedRpc.instance?.Register<ZDOID, int>(RequestRpc, RPC_Request);
-        ZRoutedRpc.instance?.Register<ZDOID, int, int>(SpawnRpc, RPC_Spawn);
+        ZRoutedRpc.instance?.Register<ZDOID, int, int, int>(SpawnRpc, RPC_Spawn);
         ZRoutedRpc.instance?.Register<ZDOID>(AdminRpc, RPC_Admin);
+        ZRoutedRpc.instance?.Register<ZDOID, int>(FleetRpc, RPC_Fleet);
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
-        ZRoutedRpc.instance?.Register<ZDOID>(SightedRpc, RPC_Sighted);
+        ZRoutedRpc.instance?.Register<ZDOID, int>(SightedRpc, RPC_Sighted);
         nextCheck = Time.time + CheckInterval;
     }
 
@@ -203,13 +223,44 @@ public class SeaBattleService : MonoBehaviour
 
         lastEncounter = Time.time;
         int bonus = EncounterRules.CrewBonus(aboard, SeaBattleSettings.CrewPerExtraPlayer.Value);
-        Jotunn.Logger.LogInfo($"Nail Ship: sending one after {sender}'s ship ({aboard} aboard, tier {tier.Key}, {bonus} extra crew)");
-        ZRoutedRpc.instance.InvokeRoutedRPC(SpawnPeer(ship, sender), SpawnRpc, shipId, tier.Index, bonus);
+        int size = PickFleetSize();
+        Jotunn.Logger.LogInfo($"Nail Ship: sending {(size > 1 ? $"a fleet of {size}" : "one")} after {sender}'s ship ({aboard} aboard, tier {tier.Key}, {bonus} extra crew)");
+        ZRoutedRpc.instance.InvokeRoutedRPC(SpawnPeer(ship, sender), SpawnRpc, shipId, tier.Index, bonus, size);
     }
 
-    // On the server: an admin asks for a Nail Ship at once, with no roll and no cooldown. A world with no crew key set
-    // gets the first tier, so the ship can be tried before any boss is slain.
+    // On the server: the size of the fleet for one encounter, from the fleet tiers and the world's keys. One ship when
+    // fleets are off or no tier applies.
+    private static int PickFleetSize()
+    {
+        if (!FleetSettings.Enabled.Value)
+        {
+            return 1;
+        }
+
+        return FleetRules.PickSize(FleetRules.ParseTiers(FleetSettings.FleetTiers.Value), key => ZoneSystem.instance.GetGlobalKey(key), Random.value);
+    }
+
+    // On the server: an admin asks for a Nail Ship at once, with no roll and no cooldown.
     private void RPC_Admin(long sender, ZDOID shipId)
+    {
+        SendForAdmin(sender, shipId, 1);
+    }
+
+    // On the server: an admin asks for a fleet at once, with no roll and no cooldown.
+    private void RPC_Fleet(long sender, ZDOID shipId, int size)
+    {
+        if (ZNet.instance != null && ZNet.instance.IsServer() && IsAdmin(sender) && !FleetSettings.Enabled.Value)
+        {
+            Reply(sender, "Fleets are switched off in the settings ([SeaBattles.Fleets] Enabled).");
+            return;
+        }
+
+        SendForAdmin(sender, shipId, Mathf.Clamp(size, 2, FleetRules.MaxSize));
+    }
+
+    // On the server: checks that the sender is an admin and orders the Nail Ship, or the fleet, at once. A world with no
+    // crew key set gets the first tier, so the ship can be tried before any boss is slain.
+    private void SendForAdmin(long sender, ZDOID shipId, int size)
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer())
         {
@@ -252,8 +303,8 @@ public class SeaBattleService : MonoBehaviour
 
         lastEncounter = Time.time;
         int bonus = EncounterRules.CrewBonus(PlayersNear(ship.GetPosition()), SeaBattleSettings.CrewPerExtraPlayer.Value);
-        ZRoutedRpc.instance.InvokeRoutedRPC(SpawnPeer(ship, sender), SpawnRpc, shipId, tier.Index, bonus);
-        Reply(sender, "A Nail Ship is sent." + note);
+        ZRoutedRpc.instance.InvokeRoutedRPC(SpawnPeer(ship, sender), SpawnRpc, shipId, tier.Index, bonus, size);
+        Reply(sender, (size > 1 ? $"A fleet of {size} Nail Ships is sent." : "A Nail Ship is sent.") + note);
     }
 
     // Only the ship's owner may raise the Nail Ship beside it, and that need not be the one who asked.
@@ -263,9 +314,10 @@ public class SeaBattleService : MonoBehaviour
         return owner != 0L ? owner : sender;
     }
 
-    // On the client that was told to: raises the Nail Ship ahead of its ship, and sounds the horn for everyone near.
-    // Only the server may order this, and the ship must still be one this machine owns with the player aboard.
-    private void RPC_Spawn(long sender, ZDOID shipId, int tierIndex, int crewBonus)
+    // On the client that was told to: raises the Nail Ship, or the fleet, ahead of its ship, and sounds the horn for
+    // everyone near. Only the server may order this, and the ship must still be one this machine owns with the player
+    // aboard.
+    private void RPC_Spawn(long sender, ZDOID shipId, int tierIndex, int crewBonus, int size)
     {
         if (sender != ZRoutedRpc.instance.GetServerPeerID())
         {
@@ -281,14 +333,16 @@ public class SeaBattleService : MonoBehaviour
             return;
         }
 
-        if (RaiderShip.Spawn(ship, Mathf.Max(0, crewBonus), tiers[tierIndex]) != null)
+        RaiderShip lead = RaiderShip.SpawnFleet(ship, Mathf.Max(0, crewBonus), tiers[tierIndex], Mathf.Clamp(size, 1, FleetRules.MaxSize));
+        if (lead != null)
         {
-            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, SightedRpc, shipId);
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, SightedRpc, shipId, lead.IsFlagship ? 2 : 1);
         }
     }
 
-    // On every client: the horn of the Nail Ship is heard near the hunted ship, and those aboard it are told.
-    private void RPC_Sighted(long sender, ZDOID shipId)
+    // On every client: the horn of the Nail Ship is heard near the hunted ship, and those aboard it are told; a fleet
+    // has its own message.
+    private void RPC_Sighted(long sender, ZDOID shipId, int size)
     {
         if (Time.time - lastSighted < SightedInterval || ZNetScene.instance == null)
         {
@@ -306,7 +360,7 @@ public class SeaBattleService : MonoBehaviour
         Ship local = Ship.GetLocalShip();
         if (local != null && local.gameObject == found && Player.m_localPlayer != null)
         {
-            Player.m_localPlayer.Message(MessageHud.MessageType.Center, "$msg_whitehilt_raider_sighted");
+            Player.m_localPlayer.Message(MessageHud.MessageType.Center, size > 1 ? "$msg_whitehilt_fleet_sighted" : "$msg_whitehilt_raider_sighted");
         }
     }
 
@@ -327,7 +381,7 @@ public class SeaBattleService : MonoBehaviour
     private static ZDO TargetShip(ZDOID id)
     {
         ZDO zdo = id.IsNone() || ZDOMan.instance == null ? null : ZDOMan.instance.GetZDO(id);
-        if (zdo == null || zdo.GetPrefab() == NailShipRegistry.ShipName.GetStableHashCode())
+        if (zdo == null || NailShipRegistry.IsNailShip(zdo.GetPrefab()))
         {
             return null;
         }

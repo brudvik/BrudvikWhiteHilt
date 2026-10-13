@@ -4,8 +4,9 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
-/// The five wild monsters of the Mistlands, the Ashlands and the ocean, and the names of their loot. Numbers here are
-/// the defaults of the settings; the sizes and clip times come from the models (see the Phase A log in the plan).
+/// The six wild monsters of the Mistlands, the Ashlands, the ocean and the Nail flagships, and the names of their loot.
+/// Numbers here are the defaults of the settings; the sizes and clip times come from the models (see the Phase A log in
+/// the plan).
 /// </summary>
 internal static class WildMonsters
 {
@@ -38,6 +39,9 @@ internal static class WildMonsters
 
     /// <summary>Prefab name of the Greenland Shark trophy.</summary>
     public const string SharkTrophy = "WhiteHilt_TrophyGreenlandShark";
+
+    /// <summary>Prefab name of the Draugr Jarl trophy.</summary>
+    public const string JarlTrophy = "WhiteHilt_TrophyDraugrJarl";
 
     /// <summary>Prefab name of the roast Mist Stag.</summary>
     public const string CookedMistStag = "WhiteHilt_CookedMistStag";
@@ -279,8 +283,59 @@ internal static class WildMonsters
         Configure = WildMonsterRegistry.ConfigureShark
     };
 
-    /// <summary>All five, in the order they are made.</summary>
-    public static readonly IReadOnlyList<WildMonster> All = new[] { MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark };
+    /// <summary>
+    /// The draugr jarl who leads the crew of a Nail flagship. He never spawns in the wild: the flagship's owner raises him
+    /// on its deck. He keeps the sounds of the Draugr Elite he is cloned from, and the undead look is baked into his
+    /// texture. Health and damage are per level; a jarl of level 3 (the flagship's default) has three times the health.
+    /// </summary>
+    public static readonly WildMonster DraugrJarl = new()
+    {
+        Id = "draugrjarl",
+        PrefabName = "WhiteHilt_DraugrJarl",
+        EnglishName = "Draugr Jarl",
+        TemplateCreature = "Draugr_Elite",
+        Faction = Character.Faction.Undead,
+        SoundPrefix = null,
+        ModelScale = 0.0126f,
+        SizeText = "about 2.3 m tall",
+        CapsuleCenter = new Vector3(0f, 1.15f, 0f),
+        CapsuleRadius = 0.5f,
+        CapsuleHeight = 2.3f,
+        Eye = new Vector3(0f, 2.1f, 0.3f),
+        WalkSpeed = 1.4f,
+        RunSpeed = 2.5f,
+        TurnSpeed = 150f,
+        RunTurnSpeed = 200f,
+        Health = 600f,
+        Modifiers = Mods(pierce: HitData.DamageModifier.Resistant, fire: HitData.DamageModifier.Weak, poison: HitData.DamageModifier.Immune,
+            spirit: HitData.DamageModifier.Weak),
+        Attacks = new[]
+        {
+            new WildAttack
+            {
+                Name = "Chop", Trigger = "jarl_swing", Description = "Slash damage of the Draugr Jarl's overhead chop.",
+                Type = HitData.DamageType.Slash, Damage = 70f, Range = 3f, Height = 2.2f, Angle = 70f, RayWidth = 1f, Interval = 3f, Force = 160f
+            },
+            new WildAttack
+            {
+                Name = "Sweep", Trigger = "jarl_sweep", Description = "Slash damage of the Draugr Jarl's sideways sweep.",
+                Type = HitData.DamageType.Slash, Damage = 45f, Range = 3.2f, Height = 1.6f, Angle = 140f, RayWidth = 1f, Interval = 5f, Force = 80f
+            }
+        },
+        Trophy = JarlTrophy,
+        TrophyChance = 100f,
+        // The undead colour is in the albedo (draugrjarl.creature.json); the model's materials are used as they are.
+        Look = new WildLook(),
+        // A little growth per star, as the jarl is big to begin with.
+        StarScale = 0.08f,
+        Spawns = false,
+        CorpseSinkAfter = 10f,
+        CorpseLifetime = 16f,
+        Configure = WildMonsterRegistry.ConfigureJarl
+    };
+
+    /// <summary>All six, in the order they are made.</summary>
+    public static readonly IReadOnlyList<WildMonster> All = new[] { MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl };
 
     // Damage modifiers where everything not named is normal, and chopping and pickaxes do nothing.
     private static HitData.DamageModifiers Mods(HitData.DamageModifier blunt = HitData.DamageModifier.Normal, HitData.DamageModifier slash = HitData.DamageModifier.Normal,

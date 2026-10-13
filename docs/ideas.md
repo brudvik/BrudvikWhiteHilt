@@ -27,7 +27,6 @@ Ideas that build on the [sea battles](sea-battles.md): the Nail Ships, their cre
 
 **Bigger enemies**
 
-- **Fleets.** Two or three Nail Ships in formation at later tiers, led by a flagship.
 - **Naglfar as a world boss.** A huge ship with a draugr jarl on deck, called with its own horn. It drops Naglfar's nails, used for hull plating on your own ship.
 - **Fleets of later biomes.** Ice ships in the Deep North and charred ships in the Ashlands sea, with that biome's crew and loot.
 

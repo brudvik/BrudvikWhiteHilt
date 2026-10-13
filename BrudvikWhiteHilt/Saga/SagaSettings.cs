@@ -41,6 +41,9 @@ public static class SagaSettings
     /// <summary>Renown for a draugr harbour sacked.</summary>
     public static ConfigEntry<int> RenownRaid { get; private set; }
 
+    /// <summary>Renown for a Nail Ship fleet broken.</summary>
+    public static ConfigEntry<int> RenownFleet { get; private set; }
+
     /// <summary>Renown for a new biome.</summary>
     public static ConfigEntry<int> RenownBiome { get; private set; }
 
@@ -79,13 +82,14 @@ public static class SagaSettings
         RenownTreasure = BindRenown("RenownTreasure", 3, "a treasure dug up");
         RenownSeaBattle = BindRenown("RenownSeaBattle", 25, "a Nail Ship taken or sunk");
         RenownRaid = BindRenown("RenownRaid", 40, "a draugr harbour sacked");
+        RenownFleet = BindRenown("RenownFleet", 40, "a Nail Ship fleet broken");
         RenownBiome = BindRenown("RenownBiome", 2, "the first steps into a biome");
         RenownSkill = BindRenown("RenownSkill", 1, "a skill reaching 25, 50, 75 or 100");
         RenownPerRank = WhiteHiltConfig.BindAdminOnly(Section, "RenownPerRank", 20, "Renown for each rank.", new AcceptableValueRange<int>(1, 500));
         MaxRank = WhiteHiltConfig.BindAdminOnly(Section, "MaxRank", 10, "Highest rank.", new AcceptableValueRange<int>(0, 50));
         CarryPerRank = WhiteHiltConfig.BindAdminOnly(Section, "CarryPerRank", 10f, "Carry weight added per rank.", new AcceptableValueRange<float>(0f, 100f));
         StaminaPerRank = WhiteHiltConfig.BindAdminOnly(Section, "StaminaPerRank", 3f, "Max stamina added per rank.", new AcceptableValueRange<float>(0f, 50f));
-        Creatures = WhiteHiltConfig.BindAdminOnly(Section, "Creatures", "WhiteHilt_Kraken,WhiteHilt_Lindorm,WhiteHilt_GiantSpider",
+        Creatures = WhiteHiltConfig.BindAdminOnly(Section, "Creatures", "WhiteHilt_Kraken,WhiteHilt_Lindorm,WhiteHilt_GiantSpider,WhiteHilt_DraugrJarl",
             "Comma-separated prefab names of creatures whose death is a deed, besides bosses and black beasts.");
         Creatures.SettingChanged += (_, _) => ReadCreatures();
         ReadCreatures();
@@ -103,6 +107,7 @@ public static class SagaSettings
         Translations.AddEnglish("whitehilt_saga_treasure", "A treasure was dug up");
         Translations.AddEnglish("whitehilt_saga_seabattle", "A Nail Ship was taken");
         Translations.AddEnglish("whitehilt_saga_raid", "A draugr harbour was sacked");
+        Translations.AddEnglish("whitehilt_saga_fleet", "A Nail fleet was broken");
         Translations.AddEnglish("whitehilt_saga_biome", "First steps into {0}");
         Translations.AddEnglish("whitehilt_saga_skill", "{0} reached {1}");
         Translations.AddEnglish("whitehilt_saga_close", "Close");

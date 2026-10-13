@@ -117,7 +117,10 @@ internal sealed class WildMonster
     /// <summary>Who the monster is friends with.</summary>
     public Character.Faction Faction;
 
-    /// <summary>Start of the names of its sounds in the bundle, e.g. <c>nidhogg</c> for <c>nidhoggidle</c>.</summary>
+    /// <summary>
+    /// Start of the names of its sounds in the bundle, e.g. <c>nidhogg</c> for <c>nidhoggidle</c>; null for a monster that
+    /// keeps the sounds of the creature it is cloned from.
+    /// </summary>
     public string SoundPrefix;
 
     /// <summary>Metres per unit of the model at the default size.</summary>
@@ -164,6 +167,15 @@ internal sealed class WildMonster
 
     /// <summary>How it is coloured.</summary>
     public WildLook Look = new();
+
+    /// <summary>
+    /// Whether it spawns in the wild. A monster that does not (the draugr jarl, who only sails on a flagship) gets no
+    /// spawn data and none of the settings for spawning.
+    /// </summary>
+    public bool Spawns = true;
+
+    /// <summary>Default visual growth per star, up to two stars.</summary>
+    public float StarScale = 0.15f;
 
     /// <summary>Biome it spawns in.</summary>
     public Heightmap.Biome Biome;

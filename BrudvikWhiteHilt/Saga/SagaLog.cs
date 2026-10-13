@@ -35,7 +35,10 @@ public enum SagaKind
     SeaBattle,
 
     /// <summary>A draugr harbour sacked.</summary>
-    Raid
+    Raid,
+
+    /// <summary>A Nail Ship fleet broken: its flagship taken or sunk.</summary>
+    Fleet
 }
 
 /// <summary>
@@ -250,6 +253,7 @@ public static class SagaLog
             SagaKind.Treasure => SagaSettings.RenownTreasure.Value,
             SagaKind.SeaBattle => SagaSettings.RenownSeaBattle.Value,
             SagaKind.Raid => SagaSettings.RenownRaid.Value,
+            SagaKind.Fleet => SagaSettings.RenownFleet.Value,
             _ => 0
         };
         Add(player, deed, name, string.Empty, renown);

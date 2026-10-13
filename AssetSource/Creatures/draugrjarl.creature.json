@@ -1,0 +1,96 @@
+{
+  "source": "Northern Outsider by Splodeman, CC BY 4.0, https://sketchfab.com/3d-models/northern-outsider-296600f89eab458f99f9fd8105aebed5",
+  "drop": ["Object_9"],
+  "decimate": 0.24,
+  "albedo_recolour": { "saturation": 0.4, "tint": [0.78, 0.96, 0.86], "value": 0.68 },
+  "pose": { "take": "idle", "frame": 1 },
+  "eyes": {
+    "bone": "Head_026",
+    "radius": 1.0,
+    "positions": [[4.0, -6.7, 159.3], [-4.0, -6.7, 159.3]],
+    "colour": [0.25, 0.95, 0.8],
+    "emission": 4.0
+  },
+  "generate": [
+    {
+      "name": "carry_idle",
+      "base": { "take": "idle", "frame": 1, "borrow": [ { "take": "walk", "frame": 67, "bones": ["RCollar_030", "RUpperArm_031", "RLowerArm_032", "RPalm_033", "CATRigRArmR"] } ] },
+      "hold": { "bone": "Axe Rig_059", "to": "RPalm_033", "from": { "take": "walk", "frame": 67 } },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 24, "wrot": { "SpineUpper_04": [-2.5, 0, 0], "RUpperArm_031": [0, 0, 1.5] } },
+        { "frame": 48 }
+      ]
+    },
+    {
+      "name": "swing",
+      "base": { "take": "idle", "frame": 1, "borrow": [ { "take": "walk", "frame": 67, "bones": ["RCollar_030", "RUpperArm_031", "RLowerArm_032", "RPalm_033", "CATRigRArmR"] } ] },
+      "hold": { "bone": "Axe Rig_059", "to": "RPalm_033", "from": { "take": "walk", "frame": 67 } },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 5, "wrot": { "SpineUpper_04": [-6, 0, 0], "RUpperArm_031": [-45, 0, 0], "RPalm_033": [25, 0, 0], "LUpperArm_07": [-20, 0, 0] } },
+        { "frame": 10, "wrot": { "SpineUpper_04": [-16, 0, 0], "RUpperArm_031": [-140, 0, 0], "RPalm_033": [150, 0, 0], "LUpperArm_07": [-40, 0, 0] } },
+        { "frame": 13, "wrot": { "SpineUpper_04": [22, 0, 0], "RUpperArm_031": [-60, 0, 0], "RPalm_033": [190, 0, 0], "LUpperArm_07": [30, 0, 0] } },
+        { "frame": 17, "wrot": { "SpineUpper_04": [28, 0, 0], "RUpperArm_031": [-45, 0, 0], "RPalm_033": [200, 0, 0], "LUpperArm_07": [35, 0, 0] } },
+        { "frame": 26 }
+      ]
+    },
+    {
+      "name": "sweep",
+      "base": { "take": "idle", "frame": 1, "borrow": [ { "take": "walk", "frame": 67, "bones": ["RCollar_030", "RUpperArm_031", "RLowerArm_032", "RPalm_033", "CATRigRArmR"] } ] },
+      "hold": { "bone": "Axe Rig_059", "to": "RPalm_033", "from": { "take": "walk", "frame": 67 } },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 9, "wrot": { "SpineLower_03": [0, 0, -35], "SpineUpper_04": [0, 0, -40], "RUpperArm_031": [0, 50, 0], "RPalm_033": [0, -70, 0], "LUpperArm_07": [0, 0, -15] } },
+        { "frame": 14, "wrot": { "SpineLower_03": [0, 0, 30], "SpineUpper_04": [0, 0, 35], "RUpperArm_031": [0, 50, 0], "RPalm_033": [0, -70, 0], "LUpperArm_07": [0, 0, 15] } },
+        { "frame": 18, "wrot": { "SpineLower_03": [0, 0, 36], "SpineUpper_04": [0, 0, 42], "RUpperArm_031": [0, 50, 0], "RPalm_033": [0, -70, 0], "LUpperArm_07": [0, 0, 20] } },
+        { "frame": 28 }
+      ]
+    },
+    {
+      "name": "hit",
+      "base": { "take": "idle", "frame": 1, "borrow": [ { "take": "walk", "frame": 67, "bones": ["RCollar_030", "RUpperArm_031", "RLowerArm_032", "RPalm_033", "CATRigRArmR"] } ] },
+      "hold": { "bone": "Axe Rig_059", "to": "RPalm_033", "from": { "take": "walk", "frame": 67 } },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 4, "wrot": { "SpineLower_03": [-10, 0, 0], "SpineUpper_04": [-12, 0, 0], "Neck_025": [-12, 0, 0] } },
+        { "frame": 14 }
+      ]
+    },
+    {
+      "name": "die",
+      "base": { "take": "idle", "frame": 1, "borrow": [ { "take": "walk", "frame": 67, "bones": ["RCollar_030", "RUpperArm_031", "RLowerArm_032", "RPalm_033", "CATRigRArmR"] } ] },
+      "hold": { "bone": "Axe Rig_059", "to": "RPalm_033", "from": { "take": "walk", "frame": 67 } },
+      "keys": [
+        { "frame": 0 },
+        { "frame": 6, "wrot": { "SpineLower_03": [-10, 0, 0], "SpineUpper_04": [-14, 0, 0] } },
+        { "frame": 14, "wrot": { "_rootJoint": [-50, 0, 0], "SpineUpper_04": [-10, 0, 0] }, "loc": { "_rootJoint": [0, 0, 8] } },
+        { "frame": 24, "wrot": { "_rootJoint": [-96, 0, 0], "SpineUpper_04": [-6, 0, 0] }, "loc": { "_rootJoint": [0, 0, 44] } },
+        { "frame": 30, "wrot": { "_rootJoint": [-96, 0, 0], "SpineUpper_04": [-6, 0, 0] }, "loc": { "_rootJoint": [0, 0, 44] } }
+      ]
+    }
+  ],
+  "clips": [
+    { "name": "idle", "take": "carry_idle", "loop": true },
+    { "name": "walk", "take": "walk", "loop": true },
+    { "name": "swing", "take": "swing", "loop": false },
+    { "name": "sweep", "take": "sweep", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "CATRigFront Cloak3_050",
+  "front_origin_bone": "Pelvis_02",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 1.0,
+    "run": "walk",
+    "run_speed": 2.5,
+    "stagger": "hit",
+    "attacks": [
+      { "trigger": "jarl_swing", "clip": "swing", "hit": 0.5 },
+      { "trigger": "jarl_sweep", "clip": "sweep", "hit": 0.42 }
+    ],
+    "always_animate": true
+  }
+}
