@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.129.1 - 2026-10-13
 
 ### Fixed
 - Bailing water or stamping out a deck fire without enough stamina now flashes the stamina bar and says *You are too tired*; before, nothing happened.
