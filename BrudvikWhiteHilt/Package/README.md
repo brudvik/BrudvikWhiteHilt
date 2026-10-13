@@ -33,15 +33,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.128.0
+## ✨ New in 0.129.0
 
-- **[Sea battles and raids](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md)**: after Bonemass, **Nail Ships** from Naglfar's fleet hunt ships on the open sea. Their draugr archers shoot from alongside before the warriors leap aboard. Kill the crew and the ship is your prize for a while, hold and all.
-- **[Ship Ballista](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)**: a new upgrade for the White Hilt Ship and Skidbladnir that you man and aim yourself, with Ship Bolts from the Shipwright's Bench. **Boarding leap**: jump from deck to deck.
-- **Raid Charts** from a Nail Ship's hold mark a draugr harbour on a coast you know: guards on the shore and a hoard that opens when they are dead. Both are new deeds in the [Saga](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/saga.md). Everyone needs this version.
+- **[Damage at sea](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#damage-at-sea)**: in a sea battle, heavy hits knock holes in the hull. The ship takes in water, lies lower and sails slower, and sinks when full (White Hilt ships flood but never sink). Patch holes with wood and resin, and bail water.
+- **[Fire on deck](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#fire-on-deck)**: Pitch Pots, thrown by you or by the Nail Ships' crews, set decks alight. From Moder on, a [Nail Ship fights back](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-nail-ship-fights-back) with its own ballista.
+- **[New ship weapons](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#the-ship-ballista)**: Chain Shot tears a sail, the Grapnel Bolt binds two ships together for boarding, and the secondary attack switches ammunition. The **[Ram Prow](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md#the-ram-prow)** hurts ships and creatures bow-first. Everyone needs this version.
 
-### Also new in 0.127.0
+### Also new in 0.128.0
 
-- **[Five new monsters](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md)**, each with its own animations and sounds: the **Mist Stag**, the **Nidhogg Spawn**, the **Yggdrasil Warden**, packs of **Garm Hounds** and the **Greenland Shark**.
+- **[Sea battles and raids](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md)**: Nail Ships from Naglfar's fleet hunt ships on the open sea, the **Ship Ballista**, the **boarding leap**, prize ships and **Raid Charts** to draugr harbours.
 
 See the [changelog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/CHANGELOG.md) for everything else.
 
@@ -166,7 +166,7 @@ Jetties on piles, stone quays with steps down to the water, and log, rope and st
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/skidbladnir.png" alt="Sea battles & raids" height="120">
 
-Draugr Nail Ships hunt your ship at sea, with a ballista to answer, boarding leaps, prize ships and raid charts that lead to a draugr harbour to sack.
+Draugr Nail Ships hunt your ship at sea: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships and raid charts that lead to a draugr harbour to sack.
 
 ### 🍄 Farm & food
 
