@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.130.0 - 2026-10-13
 
 ### Added
 - **[Nail Ship fleets](docs/sea-battles.md#fleets)**: after Moder (35% of the encounters) and Yagluth (50%), a Nail Ship may come with company: two ships, or three after Yagluth. They sail up in a wedge behind a **flagship**, break formation when the flagship is within 80 m, and come at your ship from both sides. Settings in `[SeaBattles.Fleets]`.
