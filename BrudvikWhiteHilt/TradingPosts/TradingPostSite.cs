@@ -7,25 +7,30 @@ namespace BrudvikWhiteHilt.TradingPosts;
 /// <summary>
 /// The invisible marker at a trading post's origin, turned the way the post faces. It carries the dome on every
 /// machine that loads it, is a location nothing may be built in, and levels the land behind the landing (both set up on
-/// the prefab, <see cref="TradingPostRegistry"/>). Its owner clears trees, rocks and bushes off the post. The trader and
-/// the post's other behaviour come here in later phases.
+/// the prefab, <see cref="TradingPostRegistry"/>). Its owner clears trees, rocks and bushes off the post and puts the
+/// post's trader out once; every machine dyes the post's stalls and pennant in its biome's colours.
 /// </summary>
 public class TradingPostSite : MonoBehaviour
 {
-    // When to look for vegetation after the post comes to life: a zone generated as the player arrives gets its trees a
-    // moment after the post's objects load, so the post looks again a little later.
-    private static readonly float[] clearDelays = { 1f, 5f, 15f };
+    // When to look again after the post comes to life: a zone generated as the player arrives gets its trees a moment
+    // after the post's objects load, and the post's own pieces load around the same time.
+    private static readonly float[] passDelays = { 1f, 5f, 15f };
 
     // Vegetation is cleared this far inside the dome's edge, so the trees just outside it stay.
     private const float ClearMargin = 4f;
 
     private ZNetView view;
-    private int clearStep;
+    private int pass;
 
     /// <summary>
     /// Gets the post's id, the same on all its pieces.
     /// </summary>
     public string PostId => view != null && view.IsValid() ? view.GetZDO().GetString(TradingPostKeys.PostId) : null;
+
+    /// <summary>
+    /// Gets the trader of the post's biome.
+    /// </summary>
+    public TraderLook Look => TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
 
     private void Awake()
     {
@@ -37,42 +42,108 @@ public class TradingPostSite : MonoBehaviour
 
         TradingPostLayout layout = TradingPostLayout.Load();
         TradingPostDome.Attach(transform, TradingPostLayout.ToVector(layout.dome.centre), layout.dome.radius);
-        Invoke(nameof(ClearVegetation), clearDelays[0]);
+        Invoke(nameof(Pass), passDelays[0]);
     }
 
-    // On the marker's owner: removes the trees, logs, rocks, bushes and pickables of the world's vegetation that stand
-    // inside the post. Things players built or dropped, creatures and the post's own pieces are left alone.
-    private void ClearVegetation()
+    private void Pass()
     {
         if (view == null || !view.IsValid() || ZNetScene.instance == null)
         {
             return;
         }
 
+        List<ZNetView> near = NearbyObjects();
         if (view.IsOwner())
         {
-            TradingPostLayout layout = TradingPostLayout.Load();
-            Vector3 centre = transform.TransformPoint(TradingPostLayout.ToVector(layout.dome.centre));
-            float range = layout.dome.radius - ClearMargin;
-            List<ZNetView> found = ZNetScene.instance.m_instances.Values
-                .Where(other => other != null && other != view && IsVegetation(other) && Utils.DistanceXZ(other.transform.position, centre) <= range)
-                .ToList();
-            foreach (ZNetView other in found)
-            {
-                other.ClaimOwnership();
-                ZNetScene.instance.Destroy(other.gameObject);
-            }
-
-            if (found.Count > 0)
-            {
-                Jotunn.Logger.LogInfo($"Trading posts: cleared {found.Count} trees, rocks and bushes off a post.");
-            }
+            ClearVegetation(near);
+            PutOutTrader();
         }
 
-        clearStep++;
-        if (clearStep < clearDelays.Length)
+        Dye(near);
+        pass++;
+        if (pass < passDelays.Length)
         {
-            Invoke(nameof(ClearVegetation), clearDelays[clearStep] - clearDelays[clearStep - 1]);
+            Invoke(nameof(Pass), passDelays[pass] - passDelays[pass - 1]);
+        }
+    }
+
+    // The loaded objects within the post's dome, found once per pass.
+    private List<ZNetView> NearbyObjects()
+    {
+        TradingPostLayout layout = TradingPostLayout.Load();
+        Vector3 centre = transform.TransformPoint(TradingPostLayout.ToVector(layout.dome.centre));
+        float range = layout.dome.radius;
+        return ZNetScene.instance.m_instances.Values
+            .Where(other => other != null && other != view && Utils.DistanceXZ(other.transform.position, centre) <= range)
+            .ToList();
+    }
+
+    // Removes the trees, logs, rocks, bushes and pickables of the world's vegetation that stand inside the post. Things
+    // players built or dropped, creatures and the post's own pieces are left alone.
+    private void ClearVegetation(List<ZNetView> near)
+    {
+        TradingPostLayout layout = TradingPostLayout.Load();
+        Vector3 centre = transform.TransformPoint(TradingPostLayout.ToVector(layout.dome.centre));
+        float range = layout.dome.radius - ClearMargin;
+        List<ZNetView> found = near.Where(other => IsVegetation(other) && Utils.DistanceXZ(other.transform.position, centre) <= range).ToList();
+        foreach (ZNetView other in found)
+        {
+            other.ClaimOwnership();
+            ZNetScene.instance.Destroy(other.gameObject);
+        }
+
+        if (found.Count > 0)
+        {
+            Jotunn.Logger.LogInfo($"Trading posts: cleared {found.Count} trees, rocks and bushes off a post.");
+        }
+    }
+
+    // Creates the trader's network data with its look already in it, so the equipment display finds hair, beard and
+    // clothes when the trader first comes to life and never picks random ones. Posts built before the traders came get
+    // theirs the same way.
+    private void PutOutTrader()
+    {
+        ZDO site = view.GetZDO();
+        if (site.GetBool(TradingPostKeys.HasTrader))
+        {
+            return;
+        }
+
+        GameObject prefab = ZNetScene.instance.GetPrefab(TradingPostTrader.PrefabName);
+        if (prefab == null)
+        {
+            return;
+        }
+
+        TradingPostSpot spot = TradingPostLayout.Load().trader;
+        Vector3 position = transform.TransformPoint(TradingPostLayout.ToVector(spot.position));
+        Quaternion rotation = transform.rotation * Quaternion.Euler(0f, spot.yaw, 0f);
+        int hash = prefab.name.GetStableHashCode();
+        ZNetView template = prefab.GetComponent<ZNetView>();
+        ZDO trader = ZDOMan.instance.CreateNewZDO(position, hash);
+        trader.Persistent = template.m_persistent;
+        trader.Type = template.m_type;
+        trader.Distant = template.m_distant;
+        trader.SetPrefab(hash);
+        trader.SetRotation(rotation);
+        trader.Set(TradingPostKeys.PostId, PostId);
+        trader.Set(TradingPostKeys.Biome, site.GetInt(TradingPostKeys.Biome));
+        Look.WriteTo(trader);
+        site.Set(TradingPostKeys.HasTrader, true);
+        Jotunn.Logger.LogInfo($"Trading posts: {Look.name} came to the post at {position.x:0} {position.z:0}.");
+    }
+
+    private void Dye(List<ZNetView> near)
+    {
+        string id = PostId;
+        TraderLook look = Look;
+        foreach (ZNetView piece in near)
+        {
+            ZDO zdo = piece.GetZDO();
+            if (zdo != null && zdo.GetString(TradingPostKeys.PostId) == id)
+            {
+                TradingPostColours.Apply(piece, look);
+            }
         }
     }
 

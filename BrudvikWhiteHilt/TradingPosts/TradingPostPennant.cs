@@ -26,9 +26,10 @@ public static class TradingPostPennant
     public static Mesh Mesh => mesh ??= CreateMesh();
 
     /// <summary>
-    /// Gets the pennant's striped texture, made once.
+    /// Gets the pennant's striped texture in the market stall's red, made once; a post dyes it in its biome's colour
+    /// (<see cref="TradingPostColours"/>).
     /// </summary>
-    public static Texture2D Texture => texture ??= CreateTexture();
+    public static Texture2D Texture => texture ??= CreateTexture(red);
 
     private static Mesh CreateMesh()
     {
@@ -65,13 +66,19 @@ public static class TradingPostPennant
         return created;
     }
 
-    // Stripes along the pennant, red and cream, with a faint weave so it does not look flat.
-    private static Texture2D CreateTexture()
+    /// <summary>
+    /// Makes the pennant's texture: stripes along it in the given colour and cream, with a faint weave so it does not
+    /// look flat.
+    /// </summary>
+    /// <param name="colour">The stripes' colour.</param>
+    /// <returns>The texture.</returns>
+    public static Texture2D CreateTexture(Color colour)
     {
+        Color32 coloured = colour;
         Color32[] pixels = new Color32[TextureWidth * TextureHeight];
         for (int y = 0; y < TextureHeight; y++)
         {
-            Color32 stripe = y / StripeHeight % 2 == 0 ? red : cream;
+            Color32 stripe = y / StripeHeight % 2 == 0 ? coloured : cream;
             for (int x = 0; x < TextureWidth; x++)
             {
                 float shade = 0.92f + 0.08f * ((x * 7 + y * 13) % 5) / 4f;

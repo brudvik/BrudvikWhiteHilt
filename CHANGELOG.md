@@ -17,9 +17,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **Trading posts along the coasts**: once per world, also in worlds made before, the server places up to 4 posts in
   each biome that meets the sea, the Deep North included, where the bank is low, the land behind is flat and the water at the jetty head is deep
   enough for a longship, at least 1000 m apart and away from what players built. The land behind the landing is
-  levelled and trees and rocks on the post are cleared. Admins: `whitehilt_tradepost here` (build one where you stand,
-  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). The trader and the
-  store come next. Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
+  levelled and trees and rocks on the post are cleared.
+- **The traders**: every post has its trader behind the goods stall, a man or woman in the biome's colours (Asbjørn in
+  the Meadows, Gunnar in the Black Forest, Ragnhild in the Swamp, Hallvard in the Mountains, Sigrid on the Plains, Ylva
+  in the Mistlands, Brand in the Ashlands, Frøydis in the Deep North). They turn to you, wave, greet you, talk now and
+  then and wave you goodbye; the stalls' awnings and the flag take the same colours. The store comes next. Admins: `whitehilt_tradepost here` (build one where you stand,
+  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
 
 ### Changed
 - **[Coins are worth something again](docs/chests.md#coins-and-valuables)**: in Linear mode coins, gems and everything else the Treasure Chest holds no longer become unlimited, so coins are earned by trade, escorts, raids and treasure. A new setting, `UnlimitedValuables` in `[Chests]`, decides it: `Auto` (default: not in Linear, yes in Full and Discovered), `On` or `Off`. **In a Linear world, the chests remove their unlimited stacks of coins and valuables the first time they are opened after the update**; set `UnlimitedValuables` to `On` first to keep them.

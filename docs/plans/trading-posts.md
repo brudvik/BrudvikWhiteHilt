@@ -348,3 +348,29 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   a Deep North tier exists.
 - 2026-10-14: `ProgressionTier.DeepNorth` exists now (unlocked by Bloodgold), so the Deep North posts open with it in
   phase 5, like the other biomes.
+- 2026-10-14, phase 4 done (not yet tried in the game):
+  - `build_traders.py` writes `AssetSource/Preview/traders.json` (embedded as `BrudvikWhiteHilt.Traders.json`) from the
+    agreed `TRADERS` table, now with a name per biome: Asbjørn (Meadows), Gunnar (Black Forest), Ragnhild (Swamp),
+    Hallvard (Mountain), Sigrid (Plains), Ylva (Mistlands), Brand (Ashlands), Frøydis (Deep North). `TraderLooks` reads it;
+    `TraderLooksTests` checks it.
+  - `TraderClothes`: per biome `WhiteHilt_TraderTunic_<Biome>` (ArmorTunic1/2/3), `WhiteHilt_TraderTrousers_<Biome>`
+    (ArmorTrollLeatherLegs) and `WhiteHilt_TraderCape_<Biome>` (CapeTrollHide or CapeDeepNorth), copies dyed with
+    `UniformLook.Recolor` and the preview's rules (cloth to the main colour by its brightness, gold trim to the accent,
+    white embroidery and brown leather kept). No recipe, not sold, not in any chest.
+  - `WhiteHilt_Trader` is the `Player` prefab with every MonoBehaviour on the root and `Visual` removed except
+    `ZNetView` and `VisEquipment` (several rounds, for RequireComponent), no `Rigidbody`, root motion off, layer
+    Default, persistent; plus `Trader` (store window, dialogue lists), `LookAt` on `Visual` (which `Trader.Start` needs)
+    and `TradingPostTrader`.
+  - `TradingPostTrader` (every machine, nothing sent): turns to the nearest player within 15 m (at most 75° from its
+    place), greets within 5 m, says goodbye beyond 8 m, talks every 30 s, with the player body's emotes (`emote_wave`,
+    `point`, `shrug`, `comehere`, `thumbsup`, `bow`) for Haldor's triggers; sets `onGround` so the body stands. Patches
+    skip `Trader.Update` and `Trader.RandomTalk` for it and send `Trader.Say` (store open, buy, sell) through it.
+  - The look is in the trader's ZDO (`VisEquipment` reads model, colours, hair, beard, chest, legs and shoulder items
+    from it on every machine). `TradingPostSite`'s owner creates the trader's ZDO with the look already in it (so
+    `VisEquipment.Awake` never picks random NPC hair; women get `s_noBeard`), once per post (`whitehilt_post_trader`),
+    also for posts built before; the trader carries the post's id, so `remove` takes it too.
+  - `TradingPostColours`: every machine dyes the post's two market stalls' awning stripes (right quarter of the
+    texture, red to the biome's cloth colour) and the pennant (`TradingPostPennant.CreateTexture(colour)`).
+  - The store is empty until phase 5; the vanilla store window still lets players sell valuables there.
+  - To check in the game: the body stands (not falling), hair and clothes show and are dyed, the emotes play, the
+    trader turns, the hover text and store open, no animator warnings in the log.

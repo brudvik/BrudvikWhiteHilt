@@ -65,6 +65,7 @@
     <EmbeddedResource Include="..\AssetSource\Preview\defenses.json" LogicalName="BrudvikWhiteHilt.Defenses.json" Link="Pieces\Defenses\defenses.json" />
     <EmbeddedResource Include="..\AssetSource\Decor\decor.json" LogicalName="BrudvikWhiteHilt.Decor.json" Link="Decor\decor.json" />
     <EmbeddedResource Include="..\AssetSource\Preview\tradingpost.json" LogicalName="BrudvikWhiteHilt.TradingPost.json" Link="TradingPosts\tradingpost.json" />
+    <EmbeddedResource Include="..\AssetSource\Preview\traders.json" LogicalName="BrudvikWhiteHilt.Traders.json" Link="TradingPosts\traders.json" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
     <!-- The bundles are files next to the DLL, not embedded: Unity reads them from disk (ForagingAssets, DecorAssets). -->
     <None Include="Assets\whitehilt_foraging" Link="whitehilt_foraging" CopyToOutputDirectory="PreserveNewest" />

@@ -6,8 +6,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.TradingPosts;
 
 /// <summary>
-/// Sets the trading posts up when the game starts: the marker prefab every post has at its origin, and the console
-/// command whitehilt_tradepost. The pieces themselves are made like every White Hilt piece (<see cref="TradingPostPieceBase"/>).
+/// Sets the trading posts up when the game starts: the marker prefab every post has at its origin, the traders and
+/// their clothes, and the console command whitehilt_tradepost. The pieces themselves are made like every White Hilt piece (<see cref="TradingPostPieceBase"/>).
 /// </summary>
 public static class TradingPostRegistry
 {
@@ -17,6 +17,8 @@ public static class TradingPostRegistry
     public static void Initialize()
     {
         TradingPostSettings.Initialize();
+        TraderClothes.RegisterTranslations();
+        TradingPostTrader.RegisterTranslations();
         PrefabManager.OnVanillaPrefabsAvailable += CreateMarker;
         CommandManager.Instance.AddConsoleCommand(new TradingPostCommand());
     }
@@ -26,6 +28,8 @@ public static class TradingPostRegistry
     private static void CreateMarker()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= CreateMarker;
+        TraderClothes.Create();
+        TradingPostTrader.CreatePrefab();
         GameObject prefab = PrefabManager.Instance.CreateEmptyPrefab(TradingPostKeys.MarkerPrefabName);
         foreach (Component part in prefab.GetComponents<Component>())
         {

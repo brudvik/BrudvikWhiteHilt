@@ -14,6 +14,9 @@ public static class TradingPostKeys
     /// <summary>On the marker: the biome the post serves (<see cref="Heightmap.Biome"/> as an int).</summary>
     public static readonly int Biome = "whitehilt_post_biome".GetStableHashCode();
 
+    /// <summary>On the marker: set once the post's trader has been put out.</summary>
+    public static readonly int HasTrader = "whitehilt_post_trader".GetStableHashCode();
+
     /// <summary>Prefab hash of the marker.</summary>
     public static readonly int MarkerHash = MarkerPrefabName.GetStableHashCode();
 

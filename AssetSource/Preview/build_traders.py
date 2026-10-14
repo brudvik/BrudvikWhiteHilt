@@ -28,36 +28,41 @@ PREVIEW = REPO / "BrudvikWhiteHiltUnity" / "Preview"
 TEXTURES = PREVIEW / "vanilla" / "textures"
 DECOR = REPO / "BrudvikWhiteHiltUnity" / "Assets" / "Decor"
 
-# Per biome: the cloth colour, the trim colour, the trousers, the cape (none, "troll" or "nord") and its colour, the
-# body, hair and beard (the character creator's names) with the hair colour, and the tunic's cut.
+# Per biome: the trader's name, the cloth colour, the trim colour, the trousers, the cape (none, "troll" or "nord")
+# and its colour, the body, hair and beard (the character creator's names) with the hair colour, and the tunic's cut.
+# The mod builds the traders from the same table (traders.json, written by main).
 TRADERS = [
-    {"biome": "Meadows", "main": (0.3, 0.45, 0.2), "accent": (0.93, 0.83, 0.5), "legs": (0.42, 0.33, 0.22),
+    {"biome": "Meadows", "name": "Asbjørn", "main": (0.3, 0.45, 0.2), "accent": (0.93, 0.83, 0.5), "legs": (0.42, 0.33, 0.22),
      "cape": None, "body": "male", "hair": "Hair12", "beard": "Beard5", "hair_colour": (0.85, 0.66, 0.38),
      "tunic": "uni_ArmorTunic1"},
-    {"biome": "BlackForest", "main": (0.2, 0.32, 0.22), "accent": (0.8, 0.5, 0.22), "legs": (0.3, 0.24, 0.17),
+    {"biome": "BlackForest", "name": "Gunnar", "main": (0.2, 0.32, 0.22), "accent": (0.8, 0.5, 0.22), "legs": (0.3, 0.24, 0.17),
      "cape": "troll", "cape_colour": (0.36, 0.27, 0.19), "body": "male", "hair": "Hair18", "beard": "Beard12",
      "hair_colour": (0.36, 0.22, 0.12), "tunic": "uni_ArmorTunic2"},
-    {"biome": "Swamp", "main": (0.34, 0.35, 0.2), "accent": (0.66, 0.68, 0.56), "legs": (0.22, 0.2, 0.15),
+    {"biome": "Swamp", "name": "Ragnhild", "main": (0.34, 0.35, 0.2), "accent": (0.66, 0.68, 0.56), "legs": (0.22, 0.2, 0.15),
      "cape": "nord", "cape_colour": (0.27, 0.29, 0.2), "body": "female", "hair": "Hair16", "beard": None,
      "hair_colour": (0.15, 0.12, 0.1), "tunic": "uni_ArmorTunic1"},
-    {"biome": "Mountain", "main": (0.36, 0.52, 0.72), "accent": (0.94, 0.95, 0.97), "legs": (0.55, 0.57, 0.6),
+    {"biome": "Mountain", "name": "Hallvard", "main": (0.36, 0.52, 0.72), "accent": (0.94, 0.95, 0.97), "legs": (0.55, 0.57, 0.6),
      "cape": "troll", "cape_colour": (0.9, 0.9, 0.92), "body": "male", "hair": "Hair5", "beard": "Beard13",
      "hair_colour": (0.86, 0.86, 0.84), "tunic": "uni_ArmorTunic2"},
-    {"biome": "Plains", "main": (0.82, 0.62, 0.2), "accent": (0.66, 0.2, 0.12), "legs": (0.45, 0.3, 0.18),
+    {"biome": "Plains", "name": "Sigrid", "main": (0.82, 0.62, 0.2), "accent": (0.66, 0.2, 0.12), "legs": (0.45, 0.3, 0.18),
      "cape": None, "body": "female", "hair": "Hair20", "beard": None, "hair_colour": (0.62, 0.24, 0.1),
      "tunic": "uni_ArmorTunic3"},
-    {"biome": "Mistlands", "main": (0.36, 0.24, 0.5), "accent": (0.55, 0.8, 0.95), "legs": (0.16, 0.15, 0.2),
+    {"biome": "Mistlands", "name": "Ylva", "main": (0.36, 0.24, 0.5), "accent": (0.55, 0.8, 0.95), "legs": (0.16, 0.15, 0.2),
      "cape": "nord", "cape_colour": (0.2, 0.16, 0.28), "body": "female", "hair": "Hair31", "beard": None,
      "hair_colour": (0.1, 0.09, 0.1), "tunic": "uni_ArmorTunic2"},
-    {"biome": "Ashlands", "main": (0.58, 0.12, 0.08), "accent": (0.98, 0.6, 0.18), "legs": (0.17, 0.15, 0.15),
+    {"biome": "Ashlands", "name": "Brand", "main": (0.58, 0.12, 0.08), "accent": (0.98, 0.6, 0.18), "legs": (0.17, 0.15, 0.15),
      "cape": "troll", "cape_colour": (0.16, 0.14, 0.14), "body": "male", "hair": "Hair11", "beard": "Beard18",
      "hair_colour": (0.12, 0.1, 0.09), "tunic": "uni_ArmorTunic3"},
-    {"biome": "DeepNorth", "main": (0.84, 0.88, 0.93), "accent": (0.22, 0.42, 0.68), "legs": (0.32, 0.36, 0.44),
+    {"biome": "DeepNorth", "name": "Frøydis", "main": (0.84, 0.88, 0.93), "accent": (0.22, 0.42, 0.68), "legs": (0.32, 0.36, 0.44),
      "cape": "nord", "cape_colour": (0.88, 0.9, 0.94), "body": "female", "hair": "Hair12", "beard": None,
      "hair_colour": (0.92, 0.88, 0.76), "tunic": "uni_ArmorTunic2"},
 ]
 
 CAPES = {"troll": ("uni_CapeTrollHide", "troll_diffuse"), "nord": ("uni_CapeDeepNorth", "NordCape_d")}
+# The vanilla items the mod copies for each part: the tunic's cut, the trousers and the capes.
+GAME_ITEMS = {"uni_ArmorTunic1": "ArmorTunic1", "uni_ArmorTunic2": "ArmorTunic2", "uni_ArmorTunic3": "ArmorTunic3",
+              "legs": "ArmorTrollLeatherLegs", "troll": "CapeTrollHide", "nord": "CapeDeepNorth"}
+GAME_LOOKS = HERE / "traders.json"
 SPACING = 1.7
 # The Player prefab's Visual is scaled to 0.95. The body and clothes were exported with it, hair and beards from
 # their own prefabs without it; in the game they hang under Visual and get it too.
@@ -207,7 +212,33 @@ def at_the_stall(trader):
     return post
 
 
+def write_game_looks():
+    """Writes the traders as the mod reads them (TraderLooks): one entry per biome with the vanilla items to copy."""
+    looks = []
+    for trader in TRADERS:
+        looks.append({
+            "biome": trader["biome"],
+            "name": trader["name"],
+            "female": trader["body"] == "female",
+            "hair": trader["hair"],
+            "beard": trader["beard"] or "",
+            "hairColour": list(trader["hair_colour"]),
+            "main": list(trader["main"]),
+            "accent": list(trader["accent"]),
+            "legs": list(trader["legs"]),
+            "tunic": GAME_ITEMS[trader["tunic"]],
+            "trousers": GAME_ITEMS["legs"],
+            "cape": GAME_ITEMS[trader["cape"]] if trader["cape"] else "",
+            "capeColour": list(trader.get("cape_colour", (1.0, 1.0, 1.0))),
+        })
+    text = '{"note":"Generated by AssetSource/Preview/build_traders.py; do not edit.","traders":[\n'
+    text += ",\n".join(json.dumps(look, ensure_ascii=False, separators=(",", ":")) for look in looks) + "\n]}\n"
+    GAME_LOOKS.write_text(text, encoding="utf-8")
+    print(f"wrote {GAME_LOOKS}")
+
+
 def main(render):
+    write_game_looks()
     post = at_the_stall(TRADERS[1])
     used = {part["piece"] for part in post["parts"] if part.get("piece")}
     people = portraits()
