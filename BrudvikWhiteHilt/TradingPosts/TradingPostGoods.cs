@@ -85,6 +85,13 @@ public static class TradingPostGoods
     public static int Linked(int biome) => (biome + 1) % Biomes.Length;
 
     /// <summary>
+    /// Coins a plain material of a biome is worth.
+    /// </summary>
+    /// <param name="biome">The biome index.</param>
+    /// <returns>Coins; 1 for an unknown biome.</returns>
+    public static float PlainWorth(int biome) => biome >= 0 && biome < biomeWorth.Length ? biomeWorth[biome] : 1f;
+
+    /// <summary>
     /// The world key that opens a biome's posts; empty for always.
     /// </summary>
     /// <param name="biome">The biome index.</param>

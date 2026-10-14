@@ -19,6 +19,7 @@ public static class TradingPostRegistry
         TradingPostSettings.Initialize();
         TraderClothes.RegisterTranslations();
         TradingPostTrader.RegisterTranslations();
+        TradingPostHunter.RegisterTranslations();
         TradingPostCharts.Initialize();
         TradingPostSellPicker.RegisterTranslations();
         TradingPostStore.RegisterTranslations();
@@ -29,7 +30,7 @@ public static class TradingPostRegistry
     }
 
     // The marker: an empty, saved network object with the post's site behaviour, no model and no collider. It is also
-    // a location where nothing may be built, like Haldor's camp, and it levels the land behind the landing.
+    // a location where nothing may be built, like Haldor's camp, and it levels and paints the land behind the landing.
     private static void CreateMarker()
     {
         PrefabManager.OnVanillaPrefabsAvailable -= CreateMarker;
@@ -57,6 +58,11 @@ public static class TradingPostRegistry
             AddLevelling(prefab.transform, level);
         }
 
+        foreach (TradingPostPaint paint in layout.paint ?? new TradingPostPaint[0])
+        {
+            AddPaint(prefab.transform, paint);
+        }
+
         prefab.AddComponent<TradingPostSite>();
         PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
     }
@@ -77,6 +83,26 @@ public static class TradingPostRegistry
         modifier.m_smoothPower = 3f;
         modifier.m_square = false;
         modifier.m_paintCleared = false;
+        modifier.m_playerModifiction = false;
+        modifier.m_useTerrainCompiler = false;
+    }
+
+    // A round terrain modifier that only paints: earth or stone, which also keeps the grass away. Stone is laid after
+    // earth, so a path stays a path where it crosses earth.
+    private static void AddPaint(Transform marker, TradingPostPaint paint)
+    {
+        GameObject child = new("whitehilt_tradingpost_paint");
+        child.transform.SetParent(marker, false);
+        child.transform.localPosition = TradingPostLayout.ToVector(paint.centre);
+        bool paved = paint.type == "paved";
+        TerrainModifier modifier = child.AddComponent<TerrainModifier>();
+        modifier.m_level = false;
+        modifier.m_smooth = false;
+        modifier.m_paintCleared = true;
+        modifier.m_paintType = paved ? TerrainModifier.PaintType.Paved : TerrainModifier.PaintType.Dirt;
+        modifier.m_paintRadius = paint.radius;
+        modifier.m_paintHeightCheck = false;
+        modifier.m_sortOrder = paved ? 1 : 0;
         modifier.m_playerModifiction = false;
         modifier.m_useTerrainCompiler = false;
     }

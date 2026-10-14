@@ -398,7 +398,7 @@ def overview():
     for x in (-3, 3):
         parts += [at("laftgavl_45", x, 1, 90, top), at("laftgavl_45", x, -1, -90, top)]
     parts.append(at("plankegulv_4x4", -1, 0, 0, base + 0.02))
-    parts.append(at("plankegulv_4x2", 1, 0, 90, base + 0.02))
+    parts.append(at("plankegulv_4x2", 2, 0, 90, base + 0.02))
     # The vanilla 45 degree roof on the gables, reaching 1 m past them at both ends.
     for x in (-3, -1, 1, 3):
         parts.append(part("wood_roof_45", (x, top + 1, 1)))

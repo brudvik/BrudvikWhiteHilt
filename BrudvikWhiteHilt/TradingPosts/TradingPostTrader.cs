@@ -41,6 +41,9 @@ public class TradingPostTrader : MonoBehaviour
 
     private static readonly string[] talkEmotes = { "point", "shrug", "comehere", "thumbsup" };
 
+    /// <summary>The hunter who sells trophies, seated, instead of the post's trader.</summary>
+    public bool hunter;
+
     private ZNetView view;
     private Trader trader;
     private int biome;
@@ -62,6 +65,11 @@ public class TradingPostTrader : MonoBehaviour
     public string PostId => postId;
 
     /// <summary>
+    /// Gets whether this is the hunter who sells the biome's trophies (<see cref="TradingPostHunter"/>), not the trader.
+    /// </summary>
+    public bool IsHunter => hunter;
+
+    /// <summary>
     /// Registers the dialogue and the names. Call from the plugin's Awake, before the game loads its languages.
     /// </summary>
     public static void RegisterTranslations()
@@ -81,19 +89,72 @@ public class TradingPostTrader : MonoBehaviour
     }
 
     /// <summary>
-    /// Makes the trader prefab from the player's: the body, its equipment display and animator stay; everything that
-    /// makes it a player (movement, physics, skills, sounds, network movement) goes. Call when the vanilla prefabs are
-    /// available.
+    /// Makes the trader prefab and the hunter's from the player's: the body, its equipment display and animator stay;
+    /// everything that makes it a player (movement, physics, skills, sounds, network movement) goes. Call when the
+    /// vanilla prefabs are available.
     /// </summary>
     public static void CreatePrefab()
     {
-        GameObject prefab = PrefabManager.Instance.CreateClonedPrefab(PrefabName, "Player");
+        CreatePrefab(PrefabName, false);
+        CreatePrefab(TradingPostHunter.PrefabName, true);
+    }
+
+    private static void CreatePrefab(string name, bool hunter)
+    {
+        GameObject prefab = PrefabManager.Instance.CreateClonedPrefab(name, "Player");
         if (prefab == null)
         {
-            Jotunn.Logger.LogError("Trading posts: the player prefab was not found, no traders.");
+            Jotunn.Logger.LogError($"Trading posts: the player prefab was not found, no {(hunter ? "hunter" : "traders")}.");
             return;
         }
 
+        Transform visual = StripToBody(prefab);
+        ZNetView view = prefab.GetComponent<ZNetView>();
+        // The hunter is put out again whenever a player comes while the day's answer holds; nothing of it is saved.
+        view.m_persistent = !hunter;
+        view.m_syncInitialScale = false;
+
+        Trader trader = prefab.AddComponent<Trader>();
+        trader.m_name = "$" + (hunter ? TradingPostHunter.NameKey : TraderLooks.All[0].NameKey);
+        string lines = hunter ? "hunter_" : string.Empty;
+        trader.m_dialogHeight = DialogHeight;
+        trader.m_hideDialogDelay = DialogShowTime;
+        trader.m_randomTalkInterval = TalkInterval;
+        trader.m_randomTalk = Lines(lines + "talk");
+        trader.m_randomGreets = Lines(lines + "greet");
+        trader.m_randomGoodbye = Lines(lines + "bye");
+        trader.m_randomStartTrade = Lines(lines + "start");
+        trader.m_randomBuy = Lines(lines + "buy");
+        trader.m_randomSell = Lines(lines + "sell");
+        trader.m_randomGiveItemNo = Lines(lines + "start");
+        trader.m_randomUseItemAlreadyRecieved = Lines(lines + "start");
+        if (visual != null)
+        {
+            visual.gameObject.AddComponent<LookAt>();
+        }
+
+        Light glow = new GameObject("glow").AddComponent<Light>();
+        glow.transform.SetParent(prefab.transform, false);
+        glow.transform.localPosition = new Vector3(0f, GlowHeight, 0.4f);
+        glow.type = LightType.Point;
+        glow.color = new Color(1f, 0.8f, 0.55f);
+        glow.range = GlowRange;
+        glow.intensity = GlowIntensity;
+        glow.shadows = LightShadows.None;
+
+        prefab.AddComponent<TradingPostTrader>().hunter = hunter;
+        PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
+    }
+
+    /// <summary>
+    /// Takes from a clone of the player prefab everything that makes it a player (movement, physics, skills, sounds,
+    /// network movement), keeping the body, its equipment display, its animator and the network view the equipment
+    /// display reads from. Also used for the skipper of the trading ship.
+    /// </summary>
+    /// <param name="prefab">The clone of the player prefab.</param>
+    /// <returns>The body's Visual, or null if the clone has none.</returns>
+    internal static Transform StripToBody(GameObject prefab)
+    {
         // A component another one requires cannot go before it, so the removal runs until nothing more goes.
         Transform visual = prefab.transform.Find("Visual");
         GameObject[] holders = new[] { prefab, visual != null ? visual.gameObject : null }.Where(holder => holder != null).ToArray();
@@ -115,40 +176,9 @@ public class TradingPostTrader : MonoBehaviour
             // The character moved itself by the animations' root motion; without it an emote would walk the body away.
             body.applyRootMotion = false;
         }
+
         prefab.layer = 0;
-        ZNetView view = prefab.GetComponent<ZNetView>();
-        view.m_persistent = true;
-        view.m_syncInitialScale = false;
-
-        Trader trader = prefab.AddComponent<Trader>();
-        trader.m_name = "$" + TraderLooks.All[0].NameKey;
-        trader.m_dialogHeight = DialogHeight;
-        trader.m_hideDialogDelay = DialogShowTime;
-        trader.m_randomTalkInterval = TalkInterval;
-        trader.m_randomTalk = Lines("talk");
-        trader.m_randomGreets = Lines("greet");
-        trader.m_randomGoodbye = Lines("bye");
-        trader.m_randomStartTrade = Lines("start");
-        trader.m_randomBuy = Lines("buy");
-        trader.m_randomSell = Lines("sell");
-        trader.m_randomGiveItemNo = Lines("start");
-        trader.m_randomUseItemAlreadyRecieved = Lines("start");
-        if (visual != null)
-        {
-            visual.gameObject.AddComponent<LookAt>();
-        }
-
-        Light glow = new GameObject("glow").AddComponent<Light>();
-        glow.transform.SetParent(prefab.transform, false);
-        glow.transform.localPosition = new Vector3(0f, GlowHeight, 0.4f);
-        glow.type = LightType.Point;
-        glow.color = new Color(1f, 0.8f, 0.55f);
-        glow.range = GlowRange;
-        glow.intensity = GlowIntensity;
-        glow.shadows = LightShadows.None;
-
-        prefab.AddComponent<TradingPostTrader>();
-        PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
+        return visual;
     }
 
     /// <summary>
@@ -173,7 +203,12 @@ public class TradingPostTrader : MonoBehaviour
         Emote(emotes.TryGetValue(trigger ?? string.Empty, out string emote) ? emote : trigger);
     }
 
-    private static void Dialogue(string kind, params string[] lines)
+    /// <summary>
+    /// Registers the English lines of one kind of talk, numbered from 1.
+    /// </summary>
+    /// <param name="kind">The kind, as in the keys whitehilt_trader_{kind}{n}.</param>
+    /// <param name="lines">The lines.</param>
+    internal static void Dialogue(string kind, params string[] lines)
     {
         for (int i = 0; i < lines.Length; i++)
         {
@@ -183,7 +218,7 @@ public class TradingPostTrader : MonoBehaviour
 
     private static List<string> Lines(string kind)
     {
-        int count = kind switch { "greet" => 3, "talk" => 4, _ => 2 };
+        int count = kind switch { "greet" => 3, "talk" => 4, "hunter_talk" => 4, _ => 2 };
         return Enumerable.Range(1, count).Select(i => $"$whitehilt_trader_{kind}{i}").ToList();
     }
 
@@ -198,11 +233,18 @@ public class TradingPostTrader : MonoBehaviour
         if (view != null && view.IsValid() && trader != null)
         {
             TraderLook look = TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
-            trader.m_name = "$" + look.NameKey;
             biome = Mathf.Max(0, TradingPostGoods.IndexOf(look.biome));
             postId = view.GetZDO().GetString(TradingPostKeys.PostId);
-            trader.m_items = TradingPostStore.BuildItems(biome);
-            TradingPostService.RequestSlot(postId);
+            if (hunter)
+            {
+                trader.m_items = TradingPostTrophies.BuildItems(biome);
+            }
+            else
+            {
+                trader.m_name = "$" + look.NameKey;
+                trader.m_items = TradingPostStore.BuildItems(biome);
+                TradingPostService.RequestSlot(postId);
+            }
         }
     }
 
@@ -213,6 +255,9 @@ public class TradingPostTrader : MonoBehaviour
         SetBool("inWater", false);
         SetBool("encumbered", false);
         SetBool("crouching", false);
+
+        // The hunter sits on the chair behind the fish stall, as a player sits on a chair.
+        SetBool("attach_chair", hunter);
     }
 
     private void Update()
@@ -242,6 +287,11 @@ public class TradingPostTrader : MonoBehaviour
             }
         }
 
+        if (hunter)
+        {
+            return;
+        }
+
         float yaw = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetYaw, TurnSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
     }
@@ -251,9 +301,10 @@ public class TradingPostTrader : MonoBehaviour
         return lines == null || lines.Count == 0 ? null : lines[Random.Range(0, lines.Count)];
     }
 
+    // The hunter sits; an emote would stand the body up off the chair.
     private void Emote(string emote)
     {
-        if (animator == null || string.IsNullOrEmpty(emote))
+        if (animator == null || string.IsNullOrEmpty(emote) || hunter)
         {
             return;
         }

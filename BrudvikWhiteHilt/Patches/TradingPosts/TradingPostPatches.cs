@@ -6,8 +6,8 @@ namespace BrudvikWhiteHilt.Patches.TradingPosts;
 
 /// <summary>
 /// Hooks the trading posts onto the game and keeps their pieces whole: a piece of a post takes no damage, needs no
-/// support, does not wear in rain or ash, does not burn and cannot be removed with the hammer. A post's trader runs on
-/// its own component instead of Haldor's behaviour.
+/// support, does not wear in rain or ash, does not burn and cannot be removed with the hammer. A post's trader (and its
+/// hunter, who sells trophies and buys nothing) runs on its own component instead of Haldor's behaviour.
 /// </summary>
 [HarmonyPatch]
 public static class TradingPostPatches
@@ -102,7 +102,12 @@ public static class TradingPostPatches
     private static void SellablePostfix(StoreGui __instance, ref ItemDrop.ItemData __result)
     {
         TradingPostTrader trader = __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null;
-        if (trader != null && Player.m_localPlayer != null)
+        if (trader != null && trader.IsHunter)
+        {
+            // The hunter only sells.
+            __result = null;
+        }
+        else if (trader != null && Player.m_localPlayer != null)
         {
             __result = TradingPostSellPicker.Current(trader.Biome, Player.m_localPlayer.GetInventory());
         }
@@ -118,6 +123,11 @@ public static class TradingPostPatches
         if (trader == null || player == null)
         {
             return true;
+        }
+
+        if (trader.IsHunter)
+        {
+            return false;
         }
 
         Inventory inventory = player.GetInventory();
@@ -165,7 +175,8 @@ public static class TradingPostPatches
     {
         if (__instance.m_rootPanel != null && __instance.m_rootPanel.activeSelf)
         {
-            TradingPostSellPicker.Update(__instance, __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null);
+            TradingPostTrader trader = __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null;
+            TradingPostSellPicker.Update(__instance, trader != null && !trader.IsHunter ? trader : null);
         }
     }
 
@@ -185,6 +196,12 @@ public static class TradingPostPatches
         TradingPostTrader post = trader != null ? trader.GetComponent<TradingPostTrader>() : null;
         if (post == null || Player.m_localPlayer == null)
         {
+            return;
+        }
+
+        if (post.IsHunter)
+        {
+            trader.m_items = TradingPostTrophies.BuildItems(post.Biome, Player.m_localPlayer);
             return;
         }
 
@@ -233,7 +250,7 @@ public static class TradingPostPatches
     private static void HoverPostfix(Trader __instance, ref string __result)
     {
         TradingPostTrader post = __instance.GetComponent<TradingPostTrader>();
-        GearKind? kind = post != null ? TradingPostGear.Specialty(post.Biome, post.PostId) : null;
+        GearKind? kind = post != null && !post.IsHunter ? TradingPostGear.Specialty(post.Biome, post.PostId) : null;
         if (kind != null)
         {
             __result += "\n" + Localization.instance.Localize("$whitehilt_trader_known", TradingPostGear.KindName(kind.Value));

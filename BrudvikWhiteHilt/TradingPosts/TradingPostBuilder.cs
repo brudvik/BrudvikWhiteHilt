@@ -48,7 +48,7 @@ public static class TradingPostBuilder
         site.Set(TradingPostKeys.LayoutVersion, layout.version);
         int built = 1;
         List<string> missing = new();
-        foreach (TradingPostPart part in layout.parts)
+        foreach (TradingPostPart part in layout.parts.Where(part => part.BelongsIn(biome)))
         {
             GameObject prefab = ZNetScene.instance.GetPrefab(part.prefab);
             if (prefab == null)

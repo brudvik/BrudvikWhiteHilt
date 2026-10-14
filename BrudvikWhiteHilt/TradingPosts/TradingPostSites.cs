@@ -56,10 +56,11 @@ public static class TradingPostSites
     private static readonly float[] jettyLines = { -1.5f, 0f, 1.5f };
     private const float OpenSeaZ = 25f;
 
-    // Where the land behind the landing is sampled: the house, the fire and the cart stand there.
+    // Where the land behind the landing is sampled: the house, the fire and the fenced yard round them stand there.
     private static readonly Vector2[] land =
     {
-        new(-7f, -8f), new(-3f, -8f), new(2f, -8f), new(7f, -8f), new(11f, -8f), new(-3f, -12f), new(2f, -12f), new(7f, -12f), new(0f, -4f)
+        new(-7f, -8f), new(-3f, -8f), new(2f, -8f), new(7f, -8f), new(11f, -8f), new(-3f, -12f), new(2f, -12f), new(7f, -12f), new(0f, -4f),
+        new(-7f, -17f), new(0f, -17f), new(10f, -17f)
     };
 
     /// <summary>

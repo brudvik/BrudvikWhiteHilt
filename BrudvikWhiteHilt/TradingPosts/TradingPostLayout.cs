@@ -28,6 +28,9 @@ public class TradingPostLayout
     /// <summary>Where the trader stands.</summary>
     public TradingPostSpot trader;
 
+    /// <summary>Where the hunter sits, when one is at the post: the chair's seat.</summary>
+    public TradingPostSpot hunter;
+
     /// <summary>The protective dome.</summary>
     public TradingPostDomeData dome;
 
@@ -36,6 +39,9 @@ public class TradingPostLayout
 
     /// <summary>The ground levelled for the post.</summary>
     public TradingPostLevel[] level;
+
+    /// <summary>The ground painted for the post: earth and stone, where no grass grows.</summary>
+    public TradingPostPaint[] paint;
 
     /// <summary>The pieces of the post.</summary>
     public TradingPostPart[] parts;
@@ -93,6 +99,19 @@ public class TradingPostPart
 
     /// <summary>Stands on the ground where it is instead of at its height in the layout.</summary>
     public bool ground;
+
+    /// <summary>The biomes whose posts get it, as <see cref="Heightmap.Biome"/> flags; 0 for every post.</summary>
+    public int biomes;
+
+    /// <summary>
+    /// Whether a post in a biome gets this part.
+    /// </summary>
+    /// <param name="biome">The post's biome.</param>
+    /// <returns>True if it does.</returns>
+    public bool BelongsIn(Heightmap.Biome biome)
+    {
+        return biomes == 0 || (biomes & (int)biome) != 0;
+    }
 }
 
 /// <summary>
@@ -135,4 +154,20 @@ public class TradingPostLevel
 
     /// <summary>Radius out to which the ground is smoothed into the land around, in metres.</summary>
     public float smooth;
+}
+
+/// <summary>
+/// A round patch of ground painted for a trading post.
+/// </summary>
+[Serializable]
+public class TradingPostPaint
+{
+    /// <summary>Centre in post coordinates.</summary>
+    public float[] centre;
+
+    /// <summary>Radius in metres.</summary>
+    public float radius;
+
+    /// <summary>"dirt" for earth or "paved" for stone.</summary>
+    public string type;
 }

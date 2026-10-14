@@ -2,15 +2,16 @@
 
 [← Back to the README](../README.MD)
 
-<img src="images/trading_post.png" alt="A trading post" title="A trading post: the jetty, the landing with two stalls, the trader's house" height="220">
+<img src="images/trading_post.png" alt="A trading post" title="A trading post: from the sea, the landing with its two stalls, the fenced yard behind with the trader's house, and the fire" height="220">
 
-Along the coasts of every biome stand **trading posts**: a long jetty out to deep water, a landing with two market stalls under awnings, a harbour crane and stock, the trader's small laft house and a fire with benches, all under a dome like the one over Haldor's camp. Sail there, tie up, walk up the jetty and trade. You can buy the land's materials there instead of searching for them for hours, sell goods from the next land over and every fish you catch, start an escort, and find the other posts on Hildir's charts.
+Along the coasts of every biome stand **trading posts**: a long jetty out to deep water, a landing with two market stalls under awnings, a harbour crane and stock, and behind them a fenced yard with the trader's laft house, a fire with benches and a wood yard, all under a dome like the one over Haldor's camp. Sail there, tie up, walk up the jetty and trade. You can buy the land's materials there instead of searching for them for hours, sell goods from the next land over and every fish you catch, start an escort, and find the other posts on Hildir's charts.
 
 ## The posts
 
 - **Where:** once per world, also in worlds made before, the server places up to **4 posts in each biome**, the Deep North included (`PerBiome`). A place is taken where the bank is low, the land behind the landing is flat, nothing rises along the jetty and the water at the jetty head is at least 2.5 m deep, with room for a ship alongside. The Swamp and the Mountains never meet the sea, so their posts stand on the shore below them: a coastal place with swamp or mountain within 400 m inland. The Ashlands' broken coast is searched every 20 m instead of 40 m and allows rougher land behind the landing, which the post levels. Worlds searched by an earlier version are searched again once; the posts already standing are kept and counted, and posts built to an older plan are built again where they stand. Posts stand at least **1000 m** apart (`MinDistance`), **60 m** from anything players have built (`BuildingDistance`), clear of the world's locations and not near the world's centre.
 - **Built to last:** the land behind the landing is levelled, and trees, rocks and bushes on the post are cleared. Its pieces cannot be broken, burnt or removed, and nothing can be built under the dome. Where the sea bed lies deeper than the jetty's piles reach, longer piles stand under them.
 - **Room to land:** the jetty is **4 m wide**, so the cargo standing on it leaves the way clear, and the dome (35 m across from its middle) covers the jetty and ships lying alongside on either side.
+- **A yard that is lived in:** the trader's laft house (8 × 4 m) turns its gable to the jetty, with the door under the roof carried out over a porch on two posts. It has windows in both long walls, a plank floor, and inside a bed, a chest, shelves, a table with the trader's map and accounts, a painted bench and lamps. Round it lie a fire with a grate and benches facing it, a wood yard with a chopping block and a handcart, stone paths with lanterns, and a skigard fence with a gate on three sides. The ground under the house, the fire and the wood yard is earth and the paths are stone, so no grass grows through floors or decks. Flowers, shrubs and birches grow along the edges in the green biomes only (rocks everywhere), and shells, a shore rock, a fish rack and old piles lie by the water.
 - **Safe:** the dome keeps monsters out, as Haldor's does.
 - **Seen from the sea, and at night:** a gate with a sign and lamps stands where the jetty meets the landing, and a flag and a lamp at its head. Lanterns stand along the jetty, a candle stand lights the stall where the trader stands, and a soft light hangs over the trader. The stalls' awnings and the flag take the biome's colours.
 
@@ -21,6 +22,25 @@ Along the coasts of every biome stand **trading posts**: a long jetty out to dee
 Behind the goods stall stands the post's trader, in the colours of the biome: **Asbjørn** in the Meadows, **Gunnar** in the Black Forest, **Ragnhild** in the Swamp, **Hallvard** in the Mountains, **Sigrid** on the Plains, **Ylva** in the Mistlands, **Brand** in the Ashlands and **Frøydis** in the Deep North. They turn to you as you come, wave and greet you, talk now and then, point, shrug or give a thumbs up, and wave you goodbye. Their clothes are dyed copies of the game's own and are not for sale.
 
 <img src="images/trading_post_trader.png" alt="Gunnar at his stall" title="Gunnar at his stall in the Black Forest" height="200">
+
+## The hunter
+
+Now and then **Ulf the Hunter** sits on the chair behind the fish stall: a woodsman in troll leather with a deer hide cape and the Huntsman's bow on his back. When you come to a post there is a **20 %** chance (`HunterChance`) that he is there, and the answer holds for a game day, so walking off and back does not ask again. He greets you from his chair and talks now and then.
+
+Talk to him to open his store. He sells **one of each trophy** of the post's biome, White Hilt's own monsters included, behind the same boss as the post's goods. He never sells a boss's trophy, as those open the Forsaken powers, and he buys nothing.
+
+| Post | The hunter's trophies |
+|---|---|
+| Meadows | Boar, Deer, Neck |
+| Black Forest | Greydwarf, Greydwarf Brute, Greydwarf Shaman, Skeleton, Ghost, Troll, Bjørn, Giant Spider, Lindorm |
+| Swamp | Blob, Draugr, Draugr Elite, Leech, Surtling, Wraith, Abomination, Rancid Remains, Kvastur, Serpent |
+| Mountains | Wolf, Fenring, Drake, Cultist, Stone Golem, Ulv, Kraken, Greenland Shark |
+| Plains | Deathsquito, Fuling, Fuling Berserker, Fuling Shaman, Lox, Growth, Vile, Desert Dragon, Draugr Jarl |
+| Mistlands | Seeker, Seeker Soldier, Tick, Gjall, Dvergr, Hare, Mist Stag, Nidhogg Spawn, Yggdrasil Warden |
+| Ashlands | Charred Warrior, Charred Marksman, Charred Twitcher, Asksvin, Volture, Fallen Valkyrie, Morgen, Bonemaw, Lava Blob, Garm Hound |
+| Deep North | Moose, White Deer, Seal, Mole, Barka, Frost Blob, Writhan, Jotun Warrior, Jotun Witch |
+
+The sea's trophies are sold where the creature is first met: the Serpent's by the Swamp, the Kraken's and the Greenland Shark's by the Mountains (both come after Bonemass) and the Draugr Jarl's by the Plains. The Elaking's trophy is not sold, in case it is the Deep North's boss. A trophy costs the biome's worth (see [the store](#the-store)) times **15** (`TrophyWorth`), three times that for the great beasts (Abomination, Serpent, Stone Golem, Gjall, Fallen Valkyrie, Morgen, Bonemaw, Lindorm, Kraken, Desert Dragon, Draugr Jarl, Yggdrasil Warden and the two Jotuns), with your [Trading](#the-trading-skill) discount: a Boar trophy costs 15 coins, a Serpent trophy 135, a Garm Hound trophy 120.
 
 ## The store
 
@@ -87,5 +107,7 @@ Settings in section `[TradingPosts]`, all the server's:
 | `Prices` | empty | Prices that replace the built-in ones, in coins per piece: `Prefab:Price`, comma separated |
 | `BuyUnlimitedGoods` | true | Pay for goods that are unlimited in the world's chests |
 | `ChartPrice` | 150 | Coins a Trading Post Chart costs at Hildir. Needs a restart |
+| `HunterChance` | 20 | Percent chance the hunter sits at a post when a player comes there; the answer holds for a game day. 0: no hunter |
+| `TrophyWorth` | 15 | A trophy at the hunter costs its biome's worth times this, three times for the great beasts |
 
 The escort settings `PayPerKilometre`, `WaitSeconds` and `StartRange` are in `[SeaBattles.Escorts]`, see [Sea battles](sea-battles.md#escorts). How the posts were made, picture by picture, is in the [plan](plans/trading-posts.md); the Trading skill in [its own](plans/trading-skill.md).

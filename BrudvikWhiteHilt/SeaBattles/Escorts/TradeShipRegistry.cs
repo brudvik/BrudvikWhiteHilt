@@ -8,9 +8,9 @@ namespace BrudvikWhiteHilt.SeaBattles.Escorts;
 
 /// <summary>
 /// Registers the trading ship: a clone of the vanilla longship, as the Nail Ship is, with a hull of its own health, a sail
-/// that pulls a little less than the longship's, no way for the hammer to take it apart, a merchant's look and the
-/// <see cref="TradeShip"/> that sails it. It is no piece in any table and its network object is not persistent, so a
-/// trading ship nobody sails with can never stay in the saved world.
+/// that pulls a little less than the longship's, no way for the hammer to take it apart, a merchant's look, a skipper at
+/// the helm (<see cref="TradeShipSkipper"/>) and the <see cref="TradeShip"/> that sails it. It is no piece in any table
+/// and its network object is not persistent, so a trading ship nobody sails with can never stay in the saved world.
 /// </summary>
 public static class TradeShipRegistry
 {
@@ -57,6 +57,8 @@ public static class TradeShipRegistry
 
             prefab.AddComponent<TradeShip>();
             TradeShipLook.Apply(prefab);
+            TradeShipSkipper.CreateTemplate();
+            prefab.AddComponent<TradeShipSkipper>();
             PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));
             Jotunn.Logger.LogInfo("Trading Ship added!");
         }

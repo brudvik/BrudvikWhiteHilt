@@ -55,6 +55,12 @@ public static class TradingPostSettings
     /// <summary>Coins a Trading Post Chart costs at Hildir.</summary>
     public static ConfigEntry<int> ChartPrice { get; private set; }
 
+    /// <summary>Percent chance that the hunter sits at a post when a player comes there.</summary>
+    public static ConfigEntry<int> HunterChance { get; private set; }
+
+    /// <summary>Coins a trophy costs per coin a plain material of its biome is worth.</summary>
+    public static ConfigEntry<float> TrophyWorth { get; private set; }
+
     /// <summary>
     /// The configured asking prices, read again only when the setting changed.
     /// </summary>
@@ -128,5 +134,11 @@ public static class TradingPostSettings
             "The trading posts pay for goods even when they are unlimited in the world's chests. Off: they pay nothing for those.");
         ChartPrice = WhiteHiltConfig.BindAdminOnly(Section, "ChartPrice", 150,
             "Coins a Trading Post Chart costs at Hildir. Needs a restart.", new AcceptableValueRange<int>(0, 5000));
+        HunterChance = WhiteHiltConfig.BindAdminOnly(Section, "HunterChance", 20,
+            "Percent chance that a hunter who sells the biome's trophies sits at a trading post when a player comes there. The answer holds " +
+            "for a game day. 0: no hunter.", new AcceptableValueRange<int>(0, 100));
+        TrophyWorth = WhiteHiltConfig.BindAdminOnly(Section, "TrophyWorth", 15f,
+            "A trophy at the hunter costs what a plain material of its biome is worth times this (three times as much for the great beasts' " +
+            "trophies).", new AcceptableValueRange<float>(1f, 1000f));
     }
 }

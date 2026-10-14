@@ -20,6 +20,18 @@ public static class TradingPostKeys
     /// <summary>On the marker: the version of the layout the post was built from (0 before versions).</summary>
     public static readonly int LayoutVersion = "whitehilt_post_layout".GetStableHashCode();
 
+    /// <summary>On the marker: the world time, in whole seconds, the hunter's coming was last decided.</summary>
+    public static readonly int HunterDecided = "whitehilt_post_hunter_time".GetStableHashCode();
+
+    /// <summary>On the marker: whether the hunter is at the post, as last decided.</summary>
+    public static readonly int HunterHere = "whitehilt_post_hunter_here".GetStableHashCode();
+
+    /// <summary>On the marker: the network id of the hunter put out, in two parts.</summary>
+    public static readonly int HunterUser = "whitehilt_post_hunter_user".GetStableHashCode();
+
+    /// <summary>On the marker: the second part of the hunter's network id.</summary>
+    public static readonly int HunterObject = "whitehilt_post_hunter_id".GetStableHashCode();
+
     /// <summary>Prefab hash of the marker.</summary>
     public static readonly int MarkerHash = MarkerPrefabName.GetStableHashCode();
 

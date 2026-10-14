@@ -8,13 +8,17 @@ namespace BrudvikWhiteHilt.TradingPosts;
 /// The invisible marker at a trading post's origin, turned the way the post faces. It carries the dome on every
 /// machine that loads it, is a location nothing may be built in, and levels the land behind the landing (both set up on
 /// the prefab, <see cref="TradingPostRegistry"/>). Its owner clears trees, rocks and bushes off the post and puts the
-/// post's trader out once; every machine dyes the post's stalls and pennant in its biome's colours.
+/// post's trader out once and, when a player comes, sometimes the hunter; every machine dyes the post's stalls and
+/// pennant in its biome's colours.
 /// </summary>
 public class TradingPostSite : MonoBehaviour
 {
     // When to look again after the post comes to life: a zone generated as the player arrives gets its trees a moment
     // after the post's objects load, and the post's own pieces load around the same time.
     private static readonly float[] passDelays = { 1f, 5f, 15f };
+
+    // How often the post's owner looks whether a player has come, for the hunter.
+    private const float HunterInterval = 5f;
 
     // Vegetation is cleared this far inside the dome's edge, so the trees just outside it stay.
     private const float ClearMargin = 4f;
@@ -80,6 +84,16 @@ public class TradingPostSite : MonoBehaviour
         TradingPostLayout layout = TradingPostLayout.Load();
         TradingPostDome.Attach(transform, TradingPostLayout.ToVector(layout.dome.centre), layout.dome.radius);
         Invoke(nameof(Pass), passDelays[0]);
+        InvokeRepeating(nameof(HunterPass), passDelays[0], HunterInterval);
+    }
+
+    // The owner decides whether the hunter sits at the post (TradingPostHunter).
+    private void HunterPass()
+    {
+        if (view != null && view.IsValid() && view.IsOwner() && ZNetScene.instance != null)
+        {
+            TradingPostHunter.Check(transform, view.GetZDO(), Mathf.Max(0, TradingPostGoods.IndexOf(Look.biome)));
+        }
     }
 
     private void Pass()

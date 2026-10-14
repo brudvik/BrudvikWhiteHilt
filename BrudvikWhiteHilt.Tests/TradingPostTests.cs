@@ -13,7 +13,7 @@ namespace BrudvikWhiteHilt.Tests;
 public class TradingPostTests
 {
     // Vanilla pieces a composite in the layout may unfold into.
-    private static readonly HashSet<string> vanilla = new() { "wood_roof_45" };
+    private static readonly HashSet<string> vanilla = new() { "wood_roof_45", "wood_pole", "wood_beam" };
 
     private static readonly JObject layout = JObject.Parse(File.ReadAllText(Repository.Path("AssetSource", "Preview", "tradingpost.json")));
 
@@ -36,6 +36,16 @@ public class TradingPostTests
 
         List<string> unknown = Parts().Select(part => (string)part["prefab"]!).Where(name => !known.Contains(name)).Distinct().ToList();
         Assert.True(unknown.Count == 0, "Unknown prefabs: " + string.Join(", ", unknown));
+    }
+
+    /// <summary>The ground is painted only with earth and stone, which the marker knows, and some of it is painted.</summary>
+    [Fact]
+    public void ThePaintIsEarthOrStone()
+    {
+        List<string> kinds = layout["paint"]!.Select(spot => (string)spot["type"]!).ToList();
+        Assert.NotEmpty(kinds);
+        Assert.All(kinds, kind => Assert.Contains(kind, new[] { "dirt", "paved" }));
+        Assert.Contains("paved", kinds);
     }
 
     /// <summary>The pieces only a post has are in it: the gate and the flag pole, and the pile is in the building layout.</summary>
