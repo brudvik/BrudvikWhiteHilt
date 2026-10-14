@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.137.0 - 2026-10-15
 
 ### Added
 - **[The hunter at the trading posts](docs/trading-posts.md#the-hunter)**: now and then Ulf the Hunter sits on a chair
