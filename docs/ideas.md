@@ -40,7 +40,6 @@ Ideas that build on the [sea battles](sea-battles.md): the Nail Ships, their cre
 
 - **Harbour raids.** Nail Ships come for your jetties and mooring posts like a raid, met with the alarm bell, the oil cauldron and a shore ballista among the defences.
 - **Fuller raid harbours.** A jarl guarding the hoard, huts and fires, a captive to free who becomes a trader, and waves of guards when the harbour's horn sounds.
-- **Escorts.** Haldor's or Hildir's trading ship sails between two places, and you guard it against Nail Ships.
 
 **Navigation, saga and multiplayer**
 

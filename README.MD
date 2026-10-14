@@ -41,7 +41,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.131.0
+## ✨ New in 0.132.0
+
+- **[Escorts](docs/sea-battles.md#escorts)**: buy an **Escort Contract** from Haldor and see a **trading ship** safely to port across open sea. Nail Ships come for the merchant, and every raider on its deck carries cargo off; bring it home for coins, a chance of a Raid Chart and a new deed in the [Saga](docs/saga.md).
+- **[No outrunning them at first](docs/sea-battles.md#no-outrunning-them-at-first)**: when Nail Ships attack, your ship is held just below their speed for a minute, and for as long as raiders stand on your deck. Then you may run.
+- **Nail Ships no longer wreck themselves**: their crews, ballistas and fleet-mates no longer damage their own ships.
+
+### Also new in 0.131.0
 
 - **No more players cut off on big worlds**: the server's lists of discoveries, map areas and portals now go out in pieces, and a message too large for Steam is dropped and logged instead of stopping everything behind it. Server and players all need this version.
 
@@ -49,10 +55,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 
 - **[Nail Ship fleets](docs/sea-battles.md#fleets)**: after Moder a Nail Ship may come with company, two ships and after Yagluth three, sailing in a wedge behind a red-sailed **flagship** that breaks off to attack from both sides. The flagship has a stronger hull, a bigger crew, always a ballista and richer loot.
 - **[The Draugr Jarl](docs/monsters.md#draugr-jarl)** leads the flagship: a huge undead viking with a great axe who grows stronger with every boss you slay. When he falls or his flagship is taken, the fleet breaks and runs, a new deed in the [Saga](docs/saga.md).
-
-### Also new in 0.129.0
-
-- **[Damage at sea](docs/sea-battles.md#damage-at-sea)**: holes, flooding, patching and bailing, **[fire on deck](docs/sea-battles.md#fire-on-deck)** from Pitch Pots, **Chain Shot**, the **Grapnel Bolt** and the **[Ram Prow](docs/ships.md#the-ram-prow)**.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
@@ -109,7 +111,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/treasure.md"><img src="docs/images/treasure_chest.png" height="110" alt=""></a><br><b><a href="docs/treasure.md">Treasure maps</a></b><br><sub>Buy a map from Hildir, match its scrap of land to your own map and dig up the chest.</sub></td>
 <td align="center" valign="top"><a href="docs/harbour.md"><img src="docs/images/water_havn.png" height="110" alt=""></a><br><b><a href="docs/harbour.md">Bridges, jetties & quays</a></b><br><sub>Jetties on piles, stone quays with steps down to the water, and log, rope and stone bridges.</sub></td>
-<td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships and raid charts that lead to a draugr harbour to sack.</sub></td>
+<td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.</sub></td>
 </tr>
 </table>
 

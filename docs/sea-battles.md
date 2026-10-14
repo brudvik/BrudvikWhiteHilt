@@ -8,6 +8,8 @@ The Nail Ship needs no new model: it is the vanilla longship with a dark hull, a
 
 The fight is not one-sided. The Nail Ship's bolts and rams knock [holes in your hull](#damage-at-sea) and its pitch pots set your [deck alight](#fire-on-deck), so keep wood and resin in the pack and a free hand for the bailing.
 
+You can also take a job from Haldor. He sells an **Escort Contract**: use it aboard your ship at open sea, and a [trading ship](#escorts) sails up beside you, bound for a port a kilometre or two away. The Nail Ships come for the merchant, not for you, and you are paid for seeing it safely to port.
+
 ## The Nail Ship
 
 ### When and where it comes
@@ -53,6 +55,16 @@ While nobody is on a Nail Ship's deck, its crew keep to their posts. Archers sho
 The helm of a Nail Ship stays shut (*The dead still hold the helm.*) and so does its hold (*The crew guards the hold.*) while its crew lives. You cannot use the hold for crafting either.
 
 A Nail Ship **gives up** when no player is within **300 m** (`DespawnRange`) for **60 seconds** (`DespawnSeconds`), or when the ship it hunts is gone for as long. Then it and its crew sail out of sight. A player standing on it keeps it.
+
+### No outrunning them at first
+
+When Nail Ships come for a ship, its speed is **held a little below theirs** for the first **60 seconds** (`PursuitShockSeconds`), so even a White Hilt ship cannot simply sail away: the cap is **85%** of the fastest hunter's speed (`PursuitSpeedFactor`), never below **4 m/s** (`PursuitFloorSpeed`), and the ship is braked gently down to it, not stopped. Everyone aboard sees *The Nail Ships close in. The wind fails your sail.*, and the helm shows *Held by the Nail Ships*.
+
+After that you may run, unless **living raiders stand on your deck**: then the ship stays held until they are dead or gone (*The raiders aboard drag at your ship.*). When the hold lifts you are told *You shake off the ambush. Now you can run.* A chase ends 30 seconds after the last hunter, so the next attack holds you again. Off with `PursuitEnabled`.
+
+### They do not harm their own
+
+A Nail Ship takes no damage from its own side: not from its crew's blows (a Fuling Brute's swing no longer splinters its own deck), not from a Nail ballista's bolts, and not when two Nail Ships of a fleet run into each other. Your blows, bolts, rams and collisions hurt them as before.
 
 ### Boarding leap
 
@@ -224,6 +236,77 @@ A **Raid Chart** has no recipe and no trader: it is found in a Nail Ship's hold.
 
 When the hoard is opened with no guard alive, the harbour is **sacked**. It is a [saga](saga.md) deed, once. The chest goes away once it is empty. The ship and what is left of its crew stay.
 
+## Escorts
+
+Haldor's trading ship sails to a port of its own, and you guard it against the Nail Ships. It sails on its own and its helm is shut, so the work is yours: beat the raiders back, kill the ones who land on its deck and patch its holes. If it reaches port with its cargo, every player near it is paid.
+
+| Item | Effect | Where | Price |
+|------|--------|-------|-------|
+| **Escort Contract** (`WhiteHilt_EscortContract`) | Use it aboard your ship at open sea to call a trading ship | Haldor, once the world has reached `[SeaBattles] RequiredKey` (**Bonemass** is slain, by default) | 300 coins (`ContractPrice`) |
+
+Haldor stops selling it when `[SeaBattles.Escorts] Enabled` or `[SeaBattles] Enabled` is off.
+
+### The contract
+
+Use the contract from your inventory while you are aboard a ship at sea. The server checks the call and either finds a port or says no:
+
+- **A port:** the server looks for a straight line of deep water, **1200 to 2000 m** long (`MinDistance`, `MaxDistance`), ahead of your ship (up to 70 degrees to each side of its heading), where every point on the line, every 50 m, has at least **6 m** of water (`MinDepth`). It tries the farthest port first and works inwards in steps of 200 m. If there is no such line you see *No clear deep-water passage from here. Sail further out.*
+- **Where you are:** you must be aboard an ordinary ship, within 60 m of it, in the **ocean** biome. A Nail Ship or a trading ship will not do. Otherwise you see *You must be aboard your own ship at open sea.*
+- **Busy or too soon:** you may have only one merchant on its way, and at least **10 real minutes** (`CooldownMinutes`) must have passed since your last call. Otherwise you see *You already have a merchant to guard, or one sailed with you too recently.* The cooldown is kept by the server and forgotten when it restarts.
+- **Off:** if escorts are off, or the world has not reached the key, you see *Haldor will not send a trading ship now.*
+
+A refusal costs you nothing: you keep the contract. The contract is used up only when the trading ship has been raised. It appears **25 m** to one side of your ship (farther if the water is too shallow there), facing its port. The port is marked on your map as a **Merchant's port** pin, for you only (it is not saved), and you see *A trading ship joins you. Its port is marked on your map.* The pin goes when the escort ends.
+
+### The trading ship
+
+The trading ship is the vanilla longship with a blue and cream sail and barrels and crates on its deck. It has no crew and no skipper to see; it sails itself.
+
+- It sails at full sail with the wind astern, but its sail pulls only **0.8 times** as hard as a longship's (`SailForceFactor`), so you can keep up. It steers round shallows and rocks, and stops if it finds no clear way.
+- Its helm (*The merchant's skipper keeps the helm.*) and its hold (*The merchant's cargo is not yours to open.*) are shut, it cannot be pushed or moored, and it cannot be taken apart with the Hammer. You can stand on its deck.
+- It has **1500 health** (`HullHealth`) and takes pierce damage in full, so arrows and bolts hurt it. It is holed and flooded like any other ship, so [patch](#patching-and-bailing) it, and it burns if a pitch pot lands on it. If its hull is destroyed, it sinks.
+- Look at it to see *Cargo n %, m m to port*. The cargo starts at **100 %**.
+- It is not kept in the world: if everyone leaves and nobody else loads it, it is simply gone, and the escort has failed.
+
+### The attacks
+
+On the way **2 waves** of Nail Ships come (`Waves`, 0 to 4). The first can come when the merchant is a quarter of the way (`WaveStart`, 0.25), the last has come by 80 % (`WaveEnd`), and the shares of the route are rolled when the ship is called, spread so that two waves are never closer than half an equal share of the stretch (about 14 % of the route apart with the defaults). Each wave is an ordinary Nail Ship encounter with the merchant as its target:
+
+- The merchant's owner asks the server when a wave is due, once for each wave and again after 10 seconds if none has come. The server checks that the ship exists, is still sailing and that this is the next wave, and then orders the Nail Ships raised, as it does for a natural encounter: the crew from the world's keys (the first tier when none is set), **1 more warrior** for each extra player within 60 m of the merchant (`CrewPerExtraPlayer`), and a lone ship or a [fleet](#fleets) by `FleetTiers`.
+- The horn sounds and every player within 150 m of the merchant (`RewardRange`) sees *Nail Ships! They are after the merchant.* The ships appear 180 m away (`SpawnDistance`) in the quarter ahead of the merchant, in deep water, and fight as they do against a player's ship: they lie alongside, shoot, throw pitch pots, and send their warriors across.
+- They keep hunting an empty merchant as long as players are near, and give up in the usual way when none is.
+- A ship that is hunted is held below its hunters' speed, the merchant too (see `PursuitSpeedFactor`); it is never stopped by that.
+- The Nail Crew's arrows, pots and bolts all hurt the merchant.
+
+No natural Nail Ship encounter is rolled for a ship within **400 m** (`NoEncounterRange`) of a merchant on its way, so the waves are the only attacks. 0 turns that off.
+
+**Plunder.** Every living raider who has leapt onto the merchant's deck carries cargo off: **0.5 %** of a full cargo per second each (`PlunderPerRaider`). The first time raiders land, the players within 150 m see *Raiders on the merchant's deck! The cargo is being carried off.* (at most once every 20 seconds). Kill them to stop it.
+
+### The end
+
+The machine that owns the merchant looks at the escort four times a second and decides how it stands, in this order:
+
+| Outcome | When | What you see |
+|---|---|---|
+| **Sunk** | The hull is destroyed | *The trading ship is lost. The contract has failed.* |
+| **Plundered** | The cargo is 0 | *The cargo is gone. The contract has failed.* |
+| **In port** | The merchant is within **60 m** of its port (`ArriveRadius`) | The pay, below |
+| **Abandoned** | No player has been within **300 m** (`AbandonRange`) of it for **120 seconds** (`AbandonSeconds`) | *Left alone, the merchant turns back. The contract has failed.* |
+
+A failure is shown to the players within twice the abandon range of the ship and to whoever called the merchant, wherever they are, and the pin goes. Sunk comes first, so a ship that arrives and sinks at once has failed, and a ship that reaches port with an empty hold has failed too.
+
+After the end the merchant lies still for a minute, so you can see it in port. Then it sails away from the nearest player at full sail and is gone when nobody is near, or after two minutes at the latest. A merchant that was abandoned is gone at once. A player standing on its deck keeps it where it is.
+
+### The pay
+
+When the merchant is in port, every player within **150 m** of it (`RewardRange`) is paid by the cargo that is left:
+
+- **Coins:** `Pay` (600) times the share of the cargo left, rounded down. Half a cargo pays 300. Coins that do not fit in the pack fall at your feet.
+- **A Raid Chart:** each paid player rolls `RaidChartChance` (25 %) for one, on top of the coins.
+- *The trading ship is safe in port. Haldor pays you n coins.*
+- **A saga deed**, *A trading ship was seen safely to port*, for those within the saga's witness range (see [Saga deeds](#saga-deeds)).
+
+The pay is counted from the players the merchant's owner has loaded, which is everyone who is near.
+
 ## Saga deeds
 
 These are deeds in the [Saga](saga.md), shared by everyone within 50 m (`[Saga] WitnessRange`):
@@ -233,6 +316,7 @@ These are deeds in the [Saga](saga.md), shared by everyone within 50 m (`[Saga] 
 | **A Nail Ship was taken** | Its crew is dead, or its hull sinks | 25 (`RenownSeaBattle`) |
 | **A Nail fleet was broken** | A [flagship](#the-flagship) is taken or sunk, in addition to the ship's own deed | 40 (`RenownFleet`) |
 | **A draugr harbour was sacked** | Its hoard is opened with no guard alive | 40 (`RenownRaid`) |
+| **A trading ship was seen safely to port** | A merchant reaches its port with some cargo left; only those within the witness range of the ship have it, though everyone within 150 m is paid | 40 (`RenownEscort`) |
 
 Slaying the [Draugr Jarl](#the-draugr-jarl) is a deed too: he is one of the creatures listed in `[Saga] Creatures` (5 renown, `RenownMonster`).
 
@@ -241,6 +325,7 @@ Slaying the [Draugr Jarl](#the-draugr-jarl) is a deed too: he is one of the crea
 - **The server decides** when a Nail Ship comes and makes the draugr harbours. It checks every request, so a modified client cannot ask for more. The server and every player need this version of the mod.
 - Everyone sees the same ship, the same crew and the same horn. The ship's owner, usually the nearest player, steers it. If that player leaves, the next one carries on.
 - **Fleets:** the server picks the size, and the client that owns your ship raises every ship of the fleet in one go. Each ship's owner steers it and runs its crew. The escorts hold their places in the wedge only while the flagship is loaded on the machine that owns them, and fight on their own otherwise. Whether the jarl has fallen and whether the flagship is taken or sunk is kept in the flagship's data, which the escorts read, also when the flagship is out of reach; so the fleet breaks and runs for everyone. A flagship whose data an escort cannot find for 5 seconds counts as gone.
+- **Escorts:** the server approves each contract (and keeps the cooldowns and the list of merchants on their way in its memory) and picks the port; the client that used the contract raises the trading ship. The merchant's owner decides everything about it: its route, the cargo, when a wave is due and how it ends. All of that is kept in the ship's data, so a new owner carries on. The owner asks the server for each wave, and the server checks the request and orders the Nail Ships raised on the owner's machine. The pay, the pin and the messages are sent by the owner to the players' own machines, and each player's game adds its own coins.
 - The crew are owned apart from the ship, so a crew member shot by one player and a ship steered by another still work together.
 - The aim of a ballista is kept on the gunner, so nobody has to own the ship to shoot.
 - The prize timer uses world time, so it runs also while nobody is near.
@@ -248,7 +333,7 @@ Slaying the [Draugr Jarl](#the-draugr-jarl) is a deed too: he is one of the crea
 
 ## Console
 
-`whitehilt_seabattle [status|summon|fleet [2|3]|raid|hole [n]]`
+`whitehilt_seabattle [status|summon|fleet [2|3]|raid|escort [wave]|hole [n]]`
 
 | Command | Who | What it does |
 |---|---|---|
@@ -256,9 +341,11 @@ Slaying the [Draugr Jarl](#the-draugr-jarl) is a deed too: he is one of the crea
 | `summon` | Admins | Sends a Nail Ship after the ship you are aboard, with no dice, no cooldown, no key and no ocean test. It needs deep water in the quarter ahead; the machine that owns your ship raises it. With no crew key set in the world, the first crew tier is used. It starts the cooldown |
 | `fleet [2\|3]` | Admins | Sends a whole [fleet](#fleets) of 2 ships (3 with `fleet 3`; other numbers are held to 2 to 3) after your ship, on the same terms as `summon`: no dice, no cooldown, no key and no ocean test, `FleetTiers` ignored, the first crew tier when no crew key is set. It starts the cooldown. With `[SeaBattles.Fleets] Enabled` off it says so and sends nothing |
 | `raid` | Admins | Makes a draugr harbour on the coast nearest you, 50 m to `MaxDistance` away. You need not have explored it, and `MaxActive` still counts. The console says where it is and a pin is set |
+| `escort` | Admins | Calls a [trading ship](#escorts) for the ship you are aboard, with no contract, no key, no cooldown and no check for a merchant already on its way. The same server checks and the same port search apply (open sea, a line of deep water), and the ship is raised beside yours. It needs `[SeaBattles.Escorts] Enabled` and `[SeaBattles] Enabled` |
+| `escort wave` | Admins | Sends the next wave of Nail Ships against the trading ship nearest to you at once, whatever the progress. It counts as the next of the planned waves. The first crew tier is used if the world has no crew key |
 | `hole [n]` | Anyone with cheats on (`devcommands`) | Knocks `n` holes (1 by default, at most 20) in the ship you stand on, as a ram would, to try flooding, patching and bailing without a fight. The ship's `MaxHoles` and the 1 m spacing still apply, so fewer may come. It needs `[SeaBattles.Damage] Enabled` and does next to no damage |
 
-The server checks who may call `summon`, `fleet` and `raid`: the host and the admins of a dedicated server. Others get *Only admins can do that.* All three need `[SeaBattles] Enabled`.
+The server checks who may call `summon`, `fleet`, `raid` and `escort`: the host and the admins of a dedicated server. Others get *Only admins can do that.* All of them need `[SeaBattles] Enabled`. `status` also lists the trading ships loaded here, with their state, cargo, waves sent, distance to port and your distance from them.
 
 ## Config
 
@@ -279,6 +366,10 @@ All admin only, synced from the server. Settings in section `[SeaBattles]`:
 | `HullHealth` | 1200 | Health of a Nail Ship's hull; 100 to 20000. Applies after a restart |
 | `SailForceFactor` | 1 | Multiplier on the longship's sail force; 0.2 to 5. Applies after a restart |
 | `Tailwind` | true | Nail Ships under sail always have the wind behind them |
+| `PursuitEnabled` | true | A hunted ship is held below the Nail Ships' speed at first, and while raiders stand on its deck |
+| `PursuitShockSeconds` | 60 | Seconds the hunted ship is held after the attack begins; 0 to 600 |
+| `PursuitSpeedFactor` | 0.85 | Share of the fastest hunter's speed the held ship may keep; 0.3 to 1 |
+| `PursuitFloorSpeed` | 4 | The hold never brings a ship below this speed, in m/s; 0 to 15 |
 | `BroadsideDistance` | 25 | Metres it keeps alongside while its archers shoot; 10 to 60 |
 | `BroadsideSeconds` | 40 | Seconds alongside before it closes in to board; 0 to 300. 0: it never boards |
 | `BoardDistance` | 6 | Metres within which its warriors leap across; 3 to 15 |
@@ -325,6 +416,30 @@ Settings in section `[SeaBattles.Fleets]` (see [Fleets](#fleets)):
 | `FleeWhenFlagshipFalls` | true | The escorts flee when the flagship is taken, sunk or gone |
 | `FleeWhenJarlFalls` | true | The escorts flee when the jarl is slain |
 
+Settings in section `[SeaBattles.Escorts]` (see [Escorts](#escorts)):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | Haldor sells Escort Contracts and a trading ship can be called. Off: the contract goes from his list and none can be called |
+| `ContractPrice` | 300 | Haldor's price for a contract, in coins; 0 to 5000 |
+| `MinDistance` | 1200 | Least straight-line distance to the port, in metres; 400 to 5000 |
+| `MaxDistance` | 2000 | Most distance to the port, in metres; 400 to 8000. Below `MinDistance` it counts as `MinDistance` |
+| `MinDepth` | 6 | The whole straight line to the port must have at least this much water, in metres; 2 to 30 |
+| `SailForceFactor` | 0.8 | Multiplier on the longship's sail force, so the trading ship is a bit slower; 0.3 to 1.5. Applies after a restart |
+| `HullHealth` | 1500 | Health of the trading ship's hull; 200 to 10000. Applies after a restart |
+| `Waves` | 2 | Nail Ship attacks on the way; 0 to 4 |
+| `WaveStart` | 0.25 | Share of the route at which the first wave can come; 0 to 0.9 |
+| `WaveEnd` | 0.8 | Share of the route by which the last wave has come; 0.1 to 1 |
+| `PlunderPerRaider` | 0.5 | Percent of a full cargo that one living raider on the merchant's deck carries off per second; 0 to 10 |
+| `AbandonRange` | 300 | A player must be this close to the trading ship, in metres; 50 to 1000. Failure messages go to twice this range |
+| `AbandonSeconds` | 120 | Seconds nobody may be within range before the merchant gives up; 10 to 900 |
+| `ArriveRadius` | 60 | The trading ship is in port within this many metres of its port; 20 to 200 |
+| `Pay` | 600 | Coins for a full cargo, to each player in reach; 0 to 10000 |
+| `RewardRange` | 150 | Players this close to the trading ship when it arrives are paid, in metres; also the range of the wave and plunder messages; 20 to 500 |
+| `RaidChartChance` | 25 | Percent chance per paid player of a Raid Chart; 0 to 100 |
+| `CooldownMinutes` | 10 | Least real minutes between two contracts for one player; 0 to 240 |
+| `NoEncounterRange` | 400 | No natural Nail Ship encounter is rolled for a ship this close to a merchant on its way, in metres; 0 to 2000. 0 turns it off |
+
 Settings in section `[SeaBattles.Damage]` (holes, flooding and deck fires):
 
 | Setting | Default | What it does |
@@ -368,4 +483,4 @@ Settings in section `[SeaBattles.Weapons]` (the Nail Ships' weapons and the Pitc
 
 The Chain Shot, the Grapnel Bolt and the rope are set in `[Ships.Ballista]`, and the Ram Prow in `[Ships.Ram]`, both on the [Ships](ships.md#config) page.
 
-The harbours' spacing, their clearance from buildings and their biomes come from `[Treasure]` (`MinTreasureDistance`, `MinBaseDistance`, `AllowedBiomes`), see [Treasure maps](treasure.md). The deeds' renown is `RenownSeaBattle`, `RenownRaid` and `RenownFleet` in `[Saga]`. The Draugr Jarl's own settings are in `[Monsters.DraugrJarl]`, see [Monsters](monsters.md#config). The ballista and the bolts have their own section, `[Ships.Ballista]`, on the [Ships](ships.md) page.
+The harbours' spacing, their clearance from buildings and their biomes come from `[Treasure]` (`MinTreasureDistance`, `MinBaseDistance`, `AllowedBiomes`), see [Treasure maps](treasure.md). The deeds' renown is `RenownSeaBattle`, `RenownRaid`, `RenownFleet` and `RenownEscort` in `[Saga]`. The Draugr Jarl's own settings are in `[Monsters.DraugrJarl]`, see [Monsters](monsters.md#config). The ballista and the bolts have their own section, `[Ships.Ballista]`, on the [Ships](ships.md) page.
