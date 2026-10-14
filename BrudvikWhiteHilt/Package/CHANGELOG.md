@@ -2,6 +2,45 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.133.0 - 2026-10-14
+
+### Added
+- **A Deep North tier**: Bloodgold unlocks it in linear progression (recipes in it take 3 Bloodgold extra), and White
+  Hilt armor, weapons and shields upgrade one level further, to quality 9, for 10 Bloodgold: armor +6 (48 per piece),
+  capes +2, weapons +65% of their base damage (the sword about 176 slash), shields +40% of their base block. They stay a
+  little below the Protector armor, the Nord Sword and the Nord shields. `[Tiers]` takes `DeepNorth`; new settings
+  `UpgradeDeepNorth`, `DeepNorthArmor`, `DeepNorthDamage` and `DeepNorthBlock` in `[Gear.Armor]`, `[Gear.Weapons]` and
+  `[Gear.Shields]`.
+- **Trading posts, first part** ([plan](docs/plans/trading-posts.md)): a harbour of jetties with two market stalls, the
+  trader's laft house, a harbour crane, mooring posts, a gate and a flag, under a dome like Haldor's that keeps
+  monsters out. Its pieces cannot be broken or removed, and nothing can be built inside its dome.
+- **Trading posts along the coasts**: once per world, also in worlds made before, the server places up to 4 posts in
+  each biome that meets the sea, the Deep North included, where the bank is low, the land behind is flat and the water at the jetty head is deep
+  enough for a longship, at least 1000 m apart and away from what players built. The land behind the landing is
+  levelled and trees and rocks on the post are cleared.
+- **The traders**: every post has its trader behind the goods stall, a man or woman in the biome's colours (Asbjørn in
+  the Meadows, Gunnar in the Black Forest, Ragnhild in the Swamp, Hallvard in the Mountains, Sigrid on the Plains, Ylva
+  in the Mistlands, Brand in the Ashlands, Frøydis in the Deep North). They turn to you, wave, greet you, talk now and
+  then and wave you goodbye; the stalls' awnings and the flag take the same colours.
+- **The store**: a post sells the materials of its own biome once the world has slain the boss before it (the
+  Meadows' at once), so you need not search for hours: wood, ore, hides, berries, seeds and the rest, dearer for later
+  biomes, ore and hides. It buys the goods of the next biome over (the Deep North's buy the Meadows') and every fish,
+  for a quarter of its own price; fish from later waters and with stars fetch more. The sell button shows which
+  stack it sells and for how much, and the » button beside it steps to the next stack the post buys. Settings `BuyShare`, `Prices` and `BuyUnlimitedGoods` in `[TradingPosts]`.
+- **Trading Post Charts from Hildir**: one for each biome, on sale once the world has reached it (150 coins,
+  `ChartPrice`). Read it and every trading post on that biome's coasts gets a pin on your map. The chart is kept, so you
+  can read it again or give it to a friend.
+
+### Changed
+- The server and every player need this version: the trading posts and the escorts from them add new network messages.
+- **Escorts start at the trading posts**: the traders there sell the Escort Contract instead of Haldor. Use it at a
+  post and the trading ship comes in beside the jetty, on the side away from your ship; it sets out for the nearest
+  other trading post when you go aboard your own ship, and pays 400 coins per kilometre of the voyage for a full cargo
+  (`PayPerKilometre`). If you do not come aboard within 10 minutes it sails off and you get the contract back
+  (`WaitSeconds`, `StartRange`). With the trading posts off, Haldor sells it and escorts start at sea as before. Admins: `whitehilt_tradepost here` (build one where you stand,
+  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
+- **[Coins are worth something again](docs/chests.md#coins-and-valuables)**: in Linear mode coins, gems and everything else the Treasure Chest holds no longer become unlimited, so coins are earned by trade, escorts, raids and treasure. A new setting, `UnlimitedValuables` in `[Chests]`, decides it: `Auto` (default: not in Linear, yes in Full and Discovered), `On` or `Off`. **In a Linear world, the chests remove their unlimited stacks of coins and valuables the first time they are opened after the update**; set `UnlimitedValuables` to `On` first to keep them.
+
 ## v0.132.0 - 2026-10-14
 
 ### Added
