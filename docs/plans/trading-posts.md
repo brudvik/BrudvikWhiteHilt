@@ -98,7 +98,8 @@ links pair a biome with one you reach by sea from it, so a trading voyage has a 
 | Mountain | Silver Ore, Obsidian, Freeze Gland, Wolf Pelt, Onion Seeds, Crystal | Plains goods |
 | Plains | Black Metal Scrap, Flax, Barley, Linen Thread, Cloudberries, Lox Meat, Lox Pelt, Tar | Mistlands goods |
 | Mistlands | Black Marble, Yggdrasil Wood, Carapace, Sap, Royal Jelly | Ashlands goods |
-| Ashlands | Flametal Ore, Ashwood, Grausten, Charcoal Resin, Vineberry Seeds | Meadows goods (homecoming) |
+| Ashlands | Flametal Ore, Ashwood, Grausten, Charcoal Resin, Vineberry Seeds | Deep North goods |
+| Deep North | Its materials, from the biome list the Gathering panel has (the Deep North is out in this version of the game) | Meadows goods (homecoming) |
 | Every post | | All fish, raw and cooked |
 
 - A post sells only after the world has reached its biome (its tier's key is set). An unreached biome's posts stand
@@ -323,7 +324,7 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   - `TradingPostPlacer` (on the server, after the world's locations are generated, once per world: global key
     `whitehilt_tradingposts_placed`): a 40 m grid over the world within 10 km (not within 300 m of the centre), from
     `WorldGenerator` heights, so unvisited land counts; clear of player buildings (`BuildingDistance`) and of locations
-    (their exterior radius plus the dome's); `PerBiome` posts for Meadows to Ashlands (not the Deep North), counting
+    (their exterior radius plus the dome's); `PerBiome` posts for Meadows to the Deep North, counting
     the posts already standing. Spread over frames (4 ms). `whitehilt_tradepost place` runs it again.
   - The marker is now also a `Location` with `m_noBuild` over the dome's radius (Haldor's rule, which the mod's own
     building tools already respect), and carries two round `TerrainModifier`s from the layout's `level` that level the
@@ -335,3 +336,7 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   - To check in the game: how many places suit per biome on real coasts (the log lists them; if too few, let the
     jetty grow by a section where the bed falls slowly), that the terrain modifiers level the land, that no vegetation
     is left on the landing.
+- 2026-10-14, the user: the Deep North is out in the game now, so it gets trading posts too. Added to the placer's
+  biomes and to the goods table (Ashlands now buys Deep North goods, the Deep North buys Meadows goods; to be agreed
+  with the rest of section 4). A Deep North trader is proposed in `build_traders.py` (`TRADERS`) for the user to agree to.
+  Note: the biome rule in the copilot instructions stops at the Ashlands; the Deep North comes after it.

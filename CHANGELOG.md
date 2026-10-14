@@ -9,7 +9,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   trader's laft house, a harbour crane, mooring posts, a gate and a flag, under a dome like Haldor's that keeps
   monsters out. Its pieces cannot be broken or removed, and nothing can be built inside its dome.
 - **Trading posts along the coasts**: once per world, also in worlds made before, the server places up to 4 posts in
-  each biome that meets the sea, where the bank is low, the land behind is flat and the water at the jetty head is deep
+  each biome that meets the sea, the Deep North included, where the bank is low, the land behind is flat and the water at the jetty head is deep
   enough for a longship, at least 1000 m apart and away from what players built. The land behind the landing is
   levelled and trees and rocks on the post are cleared. Admins: `whitehilt_tradepost here` (build one where you stand,
   the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). The trader and the

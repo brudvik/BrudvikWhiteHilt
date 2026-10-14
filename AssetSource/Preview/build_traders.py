@@ -9,7 +9,7 @@ The meshes are Valheim's own, exported in their bind pose with export_vanilla.py
 Cape*, Hair*, Beard*), so the body stands in the bind pose (arms out), not in the pose the game gives it.
 
 Usage: python build_traders.py [--no-render]
-Renders BrudvikWhiteHiltUnity/Preview/out/traders.png (all seven: front, corner and back, Meadows to Ashlands from
+Renders BrudvikWhiteHiltUnity/Preview/out/traders.png (all eight: front, corner and back, Meadows to the Deep North from
 the left) and tradingpost_blackforest.png (one at the stall).
 """
 import json
@@ -52,6 +52,9 @@ TRADERS = [
     {"biome": "Ashlands", "main": (0.58, 0.12, 0.08), "accent": (0.98, 0.6, 0.18), "legs": (0.17, 0.15, 0.15),
      "cape": "troll", "cape_colour": (0.16, 0.14, 0.14), "body": "male", "hair": "Hair11", "beard": "Beard18",
      "hair_colour": (0.12, 0.1, 0.09), "tunic": "uni_ArmorTunic3"},
+    {"biome": "DeepNorth", "main": (0.84, 0.88, 0.93), "accent": (0.22, 0.42, 0.68), "legs": (0.32, 0.36, 0.44),
+     "cape": "nord", "cape_colour": (0.88, 0.9, 0.94), "body": "female", "hair": "Hair12", "beard": None,
+     "hair_colour": (0.92, 0.88, 0.76), "tunic": "uni_ArmorTunic2"},
 ]
 
 CAPES = {"troll": ("uni_CapeTrollHide", "troll_diffuse"), "nord": ("uni_CapeDeepNorth", "NordCape_d")}

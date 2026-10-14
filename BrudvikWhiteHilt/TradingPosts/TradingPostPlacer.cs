@@ -19,11 +19,11 @@ public class TradingPostPlacer : MonoBehaviour
     /// <summary>Global key set once the posts of a world are placed.</summary>
     public const string DoneKey = "whitehilt_tradingposts_placed";
 
-    // The biomes that get posts, in the order of the game; the Deep North has no content yet and the ocean no land.
+    // The biomes that get posts, in the order of the game; the ocean has no land.
     private static readonly Heightmap.Biome[] biomes =
     {
         Heightmap.Biome.Meadows, Heightmap.Biome.BlackForest, Heightmap.Biome.Swamp, Heightmap.Biome.Mountain,
-        Heightmap.Biome.Plains, Heightmap.Biome.Mistlands, Heightmap.Biome.AshLands
+        Heightmap.Biome.Plains, Heightmap.Biome.Mistlands, Heightmap.Biome.AshLands, Heightmap.Biome.DeepNorth
     };
 
     private const float WorldRadius = 10000f;
