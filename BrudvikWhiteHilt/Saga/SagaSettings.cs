@@ -44,6 +44,9 @@ public static class SagaSettings
     /// <summary>Renown for a Nail Ship fleet broken.</summary>
     public static ConfigEntry<int> RenownFleet { get; private set; }
 
+    /// <summary>Renown for a trading ship escorted to port.</summary>
+    public static ConfigEntry<int> RenownEscort { get; private set; }
+
     /// <summary>Renown for a new biome.</summary>
     public static ConfigEntry<int> RenownBiome { get; private set; }
 
@@ -83,6 +86,7 @@ public static class SagaSettings
         RenownSeaBattle = BindRenown("RenownSeaBattle", 25, "a Nail Ship taken or sunk");
         RenownRaid = BindRenown("RenownRaid", 40, "a draugr harbour sacked");
         RenownFleet = BindRenown("RenownFleet", 40, "a Nail Ship fleet broken");
+        RenownEscort = BindRenown("RenownEscort", 40, "a trading ship escorted to port");
         RenownBiome = BindRenown("RenownBiome", 2, "the first steps into a biome");
         RenownSkill = BindRenown("RenownSkill", 1, "a skill reaching 25, 50, 75 or 100");
         RenownPerRank = WhiteHiltConfig.BindAdminOnly(Section, "RenownPerRank", 20, "Renown for each rank.", new AcceptableValueRange<int>(1, 500));
@@ -108,6 +112,7 @@ public static class SagaSettings
         Translations.AddEnglish("whitehilt_saga_seabattle", "A Nail Ship was taken");
         Translations.AddEnglish("whitehilt_saga_raid", "A draugr harbour was sacked");
         Translations.AddEnglish("whitehilt_saga_fleet", "A Nail fleet was broken");
+        Translations.AddEnglish("whitehilt_saga_escort", "A trading ship was seen safely to port");
         Translations.AddEnglish("whitehilt_saga_biome", "First steps into {0}");
         Translations.AddEnglish("whitehilt_saga_skill", "{0} reached {1}");
         Translations.AddEnglish("whitehilt_saga_close", "Close");

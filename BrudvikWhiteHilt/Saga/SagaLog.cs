@@ -38,7 +38,10 @@ public enum SagaKind
     Raid,
 
     /// <summary>A Nail Ship fleet broken: its flagship taken or sunk.</summary>
-    Fleet
+    Fleet,
+
+    /// <summary>A trading ship seen safely to port.</summary>
+    Escort
 }
 
 /// <summary>
@@ -254,6 +257,7 @@ public static class SagaLog
             SagaKind.SeaBattle => SagaSettings.RenownSeaBattle.Value,
             SagaKind.Raid => SagaSettings.RenownRaid.Value,
             SagaKind.Fleet => SagaSettings.RenownFleet.Value,
+            SagaKind.Escort => SagaSettings.RenownEscort.Value,
             _ => 0
         };
         Add(player, deed, name, string.Empty, renown);

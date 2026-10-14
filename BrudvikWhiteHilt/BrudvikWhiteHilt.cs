@@ -154,11 +154,14 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         SeaBattles.Damage.DamageSettings.Initialize();
         SeaBattles.Weapons.WeaponSettings.Initialize();
         SeaBattles.Fleets.FleetSettings.Initialize();
+        SeaBattles.Escorts.EscortSettings.Initialize();
         Items.Summoning.SummoningHornService.Initialize();
         Kraken.KrakenCommands.Register();
         Kraken.KrakenRegistry.Initialize();
         SeaBattles.SeaBattleCommands.Register();
         SeaBattles.NailShipRegistry.Initialize();
+        SeaBattles.Escorts.TradeShipRegistry.Initialize();
+        SeaBattles.Escorts.EscortContract.Initialize();
         Monsters.MonsterSettings.Initialize();
         OldLand.OldLandSettings.Initialize();
         Monsters.MonsterCommands.Register();
@@ -361,6 +364,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.DesertDragonRegistry.ApplyConfig();
         Monsters.WildMonsterRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
+        SeaBattles.Escorts.EscortContract.ApplyConfig();
         Items.Summoning.DragonHorn.ApplyConfig();
         Items.Roofing.RoofMaterials.ApplyConfig();
         Pieces.Roofs.RoofCatalog.ApplyConfig();

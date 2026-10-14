@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Summoning;
 using BrudvikWhiteHilt.Kraken;
+using BrudvikWhiteHilt.SeaBattles.Escorts;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class SeaBattleService : MonoBehaviour
 
     // The server only believes a request from a player this close to the ship it names, and counts the players aboard
     // from those this close to it.
-    private const float AboardRange = 60f;
+    internal const float AboardRange = 60f;
 
     // The sighting is shown at most this often, so a client that repeats it cannot flood the horn.
     private const float SightedInterval = 5f;
@@ -41,7 +42,7 @@ public class SeaBattleService : MonoBehaviour
     public static void Summon()
     {
         Ship ship = Ship.GetLocalShip();
-        if (ZRoutedRpc.instance == null || ship == null || ship.m_nview == null || !ship.m_nview.IsValid() || RaiderShip.Is(ship))
+        if (ZRoutedRpc.instance == null || ship == null || ship.m_nview == null || !ship.m_nview.IsValid() || RaiderShip.Is(ship) || TradeShip.Is(ship))
         {
             Print("Board a ship at sea first.");
             return;
@@ -57,7 +58,7 @@ public class SeaBattleService : MonoBehaviour
     public static void SummonFleet(int size)
     {
         Ship ship = Ship.GetLocalShip();
-        if (ZRoutedRpc.instance == null || ship == null || ship.m_nview == null || !ship.m_nview.IsValid() || RaiderShip.Is(ship))
+        if (ZRoutedRpc.instance == null || ship == null || ship.m_nview == null || !ship.m_nview.IsValid() || RaiderShip.Is(ship) || TradeShip.Is(ship))
         {
             Print("Board a ship at sea first.");
             return;
@@ -101,7 +102,7 @@ public class SeaBattleService : MonoBehaviour
             && WorldGenerator.instance.GetHeight(x, z) < ZoneSystem.instance.m_waterLevel - depth;
     }
 
-    private static bool IsOcean(Vector3 position)
+    internal static bool IsOcean(Vector3 position)
     {
         return WorldGenerator.instance != null && WorldGenerator.instance.GetBiome(position) == Heightmap.Biome.Ocean;
     }
@@ -113,7 +114,7 @@ public class SeaBattleService : MonoBehaviour
                 (x, z) => WorldGenerator.instance.GetHeight(x, z), ZoneSystem.instance.m_waterLevel);
     }
 
-    private static bool HasKey(string key)
+    internal static bool HasKey(string key)
     {
         return string.IsNullOrEmpty(key) || (ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key));
     }
@@ -158,13 +159,18 @@ public class SeaBattleService : MonoBehaviour
     {
         Player player = Player.m_localPlayer;
         if (!SeaBattleSettings.Enabled.Value || player == null || player.IsDead() || ship == null || ship.m_nview == null
-            || !ship.m_nview.IsValid() || !ship.m_nview.IsOwner() || RaiderShip.Is(ship) || RaiderShip.Hunting > 0
+            || !ship.m_nview.IsValid() || !ship.m_nview.IsOwner() || RaiderShip.Is(ship) || TradeShip.Is(ship) || RaiderShip.Hunting > 0
             || KrakenBody.Instances.Count > 0 || !ship.m_players.Contains(player))
         {
             return false;
         }
 
         Vector3 position = ship.transform.position;
+        if (TradeShip.AnyNear(position, EscortSettings.NoEncounterRange.Value))
+        {
+            return false;
+        }
+
         return EncounterRules.AttackChance(SeaBattleSettings.ChancePerMinute.Value, SeaBattleSettings.ChancePerExtraPlayer.Value, ship.m_players.Count) > 0f
             && HasKey(SeaBattleSettings.RequiredKey.Value) && OpenSea(position);
     }
@@ -201,6 +207,12 @@ public class SeaBattleService : MonoBehaviour
             return;
         }
 
+        // A merchant on its way has the sea to itself: the escort has its own waves.
+        if (EscortService.Quiet(ship.GetPosition()))
+        {
+            return;
+        }
+
         int aboard = Mathf.Clamp(playersAboard, 1, Mathf.Max(1, PlayersNear(ship.GetPosition())));
         float chance = EncounterRules.AttackChance(SeaBattleSettings.ChancePerMinute.Value, SeaBattleSettings.ChancePerExtraPlayer.Value, aboard);
         if (!EncounterRules.Rolled(chance, Random.value))
@@ -230,7 +242,7 @@ public class SeaBattleService : MonoBehaviour
 
     // On the server: the size of the fleet for one encounter, from the fleet tiers and the world's keys. One ship when
     // fleets are off or no tier applies.
-    private static int PickFleetSize()
+    internal static int PickFleetSize()
     {
         if (!FleetSettings.Enabled.Value)
         {
@@ -372,16 +384,16 @@ public class SeaBattleService : MonoBehaviour
         }
     }
 
-    private static void Reply(long sender, string message)
+    internal static void Reply(long sender, string message)
     {
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, ReplyRpc, message);
     }
 
     // The network data of a ship the server knows: it exists and its prefab is a ship that is not a Nail Ship.
-    private static ZDO TargetShip(ZDOID id)
+    internal static ZDO TargetShip(ZDOID id)
     {
         ZDO zdo = id.IsNone() || ZDOMan.instance == null ? null : ZDOMan.instance.GetZDO(id);
-        if (zdo == null || NailShipRegistry.IsNailShip(zdo.GetPrefab()))
+        if (zdo == null || NailShipRegistry.IsNailShip(zdo.GetPrefab()) || TradeShipRegistry.IsTradeShip(zdo.GetPrefab()))
         {
             return null;
         }
@@ -400,7 +412,7 @@ public class SeaBattleService : MonoBehaviour
         return zdo != null && zdo.GetOwner() == sender && zdo.GetFloat(ZDOVars.s_health, 1f) > 0f ? zdo : null;
     }
 
-    private static int PlayersNear(Vector3 position)
+    internal static int PlayersNear(Vector3 position)
     {
         int count = 0;
         foreach (ZNet.PlayerInfo info in ZNet.instance.GetPlayerList())

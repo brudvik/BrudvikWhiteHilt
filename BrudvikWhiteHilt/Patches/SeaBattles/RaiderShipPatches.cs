@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.SeaBattles;
+using BrudvikWhiteHilt.SeaBattles.Escorts;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,7 +109,8 @@ public static class RaiderShipPatches
     [HarmonyPrefix]
     public static bool Tailwind(Ship __instance, float sailSize, ref Vector3 __result)
     {
-        if (!SeaBattleSettings.Tailwind.Value || !RaiderShip.Sails(__instance))
+        // A trading ship always has the wind behind it, whatever the Nail Ships' setting says: it must reach its port.
+        if (!RaiderShip.Sails(__instance) || (!SeaBattleSettings.Tailwind.Value && !TradeShip.Is(__instance)))
         {
             return true;
         }
@@ -118,7 +120,7 @@ public static class RaiderShipPatches
     }
 
     /// <summary>
-    /// Keeps the helm of a Nail Ship shut while its crew lives.
+    /// Keeps the helm of a Nail Ship shut while its crew lives, and the helm of a trading ship always.
     /// </summary>
     /// <param name="__instance">The helm.</param>
     /// <param name="character">Who uses it.</param>
@@ -129,14 +131,15 @@ public static class RaiderShipPatches
     [HarmonyPrefix]
     public static bool Helm(ShipControlls __instance, Humanoid character, bool repeat, ref bool __result)
     {
-        if (!RaiderShip.CrewHolds(__instance.m_ship))
+        bool trade = TradeShip.Is(__instance.m_ship);
+        if (!trade && !RaiderShip.CrewHolds(__instance.m_ship))
         {
             return true;
         }
 
         if (!repeat)
         {
-            character.Message(MessageHud.MessageType.Center, "$msg_whitehilt_raider_helm_held");
+            character.Message(MessageHud.MessageType.Center, trade ? "$msg_whitehilt_trade_helm_held" : "$msg_whitehilt_raider_helm_held");
         }
 
         __result = false;
@@ -144,7 +147,7 @@ public static class RaiderShipPatches
     }
 
     /// <summary>
-    /// Keeps the hold of a Nail Ship shut while its crew lives.
+    /// Keeps the hold of a Nail Ship shut while its crew lives, and the hold of a trading ship always.
     /// </summary>
     /// <param name="__instance">The container.</param>
     /// <param name="character">Who uses it.</param>
@@ -155,6 +158,17 @@ public static class RaiderShipPatches
     [HarmonyPrefix]
     public static bool Hold(Container __instance, Humanoid character, bool hold, ref bool __result)
     {
+        if (__instance.GetComponentInParent<TradeShip>() != null)
+        {
+            if (!hold)
+            {
+                character.Message(MessageHud.MessageType.Center, "$msg_whitehilt_trade_hold_shut");
+            }
+
+            __result = true;
+            return false;
+        }
+
         RaiderShip raider = __instance.GetComponentInParent<RaiderShip>();
         if (raider == null || !RaiderShip.CrewHolds(raider.Ship))
         {

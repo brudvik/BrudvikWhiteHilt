@@ -73,7 +73,8 @@ public class ShipMooring : MonoBehaviour
         float bestDistance = range;
         foreach (ShipMooring mooring in instances)
         {
-            if (mooring == null || mooring.ship == null || mooring.IsMoored || SeaBattles.RaiderShip.Is(mooring.ship))
+            if (mooring == null || mooring.ship == null || mooring.IsMoored || SeaBattles.RaiderShip.Is(mooring.ship)
+                || SeaBattles.Escorts.TradeShip.Is(mooring.ship))
             {
                 continue;
             }

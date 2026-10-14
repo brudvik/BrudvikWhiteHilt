@@ -2,6 +2,7 @@ using BrudvikWhiteHilt.Backpack;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
 using BrudvikWhiteHilt.SeaBattles;
 using BrudvikWhiteHilt.SeaBattles.Damage;
+using BrudvikWhiteHilt.SeaBattles.Escorts;
 using BrudvikWhiteHilt.SeaBattles.Weapons;
 using UnityEngine;
 
@@ -126,6 +127,13 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
             return raider.HoverText();
         }
 
+        // The same goes for a trading ship: it shows the cargo and the way to port.
+        TradeShip trade = TradeShip.Of(ship);
+        if (trade != null)
+        {
+            return trade.HoverText();
+        }
+
         return CanPush(Player.m_localPlayer) ? Localization.instance.Localize("[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_ship_push") : string.Empty;
     }
 
@@ -170,7 +178,7 @@ public class ShipAssist : MonoBehaviour, Hoverable, Interactable
 
     private bool CanPush(Player player)
     {
-        return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !RaiderShip.Is(ship)
+        return ShipSettings.PushShip.Value && player != null && ship != null && nview != null && nview.IsValid() && !RaiderShip.Is(ship) && !TradeShip.Is(ship)
             && !ShipDamageInput.IsAimedAt(ship) && !DeckFireInput.IsAimedAt(ship) && !GrappleInput.IsAimedAt(ship)
             && player.GetStandingOnShip() == null
             && !ship.IsPlayerInBoat(player) && Mathf.Abs(ship.GetSpeed()) < MaxPushableSpeed && (upgrades == null || !upgrades.IsAnchored);

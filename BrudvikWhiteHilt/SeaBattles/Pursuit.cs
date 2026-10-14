@@ -152,15 +152,7 @@ public static class Pursuit
     // Whether a living, boarded Nail crew member stands on this ship.
     private static bool EnemiesAboard(Ship ship)
     {
-        foreach (RaiderCrew crew in RaiderCrew.All)
-        {
-            if (crew.Alive && crew.Boarded && crew.Character.GetStandingOnShip() == ship)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return RaiderCrew.AliveAboard(ship) > 0;
     }
 
     private static void Clamp(Ship ship, float? cap)

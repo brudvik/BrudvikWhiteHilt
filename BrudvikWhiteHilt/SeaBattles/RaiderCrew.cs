@@ -104,6 +104,26 @@ public class RaiderCrew : MonoBehaviour
     }
 
     /// <summary>
+    /// How many living crew members that have leapt aboard stand on a ship. Only the crew loaded on this machine are
+    /// counted, which is all of them where the ship's owner is, since the crew leaps from a ship in the same place.
+    /// </summary>
+    /// <param name="ship">The ship they stand on.</param>
+    /// <returns>The number of raiders on its deck.</returns>
+    public static int AliveAboard(Ship ship)
+    {
+        int count = 0;
+        foreach (RaiderCrew crew in byAi.Values)
+        {
+            if (crew.Alive && crew.Boarded && crew.character.GetStandingOnShip() == ship)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
     /// Lets the creature hold its post, leap or turn back, after the game's AI has decided what to do. Does nothing on
     /// machines that do not own the creature.
     /// </summary>
