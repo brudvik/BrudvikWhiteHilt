@@ -16,6 +16,30 @@ The config (`EternalFire` section) decides when it applies: `Progression` (defau
 
 ---
 
+## 🏠 COMFORT IN THE WHOLE ROOM
+
+In the game, comfort counts only the pieces within **10 m of where you stand**, so everything that gives comfort must crowd round your seat by the fire. Three things widen it, so a large, well furnished hall is cosy all through:
+
+<img src="images/husvette.png" alt="Husvette" title="Husvette" height="160">
+
+- **The Husvette**, a carved house spirit with a red cap and his bowl of porridge. Every comfort piece within **30 m** of him (`HusvetteRadius`) counts for everyone **under a roof** within the same 30 m, and a fire burning anywhere within his reach is warm enough to rest by (`HusvetteWarmth`). Look at him to see his reach as a ring on the ground; it shows while you place him too.
+- **The Book of the Hall**, sold by Hildir and the [trading posts](trading-posts.md) for 300 coins (`BookPrice`). Read it once and your own comfort reach grows by **10 m** (`BookBonus`), from 10 to 20 m, wherever you are. The book is used up.
+- **Homecraft**, a new skill. It rises while you rest (`RestExperience` every 10 seconds) and when you build pieces that give comfort (`BuildExperience` per point of comfort), and widens your own reach by up to **20 m** at level 100 (`SkillBonus`), but your own reach is never more than **40 m** (`PersonalMax`, the Husvette's reach plus 10).
+
+Comfort counts the pieces within your own reach and within every Husvette whose room you stand in. As in the game, each comfort group counts once, so a larger room gives variety, not endless comfort.
+
+| Your own reach | Without | With the book | Book and Homecraft 50 | Book and Homecraft 100 |
+|---|---|---|---|---|
+| Metres | 10 | 20 | 30 | 40 |
+
+| Item | Description | Crafting Station | Requirements |
+|------|-------------|------------------|--------------|
+| **Husvette** | Binds the room's comfort within 30 m | Hammer (Workbench), Furniture | Fine Wood ×4, Wood ×2, Troll Hide ×1 |
+
+Settings in `[Comfort]`: `Enabled`, `HusvetteRadius` (30), `HusvetteWarmth` (on), `BookBonus` (10), `BookPrice` (300), `SkillBonus` (20), `PersonalMax` (40), `RestExperience` (1), `BuildExperience` (2). With linear progression the Husvette comes with the Black Forest.
+
+---
+
 ## 🕯️ RUSHLIGHT
 
 The old light of the poor: a cattail rush dipped in fat and held slanted in an iron rush nip. It gives less light than a standing torch, and burns [Cattails](foraging.md) instead of Resin, each twice as long. Surt's Brazier keeps it lit like any other torch.

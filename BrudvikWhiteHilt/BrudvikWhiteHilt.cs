@@ -74,6 +74,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         ProgressionManager.RegisterTranslations();
         ExplorationSkill.Register();
         HusbandrySkill.Register();
+        Comfort.ComfortService.Initialize();
         Mastery.MasterySettings.Initialize();
         Mastery.ForagingSkill.Register();
         RegisterMasteryTranslations();
@@ -292,6 +293,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             Diagnostics.StartupTimer.Each("pieces", customPieces, customPiece => customPiece.Add());
             ExplorationSkill.SetIconFromMapTable();
             HusbandrySkill.SetIconFromBoarTrophy();
+            Comfort.ComfortService.SetSkillIcon();
             Mastery.ForagingSkill.SetIconFromMushroom();
             Mastery.MasteryEffects.Register();
             Pieces.Ships.ShipBell.Create();

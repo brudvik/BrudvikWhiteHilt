@@ -45,6 +45,13 @@ public static class TradingPostStore
             });
         }
 
+        // And the Book of the Hall, the knowledge of furnishing a great hall.
+        Trader.TradeItem book = Comfort.ComfortService.TradeItem();
+        if (book != null)
+        {
+            items.Add(book);
+        }
+
         // Every post's trader sells the Escort Contract, behind the key of the sea battles, as Haldor did.
         ItemDrop contract = ObjectDB.instance.GetItemPrefab(SeaBattles.Escorts.EscortContract.PrefabName)?.GetComponent<ItemDrop>();
         if (contract != null && SeaBattles.Escorts.EscortSettings.Enabled.Value && SeaBattles.SeaBattleSettings.Enabled.Value)

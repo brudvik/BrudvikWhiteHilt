@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Comfort in the whole room](docs/base.md#-comfort-in-the-whole-room)**: the **Husvette**, a carved house spirit with
+  a red cap and his porridge, makes every comfort piece within 30 m count for everyone under its roof, and lets a fire
+  anywhere in the room keep them warm enough to rest. The **Book of the Hall** (Hildir and the trading posts) widens your
+  own comfort reach from 10 to 20 m, and the new **Homecraft** skill, raised by resting and building comfort, widens it
+  further, up to 40 m. Settings in `[Comfort]`.
+
 ## v0.133.0 - 2026-10-14
 
 ### Added

@@ -947,6 +947,8 @@ def main():
     pieces += water_pieces()
     from build_carvings import carving_pieces
     pieces += carving_pieces()
+    from build_husvette import husvette_piece
+    pieces.append(husvette_piece())
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")
