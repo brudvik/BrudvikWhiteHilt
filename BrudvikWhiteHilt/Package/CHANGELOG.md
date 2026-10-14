@@ -2,6 +2,24 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.132.0 - 2026-10-14
+
+### Added
+- **[Escorts](docs/sea-battles.md#escorts)**: Haldor sells an **Escort Contract** (300 coins, once Bonemass is slain). Use it aboard your ship at open sea and a **trading ship** sails up beside you, bound for a port 1200 to 2000 m away over deep water, marked on your map. It has a blue and cream sail and barrels and crates on deck; it sails itself, a little slower than a longship, and its helm and hold are shut.
+- **Nail Ships come for the merchant, not for you**: two waves on the way (a fleet once fleets are open to the world), and no natural Nail Ship encounter within 400 m of it. Every living raider who leaps onto its deck carries the cargo off, 0.5% a second each, so sink or take the Nail Ships, kill the raiders and [patch the holes](docs/sea-battles.md#patching-and-bailing).
+- **The pay**: when the merchant reaches port, every player within 150 m gets coins by the cargo left (600 for a full cargo), with a 25% chance each of a Raid Chart. It fails if the ship sinks, the cargo is gone, or nobody stays within 300 m of it for two minutes. Settings in `[SeaBattles.Escorts]`.
+- **A new [saga](docs/saga.md) deed**, *A trading ship was seen safely to port* (40 renown, `RenownEscort`).
+- **`whitehilt_seabattle escort` and `escort wave`**, console commands for admins: call a trading ship for your ship without a contract, and send its next wave at once. `status` now lists the trading ships loaded.
+
+### Changed
+- **[No outrunning the Nail Ships at first](docs/sea-battles.md#no-outrunning-them-at-first)**: when Nail Ships attack, the hunted ship is held at 85% of their speed (never below 4 m/s) for 60 seconds, so they catch even a White Hilt ship. After that you may run, unless living raiders stand on your deck. Settings `PursuitEnabled`, `PursuitShockSeconds`, `PursuitSpeedFactor` and `PursuitFloorSpeed` in `[SeaBattles]`.
+- The server and every player need this version: escorts add new network messages.
+- "Escorts" is gone from the ideas page.
+
+### Fixed
+- **Nail Ships no longer wreck themselves**: a crew member's blows (such as a Fuling Brute's swing), a Nail ballista's bolts and collisions between ships of the same fleet no longer damage a Nail Ship. Players' attacks hurt them as before.
+- The four pursuit settings in `[SeaBattles]` (`PursuitEnabled`, `PursuitShockSeconds`, `PursuitSpeedFactor`, `PursuitFloorSpeed`) had no Norwegian names in the settings window; they have now.
+
 ## v0.131.0 - 2026-10-13
 
 ### Fixed
