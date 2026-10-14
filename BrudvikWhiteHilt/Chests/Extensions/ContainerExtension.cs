@@ -18,6 +18,9 @@ namespace BrudvikWhiteHilt.Chests.Extensions
         // Remembers the mode a chest was last restocked in, so a mode change can be cleaned up.
         private const string ModeKey = "BrudvikStackedChest_Mode";
 
+        // Added to the stored mode when valuables were held back (see ChestSupply.ValuablesUnlimited).
+        private const int WithheldValuables = 100;
+
         // Restocking changes the inventory, which reports the change and would restock again.
         private static bool restocking;
 
@@ -126,19 +129,25 @@ namespace BrudvikWhiteHilt.Chests.Extensions
             }
         }
 
+        // Removes the stacks the container supplied under the rules it was last restocked with and no longer supplies:
+        // after a change of the mode, or when valuables stop being unlimited. The rules are stored in the ZDO as the
+        // mode, plus WithheldValuables when valuables were held back; values from before that flag mean they were not.
         private static bool RemoveAfterModeChange(Container container, Inventory inventory, ChestCategory category, ChestSupply supply,
             ChestMode mode, string modeKey, ChestMode unknownMode)
         {
+            var valuables = supply.ValuablesUnlimited;
+            var rules = (int)mode + (valuables ? 0 : WithheldValuables);
             var zdo = container.m_nview.GetZDO();
             var stored = zdo.GetInt(modeKey, -1);
-            if (stored == (int)mode) return false;
+            if (stored == rules) return false;
 
             // Chests from before the modes existed were filled in Full mode.
-            var previous = stored < 0 ? unknownMode : (ChestMode)stored;
-            zdo.Set(modeKey, (int)mode);
-            if (previous == mode) return false;
+            var previous = stored < 0 ? unknownMode : (ChestMode)(stored % WithheldValuables);
+            var previousValuables = stored < WithheldValuables;
+            zdo.Set(modeKey, rules);
+            if (previous == mode && previousValuables == valuables) return false;
 
-            return RemoveWhere(inventory, item => supply.IsStock(previous, category, item) && !supply.IsSupplied(mode, category, item));
+            return RemoveWhere(inventory, item => supply.IsStock(previous, previousValuables, category, item) && !supply.IsSupplied(mode, category, item));
         }
 
         // Unlocks an item as unlimited once the chest holds enough of it, with an effect and a message.

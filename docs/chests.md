@@ -144,6 +144,10 @@ In Linear and Discovered:
 - Items that come in levels, like fish, count each level on its own in Linear mode: a full stack of level 2 Perch unlocks level 2 Perch, and from then on every chest of that type also keeps a stack of it. In Full and Discovered mode every level of such an item is unlimited once it is stored.
 - The Everlasting Chest makes any stackable item unlimited once it holds a full stack (Linear) or once it is discovered (Discovered).
 
+### Coins and valuables
+
+Coins, gems and everything else the Treasure Chest holds only become unlimited where `UnlimitedValuables` allows it. By default (`Auto`) they never do in Linear mode, so coins are something you earn: by trade, escorts, raids and treasure. In Full and Discovered they are unlimited as before. `On` lets them become unlimited in every mode, `Off` never. While they are held back, a full stack of coins is an ordinary stack, the Treasure Chest's bars do not count them, and carts and ship holds do not refill them. When valuables stop being unlimited, the chests remove their unlimited stacks of them, as a switch to a less generous mode does.
+
 Switching to a less generous mode removes the unlimited items the new mode no longer supplies, for example everything that is not unlocked when going from Full to Linear.
 
 A new config file starts in Linear; a config file that already holds a mode keeps it. If you play in Full and delete or replace the config file, set `Mode` back to `Full` before opening any chest, or the chests switch to Linear and remove what is not unlocked.
@@ -179,6 +183,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 |---------|---------|-------------|
 | Chests | Mode | Linear, Full or Discovered (default Linear) |
 | Chests | UnlockStacks | Linear: full stacks a chest must hold to unlock an item (1–10, default 1) |
+| Chests | UnlimitedValuables | Whether coins, gems and the rest of the Treasure Chest can become unlimited: Auto (default: not in Linear, yes in Full and Discovered), On or Off |
 | Chests | SortContents | Keep the contents sorted from the top left (default on) |
 | Chests | LearnAll | Show the Learn all button (default on) |
 | Chests | LearnTrophies | Let Learn all learn trophies too (default on) |

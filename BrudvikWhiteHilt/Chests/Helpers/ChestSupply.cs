@@ -78,6 +78,17 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public bool IsReady => Mode == ChestMode.Full || progress.IsReady;
 
         /// <summary>
+        /// Gets a value indicating whether the Treasure chest's items (coins, gems and everything with a trade value)
+        /// can become unlimited: <see cref="UnlimitedValuablesMode.Auto"/> allows it in every mode but Linear.
+        /// </summary>
+        public bool ValuablesUnlimited => settings.UnlimitedValuables.Value switch
+        {
+            UnlimitedValuablesMode.On => true,
+            UnlimitedValuablesMode.Off => false,
+            _ => Mode != ChestMode.Linear
+        };
+
+        /// <summary>
         /// Checks whether a stack in a chest is refilled without limit under the given mode.
         /// </summary>
         /// <param name="mode">The chest mode to evaluate.</param>
@@ -86,11 +97,26 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if the stack is kept full.</returns>
         public bool IsSupplied(ChestMode mode, ChestCategory category, ItemDrop.ItemData item)
         {
+            return IsSupplied(mode, ValuablesUnlimited, category, item);
+        }
+
+        /// <summary>
+        /// Checks whether a stack in a chest is refilled without limit under the given mode and valuables rule, so a
+        /// chest can tell what it supplied under the rules it was last restocked with.
+        /// </summary>
+        /// <param name="mode">The chest mode to evaluate.</param>
+        /// <param name="valuablesUnlimited">Whether valuables can be unlimited, see <see cref="ValuablesUnlimited"/>.</param>
+        /// <param name="category">The chest's category; <see cref="ChestCategory.None"/> accepts any item.</param>
+        /// <param name="item">The stack in the chest.</param>
+        /// <returns>True if the stack is kept full.</returns>
+        public bool IsSupplied(ChestMode mode, bool valuablesUnlimited, ChestCategory category, ItemDrop.ItemData item)
+        {
             if (!IsPlain(item)) return false;
+            if (item.m_dropPrefab != null && IsWithheld(item.m_dropPrefab.name, valuablesUnlimited)) return false;
             if (mode == ChestMode.Full) return true;
             if (item.m_dropPrefab == null) return false;
 
-            return IsSupplied(mode, category, GetLevelKey(item), item.m_shared);
+            return IsSupplied(mode, valuablesUnlimited, category, GetLevelKey(item), item.m_shared);
         }
 
         /// <summary>
@@ -192,7 +218,20 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if the stack is supplied by the chest.</returns>
         public bool IsStock(ChestMode mode, ChestCategory category, ItemDrop.ItemData item)
         {
-            if (!IsSupplied(mode, category, item)) return false;
+            return IsStock(mode, ValuablesUnlimited, category, item);
+        }
+
+        /// <summary>
+        /// Checks whether a stack in a chest belongs to the chest itself under the given mode and valuables rule.
+        /// </summary>
+        /// <param name="mode">The chest mode to evaluate.</param>
+        /// <param name="valuablesUnlimited">Whether valuables can be unlimited, see <see cref="ValuablesUnlimited"/>.</param>
+        /// <param name="category">The chest's category; <see cref="ChestCategory.None"/> accepts any item.</param>
+        /// <param name="item">The stack in the chest.</param>
+        /// <returns>True if the stack is supplied by the chest.</returns>
+        public bool IsStock(ChestMode mode, bool valuablesUnlimited, ChestCategory category, ItemDrop.ItemData item)
+        {
+            if (!IsSupplied(mode, valuablesUnlimited, category, item)) return false;
             if (IsStackable(item.m_shared)) return true;
 
             return category != ChestCategory.None && item.m_dropPrefab != null &&
@@ -249,8 +288,10 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public IEnumerable<string> GetItemsToAdd(ChestCategory category)
         {
             var mode = Mode;
+            var valuables = ValuablesUnlimited;
             foreach (var name in catalog.GetItems(category))
             {
+                if (IsWithheld(name, valuables)) continue;
                 if (mode == ChestMode.Full)
                 {
                     yield return name;
@@ -259,19 +300,20 @@ namespace BrudvikWhiteHilt.Chests.Helpers
 
                 var shared = catalog.GetShared(name);
                 if (shared == null) continue;
-                if (IsSupplied(mode, category, name, shared)) yield return name;
+                if (IsSupplied(mode, valuables, category, name, shared)) yield return name;
                 if (mode != ChestMode.Linear || !HasLevels(shared)) continue;
 
                 for (var quality = 2; quality <= shared.m_maxQuality; quality++)
                 {
                     var key = GetLevelKey(name, quality);
-                    if (IsSupplied(mode, category, key, shared)) yield return key;
+                    if (IsSupplied(mode, valuables, category, key, shared)) yield return key;
                 }
             }
         }
 
         /// <summary>
-        /// Counts how many of a category's items are unlimited, and how many could become unlimited.
+        /// Counts how many of a category's items are unlimited, and how many could become unlimited. Valuables that
+        /// are held back (<see cref="ValuablesUnlimited"/>) count as neither.
         /// </summary>
         /// <param name="category">The chest category.</param>
         /// <param name="supplied">The number of unlimited items.</param>
@@ -279,15 +321,16 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public void CountProgress(ChestCategory category, out int supplied, out int total)
         {
             var mode = Mode;
+            var valuables = ValuablesUnlimited;
             supplied = 0;
             total = 0;
             foreach (var name in catalog.GetItems(category))
             {
                 var shared = catalog.GetShared(name);
-                if (shared == null || (mode != ChestMode.Full && !IsStackable(shared))) continue;
+                if (shared == null || IsWithheld(name, valuables) || (mode != ChestMode.Full && !IsStackable(shared))) continue;
 
                 total++;
-                if (IsSupplied(mode, category, name, shared)) supplied++;
+                if (IsSupplied(mode, valuables, category, name, shared)) supplied++;
             }
         }
 
@@ -369,7 +412,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if the item can still be unlocked from this chest.</returns>
         public bool CanUnlock(ChestCategory category, string key, ItemDrop.ItemData.SharedData shared)
         {
-            return IsStackable(shared) && BelongsIn(category, SplitLevelKey(key, out _)) && !progress.IsUnlocked(key);
+            var name = SplitLevelKey(key, out _);
+            return IsStackable(shared) && BelongsIn(category, name) && !IsWithheld(name, ValuablesUnlimited) && !progress.IsUnlocked(key);
         }
 
         /// <summary>
@@ -400,7 +444,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public bool IsUnlimited(string prefabName, ItemDrop.ItemData.SharedData shared)
         {
             var category = catalog.GetCategory(prefabName);
-            return category != ChestCategory.None && IsSupplied(Mode, category, prefabName, shared);
+            return category != ChestCategory.None && IsSupplied(Mode, ValuablesUnlimited, category, prefabName, shared);
         }
 
         /// <summary>
@@ -432,12 +476,21 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// <returns>True if more than one of the item fits in a slot.</returns>
         public static bool IsStackable(ItemDrop.ItemData.SharedData shared) => shared.m_maxStackSize > 1;
 
-        private bool IsSupplied(ChestMode mode, ChestCategory category, string key, ItemDrop.ItemData.SharedData shared)
+        private bool IsSupplied(ChestMode mode, bool valuablesUnlimited, ChestCategory category, string key, ItemDrop.ItemData.SharedData shared)
         {
+            var name = SplitLevelKey(key, out _);
+            if (IsWithheld(name, valuablesUnlimited)) return false;
             if (mode == ChestMode.Full) return true;
-            if (!IsStackable(shared) || !BelongsIn(category, SplitLevelKey(key, out _))) return false;
+            if (!IsStackable(shared) || !BelongsIn(category, name)) return false;
 
             return mode == ChestMode.Linear ? progress.IsUnlocked(key) : progress.IsDiscovered(shared.m_name);
+        }
+
+        // Valuables are held back while they may not be unlimited, so coins keep their worth; a full stack of them
+        // then stays an ordinary stack in every mode and every container.
+        private bool IsWithheld(string prefabName, bool valuablesUnlimited)
+        {
+            return !valuablesUnlimited && catalog.Contains(ChestCategory.Treasure, prefabName);
         }
 
         private bool BelongsIn(ChestCategory category, string prefabName)

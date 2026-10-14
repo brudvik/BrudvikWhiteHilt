@@ -2,6 +2,11 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **[Coins are worth something again](docs/chests.md#coins-and-valuables)**: in Linear mode coins, gems and everything else the Treasure Chest holds no longer become unlimited, so coins are earned by trade, escorts, raids and treasure. A new setting, `UnlimitedValuables` in `[Chests]`, decides it: `Auto` (default: not in Linear, yes in Full and Discovered), `On` or `Off`. **In a Linear world, the chests remove their unlimited stacks of coins and valuables the first time they are opened after the update**; set `UnlimitedValuables` to `On` first to keep them.
+
 ## v0.132.0 - 2026-10-14
 
 ### Added

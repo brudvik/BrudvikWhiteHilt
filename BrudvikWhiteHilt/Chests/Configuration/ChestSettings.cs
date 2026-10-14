@@ -52,6 +52,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
         public ConfigEntry<int> UnlockStacks { get; }
 
         /// <summary>
+        /// Whether the Treasure chest's items (coins, gems and everything with a trade value) can become unlimited.
+        /// </summary>
+        public ConfigEntry<UnlimitedValuablesMode> UnlimitedValuables { get; }
+
+        /// <summary>
         /// When enabled, chests keep their contents sorted from the top left, unlimited items first.
         /// </summary>
         public ConfigEntry<bool> SortContents { get; }
@@ -109,6 +114,12 @@ namespace BrudvikWhiteHilt.Chests.Configuration
             UnlockStacks = Remember("General", WhiteHiltConfig.BindAdminOnly(Section, "UnlockStacks", 1,
                 "Linear mode: the number of full stacks of an item a chest must hold before the item is unlocked.",
                 new AcceptableValueRange<int>(1, 10)));
+
+            UnlimitedValuables = WhiteHiltConfig.BindAdminOnly(Section, "UnlimitedValuables", UnlimitedValuablesMode.Auto,
+                "Whether coins, gems and everything else the Treasure Chest holds can become unlimited. " +
+                "Auto (default): not in Linear mode, so coins are something to work for; yes in Full and Discovered. " +
+                "On: like every other item. Off: never, in any mode. " +
+                "When they stop being unlimited, the chests remove the unlimited stacks of them.");
 
             SortContents = Remember("General", WhiteHiltConfig.BindAdminOnly(Section, "SortContents", true,
                 "Keep the chest contents sorted from the top left: unlimited items first, then items stored by players, " +
