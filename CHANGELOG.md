@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.136.0 - 2026-10-14
 
 ### Added
 - **[Sort recipes by what they give](docs/base.md#-crafting-panel)**: a sort button above every recipe list switches
