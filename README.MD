@@ -41,7 +41,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.132.0
+## ✨ New in 0.133.0
+
+- **[Trading posts](docs/trading-posts.md)**: harbours along the coasts of every biome, with a long jetty, two market stalls and a trader in the biome's colours, under a dome that keeps monsters out. **Buy the land's materials** instead of searching for hours, **sell the next land's goods and your fish**, and choose what to sell.
+- **[Escorts start at the posts](docs/sea-battles.md#escorts)**: the traders sell the Escort Contract. The merchant waits by the jetty until you board your own ship, sails to the nearest other post and pays by the length of the voyage.
+- **Hildir's Trading Post Charts**: one per biome, marking every post on your map.
+- **[Coins are worth something](docs/chests.md#coins-and-valuables)**: in Linear mode coins and valuables no longer become unlimited in the chests (`[Chests] UnlimitedValuables`).
+- **[A Deep North tier](docs/progression.md)**: Bloodgold unlocks it, and White Hilt gear upgrades to quality 9 with it.
+
+### Also new in 0.132.0
 
 - **[Escorts](docs/sea-battles.md#escorts)**: buy an **Escort Contract** from Haldor and see a **trading ship** safely to port across open sea. Nail Ships come for the merchant, and every raider on its deck carries cargo off; bring it home for coins, a chance of a Raid Chart and a new deed in the [Saga](docs/saga.md).
 - **[No outrunning them at first](docs/sea-battles.md#no-outrunning-them-at-first)**: when Nail Ships attack, your ship is held just below their speed for a minute, and for as long as raiders stand on your deck. Then you may run.
@@ -50,11 +58,6 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 ### Also new in 0.131.0
 
 - **No more players cut off on big worlds**: the server's lists of discoveries, map areas and portals now go out in pieces, and a message too large for Steam is dropped and logged instead of stopping everything behind it. Server and players all need this version.
-
-### Also new in 0.130.0
-
-- **[Nail Ship fleets](docs/sea-battles.md#fleets)**: after Moder a Nail Ship may come with company, two ships and after Yagluth three, sailing in a wedge behind a red-sailed **flagship** that breaks off to attack from both sides. The flagship has a stronger hull, a bigger crew, always a ballista and richer loot.
-- **[The Draugr Jarl](docs/monsters.md#draugr-jarl)** leads the flagship: a huge undead viking with a great axe who grows stronger with every boss you slay. When he falls or his flagship is taken, the fleet breaks and runs, a new deed in the [Saga](docs/saga.md).
 
 See the [changelog](CHANGELOG.md) for everything else.
 
