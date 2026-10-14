@@ -33,8 +33,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.136.0
+## ✨ New in 0.136.1
 
+- **[A trading ship that finds its way](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#escorts)**: the merchant you escort from a trading post no longer steers straight at the port and runs aground on the islands between. The server plans a sea route round them, as the Navigator's Table does, and the merchant follows it, plans a new one if it gets stuck, and the contract pays by the length of that route. If no sea route leads to the other post, the contract is refused and kept.
+
+### Also new in 0.136.0
 - **[Find the best food at a glance](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md#-crafting-panel)**: every recipe list shows what each recipe gives (a food's health, stamina and eitr, a potion's effect, a weapon's damage, armour or block), and a sort button orders it by health, stamina, eitr, all three, the best food for your profile (warrior, archer, mage or your own weights) or the strength of gear.
 
 ### Also new in 0.135.0
