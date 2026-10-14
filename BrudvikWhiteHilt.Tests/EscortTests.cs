@@ -430,7 +430,7 @@ public class TradeShipDataTests
             .ToList();
         hashes.AddRange(Enumerable.Range(0, TradeKeys.MaxWaves).Select(TradeKeys.WaveAt));
 
-        Assert.Equal(11 + TradeKeys.MaxWaves, hashes.Count);
+        Assert.Equal(14 + TradeKeys.MaxWaves, hashes.Count);
         Assert.Equal(hashes.Count, hashes.Distinct().Count());
     }
 
@@ -447,6 +447,9 @@ public class TradeShipDataTests
         Assert.Equal("whitehilt_trade_endedat".GetStableHashCode(), TradeKeys.EndedAt);
         Assert.Equal("whitehilt_trade_pay".GetStableHashCode(), TradeKeys.Pay);
         Assert.Equal("whitehilt_trade_raisedat".GetStableHashCode(), TradeKeys.RaisedAt);
+        Assert.Equal("whitehilt_trade_path".GetStableHashCode(), TradeKeys.Path);
+        Assert.Equal("whitehilt_trade_point".GetStableHashCode(), TradeKeys.Point);
+        Assert.Equal("whitehilt_trade_routetotal".GetStableHashCode(), TradeKeys.RouteTotal);
         Assert.Equal("whitehilt_trade_waveat2".GetStableHashCode(), TradeKeys.WaveAt(2));
     }
 

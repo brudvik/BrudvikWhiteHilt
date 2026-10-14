@@ -1,6 +1,8 @@
+using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.Pieces.Ships;
 using BrudvikWhiteHilt.Saga;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,10 +12,13 @@ namespace BrudvikWhiteHilt.SeaBattles.Escorts;
 
 /// <summary>
 /// On the trading ship, on every client. Only the ship's owner thinks: four times a second it works out how far along its
-/// route the ship is, steers it for its destination with the same help the route autopilot and the Nail Ships use, lets
+/// route the ship is, steers it along the route the server planned (the turning points in the ship's data, found by
+/// <see cref="SeaRouteFinder"/> as for the Navigator's Table; a ship that cannot go on plans a new one) with the same
+/// help the route autopilot and the Nail Ships use against what lies close ahead, lets
 /// the raiders on its deck empty the hold, and decides whether the escort goes on or has ended. When it ends the ship
 /// stops, and a minute later it sails out of sight. Everything the escort needs to survive a change of owner (the
-/// destination, where it began, the cargo, the waves, when a player was last near) is in the ship's ZDO, and the
+/// destination, the route and the point it has reached, where it began, the cargo, the waves, when a player was last
+/// near) is in the ship's ZDO, and the
 /// others read the state from there for the hover text and the locks on the helm and the hold. The ship is registered in
 /// <see cref="SailingShips"/> while it sails, so the game's physics does not stop it for want of a crew.
 /// </summary>
@@ -54,8 +59,18 @@ public class TradeShip : MonoBehaviour
     private const int DestinationBearings = 9;
     private const float RouteStep = 50f;
 
+    // A turning point of the planned route counts as reached this close, a little before the ship is on it, so the turn
+    // starts in time. A ship that cannot go on for this many seconds plans a new route from where it lies, and tries
+    // again no sooner than the gap. Over this many degrees of turn the sail is set to half.
+    private const float PointReached = 20f;
+    private const float StuckSeconds = 8f;
+    private const float ReplanGap = 30f;
+    private const float SlowTurnDegrees = 50f;
+
     private static readonly Dictionary<Ship, TradeShip> byShip = new();
 
+    private readonly List<Vector3> path = new();
+    private uint pathRevision = uint.MaxValue;
     private Ship ship;
     private ZNetView nview;
     private ShipAssist assist;
@@ -65,6 +80,9 @@ public class TradeShip : MonoBehaviour
     private float steerCourse;
     private bool steering;
     private int avoidSign = 1;
+    private float stuckFor;
+    private float nextReplan;
+    private bool planning;
     private bool hullDestroyed;
     private bool finishing;
     private float[] waveShares;
@@ -146,6 +164,27 @@ public class TradeShip : MonoBehaviour
     }
 
     /// <summary>
+    /// How far the ship has left to sail to its port: along the planned route when it has one, else in a straight line.
+    /// Read from the ship's data, so every machine can show it.
+    /// </summary>
+    /// <returns>The distance in metres.</returns>
+    public float RouteLeft()
+    {
+        if (nview == null || !nview.IsValid())
+        {
+            return 0f;
+        }
+
+        ReadPath(nview.GetZDO());
+        if (path.Count == 0)
+        {
+            return Utils.DistanceXZ(transform.position, Destination);
+        }
+
+        return RouteTrack.Remaining(path, nview.GetZDO().GetInt(TradeKeys.Point), transform.position);
+    }
+
+    /// <summary>
     /// A line per trading ship that is loaded here, for the console.
     /// </summary>
     /// <returns>The description.</returns>
@@ -161,9 +200,9 @@ public class TradeShip : MonoBehaviour
         {
             Vector3 here = trade.transform.position;
             float away = Player.m_localPlayer != null ? Vector3.Distance(Player.m_localPlayer.transform.position, here) : 0f;
-            float toPort = Utils.DistanceXZ(here, trade.Destination);
-            lines.Add($"  {trade.State}, cargo {trade.Cargo * 100f:0} %, waves {trade.WavesSent}/{trade.Waves}, {toPort:0} m to port, " +
-                $"{away:0} m away, owner here: {trade.nview != null && trade.nview.IsOwner()}");
+            float toPort = trade.RouteLeft();
+            lines.Add($"  {trade.State}, cargo {trade.Cargo * 100f:0} %, waves {trade.WavesSent}/{trade.Waves}, {toPort:0} m to port " +
+                $"({trade.path.Count} turning points), {away:0} m away, owner here: {trade.nview != null && trade.nview.IsOwner()}");
         }
 
         return string.Join("\n", lines);
@@ -211,7 +250,7 @@ public class TradeShip : MonoBehaviour
 
         Vector2 toPort = destination - spot;
         Quaternion facing = toPort.sqrMagnitude > 1f ? Quaternion.Euler(0f, RaiderTactics.CourseTo(spot, destination, 0f), 0f) : near.transform.rotation;
-        return Create(spot, facing, destination, contractor, EscortSettings.Pay.Value, waiting: false);
+        return Create(spot, facing, destination, contractor, EscortSettings.Pay.Value, waiting: false, null);
     }
 
     /// <summary>
@@ -222,8 +261,10 @@ public class TradeShip : MonoBehaviour
     /// <param name="destination">World x and z of the port, off the nearest other post.</param>
     /// <param name="contractor">The player id of the one who bought the escort.</param>
     /// <param name="pay">The coins the escort pays for a full cargo.</param>
+    /// <param name="route">The turning points of the route from the post to the port, planned by the server; the ship steers
+    /// for them one after the other. Empty for a straight run.</param>
     /// <returns>The new ship, or null when no deep, clear water lies beside the jetty.</returns>
-    public static TradeShip RaiseAtPost(Transform post, Vector2 destination, long contractor, int pay)
+    public static TradeShip RaiseAtPost(Transform post, Vector2 destination, long contractor, int pay, IReadOnlyList<Vector3> route)
     {
         if (post == null || ZoneSystem.instance == null)
         {
@@ -244,7 +285,7 @@ public class TradeShip : MonoBehaviour
                 bool clear = Ship.Instances.OfType<Ship>().All(other => other == null || Vector2.Distance(Flat(other.transform.position), spot) > ClearOfShips);
                 if (clear && SeaBattleService.DeepWater(spot.x, spot.y, SideDepth))
                 {
-                    return Create(spot, Quaternion.Euler(0f, post.eulerAngles.y, 0f), destination, contractor, pay, waiting: true);
+                    return Create(spot, Quaternion.Euler(0f, post.eulerAngles.y, 0f), destination, contractor, pay, waiting: true, route);
                 }
             }
         }
@@ -253,9 +294,10 @@ public class TradeShip : MonoBehaviour
         return null;
     }
 
-    // Makes the ship and fills its data: where it began, where it goes, who called it, the pay, a full cargo and the shares
-    // of the route at which the waves come. The new ship belongs to this machine.
-    private static TradeShip Create(Vector2 spot, Quaternion facing, Vector2 destination, long contractor, int pay, bool waiting)
+    // Makes the ship and fills its data: where it began, where it goes and by which turning points, who called it, the
+    // pay, a full cargo and the shares of the route at which the waves come. The new ship belongs to this machine.
+    private static TradeShip Create(Vector2 spot, Quaternion facing, Vector2 destination, long contractor, int pay, bool waiting,
+        IReadOnlyList<Vector3> route)
     {
         ZNetScene scene = ZNetScene.instance;
         GameObject prefab = scene != null ? scene.GetPrefab(TradeShipRegistry.ShipName) : null;
@@ -277,6 +319,12 @@ public class TradeShip : MonoBehaviour
         zdo.Set(TradeKeys.Cargo, 1f);
         zdo.Set(TradeKeys.WavesSent, 0);
         zdo.Set(TradeKeys.Seen, ZNet.instance.GetTime().Ticks);
+        if (route != null && route.Count > 0)
+        {
+            zdo.Set(TradeKeys.Path, RouteTrack.Pack(route.ToList()).GetArray());
+            zdo.Set(TradeKeys.Point, 0);
+            zdo.Set(TradeKeys.RouteTotal, RouteTrack.Remaining(route, 0, point));
+        }
 
         int waves = Mathf.Clamp(EscortSettings.Waves.Value, 0, TradeKeys.MaxWaves);
         float[] shares = EscortRules.RollWaves(waves, EscortSettings.WaveStart.Value, EscortSettings.WaveEnd.Value, () => Random.value);
@@ -320,7 +368,7 @@ public class TradeShip : MonoBehaviour
         }
 
         string line = Localization.instance.Localize("$whitehilt_trade_hover");
-        float toPort = Utils.DistanceXZ(transform.position, Destination);
+        float toPort = RouteLeft();
         return text + "\n" + string.Format(line, Mathf.RoundToInt(Cargo * 100f), Mathf.RoundToInt(toPort));
     }
 
@@ -350,6 +398,7 @@ public class TradeShip : MonoBehaviour
 
     private void OnDisable()
     {
+        planning = false;
         if (ship != null)
         {
             SailingShips.Remove(ship.m_players);
@@ -510,18 +559,31 @@ public class TradeShip : MonoBehaviour
         return EndedSeconds(nview.GetZDO()) >= SailOffDelay;
     }
 
-    // One tick of an escort that goes on: steer for the port, let the raiders on the deck empty the hold, note that a
-    // player is near, and see whether it has ended.
+    // One tick of an escort that goes on: steer for the next turning point of the planned route (or for the port when
+    // there is no route), let the raiders on the deck empty the hold, note that a player is near, and see whether it has
+    // ended.
     private void Sail(ZDO zdo, float dt)
     {
         Vector3 destination = zdo.GetVec3(TradeKeys.Destination, transform.position);
         Vector2 here = Flat(transform.position);
         Vector2 port = Flat(destination);
 
-        float course = RaiderTactics.CourseTo(here, port, ShipAssist.Heading(transform));
-        steerCourse = ChooseCourse(course, out bool clear);
+        ReadPath(zdo);
+        int point = zdo.GetInt(TradeKeys.Point);
+        int reached = RouteTrack.Advance(path, point, transform.position, PointReached, EscortSettings.ArriveRadius.Value);
+        if (reached != point)
+        {
+            point = reached;
+            zdo.Set(TradeKeys.Point, point);
+        }
+
+        Vector2 aim = point < path.Count ? Flat(path[point]) : port;
+        float course = RaiderTactics.CourseTo(here, aim, ShipAssist.Heading(transform));
+        steerCourse = ChooseCourse(course, Vector2.Distance(here, aim) + PointReached, out bool clear);
         steering = true;
-        ship.m_speed = clear ? Ship.Speed.Full : Ship.Speed.Stop;
+        bool turning = Mathf.Abs(Mathf.DeltaAngle(ShipAssist.Heading(transform), steerCourse)) > SlowTurnDegrees;
+        ship.m_speed = !clear ? Ship.Speed.Stop : turning ? Ship.Speed.Half : Ship.Speed.Full;
+        CheckStuck(zdo, clear, dt);
 
         float cargo = zdo.GetFloat(TradeKeys.Cargo, 1f);
         int raiders = RaiderCrew.AliveAboard(ship);
@@ -532,7 +594,7 @@ public class TradeShip : MonoBehaviour
         }
 
         WarnOfPlunder(raiders);
-        AskForWave(zdo, EscortRules.Progress(Flat(zdo.GetVec3(TradeKeys.Start, transform.position)), port, here));
+        AskForWave(zdo, Progress(zdo, port, here));
 
         float alone = SecondsAlone(zdo);
         EscortOutcome outcome = EscortRules.Outcome(Vector2.Distance(here, port), EscortSettings.ArriveRadius.Value, HullGone(zdo), left,
@@ -704,7 +766,7 @@ public class TradeShip : MonoBehaviour
         float away = nearest != null
             ? RaiderTactics.CourseTo(Flat(nearest.transform.position), Flat(transform.position), ShipAssist.Heading(transform))
             : ShipAssist.Heading(transform);
-        steerCourse = ChooseCourse(away, out bool clear);
+        steerCourse = ChooseCourse(away, float.MaxValue, out bool clear);
         steering = true;
         ship.m_speed = clear ? Ship.Speed.Full : Ship.Speed.Stop;
         if (!PlayerWithin(SeaBattleSettings.DespawnRange.Value))
@@ -757,11 +819,12 @@ public class TradeShip : MonoBehaviour
     }
 
     // The course asked for if the sea ahead is clear, else the nearest clear one 30, 60 or 90 degrees off it, as the Nail
-    // Ships and the route autopilot do; the side taken last is tried first so it does not swing back and forth.
-    private float ChooseCourse(float course, out bool clear)
+    // Ships and the route autopilot do; the side taken last is tried first so it does not swing back and forth. It looks
+    // no further than the next turning point, so land beyond a turn of the planned route does not count.
+    private float ChooseCourse(float course, float reach, out bool clear)
     {
         clear = true;
-        float look = assist.Lookahead();
+        float look = Mathf.Min(assist.Lookahead(), reach);
         if (!assist.ShallowAhead() && !assist.Blocked(course, look))
         {
             return course;
@@ -781,6 +844,69 @@ public class TradeShip : MonoBehaviour
 
         clear = false;
         return course;
+    }
+
+    // Reads the planned route from the ship's data, only when the data has changed, as unpacking it every tick would be
+    // wasteful. Every machine reads it, for the hover text; only the owner steers by it.
+    private void ReadPath(ZDO zdo)
+    {
+        if (zdo.DataRevision == pathRevision)
+        {
+            return;
+        }
+
+        pathRevision = zdo.DataRevision;
+        RouteTrack.Unpack(zdo.GetByteArray(TradeKeys.Path), path);
+    }
+
+    // How far along its route the ship is, 0 to 1, which the waves are timed by: by the planned route when it has one,
+    // else by the straight line from where the ship began to the port.
+    private float Progress(ZDO zdo, Vector2 port, Vector2 here)
+    {
+        float total = zdo.GetFloat(TradeKeys.RouteTotal);
+        if (path.Count == 0 || total <= 0f)
+        {
+            return EscortRules.Progress(Flat(zdo.GetVec3(TradeKeys.Start, transform.position)), port, here);
+        }
+
+        return RouteTrack.Progress(RouteTrack.Remaining(path, zdo.GetInt(TradeKeys.Point), transform.position), total);
+    }
+
+    // A ship that cannot go on in any direction (the sea ahead is shallow or has land in it all the way round, as when it
+    // ran into a bay that its route did not know) waits a few seconds, then plans a new route from where it lies.
+    private void CheckStuck(ZDO zdo, bool clear, float dt)
+    {
+        stuckFor = clear ? 0f : stuckFor + dt;
+        if (stuckFor >= StuckSeconds && !planning && Time.time >= nextReplan)
+        {
+            StartCoroutine(Replan(zdo.GetVec3(TradeKeys.Destination, transform.position)));
+        }
+    }
+
+    // Plans a route from where the ship lies to its port, as the Navigator's Table does, over several frames. The new route
+    // replaces the old one only if this machine still owns the ship and the escort still goes on, and the total is set so
+    // the progress does not jump. When no route is found, the ship tries again after the gap.
+    private IEnumerator Replan(Vector3 destination)
+    {
+        planning = true;
+        nextReplan = Time.time + ReplanGap;
+        List<Vector3> route = null;
+        yield return SeaRouteFinder.Find(transform.position, new List<Vector3> { destination }, null, (found, _) => route = found);
+        planning = false;
+        if (route == null || route.Count == 0 || nview == null || !nview.IsValid() || !nview.IsOwner() || State != TradeState.Sailing)
+        {
+            Jotunn.Logger.LogInfo("Trading Ship: no new route found from where it lies");
+            yield break;
+        }
+
+        ZDO zdo = nview.GetZDO();
+        ReadPath(zdo);
+        float progress = Progress(zdo, Flat(destination), Flat(transform.position));
+        zdo.Set(TradeKeys.Path, RouteTrack.Pack(route).GetArray());
+        zdo.Set(TradeKeys.Point, 0);
+        zdo.Set(TradeKeys.RouteTotal, RouteTrack.TotalFor(RouteTrack.Remaining(route, 0, transform.position), progress));
+        stuckFor = 0f;
+        Jotunn.Logger.LogInfo($"Trading Ship: planned a new route of {route.Count} turning points from {transform.position}");
     }
 
     // A place to one side of a ship, 25 m out and then farther, where the sea is deep enough; the right side is tried first.

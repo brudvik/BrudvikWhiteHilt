@@ -1,6 +1,8 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Summoning;
+using BrudvikWhiteHilt.Navigation;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -74,10 +76,15 @@ public class EscortService : MonoBehaviour
     private const string ReasonBusy = "busy";
     private const string ReasonPost = "post";
     private const string ReasonNoPort = "noport";
+    private const string ReasonNoRoute = "noroute";
 
     // A request without an answer (server restarted, connection lost) may be sent again after this many seconds. An answer
-    // is only taken while one is awaited, for about this long.
-    private const float RequestTimeout = 20f;
+    // is only taken while one is awaited, for about this long; the server may need several seconds to plan a long route.
+    private const float RequestTimeout = 60f;
+
+    // How long the server's route search may run in one frame, in milliseconds; nobody plays on a dedicated server, and
+    // a longer search per frame gives the player the answer sooner.
+    private const double ServerSearchMilliseconds = 12.0;
 
     // The server counts a merchant as on its way from the moment it approves the contract: for this many seconds until the
     // client says it raised the ship, and for this many seconds until the ship's data reaches the server.
@@ -297,7 +304,7 @@ public class EscortService : MonoBehaviour
         requestedAt = float.NegativeInfinity;
         ZRoutedRpc.instance?.Register<ZDOID>(RequestRpc, RPC_Request);
         ZRoutedRpc.instance?.Register<ZDOID>(PostRequestRpc, RPC_PostRequest);
-        ZRoutedRpc.instance?.Register<ZDOID, Vector3, int>(PostStartRpc, RPC_PostStart);
+        ZRoutedRpc.instance?.Register<ZDOID, Vector3, int, ZPackage>(PostStartRpc, RPC_PostStart);
         ZRoutedRpc.instance?.Register<ZDOID, int>(AdminRpc, RPC_Admin);
         ZRoutedRpc.instance?.Register<ZDOID, Vector3, bool>(StartRpc, RPC_Start);
         ZRoutedRpc.instance?.Register<string>(RefusedRpc, RPC_Refused);
@@ -335,8 +342,8 @@ public class EscortService : MonoBehaviour
 
     // On the server: a player used a contract at a trading post. The sender must be a real connection with a living player
     // inside the post's dome, past the cooldown and with no merchant on its way; the world must have reached the key of
-    // the sea battles; and there must be another post to sail to. The port is the nearest other post, however far, 30 m
-    // off its jetty head, and the pay grows with the distance.
+    // the sea battles; and there must be another post to sail to, with a sea route to it. The port is the nearest other
+    // post, however far, 30 m off its jetty head, and the pay grows with the length of the route.
     private void RPC_PostRequest(long sender, ZDOID postId)
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || RoutedRpcSender.Verify(sender, out _) == null)
@@ -381,19 +388,55 @@ public class EscortService : MonoBehaviour
             return;
         }
 
+        Vector3 start = post.GetPosition() + post.GetRotation() * Vector3.forward * PortOffJetty;
+        start.y = ZoneSystem.instance.m_waterLevel;
         Vector3 port = other.GetPosition() + other.GetRotation() * Vector3.forward * PortOffJetty;
         port.y = ZoneSystem.instance.m_waterLevel;
-        int pay = EscortRules.PayForVoyage(EscortSettings.PayPerKilometre.Value, Utils.DistanceXZ(post.GetPosition(), port));
         cooldownUntil[contractor] = Time.time + EscortSettings.CooldownMinutes.Value * 60f;
         active[contractor] = new Active { Since = Time.time };
-        Jotunn.Logger.LogInfo($"Escort: a merchant comes to the post at {post.GetPosition().x:0} {post.GetPosition().z:0} for {sender}, bound for {port.x:0} {port.z:0}, {pay} coins");
-        ZRoutedRpc.instance.InvokeRoutedRPC(sender, PostStartRpc, post.m_uid, port, pay);
+        StartCoroutine(PlanPostVoyage(sender, contractor, postId, start, port));
+    }
+
+    // On the server: finds the way from a post to the port over the world generator's ground, as the Navigator's Table
+    // does, a few frames at a time. The contract is refused when there is no way, so nobody pays for a merchant that could
+    // never arrive. The port is moved into deep water where the jetty head lies in shallows, the pay grows with the length
+    // of the route round the islands and not the line over them, and the route goes to the client with the answer.
+    private IEnumerator PlanPostVoyage(long sender, long contractor, ZDOID postId, Vector3 start, Vector3 port)
+    {
+        List<Vector3> route = null;
+        List<Vector3> harbours = null;
+        yield return SeaRouteFinder.Find(start, new List<Vector3> { port }, null, (found, snapped) =>
+        {
+            route = found;
+            harbours = snapped;
+        }, ServerSearchMilliseconds);
+
+        if (route == null || route.Count == 0 || harbours == null || harbours.Count == 0)
+        {
+            active.Remove(contractor);
+            cooldownUntil.Remove(contractor);
+            Jotunn.Logger.LogInfo($"Escort: no sea route from {start.x:0} {start.z:0} to {port.x:0} {port.z:0}; the contract is refused");
+            Refuse(sender, ReasonNoRoute);
+            yield break;
+        }
+
+        Vector3 harbour = harbours[harbours.Count - 1];
+        harbour.y = ZoneSystem.instance.m_waterLevel;
+        int pay = EscortRules.PayForVoyage(EscortSettings.PayPerKilometre.Value, RouteTrack.Length(route));
+        if (active.TryGetValue(contractor, out Active record))
+        {
+            record.Since = Time.time;
+        }
+
+        Jotunn.Logger.LogInfo($"Escort: a merchant comes to the post for {sender}, bound for {harbour.x:0} {harbour.z:0} " +
+            $"over {route.Count} turning points, {RouteTrack.Length(route):0} m, {pay} coins");
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, PostStartRpc, postId, harbour, pay, RouteTrack.Pack(route));
     }
 
     // On the client that was sent a port from a trading post: brings the trading ship in beside the post's jetty, on the
     // side away from the player's own ship, where it waits; uses up the contract; marks the port; tells the server which
     // ship it is. Only the server may order this, and only after this client asked.
-    private void RPC_PostStart(long sender, ZDOID postId, Vector3 port, int pay)
+    private void RPC_PostStart(long sender, ZDOID postId, Vector3 port, int pay, ZPackage routePackage)
     {
         if (sender != ZRoutedRpc.instance.GetServerPeerID() || Time.time - requestedAt > RequestTimeout)
         {
@@ -404,8 +447,10 @@ public class EscortService : MonoBehaviour
         Player player = Player.m_localPlayer;
         GameObject found = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(postId) : null;
         ItemDrop.ItemData contract = player != null ? FindContract(player) : null;
+        List<Vector3> route = new();
+        RouteTrack.Unpack(routePackage.GetArray(), route);
         TradeShip trade = found != null && player != null && contract != null
-            ? TradeShip.RaiseAtPost(found.transform, new Vector2(port.x, port.z), player.GetPlayerID(), Mathf.Max(0, pay))
+            ? TradeShip.RaiseAtPost(found.transform, new Vector2(port.x, port.z), player.GetPlayerID(), Mathf.Max(0, pay), route)
             : null;
         if (trade == null)
         {

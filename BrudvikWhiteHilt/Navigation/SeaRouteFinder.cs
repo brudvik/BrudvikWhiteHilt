@@ -55,9 +55,13 @@ public static class SeaRouteFinder
     /// <param name="targets">The markers, in order.</param>
     /// <param name="coast">Keeps close to land, or null for the fastest route.</param>
     /// <param name="done">Called with the route and the targets moved into deep water, or with nulls if none was found.</param>
+    /// <param name="millisecondsPerFrame">How long the search may run in one frame; 0 for the default. A server that nobody
+    /// plays on can give it more than a client that draws the game.</param>
     /// <returns>The coroutine.</returns>
-    public static IEnumerator Find(Vector3 from, IList<Vector3> targets, CoastOptions coast, Action<List<Vector3>, List<Vector3>> done)
+    public static IEnumerator Find(Vector3 from, IList<Vector3> targets, CoastOptions coast, Action<List<Vector3>, List<Vector3>> done,
+        double millisecondsPerFrame = 0.0)
     {
+        double budget = millisecondsPerFrame > 0.0 ? millisecondsPerFrame : MillisecondsPerFrame;
         Grid grid = new(coast);
         (int X, int Z)? start = Snap(ToCell(from), grid);
         if (start == null)
@@ -79,7 +83,7 @@ public static class SeaRouteFinder
             }
 
             List<(int X, int Z)> leg = null;
-            yield return Search(cells[cells.Count - 1], goal.Value, grid, result => leg = result);
+            yield return Search(cells[cells.Count - 1], goal.Value, grid, budget, result => leg = result);
             if (leg == null)
             {
                 done(null, null);
@@ -92,13 +96,13 @@ public static class SeaRouteFinder
         }
 
         List<Vector3> route = null;
-        yield return Simplify(cells, stops, grid, result => route = result);
+        yield return Simplify(cells, stops, grid, budget, result => route = result);
         done(route, snapped);
     }
 
     // An A* search over the grid of water cells, as a coroutine that yields when it has run too long in one frame, so
     // finding a long route does not freeze the game.
-    private static IEnumerator Search((int X, int Z) start, (int X, int Z) goal, Grid grid, Action<List<(int X, int Z)>> done)
+    private static IEnumerator Search((int X, int Z) start, (int X, int Z) goal, Grid grid, double budget, Action<List<(int X, int Z)>> done)
     {
         if (start == goal)
         {
@@ -140,7 +144,7 @@ public static class SeaRouteFinder
                 break;
             }
 
-            if (expanded % 32 == 0 && clock.Elapsed.TotalMilliseconds > MillisecondsPerFrame)
+            if (expanded % 32 == 0 && clock.Elapsed.TotalMilliseconds > budget)
             {
                 yield return null;
                 clock.Restart();
@@ -178,7 +182,7 @@ public static class SeaRouteFinder
 
     // Keeps only the turning points, skipping every point the ship can sail past in a straight line,
     // but never a marker: each leg ends on its marker's cell. Along the coast a shortcut may not leave it.
-    private static IEnumerator Simplify(List<(int X, int Z)> cells, List<int> stops, Grid grid, Action<List<Vector3>> done)
+    private static IEnumerator Simplify(List<(int X, int Z)> cells, List<int> stops, Grid grid, double budget, Action<List<Vector3>> done)
     {
         List<Vector3> route = new();
         int from = 0;
@@ -197,7 +201,7 @@ public static class SeaRouteFinder
                 && DeepLine(ToWorld(cells[from]), ToWorld(cells[to]))))
             {
                 to--;
-                if (clock.Elapsed.TotalMilliseconds > MillisecondsPerFrame)
+                if (clock.Elapsed.TotalMilliseconds > budget)
                 {
                     yield return null;
                     clock.Restart();

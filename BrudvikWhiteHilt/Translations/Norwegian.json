@@ -4045,6 +4045,7 @@
   "msg_whitehilt_escort_expired": "Ingen kom, så kjøpmannen seilte sin vei. Du får kontrakten tilbake.",
   "msg_whitehilt_escort_refused_post": "Bruk kontrakten ved et handelssted, under kuppelen.",
   "msg_whitehilt_escort_refused_noport": "Det finnes ikke noe annet handelssted å seile til.",
+  "msg_whitehilt_escort_refused_noroute": "Ingen sjøvei fører herfra til nærmeste andre handelssted.",
   "whitehilt_trade_waiting": "Venter på at du går om bord i skipet ditt",
   "whitehilt_cfg_seabattles_escorts_payperkilometre": "Betaling per kilometer",
   "whitehilt_cfg_seabattles_escorts_payperkilometre_desc": "Med handelssteder: mynter for full last for hver kilometer fra handelsstedet eskorten begynner ved til nærmeste andre handelssted den seiler til, til hver spiller innen rekkevidde når den kommer fram. Betaling brukes for en administrators eskorte på åpent hav.",

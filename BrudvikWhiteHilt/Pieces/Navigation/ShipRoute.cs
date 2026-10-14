@@ -126,7 +126,7 @@ public class ShipRoute : MonoBehaviour
     /// <param name="points">The new markers.</param>
     public void SetMarkers(IList<Vector3> points)
     {
-        nview.InvokeRPC(MarkersRpc, Pack(points));
+        nview.InvokeRPC(MarkersRpc, RouteTrack.Pack(points));
     }
 
     /// <summary>
@@ -137,7 +137,7 @@ public class ShipRoute : MonoBehaviour
     /// <param name="explore">True for explorer mode: along the coast, never full sail near land.</param>
     public void Sail(IList<Vector3> route, IList<Vector3> snappedMarkers, bool explore)
     {
-        nview.InvokeRPC(SailRpc, Pack(route), Pack(snappedMarkers), explore);
+        nview.InvokeRPC(SailRpc, RouteTrack.Pack(route), RouteTrack.Pack(snappedMarkers), explore);
     }
 
     /// <summary>
@@ -146,35 +146,6 @@ public class ShipRoute : MonoBehaviour
     public void Stop()
     {
         nview.InvokeRPC(StopRpc);
-    }
-
-    private static ZPackage Pack(IList<Vector3> points)
-    {
-        ZPackage package = new();
-        package.Write(points.Count);
-        foreach (Vector3 point in points)
-        {
-            package.Write(point.x);
-            package.Write(point.z);
-        }
-
-        return package;
-    }
-
-    private static void Unpack(byte[] data, List<Vector3> into)
-    {
-        into.Clear();
-        if (data == null || data.Length == 0)
-        {
-            return;
-        }
-
-        ZPackage package = new(data);
-        int count = package.ReadInt();
-        for (int i = 0; i < count; i++)
-        {
-            into.Add(new Vector3(package.ReadSingle(), 0f, package.ReadSingle()));
-        }
     }
 
     private static float Bearing(Vector3 from, Vector3 to)
@@ -226,13 +197,13 @@ public class ShipRoute : MonoBehaviour
         }
 
         readRevision = zdo.DataRevision;
-        Unpack(zdo.GetByteArray(markersKey), markers);
-        Unpack(zdo.GetByteArray(pathKey), path);
+        RouteTrack.Unpack(zdo.GetByteArray(markersKey), markers);
+        RouteTrack.Unpack(zdo.GetByteArray(pathKey), path);
     }
 
     private void Write(ZDO zdo, List<Vector3> points, int key)
     {
-        zdo.Set(key, Pack(points).GetArray());
+        zdo.Set(key, RouteTrack.Pack(points).GetArray());
     }
 
     // Every client watches for the moment the ship sets off; a route already under way when it loads does not count.
@@ -315,9 +286,10 @@ public class ShipRoute : MonoBehaviour
         }
 
         int point = zdo.GetInt(pointKey);
-        while (point < path.Count && Utils.DistanceXZ(here, path[point]) < (point == path.Count - 1 ? MarkerReached : PointReached))
+        int reached = RouteTrack.Advance(path, point, here, PointReached, MarkerReached);
+        if (reached != point)
         {
-            point++;
+            point = reached;
             zdo.Set(pointKey, point);
         }
 
@@ -460,18 +432,7 @@ public class ShipRoute : MonoBehaviour
 
     private float Remaining(int point)
     {
-        if (point >= path.Count)
-        {
-            return 0f;
-        }
-
-        float left = Utils.DistanceXZ(transform.position, path[point]);
-        for (int i = point + 1; i < path.Count; i++)
-        {
-            left += Utils.DistanceXZ(path[i - 1], path[i]);
-        }
-
-        return left;
+        return RouteTrack.Remaining(path, point, transform.position);
     }
 
     private void StopSailing(ZDO zdo, string message)
@@ -494,7 +455,7 @@ public class ShipRoute : MonoBehaviour
         }
 
         List<Vector3> points = new();
-        Unpack(package.GetArray(), points);
+        RouteTrack.Unpack(package.GetArray(), points);
         ZDO zdo = nview.GetZDO();
         Write(zdo, points.GetRange(0, Mathf.Min(points.Count, MaxMarkers)), markersKey);
         if (zdo.GetBool(sailingKey))
@@ -513,9 +474,9 @@ public class ShipRoute : MonoBehaviour
         }
 
         List<Vector3> points = new();
-        Unpack(route.GetArray(), points);
+        RouteTrack.Unpack(route.GetArray(), points);
         List<Vector3> snapped = new();
-        Unpack(snappedMarkers.GetArray(), snapped);
+        RouteTrack.Unpack(snappedMarkers.GetArray(), snapped);
         if (points.Count == 0)
         {
             return;

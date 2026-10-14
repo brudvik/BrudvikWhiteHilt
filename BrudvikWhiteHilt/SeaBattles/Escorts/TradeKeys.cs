@@ -1,3 +1,5 @@
+using BrudvikWhiteHilt.Navigation;
+
 namespace BrudvikWhiteHilt.SeaBattles.Escorts;
 
 /// <summary>
@@ -66,6 +68,15 @@ internal static class TradeKeys
 
     /// <summary>World ticks when the escort ended; 0 while it goes on.</summary>
     public static readonly int EndedAt = "whitehilt_trade_endedat".GetStableHashCode();
+
+    /// <summary>The planned route: the turning points, packed by <see cref="RouteTrack.Pack"/> (a byte array); none for a straight run.</summary>
+    public static readonly int Path = "whitehilt_trade_path".GetStableHashCode();
+
+    /// <summary>The index of the turning point the ship steers for (an int).</summary>
+    public static readonly int Point = "whitehilt_trade_point".GetStableHashCode();
+
+    /// <summary>The length of the route when it was planned, in metres (a float), for the progress along it.</summary>
+    public static readonly int RouteTotal = "whitehilt_trade_routetotal".GetStableHashCode();
 
     /// <summary>
     /// The key of the share of the route at which a wave comes.

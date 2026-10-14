@@ -252,6 +252,7 @@ Use the contract from your inventory at a trading post, under its dome. The serv
 
 - **Where you are:** you must be under a trading post's dome. Otherwise you see *Use the contract at a trading post, under its dome.*
 - **A port:** the port is **the nearest other trading post**, however far, 30 m off the end of its jetty. If the world has no other post you see *There is no other trading post to sail to.*
+- **A sea route:** the server plans the way from your post to the port over the world's ground, with the same route finder as the [Navigator's Table](ships.md), so the merchant sails round islands and into bays instead of straight at them. It takes a few seconds for a long way. If no sea route leads there (a post on a lake or a closed bay) you see *No sea route leads from here to the nearest other trading post.* and keep your contract. Where the jetty head lies in shallows the port is moved to the nearest deep water, and the pay follows the length of the **route**, not the straight line.
 - **Busy or too soon** and **Off:** as below.
 
 The trading ship comes in beside the post's jetty, on the side away from your own ship (or the other side if that water is too shallow or taken), bow to the sea, and waits there; the contract is used up, the port is marked on your map, and you see *A trading ship comes in to the post. Go aboard your own ship to set out; its port is marked on your map.* Look at it to see *Waiting for you to go aboard your ship*. It waits without waves and without the abandon timer until you stand on your own ship within **150 m** of it (`StartRange`); then it casts off, everyone near sees *The merchant casts off. Guard it to port!*, and the escort below begins. If you have not come aboard within **10 minutes** (`WaitSeconds`), it sails off and you get the contract back: *Nobody came, so the merchant sailed off. You get the contract back.*
@@ -269,10 +270,10 @@ A refusal costs you nothing: you keep the contract. The contract is used up only
 
 The trading ship is the vanilla longship with a blue and cream sail and barrels and crates on its deck. It has no crew and no skipper to see; it sails itself.
 
-- It sails at full sail with the wind astern, but its sail pulls only **0.8 times** as hard as a longship's (`SailForceFactor`), so you can keep up. It steers round shallows and rocks, and stops if it finds no clear way.
+- It sails at full sail with the wind astern, but its sail pulls only **0.8 times** as hard as a longship's (`SailForceFactor`), so you can keep up. It follows the route the server planned, turning point by turning point, eases the sail in the sharp turns, and steers round shallows and rocks close ahead. If it finds no clear way for 8 seconds it plans a new route from where it lies, no more often than every 30 seconds.
 - Its helm (*The merchant's skipper keeps the helm.*) and its hold (*The merchant's cargo is not yours to open.*) are shut, it cannot be pushed or moored, and it cannot be taken apart with the Hammer. You can stand on its deck.
 - It has **1500 health** (`HullHealth`) and takes pierce damage in full, so arrows and bolts hurt it. It is holed and flooded like any other ship, so [patch](#patching-and-bailing) it, and it burns if a pitch pot lands on it. If its hull is destroyed, it sinks.
-- Look at it to see *Cargo n %, m m to port*. The cargo starts at **100 %**.
+- Look at it to see *Cargo n %, m m to port*; the distance is the way left along its route. The cargo starts at **100 %**.
 - It is not kept in the world: if everyone leaves and nobody else loads it, it is simply gone, and the escort has failed.
 
 ### The attacks
@@ -308,7 +309,7 @@ After the end the merchant lies still for a minute, so you can see it in port. T
 
 When the merchant is in port, every player within **150 m** of it (`RewardRange`) is paid by the cargo that is left:
 
-- **Coins:** for a full cargo **400 for every kilometre** of the voyage from the post to its port (`PayPerKilometre`), times the share of the cargo left, rounded down: a 2 km voyage pays 800, with half the cargo 400. An escort at sea pays `Pay` (600) for a full cargo. Coins that do not fit in the pack fall at your feet.
+- **Coins:** for a full cargo **400 for every kilometre** of the voyage from the post to its port, along the planned route (`PayPerKilometre`), times the share of the cargo left, rounded down: a 2 km route pays 800, with half the cargo 400. An escort at sea pays `Pay` (600) for a full cargo. Coins that do not fit in the pack fall at your feet.
 - **A Raid Chart:** each paid player rolls `RaidChartChance` (25 %) for one, on top of the coins.
 - *The trading ship is safe in port. The merchant pays you n coins.*
 - **A saga deed**, *A trading ship was seen safely to port*, for those within the saga's witness range (see [Saga deeds](#saga-deeds)).
@@ -430,7 +431,7 @@ Settings in section `[SeaBattles.Escorts]` (see [Escorts](#escorts)):
 |---|---|---|
 | `Enabled` | true | The trading posts' traders (or Haldor, with the posts off) sell Escort Contracts and a trading ship can be called. Off: the contract goes from the lists and none can be called |
 | `ContractPrice` | 300 | The price of a contract, in coins; 0 to 5000 |
-| `PayPerKilometre` | 400 | With trading posts: coins for a full cargo per kilometre from the post to its port; 0 to 5000 |
+| `PayPerKilometre` | 400 | With trading posts: coins for a full cargo per kilometre of the route from the post to its port; 0 to 5000 |
 | `WaitSeconds` | 600 | With trading posts: seconds the merchant waits at the post for you to go aboard; then it sails off and the contract comes back; 60 to 3600 |
 | `StartRange` | 150 | With trading posts: the escort begins when you stand on your own ship this close to the waiting merchant, in metres; 20 to 500 |
 | `MinDistance` | 1200 | At sea: least straight-line distance to the port, in metres; 400 to 5000 |

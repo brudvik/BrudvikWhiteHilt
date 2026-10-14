@@ -158,6 +158,7 @@ public static class EscortSettings
         Translations.AddEnglish("msg_whitehilt_escort_expired", "Nobody came, so the merchant sailed off. You get the contract back.");
         Translations.AddEnglish("msg_whitehilt_escort_refused_post", "Use the contract at a trading post, under its dome.");
         Translations.AddEnglish("msg_whitehilt_escort_refused_noport", "There is no other trading post to sail to.");
+        Translations.AddEnglish("msg_whitehilt_escort_refused_noroute", "No sea route leads from here to the nearest other trading post.");
         Translations.AddEnglish("whitehilt_trade_waiting", "Waiting for you to go aboard your ship");
         Translations.AddEnglish("msg_whitehilt_escort_sunk", "The trading ship is lost. The contract has failed.");
         Translations.AddEnglish("msg_whitehilt_escort_plundered", "The cargo is gone. The contract has failed.");
