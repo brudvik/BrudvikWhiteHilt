@@ -5,6 +5,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **A Deep North tier**: Bloodgold unlocks it in linear progression (recipes in it take 3 Bloodgold extra), and White
+  Hilt armor, weapons and shields upgrade one level further, to quality 9, for 10 Bloodgold: armor +6 (48 per piece),
+  capes +2, weapons +65% of their base damage (the sword about 176 slash), shields +40% of their base block. They stay a
+  little below the Protector armor, the Nord Sword and the Nord shields. `[Tiers]` takes `DeepNorth`; new settings
+  `UpgradeDeepNorth`, `DeepNorthArmor`, `DeepNorthDamage` and `DeepNorthBlock` in `[Gear.Armor]`, `[Gear.Weapons]` and
+  `[Gear.Shields]`.
 - **Trading posts, first part** ([plan](docs/plans/trading-posts.md)): a harbour of jetties with two market stalls, the
   trader's laft house, a harbour crane, mooring posts, a gate and a flag, under a dome like Haldor's that keeps
   monsters out. Its pieces cannot be broken or removed, and nothing can be built inside its dome.

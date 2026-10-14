@@ -22,7 +22,8 @@ public static class ProgressionManager
         (ProgressionTier.Mountain, "Silver", 5),
         (ProgressionTier.Plains, "BlackMetal", 5),
         (ProgressionTier.Mistlands, "Eitr", 3),
-        (ProgressionTier.Ashlands, "FlametalNew", 3)
+        (ProgressionTier.Ashlands, "FlametalNew", 3),
+        (ProgressionTier.DeepNorth, "Gold", 3)
     };
 
     private static readonly Dictionary<string, IWhiteHiltProgressionEntry> itemEntries = new();
@@ -154,6 +155,7 @@ public static class ProgressionManager
             TierOverride.Plains => ProgressionTier.Plains,
             TierOverride.Mistlands => ProgressionTier.Mistlands,
             TierOverride.Ashlands => ProgressionTier.Ashlands,
+            TierOverride.DeepNorth => ProgressionTier.DeepNorth,
             _ when entry is IFullModeOnly => null,
             _ => entry.DefaultTier
         };
@@ -321,6 +323,7 @@ public static class ProgressionManager
         return tier switch
         {
             ProgressionTier.BlackForest => "Black Forest",
+            ProgressionTier.DeepNorth => "Deep North",
             _ => tier.ToString()
         };
     }

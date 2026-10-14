@@ -346,3 +346,5 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   idols. Added to the biome rule in `.github/copilot-instructions.md` and to section 4. `ProgressionTier` and
   `GearUpgrades` still end at the Ashlands; a post in the Deep North opens once the world has reached the Ashlands until
   a Deep North tier exists.
+- 2026-10-14: `ProgressionTier.DeepNorth` exists now (unlocked by Bloodgold), so the Deep North posts open with it in
+  phase 5, like the other biomes.

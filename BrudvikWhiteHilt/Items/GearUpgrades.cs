@@ -37,8 +37,8 @@ public static class GearUpgrades
     /// </summary>
     public const int VanillaMaxQuality = 4;
 
-    private static readonly string[] Biomes = { "Mountain", "Plains", "Mistlands", "Ashlands" };
-    private static readonly string[] BiomeCosts = { "Silver:10", "BlackMetal:10", "Carapace:10", "FlametalNew:10" };
+    private static readonly string[] Biomes = { "Mountain", "Plains", "Mistlands", "Ashlands", "DeepNorth" };
+    private static readonly string[] BiomeCosts = { "Silver:10", "BlackMetal:10", "Carapace:10", "FlametalNew:10", "Gold:10" };
 
     private static readonly Dictionary<string, Track> trackByPrefab = new();
     private static readonly Dictionary<string, GearKind> kindBySharedName = new();
@@ -74,17 +74,19 @@ public static class GearUpgrades
                 "Armor a helmet, chest or leg piece gains at quality 7.", new AcceptableValueRange<float>(0f, 100f)),
             WhiteHiltConfig.BindAdminOnly("Gear.Armor", "AshlandsArmor", 6f,
                 "Armor a helmet, chest or leg piece gains at quality 8.", new AcceptableValueRange<float>(0f, 100f)),
+            WhiteHiltConfig.BindAdminOnly("Gear.Armor", "DeepNorthArmor", 6f,
+                "Armor a helmet, chest or leg piece gains at quality 9.", new AcceptableValueRange<float>(0f, 100f)),
         };
         capeArmorPerBiome = WhiteHiltConfig.BindAdminOnly("Gear.Armor", "CapeArmorPerBiome", 2f,
-            "Armor a cape gains at each quality from 5 to 8.", new AcceptableValueRange<float>(0f, 100f));
+            "Armor a cape gains at each quality from 5 to 9.", new AcceptableValueRange<float>(0f, 100f));
 
         weaponTrack = new Track("Gear.Weapons", "the weapon", string.Empty);
-        biomeDamage = BindShares("Gear.Weapons", "Damage", new[] { 0.1f, 0.3f, 0.35f, 0.3f },
+        biomeDamage = BindShares("Gear.Weapons", "Damage", new[] { 0.1f, 0.3f, 0.35f, 0.3f, 0.65f },
             "Share of the weapon's base damage it gains at quality {0}, on each damage type it deals.");
 
         // Shields also take a Lindorm scale for every level.
         shieldTrack = new Track("Gear.Shields", "the shield", $"{MonsterRegistry.ScaleName}:1");
-        biomeBlock = BindShares("Gear.Shields", "Block", new[] { 0.2f, 0.4f, 0.4f, 0.4f },
+        biomeBlock = BindShares("Gear.Shields", "Block", new[] { 0.2f, 0.4f, 0.4f, 0.4f, 0.4f },
             "Share of the shield's base block power it gains at quality {0}.");
     }
 

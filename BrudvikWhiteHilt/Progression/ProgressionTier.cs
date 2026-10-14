@@ -38,5 +38,10 @@ public enum ProgressionTier
     /// <summary>
     /// Unlocked by Flametal.
     /// </summary>
-    Ashlands
+    Ashlands,
+
+    /// <summary>
+    /// Unlocked by Bloodgold.
+    /// </summary>
+    DeepNorth
 }

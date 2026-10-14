@@ -46,6 +46,11 @@ public enum TierOverride
     Ashlands,
 
     /// <summary>
+    /// Unlocked by Bloodgold.
+    /// </summary>
+    DeepNorth,
+
+    /// <summary>
     /// Never craftable, in any mode. Existing copies are kept.
     /// </summary>
     Never

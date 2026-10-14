@@ -33,7 +33,7 @@ Configured in `BepInEx/config/com.jotunn.BrudvikWhiteHilt.cfg`, or in the settin
 |---------|--------|-------------|
 | `[General] Mode` | `Linear` (default), `Full` | Linear: White Hilt gear unlocks biome by biome. Full: every recipe is available from the start. |
 | `[General] ShowUnlockMessages` | `true`/`false` | Show a message listing the newly available items when a tier unlocks. |
-| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
+| `[Tiers] <ItemId>` | `Default`, `Start`, `BlackForest`, `Swamp`, `Mountain`, `Plains`, `Mistlands`, `Ashlands`, `DeepNorth`, `Never` | Per-item tier override (linear mode). `Never` disables the recipe in both modes. Also works for the Stone Pot and its food. |
 | `[Content] <ItemId>` | `true` (default)/`false` | Off: the item or piece can no longer be crafted or built. Existing copies are kept. |
 | `[Recipes] <ItemId>` | empty (default) or a list | Empty: the built-in recipe. Otherwise `Prefab:Amount` or `Prefab:Amount:AmountPerLevel`, comma separated, e.g. `Iron:10:5, FineWood:4`. Unknown prefabs are skipped with a warning. Pieces keep at most as many requirements as the build menu shows. |
 | `[Foraging.<Name>] Spawn` | `true`/`false` | Let the plant grow in new zones, and once in old land (`[OldLand]`). |
@@ -59,6 +59,7 @@ Foraging and food settings take effect without a restart.
 | Plains | Black Metal | Black Metal ×5 | Staff of Lightning, White Hilt Cape · Sleipnir, Baldur, Hel |
 | Mistlands | Eitr | Eitr ×3 | Necromancer's Staff, Brood Scale Charm · Loki |
 | Ashlands | Flametal | Flametal ×3 | Garm Fang Arrow · Surt |
+| Deep North | Bloodgold | Bloodgold ×3 | – (White Hilt gear upgrades to quality 9 with Bloodgold) |
 
 The Gifts of **Hugin** (every skill to 100), **Munin** (every recipe) and **Brokkr** (+25 to every skill) are not available in linear mode: there you learn and find things yourself. A `[Tiers]` setting can still give them a tier.
 

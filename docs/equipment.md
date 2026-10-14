@@ -124,7 +124,7 @@ Two black uniforms with gold trim, the White Hilt badge on the left breast and t
 
 ## 📈 UPGRADES THROUGH THE BIOMES
 
-White Hilt weapons, shields and armor (the uniforms included) go past quality 4: one more level for each biome after the Swamp, paid with that biome's material. Every shield upgrade also takes a **Lindorm Scale** (see [Lindorm & giant spiders](monsters.md)). A piece stays a little below the best vanilla gear of the biome it is upgraded for, which is the price of being weightless and indestructible. From quality 5 the station level of quality 4 is enough. The recipe's own materials are only paid when the piece is crafted.
+White Hilt weapons, shields and armor (the uniforms included) go past quality 4: one more level for each biome after the Swamp, the Deep North included, paid with that biome's material. Every shield upgrade also takes a **Lindorm Scale** (see [Lindorm & giant spiders](monsters.md)). A piece stays a little below the best vanilla gear of the biome it is upgraded for, which is the price of being weightless and indestructible. From quality 5 the station level of quality 4 is enough. The recipe's own materials are only paid when the piece is crafted.
 
 | Quality | Biome | Upgrade cost | Helmet, chest, legs | Cape | Sword (slash) | Shield / Tower Shield (block) |
 |---|---|---|---|---|---|---|
@@ -134,6 +134,7 @@ White Hilt weapons, shields and armor (the uniforms included) go past quality 4:
 | 6 | Plains | Black Metal ×10 | 30 | 12 | 101 | 85 / 101 |
 | 7 | Mistlands | Carapace ×10 | 36 | 14 | 120 | 102 / 122 |
 | 8 | Ashlands | Flametal ×10 | 42 | 16 | 137 | 119 / 143 |
+| 9 | Deep North | Bloodgold ×10 | 48 | 18 | about 176 | about 136 / 164 |
 
 | Biome | Best vanilla armor | Best vanilla sword (quality 4) | Best vanilla shield / tower shield (quality 3) |
 |---|---|---|---|
@@ -142,9 +143,10 @@ White Hilt weapons, shields and armor (the uniforms included) go past quality 4:
 | Plains | Padded 32 | Black Metal 113 | Black Metal 90 / Black Metal Tower 116 |
 | Mistlands | Carapace 38 | Mistwalker 75 + 58 frost | Carapace 108 |
 | Ashlands | Flametal 44 | Nidhogg 153 | Flametal 126 / Flametal Tower 152 |
+| Deep North | Protector 50 | Nord Sword 200 | Nord Shield 144 / Nord Greatshield 170 |
 
-- **Weapons** gain a share of their base damage at each biome level, on every damage type they deal: 10%, 30%, 35% and 30% (in all 105% at quality 8). The table shows the sword's tooltip; its hits are 10% harder (`DamageMultiplierBonus`). The other weapons follow the same shares, the bow and crossbow included.
-- **Shields** (White Hilt Shield, Tower Shield and Buckler) gain 20%, 40%, 40% and 40% of their base block power.
+- **Weapons** gain a share of their base damage at each biome level, on every damage type they deal: 10%, 30%, 35%, 30% and 65% (in all 170% at quality 9). The table shows the sword's tooltip; its hits are 10% harder (`DamageMultiplierBonus`). The other weapons follow the same shares, the bow and crossbow included.
+- **Shields** (White Hilt Shield, Tower Shield and Buckler) gain 20%, 40%, 40%, 40% and 40% of their base block power.
 - **The three staffs** stay at quality 4: they already have the strength of the Mistlands staffs.
 - **Capes** gain 2 armor at each biome level.
 
@@ -201,11 +203,11 @@ All admin only, synced from the server. The attack style settings are on [Attack
 | `[Gear.Weapons] BonusDamagePerLevel` | 2 | Added per quality level to each damage type the weapon already deals |
 | `[Gear.Weapons] SwordFireDamage` | 5 | Fire damage of the White Hilt Sword |
 | `[Gear.Weapons] UpgradeSwamp` | Iron:5 | Cost of each weapon upgrade to quality 2, 3 and 4 (`Prefab:Amount`, comma separated) |
-| `[Gear.Weapons] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` | Silver:10 / BlackMetal:10 / Carapace:10 / FlametalNew:10 | Cost of the weapon upgrade to quality 5, 6, 7 and 8. Empty: weapons stop at the level before |
-| `[Gear.Weapons] MountainDamage` / `PlainsDamage` / `MistlandsDamage` / `AshlandsDamage` | 0.1 / 0.3 / 0.35 / 0.3 | Share of the base damage a weapon gains at quality 5, 6, 7 and 8 |
+| `[Gear.Weapons] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` / `UpgradeDeepNorth` | Silver:10 / BlackMetal:10 / Carapace:10 / FlametalNew:10 / Gold:10 | Cost of the weapon upgrade to quality 5, 6, 7, 8 and 9. Empty: weapons stop at the level before |
+| `[Gear.Weapons] MountainDamage` / `PlainsDamage` / `MistlandsDamage` / `AshlandsDamage` / `DeepNorthDamage` | 0.1 / 0.3 / 0.35 / 0.3 / 0.65 | Share of the base damage a weapon gains at quality 5, 6, 7, 8 and 9 |
 | `[Gear.Shields] UpgradeSwamp` | Iron:5, WhiteHilt_LindormScale:1 | Cost of each shield upgrade to quality 2, 3 and 4 |
-| `[Gear.Shields] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` | the weapon costs + WhiteHilt_LindormScale:1 | Cost of the shield upgrade to quality 5, 6, 7 and 8. Empty: shields stop at the level before |
-| `[Gear.Shields] MountainBlock` / `PlainsBlock` / `MistlandsBlock` / `AshlandsBlock` | 0.2 / 0.4 / 0.4 / 0.4 | Share of the base block power a shield gains at quality 5, 6, 7 and 8 |
+| `[Gear.Shields] UpgradeMountain` / `UpgradePlains` / `UpgradeMistlands` / `UpgradeAshlands` / `UpgradeDeepNorth` | the weapon costs + WhiteHilt_LindormScale:1 | Cost of the shield upgrade to quality 5, 6, 7, 8 and 9. Empty: shields stop at the level before |
+| `[Gear.Shields] MountainBlock` / `PlainsBlock` / `MistlandsBlock` / `AshlandsBlock` / `DeepNorthBlock` | 0.2 / 0.4 / 0.4 / 0.4 / 0.4 | Share of the base block power a shield gains at quality 5, 6, 7, 8 and 9 |
 | `[Gear.Armor] ArmorBonus` | 4 | Armor added to each armor piece |
 | `[Gear.Armor] ArmorPerLevelBonus` | 0 | Added to the armor per quality level up to quality 4 |
 | `[Gear.Armor] MovementBonus` | 0.05 | Taken off the slowdown of each armor piece that has one (0.05 = 5%); never makes a piece faster |
@@ -214,11 +216,13 @@ All admin only, synced from the server. The attack style settings are on [Attack
 | `[Gear.Armor] UpgradePlains` | BlackMetal:10 | Cost of the upgrade to quality 6. Empty: armor stops at the level before |
 | `[Gear.Armor] UpgradeMistlands` | Carapace:10 | Cost of the upgrade to quality 7. Empty: armor stops at the level before |
 | `[Gear.Armor] UpgradeAshlands` | FlametalNew:10 | Cost of the upgrade to quality 8. Empty: armor stops at the level before |
+| `[Gear.Armor] UpgradeDeepNorth` | Gold:10 | Cost of the upgrade to quality 9 (Bloodgold). Empty: armor stops at the level before |
 | `[Gear.Armor] MountainArmor` | 2 | Armor a helmet, chest or leg piece gains at quality 5 |
 | `[Gear.Armor] PlainsArmor` | 4 | Armor a helmet, chest or leg piece gains at quality 6 |
 | `[Gear.Armor] MistlandsArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 7 |
 | `[Gear.Armor] AshlandsArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 8 |
-| `[Gear.Armor] CapeArmorPerBiome` | 2 | Armor a cape gains at each quality from 5 to 8 |
+| `[Gear.Armor] DeepNorthArmor` | 6 | Armor a helmet, chest or leg piece gains at quality 9 |
+| `[Gear.Armor] CapeArmorPerBiome` | 2 | Armor a cape gains at each quality from 5 to 9 |
 | `[Gear.Tools] HomeItemsStaminaReduction` | 1.0 | Taken off the stamina use for building, farming and cultivating (1 = no stamina) |
 | `[Necromancy] HealthCostPercent` | 50 | Share of your maximum health a waking takes; the staff refuses rather than kill you |
 | `[Necromancy] EitrCost` | 60 | Eitr a waking takes |
