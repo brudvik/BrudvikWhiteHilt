@@ -431,3 +431,6 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   window's sell button reads "Sell 20 Raw Fish (+10)" (the game's `$1`/`$2` words) and a » button, a copy of the sell
   button without its click and gamepad hint, steps through the stacks the post buys (grid order); the choice restarts
   when the window opens. At other traders the window is the game's own.
+- 2026-10-14, phase 8: `docs/trading-posts.md` with the pictures (`docs/images/trading_post.png`,
+  `trading_post_traders.png`, `trading_post_trader.png`, from the round A and B previews), a card in README.MD under
+  Sea & travel and a line in `docs/README.md`. Released as v0.133.0.

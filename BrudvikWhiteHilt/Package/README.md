@@ -173,6 +173,12 @@ Jetties on piles, stone quays with steps down to the water, and log, rope and st
 
 Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.
 
+#### [Trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/trading_post_trader.png" alt="Trading posts" height="120">
+
+Harbours along every coast with a trader in the biome's colours: buy the land's materials, sell the next land's goods and your fish, start escorts, and find them on Hildir's charts.
+
 ### 🍄 Farm & food
 
 #### [Foraging & food](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/foraging.md)

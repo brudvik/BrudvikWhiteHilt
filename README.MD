@@ -113,6 +113,9 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <td align="center" valign="top"><a href="docs/harbour.md"><img src="docs/images/water_havn.png" height="110" alt=""></a><br><b><a href="docs/harbour.md">Bridges, jetties & quays</a></b><br><sub>Jetties on piles, stone quays with steps down to the water, and log, rope and stone bridges.</sub></td>
 <td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.</sub></td>
 </tr>
+<tr>
+<td align="center" valign="top"><a href="docs/trading-posts.md"><img src="docs/images/trading_post_trader.png" height="110" alt=""></a><br><b><a href="docs/trading-posts.md">Trading posts</a></b><br><sub>Harbours along every coast with a trader in the biome's colours: buy the land's materials, sell the next land's goods and your fish, start escorts, and find them on Hildir's charts.</sub></td>
+</tr>
 </table>
 
 ### 🍄 Farm & food
