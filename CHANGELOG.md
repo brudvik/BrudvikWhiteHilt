@@ -7,9 +7,13 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ### Added
 - **Trading posts, first part** ([plan](docs/plans/trading-posts.md)): a harbour of jetties with two market stalls, the
   trader's laft house, a harbour crane, mooring posts, a gate and a flag, under a dome like Haldor's that keeps
-  monsters out. Its pieces cannot be broken or removed. For now admins build one with `whitehilt_tradepost here`
-  (where you stand, the jetty running out the way you look), and remove it with `whitehilt_tradepost remove`; posts
-  placed in the world, the trader and the store come next. Setting `[TradingPosts] Enabled`.
+  monsters out. Its pieces cannot be broken or removed, and nothing can be built inside its dome.
+- **Trading posts along the coasts**: once per world, also in worlds made before, the server places up to 4 posts in
+  each biome that meets the sea, where the bank is low, the land behind is flat and the water at the jetty head is deep
+  enough for a longship, at least 1000 m apart and away from what players built. The land behind the landing is
+  levelled and trees and rocks on the post are cleared. Admins: `whitehilt_tradepost here` (build one where you stand,
+  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). The trader and the
+  store come next. Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
 
 ### Changed
 - **[Coins are worth something again](docs/chests.md#coins-and-valuables)**: in Linear mode coins, gems and everything else the Treasure Chest holds no longer become unlimited, so coins are earned by trade, escorts, raids and treasure. A new setting, `UnlimitedValuables` in `[Chests]`, decides it: `Auto` (default: not in Linear, yes in Full and Discovered), `On` or `Off`. **In a Linear world, the chests remove their unlimited stacks of coins and valuables the first time they are opened after the update**; set `UnlimitedValuables` to `On` first to keep them.

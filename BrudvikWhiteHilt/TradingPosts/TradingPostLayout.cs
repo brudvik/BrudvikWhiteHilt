@@ -31,7 +31,7 @@ public class TradingPostLayout
     /// <summary>Under the jetty: the tops of the long piles that go down to the bed where it lies deep.</summary>
     public TradingPostSpot[] piles;
 
-    /// <summary>The ground levelled for the post (plan phase 3).</summary>
+    /// <summary>The ground levelled for the post.</summary>
     public TradingPostLevel[] level;
 
     /// <summary>The pieces of the post.</summary>
@@ -119,17 +119,17 @@ public class TradingPostDomeData
 }
 
 /// <summary>
-/// A rectangle of ground levelled for a trading post.
+/// A round patch of ground levelled for a trading post, at its centre's height.
 /// </summary>
 [Serializable]
 public class TradingPostLevel
 {
-    /// <summary>Lowest x and z in post coordinates.</summary>
-    public float[] min;
+    /// <summary>Centre in post coordinates; its y is the height the ground is levelled to.</summary>
+    public float[] centre;
 
-    /// <summary>Highest x and z in post coordinates.</summary>
-    public float[] max;
+    /// <summary>Radius of the level ground, in metres.</summary>
+    public float radius;
 
-    /// <summary>Height of the ground, relative to the deck.</summary>
-    public float height;
+    /// <summary>Radius out to which the ground is smoothed into the land around, in metres.</summary>
+    public float smooth;
 }

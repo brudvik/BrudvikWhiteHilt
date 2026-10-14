@@ -8,7 +8,7 @@ namespace BrudvikWhiteHilt.TradingPosts;
 
 /// <summary>
 /// The trading posts' part on the game object: on the server it answers the admin commands (build a post where the
-/// admin stands, remove the nearest, list them); on a client it prints the server's answers.
+/// admin stands, remove the nearest, list them, search the coasts again); on a client it prints the server's answers.
 /// </summary>
 public class TradingPostService : MonoBehaviour
 {
@@ -18,6 +18,7 @@ public class TradingPostService : MonoBehaviour
     private const int ActionHere = 0;
     private const int ActionRemove = 1;
     private const int ActionList = 2;
+    private const int ActionPlace = 3;
 
     // How far from the admin a post may be to be removed by "remove".
     private const float RemoveRange = 80f;
@@ -39,6 +40,11 @@ public class TradingPostService : MonoBehaviour
     /// Asks the server for a list of the posts.
     /// </summary>
     public static void RequestList() => Send(ActionList);
+
+    /// <summary>
+    /// Asks the server to search the coasts now and build the posts each biome still lacks.
+    /// </summary>
+    public static void RequestPlace() => Send(ActionPlace);
 
     private static void Send(int action)
     {
@@ -92,6 +98,11 @@ public class TradingPostService : MonoBehaviour
             case ActionList:
                 Reply(sender, Describe(position));
                 break;
+            case ActionPlace:
+                Reply(sender, TradingPostPlacer.PlaceNow()
+                    ? "Searching the coasts for trading posts; the log says what was placed."
+                    : "A search is already running.");
+                break;
         }
     }
 
@@ -104,7 +115,7 @@ public class TradingPostService : MonoBehaviour
         }
 
         Vector3 origin = position + Vector3.up * DeckAboveGround;
-        string id = TradingPostBuilder.Build(origin, yaw);
+        string id = TradingPostBuilder.Build(origin, yaw, WorldGenerator.instance.GetBiome(origin));
         Reply(sender, id == null
             ? "No trading post could be built; see the log."
             : $"A trading post is built here, its jetty running out {yaw.ToString("0", CultureInfo.InvariantCulture)}° from north.");
@@ -133,7 +144,7 @@ public class TradingPostService : MonoBehaviour
         foreach (ZDO zdo in markers)
         {
             Vector3 at = zdo.GetPosition();
-            text.Append($"\n  {at.x:0} {at.z:0}, {Utils.DistanceXZ(at, position):0} m away");
+            text.Append($"\n  {(Heightmap.Biome)zdo.GetInt(TradingPostKeys.Biome)} at {at.x:0} {at.z:0}, {Utils.DistanceXZ(at, position):0} m away");
         }
 
         return text.ToString();

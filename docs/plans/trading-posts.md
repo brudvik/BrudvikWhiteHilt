@@ -313,3 +313,25 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
     `Piece.CanBeRemoved`), need no support and do not wear or burn.
   - `whitehilt_tradepost here|remove|list` (admins, checked on the server), `[TradingPosts] Enabled`.
   - Open for phase 3: levelling the ground (`level`), and keeping players from building inside a post's dome.
+- 2026-10-14, phase 3 done (not yet tried in the game):
+  - `TradingPostSites` (pure, tested in `TradingPostSitesTests`): a place suits when the bank under the landing is
+    0.3–2.5 m above the sea, the land behind (nine samples where the house, fire and cart stand) is no more than 2 m
+    above the deck and within 2.5 m of itself, nothing along the jetty rises within 0.6 m of the deck, and the water is
+    2.5 m deep at the head and 6 m beyond it and 2 m deep 6 m either side of the head. The deck is 1 m above the sea or
+    0.1 m above the bank. Sixteen directions are tried; deeper water at the head, flatter land and deeper water further
+    out score best. `Pick` takes them in the world seed's shuffled order, at least `MinDistance` apart.
+  - `TradingPostPlacer` (on the server, after the world's locations are generated, once per world: global key
+    `whitehilt_tradingposts_placed`): a 40 m grid over the world within 10 km (not within 300 m of the centre), from
+    `WorldGenerator` heights, so unvisited land counts; clear of player buildings (`BuildingDistance`) and of locations
+    (their exterior radius plus the dome's); `PerBiome` posts for Meadows to Ashlands (not the Deep North), counting
+    the posts already standing. Spread over frames (4 ms). `whitehilt_tradepost place` runs it again.
+  - The marker is now also a `Location` with `m_noBuild` over the dome's radius (Haldor's rule, which the mod's own
+    building tools already respect), and carries two round `TerrainModifier`s from the layout's `level` that level the
+    land behind the landing to the bank; things on the land stand at that height.
+  - `TradingPostSite` clears trees, logs, rocks, bushes and pickables inside the post (not what players built,
+    creatures, containers or dropped items) on the marker's owner, 1, 5 and 15 s after it loads, since a zone generated
+    as a player arrives gets its vegetation a moment later.
+  - The marker stores the post's biome (`whitehilt_post_biome`).
+  - To check in the game: how many places suit per biome on real coasts (the log lists them; if too few, let the
+    jetty grow by a section where the bed falls slowly), that the terrain modifiers level the land, that no vegetation
+    is left on the landing.

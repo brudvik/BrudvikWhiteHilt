@@ -26,8 +26,9 @@ public static class TradingPostBuilder
     /// </summary>
     /// <param name="origin">The middle of the landing at deck height.</param>
     /// <param name="yaw">Which way the post faces, in degrees: its jetty runs out along this direction.</param>
+    /// <param name="biome">The biome the post serves.</param>
     /// <returns>The new post's id, or null if a prefab is missing.</returns>
-    public static string Build(Vector3 origin, float yaw)
+    public static string Build(Vector3 origin, float yaw, Heightmap.Biome biome)
     {
         TradingPostLayout layout = TradingPostLayout.Load();
         Quaternion turn = Quaternion.Euler(0f, yaw, 0f);
@@ -40,7 +41,9 @@ public static class TradingPostBuilder
             return null;
         }
 
-        Create(marker, origin, turn).Set(TradingPostKeys.PostId, id);
+        ZDO site = Create(marker, origin, turn);
+        site.Set(TradingPostKeys.PostId, id);
+        site.Set(TradingPostKeys.Biome, (int)biome);
         int built = 1;
         List<string> missing = new();
         foreach (TradingPostPart part in layout.parts)
@@ -55,7 +58,7 @@ public static class TradingPostBuilder
             Vector3 position = origin + turn * TradingPostLayout.ToVector(part.position);
             if (part.ground)
             {
-                position.y = GroundHeight(position);
+                position.y = LevelledHeight(layout, origin, turn, position);
             }
 
             Create(prefab, position, turn * Quaternion.Euler(0f, part.yaw, 0f)).Set(TradingPostKeys.PostId, id);
@@ -68,7 +71,7 @@ public static class TradingPostBuilder
             Jotunn.Logger.LogWarning($"Trading posts: missing prefabs, left out: {string.Join(", ", missing.Distinct())}");
         }
 
-        Jotunn.Logger.LogInfo($"Trading posts: built post {id} at {origin.x:0} {origin.z:0} facing {yaw:0}° ({built} objects).");
+        Jotunn.Logger.LogInfo($"Trading posts: built post {id} ({biome}) at {origin.x:0} {origin.z:0} facing {yaw:0}° ({built} objects).");
         return id;
     }
 
@@ -122,6 +125,22 @@ public static class TradingPostBuilder
         }
 
         return built;
+    }
+
+    // The ground a thing on the land stands on: inside a levelled patch the patch's height, which the post's terrain
+    // modifiers make the ground when it loads; elsewhere the ground itself.
+    private static float LevelledHeight(TradingPostLayout layout, Vector3 origin, Quaternion turn, Vector3 position)
+    {
+        foreach (TradingPostLevel level in layout.level ?? new TradingPostLevel[0])
+        {
+            Vector3 centre = origin + turn * TradingPostLayout.ToVector(level.centre);
+            if (Utils.DistanceXZ(centre, position) <= level.radius)
+            {
+                return centre.y;
+            }
+        }
+
+        return GroundHeight(position);
     }
 
     // The height of the ground: the terrain where the zone is loaded, else the generated world's.

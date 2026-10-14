@@ -11,6 +11,9 @@ public static class TradingPostKeys
     /// <summary>The post a piece or marker belongs to: the post's id, the same on all its pieces.</summary>
     public static readonly int PostId = "whitehilt_post".GetStableHashCode();
 
+    /// <summary>On the marker: the biome the post serves (<see cref="Heightmap.Biome"/> as an int).</summary>
+    public static readonly int Biome = "whitehilt_post_biome".GetStableHashCode();
+
     /// <summary>Prefab hash of the marker.</summary>
     public static readonly int MarkerHash = MarkerPrefabName.GetStableHashCode();
 

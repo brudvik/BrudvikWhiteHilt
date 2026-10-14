@@ -15,6 +15,7 @@ public static class TradingPostPatches
     private static void GameStartPostfix(Game __instance)
     {
         __instance.gameObject.AddComponent<TradingPostService>();
+        __instance.gameObject.AddComponent<TradingPostPlacer>();
     }
 
     // The flags are not saved, so they are set again every time a post's piece comes to life.

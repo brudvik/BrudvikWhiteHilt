@@ -311,7 +311,9 @@ def game_layout(post):
         "trader": {"position": r3(TRADER), "yaw": 0},
         "dome": {"centre": r3(DOME_CENTRE), "radius": DOME_RADIUS},
         "piles": post.piles,
-        "level": [{"min": [-9, -12.5], "max": [13, -4], "height": bank}],
+        # The land behind the landing (the house, the fire, the cart) is levelled at the bank's height by two round
+        # terrain modifiers, which keep their shape however the post is turned; their smoothing ends under the landing.
+        "level": [{"centre": [x, bank, -8.25], "radius": 6.5, "smooth": 10.0} for x in (-3.0, 7.5)],
         "parts": parts,
     }
 
