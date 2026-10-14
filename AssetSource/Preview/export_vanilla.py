@@ -93,8 +93,14 @@ def export(env, prefab, output, texture_dir, saved_textures, child_path=None, na
         local = matrix if is_root else multiply(matrix, trs(transform))
         renderer = component(game_object, "MeshRenderer")
         mesh_filter = component(game_object, "MeshFilter")
-        if renderer is not None and (renderer.m_Enabled or forced) and mesh_filter is not None and mesh_filter.m_Mesh.path_id:
-            mesh = mesh_filter.m_Mesh.read()
+        mesh_pointer = mesh_filter.m_Mesh if mesh_filter is not None else None
+        if renderer is None:
+            # Hair, beards and worn clothes are skinned to the player's bones; their mesh in its bind pose fits the
+            # player body exported the same way.
+            renderer = component(game_object, "SkinnedMeshRenderer")
+            mesh_pointer = renderer.m_Mesh if renderer is not None else None
+        if renderer is not None and (renderer.m_Enabled or forced) and mesh_pointer is not None and mesh_pointer.path_id:
+            mesh = mesh_pointer.read()
             handler = MeshHandler(mesh)
             handler.process()
             submeshes = handler.get_triangles()
