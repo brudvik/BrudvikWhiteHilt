@@ -26,7 +26,10 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   Meadows' at once), so you need not search for hours: wood, ore, hides, berries, seeds and the rest, dearer for later
   biomes, ore and hides. It buys the goods of the next biome over (the Deep North's buy the Meadows') and every fish,
   for a quarter of its own price; fish from later waters and with stars fetch more. The sell button sells the first
-  stack the post wants. Settings `BuyShare`, `Prices` and `BuyUnlimitedGoods` in `[TradingPosts]`. Admins: `whitehilt_tradepost here` (build one where you stand,
+  stack the post wants. Settings `BuyShare`, `Prices` and `BuyUnlimitedGoods` in `[TradingPosts]`.
+- **Trading Post Charts from Hildir**: one for each biome, on sale once the world has reached it (150 coins,
+  `ChartPrice`). Read it and every trading post on that biome's coasts gets a pin on your map. The chart is kept, so you
+  can read it again or give it to a friend. Admins: `whitehilt_tradepost here` (build one where you stand,
   the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
 
 ### Changed

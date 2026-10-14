@@ -141,6 +141,21 @@ public static class TradingPostPatches
         return false;
     }
 
+    // Reading a Trading Post Chart asks the server for the biome's posts instead of the game's own use of the item.
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UseItem))]
+    [HarmonyPrefix]
+    private static bool UseChartPrefix(Humanoid __instance, ItemDrop.ItemData item)
+    {
+        int biome = TradingPostCharts.BiomeOf(item);
+        if (biome < 0 || __instance is not Player player || player != Player.m_localPlayer)
+        {
+            return true;
+        }
+
+        TradingPostService.RequestChart(biome);
+        return false;
+    }
+
     private static bool IsPostPart(WearNTear piece)
     {
         return piece.m_nview != null && TradingPostKeys.IsPostPart(piece.m_nview.GetZDO());

@@ -35,6 +35,9 @@ public static class TradingPostSettings
     /// <summary>Whether the posts pay for an item that is unlimited in the world's chests.</summary>
     public static ConfigEntry<bool> BuyUnlimitedGoods { get; private set; }
 
+    /// <summary>Coins a Trading Post Chart costs at Hildir.</summary>
+    public static ConfigEntry<int> ChartPrice { get; private set; }
+
     /// <summary>
     /// The configured asking prices, read again only when the setting changed.
     /// </summary>
@@ -74,5 +77,7 @@ public static class TradingPostSettings
             "What a post pays follows from them by BuyShare.");
         BuyUnlimitedGoods = WhiteHiltConfig.BindAdminOnly(Section, "BuyUnlimitedGoods", true,
             "The trading posts pay for goods even when they are unlimited in the world's chests. Off: they pay nothing for those.");
+        ChartPrice = WhiteHiltConfig.BindAdminOnly(Section, "ChartPrice", 150,
+            "Coins a Trading Post Chart costs at Hildir. Needs a restart.", new AcceptableValueRange<int>(0, 5000));
     }
 }

@@ -14,6 +14,8 @@ public class TradingPostService : MonoBehaviour
 {
     private const string AdminRpc = "WhiteHiltTradePostAdmin";
     private const string ReplyRpc = "WhiteHiltTradePostReply";
+    private const string ChartRpc = "WhiteHiltTradePostChart";
+    private const string ChartReplyRpc = "WhiteHiltTradePostChartReply";
 
     private const int ActionHere = 0;
     private const int ActionRemove = 1;
@@ -46,6 +48,15 @@ public class TradingPostService : MonoBehaviour
     /// </summary>
     public static void RequestPlace() => Send(ActionPlace);
 
+    /// <summary>
+    /// Asks the server where a biome's posts stand, for a chart the local player reads.
+    /// </summary>
+    /// <param name="biome">The biome index (<see cref="TradingPostGoods.Biomes"/>).</param>
+    public static void RequestChart(int biome)
+    {
+        ZRoutedRpc.instance?.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), ChartRpc, biome);
+    }
+
     private static void Send(int action)
     {
         Player player = Player.m_localPlayer;
@@ -70,6 +81,8 @@ public class TradingPostService : MonoBehaviour
     {
         ZRoutedRpc.instance?.Register<Vector3, float, int>(AdminRpc, RPC_Admin);
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
+        ZRoutedRpc.instance?.Register<int>(ChartRpc, RPC_Chart);
+        ZRoutedRpc.instance?.Register<ZPackage>(ChartReplyRpc, RPC_ChartReply);
     }
 
     // On the server: an admin's request. Every request is checked: the sender must be an admin, and building must be on.
@@ -158,5 +171,40 @@ public class TradingPostService : MonoBehaviour
     private void RPC_Reply(long sender, string message)
     {
         Print(message);
+    }
+
+    // On the server: where the posts of a biome stand, sent back to the reader. Anyone may ask: the posts are no secret,
+    // only hard to find, and the chart that asks costs coins.
+    private void RPC_Chart(long sender, int biome)
+    {
+        if (ZNet.instance == null || !ZNet.instance.IsServer() || biome < 0 || biome >= TradingPostGoods.Biomes.Length)
+        {
+            return;
+        }
+
+        string name = TradingPostGoods.Biomes[biome];
+        ZPackage reply = new();
+        ZDO[] markers = TradingPostBuilder.Markers()
+            .Where(zdo => string.Equals(((Heightmap.Biome)zdo.GetInt(TradingPostKeys.Biome)).ToString(), name, System.StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+        reply.Write(markers.Length);
+        foreach (ZDO zdo in markers)
+        {
+            reply.Write(zdo.GetPosition());
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, ChartReplyRpc, reply);
+    }
+
+    private void RPC_ChartReply(long sender, ZPackage reply)
+    {
+        int count = reply.ReadInt();
+        System.Collections.Generic.List<Vector3> positions = new();
+        for (int i = 0; i < count; i++)
+        {
+            positions.Add(reply.ReadVector3());
+        }
+
+        TradingPostCharts.Mark(positions);
     }
 }

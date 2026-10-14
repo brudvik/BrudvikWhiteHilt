@@ -391,3 +391,11 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   - Settings `BuyShare`, `Prices` (`Prefab:Price` per piece), `BuyUnlimitedGoods` (on).
   - Examples: Meadows post sells 20 Wood for 10, 10 Deer Hide for 15; buys Copper Ore at 1 each, a perch at 1 (2 with
     three stars), a northern salmon at 10.
+- 2026-10-14, phase 6 done (not yet tried in the game):
+  - `TradingPostCharts`: `WhiteHilt_TradeChart_<Biome>` for the eight biomes, a leather scrap drawn as the treasure maps
+    and tinted towards the biome's colour; on Hildir's list at `ChartPrice` (150, needs a restart), each behind the key
+    that opens its biome's posts (the Meadows' at once).
+  - Reading one (`Humanoid.UseItem` patch, local player only) sends `WhiteHiltTradePostChart` (biome index) to the
+    server, which answers with the positions of that biome's markers; the reader gets one saved pin (house icon,
+    "Trading post") per post, skipping posts already pinned (`Minimap.HaveSimilarPin`). The chart is not used up.
+  - The game's `Localization.Localize(text, words)` fills `$1`, `$2`, not `{0}`.
