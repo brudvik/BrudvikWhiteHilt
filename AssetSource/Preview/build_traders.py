@@ -189,7 +189,7 @@ def contact_sheet(names, out):
 
 def at_the_stall(trader):
     """The trading post with this trader behind the goods stall and the awnings in the biome's colours."""
-    post = build_trading_post.trading_post()
+    _, post = build_trading_post.trading_post()
     awning = awning_texture(trader)
     for part in post["parts"]:
         if part.get("mesh") == "preview_decor_market_stall":

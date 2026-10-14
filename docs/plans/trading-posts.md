@@ -121,7 +121,7 @@ calls the trading ship up beside you at once. With the trading posts:
   from that post. Using it anywhere else gives a message saying where to go; the contract is kept, as for every refusal.
 - **Where the merchant appears.** Beside the post's jetty, on the side away from your own ship: the server takes the
   side of the jetty opposite to the nearest ship the player owns or last steered within 60 m, or either side if there
-  is none, and places the merchant 25–40 m off the jetty, inside the dome, bow to the open sea. It never appears
+  is none, and places the merchant 15–20 m off the jetty, inside the dome (26 m radius), bow to the open sea. It never appears
   within 20 m of another ship.
 - **Waiting.** The merchant lies there with its sail furled (a new state, `Waiting`, in its ZDO). No route, no waves,
   no abandon timer yet. If nobody who bought it goes aboard a ship within `[SeaBattles.Escorts] WaitSeconds`
@@ -294,3 +294,22 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   nobody is attacked while trading; the escort job moves from Haldor to the posts, the trading ship appears on the
   far side of the post from your own ship (or some way from it), and the escort only really starts when you go aboard
   your own ship after buying and starting it. Added to sections 1, 2 and 4a, phases 2 and 7.
+- 2026-10-14, phase 2 done (not yet tried in the game):
+  - `build_trading_post.py` now also writes `AssetSource/Preview/tradingpost.json` (embedded as
+    `BrudvikWhiteHilt.TradingPost.json`): 96 parts in post coordinates (middle of the landing at deck height, +z to the
+    sea), the laft house unfolded into its pieces and `wood_roof_45`, decor as `piece_whitehilt_decor_<id>`, parts on
+    the land marked `ground`; the trader's place, the dome (centre z 5, radius 26), 27 pile places, the ground to level
+    (phase 3) and the jetty head.
+  - Post-only pieces in `build_water.py` / `defenses.json`: `handelsport` (gate with sign), `flaggstang` (flag pole; the
+    pennant is a mesh made in code, `TradingPostPennant`) and `handelspaele` (6 m pile). In C# they are
+    `TradingPostPieceBase` subclasses implementing the new `IUnlistedPiece`: not on the hammer
+    (`PieceConfig.Enabled = false`) and not registered with progression, so they get no config entries.
+  - `TradingPostBuilder` (server) creates the marker `WhiteHilt_TradingPost` and every part as network data only, each
+    with `whitehilt_post` = the post's id, long piles stacked down to the bed where it lies deeper than the jetty's own
+    piles; `Remove` destroys every object of a post.
+  - `TradingPostSite` on the marker attaches the dome: `TradingPostDome` copies `ForceField` (with its `NoMonsterArea`)
+    out of `Vendor_BlackForest` once and scales it to the radius; renderers off on a dedicated server.
+  - `TradingPostPatches`: a post's pieces skip `WearNTear.RPC_Damage`, cannot be removed (`WearNTear.CanBeRemoved`,
+    `Piece.CanBeRemoved`), need no support and do not wear or burn.
+  - `whitehilt_tradepost here|remove|list` (admins, checked on the server), `[TradingPosts] Enabled`.
+  - Open for phase 3: levelling the ground (`level`), and keeping players from building inside a post's dome.

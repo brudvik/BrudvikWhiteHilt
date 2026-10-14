@@ -263,8 +263,56 @@ def water_pieces():
         {"name": "steinbru", "base": "stone_wall_2x1", **dict(zip(("parts", "colliders", "snapPoints"), _snaps(stone_bridge("steinbru")))), "views": side},
         {"name": "hengebru", "base": "wood_floor", **dict(zip(("parts", "colliders", "snapPoints"), _snaps(suspension_bridge("hengebru")))), "views": side},
     ]
+    pieces += trading_post_pieces()
     pieces.append(overview())
     return pieces
+
+
+# The trading post's own pieces (docs/plans/trading-posts.md), placed only by the mod, never built with the hammer.
+GATE_HALF = 1.15  # the gate's posts stand at x -1.15 and 1.15, either side of the 2 m jetty
+GATE_BEAM = 2.85  # height of the beam the sign hangs from
+FLAG_HEIGHT = 6.5
+FLAG_ARM = 2.5  # height of the arm the lamp hangs from
+PENNANT_HEIGHT = 5.5  # where the pennant's hoist starts; the mod adds the pennant there
+PILE_LENGTH = 6.0
+
+
+def trading_post_gate():
+    """The gate where a trading post's jetty meets the landing: two posts, a beam across them and the sign under it,
+    facing +z (the sea). Its foot is at y 0, the deck."""
+    parts = [pole((x, -0.1, 0), (x, GATE_BEAM + 0.15, 0), 0.11) for x in (-GATE_HALF, GATE_HALF)]
+    parts.append(plank((-1.6, GATE_BEAM, 0), (1.6, GATE_BEAM, 0), 0.18, 0.2))
+    parts.append(part("sign", (0, GATE_BEAM - 0.5, 0.05), (0, 180, 0), (1.3, 1.3, 1.3)))
+    for x in (-GATE_HALF, GATE_HALF):
+        parts.append(part("wood_pole_log", (x, GATE_BEAM - 0.4, 0), (0, 0, 0), (0.5, 0.06, 0.5), tint=ROPE_TINT, detail=True))
+    colliders = [box((x, GATE_BEAM / 2, 0), (0.24, GATE_BEAM + 0.2, 0.24)) for x in (-GATE_HALF, GATE_HALF)]
+    colliders.append(box((0, GATE_BEAM, 0), (3.2, 0.2, 0.2)))
+    return parts, colliders, []
+
+
+def trading_post_flag_pole():
+    """The flag pole at a trading post's jetty head, FLAG_HEIGHT tall, with an arm for a lamp at FLAG_ARM pointing
+    along +z. The mod hangs the pennant at PENNANT_HEIGHT."""
+    parts = [pole((0, -0.1, 0), (0, FLAG_HEIGHT, 0), 0.08)]
+    parts.append(plank((0, FLAG_ARM, 0), (0, FLAG_ARM, 0.42), 0.07, 0.07))
+    parts.append(pole((0, FLAG_HEIGHT, 0), (0, FLAG_HEIGHT + 0.08, 0), 0.11))
+    return parts, [box((0, FLAG_HEIGHT / 2, 0), (0.18, FLAG_HEIGHT, 0.18))], []
+
+
+def trading_post_pile():
+    """A long pile from y 0 down to -PILE_LENGTH: where the sea bed under a trading post's jetty lies deeper than the
+    jetty's own piles reach, the mod stands these under them, down to the bed."""
+    parts = [pole((0, -PILE_LENGTH, 0), (0, 0.0, 0), 0.15, tint=PILE)]
+    return parts, [box((0, -PILE_LENGTH / 2, 0), (0.3, PILE_LENGTH, 0.3))], []
+
+
+def trading_post_pieces():
+    side = views(("front", 180, 10), ("side", 90, 10), ("angle", -140, 25))
+    return [
+        {"name": name, "base": "wood_pole2", **dict(zip(("parts", "colliders", "snapPoints"), _snaps(build()))), "views": side}
+        for name, build in (("handelsport", trading_post_gate), ("flaggstang", trading_post_flag_pole),
+                            ("handelspaele", trading_post_pile))
+    ]
 
 
 def _snaps(result):

@@ -177,6 +177,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
         Treasure.TreasureSettings.Initialize();
+        TradingPosts.TradingPostRegistry.Initialize();
         Treasure.TreasureRegistry.Initialize();
         Pieces.Roofs.RoofSettings.Initialize();
         Items.Roofing.RoofMaterials.Initialize();
@@ -258,7 +259,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
                 if (Activator.CreateInstance(type, PieceManager.Instance) is IWhiteHiltCustomPiece customPiece && customPiece.Enabled)
                 {
                     customPieces.Add(customPiece);
-                    ProgressionManager.RegisterPiece(customPiece);
+                    if (customPiece is not IUnlistedPiece)
+                    {
+                        ProgressionManager.RegisterPiece(customPiece);
+                    }
                 }
             }
 

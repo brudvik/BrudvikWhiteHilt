@@ -10,8 +10,14 @@ Coordinates: x runs along the shore, the sea lies at +z. The sea bed is the grou
 at WATER, the bank's top at BANK and the deck at DECK. The jetty pieces' own piles reach 3 m below the deck; where the
 bed lies deeper, extra piles go down to it (the mod must do the same).
 
+The same parts are written to AssetSource/Preview/tradingpost.json, which the mod embeds and builds every post from
+(TradingPostLayout): every piece's prefab, position and yaw relative to the middle of the landing at deck height, +z
+towards the sea; the laft house unfolded into its pieces; where the trader stands, the dome, the piles to fill down to
+the bed, and the ground to level. Only the bank, the water and the ship are the preview's own.
+
 Usage: python build_trading_post.py [--no-render]
-Writes BrudvikWhiteHiltUnity/Preview/tradingpost_layout.json and renders it into Preview/out/tradingpost.png.
+Writes tradingpost.json and BrudvikWhiteHiltUnity/Preview/tradingpost_layout.json, and renders the latter into
+Preview/out/tradingpost.png.
 """
 import json
 import math
@@ -19,10 +25,10 @@ import pathlib
 import subprocess
 import sys
 
+import compose_preview
 import render_decor
-from build_borgund import pole
-from build_defence_extras import plank
 from build_defenses import r3
+from build_water import FLAG_ARM, GATE_BEAM, PENNANT_HEIGHT
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
@@ -30,6 +36,7 @@ PREVIEW = REPO / "BrudvikWhiteHiltUnity" / "Preview"
 MESHES = PREVIEW / "vanilla"
 CATALOG = REPO / "AssetSource" / "Decor" / "decor.json"
 DEFENSES = HERE / "defenses.json"
+GAME_LAYOUT = HERE / "tradingpost.json"
 
 DECK = 4.0  # the walking surface of the landing and the jetty
 BANK = 3.9  # the top of the bank, just under the deck
@@ -38,7 +45,9 @@ PILE_REACH = 3.0  # how far the jetty pieces' own piles reach below the deck
 JETTY_SECTIONS = 4  # 4 m each, out from the landing's edge at z 2
 CANVAS = [0.62, 0.16, 0.13]  # the market stall's red; one colour scheme per biome comes in round B
 CANVAS_LIGHT = [0.9, 0.87, 0.8]
-PILE = [0.5, 0.42, 0.34]
+DOME_CENTRE = (0.0, 0.0, 5.0)  # in post coordinates: over the jetty's foot, so the house and the jetty head are inside
+DOME_RADIUS = 26.0
+TRADER = (-1.7, 0.0, -3.05)  # behind the goods stall, facing the jetty
 
 
 def custom_mesh(name, vertices, triangles, uvs=None, texture=""):
@@ -116,20 +125,24 @@ def pennant_mesh():
 
 
 class Post:
-    """Collects the parts of the post."""
+    """Collects the parts of the post: what the preview draws (parts) and what the mod builds (placements)."""
 
     def __init__(self):
         catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
         self.entries = {entry["id"]: entry for entry in catalog["pieces"]}
         self.parts = []
+        self.placements = []
+        self.piles = []
 
-    def decor(self, model_id, x, z, yaw=0.0, y=DECK):
-        """A Decor Hammer model standing at (x, y, z), its footprint centred there, turned by yaw."""
+    def decor(self, model_id, x, z, yaw=0.0, y=DECK, ground=False):
+        """A Decor Hammer model standing at (x, y, z), its footprint centred there, turned by yaw. With ground, the mod
+        stands it on the ground where it is instead of at y."""
         name, _, _ = render_decor.load(self.entries[model_id])
         data = {"mesh": f"preview_{name}", "position": r3((x, y, z))}
         if yaw:
             data["rotation"] = [0, yaw, 0]
         self.parts.append(data)
+        self.place(f"piece_whitehilt_decor_{model_id}", x, y, z, yaw, ground)
 
     def height(self, model_id):
         return self.entries[model_id]["height"]
@@ -139,18 +152,26 @@ class Post:
         if yaw:
             data["rotation"] = [0, yaw, 0]
         self.parts.append(data)
+        self.placements.append({"piece": name, "position": (x, y - DECK, z), "yaw": yaw})
 
     def on_land(self, model_id, x, z, yaw=0.0):
-        self.decor(model_id, x, z, yaw, bank_height(x, z))
+        self.decor(model_id, x, z, yaw, bank_height(x, z), ground=True)
+
+    def place(self, prefab, x, y, z, yaw, ground=False):
+        data = {"prefab": prefab, "position": r3((x, y - DECK, z)), "yaw": round(yaw % 360, 1)}
+        if ground:
+            data["ground"] = True
+        self.placements.append(data)
 
 
 def deep_piles(post, points):
-    """Extra piles under the jetty, from the jetty piece's own piles down to the bed, where the bed is deeper."""
+    """Places under the jetty where the mod stands extra piles down to the bed when the bed lies deeper than the jetty
+    piece's own piles reach; the preview draws them where its own bed is that deep."""
+    top = DECK - PILE_REACH + 0.3
     for x, z in points:
-        top = DECK - PILE_REACH + 0.3
-        bed = bank_height(x, z)
-        if bed < top - 0.2:
-            post.parts.append(pole((x, bed - 0.2, z), (x, top, z), 0.15, tint=PILE))
+        post.piles.append({"position": r3((x, top - DECK, z))})
+        if bank_height(x, z) < top - 0.2:
+            post.parts.append({"piece": "handelspaele", "position": r3((x, top, z))})
 
 
 def trading_post():
@@ -180,12 +201,9 @@ def trading_post():
     deep_piles(post, [(dx, z) for z in range(3, end + 2, 2) for dx in (-0.85, 0.85)])
 
     # The gate where the jetty meets the landing: two posts, a beam with the sign under it and a lamp at each end.
-    for x in (-1.15, 1.15):
-        post.parts.append(pole((x, DECK - 0.1, 2.2), (x, DECK + 3.0, 2.2), 0.11))
-    post.parts.append(plank((-1.6, DECK + 2.85, 2.2), (1.6, DECK + 2.85, 2.2), 0.18, 0.2))
-    post.parts.append({"mesh": "sign", "position": r3((0, DECK + 2.35, 2.25)), "rotation": [0, 180, 0], "scale": [1.3, 1.3, 1.3]})
+    post.piece("handelsport", 0, 2.2)
     for x in (-1.45, 1.45):
-        post.decor("hanging_lamp", x, 2.2, y=DECK + 2.75 - post.height("hanging_lamp"))
+        post.decor("hanging_lamp", x, 2.2, y=DECK + GATE_BEAM - 0.1 - post.height("hanging_lamp"))
 
     # Two stalls with a path between them, straight from the gate to the house door: the land's goods on the left,
     # the fish on the right.
@@ -224,11 +242,10 @@ def trading_post():
     for z in (9.0, 15.0):
         post.piece("fortoyningspale", 0.8, z)
 
-    # The flag at the jetty head, seen from the sea, and a lamp there for the night.
-    post.parts.append(pole((-0.75, DECK - 0.1, end + 1.75), (-0.75, DECK + 6.5, end + 1.75), 0.08))
-    post.parts.append({"mesh": "tp_pennant", "position": r3((-0.75, DECK + 5.5, end + 1.75)), "rotation": [0, 150, 0]})
-    post.parts.append(plank((-0.75, DECK + 2.5, end + 1.75), (-0.75, DECK + 2.5, end + 2.15), 0.07, 0.07))
-    post.decor("hanging_lamp", -0.75, end + 2.15, y=DECK + 2.45 - post.height("hanging_lamp"))
+    # The flag at the jetty head, seen from the sea, and a lamp on its arm for the night. The mod hangs the pennant.
+    post.piece("flaggstang", -0.75, end + 1.6)
+    post.parts.append({"mesh": "tp_pennant", "position": r3((-0.75, DECK + PENNANT_HEIGHT, end + 1.6))})
+    post.decor("hanging_lamp", -0.75, end + 2.0, y=DECK + FLAG_ARM - 0.05 - post.height("hanging_lamp"))
 
     # The trader's house on the land behind the stalls, its door facing the gate down the path.
     house_z = -8.8
@@ -246,7 +263,8 @@ def trading_post():
     # A longship tied up along the jetty, for the scale.
     post.parts.append({"mesh": "Karve", "position": r3((3.0, WATER - 0.25, 12.5)), "rotation": [0, 180, 0], "tint": [0.5, 0.36, 0.24]})
 
-    return {
+    post.end = end
+    return post, {
         "name": "tradingpost",
         "parts": post.parts,
         "views": [
@@ -255,6 +273,56 @@ def trading_post():
             {"label": "top", "yaw": 180, "pitch": 70, "focus": [0, DECK, 4], "radius": 17},
         ],
     }
+
+
+def game_layout(post):
+    """The layout the mod builds a post from: the placements with every composite piece (the laft house) unfolded into
+    the pieces it is made of, in post coordinates."""
+    pieces = {piece["name"]: piece for piece in json.loads(DEFENSES.read_text())["pieces"]}
+    parts = []
+
+    def unfold(name, position, yaw):
+        piece = pieces[name]
+        if "base" in piece:
+            parts.append({"prefab": f"piece_whitehilt_{name}", "position": r3(position), "yaw": round(yaw % 360, 1)})
+            return
+        for child in piece["parts"]:
+            rotation = child.get("rotation", [0, 0, 0])
+            assert rotation[0] == 0 and rotation[2] == 0, f"{name}: only turns about y can be unfolded"
+            offset = compose_preview.rotate_y(child["position"], yaw)
+            where = [position[i] + offset[i] for i in range(3)]
+            if child.get("piece"):
+                unfold(child["piece"], where, yaw + rotation[1])
+            else:
+                # Vanilla meshes in a composite are the vanilla pieces of the same name, such as the roof.
+                parts.append({"prefab": child["mesh"], "position": r3(where), "yaw": round((yaw + rotation[1]) % 360, 1)})
+
+    for placement in post.placements:
+        if "piece" in placement:
+            unfold(placement["piece"], placement["position"], placement["yaw"])
+        else:
+            parts.append(placement)
+
+    bank = round(BANK - DECK, 3)
+    return {
+        "note": "Generated by AssetSource/Preview/build_trading_post.py; do not edit. Post coordinates: the middle of the "
+                "landing at deck height, +z towards the sea.",
+        "head": [0, round(post.end + 1, 3)],
+        "trader": {"position": r3(TRADER), "yaw": 0},
+        "dome": {"centre": r3(DOME_CENTRE), "radius": DOME_RADIUS},
+        "piles": post.piles,
+        "level": [{"min": [-9, -12.5], "max": [13, -4], "height": bank}],
+        "parts": parts,
+    }
+
+
+def write_game_layout(layout):
+    """Writes the game layout one part per line, so a change shows as a small diff."""
+    head = {key: value for key, value in layout.items() if key != "parts"}
+    text = json.dumps(head, separators=(",", ":"))[:-1] + ',"parts":[\n'
+    text += ",\n".join(json.dumps(part, separators=(",", ":")) for part in layout["parts"]) + "\n]}\n"
+    GAME_LAYOUT.write_text(text, encoding="utf-8")
+    print(f"wrote {GAME_LAYOUT} with {len(layout['parts'])} parts")
 
 
 def templates(names):
@@ -271,7 +339,8 @@ def templates(names):
 
 
 def main(render):
-    post = trading_post()
+    built, post = trading_post()
+    write_game_layout(game_layout(built))
     used = {part["piece"] for part in post["parts"] if part.get("piece")}
     layout = {"pieces": templates(used) + [post]}
     path = PREVIEW / "tradingpost_layout.json"

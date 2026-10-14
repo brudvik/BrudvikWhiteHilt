@@ -111,7 +111,8 @@ public abstract class DefensePieceBase : IWhiteHiltCustomPiece
                 PieceTable = PieceTables.Hammer,
                 Category = Category,
                 CraftingStation = BuildStation,
-                Requirements = Requirements
+                Requirements = Requirements,
+                Enabled = this is not IUnlistedPiece
             };
 
             CustomPiece piece = new(PrefabName, data.@base, pieceConfig);
