@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.TradingPosts;
 using HarmonyLib;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.TradingPosts;
 
@@ -92,6 +93,51 @@ public static class TradingPostPatches
         }
 
         trader.Say(text, trigger);
+        return false;
+    }
+
+    // At a post the store window buys the post's goods and fish, not the valuables Haldor buys.
+    [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.GetSellableItem))]
+    [HarmonyPostfix]
+    private static void SellablePostfix(StoreGui __instance, ref ItemDrop.ItemData __result)
+    {
+        TradingPostTrader trader = __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null;
+        if (trader != null && Player.m_localPlayer != null)
+        {
+            __result = TradingPostStore.FirstSellable(trader.Biome, Player.m_localPlayer.GetInventory());
+        }
+    }
+
+    // Sells the first stack the post buys at the post's price, the way the game sells a valuable.
+    [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.SellItem))]
+    [HarmonyPrefix]
+    private static bool SellPrefix(StoreGui __instance)
+    {
+        TradingPostTrader trader = __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null;
+        Player player = Player.m_localPlayer;
+        if (trader == null || player == null)
+        {
+            return true;
+        }
+
+        Inventory inventory = player.GetInventory();
+        ItemDrop.ItemData item = TradingPostStore.FirstSellable(trader.Biome, inventory);
+        int coins = item != null ? TradingPostStore.PayFor(trader.Biome, item) : 0;
+        if (coins <= 0)
+        {
+            return false;
+        }
+
+        ItemDrop coin = __instance.m_coinPrefab;
+        bool cheated = inventory.ItemCheated(item.m_shared.m_name);
+        string sold = item.m_stack <= 1 ? item.m_shared.m_name : $"{item.m_stack}x{item.m_shared.m_name}";
+        Sprite icon = item.m_shared.m_icons != null && item.m_shared.m_icons.Length > 0 ? item.m_shared.m_icons[0] : null;
+        inventory.RemoveItem(item);
+        inventory.AddItem(coin.gameObject.name, coins, coin.m_itemData.m_quality, coin.m_itemData.m_variant, 0L, string.Empty, cheated);
+        __instance.m_sellEffects.Create(__instance.transform.position, Quaternion.identity);
+        player.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_sold", sold, coins.ToString()), 0, icon);
+        __instance.m_trader.OnSold();
+        __instance.FillList();
         return false;
     }
 

@@ -38,11 +38,17 @@ public class TradingPostTrader : MonoBehaviour
 
     private ZNetView view;
     private Trader trader;
+    private int biome;
     private Animator animator;
     private HashSet<string> parameters;
     private float restYaw;
     private bool greeted;
     private float nextTalk;
+
+    /// <summary>
+    /// Gets the index of the trader's biome in <see cref="TradingPostGoods.Biomes"/>.
+    /// </summary>
+    public int Biome => biome;
 
     /// <summary>
     /// Registers the dialogue and the names. Call from the plugin's Awake, before the game loads its languages.
@@ -56,6 +62,7 @@ public class TradingPostTrader : MonoBehaviour
         Dialogue("start", "Let us see what you have.", "Take your time, friend.");
         Dialogue("buy", "A fine choice.", "That will serve you well.");
         Dialogue("sell", "A fair price for fair goods.", "Good, I can sell that on.");
+        Translations.AddEnglish("whitehilt_trader_closed", "I have nothing for you yet. Come back when the land beyond is open to you.");
         foreach (TraderLook look in TraderLooks.All)
         {
             Translations.AddEnglish(look.NameKey, $"{look.name} the Trader");
@@ -131,6 +138,13 @@ public class TradingPostTrader : MonoBehaviour
     /// <param name="trigger">Haldor's animator trigger, or an emote's own name.</param>
     public void Say(string text, string trigger)
     {
+        // Opening the store of a biome the world has not reached yet: the trader says so instead.
+        if (trigger == "Talk" && trader != null && trader.m_randomStartTrade.Contains(text) && Player.m_localPlayer != null
+            && trader.GetAvailableItems().Count == 0)
+        {
+            text = "$whitehilt_trader_closed";
+        }
+
         if (Chat.instance != null && !string.IsNullOrEmpty(text))
         {
             Chat.instance.SetNpcText(gameObject, Vector3.up * DialogHeight, 20f, DialogShowTime, string.Empty, text, false);
@@ -165,6 +179,8 @@ public class TradingPostTrader : MonoBehaviour
         {
             TraderLook look = TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
             trader.m_name = "$" + look.NameKey;
+            biome = Mathf.Max(0, TradingPostGoods.IndexOf(look.biome));
+            trader.m_items = TradingPostStore.BuildItems(biome);
         }
     }
 

@@ -21,7 +21,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **The traders**: every post has its trader behind the goods stall, a man or woman in the biome's colours (Asbjørn in
   the Meadows, Gunnar in the Black Forest, Ragnhild in the Swamp, Hallvard in the Mountains, Sigrid on the Plains, Ylva
   in the Mistlands, Brand in the Ashlands, Frøydis in the Deep North). They turn to you, wave, greet you, talk now and
-  then and wave you goodbye; the stalls' awnings and the flag take the same colours. The store comes next. Admins: `whitehilt_tradepost here` (build one where you stand,
+  then and wave you goodbye; the stalls' awnings and the flag take the same colours.
+- **The store**: a post sells the materials of its own biome once the world has slain the boss before it (the
+  Meadows' at once), so you need not search for hours: wood, ore, hides, berries, seeds and the rest, dearer for later
+  biomes, ore and hides. It buys the goods of the next biome over (the Deep North's buy the Meadows') and every fish,
+  for a quarter of its own price; fish from later waters and with stars fetch more. The sell button sells the first
+  stack the post wants. Settings `BuyShare`, `Prices` and `BuyUnlimitedGoods` in `[TradingPosts]`. Admins: `whitehilt_tradepost here` (build one where you stand,
   the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
 
 ### Changed

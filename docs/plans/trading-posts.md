@@ -374,3 +374,20 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   - The store is empty until phase 5; the vanilla store window still lets players sell valuables there.
   - To check in the game: the body stands (not falling), hair and clothes show and are dyed, the emotes play, the
     trader turns, the hover text and store open, no animator warnings in the log.
+- 2026-10-14, the user agreed to section 4 as drafted (links, goods, a quarter of the asking price, fish everywhere).
+- 2026-10-14, phase 5 done (not yet tried in the game):
+  - `TradingPostGoods` (pure, `TradingPostGoodsTests`): each biome's materials (prefab names checked against the game's
+    item bundle; the Deep North's seed poteitr is `PoteitrSeeds`); asking price per piece = the biome's worth (Meadows 1,
+    Black Forest 2, Swamp 3, Mountain 4, Plains 5, Mistlands 6, Ashlands 8, Deep North 10) × 0.5 for bulk (wood, stone,
+    grain, marble), × 2 for ore and metal, × 1.5 for hides; sold 20 at a time for bulk, 5 for metal, else 10. A post buys
+    the next biome's materials (Deep North: the Meadows') and every fish at `BuyShare` (0.25) of the price; a fish is
+    worth 4 of its biome's plain materials, +50% per star; raw and cooked fish meat 2 and 3. Each biome's goods carry the
+    world key of the boss before it (Meadows none, then defeated_eikthyr ... defeated_fader for the Deep North).
+  - `TradingPostStore`: the trader's `m_items` per post; `PayFor` (0 for goods the post does not buy, and with
+    `BuyUnlimitedGoods` off for goods unlimited in the chests); `FirstSellable` in grid order, not equipped items.
+  - Patches on `StoreGui.GetSellableItem` and `StoreGui.SellItem`: at a post the sell button sells the first stack the
+    post buys, at the post's price, with the game's own message and effects.
+  - A store with nothing open yet makes the trader say so (`whitehilt_trader_closed`).
+  - Settings `BuyShare`, `Prices` (`Prefab:Price` per piece), `BuyUnlimitedGoods` (on).
+  - Examples: Meadows post sells 20 Wood for 10, 10 Deer Hide for 15; buys Copper Ore at 1 each, a perch at 1 (2 with
+    three stars), a northern salmon at 10.
