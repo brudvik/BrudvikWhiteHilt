@@ -2,6 +2,31 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.137.0 - 2026-10-15
+
+### Added
+- **[The hunter at the trading posts](docs/trading-posts.md#the-hunter)**: now and then Ulf the Hunter sits on a chair
+  behind a post's fish stall, a woodsman in troll leather with a bow on his back. When you come to a post there is a
+  20 % chance he is there (`HunterChance`), and the answer holds for a game day. He sells one of each trophy of the
+  post's biome, White Hilt's own monsters included (never a boss's), behind the same boss as the post's goods, at the
+  biome's worth times 15 (`TrophyWorth`), three times that for the great beasts.
+- **[A skipper at the trading ship's helm](docs/sea-battles.md#the-trading-ship)**: the merchant you escort no longer
+  sails empty. A skipper dressed like the posts' traders holds the helm, each ship its own, the same for every player.
+
+### Changed
+- **[The trading posts look lived in](docs/trading-posts.md#the-posts)**: the trader's house is now 8 × 4 m with its
+  gable and door towards the jetty under a roof carried out over a porch, windows in both long walls, a plank floor over
+  all of it and furnished inside (bed, chest, shelves, a table with the trader's map and accounts, a bench, lamps).
+  Behind the landing lies a fenced yard with a gate: a fire with a grate and benches, a wood yard, stone paths with
+  lanterns. The ground under the house, the yard and the paths is painted earth and stone, so no grass grows through
+  floors and decks. Flowers, shrubs and birches grow along the edges in the green biomes; shells, a shore rock, a fish
+  rack and old piles lie by the water. Posts already in the world are built again to the new plan.
+- New posts are only placed where the land 17 m behind the landing is flat enough for the yard.
+
+### Fixed
+- The bench beside a trading post's fire faced away from it.
+- The small laft house of the log house pieces (the documentation's example) left a strip of its floor out.
+
 ## v0.136.1 - 2026-10-15
 
 ### Fixed

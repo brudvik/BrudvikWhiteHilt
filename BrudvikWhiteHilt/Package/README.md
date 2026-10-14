@@ -33,7 +33,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.136.1
+## ✨ New in 0.137.0
+
+- **[A hunter at the trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#the-hunter)**: one time in five, Ulf the Hunter sits behind a post's fish stall and sells the trophies of the land, White Hilt's own monsters included.
+- **[Trading posts that look lived in](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#the-posts)**: a larger laft house with a porch, windows and furniture inside, a fenced yard with a fire, a wood yard, stone paths and lanterns, no grass through the floors, flowers and shrubs along the edges, and shells and an old fish rack by the shore.
+- **[A skipper at the trading ship's helm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-trading-ship)**: the merchant you escort no longer sails empty.
+
+### Also new in 0.136.1
 
 - **[A trading ship that finds its way](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#escorts)**: the merchant you escort from a trading post no longer steers straight at the port and runs aground on the islands between. The server plans a sea route round them, as the Navigator's Table does, and the merchant follows it, plans a new one if it gets stuck, and the contract pays by the length of that route. If no sea route leads to the other post, the contract is refused and kept.
 
@@ -52,7 +58,7 @@ Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend th
 
 ### Also new in 0.133.0
 
-- **[Trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md)**: harbours along the coasts of every biome with a trader in the biome's colours, under a dome that keeps monsters out. **Buy the land's materials**, **sell the next land's goods and your fish**, start **[escorts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#escorts)** from the posts, and find them with Hildir's Trading Post Charts.
+- **[Trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md)**: harbours along the coasts of every biome with a trader in the biome's colours, under a dome that keeps monsters out. **Buy the land's materials**, **sell the next land's goods and your fish**, start **[escorts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#escorts)** from the posts, buy **trophies** from the hunter who now and then sits there, and find them with Hildir's Trading Post Charts.
 - **[A Deep North tier](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/progression.md)**: Bloodgold unlocks it, and White Hilt gear upgrades to quality 9 with it.
 
 ### Also new in 0.132.0
@@ -189,7 +195,7 @@ Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship w
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/trading_post_trader.png" alt="Trading posts" height="120">
 
-Harbours along every coast with a trader in the biome's colours: buy the land's materials, sell the next land's goods and your fish, start escorts, and find them on Hildir's charts.
+Harbours along every coast with a trader in the biome's colours: buy the land's materials, sell the next land's goods and your fish, buy trophies from the hunter, start escorts, and find them on Hildir's charts.
 
 ### 🍄 Farm & food
 
