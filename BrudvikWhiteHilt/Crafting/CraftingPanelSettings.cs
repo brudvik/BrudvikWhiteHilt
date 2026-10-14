@@ -58,6 +58,37 @@ public static class CraftingPanelSettings
     public static ConfigEntry<bool> CraftableFirst { get; private set; }
 
     /// <summary>
+    /// What the recipe list is sorted by. The sort button above the list switches it.
+    /// </summary>
+    public static ConfigEntry<RecipeSort> SortBy { get; private set; }
+
+    /// <summary>
+    /// Show beside each recipe what its item gives: a food's health, stamina and eitr, a potion's effect, a piece of
+    /// gear's damage, armour or block.
+    /// </summary>
+    public static ConfigEntry<bool> ShowStats { get; private set; }
+
+    /// <summary>
+    /// How health, stamina and eitr are weighed when food is sorted Best for me.
+    /// </summary>
+    public static ConfigEntry<FoodProfile> Profile { get; private set; }
+
+    /// <summary>The weight of health in the Custom profile.</summary>
+    public static ConfigEntry<float> HealthWeight { get; private set; }
+
+    /// <summary>The weight of stamina in the Custom profile.</summary>
+    public static ConfigEntry<float> StaminaWeight { get; private set; }
+
+    /// <summary>The weight of eitr in the Custom profile.</summary>
+    public static ConfigEntry<float> EitrWeight { get; private set; }
+
+    /// <summary>
+    /// The weights of the chosen profile.
+    /// </summary>
+    public static (float Health, float Stamina, float Eitr) Weights =>
+        RecipeStats.Weights(Profile.Value, (HealthWeight.Value, StaminaWeight.Value, EitrWeight.Value));
+
+    /// <summary>
     /// Binds the config entries and registers the English texts. Call from the plugin's Awake.
     /// </summary>
     public static void Initialize()
@@ -81,6 +112,18 @@ public static class CraftingPanelSettings
         Translations.AddEnglish("whitehilt_recipes_tab_ammo", "Ammunition");
         Translations.AddEnglish("whitehilt_recipes_tab_food", "Food and meads");
         Translations.AddEnglish("whitehilt_recipes_tab_materials", "Materials and other");
+        Translations.AddEnglish("whitehilt_recipes_sort_tip",
+            "Click to sort by something else: name, the health, stamina or eitr a food gives, all three together, the best food for your profile (in the settings), or the strength of gear.");
+        Translations.AddEnglish("whitehilt_recipes_sort_name", "Name");
+        Translations.AddEnglish("whitehilt_recipes_sort_health", "Health");
+        Translations.AddEnglish("whitehilt_recipes_sort_stamina", "Stamina");
+        Translations.AddEnglish("whitehilt_recipes_sort_eitr", "Eitr");
+        Translations.AddEnglish("whitehilt_recipes_sort_total", "Total");
+        Translations.AddEnglish("whitehilt_recipes_sort_bestforme", "Best for me");
+        Translations.AddEnglish("whitehilt_recipes_sort_strength", "Strength");
+        Translations.AddEnglish("whitehilt_recipes_stat_damage", "dmg");
+        Translations.AddEnglish("whitehilt_recipes_stat_armor", "armour");
+        Translations.AddEnglish("whitehilt_recipes_stat_block", "block");
 
         ShowAvailable = WhiteHiltConfig.BindLocal(Section, "ShowAvailable", true,
             "Show on each requirement's icon how many you have, in your inventory and the chests around you, or ∞ when a chest nearby keeps it unlimited.");
@@ -99,5 +142,20 @@ public static class CraftingPanelSettings
             "Sort the recipe list by name, with your favourites (right-click a recipe) first. Off keeps the game's own order.");
         CraftableFirst = WhiteHiltConfig.BindLocal(Section, "CraftableFirst", false,
             "When sorting by name, put what you can craft now before the rest, as the game does.");
+        SortBy = WhiteHiltConfig.BindLocal(Section, "SortBy", RecipeSort.Name,
+            "What the recipe list is sorted by: Name, the Health, Stamina or Eitr a food gives, Total (all three), BestForMe (weighed by FoodProfile) " +
+            "or Strength (a weapon's damage, armour's armour, a shield's block). Favourites stay first. The sort button above the list switches it.");
+        ShowStats = WhiteHiltConfig.BindLocal(Section, "ShowStats", true,
+            "Show beside each recipe what it gives: a food's health, stamina and eitr (in the game's colours) and how long it lasts, " +
+            "a potion's or mead's effect, a weapon's damage, armour's armour or a shield's block.");
+        Profile = WhiteHiltConfig.BindLocal(Section, "FoodProfile", FoodProfile.Balanced,
+            "How health, stamina and eitr are weighed when food is sorted Best for me: Balanced (1, 1, 1), Warrior (1.5, 1, 0.5), " +
+            "Archer (1, 1.5, 0.5), Mage (1, 0.5, 1.5), or Custom (the three weights below).");
+        HealthWeight = WhiteHiltConfig.BindLocal(Section, "HealthWeight", 1f, "The weight of health in the Custom food profile.",
+            new AcceptableValueRange<float>(0f, 3f));
+        StaminaWeight = WhiteHiltConfig.BindLocal(Section, "StaminaWeight", 1f, "The weight of stamina in the Custom food profile.",
+            new AcceptableValueRange<float>(0f, 3f));
+        EitrWeight = WhiteHiltConfig.BindLocal(Section, "EitrWeight", 1f, "The weight of eitr in the Custom food profile.",
+            new AcceptableValueRange<float>(0f, 3f));
     }
 }

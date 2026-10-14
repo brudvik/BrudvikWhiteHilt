@@ -13,8 +13,9 @@ namespace BrudvikWhiteHilt.Crafting;
 /// <summary>
 /// Makes the recipe list at every station easier to find one's way in: a search field over names and materials, a
 /// Craftable button that hides what cannot be made now, tabs by kind of item, favourites at the top (right-click a
-/// recipe) and the list sorted by name. It works on the list vanilla has just built, so the game's own stations and
-/// other mods' recipes are included.
+/// recipe) and the list sorted by name or by what the items give (<see cref="RecipeStats"/>): a food's health, stamina
+/// or eitr, the best food for the player's profile, or the strength of gear, shown beside each recipe too. It works on
+/// the list vanilla has just built, so the game's own stations and other mods' recipes are included.
 /// </summary>
 public static class RecipeList
 {
@@ -25,6 +26,9 @@ public static class RecipeList
     private const float Gap = 4f;
     private const float BarHeight = RowHeight * 2f + Gap * 3f;
     private const float CraftableWidth = 96f;
+    private const float SortWidth = 92f;
+    private const string StatsName = "WhiteHiltStats";
+    private const float StatsGap = 6f;
     private const float AllTabWidth = 52f;
     private const string Star = "<color=#FFC94D>★</color> ";
 
@@ -45,6 +49,9 @@ public static class RecipeList
     private static readonly Dictionary<RecipeCategory, (Button Button, Image Icon)> tabButtons = new();
     private static readonly HashSet<RecipeCategory> present = new();
     private static readonly Dictionary<Recipe, string> names = new();
+    private static readonly Dictionary<(Recipe Recipe, int Quality), ItemStats> stats = new();
+    private static readonly Dictionary<string, ItemDrop> meads = new();
+    private static ZNetScene meadsFor;
 
     private static InventoryGui builtFor;
     private static RectTransform bar;
@@ -57,6 +64,7 @@ public static class RecipeList
     private static GameObject tooltipPrefab;
     private static InputField search;
     private static Text craftableLabel;
+    private static Text sortLabel;
     private static RecipeCategory selectedTab = RecipeCategory.All;
     private static bool inputBlocked;
     private static bool clearing;
@@ -87,7 +95,7 @@ public static class RecipeList
         {
             GameObject element = list[i].InterfaceElement;
             ((RectTransform)element.transform).anchoredPosition = new Vector2(0f, i * -space);
-            Decorate(element, list[i].Recipe);
+            Decorate(element, list[i]);
         }
 
         gui.m_recipeListRoot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.Max(gui.m_recipeListBaseSize, list.Count * space));
@@ -251,11 +259,14 @@ public static class RecipeList
         }
     }
 
-    // Favourites first, then by name with the highest quality first, or in the game's order when sorting is off.
+    // Favourites first, then by what the items give when the list is sorted by that, then by name with the highest
+    // quality first; or in the game's order when sorting by name is off.
     private static void Order(List<InventoryGui.RecipeDataPair> list)
     {
         names.Clear();
-        if (!CraftingPanelSettings.SortByName.Value)
+        stats.Clear();
+        RecipeSort sort = CraftingPanelSettings.SortBy.Value;
+        if (sort == RecipeSort.Name && !CraftingPanelSettings.SortByName.Value)
         {
             List<InventoryGui.RecipeDataPair> first = list.Where(pair => IsFavorite(pair.Recipe)).ToList();
             if (first.Count > 0 && first.Count < list.Count)
@@ -270,12 +281,18 @@ public static class RecipeList
         }
 
         bool craftableFirst = CraftingPanelSettings.CraftableFirst.Value;
+        (float Health, float Stamina, float Eitr) weights = CraftingPanelSettings.Weights;
         list.Sort((a, b) =>
         {
             int order = IsFavorite(b.Recipe).CompareTo(IsFavorite(a.Recipe));
             if (order == 0 && craftableFirst)
             {
                 order = b.CanCraft.CompareTo(a.CanCraft);
+            }
+
+            if (order == 0 && sort != RecipeSort.Name)
+            {
+                order = RecipeStats.Compare(RecipeStats.Key(Stats(a), sort, weights), RecipeStats.Key(Stats(b), sort, weights));
             }
 
             if (order == 0)
@@ -309,9 +326,105 @@ public static class RecipeList
             .Select(req => Localization.instance.Localize(req.m_resItem.m_itemData.m_shared.m_name));
     }
 
-    // A star before a favourite's name, and a right-click on any recipe to make it one or not.
-    private static void Decorate(GameObject element, Recipe recipe)
+    // What a recipe's item gives, at the quality the recipe makes: an upgrade makes the next one.
+    private static ItemStats Stats(InventoryGui.RecipeDataPair pair)
     {
+        ItemDrop item = pair.Recipe != null ? pair.Recipe.m_item : null;
+        if (item == null)
+        {
+            return default;
+        }
+
+        int quality = pair.ItemData != null ? Mathf.Min(pair.ItemData.m_quality + 1, item.m_itemData.m_shared.m_maxQuality) : 1;
+        if (!stats.TryGetValue((pair.Recipe, quality), out ItemStats found))
+        {
+            found = Read(item, quality, true);
+            stats[(pair.Recipe, quality)] = found;
+        }
+
+        return found;
+    }
+
+    // A food's health, stamina, eitr and time; a weapon's or ammunition's damage (not chopping or mining), armour's
+    // armour, a shield's block; a potion's effect and time. A mead base shows the mead it ferments into.
+    private static ItemStats Read(ItemDrop item, int quality, bool followMead)
+    {
+        ItemDrop.ItemData.SharedData shared = item.m_itemData.m_shared;
+        if (shared.m_food > 0f || shared.m_foodStamina > 0f || shared.m_foodEitr > 0f)
+        {
+            return new ItemStats(shared.m_food, shared.m_foodStamina, shared.m_foodEitr, shared.m_foodBurnTime / 60f);
+        }
+
+        int levels = Mathf.Max(0, quality - 1);
+        switch (shared.m_itemType)
+        {
+            case ItemDrop.ItemData.ItemType.Shield:
+                return new ItemStats(0f, 0f, 0f, 0f, shared.m_blockPower + shared.m_blockPowerPerLevel * levels, StrengthKind.Block);
+            case ItemDrop.ItemData.ItemType.Helmet:
+            case ItemDrop.ItemData.ItemType.Chest:
+            case ItemDrop.ItemData.ItemType.Legs:
+            case ItemDrop.ItemData.ItemType.Hands:
+            case ItemDrop.ItemData.ItemType.Shoulder:
+                float armor = shared.m_armor + shared.m_armorPerLevel * levels;
+                return armor > 0f ? new ItemStats(0f, 0f, 0f, 0f, armor, StrengthKind.Armor) : default;
+            case ItemDrop.ItemData.ItemType.OneHandedWeapon:
+            case ItemDrop.ItemData.ItemType.TwoHandedWeapon:
+            case ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft:
+            case ItemDrop.ItemData.ItemType.Bow:
+            case ItemDrop.ItemData.ItemType.Ammo:
+            case ItemDrop.ItemData.ItemType.AmmoNonEquipable:
+                HitData.DamageTypes damage = shared.m_damages.Clone();
+                damage.Add(shared.m_damagesPerLevel, levels);
+                float total = damage.GetTotalDamage() - damage.m_chop - damage.m_pickaxe;
+                return total > 0f ? new ItemStats(0f, 0f, 0f, 0f, total, StrengthKind.Damage) : default;
+        }
+
+        StatusEffect effect = shared.m_consumeStatusEffect;
+        if (effect != null && !string.IsNullOrEmpty(effect.m_name))
+        {
+            return new ItemStats(0f, 0f, 0f, effect.m_ttl / 60f, effect: Localization.instance.Localize(effect.m_name));
+        }
+
+        ItemDrop mead = followMead ? Mead(item.gameObject.name) : null;
+        return mead != null ? Read(mead, 1, false) : default;
+    }
+
+    // The mead a mead base ferments into, from the fermenters the game knows.
+    private static ItemDrop Mead(string meadBase)
+    {
+        ZNetScene scene = ZNetScene.instance;
+        if (scene != meadsFor)
+        {
+            meadsFor = scene;
+            meads.Clear();
+            foreach (GameObject prefab in scene != null ? scene.m_prefabs : new List<GameObject>())
+            {
+                Fermenter fermenter = prefab != null ? prefab.GetComponent<Fermenter>() : null;
+                foreach (Fermenter.ItemConversion conversion in fermenter != null ? fermenter.m_conversion : new List<Fermenter.ItemConversion>())
+                {
+                    if (conversion?.m_from != null && conversion.m_to != null)
+                    {
+                        meads[conversion.m_from.gameObject.name] = conversion.m_to;
+                    }
+                }
+            }
+        }
+
+        return meads.TryGetValue(meadBase, out ItemDrop mead) ? mead : null;
+    }
+
+    // A star before a favourite's name, what the item gives at the right of the line, and a right-click on any recipe
+    // to make it a favourite or not.
+    private static void Decorate(GameObject element, InventoryGui.RecipeDataPair pair)
+    {
+        Recipe recipe = pair.Recipe;
+        if (CraftingPanelSettings.ShowStats.Value)
+        {
+            (string, string, string) labels = (Localization.instance.Localize("$whitehilt_recipes_stat_damage"),
+                Localization.instance.Localize("$whitehilt_recipes_stat_armor"), Localization.instance.Localize("$whitehilt_recipes_stat_block"));
+            ShowStats(element, RecipeStats.Format(Stats(pair), CraftingPanelSettings.SortBy.Value, CraftingPanelSettings.Weights, labels));
+        }
+
         if (IsFavorite(recipe))
         {
             TMP_Text name = element.transform.Find("name")?.GetComponent<TMP_Text>();
@@ -323,6 +436,43 @@ public static class RecipeList
 
         FavoriteClick click = element.GetComponent<FavoriteClick>() ?? element.AddComponent<FavoriteClick>();
         click.Recipe = recipe;
+    }
+
+    // A copy of the line's name text at its right end, holding the stats; the name gives up that much room. The game
+    // makes the lines anew every time it lists the recipes, so this runs once per line.
+    private static void ShowStats(GameObject element, string text)
+    {
+        TMP_Text name = element.transform.Find("name")?.GetComponent<TMP_Text>();
+        if (name == null || string.IsNullOrEmpty(text) || element.transform.Find(StatsName) != null)
+        {
+            return;
+        }
+
+        TMP_Text line = Object.Instantiate(name, name.transform.parent);
+        line.name = StatsName;
+        line.text = text;
+        line.fontSize = name.fontSize * 0.85f;
+        line.color = Color.white;
+        line.alignment = TextAlignmentOptions.MidlineRight;
+        line.enableWordWrapping = false;
+        line.raycastTarget = false;
+        float width = line.GetPreferredValues(text).x;
+        RectTransform room = name.rectTransform;
+        room.offsetMax = new Vector2(room.offsetMax.x - width - StatsGap, room.offsetMax.y);
+        name.overflowMode = TextOverflowModes.Ellipsis;
+    }
+
+    private static void CycleSort()
+    {
+        int count = Enum.GetValues(typeof(RecipeSort)).Length;
+        CraftingPanelSettings.SortBy.Value = (RecipeSort)(((int)CraftingPanelSettings.SortBy.Value + 1) % count);
+        ScrollToTop();
+        Refresh();
+    }
+
+    private static string SortName()
+    {
+        return Localization.instance.Localize("$whitehilt_recipes_sort_" + CraftingPanelSettings.SortBy.Value.ToString().ToLowerInvariant());
     }
 
     private static void SelectTab(RecipeCategory category)
@@ -389,6 +539,8 @@ public static class RecipeList
         }
 
         craftableLabel.color = CraftingPanelSettings.OnlyCraftable.Value ? GUIManager.Instance.ValheimOrange : OffColor;
+        sortLabel.text = SortName();
+        sortLabel.color = CraftingPanelSettings.SortBy.Value != RecipeSort.Name ? GUIManager.Instance.ValheimOrange : OffColor;
     }
 
     private static void SetInputBlocked(bool block)
@@ -502,6 +654,16 @@ public static class RecipeList
         Size(search.gameObject, 1f, 0f);
         search.onValueChanged.AddListener(_ => OnSearchChanged());
         Tooltip(search.gameObject, "$whitehilt_recipes_search_tip");
+
+        GameObject sort = GUIManager.Instance.CreateButton(SortName(), top, Vector2.zero, Vector2.zero, Vector2.zero, SortWidth, RowHeight);
+        sort.name = "Sort";
+        Size(sort, 0f, SortWidth);
+        sort.GetComponent<Button>().onClick.AddListener(CycleSort);
+        sortLabel = sort.GetComponentInChildren<Text>();
+        sortLabel.resizeTextForBestFit = true;
+        sortLabel.resizeTextMinSize = 9;
+        sortLabel.resizeTextMaxSize = 14;
+        Tooltip(sort, "$whitehilt_recipes_sort_tip");
 
         GameObject craftable = GUIManager.Instance.CreateButton(Localization.instance.Localize("$whitehilt_recipes_craftable"), top,
             Vector2.zero, Vector2.zero, Vector2.zero, CraftableWidth, RowHeight);

@@ -158,6 +158,8 @@ The crafting panel and the build menu show what you have, not only what a recipe
 - **Tabs**: All, Weapons, Armour and gear, Tools, Ammunition, Food and meads, and Materials and other. A recipe's tab is read from its item, so other mods' recipes are sorted too; pickaxes and fishing rods are tools. Tabs with nothing at the station are hidden.
 - **Favourites**: right-click a recipe to mark it with a gold ★ and keep it at the top of the list; right-click again to unmark it. Favourites are saved on the character.
 - **Sorted by name**: favourites first, then by name, and upgrades of the same item with the highest level first.
+- **Sorted by what it gives**: the sort button between the search and Craftable switches between *Name*, *Health*, *Stamina*, *Eitr*, *Total* (all three), *Best for me* and *Strength*. Food sorts put the best food at the top, so the dishes at the cauldron can be compared at a glance; *Best for me* weighs health, stamina and eitr by your profile (`FoodProfile`): Balanced (1, 1, 1), Warrior (1.5, 1, 0.5), Archer (1, 1.5, 0.5), Mage (1, 0.5, 1.5) or your own weights. *Strength* sorts weapons and ammunition by damage, armour by armour and shields by block. What a sort says nothing about goes after the rest, by name; favourites still come first.
+- **What it gives, on every line**: beside each recipe, a food's health, stamina and eitr in the game's own colours (red, yellow, blue) and how many minutes it lasts; a potion's or mead's effect and time (a mead base at the cauldron shows the mead it ferments into); a weapon's or ammunition's damage, armour's armour or a shield's block, at the level the recipe makes. The number the list is sorted by is in bold, and *Total* and *Best for me* add the score in gold.
 
 | Setting (`CraftingPanel`) | Default | Description |
 |---|---|---|
@@ -170,6 +172,10 @@ The crafting panel and the build menu show what you have, not only what a recipe
 | `OnlyCraftable` | off | List only what you can craft; the Craftable button switches it (each player) |
 | `SortByName` | on | Sort the recipe list by name, favourites first; off keeps the game's order (each player) |
 | `CraftableFirst` | off | When sorting by name, what you can craft now comes first (each player) |
+| `SortBy` | Name | What the recipe list is sorted by; the sort button switches it (each player) |
+| `ShowStats` | on | What each recipe gives, beside it in the list (each player) |
+| `FoodProfile` | Balanced | How *Best for me* weighs health, stamina and eitr: Balanced, Warrior, Archer, Mage or Custom (each player) |
+| `HealthWeight`, `StaminaWeight`, `EitrWeight` | 1 | The weights of the Custom profile, 0 to 3 (each player) |
 
 ---
 
