@@ -386,6 +386,17 @@ public class EscortPayTests
         Assert.Equal(0, EscortRules.Pay(600, -1f));
         Assert.Equal(0, EscortRules.Pay(-50, 1f));
     }
+
+    [Theory]
+    [InlineData(400f, 1000f, 400)]
+    [InlineData(400f, 2500f, 1000)]
+    [InlineData(400f, 333f, 133)]
+    [InlineData(0f, 3000f, 0)]
+    [InlineData(400f, -10f, 0)]
+    public void AVoyageBetweenPostsPaysByItsLength(float perKilometre, float distance, int coins)
+    {
+        Assert.Equal(coins, EscortRules.PayForVoyage(perKilometre, distance));
+    }
 }
 
 public class EscortNearTests
@@ -419,7 +430,7 @@ public class TradeShipDataTests
             .ToList();
         hashes.AddRange(Enumerable.Range(0, TradeKeys.MaxWaves).Select(TradeKeys.WaveAt));
 
-        Assert.Equal(9 + TradeKeys.MaxWaves, hashes.Count);
+        Assert.Equal(11 + TradeKeys.MaxWaves, hashes.Count);
         Assert.Equal(hashes.Count, hashes.Distinct().Count());
     }
 
@@ -434,6 +445,8 @@ public class TradeShipDataTests
         Assert.Equal("whitehilt_trade_wavessent".GetStableHashCode(), TradeKeys.WavesSent);
         Assert.Equal("whitehilt_trade_seen".GetStableHashCode(), TradeKeys.Seen);
         Assert.Equal("whitehilt_trade_endedat".GetStableHashCode(), TradeKeys.EndedAt);
+        Assert.Equal("whitehilt_trade_pay".GetStableHashCode(), TradeKeys.Pay);
+        Assert.Equal("whitehilt_trade_raisedat".GetStableHashCode(), TradeKeys.RaisedAt);
         Assert.Equal("whitehilt_trade_waveat2".GetStableHashCode(), TradeKeys.WaveAt(2));
     }
 

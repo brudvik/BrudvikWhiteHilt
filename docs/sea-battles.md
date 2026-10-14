@@ -8,7 +8,7 @@ The Nail Ship needs no new model: it is the vanilla longship with a dark hull, a
 
 The fight is not one-sided. The Nail Ship's bolts and rams knock [holes in your hull](#damage-at-sea) and its pitch pots set your [deck alight](#fire-on-deck), so keep wood and resin in the pack and a free hand for the bailing.
 
-You can also take a job from Haldor. He sells an **Escort Contract**: use it aboard your ship at open sea, and a [trading ship](#escorts) sails up beside you, bound for a port a kilometre or two away. The Nail Ships come for the merchant, not for you, and you are paid for seeing it safely to port.
+You can also take a job at a [trading post](trading-posts.md). Its trader sells an **Escort Contract**: use it at the post, and a [trading ship](#escorts) comes in beside the jetty. When you go aboard your own ship it sets out for the nearest other trading post. The Nail Ships come for the merchant, not for you, and you are paid for seeing it safely to port, more for a longer voyage.
 
 ## The Nail Ship
 
@@ -238,22 +238,30 @@ When the hoard is opened with no guard alive, the harbour is **sacked**. It is a
 
 ## Escorts
 
-Haldor's trading ship sails to a port of its own, and you guard it against the Nail Ships. It sails on its own and its helm is shut, so the work is yours: beat the raiders back, kill the ones who land on its deck and patch its holes. If it reaches port with its cargo, every player near it is paid.
+A merchant's trading ship sails from one trading post to the nearest other one, and you guard it against the Nail Ships. It sails on its own and its helm is shut, so the work is yours: beat the raiders back, kill the ones who land on its deck and patch its holes. If it reaches port with its cargo, every player near it is paid.
 
 | Item | Effect | Where | Price |
 |------|--------|-------|-------|
-| **Escort Contract** (`WhiteHilt_EscortContract`) | Use it aboard your ship at open sea to call a trading ship | Haldor, once the world has reached `[SeaBattles] RequiredKey` (**Bonemass** is slain, by default) | 300 coins (`ContractPrice`) |
+| **Escort Contract** (`WhiteHilt_EscortContract`) | Use it at a trading post to call a trading ship there | The trader of every [trading post](trading-posts.md), once the world has reached `[SeaBattles] RequiredKey` (**Bonemass** is slain, by default) | 300 coins (`ContractPrice`) |
 
-Haldor stops selling it when `[SeaBattles.Escorts] Enabled` or `[SeaBattles] Enabled` is off.
+Nobody sells it when `[SeaBattles.Escorts] Enabled` or `[SeaBattles] Enabled` is off. With the trading posts off (`[TradingPosts] Enabled`), Haldor sells it as before and it is used aboard your ship at open sea, as described under *At sea* below.
 
 ### The contract
 
-Use the contract from your inventory while you are aboard a ship at sea. The server checks the call and either finds a port or says no:
+Use the contract from your inventory at a trading post, under its dome. The server checks the call and either finds a port or says no:
+
+- **Where you are:** you must be under a trading post's dome. Otherwise you see *Use the contract at a trading post, under its dome.*
+- **A port:** the port is **the nearest other trading post**, however far, 30 m off the end of its jetty. If the world has no other post you see *There is no other trading post to sail to.*
+- **Busy or too soon** and **Off:** as below.
+
+The trading ship comes in beside the post's jetty, on the side away from your own ship (or the other side if that water is too shallow or taken), bow to the sea, and waits there; the contract is used up, the port is marked on your map, and you see *A trading ship comes in to the post. Go aboard your own ship to set out; its port is marked on your map.* Look at it to see *Waiting for you to go aboard your ship*. It waits without waves and without the abandon timer until you stand on your own ship within **150 m** of it (`StartRange`); then it casts off, everyone near sees *The merchant casts off. Guard it to port!*, and the escort below begins. If you have not come aboard within **10 minutes** (`WaitSeconds`), it sails off and you get the contract back: *Nobody came, so the merchant sailed off. You get the contract back.*
+
+**At sea** (trading posts off, or an admin's `escort`): use the contract while you are aboard a ship at sea, and the server checks:
 
 - **A port:** the server looks for a straight line of deep water, **1200 to 2000 m** long (`MinDistance`, `MaxDistance`), ahead of your ship (up to 70 degrees to each side of its heading), where every point on the line, every 50 m, has at least **6 m** of water (`MinDepth`). It tries the farthest port first and works inwards in steps of 200 m. If there is no such line you see *No clear deep-water passage from here. Sail further out.*
 - **Where you are:** you must be aboard an ordinary ship, within 60 m of it, in the **ocean** biome. A Nail Ship or a trading ship will not do. Otherwise you see *You must be aboard your own ship at open sea.*
 - **Busy or too soon:** you may have only one merchant on its way, and at least **10 real minutes** (`CooldownMinutes`) must have passed since your last call. Otherwise you see *You already have a merchant to guard, or one sailed with you too recently.* The cooldown is kept by the server and forgotten when it restarts.
-- **Off:** if escorts are off, or the world has not reached the key, you see *Haldor will not send a trading ship now.*
+- **Off:** if escorts are off, or the world has not reached the key, you see *No trading ship will sail now.*
 
 A refusal costs you nothing: you keep the contract. The contract is used up only when the trading ship has been raised. It appears **25 m** to one side of your ship (farther if the water is too shallow there), facing its port. The port is marked on your map as a **Merchant's port** pin, for you only (it is not saved), and you see *A trading ship joins you. Its port is marked on your map.* The pin goes when the escort ends.
 
@@ -300,9 +308,9 @@ After the end the merchant lies still for a minute, so you can see it in port. T
 
 When the merchant is in port, every player within **150 m** of it (`RewardRange`) is paid by the cargo that is left:
 
-- **Coins:** `Pay` (600) times the share of the cargo left, rounded down. Half a cargo pays 300. Coins that do not fit in the pack fall at your feet.
+- **Coins:** for a full cargo **400 for every kilometre** of the voyage from the post to its port (`PayPerKilometre`), times the share of the cargo left, rounded down: a 2 km voyage pays 800, with half the cargo 400. An escort at sea pays `Pay` (600) for a full cargo. Coins that do not fit in the pack fall at your feet.
 - **A Raid Chart:** each paid player rolls `RaidChartChance` (25 %) for one, on top of the coins.
-- *The trading ship is safe in port. Haldor pays you n coins.*
+- *The trading ship is safe in port. The merchant pays you n coins.*
 - **A saga deed**, *A trading ship was seen safely to port*, for those within the saga's witness range (see [Saga deeds](#saga-deeds)).
 
 The pay is counted from the players the merchant's owner has loaded, which is everyone who is near.
@@ -420,9 +428,12 @@ Settings in section `[SeaBattles.Escorts]` (see [Escorts](#escorts)):
 
 | Setting | Default | What it does |
 |---|---|---|
-| `Enabled` | true | Haldor sells Escort Contracts and a trading ship can be called. Off: the contract goes from his list and none can be called |
-| `ContractPrice` | 300 | Haldor's price for a contract, in coins; 0 to 5000 |
-| `MinDistance` | 1200 | Least straight-line distance to the port, in metres; 400 to 5000 |
+| `Enabled` | true | The trading posts' traders (or Haldor, with the posts off) sell Escort Contracts and a trading ship can be called. Off: the contract goes from the lists and none can be called |
+| `ContractPrice` | 300 | The price of a contract, in coins; 0 to 5000 |
+| `PayPerKilometre` | 400 | With trading posts: coins for a full cargo per kilometre from the post to its port; 0 to 5000 |
+| `WaitSeconds` | 600 | With trading posts: seconds the merchant waits at the post for you to go aboard; then it sails off and the contract comes back; 60 to 3600 |
+| `StartRange` | 150 | With trading posts: the escort begins when you stand on your own ship this close to the waiting merchant, in metres; 20 to 500 |
+| `MinDistance` | 1200 | At sea: least straight-line distance to the port, in metres; 400 to 5000 |
 | `MaxDistance` | 2000 | Most distance to the port, in metres; 400 to 8000. Below `MinDistance` it counts as `MinDistance` |
 | `MinDepth` | 6 | The whole straight line to the port must have at least this much water, in metres; 2 to 30 |
 | `SailForceFactor` | 0.8 | Multiplier on the longship's sail force, so the trading ship is a bit slower; 0.3 to 1.5. Applies after a restart |
@@ -434,7 +445,7 @@ Settings in section `[SeaBattles.Escorts]` (see [Escorts](#escorts)):
 | `AbandonRange` | 300 | A player must be this close to the trading ship, in metres; 50 to 1000. Failure messages go to twice this range |
 | `AbandonSeconds` | 120 | Seconds nobody may be within range before the merchant gives up; 10 to 900 |
 | `ArriveRadius` | 60 | The trading ship is in port within this many metres of its port; 20 to 200 |
-| `Pay` | 600 | Coins for a full cargo, to each player in reach; 0 to 10000 |
+| `Pay` | 600 | At sea: coins for a full cargo, to each player in reach; 0 to 10000 |
 | `RewardRange` | 150 | Players this close to the trading ship when it arrives are paid, in metres; also the range of the wave and plunder messages; 20 to 500 |
 | `RaidChartChance` | 25 | Percent chance per paid player of a Raid Chart; 0 to 100 |
 | `CooldownMinutes` | 10 | Least real minutes between two contracts for one player; 0 to 240 |

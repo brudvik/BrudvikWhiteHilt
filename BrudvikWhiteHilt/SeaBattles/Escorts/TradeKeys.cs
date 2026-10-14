@@ -12,7 +12,10 @@ public enum TradeState
     Arrived = 1,
 
     /// <summary>The escort failed: the ship sank, the cargo was carried off, or the merchant gave up.</summary>
-    Lost = 2
+    Lost = 2,
+
+    /// <summary>Lying at a trading post until the contractor goes aboard their own ship.</summary>
+    Waiting = 3
 }
 
 /// <summary>
@@ -54,6 +57,12 @@ internal static class TradeKeys
 
     /// <summary>World ticks when a player was last within range.</summary>
     public static readonly int Seen = "whitehilt_trade_seen".GetStableHashCode();
+
+    /// <summary>The coins the escort pays for a full cargo, written when the ship is raised.</summary>
+    public static readonly int Pay = "whitehilt_trade_pay".GetStableHashCode();
+
+    /// <summary>World ticks when the ship was raised at a trading post, for the wait.</summary>
+    public static readonly int RaisedAt = "whitehilt_trade_raisedat".GetStableHashCode();
 
     /// <summary>World ticks when the escort ended; 0 while it goes on.</summary>
     public static readonly int EndedAt = "whitehilt_trade_endedat".GetStableHashCode();

@@ -37,6 +37,15 @@ public class TradeShip : MonoBehaviour
     // The trading ship is raised this far to the side of the ship that calls it, and farther if the water is too shallow
     // there; it needs this much water under it.
     private const float SideDistance = 25f;
+
+    // Where a merchant waits at a trading post, in the post's coordinates (x across, z out along the jetty), on the side
+    // away from the player's ship: the first place deep enough and clear of other ships is taken.
+    private static readonly Vector2[] waitSpots = { new(17f, 12f), new(17f, 20f), new(22f, 27f), new(12f, 30f) };
+
+    // A ship within this of a post counts as the player's when choosing the merchant's side; none within this of the
+    // waiting place may be in the way.
+    private const float OwnShipRange = 80f;
+    private const float ClearOfShips = 18f;
     private const float SideDepth = 6f;
 
     // The port is looked for in the arc this many degrees either side of the heading, at this many bearings, and the line
@@ -188,11 +197,9 @@ public class TradeShip : MonoBehaviour
     /// <returns>The new ship, or null when there was no deep water beside the ship or no prefab.</returns>
     public static TradeShip Raise(Ship near, Vector2 destination, long contractor)
     {
-        ZNetScene scene = ZNetScene.instance;
-        GameObject prefab = scene != null ? scene.GetPrefab(TradeShipRegistry.ShipName) : null;
-        if (prefab == null || near == null || ZoneSystem.instance == null)
+        if (near == null || ZoneSystem.instance == null)
         {
-            Jotunn.Logger.LogWarning($"Trading Ship: prefab {TradeShipRegistry.ShipName} or the calling ship was not found");
+            Jotunn.Logger.LogWarning("Trading Ship: the calling ship was not found");
             return null;
         }
 
@@ -202,15 +209,71 @@ public class TradeShip : MonoBehaviour
             return null;
         }
 
-        Vector3 point = new(spot.x, ZoneSystem.instance.m_waterLevel, spot.y);
         Vector2 toPort = destination - spot;
         Quaternion facing = toPort.sqrMagnitude > 1f ? Quaternion.Euler(0f, RaiderTactics.CourseTo(spot, destination, 0f), 0f) : near.transform.rotation;
+        return Create(spot, facing, destination, contractor, EscortSettings.Pay.Value, waiting: false);
+    }
+
+    /// <summary>
+    /// Brings a trading ship in beside a trading post's jetty, on the side away from the player's own ship, bow to the
+    /// sea, where it waits until the contractor goes aboard their own ship (see <see cref="TradeState.Waiting"/>).
+    /// </summary>
+    /// <param name="post">The post's marker: the middle of the landing, facing out along the jetty.</param>
+    /// <param name="destination">World x and z of the port, off the nearest other post.</param>
+    /// <param name="contractor">The player id of the one who bought the escort.</param>
+    /// <param name="pay">The coins the escort pays for a full cargo.</param>
+    /// <returns>The new ship, or null when no deep, clear water lies beside the jetty.</returns>
+    public static TradeShip RaiseAtPost(Transform post, Vector2 destination, long contractor, int pay)
+    {
+        if (post == null || ZoneSystem.instance == null)
+        {
+            return null;
+        }
+
+        Ship own = Ship.Instances.OfType<Ship>()
+            .Where(other => other != null && !RaiderShip.Is(other) && !Is(other) && Vector3.Distance(other.transform.position, post.position) <= OwnShipRange)
+            .OrderBy(other => Vector3.Distance(other.transform.position, post.position))
+            .FirstOrDefault();
+        float side = own != null && Vector3.Dot(own.transform.position - post.position, post.right) > 0f ? -1f : 1f;
+        foreach (float sign in new[] { side, -side })
+        {
+            foreach (Vector2 local in waitSpots)
+            {
+                Vector3 world = post.TransformPoint(new Vector3(local.x * sign, 0f, local.y));
+                Vector2 spot = Flat(world);
+                bool clear = Ship.Instances.OfType<Ship>().All(other => other == null || Vector2.Distance(Flat(other.transform.position), spot) > ClearOfShips);
+                if (clear && SeaBattleService.DeepWater(spot.x, spot.y, SideDepth))
+                {
+                    return Create(spot, Quaternion.Euler(0f, post.eulerAngles.y, 0f), destination, contractor, pay, waiting: true);
+                }
+            }
+        }
+
+        Jotunn.Logger.LogInfo("Trading Ship: no deep, clear water beside the post's jetty");
+        return null;
+    }
+
+    // Makes the ship and fills its data: where it began, where it goes, who called it, the pay, a full cargo and the shares
+    // of the route at which the waves come. The new ship belongs to this machine.
+    private static TradeShip Create(Vector2 spot, Quaternion facing, Vector2 destination, long contractor, int pay, bool waiting)
+    {
+        ZNetScene scene = ZNetScene.instance;
+        GameObject prefab = scene != null ? scene.GetPrefab(TradeShipRegistry.ShipName) : null;
+        if (prefab == null)
+        {
+            Jotunn.Logger.LogWarning($"Trading Ship: prefab {TradeShipRegistry.ShipName} was not found");
+            return null;
+        }
+
+        Vector3 point = new(spot.x, ZoneSystem.instance.m_waterLevel, spot.y);
         GameObject instance = Instantiate(prefab, point, facing);
         ZDO zdo = instance.GetComponent<ZNetView>().GetZDO();
         zdo.Set(TradeKeys.Start, point);
         zdo.Set(TradeKeys.Destination, new Vector3(destination.x, point.y, destination.y));
         zdo.Set(TradeKeys.Contractor, contractor);
-        zdo.Set(TradeKeys.State, (int)TradeState.Sailing);
+        zdo.Set(TradeKeys.State, (int)(waiting ? TradeState.Waiting : TradeState.Sailing));
+        zdo.Set(TradeKeys.Pay, pay);
+        zdo.Set(TradeKeys.RaisedAt, ZNet.instance.GetTime().Ticks);
         zdo.Set(TradeKeys.Cargo, 1f);
         zdo.Set(TradeKeys.WavesSent, 0);
         zdo.Set(TradeKeys.Seen, ZNet.instance.GetTime().Ticks);
@@ -246,6 +309,11 @@ public class TradeShip : MonoBehaviour
     public string HoverText()
     {
         string text = Localization.instance.Localize("$whitehilt_tradeship");
+        if (State == TradeState.Waiting)
+        {
+            return text + "\n" + Localization.instance.Localize("$whitehilt_trade_waiting");
+        }
+
         if (State != TradeState.Sailing || nview == null || !nview.IsValid())
         {
             return text;
@@ -348,10 +416,69 @@ public class TradeShip : MonoBehaviour
         {
             Sail(zdo, dt);
         }
+        else if (State == TradeState.Waiting)
+        {
+            Wait(zdo);
+        }
         else
         {
             SailOff(zdo);
         }
+    }
+
+    // At a trading post: lies still until the contractor is aboard their own ship near it, then casts off; after
+    // WaitSeconds with nobody coming it gives up, and the contractor gets the contract back.
+    private void Wait(ZDO zdo)
+    {
+        ship.m_speed = Ship.Speed.Stop;
+        steering = false;
+        long contractor = zdo.GetLong(TradeKeys.Contractor);
+        if (ContractorAboard(contractor))
+        {
+            zdo.Set(TradeKeys.State, (int)TradeState.Sailing);
+            zdo.Set(TradeKeys.Start, transform.position);
+            zdo.Set(TradeKeys.Seen, ZNet.instance.GetTime().Ticks);
+            RefreshSailing();
+            Jotunn.Logger.LogInfo($"Trading Ship: the contractor is aboard; the merchant casts off from {transform.position}");
+            EscortService.Notice(EscortNotice.SetOut, this, EscortSettings.StartRange.Value * 2f);
+            return;
+        }
+
+        long raised = zdo.GetLong(TradeKeys.RaisedAt);
+        if (raised != 0L && (ZNet.instance.GetTime() - new DateTime(raised)).TotalSeconds > EscortSettings.WaitSeconds.Value)
+        {
+            zdo.Set(TradeKeys.State, (int)TradeState.Lost);
+            zdo.Set(TradeKeys.EndedAt, ZNet.instance.GetTime().Ticks);
+            RefreshSailing();
+            Jotunn.Logger.LogInfo("Trading Ship: nobody came; the merchant sails off and the contract goes back");
+            EscortService.Notice(EscortNotice.Expired, this, 0f);
+        }
+    }
+
+    // Whether the contractor stands on a ship of their own (not a trading or Nail Ship) within StartRange. Every machine
+    // knows who is aboard each ship it has loaded, so the owner can tell for any player.
+    private bool ContractorAboard(long contractor)
+    {
+        if (contractor == 0L)
+        {
+            return false;
+        }
+
+        float range = EscortSettings.StartRange.Value;
+        foreach (Ship other in Ship.Instances.OfType<Ship>())
+        {
+            if (other == null || other == ship || RaiderShip.Is(other) || Is(other) || Vector3.Distance(other.transform.position, transform.position) > range)
+            {
+                continue;
+            }
+
+            if (other.m_players.Any(player => player != null && player.GetPlayerID() == contractor))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // The ship is in the set the physics reads while it sails, and again when it sails out of sight; lying in port it is

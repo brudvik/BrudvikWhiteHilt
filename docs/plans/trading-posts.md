@@ -131,8 +131,11 @@ calls the trading ship up beside you at once. With the trading posts:
   (any ship that is not a trading or Nail Ship) within `StartRange` (default 150 m) of the merchant: the merchant's
   owner sets the state to `Sailing`, the server picks the destination, the route is marked on the map, the waves are
   timed and the abandon rule applies from then on, as today.
-- **Where it sails.** Preferably to **another trading post** 1200–2000 m away over deep water, so an escort ends in a
-  harbour; where none lies in that range, to an open-sea destination as today. **Agree with the user before phase 7.**
+- **Where it sails.** Always to **the nearest other trading post**, however far (agreed with the user 2026-10-14). The
+  port is a point 30 m off that post's jetty head; the ship arrives within `ArriveRadius` of it. With no other post in
+  the world the contract is refused and kept. An admin's `whitehilt_seabattle escort` at sea keeps today's open-sea port.
+- **The pay** grows with the length of the voyage: `PayPerKilometre` (400) × the distance from the post to the port, in
+  km, × the cargo left; it is written on the ship when it is raised, and every player near when it arrives gets it.
 - **Console.** `whitehilt_seabattle escort` keeps working anywhere (admins, for testing) and starts sailing at once.
 - **Code.** `EscortService.Request` checks the dome instead of open sea; `Approve` gets the post and the player's
   ship and computes the waiting place; `TradeShip` gets the waiting state and the boarding check (owner-only, a few
@@ -399,3 +402,28 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
     server, which answers with the positions of that biome's markers; the reader gets one saved pin (house icon,
     "Trading post") per post, skipping posts already pinned (`Minimap.HaveSimilarPin`). The chart is not used up.
   - The game's `Localization.Localize(text, words)` fills `$1`, `$2`, not `{0}`.
+- 2026-10-14, the user on phase 7: the destination is always another trading post, the nearest, however far, and the
+  pay is reckoned from the length too. Section 4a updated.
+- 2026-10-14, phase 7 done (not yet tried in the game):
+  - The Escort Contract is sold by every post's trader (`TradingPostStore.BuildItems`, behind `[SeaBattles] RequiredKey`
+    at `ContractPrice`); Haldor's list drops it while `[TradingPosts] Enabled` is on (`EscortContract.UpdateTrader`).
+  - Using it (`EscortService.Request`): with the posts on it must be under a loaded post's dome
+    (`TradingPostSite.Within`); the client sends `WhiteHiltEscortPostRequest` with the post's marker id. The server
+    (`RPC_PostRequest`) checks the player is within the dome + 10 m of that marker, the key, the cooldown and that no
+    merchant of theirs is active, picks the nearest other marker in straight-line distance (no route check, as agreed),
+    sets the port 30 m off its jetty along its rotation, and the pay `EscortRules.PayForVoyage(PayPerKilometre,
+    distance)`; it answers `WhiteHiltEscortPostStart` (marker, port, pay).
+  - The client (`RPC_PostStart`) raises the ship with `TradeShip.RaiseAtPost`: beside the jetty on the side away from
+    the nearest ordinary ship within 80 m (post coordinates x ±17/22/12, z 12 to 30), deep and 18 m clear of other
+    ships, bow to the sea; state `Waiting` (new, 3), `TradeKeys.Pay` and `RaisedAt` written; the contract is used up and
+    the port pinned.
+  - `TradeShip.Wait` (owner): lies still; when the contractor stands on an ordinary ship within `StartRange` (every
+    machine fills `Ship.m_players`) it sets `Sailing`, `Start` = here, `Seen` = now and tells `SetOut`; after
+    `WaitSeconds` it ends `Lost` and tells `Expired`, on which the contractor's client gets the contract back (once).
+  - The server counts a waiting merchant as busy (`IsActive`) but sends waves only to sailing ones; pins stay while
+    waiting; the pay on arrival comes from `TradeKeys.Pay` (falls back to `Pay` for ships at sea).
+  - New settings `PayPerKilometre` (400), `WaitSeconds` (600), `StartRange` (150) in `[SeaBattles.Escorts]`; texts
+    no longer name Haldor as the payer. The admin's `whitehilt_seabattle escort` still starts at sea.
+  - Risk to check in the game: the nearest post may lie behind land; the merchant steers round obstacles it sees ahead
+    but has no route planner, so a voyage around a continent may stall. If it does, a route check (nearest post with a
+    clear sea route) is the fix to agree on.

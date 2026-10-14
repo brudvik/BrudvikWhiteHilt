@@ -2,6 +2,7 @@ using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Summoning;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.SeaBattles.Escorts;
@@ -28,7 +29,13 @@ public enum EscortNotice
     Plundered = 4,
 
     /// <summary>Nobody was near for too long, and the merchant gave up.</summary>
-    Abandoned = 5
+    Abandoned = 5,
+
+    /// <summary>The merchant waited at the trading post, but the contractor never went aboard; the contract goes back.</summary>
+    Expired = 6,
+
+    /// <summary>The contractor went aboard, and the merchant has cast off from the trading post.</summary>
+    SetOut = 7
 }
 
 /// <summary>
@@ -45,6 +52,8 @@ public enum EscortNotice
 public class EscortService : MonoBehaviour
 {
     private const string RequestRpc = "WhiteHiltEscortRequest";
+    private const string PostRequestRpc = "WhiteHiltEscortPostRequest";
+    private const string PostStartRpc = "WhiteHiltEscortPostStart";
     private const string AdminRpc = "WhiteHiltEscortAdmin";
     private const string StartRpc = "WhiteHiltEscortStart";
     private const string RefusedRpc = "WhiteHiltEscortRefused";
@@ -63,6 +72,8 @@ public class EscortService : MonoBehaviour
     private const string ReasonSea = "sea";
     private const string ReasonRoute = "route";
     private const string ReasonBusy = "busy";
+    private const string ReasonPost = "post";
+    private const string ReasonNoPort = "noport";
 
     // A request without an answer (server restarted, connection lost) may be sent again after this many seconds. An answer
     // is only taken while one is awaited, for about this long.
@@ -81,6 +92,12 @@ public class EscortService : MonoBehaviour
     // The pin on the map is dropped when the ship's data is known here and says the escort ended, or has been unknown this long.
     private const float PinCheckInterval = 2f;
     private const float PinUnseenSeconds = 60f;
+
+    // How far outside a post's dome a contract still counts as used at the post, for the player's movement since asking.
+    private const float PostReach = 10f;
+
+    // The port lies this far off the destination post's origin along its jetty: 11 m past the jetty head.
+    private const float PortOffJetty = 30f;
 
     private static EscortService instance;
     private static float requestedAt = float.NegativeInfinity;
@@ -123,6 +140,21 @@ public class EscortService : MonoBehaviour
         if (!EscortSettings.Enabled.Value || !SeaBattleSettings.Enabled.Value)
         {
             Say(player, ReasonOff);
+            return;
+        }
+
+        // With trading posts the contract is used at a post, whose trader sells it, and the merchant comes in there.
+        if (TradingPosts.TradingPostSettings.Enabled.Value)
+        {
+            TradingPosts.TradingPostSite site = TradingPosts.TradingPostSite.Within(player.transform.position);
+            if (site == null)
+            {
+                Say(player, ReasonPost);
+                return;
+            }
+
+            requestedAt = Time.time;
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), PostRequestRpc, site.Id);
             return;
         }
 
@@ -264,6 +296,8 @@ public class EscortService : MonoBehaviour
         instance = this;
         requestedAt = float.NegativeInfinity;
         ZRoutedRpc.instance?.Register<ZDOID>(RequestRpc, RPC_Request);
+        ZRoutedRpc.instance?.Register<ZDOID>(PostRequestRpc, RPC_PostRequest);
+        ZRoutedRpc.instance?.Register<ZDOID, Vector3, int>(PostStartRpc, RPC_PostStart);
         ZRoutedRpc.instance?.Register<ZDOID, int>(AdminRpc, RPC_Admin);
         ZRoutedRpc.instance?.Register<ZDOID, Vector3, bool>(StartRpc, RPC_Start);
         ZRoutedRpc.instance?.Register<string>(RefusedRpc, RPC_Refused);
@@ -297,6 +331,98 @@ public class EscortService : MonoBehaviour
     private void RPC_Request(long sender, ZDOID shipId)
     {
         Approve(sender, shipId, admin: false);
+    }
+
+    // On the server: a player used a contract at a trading post. The sender must be a real connection with a living player
+    // inside the post's dome, past the cooldown and with no merchant on its way; the world must have reached the key of
+    // the sea battles; and there must be another post to sail to. The port is the nearest other post, however far, 30 m
+    // off its jetty head, and the pay grows with the distance.
+    private void RPC_PostRequest(long sender, ZDOID postId)
+    {
+        if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || RoutedRpcSender.Verify(sender, out _) == null)
+        {
+            return;
+        }
+
+        ZDO player = SeaBattleService.PlayerZdo(sender);
+        ZDO post = postId.IsNone() ? null : ZDOMan.instance.GetZDO(postId);
+        if (player == null)
+        {
+            return;
+        }
+
+        if (!EscortSettings.Enabled.Value || !SeaBattleSettings.Enabled.Value || !SeaBattleService.HasKey(SeaBattleSettings.RequiredKey.Value))
+        {
+            Refuse(sender, ReasonOff);
+            return;
+        }
+
+        if (post == null || post.GetPrefab() != TradingPosts.TradingPostKeys.MarkerHash
+            || Utils.DistanceXZ(player.GetPosition(), post.GetPosition()) > TradingPosts.TradingPostLayout.Load().dome.radius + PostReach)
+        {
+            Refuse(sender, ReasonPost);
+            return;
+        }
+
+        long contractor = player.GetLong(ZDOVars.s_playerID);
+        if (IsBusy(contractor) || cooldownUntil.TryGetValue(contractor, out float until) && Time.time < until)
+        {
+            Refuse(sender, ReasonBusy);
+            return;
+        }
+
+        ZDO other = TradingPosts.TradingPostBuilder.Markers()
+            .Where(zdo => zdo.m_uid != post.m_uid)
+            .OrderBy(zdo => Utils.DistanceXZ(zdo.GetPosition(), post.GetPosition()))
+            .FirstOrDefault();
+        if (other == null)
+        {
+            Refuse(sender, ReasonNoPort);
+            return;
+        }
+
+        Vector3 port = other.GetPosition() + other.GetRotation() * Vector3.forward * PortOffJetty;
+        port.y = ZoneSystem.instance.m_waterLevel;
+        int pay = EscortRules.PayForVoyage(EscortSettings.PayPerKilometre.Value, Utils.DistanceXZ(post.GetPosition(), port));
+        cooldownUntil[contractor] = Time.time + EscortSettings.CooldownMinutes.Value * 60f;
+        active[contractor] = new Active { Since = Time.time };
+        Jotunn.Logger.LogInfo($"Escort: a merchant comes to the post at {post.GetPosition().x:0} {post.GetPosition().z:0} for {sender}, bound for {port.x:0} {port.z:0}, {pay} coins");
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, PostStartRpc, post.m_uid, port, pay);
+    }
+
+    // On the client that was sent a port from a trading post: brings the trading ship in beside the post's jetty, on the
+    // side away from the player's own ship, where it waits; uses up the contract; marks the port; tells the server which
+    // ship it is. Only the server may order this, and only after this client asked.
+    private void RPC_PostStart(long sender, ZDOID postId, Vector3 port, int pay)
+    {
+        if (sender != ZRoutedRpc.instance.GetServerPeerID() || Time.time - requestedAt > RequestTimeout)
+        {
+            return;
+        }
+
+        requestedAt = float.NegativeInfinity;
+        Player player = Player.m_localPlayer;
+        GameObject found = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(postId) : null;
+        ItemDrop.ItemData contract = player != null ? FindContract(player) : null;
+        TradeShip trade = found != null && player != null && contract != null
+            ? TradeShip.RaiseAtPost(found.transform, new Vector2(port.x, port.z), player.GetPlayerID(), Mathf.Max(0, pay))
+            : null;
+        if (trade == null)
+        {
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), RaisedRpc, ZDOID.None);
+            if (player != null && found != null && contract != null)
+            {
+                Say(player, ReasonRoute);
+            }
+
+            return;
+        }
+
+        player.GetInventory().RemoveOneItem(contract);
+        ZDOID tradeId = trade.GetComponent<ZNetView>().GetZDO().m_uid;
+        MarkPort(tradeId, port);
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), RaisedRpc, tradeId);
+        player.Message(MessageHud.MessageType.Center, Translations.Word("msg_whitehilt_escort_waiting"));
     }
 
     // On the server: an admin asks for a trading ship at once.
@@ -422,19 +548,31 @@ public class EscortService : MonoBehaviour
     // taken from the message, and the range is held to a sensible size.
     private void RPC_Notice(long sender, int kind, ZDOID shipId, long contractor, Vector3 position, float range)
     {
-        if (kind < (int)EscortNotice.Wave || kind > (int)EscortNotice.Abandoned)
+        if (kind < (int)EscortNotice.Wave || kind > (int)EscortNotice.SetOut)
         {
             return;
         }
 
         EscortNotice notice = (EscortNotice)kind;
         bool failure = notice == EscortNotice.Sunk || notice == EscortNotice.Plundered || notice == EscortNotice.Abandoned;
-        if (failure || notice == EscortNotice.Arrived)
+        if (failure || notice == EscortNotice.Arrived || notice == EscortNotice.Expired)
         {
             DropPin(shipId);
         }
 
         Player player = Player.m_localPlayer;
+        if (notice == EscortNotice.Expired)
+        {
+            // The merchant waited in vain: the contractor gets the contract back, once for the ship.
+            if (player != null && contractor != 0L && player.GetPlayerID() == contractor && paid.Add(shipId))
+            {
+                Give(player, EscortContract.PrefabName, 1);
+                player.Message(MessageHud.MessageType.Center, Translations.Word("msg_whitehilt_escort_expired"));
+            }
+
+            return;
+        }
+
         string token = notice switch
         {
             EscortNotice.Wave => "msg_whitehilt_escort_wave",
@@ -442,6 +580,7 @@ public class EscortService : MonoBehaviour
             EscortNotice.Sunk => "msg_whitehilt_escort_sunk",
             EscortNotice.Plundered => "msg_whitehilt_escort_plundered",
             EscortNotice.Abandoned => "msg_whitehilt_escort_abandoned",
+            EscortNotice.SetOut => "msg_whitehilt_escort_setout",
             _ => null
         };
         if (player == null || token == null)
@@ -481,7 +620,7 @@ public class EscortService : MonoBehaviour
 
         paid.Add(shipId);
         cargo = Mathf.Clamp(cargo, 0f, Mathf.Min(1f, zdo.GetFloat(TradeKeys.Cargo, 1f) + 0.05f));
-        int coins = EscortRules.Pay(EscortSettings.Pay.Value, cargo);
+        int coins = EscortRules.Pay(zdo.GetInt(TradeKeys.Pay, EscortSettings.Pay.Value), cargo);
         if (coins > 0)
         {
             Give(player, "Coins", coins);
@@ -609,7 +748,7 @@ public class EscortService : MonoBehaviour
             return Forget(contractor, Time.time - record.Since >= UnseenSeconds);
         }
 
-        return Forget(contractor, !IsSailing(zdo));
+        return Forget(contractor, !IsActive(zdo));
     }
 
     // Drops a record when told to; the answer is whether the record is still there, that is, still counts.
@@ -628,6 +767,13 @@ public class EscortService : MonoBehaviour
         return TradeShipRegistry.IsTradeShip(zdo.GetPrefab()) && zdo.GetInt(TradeKeys.State) == (int)TradeState.Sailing;
     }
 
+    // Sailing, or waiting at a trading post for the contractor: the escort has not ended.
+    private static bool IsActive(ZDO zdo)
+    {
+        int state = zdo.GetInt(TradeKeys.State);
+        return TradeShipRegistry.IsTradeShip(zdo.GetPrefab()) && (state == (int)TradeState.Sailing || state == (int)TradeState.Waiting);
+    }
+
     // On the server: the data of every merchant known to be on its way. Records that have ended or were never realised
     // are dropped on the way.
     private IEnumerable<ZDO> MerchantsOnTheirWay()
@@ -644,7 +790,7 @@ public class EscortService : MonoBehaviour
             if (!record.Ship.IsNone() && IsBusy(contractor))
             {
                 ZDO zdo = ZDOMan.instance.GetZDO(record.Ship);
-                if (zdo != null)
+                if (zdo != null && IsSailing(zdo))
                 {
                     found.Add(zdo);
                 }
@@ -708,7 +854,7 @@ public class EscortService : MonoBehaviour
         return null;
     }
 
-    // On the client: the server refused. Only the server may say so, and only the four reasons it knows.
+    // On the client: the server refused. Only the server may say so, and only the reasons it knows.
     private void RPC_Refused(long sender, string reason)
     {
         if (sender != ZRoutedRpc.instance.GetServerPeerID())
@@ -718,7 +864,8 @@ public class EscortService : MonoBehaviour
 
         requestedAt = float.NegativeInfinity;
         Player player = Player.m_localPlayer;
-        if (player != null && (reason == ReasonOff || reason == ReasonSea || reason == ReasonRoute || reason == ReasonBusy))
+        if (player != null && (reason == ReasonOff || reason == ReasonSea || reason == ReasonRoute || reason == ReasonBusy
+            || reason == ReasonPost || reason == ReasonNoPort))
         {
             Say(player, reason);
         }
@@ -791,7 +938,8 @@ public class EscortService : MonoBehaviour
                 pair.Value.MissingSince = Time.time;
             }
 
-            bool ended = zdo != null ? zdo.GetInt(TradeKeys.State) != (int)TradeState.Sailing : Time.time - pair.Value.MissingSince > PinUnseenSeconds;
+            int state = zdo != null ? zdo.GetInt(TradeKeys.State) : -1;
+            bool ended = zdo != null ? state != (int)TradeState.Sailing && state != (int)TradeState.Waiting : Time.time - pair.Value.MissingSince > PinUnseenSeconds;
             if (ended)
             {
                 (done ??= new List<ZDOID>()).Add(pair.Key);

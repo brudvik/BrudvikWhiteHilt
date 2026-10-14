@@ -45,6 +45,20 @@ public static class TradingPostStore
             });
         }
 
+        // Every post's trader sells the Escort Contract, behind the key of the sea battles, as Haldor did.
+        ItemDrop contract = ObjectDB.instance.GetItemPrefab(SeaBattles.Escorts.EscortContract.PrefabName)?.GetComponent<ItemDrop>();
+        if (contract != null && SeaBattles.Escorts.EscortSettings.Enabled.Value && SeaBattles.SeaBattleSettings.Enabled.Value)
+        {
+            items.Add(new Trader.TradeItem
+            {
+                m_prefab = contract,
+                m_stack = 1,
+                m_price = SeaBattles.Escorts.EscortSettings.ContractPrice.Value,
+                m_requiredGlobalKey = SeaBattles.SeaBattleSettings.RequiredKey.Value?.Trim() ?? string.Empty,
+                m_buyPlayerEffects = new EffectList()
+            });
+        }
+
         return items;
     }
 

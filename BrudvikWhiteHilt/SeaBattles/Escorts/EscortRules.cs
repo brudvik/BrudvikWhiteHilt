@@ -208,6 +208,18 @@ public static class EscortRules
     }
 
     /// <summary>
+    /// The pay for a full cargo of a voyage from one trading post to another: <paramref name="perKilometre"/> for every
+    /// 1000 m of the way, rounded.
+    /// </summary>
+    /// <param name="perKilometre">Coins per kilometre.</param>
+    /// <param name="distance">The length of the voyage, in metres.</param>
+    /// <returns>The coins for a full cargo.</returns>
+    public static int PayForVoyage(float perKilometre, float distance)
+    {
+        return Math.Max(0, (int)Math.Round(Math.Max(0f, perKilometre) * Math.Max(0f, distance) / 1000.0));
+    }
+
+    /// <summary>
     /// Whether a point lies within a range of any of the given places.
     /// </summary>
     /// <param name="point">World x and z of the point.</param>

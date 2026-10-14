@@ -19,8 +19,15 @@ public class TradingPostSite : MonoBehaviour
     // Vegetation is cleared this far inside the dome's edge, so the trees just outside it stay.
     private const float ClearMargin = 4f;
 
+    private static readonly List<TradingPostSite> loaded = new();
+
     private ZNetView view;
     private int pass;
+
+    /// <summary>
+    /// Gets the network id of the post's marker.
+    /// </summary>
+    public ZDOID Id => view != null && view.IsValid() ? view.GetZDO().m_uid : ZDOID.None;
 
     /// <summary>
     /// Gets the post's id, the same on all its pieces.
@@ -31,6 +38,36 @@ public class TradingPostSite : MonoBehaviour
     /// Gets the trader of the post's biome.
     /// </summary>
     public TraderLook Look => TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
+
+    /// <summary>
+    /// The loaded post whose dome a point is under, or null.
+    /// </summary>
+    /// <param name="position">The point, in world space.</param>
+    /// <returns>The post, or null.</returns>
+    public static TradingPostSite Within(Vector3 position)
+    {
+        TradingPostLayout layout = TradingPostLayout.Load();
+        foreach (TradingPostSite site in loaded)
+        {
+            if (site != null && site.view != null && site.view.IsValid()
+                && Utils.DistanceXZ(site.transform.TransformPoint(TradingPostLayout.ToVector(layout.dome.centre)), position) <= layout.dome.radius)
+            {
+                return site;
+            }
+        }
+
+        return null;
+    }
+
+    private void OnEnable()
+    {
+        loaded.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        loaded.Remove(this);
+    }
 
     private void Awake()
     {

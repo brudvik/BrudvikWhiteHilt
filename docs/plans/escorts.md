@@ -623,6 +623,11 @@ found no broken link.
   loaded it gives no fail text, only a lost pin (see phase 4).
 - The server's memory of merchants and cooldowns is lost on a restart, like the Nail Ship cooldown.
 
+- 2026-10-14: escorts moved to the trading posts (see [trading-posts.md](trading-posts.md), section 4a and phase 7):
+  the posts' traders sell the contract, the merchant waits at the post (`TradeState.Waiting`) until the contractor goes
+  aboard, sails to the nearest other post and pays `PayPerKilometre` by the length of the voyage. With the posts off,
+  everything in this plan still holds.
+
 ## What must be tested in the game
 
 1. **Haldor.** In Black Forest after Bonemass: the Escort Contract is on his list for 300 coins, with the blue map icon and the tooltip.

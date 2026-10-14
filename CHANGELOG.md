@@ -29,10 +29,15 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   stack the post wants. Settings `BuyShare`, `Prices` and `BuyUnlimitedGoods` in `[TradingPosts]`.
 - **Trading Post Charts from Hildir**: one for each biome, on sale once the world has reached it (150 coins,
   `ChartPrice`). Read it and every trading post on that biome's coasts gets a pin on your map. The chart is kept, so you
-  can read it again or give it to a friend. Admins: `whitehilt_tradepost here` (build one where you stand,
-  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
+  can read it again or give it to a friend.
 
 ### Changed
+- **Escorts start at the trading posts**: the traders there sell the Escort Contract instead of Haldor. Use it at a
+  post and the trading ship comes in beside the jetty, on the side away from your ship; it sets out for the nearest
+  other trading post when you go aboard your own ship, and pays 400 coins per kilometre of the voyage for a full cargo
+  (`PayPerKilometre`). If you do not come aboard within 10 minutes it sails off and you get the contract back
+  (`WaitSeconds`, `StartRange`). With the trading posts off, Haldor sells it and escorts start at sea as before. Admins: `whitehilt_tradepost here` (build one where you stand,
+  the jetty running out the way you look), `remove`, `list` and `place` (search the coasts again). Settings `[TradingPosts] Enabled`, `PerBiome`, `MinDistance` and `BuildingDistance`.
 - **[Coins are worth something again](docs/chests.md#coins-and-valuables)**: in Linear mode coins, gems and everything else the Treasure Chest holds no longer become unlimited, so coins are earned by trade, escorts, raids and treasure. A new setting, `UnlimitedValuables` in `[Chests]`, decides it: `Auto` (default: not in Linear, yes in Full and Discovered), `On` or `Off`. **In a Linear world, the chests remove their unlimited stacks of coins and valuables the first time they are opened after the update**; set `UnlimitedValuables` to `On` first to keep them.
 
 ## v0.132.0 - 2026-10-14

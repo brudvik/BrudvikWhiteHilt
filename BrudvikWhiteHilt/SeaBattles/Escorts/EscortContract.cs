@@ -9,8 +9,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.SeaBattles.Escorts;
 
 /// <summary>
-/// The Escort Contract: a scrap of leather drawn as the treasure maps are, in the blue of Haldor's trade, that Haldor
-/// sells once the sea battles are open to the world. It has no recipe. Using it is done by <see cref="EscortService"/>.
+/// The Escort Contract: a scrap of leather drawn as the treasure maps are, in the blue of Haldor's trade, sold once the
+/// sea battles are open to the world: by the traders of the trading posts, or by Haldor when the posts are off. It has no recipe. Using it is done by <see cref="EscortService"/>.
 /// The goods of the trader are set up the way the other traders' are: idempotent, for every new world scene, and for the
 /// traders already standing in the world, and the contract is taken away again when the feature is switched off.
 /// </summary>
@@ -134,7 +134,9 @@ public static class EscortContract
         }
 
         Trader.TradeItem entry = trader.m_items.Find(candidate => candidate.m_prefab == contract);
-        if (!EscortSettings.Enabled.Value || !SeaBattleSettings.Enabled.Value)
+
+        // With trading posts the contract moves to their traders (TradingPostStore), so escorts begin at a post.
+        if (!EscortSettings.Enabled.Value || !SeaBattleSettings.Enabled.Value || TradingPosts.TradingPostSettings.Enabled.Value)
         {
             if (entry != null)
             {
