@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.133.0 - 2026-10-14
 
 ### Added
 - **A Deep North tier**: Bloodgold unlocks it in linear progression (recipes in it take 3 Bloodgold extra), and White
@@ -32,6 +32,7 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   can read it again or give it to a friend.
 
 ### Changed
+- The server and every player need this version: the trading posts and the escorts from them add new network messages.
 - **Escorts start at the trading posts**: the traders there sell the Escort Contract instead of Haldor. Use it at a
   post and the trading ship comes in beside the jetty, on the side away from your ship; it sets out for the nearest
   other trading post when you go aboard your own ship, and pays 400 coins per kilometre of the voyage for a full cargo
