@@ -1580,3 +1580,34 @@ public class GrappledRaiderTests
         Assert.Equal(state, RaiderTactics.Decide(Input(state, 1f, 1f, true, true), Tuning).State);
     }
 }
+
+public class FriendlyFireTests
+{
+    [Theory]
+    // target on raider ship, has attacker, attacker is raider, turret shot, expected
+    [InlineData(true, true, true, false, true)]
+    [InlineData(true, true, true, true, true)]
+    // The player, or any other attacker, still harms a Nail Ship.
+    [InlineData(true, true, false, false, false)]
+    [InlineData(true, true, false, true, false)]
+    // A turret shot with no owner is a Nail Ship's ballista.
+    [InlineData(true, false, false, true, true)]
+    [InlineData(true, false, false, false, false)]
+    // Other ships are never protected.
+    [InlineData(false, true, true, false, false)]
+    [InlineData(false, false, false, true, false)]
+    public void OnlyTheOwnSidesHitsOnANailShipAreIgnored(bool onRaider, bool hasAttacker, bool attackerRaider, bool turret, bool expected)
+    {
+        Assert.Equal(expected, FriendlyFire.IgnoresHit(onRaider, hasAttacker, attackerRaider, turret));
+    }
+
+    [Theory]
+    [InlineData(true, true, true)]
+    [InlineData(true, false, false)]
+    [InlineData(false, true, false)]
+    [InlineData(false, false, false)]
+    public void OnlyTwoNailShipsIgnoreEachOthersCollision(bool self, bool other, bool expected)
+    {
+        Assert.Equal(expected, FriendlyFire.IgnoresCollision(self, other));
+    }
+}

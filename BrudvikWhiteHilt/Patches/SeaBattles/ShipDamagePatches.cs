@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.SeaBattles;
 using BrudvikWhiteHilt.SeaBattles.Damage;
 using HarmonyLib;
 using System;
@@ -13,28 +14,40 @@ namespace BrudvikWhiteHilt.Patches.SeaBattles;
 public static class ShipDamagePatches
 {
     /// <summary>
-    /// Looks at a hit on a hull before the game works out what the hull's resistances leave of it, so a ship that cannot be
-    /// harmed still gets its holes. It runs on the hull's owner and does not change the hit.
+    /// Looks at a hit on a hull before the game works out what the hull's resistances leave of it. A hit from a Nail Ship's
+    /// own side is dropped, so it does neither harm nor holes; any other hit goes on, and a ship that cannot be harmed
+    /// still gets its holes. It runs on the hull's owner and does not change the hit.
     /// </summary>
     /// <param name="__instance">The hull that was hit.</param>
     /// <param name="hit">The hit, as it arrived.</param>
+    /// <returns>False to skip the game's method.</returns>
     [HarmonyPatch(typeof(WearNTear), "RPC_Damage")]
     [HarmonyPrefix]
-    public static void Hit(WearNTear __instance, HitData hit)
+    public static bool Hit(WearNTear __instance, HitData hit)
     {
-        if (!ShipDamage.Loaded || hit == null)
+        if (hit == null || (!ShipDamage.Loaded && RaiderShip.Loaded == 0))
         {
-            return;
+            return true;
         }
 
         try
         {
-            ShipDamage.Of(__instance)?.TryHit(hit);
+            if (FriendlyFirePatches.IsFriendlyFire(__instance, hit))
+            {
+                return false;
+            }
+
+            if (ShipDamage.Loaded)
+            {
+                ShipDamage.Of(__instance)?.TryHit(hit);
+            }
         }
         catch (Exception ex)
         {
             Jotunn.Logger.LogWarning($"Ship damage: a hit on a hull was not looked at: {ex}");
         }
+
+        return true;
     }
 
     /// <summary>
