@@ -2,6 +2,30 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Trading posts](docs/trading-posts.md) sell White Hilt's own items**: everything the mod adds that can be crafted
+  (food, meads, potions, ammunition, gear and the rest) is shared out among the posts of the biome of its tier, each
+  piece at one post only, priced from its recipe and sold as many at once as one craft makes. New kinds for what a post
+  is known for: provisions, ammunition and wares.
+- **Trading posts in the Swamp, the Mountains and the Ashlands**: the Swamp and the Mountains never meet the sea, so
+  their posts stand on the shore below them (swamp or mountain within 400 m inland); the Ashlands' broken coast is
+  searched every 20 m and allows rougher land behind the landing. Worlds searched before are searched once more, keeping
+  their posts.
+- **Light at the posts**: lanterns along the jetty, a candle stand at the trader's stall and a soft light over the
+  trader, so the trader is seen at night.
+
+### Changed
+- **Posts pay more**: from 60 % of their price at Trading 0 to 90 % at 100 (was 25 % to 40 %); settings left at the old
+  defaults are moved to the new ones.
+- **A wider jetty and a larger dome**: the jetty is 4 m wide, so the cargo on it no longer blocks the way, and the dome
+  is a third larger (34.7 m), covering ships on both sides. Posts already standing are built again where they stand.
+
+### Fixed
+- **A store showed one item priced 123456**: an item the mod adds to a trader's list had no tooltip, which stopped the
+  store window after its first line. Affected the trading posts and the mod's items at Haldor and Hildir.
+
 ## v0.134.0 - 2026-10-14
 
 ### Added

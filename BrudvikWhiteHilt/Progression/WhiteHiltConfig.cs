@@ -334,6 +334,7 @@ public static class WhiteHiltConfig
             (Id: "dragon-0.77.0", Section: "Desert Dragon", Values: new[] { ("Health", 800f), ("FireDamage", 15f) }),
             (Id: "dragonhorn-0.123.0", Section: "DragonHorn", Values: new[] { ("Health", 600f), ("FireDamage", 8f), ("Flames", 8f), ("BreathSeconds", 10f), ("FightsBosses", 0f) }),
             (Id: "kraken-0.79.0", Section: "Kraken", Values: new[] { ("Tentacles", 4f), ("BodyHealth", 4000f), ("TentacleHealth", 500f), ("BodyDamage", 90f), ("TentacleDamage", 45f), ("ShipDamagePercent", 30f) }),
+            (Id: "trading-sell-0.135.0", Section: "TradingPosts", Values: new[] { ("BuyShare", 0.25f), ("MaxBuyShare", 0.4f) }),
             (Id: "ship-lantern-0.80.6", Section: "Ships", Values: new[] { ("LanternBrightness", 2.5f), ("LanternRange", 2f) }),
             (Id: "freya-0.72.3", Section: "Potions.GiftOfFreya", Values: new[] { ("DurationMinutes", 20f) }),
             (Id: "fenrir-0.72.3", Section: "Potions.GiftOfFenrir", Values: new[] { ("AttackSpeed", 1.5f), ("LifeSteal", 0.15f) }),

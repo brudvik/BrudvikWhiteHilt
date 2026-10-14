@@ -7,8 +7,8 @@ Plan for **Trading** (*Handel*), agreed with the user on 2026-10-14. It builds o
 
 - **A Trading skill.** It rises with every trade at a trading post, buying and selling (1 point per 5 coins,
   `ExperiencePerCoins`), and with the pay of an escort.
-- **Better paid.** A post pays a share of its own price that grows with the skill: 25 % at level 0 (`BuyShare`) to
-  40 % at 100 (`MaxBuyShare`).
+- **Better paid.** A post pays a share of its own price that grows with the skill: 60 % at level 0 (`BuyShare`) to
+  90 % at 100 (`MaxBuyShare`) (25 % to 40 % before v0.135.0).
 - **A discount.** What a post sells costs less as the skill grows: up to 10 % off at 100 (`BuyDiscount`).
 - **Each post's own gear.** Every biome has a pool of gear: the weapons, armour, capes, shields, bows and tools whose
   recipes use that biome's materials and no later biome's (the biome rule, found from the game's own recipes, so new

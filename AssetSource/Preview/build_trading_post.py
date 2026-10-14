@@ -28,7 +28,7 @@ import sys
 import compose_preview
 import render_decor
 from build_defenses import r3
-from build_water import FLAG_ARM, GATE_BEAM, PENNANT_HEIGHT
+from build_water import FLAG_ARM, GATE_BEAM, GATE_HALF, PENNANT_HEIGHT
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
@@ -43,11 +43,14 @@ BANK = 3.9  # the top of the bank, just under the deck
 WATER = 2.8  # so the water is about 2.6 m deep at the jetty head
 PILE_REACH = 3.0  # how far the jetty pieces' own piles reach below the deck
 JETTY_SECTIONS = 4  # 4 m each, out from the landing's edge at z 2
+JETTY_ROWS = (-1.0, 1.0)  # two sections side by side: the jetty is 4 m wide, room to walk past the cargo
 CANVAS = [0.62, 0.16, 0.13]  # the market stall's red; one colour scheme per biome comes in round B
 CANVAS_LIGHT = [0.9, 0.87, 0.8]
 DOME_CENTRE = (0.0, 0.0, 5.0)  # in post coordinates: over the jetty's foot, so the house and the jetty head are inside
-DOME_RADIUS = 26.0
+DOME_RADIUS = 34.7  # a third more than the first 26 m, so ships lie inside on every side of the jetty
 TRADER = (-1.7, 0.0, -3.05)  # behind the goods stall, facing the jetty
+# Raised whenever the layout changes: the mod builds the posts of an older layout again, keeping their ids.
+LAYOUT_VERSION = 2
 
 
 def custom_mesh(name, vertices, triangles, uvs=None, texture=""):
@@ -193,16 +196,18 @@ def trading_post():
             post.piece("brygge", x, z)
     deep_piles(post, [(x + dx, 2 - 0.15) for x in (-4, 0, 4) for dx in (-1.8, 0, 1.8)])
 
-    # The jetty straight out from the middle of the landing, and its head with the stair down to the sea.
+    # The jetty straight out from the middle of the landing, two sections wide, and its head with the stairs down to
+    # the sea.
     end = 2 + 4 * JETTY_SECTIONS
-    for i in range(JETTY_SECTIONS):
-        post.piece("brygge", 0, 4 + 4 * i, 90)
-    post.piece("bryggehode", 0, end + 1, -90)
-    deep_piles(post, [(dx, z) for z in range(3, end + 2, 2) for dx in (-0.85, 0.85)])
+    for row in JETTY_ROWS:
+        for i in range(JETTY_SECTIONS):
+            post.piece("brygge", row, 4 + 4 * i, 90)
+        post.piece("bryggehode", row, end + 1, -90)
+    deep_piles(post, [(row + dx, z) for z in range(3, end + 2, 2) for row in JETTY_ROWS for dx in (-0.85, 0.85)])
 
     # The gate where the jetty meets the landing: two posts, a beam with the sign under it and a lamp at each end.
     post.piece("handelsport", 0, 2.2)
-    for x in (-1.45, 1.45):
+    for x in (-GATE_HALF - 0.3, GATE_HALF + 0.3):
         post.decor("hanging_lamp", x, 2.2, y=DECK + GATE_BEAM - 0.1 - post.height("hanging_lamp"))
 
     # Two stalls with a path between them, straight from the gate to the house door: the land's goods on the left,
@@ -219,6 +224,12 @@ def trading_post():
     post.decor("basket", 4.6, -0.3, 20, y=DECK + post.height("table_rough"))
     post.decor("bucket_water", 3.6, 0.6)
 
+    # Light at the stalls, so the trader is seen at night: a candle stand beside the goods stall, behind the counter
+    # where the trader stands (the other side is the path to the house), and a lantern on the fish stall's corner. The
+    # mod also hangs a soft light over the trader.
+    post.decor("candlestand", -3.15, -3.5)
+    post.decor("lantern_wood", 3.3, -3.4)
+
     # The stock on the left of the landing: crates stacked two high, barrels and sacks.
     post.decor("crate_lidded", -5.2, -3.4, 5)
     post.decor("crate_lidded", -5.2, -3.4, -10, y=DECK + post.height("crate_lidded"))
@@ -234,18 +245,21 @@ def trading_post():
     # The harbour crane on the landing's right front corner, its jib over the water, for unloading.
     post.piece("havnekran", 5.0, 1.0)
 
-    # Along the jetty: cargo waiting to be loaded, and two of our own mooring posts by the ship.
-    post.decor("barrel_farm", -0.55, 8.6)
-    post.decor("barrel_farm", -0.5, 9.5, 30)
-    post.decor("crate_lidded", -0.55, 10.5, 90)
-    post.decor("grain_sack", -0.5, 11.3, 60)
+    # Along the jetty: cargo waiting to be loaded by the left edge, leaving the way clear, two of our own mooring posts
+    # on the right edge by the ship, and lanterns along it for the night.
+    post.decor("barrel_farm", -1.55, 8.6)
+    post.decor("barrel_farm", -1.5, 9.5, 30)
+    post.decor("crate_lidded", -1.55, 10.5, 90)
+    post.decor("grain_sack", -1.5, 11.3, 60)
     for z in (9.0, 15.0):
-        post.piece("fortoyningspale", 0.8, z)
+        post.piece("fortoyningspale", 1.8, z)
+    for x, z in ((-1.75, 5.0), (1.75, 12.0), (-1.75, 16.0)):
+        post.decor("lantern_wood", x, z)
 
     # The flag at the jetty head, seen from the sea, and a lamp on its arm for the night. The mod hangs the pennant.
-    post.piece("flaggstang", -0.75, end + 1.6)
-    post.parts.append({"mesh": "tp_pennant", "position": r3((-0.75, DECK + PENNANT_HEIGHT, end + 1.6))})
-    post.decor("hanging_lamp", -0.75, end + 2.0, y=DECK + FLAG_ARM - 0.05 - post.height("hanging_lamp"))
+    post.piece("flaggstang", -1.75, end + 1.6)
+    post.parts.append({"mesh": "tp_pennant", "position": r3((-1.75, DECK + PENNANT_HEIGHT, end + 1.6))})
+    post.decor("hanging_lamp", -1.75, end + 2.0, y=DECK + FLAG_ARM - 0.05 - post.height("hanging_lamp"))
 
     # The trader's house on the land behind the stalls, its door facing the gate down the path.
     house_z = -8.8
@@ -261,7 +275,7 @@ def trading_post():
     post.on_land("tavern_bench", 11.0, -6.5, 90)
 
     # A longship tied up along the jetty, for the scale.
-    post.parts.append({"mesh": "Karve", "position": r3((3.0, WATER - 0.25, 12.5)), "rotation": [0, 180, 0], "tint": [0.5, 0.36, 0.24]})
+    post.parts.append({"mesh": "Karve", "position": r3((4.0, WATER - 0.25, 12.5)), "rotation": [0, 180, 0], "tint": [0.5, 0.36, 0.24]})
 
     post.end = end
     return post, {
@@ -307,6 +321,7 @@ def game_layout(post):
     return {
         "note": "Generated by AssetSource/Preview/build_trading_post.py; do not edit. Post coordinates: the middle of the "
                 "landing at deck height, +z towards the sea.",
+        "version": LAYOUT_VERSION,
         "head": [0, round(post.end + 1, 3)],
         "trader": {"position": r3(TRADER), "yaw": 0},
         "dome": {"centre": r3(DOME_CENTRE), "radius": DOME_RADIUS},

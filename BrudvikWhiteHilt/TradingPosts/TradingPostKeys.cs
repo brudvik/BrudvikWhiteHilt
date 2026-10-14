@@ -17,6 +17,9 @@ public static class TradingPostKeys
     /// <summary>On the marker: set once the post's trader has been put out.</summary>
     public static readonly int HasTrader = "whitehilt_post_trader".GetStableHashCode();
 
+    /// <summary>On the marker: the version of the layout the post was built from (0 before versions).</summary>
+    public static readonly int LayoutVersion = "whitehilt_post_layout".GetStableHashCode();
+
     /// <summary>Prefab hash of the marker.</summary>
     public static readonly int MarkerHash = MarkerPrefabName.GetStableHashCode();
 

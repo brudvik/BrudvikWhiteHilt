@@ -24,7 +24,7 @@ public static class TradingPostSites
     /// <summary>Water at least this deep must lie under the jetty head, for a longship.</summary>
     public const float HeadDepth = 2.5f;
 
-    /// <summary>Water at least this deep must lie six metres either side of the head, where a ship lies alongside.</summary>
+    /// <summary>Water at least this deep must lie seven metres either side of the head, where a ship lies alongside.</summary>
     public const float SideDepth = 2.0f;
 
     /// <summary>The land behind the landing may rise at most this much above the deck.</summary>
@@ -33,12 +33,27 @@ public static class TradingPostSites
     /// <summary>The land behind the landing may differ at most this much in height.</summary>
     public const float MaxLandSpread = 2.5f;
 
+    /// <summary>How far inland a post looks for the biome it serves, when that biome does not reach the sea itself.</summary>
+    public const float InlandReach = 400f;
+
+    /// <summary>The rules on most coasts.</summary>
+    public static readonly Rules Gentle = new(MaxLandAboveDeck, MaxLandSpread);
+
+    /// <summary>
+    /// The rules on the broken coasts of the Ashlands: the post levels the ground under its house, so the land behind may
+    /// be rougher; the water a ship needs is the same.
+    /// </summary>
+    public static readonly Rules Rugged = new(4.0f, 6.0f);
+
     /// <summary>Directions tried at each place.</summary>
     public const int Directions = 16;
 
     // The jetty head's middle, from the layout's "head".
     private const float HeadZ = 19f;
-    private const float SideX = 6f;
+    private const float SideX = 7f;
+
+    // The jetty is 4 m wide: nothing may rise under its middle or its edges.
+    private static readonly float[] jettyLines = { -1.5f, 0f, 1.5f };
     private const float OpenSeaZ = 25f;
 
     // Where the land behind the landing is sampled: the house, the fire and the cart stand there.
@@ -56,9 +71,11 @@ public static class TradingPostSites
     /// <param name="water">The sea's level.</param>
     /// <param name="deck">The deck's height, when it suits.</param>
     /// <param name="score">How well it suits: deeper water and flatter land are better.</param>
+    /// <param name="rules">How rough the land behind may be; <see cref="Gentle"/> when left out.</param>
     /// <returns>True if a post fits there.</returns>
-    public static bool Evaluate(Vector2 origin, float yaw, Func<float, float, float> height, float water, out float deck, out float score)
+    public static bool Evaluate(Vector2 origin, float yaw, Func<float, float, float> height, float water, out float deck, out float score, Rules rules = null)
     {
+        rules ??= Gentle;
         deck = 0f;
         score = 0f;
         float bank = height(origin.x, origin.y);
@@ -73,7 +90,7 @@ public static class TradingPostSites
         foreach (Vector2 local in land)
         {
             float h = At(origin, yaw, local, height);
-            if (h < water + 0.2f || h > deck + MaxLandAboveDeck)
+            if (h < water + 0.2f || h > deck + rules.LandAboveDeck)
             {
                 return false;
             }
@@ -82,16 +99,19 @@ public static class TradingPostSites
             high = Mathf.Max(high, h);
         }
 
-        if (high - low > MaxLandSpread)
+        if (high - low > rules.LandSpread)
         {
             return false;
         }
 
         for (float z = 3f; z <= HeadZ; z += 2f)
         {
-            if (At(origin, yaw, new Vector2(0f, z), height) > deck - 0.6f)
+            foreach (float x in jettyLines)
             {
-                return false;
+                if (At(origin, yaw, new Vector2(x, z), height) > deck - 0.6f)
+                {
+                    return false;
+                }
             }
         }
 
@@ -119,8 +139,9 @@ public static class TradingPostSites
     /// <param name="yaw">The best direction, in degrees.</param>
     /// <param name="deck">The deck's height.</param>
     /// <param name="score">How well it suits.</param>
+    /// <param name="rules">How rough the land behind may be; <see cref="Gentle"/> when left out.</param>
     /// <returns>True if any direction suits.</returns>
-    public static bool TryFind(Vector2 origin, Func<float, float, float> height, float water, out float yaw, out float deck, out float score)
+    public static bool TryFind(Vector2 origin, Func<float, float, float> height, float water, out float yaw, out float deck, out float score, Rules rules = null)
     {
         yaw = 0f;
         deck = 0f;
@@ -129,7 +150,7 @@ public static class TradingPostSites
         for (int i = 0; i < Directions; i++)
         {
             float candidate = 360f * i / Directions;
-            if (Evaluate(origin, candidate, height, water, out float candidateDeck, out float candidateScore) && candidateScore > score)
+            if (Evaluate(origin, candidate, height, water, out float candidateDeck, out float candidateScore, rules) && candidateScore > score)
             {
                 found = true;
                 yaw = candidate;
@@ -172,6 +193,35 @@ public static class TradingPostSites
     }
 
     /// <summary>
+    /// The biomes behind a post, looking inland from the landing within <see cref="InlandReach"/>: straight back and a
+    /// little to either side. A biome that never meets the sea (the swamp lies above the coast, the mountains far above
+    /// it) gets its posts on the shore below it this way.
+    /// </summary>
+    /// <param name="origin">The middle of the landing (x, z).</param>
+    /// <param name="yaw">Which way the jetty runs, in degrees from +z.</param>
+    /// <param name="biome">The biome at (x, z).</param>
+    /// <typeparam name="TBiome">The kind of biome (the game's, or a test's).</typeparam>
+    /// <returns>Each biome found, once, nearest first.</returns>
+    public static List<TBiome> Inland<TBiome>(Vector2 origin, float yaw, Func<float, float, TBiome> biome)
+    {
+        List<TBiome> found = new();
+        for (float distance = 25f; distance <= InlandReach; distance += 25f)
+        {
+            foreach (float side in new[] { 0f, -0.5f, 0.5f })
+            {
+                Vector2 world = ToWorld(origin, yaw, new Vector2(side * distance, -distance));
+                TBiome here = biome(world.x, world.y);
+                if (!found.Contains(here))
+                {
+                    found.Add(here);
+                }
+            }
+        }
+
+        return found;
+    }
+
+    /// <summary>
     /// Turns a point from post coordinates into the world.
     /// </summary>
     /// <param name="origin">The middle of the landing (x, z).</param>
@@ -190,5 +240,21 @@ public static class TradingPostSites
     {
         Vector2 world = ToWorld(origin, yaw, local);
         return height(world.x, world.y);
+    }
+
+    /// <summary>How rough the land behind a post may be.</summary>
+    public sealed class Rules
+    {
+        public Rules(float landAboveDeck, float landSpread)
+        {
+            LandAboveDeck = landAboveDeck;
+            LandSpread = landSpread;
+        }
+
+        /// <summary>The land behind the landing may rise at most this much above the deck.</summary>
+        public float LandAboveDeck { get; }
+
+        /// <summary>The land behind the landing may differ at most this much in height.</summary>
+        public float LandSpread { get; }
     }
 }

@@ -10,14 +10,19 @@ namespace BrudvikWhiteHilt.TradingPosts;
 /// <summary>
 /// Places the trading posts in the world, on the server: once per world, after its locations are generated, it
 /// searches the coasts for places that suit a post (<see cref="TradingPostSites"/>), picks up to
-/// <see cref="TradingPostSettings.PerBiome"/> in each biome that meets the sea, far apart and clear of buildings and
-/// locations, and builds them. Worlds made before the posts get them too. The work is spread over frames so the
-/// server does not stall.
+/// <see cref="TradingPostSettings.PerBiome"/> in each biome, far apart and clear of buildings and locations, and builds
+/// them. A biome that never meets the sea (the swamp, the mountains) gets its posts on the shore below it; the broken
+/// coasts of the Ashlands are searched closer and with rougher land allowed. Worlds made before the posts get them too,
+/// and worlds searched by an older search are searched again, keeping the posts they have. The work is spread over
+/// frames so the server does not stall.
 /// </summary>
 public class TradingPostPlacer : MonoBehaviour
 {
-    /// <summary>Global key set once the posts of a world are placed.</summary>
-    public const string DoneKey = "whitehilt_tradingposts_placed";
+    /// <summary>
+    /// Global key set once the posts of a world are placed. Its number goes up when the search finds new kinds of places,
+    /// so worlds searched before are searched again.
+    /// </summary>
+    public const string DoneKey = "whitehilt_tradingposts_placed_2";
 
     // The biomes that get posts, in the order of the game; the ocean has no land.
     private static readonly Heightmap.Biome[] biomes =
@@ -26,8 +31,17 @@ public class TradingPostPlacer : MonoBehaviour
         Heightmap.Biome.Plains, Heightmap.Biome.Mistlands, Heightmap.Biome.AshLands, Heightmap.Biome.DeepNorth
     };
 
+    // Biomes that never meet the sea: their posts stand on the shore below them.
+    private static readonly Heightmap.Biome[] inland = { Heightmap.Biome.Swamp, Heightmap.Biome.Mountain };
+
     private const float WorldRadius = 10000f;
     private const float GridStep = 40f;
+
+    // The Ashlands' coast breaks up every few metres, so it is searched closer.
+    private const float AshlandsGridStep = 20f;
+
+    // Within the world the Ashlands lie south of this.
+    private const float AshlandsNorth = -3500f;
     private const float FrameBudgetMs = 4f;
 
     // No post near the world's centre, where players start.
@@ -88,6 +102,11 @@ public class TradingPostPlacer : MonoBehaviour
         }
 
         enabled = false;
+        if (TradingPostSettings.Enabled.Value)
+        {
+            TradingPostBuilder.RebuildOutdated();
+        }
+
         if (TradingPostSettings.Enabled.Value && !zones.GetGlobalKey(DoneKey))
         {
             StartCoroutine(Place());
@@ -98,9 +117,6 @@ public class TradingPostPlacer : MonoBehaviour
     {
         running = true;
         watch.Restart();
-        float water = ZoneSystem.instance.m_waterLevel;
-        Func<float, float, float> height = (x, z) => WorldGenerator.instance.GetHeight(x, z);
-
         Dictionary<Vector2s, List<Vector3>> buildings = new();
         IEnumerator collect = CollectBuildings(buildings);
         while (collect.MoveNext())
@@ -109,50 +125,19 @@ public class TradingPostPlacer : MonoBehaviour
         }
 
         Dictionary<Heightmap.Biome, List<Site>> found = biomes.ToDictionary(biome => biome, _ => new List<Site>());
-        for (float x = -WorldRadius; x <= WorldRadius; x += GridStep)
+        IEnumerator coasts = Search(found, buildings, GridStep, WorldRadius, false);
+        while (coasts.MoveNext())
         {
-            for (float z = -WorldRadius; z <= WorldRadius; z += GridStep)
-            {
-                if (watch.Elapsed.TotalMilliseconds > FrameBudgetMs)
-                {
-                    yield return null;
-                    if (ZNet.instance == null || WorldGenerator.instance == null)
-                    {
-                        running = false;
-                        yield break;
-                    }
-
-                    watch.Restart();
-                }
-
-                Vector2 origin = new(x, z);
-                float magnitude = origin.magnitude;
-                if (magnitude > WorldRadius || magnitude < CentreClearance)
-                {
-                    continue;
-                }
-
-                float bank = height(x, z) - water;
-                if (bank < TradingPostSites.MinBank || bank > TradingPostSites.MaxBank)
-                {
-                    continue;
-                }
-
-                Heightmap.Biome biome = WorldGenerator.instance.GetBiome(x, z);
-                if (!found.TryGetValue(biome, out List<Site> sites)
-                    || !TradingPostSites.TryFind(origin, height, water, out float yaw, out float deck, out _))
-                {
-                    continue;
-                }
-
-                if (IsFree(origin, buildings))
-                {
-                    sites.Add(new Site(origin, yaw, deck));
-                }
-            }
+            yield return null;
         }
 
-        if (ZNet.instance == null || ZoneSystem.instance == null)
+        IEnumerator ashlands = Search(found, buildings, AshlandsGridStep, AshlandsNorth, true);
+        while (ashlands.MoveNext())
+        {
+            yield return null;
+        }
+
+        if (ZNet.instance == null || ZoneSystem.instance == null || WorldGenerator.instance == null)
         {
             running = false;
             yield break;
@@ -163,14 +148,69 @@ public class TradingPostPlacer : MonoBehaviour
         running = false;
     }
 
-    // Picks and builds the posts of each biome, counting the posts already standing in it.
+    // Searches the world south of a line for places that suit a post: everywhere but the Ashlands, or only the Ashlands.
+    // Ends early if the world goes away.
+    private IEnumerator Search(Dictionary<Heightmap.Biome, List<Site>> found, Dictionary<Vector2s, List<Vector3>> buildings, float step, float north, bool ashlands)
+    {
+        float water = ZoneSystem.instance.m_waterLevel;
+        Func<float, float, float> height = (x, z) => WorldGenerator.instance.GetHeight(x, z);
+        Func<float, float, Heightmap.Biome> biomeAt = (x, z) => WorldGenerator.instance.GetBiome(x, z);
+        TradingPostSites.Rules rules = ashlands ? TradingPostSites.Rugged : TradingPostSites.Gentle;
+        for (float x = -WorldRadius; x <= WorldRadius; x += step)
+        {
+            for (float z = -WorldRadius; z <= north; z += step)
+            {
+                if (watch.Elapsed.TotalMilliseconds > FrameBudgetMs)
+                {
+                    yield return null;
+                    if (ZNet.instance == null || WorldGenerator.instance == null)
+                    {
+                        yield break;
+                    }
+
+                    watch.Restart();
+                }
+
+                Vector2 origin = new(x, z);
+                float magnitude = origin.magnitude;
+                if (magnitude > WorldRadius || magnitude < CentreClearance || WorldGenerator.IsAshlands(x, z) != ashlands)
+                {
+                    continue;
+                }
+
+                float bank = height(x, z) - water;
+                if (bank < TradingPostSites.MinBank || bank > TradingPostSites.MaxBank)
+                {
+                    continue;
+                }
+
+                Heightmap.Biome biome = biomeAt(x, z);
+                if (!found.TryGetValue(biome, out List<Site> sites)
+                    || !TradingPostSites.TryFind(origin, height, water, out float yaw, out float deck, out _, rules)
+                    || !IsFree(origin, buildings))
+                {
+                    continue;
+                }
+
+                Site site = new(origin, yaw, deck);
+                sites.Add(site);
+                foreach (Heightmap.Biome behind in TradingPostSites.Inland(origin, yaw, biomeAt).Intersect(inland))
+                {
+                    found[behind].Add(site);
+                }
+            }
+        }
+    }
+
+    // Picks and builds the posts of each biome, counting the posts already standing in it. The biomes with the fewest
+    // places pick first, so a shore below the swamp is not taken by the meadows when the swamp has no other.
     private static void Build(Dictionary<Heightmap.Biome, List<Site>> found)
     {
         List<ZDO> standing = TradingPostBuilder.Markers().ToList();
         List<Vector2> taken = standing.Select(zdo => new Vector2(zdo.GetPosition().x, zdo.GetPosition().z)).ToList();
         System.Random random = new(WorldGenerator.instance.GetSeed());
-        List<string> summary = new();
-        foreach (Heightmap.Biome biome in biomes)
+        Dictionary<Heightmap.Biome, string> summary = new();
+        foreach (Heightmap.Biome biome in biomes.OrderBy(biome => found[biome].Count))
         {
             List<Site> sites = found[biome];
             int have = standing.Count(zdo => zdo.GetInt(TradingPostKeys.Biome) == (int)biome);
@@ -182,10 +222,10 @@ public class TradingPostPlacer : MonoBehaviour
                 TradingPostBuilder.Build(new Vector3(pick.x, site.Deck, pick.y), site.Yaw, biome);
             }
 
-            summary.Add($"{biome} {have + picks.Count} ({sites.Count} places suit)");
+            summary[biome] = $"{biome} {have + picks.Count} ({sites.Count} places suit)";
         }
 
-        Jotunn.Logger.LogInfo($"Trading posts placed: {string.Join(", ", summary)}.");
+        Jotunn.Logger.LogInfo($"Trading posts placed: {string.Join(", ", biomes.Select(biome => summary[biome]))}.");
     }
 
     // Anything a player has built has its creator set; collected per zone, a few sectors per frame.

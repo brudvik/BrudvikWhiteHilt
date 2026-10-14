@@ -99,15 +99,15 @@ public static class TradingPostSettings
         Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true,
             "Make trading posts by the sea. Off: no new ones are made; the posts already in the world stay.");
         PerBiome = WhiteHiltConfig.BindAdminOnly(Section, "PerBiome", 4,
-            "How many trading posts each biome that meets the sea gets, where its coast has room for them. Placed once per world; " +
+            "How many trading posts each biome gets, where its coast (or the shore below it) has room for them. Placed once per world; " +
             "a higher number takes effect with whitehilt_tradepost place.", new AcceptableValueRange<int>(0, 10));
         MinDistance = WhiteHiltConfig.BindAdminOnly(Section, "MinDistance", 1000f,
             "Least distance between two trading posts, in metres.", new AcceptableValueRange<float>(200f, 5000f));
         BuildingDistance = WhiteHiltConfig.BindAdminOnly(Section, "BuildingDistance", 60f,
             "Least distance from a new trading post to anything a player has built, in metres.", new AcceptableValueRange<float>(0f, 300f));
-        BuyShare = WhiteHiltConfig.BindAdminOnly(Section, "BuyShare", 0.25f,
-            "Share of its own asking price a trading post pays for the goods it buys (0.25 = a quarter).", new AcceptableValueRange<float>(0f, 1f));
-        MaxBuyShare = WhiteHiltConfig.BindAdminOnly(Section, "MaxBuyShare", 0.4f,
+        BuyShare = WhiteHiltConfig.BindAdminOnly(Section, "BuyShare", 0.6f,
+            "Share of its own asking price a trading post pays for the goods it buys (0.6 = three fifths).", new AcceptableValueRange<float>(0f, 1f));
+        MaxBuyShare = WhiteHiltConfig.BindAdminOnly(Section, "MaxBuyShare", 0.9f,
             "Share of its own asking price a trading post pays a player with Trading 100; it grows from BuyShare at level 0.",
             new AcceptableValueRange<float>(0f, 1f));
         BuyDiscount = WhiteHiltConfig.BindAdminOnly(Section, "BuyDiscount", 0.1f,

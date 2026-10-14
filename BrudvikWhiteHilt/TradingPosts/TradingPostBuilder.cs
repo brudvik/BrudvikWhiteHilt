@@ -27,12 +27,13 @@ public static class TradingPostBuilder
     /// <param name="origin">The middle of the landing at deck height.</param>
     /// <param name="yaw">Which way the post faces, in degrees: its jetty runs out along this direction.</param>
     /// <param name="biome">The biome the post serves.</param>
+    /// <param name="id">The post's id when it is built again; null for a new post.</param>
     /// <returns>The new post's id, or null if a prefab is missing.</returns>
-    public static string Build(Vector3 origin, float yaw, Heightmap.Biome biome)
+    public static string Build(Vector3 origin, float yaw, Heightmap.Biome biome, string id = null)
     {
         TradingPostLayout layout = TradingPostLayout.Load();
         Quaternion turn = Quaternion.Euler(0f, yaw, 0f);
-        string id = Guid.NewGuid().ToString("N");
+        id ??= Guid.NewGuid().ToString("N");
 
         GameObject marker = ZNetScene.instance.GetPrefab(TradingPostKeys.MarkerPrefabName);
         if (marker == null)
@@ -44,6 +45,7 @@ public static class TradingPostBuilder
         ZDO site = Create(marker, origin, turn);
         site.Set(TradingPostKeys.PostId, id);
         site.Set(TradingPostKeys.Biome, (int)biome);
+        site.Set(TradingPostKeys.LayoutVersion, layout.version);
         int built = 1;
         List<string> missing = new();
         foreach (TradingPostPart part in layout.parts)
@@ -90,6 +92,42 @@ public static class TradingPostBuilder
         }
 
         return parts.Count;
+    }
+
+    /// <summary>
+    /// Builds again, where they stand and with the same ids, the posts built from an older layout, so a wider jetty or
+    /// a larger dome reaches the posts already in the world. Their traders are put out again by their markers. Call on
+    /// the server.
+    /// </summary>
+    /// <returns>How many posts were built again.</returns>
+    public static int RebuildOutdated()
+    {
+        int version = TradingPostLayout.Load().version;
+        List<ZDO> outdated = Markers().Where(marker => marker.GetInt(TradingPostKeys.LayoutVersion) < version).ToList();
+        if (outdated.Count == 0)
+        {
+            return 0;
+        }
+
+        HashSet<string> ids = new(outdated.Select(marker => marker.GetString(TradingPostKeys.PostId)));
+        List<(Vector3 Origin, float Yaw, Heightmap.Biome Biome, string Id)> posts = outdated
+            .Select(marker => (marker.GetPosition(), marker.GetRotation().eulerAngles.y, (Heightmap.Biome)marker.GetInt(TradingPostKeys.Biome),
+                marker.GetString(TradingPostKeys.PostId)))
+            .ToList();
+        List<ZDO> parts = ZDOMan.instance.m_objectsByID.Values.Where(zdo => ids.Contains(zdo.GetString(TradingPostKeys.PostId))).ToList();
+        foreach (ZDO zdo in parts)
+        {
+            zdo.SetOwner(ZDOMan.GetSessionID());
+            ZDOMan.instance.DestroyZDO(zdo);
+        }
+
+        foreach ((Vector3 origin, float yaw, Heightmap.Biome biome, string id) in posts)
+        {
+            Build(origin, yaw, biome, id);
+        }
+
+        Jotunn.Logger.LogInfo($"Trading posts: built {posts.Count} posts again from layout {version}.");
+        return posts.Count;
     }
 
     /// <summary>

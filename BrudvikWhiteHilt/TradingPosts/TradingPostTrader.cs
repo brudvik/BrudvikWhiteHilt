@@ -28,6 +28,11 @@ public class TradingPostTrader : MonoBehaviour
     private const float DialogHeight = 2.1f;
     private const float DialogShowTime = 5f;
 
+    // A soft warm light over the trader, so the trader is seen at night from the jetty.
+    private const float GlowHeight = 2.6f;
+    private const float GlowRange = 6f;
+    private const float GlowIntensity = 1.1f;
+
     // Haldor's animator triggers and the emotes that stand in for them on the player body.
     private static readonly Dictionary<string, string> emotes = new()
     {
@@ -132,6 +137,15 @@ public class TradingPostTrader : MonoBehaviour
         {
             visual.gameObject.AddComponent<LookAt>();
         }
+
+        Light glow = new GameObject("glow").AddComponent<Light>();
+        glow.transform.SetParent(prefab.transform, false);
+        glow.transform.localPosition = new Vector3(0f, GlowHeight, 0.4f);
+        glow.type = LightType.Point;
+        glow.color = new Color(1f, 0.8f, 0.55f);
+        glow.range = GlowRange;
+        glow.intensity = GlowIntensity;
+        glow.shadows = LightShadows.None;
 
         prefab.AddComponent<TradingPostTrader>();
         PrefabManager.Instance.AddPrefab(new CustomPrefab(prefab, false));

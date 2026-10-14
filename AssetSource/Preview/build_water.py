@@ -269,7 +269,7 @@ def water_pieces():
 
 
 # The trading post's own pieces (docs/plans/trading-posts.md), placed only by the mod, never built with the hammer.
-GATE_HALF = 1.15  # the gate's posts stand at x -1.15 and 1.15, either side of the 2 m jetty
+GATE_HALF = 1.9  # the gate's posts stand at x -1.9 and 1.9, just inside the edges of the 4 m jetty
 GATE_BEAM = 2.85  # height of the beam the sign hangs from
 FLAG_HEIGHT = 6.5
 FLAG_ARM = 2.5  # height of the arm the lamp hangs from
@@ -281,12 +281,12 @@ def trading_post_gate():
     """The gate where a trading post's jetty meets the landing: two posts, a beam across them and the sign under it,
     facing +z (the sea). Its foot is at y 0, the deck."""
     parts = [pole((x, -0.1, 0), (x, GATE_BEAM + 0.15, 0), 0.11) for x in (-GATE_HALF, GATE_HALF)]
-    parts.append(plank((-1.6, GATE_BEAM, 0), (1.6, GATE_BEAM, 0), 0.18, 0.2))
+    parts.append(plank((-GATE_HALF - 0.45, GATE_BEAM, 0), (GATE_HALF + 0.45, GATE_BEAM, 0), 0.18, 0.2))
     parts.append(part("sign", (0, GATE_BEAM - 0.5, 0.05), (0, 180, 0), (1.3, 1.3, 1.3)))
     for x in (-GATE_HALF, GATE_HALF):
         parts.append(part("wood_pole_log", (x, GATE_BEAM - 0.4, 0), (0, 0, 0), (0.5, 0.06, 0.5), tint=ROPE_TINT, detail=True))
     colliders = [box((x, GATE_BEAM / 2, 0), (0.24, GATE_BEAM + 0.2, 0.24)) for x in (-GATE_HALF, GATE_HALF)]
-    colliders.append(box((0, GATE_BEAM, 0), (3.2, 0.2, 0.2)))
+    colliders.append(box((0, GATE_BEAM, 0), (2 * GATE_HALF + 0.9, 0.2, 0.2)))
     return parts, colliders, []
 
 

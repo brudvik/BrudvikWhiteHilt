@@ -66,6 +66,24 @@ public class TradingPostSitesTests
         Assert.False(TradingPostSites.Evaluate(Vector2.zero, 0f, Hillside, Water, out _, out _));
     }
 
+    /// <summary>Rough land behind the landing suits on the broken coasts, where the post levels its ground.</summary>
+    [Fact]
+    public void RoughLandSuitsWhereThePostLevelsIt()
+    {
+        static float Rough(float x, float z) => z <= 2f ? 31f + (x > 0f ? 4f : 0f) * Mathf.Min(1f, -z / 8f) : Shore(x, z);
+        Assert.False(TradingPostSites.Evaluate(Vector2.zero, 0f, Rough, Water, out _, out _));
+        Assert.True(TradingPostSites.Evaluate(Vector2.zero, 0f, Rough, Water, out _, out _, TradingPostSites.Rugged));
+    }
+
+    /// <summary>The biomes behind a post are found looking inland, nearest first.</summary>
+    [Fact]
+    public void TheBiomesBehindAreFoundInland()
+    {
+        static string Land(float x, float z) => z > 0f ? "Ocean" : z > -100f ? "Meadows" : "Swamp";
+        Assert.Equal(new List<string> { "Meadows", "Swamp" }, TradingPostSites.Inland(Vector2.zero, 0f, Land));
+        Assert.DoesNotContain("Swamp", TradingPostSites.Inland(Vector2.zero, 180f, Land));
+    }
+
     /// <summary>A post turned to the east is judged in its own turned coordinates.</summary>
     [Fact]
     public void ATurnedShoreIsFoundToo()

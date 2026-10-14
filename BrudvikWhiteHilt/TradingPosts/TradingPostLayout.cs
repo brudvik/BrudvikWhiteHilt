@@ -19,6 +19,9 @@ public class TradingPostLayout
     /// <summary>Where the layout comes from.</summary>
     public string note;
 
+    /// <summary>The layout's version: posts built from an older one are built again.</summary>
+    public int version;
+
     /// <summary>The middle of the jetty head (x, z), where a ship ties up.</summary>
     public float[] head;
 
