@@ -11,6 +11,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   own comfort reach from 10 to 20 m, and the new **Homecraft** skill, raised by resting and building comfort, widens it
   further, up to 40 m. Settings in `[Comfort]`.
 
+### Changed
+- **[Workbench extensions](docs/build-tools.md#workbench-extensions) fit where they fit**: an extension is no longer
+  refused because another extension, of any station, stands near its centre; only one that really overlaps another is
+  (`[StationExtensions] Spacing`). Extensions may stand up to 10 m from their station (5 m in the game, `Reach`), for
+  placing and for the station's level, and the station's reach shows as a ring while you place one (`ShowReachRing`).
+
 ## v0.133.0 - 2026-10-14
 
 ### Added

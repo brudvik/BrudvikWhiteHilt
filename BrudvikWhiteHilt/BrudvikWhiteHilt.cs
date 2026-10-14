@@ -86,6 +86,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         PortalSettings.Initialize();
         Pieces.Portals.Effects.PortalFxSettings.Initialize();
         BuildToolSettings.Initialize();
+        Building.StationExtensions.Initialize();
         Building.Media.MediaSettings.Initialize();
         Building.Groups.GroupSettings.Initialize();
         Building.Groups.SharedBlueprintSettings.Initialize();

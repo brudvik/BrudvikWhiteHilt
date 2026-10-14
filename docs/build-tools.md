@@ -139,3 +139,15 @@ Section `[BuildTools.Moats]` (admin only, synced from the server):
 | `CreatureSpeed` | 0.5 | Speed of creatures in a ditch, as a share of their normal speed |
 | `CreatureSlideAngle` | 38 | Creatures in a ditch slide down slopes steeper than this; 90 turns it off |
 | `ClimbOutSeconds` | 10 | Seconds a creature slides before it claws its way out |
+
+### Workbench extensions
+
+In the game a workbench extension (a chopping block, a tanning rack, a forge cooler, a stone pot's herb tray...) is refused with *needs more space* when any other extension, even one of another station, stands within its space requirement, measured from centre to centre, so two small extensions that do not touch can still not stand side by side. The mod only refuses an extension that really **overlaps** another one: their solid shapes are compared, and pieces may touch (`Spacing`).
+
+An extension may stand up to **10 m** from its station (`Reach`, 5 m in the game), both to place it and to count towards the station's level. While you place one, the nearest station of its kind shows its reach as a ring on the ground (`ShowReachRing`).
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[StationExtensions] Spacing` | Overlap | `Overlap`: refused only where it overlaps another extension. `Off`: never refused for other extensions. `Vanilla`: as in the game |
+| `[StationExtensions] Reach` | 10 | How far from its station an extension may stand, in metres; 0 uses each extension's own distance from the game |
+| `[StationExtensions] ShowReachRing` | on | Show the station's reach while placing an extension (each player's own) |
