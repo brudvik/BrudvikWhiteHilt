@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.132.0 - 2026-10-14
 
 ### Added
 - **[Escorts](docs/sea-battles.md#escorts)**: Haldor sells an **Escort Contract** (300 coins, once Bonemass is slain). Use it aboard your ship at open sea and a **trading ship** sails up beside you, bound for a port 1200 to 2000 m away over deep water, marked on your map. It has a blue and cream sail and barrels and crates on deck; it sails itself, a little slower than a longship, and its helm and hold are shut.
