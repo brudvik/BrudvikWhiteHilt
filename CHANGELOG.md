@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.135.0 - 2026-10-14
 
 ### Added
 - **[Trading posts](docs/trading-posts.md) sell White Hilt's own items**: everything the mod adds that can be crafted
