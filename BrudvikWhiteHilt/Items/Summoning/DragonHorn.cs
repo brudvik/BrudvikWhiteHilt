@@ -432,7 +432,7 @@ public static class DragonHorn
         if (entry == null)
         {
             // StoreGui.BuySelectedItem plays these after every purchase without a null check.
-            entry = new Trader.TradeItem { m_prefab = horn, m_stack = 1, m_buyPlayerEffects = new EffectList() };
+            entry = new Trader.TradeItem { m_prefab = horn, m_stack = 1, m_tooltip = string.Empty, m_buyPlayerEffects = new EffectList() };
             trader.m_items.Add(entry);
         }
 

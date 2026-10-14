@@ -107,6 +107,7 @@ public static class TradingPostStore
             {
                 m_prefab = drop,
                 m_stack = stack,
+                m_tooltip = string.Empty,
                 m_price = TradingSkill.Price(Mathf.Max(1, Mathf.RoundToInt(TradingPostGoods.AskingPrice(prefab, prices) * stack)), player),
                 m_requiredGlobalKey = TradingPostGoods.OpenKey(biome),
                 // The store window plays these after every purchase without checking for none.
@@ -131,6 +132,7 @@ public static class TradingPostStore
             {
                 m_prefab = contract,
                 m_stack = 1,
+                m_tooltip = string.Empty,
                 m_price = SeaBattles.Escorts.EscortSettings.ContractPrice.Value,
                 m_requiredGlobalKey = SeaBattles.SeaBattleSettings.RequiredKey.Value?.Trim() ?? string.Empty,
                 m_buyPlayerEffects = new EffectList()
@@ -188,7 +190,8 @@ public static class TradingPostStore
             Trader.TradeItem item = new()
             {
                 m_prefab = drop,
-                m_stack = 1,
+                m_stack = Mathf.Min(gear[rank].Stack, drop.m_itemData.m_shared.m_maxStackSize),
+                m_tooltip = string.Empty,
                 m_price = TradingSkill.Price(gear[rank].Price, player),
                 m_requiredGlobalKey = TradingPostGoods.OpenKey(biome),
                 m_buyPlayerEffects = new EffectList()

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,9 @@ namespace BrudvikWhiteHilt.TradingPosts;
 /// The gear the trading posts sell, found from the game's recipes: every weapon, bow, piece of armour, shield and tool
 /// whose materials are all known (<see cref="TradingGear"/>) belongs to the biome of its latest material, and is sold at
 /// one of that biome's posts, by the post's place among them (asked of the server, <see cref="TradingPostService"/>).
-/// White Hilt's own gear is left out. Built again when the world's item list or the prices change.
+/// White Hilt's own items that can be crafted are shared out the same way, whatever their kind (food, meads, potions,
+/// ammunition and the rest too): each belongs to the biome of its progression tier and is sold as many at once as one
+/// craft makes. Built again when the world's item list or the prices change.
 /// </summary>
 public static class TradingPostGear
 {
@@ -29,6 +32,9 @@ public static class TradingPostGear
         Translations.AddEnglish(KindKey(GearKind.Armour), "armour");
         Translations.AddEnglish(KindKey(GearKind.Shields), "shields");
         Translations.AddEnglish(KindKey(GearKind.Tools), "tools");
+        Translations.AddEnglish(KindKey(GearKind.Provisions), "provisions");
+        Translations.AddEnglish(KindKey(GearKind.Ammunition), "ammunition");
+        Translations.AddEnglish(KindKey(GearKind.Wares), "wares");
     }
 
     /// <summary>
@@ -95,20 +101,36 @@ public static class TradingPostGear
         builtPrices = prices;
         builtFactor = factor;
         pools.Clear();
+
+        // White Hilt's own items, with their tiers. Their recipes are switched on and off per player by the progression,
+        // so that is not asked: every machine must share out the same pool.
+        Dictionary<string, ProgressionTier?> own = new();
+        foreach ((string prefab, ProgressionTier? tier) in ProgressionManager.ItemTiers())
+        {
+            own[prefab] = tier;
+        }
+
         HashSet<string> seen = new();
         List<GearEntry> found = new();
+        int ownCount = 0;
         foreach (Recipe recipe in db.m_recipes)
         {
-            ItemDrop item = recipe != null && recipe.m_enabled ? recipe.m_item : null;
-            if (item == null || recipe.m_amount != 1 || recipe.m_resources == null)
+            ItemDrop item = recipe?.m_item;
+            if (item == null || recipe.m_resources == null)
             {
                 continue;
             }
 
             string name = item.gameObject.name;
+            bool isOwn = own.TryGetValue(name, out ProgressionTier? tier);
+            if (!isOwn && (!recipe.m_enabled || recipe.m_amount != 1 || name.StartsWith(OwnPrefix)))
+            {
+                continue;
+            }
+
             ItemDrop.ItemData.SharedData shared = item.m_itemData.m_shared;
-            GearKind? kind = KindOf(shared);
-            if (kind == null || name.StartsWith(OwnPrefix) || !string.IsNullOrEmpty(shared.m_dlc) || !seen.Add(name))
+            GearKind? kind = isOwn ? KindOfAny(shared) : KindOf(shared);
+            if (kind == null || !string.IsNullOrEmpty(shared.m_dlc) || !seen.Add(name))
             {
                 continue;
             }
@@ -117,13 +139,15 @@ public static class TradingPostGear
                 .Where(requirement => requirement?.m_resItem != null)
                 .Select(requirement => (requirement.m_resItem.gameObject.name, requirement.m_amount))
                 .ToList();
-            int biome = TradingGear.RecipeBiome(resources);
+            int biome = isOwn ? OwnBiome(tier, resources) : TradingGear.RecipeBiome(resources);
             if (biome < 0)
             {
                 continue;
             }
 
-            found.Add(new GearEntry(name, kind.Value, biome, TradingGear.RecipePrice(resources, factor, TradingPostSettings.ConfiguredPrices)));
+            int price = TradingGear.RecipePrice(resources, factor, TradingPostSettings.ConfiguredPrices, isOwn ? biome : -1);
+            found.Add(new GearEntry(name, kind.Value, biome, price, isOwn ? recipe.m_amount : 1));
+            ownCount += isOwn ? 1 : 0;
         }
 
         foreach (IGrouping<int, GearEntry> biome in found.GroupBy(entry => entry.Biome))
@@ -131,7 +155,35 @@ public static class TradingPostGear
             pools[biome.Key] = TradingGear.Ordered(biome);
         }
 
-        Jotunn.Logger.LogInfo($"Trading posts: gear by biome: {string.Join(", ", pools.OrderBy(pool => pool.Key).Select(pool => $"{TradingPostGoods.Biomes[pool.Key]} {pool.Value.Count}"))}.");
+        Jotunn.Logger.LogInfo($"Trading posts: gear by biome ({ownCount} of White Hilt's own): {string.Join(", ", pools.OrderBy(pool => pool.Key).Select(pool => $"{TradingPostGoods.Biomes[pool.Key]} {pool.Value.Count}"))}.");
+    }
+
+    // An own item's biome: its tier's, or, for one only full mode has, the latest of the materials whose biome is known.
+    private static int OwnBiome(ProgressionTier? tier, IEnumerable<(string Prefab, int Amount)> resources)
+    {
+        if (tier != null)
+        {
+            return (int)tier.Value;
+        }
+
+        return resources.Where(resource => resource.Amount > 0).Select(resource => TradingGear.MaterialBiome(resource.Prefab)).DefaultIfEmpty(-1).Max();
+    }
+
+    // Any item of White Hilt's own: gear by its kind, the rest as provisions, ammunition or wares.
+    private static GearKind KindOfAny(ItemDrop.ItemData.SharedData shared)
+    {
+        GearKind? gear = KindOf(shared);
+        if (gear != null)
+        {
+            return gear.Value;
+        }
+
+        return shared.m_itemType switch
+        {
+            ItemDrop.ItemData.ItemType.Consumable => GearKind.Provisions,
+            ItemDrop.ItemData.ItemType.Ammo or ItemDrop.ItemData.ItemType.AmmoNonEquipable => GearKind.Ammunition,
+            _ => GearKind.Wares
+        };
     }
 
     private static GearKind? KindOf(ItemDrop.ItemData.SharedData shared)
@@ -149,6 +201,7 @@ public static class TradingPostGear
             case ItemDrop.ItemData.ItemType.Helmet:
             case ItemDrop.ItemData.ItemType.Chest:
             case ItemDrop.ItemData.ItemType.Legs:
+            case ItemDrop.ItemData.ItemType.Hands:
             case ItemDrop.ItemData.ItemType.Shoulder:
                 return GearKind.Armour;
             case ItemDrop.ItemData.ItemType.Tool:

@@ -113,4 +113,29 @@ public class TradingGearTests
         Assert.Equal(GearKind.Weapons, TradingGear.Specialty(new[] { GearKind.Shields, GearKind.Weapons }));
         Assert.Null(TradingGear.Specialty(new GearKind[0]));
     }
+
+    /// <summary>A post is known for its gear before its provisions, and for provisions when it has no gear.</summary>
+    [Fact]
+    public void GearComesBeforeProvisions()
+    {
+        Assert.Equal(GearKind.Tools, TradingGear.Specialty(new[] { GearKind.Provisions, GearKind.Provisions, GearKind.Tools }));
+        Assert.Equal(GearKind.Provisions, TradingGear.Specialty(new[] { GearKind.Provisions, GearKind.Ammunition, GearKind.Provisions }));
+    }
+
+    /// <summary>White Hilt's own materials, of unknown worth, count as plain materials of the item's biome.</summary>
+    [Fact]
+    public void OwnMaterialsCountAsPlainOnes()
+    {
+        (string, int)[] resources = { ("WhiteHiltHerb", 2), ("Wood", 4) };
+        Assert.Equal(2, TradingGear.RecipePrice(resources, 1f));
+        Assert.Equal(2 * 3 + 2, TradingGear.RecipePrice(resources, 1f, null, 2));
+    }
+
+    /// <summary>A stack is sold whole, never as less than one.</summary>
+    [Fact]
+    public void AnEntryKeepsItsStack()
+    {
+        Assert.Equal(10, new GearEntry("WhiteHiltArrow", GearKind.Ammunition, 1, 40, 10).Stack);
+        Assert.Equal(1, new GearEntry("Club", GearKind.Weapons, 0, 4, 0).Stack);
+    }
 }

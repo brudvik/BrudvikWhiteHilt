@@ -200,7 +200,7 @@ public static class ComfortService
         ItemDrop book = ObjectDB.instance != null ? ObjectDB.instance.GetItemPrefab(BookPrefabName)?.GetComponent<ItemDrop>() : null;
         return book == null || !ComfortSettings.Enabled.Value
             ? null
-            : new Trader.TradeItem { m_prefab = book, m_stack = 1, m_price = ComfortSettings.BookPrice.Value, m_buyPlayerEffects = new EffectList() };
+            : new Trader.TradeItem { m_prefab = book, m_stack = 1, m_tooltip = string.Empty, m_price = ComfortSettings.BookPrice.Value, m_buyPlayerEffects = new EffectList() };
     }
 
     // A book drawn as the treasure maps are, tinted a deep red, with the bonus in its description.
@@ -257,6 +257,6 @@ public static class ComfortService
             return;
         }
 
-        hildir.m_items.Add(new Trader.TradeItem { m_prefab = book, m_stack = 1, m_price = ComfortSettings.BookPrice.Value, m_buyPlayerEffects = new EffectList() });
+        hildir.m_items.Add(new Trader.TradeItem { m_prefab = book, m_stack = 1, m_tooltip = string.Empty, m_price = ComfortSettings.BookPrice.Value, m_buyPlayerEffects = new EffectList() });
     }
 }

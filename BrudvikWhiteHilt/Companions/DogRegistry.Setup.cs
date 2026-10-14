@@ -351,7 +351,7 @@ public static partial class DogRegistry
             if (entry == null)
             {
                 // StoreGui.BuySelectedItem plays these after every purchase without a null check.
-                entry = new Trader.TradeItem { m_prefab = puppy, m_stack = 1, m_buyKey = BuyKey, m_buyPlayerEffects = new EffectList() };
+                entry = new Trader.TradeItem { m_prefab = puppy, m_stack = 1, m_tooltip = string.Empty, m_buyKey = BuyKey, m_buyPlayerEffects = new EffectList() };
                 trader.m_items.Add(entry);
             }
 

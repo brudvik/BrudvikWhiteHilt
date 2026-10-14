@@ -24,7 +24,16 @@ public enum GearKind
     Shields,
 
     /// <summary>Pickaxes, hammers, hoes and the like.</summary>
-    Tools
+    Tools,
+
+    /// <summary>Food, meads and potions.</summary>
+    Provisions,
+
+    /// <summary>Arrows, bolts and the like.</summary>
+    Ammunition,
+
+    /// <summary>Everything else: materials, trinkets, utility items.</summary>
+    Wares
 }
 
 /// <summary>
@@ -39,13 +48,15 @@ public sealed class GearEntry
     /// <param name="prefab">The item's prefab name.</param>
     /// <param name="kind">What kind of gear it is.</param>
     /// <param name="biome">The biome index of its latest material.</param>
-    /// <param name="price">Its price in coins, before any discount.</param>
-    public GearEntry(string prefab, GearKind kind, int biome, int price)
+    /// <param name="price">Its price in coins, before any discount, for the whole stack.</param>
+    /// <param name="stack">How many are sold at once: what one craft makes.</param>
+    public GearEntry(string prefab, GearKind kind, int biome, int price, int stack = 1)
     {
         Prefab = prefab;
         Kind = kind;
         Biome = biome;
         Price = price;
+        Stack = Math.Max(1, stack);
     }
 
     /// <summary>Gets the item's prefab name.</summary>
@@ -57,8 +68,11 @@ public sealed class GearEntry
     /// <summary>Gets the biome index (<see cref="TradingPostGoods.Biomes"/>) of its latest material.</summary>
     public int Biome { get; }
 
-    /// <summary>Gets its price in coins, before any discount.</summary>
+    /// <summary>Gets its price in coins, before any discount, for the whole stack.</summary>
     public int Price { get; }
+
+    /// <summary>Gets how many are sold at once.</summary>
+    public int Stack { get; }
 }
 
 /// <summary>
@@ -179,10 +193,18 @@ public static class TradingGear
     /// <param name="resources">The recipe's materials and amounts.</param>
     /// <param name="factor">The gear price factor.</param>
     /// <param name="prices">Configured asking prices, or null.</param>
+    /// <param name="unknownBiome">For White Hilt's own recipes, whose materials may be its own: a material of unknown worth
+    /// counts as a plain material of this biome. -1 to count it as nothing.</param>
     /// <returns>Coins, at least 1.</returns>
-    public static int RecipePrice(IEnumerable<(string Prefab, int Amount)> resources, float factor, IReadOnlyDictionary<string, float> prices = null)
+    public static int RecipePrice(IEnumerable<(string Prefab, int Amount)> resources, float factor, IReadOnlyDictionary<string, float> prices = null, int unknownBiome = -1)
     {
-        float sum = resources.Where(resource => resource.Amount > 0).Sum(resource => MaterialPrice(resource.Prefab, prices) * resource.Amount);
+        float Worth(string prefab)
+        {
+            float price = MaterialPrice(prefab, prices);
+            return price > 0f || unknownBiome < 0 || unknownBiome >= biomeWorth.Length ? price : biomeWorth[unknownBiome];
+        }
+
+        float sum = resources.Where(resource => resource.Amount > 0).Sum(resource => Worth(resource.Prefab) * resource.Amount);
         return Mathf.Max(1, Mathf.RoundToInt(sum * Mathf.Max(0f, factor)));
     }
 
@@ -302,13 +324,17 @@ public static class TradingGear
     }
 
     /// <summary>
-    /// What a post is known for: the kind most of its gear is, the earlier kind on a tie; null with no gear.
+    /// What a post is known for: the kind most of its gear is, the earlier kind on a tie; null with no gear. Weapons,
+    /// bows, armour, shields and tools come before the provisions, ammunition and wares a post also sells, so a post is
+    /// known for those only when it has no gear.
     /// </summary>
     /// <param name="kinds">The kinds of the post's gear.</param>
     /// <returns>The kind, or null.</returns>
     public static GearKind? Specialty(IEnumerable<GearKind> kinds)
     {
-        List<IGrouping<GearKind, GearKind>> groups = kinds.GroupBy(kind => kind).ToList();
+        List<GearKind> all = kinds.ToList();
+        List<GearKind> gear = all.Where(kind => kind <= GearKind.Tools).ToList();
+        List<IGrouping<GearKind, GearKind>> groups = (gear.Count > 0 ? gear : all).GroupBy(kind => kind).ToList();
         if (groups.Count == 0)
         {
             return null;

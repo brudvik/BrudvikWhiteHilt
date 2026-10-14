@@ -61,6 +61,22 @@ public static class ProgressionManager
     }
 
     /// <summary>
+    /// White Hilt's own items that are switched on, each with the biome tier it belongs to in linear mode (whatever the
+    /// mode is): its configured or default tier, or null for one only full mode has.
+    /// </summary>
+    /// <returns>Prefab name and tier of each item.</returns>
+    public static IEnumerable<(string Prefab, ProgressionTier? Tier)> ItemTiers()
+    {
+        foreach (KeyValuePair<string, IWhiteHiltProgressionEntry> pair in itemEntries)
+        {
+            if (ResolveTier(pair.Value, linear: false) != null)
+            {
+                yield return (pair.Key, ResolveTier(pair.Value, linear: true));
+            }
+        }
+    }
+
+    /// <summary>
     /// Registers a piece whose build recipe is gated.
     /// </summary>
     /// <param name="entry">The piece.</param>

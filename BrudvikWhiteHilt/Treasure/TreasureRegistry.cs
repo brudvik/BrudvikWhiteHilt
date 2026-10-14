@@ -313,7 +313,7 @@ public static class TreasureRegistry
 
         if (entry == null)
         {
-            entry = new Trader.TradeItem { m_prefab = map, m_stack = 1, m_buyPlayerEffects = new EffectList() };
+            entry = new Trader.TradeItem { m_prefab = map, m_stack = 1, m_tooltip = string.Empty, m_buyPlayerEffects = new EffectList() };
             trader.m_items.Add(entry);
         }
 

@@ -219,6 +219,7 @@ public static class TradingPostCharts
             {
                 m_prefab = chart,
                 m_stack = 1,
+                m_tooltip = string.Empty,
                 m_price = TradingPostSettings.ChartPrice.Value,
                 m_requiredGlobalKey = TradingPostGoods.OpenKey(biome),
                 m_buyPlayerEffects = new EffectList()
