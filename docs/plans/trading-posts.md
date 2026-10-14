@@ -99,7 +99,7 @@ links pair a biome with one you reach by sea from it, so a trading voyage has a 
 | Plains | Black Metal Scrap, Flax, Barley, Linen Thread, Cloudberries, Lox Meat, Lox Pelt, Tar | Mistlands goods |
 | Mistlands | Black Marble, Yggdrasil Wood, Carapace, Sap, Royal Jelly | Ashlands goods |
 | Ashlands | Flametal Ore, Ashwood, Grausten, Charcoal Resin, Vineberry Seeds | Deep North goods |
-| Deep North | Its materials, from the biome list the Gathering panel has (the Deep North is out in this version of the game) | Meadows goods (homecoming) |
+| Deep North | Petrified Tissue, Bloodgold, Moose Hide, Moose Meat, Moose Sinew, Seal Pelt, Elaking Hair Bundle, Leather Straps, Oat Seeds, Seed Poteitr, Frosty Fishing Bait | Meadows goods (homecoming) |
 | Every post | | All fish, raw and cooked |
 
 - A post sells only after the world has reached its biome (its tier's key is set). An unreached biome's posts stand
@@ -340,3 +340,9 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   biomes and to the goods table (Ashlands now buys Deep North goods, the Deep North buys Meadows goods; to be agreed
   with the rest of section 4). A Deep North trader is proposed in `build_traders.py` (`TRADERS`) for the user to agree to.
   Note: the biome rule in the copilot instructions stops at the Ashlands; the Deep North comes after it.
+- 2026-10-14: the Deep North's materials read from the game (its recipes for the Vanguard, Protector and Caller armour,
+  the capes, Northern Morning Fare and Frosty Fishing Bait, and the item texts): Bloodgold from Petrified Tissue, Moose
+  Hide/Meat/Sinew, Seal Pelt, Elaking Hair Bundle, Nornathread, Leather Straps, Oats, Poteitr, Nord moulds, Bloodgold
+  idols. Added to the biome rule in `.github/copilot-instructions.md` and to section 4. `ProgressionTier` and
+  `GearUpgrades` still end at the Ashlands; a post in the Deep North opens once the world has reached the Ashlands until
+  a Deep North tier exists.

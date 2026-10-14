@@ -108,6 +108,9 @@ Biome order and their typical materials:
 - Plains: Black Metal, Linen Thread, Needle, Barley, Flax, Cloudberries, Lox Meat and Pelt, Tar
 - Mistlands: Black Marble, Eitr, Yggdrasil Wood, Carapace, Sap
 - Ashlands: Flametal, Askvin materials
+- Deep North: Bloodgold (`Gold`, smelted from Petrified Tissue `GoldOre` mined from Petrified Gammeltrolls), Moose Hide, Moose Meat, Moose Sinew (`MooseHide`, `MooseSinew`), Seal Pelt (`SealHide`), Elaking Hair Bundle (`ElakingHairBundle`), Nornathread (`NornThread`), Leather Straps (`Leatherstraps`), Oats and Oat Flour (`OatFlour`), Poteitr (`Poteitr`), the Nord moulds and the Bloodgold idols (`Upgrader7Armor`), Frosty Fishing Bait (`FishingBaitDeepNorth`)
+
+The Deep North comes after the Ashlands (out in the game since 2026; names read from the game's own recipes and texts). Most of its items have no Norwegian text in the game yet, so give the mod's own Norwegian name where one is shown. `ProgressionTier` and the gear upgrades (`Items/GearUpgrades.cs`) still stop at the Ashlands.
 
 Ocean materials (Octopus, Kraken Ink and Tentacle) count as Swamp, since the Kraken rises once Bonemass is slain.
 
