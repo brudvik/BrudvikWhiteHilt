@@ -10,6 +10,11 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   anywhere in the room keep them warm enough to rest. The **Book of the Hall** (Hildir and the trading posts) widens your
   own comfort reach from 10 to 20 m, and the new **Homecraft** skill, raised by resting and building comfort, widens it
   further, up to 40 m. Settings in `[Comfort]`.
+- **[Trading](docs/trading-posts.md#the-trading-skill)**, a new skill raised by trading at the posts and by escorts: the
+  posts pay you from 25 % up to 40 % of their price and sell up to 10 % cheaper. Every post now also sells **gear of its
+  biome**, found from the game's recipes and shared out so each piece is sold at one post only; it opens at Trading 20,
+  40, 60 and 80, and what you have not opened shows greyed out. A post's trader and its pin on your map say what it is
+  known for. Settings in `[TradingPosts]`.
 
 ### Changed
 - **[Workbench extensions](docs/build-tools.md#workbench-extensions) fit where they fit**: an extension is no longer

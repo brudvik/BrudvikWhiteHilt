@@ -137,6 +137,7 @@ public static class TradingPostPatches
         __instance.m_sellEffects.Create(__instance.transform.position, Quaternion.identity);
         player.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_sold", sold, coins.ToString()), 0, icon);
         __instance.m_trader.OnSold();
+        TradingSkill.Raise(player, coins);
         __instance.FillList();
         return false;
     }
@@ -173,6 +174,70 @@ public static class TradingPostPatches
     private static void StoreShowPostfix()
     {
         TradingPostSellPicker.Reset();
+    }
+
+    // A post's goods are made again for the player who opens its store: their prices and the gear their Trading has
+    // opened. Visiting a post also names its pin on the player's map after what it is known for.
+    [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.Show))]
+    [HarmonyPrefix]
+    private static void StoreShowPrefix(Trader trader)
+    {
+        TradingPostTrader post = trader != null ? trader.GetComponent<TradingPostTrader>() : null;
+        if (post == null || Player.m_localPlayer == null)
+        {
+            return;
+        }
+
+        trader.m_items = TradingPostStore.BuildItems(post.Biome, post.PostId, Player.m_localPlayer);
+        GearKind? kind = TradingPostGear.Specialty(post.Biome, post.PostId);
+        if (kind != null)
+        {
+            TradingPostCharts.MarkVisited(trader.transform.position, kind.Value);
+        }
+    }
+
+    [HarmonyPatch(typeof(StoreGui), "FillList")]
+    [HarmonyPostfix]
+    private static void FillListPostfix(StoreGui __instance)
+    {
+        if (__instance.m_trader != null && __instance.m_trader.GetComponent<TradingPostTrader>() != null)
+        {
+            TradingPostStore.ShowLocked(__instance.m_trader.GetAvailableItems(), __instance.m_itemList);
+        }
+    }
+
+    // Gear the player's Trading has not opened cannot be bought, whatever the purse holds.
+    [HarmonyPatch(typeof(StoreGui), "CanAfford")]
+    [HarmonyPostfix]
+    private static void CanAffordPostfix(Trader.TradeItem item, ref bool __result)
+    {
+        if (__result && TradingPostStore.LockedAt(item) > 0)
+        {
+            __result = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(Trader), nameof(Trader.OnBought))]
+    [HarmonyPostfix]
+    private static void BoughtPostfix(Trader __instance, Trader.TradeItem item)
+    {
+        if (item != null && __instance.GetComponent<TradingPostTrader>() != null)
+        {
+            TradingSkill.Raise(Player.m_localPlayer, item.m_price);
+        }
+    }
+
+    // A post's trader says what the post is known for.
+    [HarmonyPatch(typeof(Trader), nameof(Trader.GetHoverText))]
+    [HarmonyPostfix]
+    private static void HoverPostfix(Trader __instance, ref string __result)
+    {
+        TradingPostTrader post = __instance.GetComponent<TradingPostTrader>();
+        GearKind? kind = post != null ? TradingPostGear.Specialty(post.Biome, post.PostId) : null;
+        if (kind != null)
+        {
+            __result += "\n" + Localization.instance.Localize("$whitehilt_trader_known", TradingPostGear.KindName(kind.Value));
+        }
     }
 
     private static bool IsPostPart(WearNTear piece)

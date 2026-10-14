@@ -33,6 +33,8 @@ public static class SkillBook
         Translations.AddEnglish("whitehilt_book_fishing", "Snag: {0}%. Legendary fish: {1}%");
         Translations.AddEnglish("whitehilt_book_husbandry", "Taming {0}% faster, fed {1}% longer, pregnancy {2}% shorter, herd +{3}");
         Translations.AddEnglish("whitehilt_book_twins", "Twins: {0}%. Stronger young: {1}%");
+        Translations.AddEnglish("whitehilt_book_trading", "The trading posts pay {0}% of their price and sell {1}% cheaper");
+        Translations.AddEnglish("whitehilt_book_trading_gear", "Trading post gear opens at {0}; open to you: {1} of {2} steps");
     }
 
     /// <summary>
@@ -125,6 +127,16 @@ public static class SkillBook
             if (log.Count > 0)
             {
                 yield return $"<color={Heading}>{Localize("$whitehilt_catch_log")}</color>\n  " + string.Join("\n  ", log);
+            }
+        }
+        else if (type == TradingPosts.TradingSkill.Type)
+        {
+            yield return Format("$whitehilt_book_trading", Percent(TradingPosts.TradingSkill.BuyShare(player)),
+                Percent(TradingPosts.TradingGear.BuyShare(level, 0f, TradingPosts.TradingPostSettings.BuyDiscount.Value)));
+            IReadOnlyList<int> levels = TradingPosts.TradingPostSettings.Levels;
+            if (levels.Count > 0)
+            {
+                yield return Format("$whitehilt_book_trading_gear", string.Join(", ", levels), levels.Count(open => level >= open).ToString(), levels.Count.ToString());
             }
         }
         else if (type == HusbandrySkill.Type)

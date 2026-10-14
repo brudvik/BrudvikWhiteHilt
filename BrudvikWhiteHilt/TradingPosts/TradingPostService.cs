@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,8 @@ namespace BrudvikWhiteHilt.TradingPosts;
 
 /// <summary>
 /// The trading posts' part on the game object: on the server it answers the admin commands (build a post where the
-/// admin stands, remove the nearest, list them, search the coasts again); on a client it prints the server's answers.
+/// admin stands, remove the nearest, list them, search the coasts again) and tells a reader where a post stands among
+/// its biome's posts, which decides the gear it sells; on a client it prints the server's answers.
 /// </summary>
 public class TradingPostService : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class TradingPostService : MonoBehaviour
     private const string ReplyRpc = "WhiteHiltTradePostReply";
     private const string ChartRpc = "WhiteHiltTradePostChart";
     private const string ChartReplyRpc = "WhiteHiltTradePostChartReply";
+    private const string SlotRpc = "WhiteHiltTradePostSlot";
+    private const string SlotReplyRpc = "WhiteHiltTradePostSlotReply";
 
     private const int ActionHere = 0;
     private const int ActionRemove = 1;
@@ -27,6 +31,10 @@ public class TradingPostService : MonoBehaviour
 
     // The landing's deck is this much above the ground the admin stands on.
     private const float DeckAboveGround = 0.1f;
+
+    // Each post's place among its biome's posts and how many they are, as the server told this machine.
+    private static readonly Dictionary<string, (int Slot, int Count)> slots = new();
+    private static readonly HashSet<string> asked = new();
 
     /// <summary>
     /// Asks the server to build a post where the local player stands, its jetty running out the way they look.
@@ -57,6 +65,41 @@ public class TradingPostService : MonoBehaviour
         ZRoutedRpc.instance?.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), ChartRpc, biome);
     }
 
+    /// <summary>
+    /// Asks the server once where a post stands among its biome's posts.
+    /// </summary>
+    /// <param name="postId">The post's id.</param>
+    public static void RequestSlot(string postId)
+    {
+        if (string.IsNullOrEmpty(postId) || ZRoutedRpc.instance == null || !asked.Add(postId))
+        {
+            return;
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), SlotRpc, postId);
+    }
+
+    /// <summary>
+    /// Where a post stands among its biome's posts, once the server has said.
+    /// </summary>
+    /// <param name="postId">The post's id.</param>
+    /// <param name="slot">Its place, from 0.</param>
+    /// <param name="count">How many posts the biome has.</param>
+    /// <returns>True when known.</returns>
+    public static bool TryGetSlot(string postId, out int slot, out int count)
+    {
+        slot = -1;
+        count = 0;
+        if (postId == null || !slots.TryGetValue(postId, out (int Slot, int Count) known))
+        {
+            return false;
+        }
+
+        slot = known.Slot;
+        count = known.Count;
+        return true;
+    }
+
     private static void Send(int action)
     {
         Player player = Player.m_localPlayer;
@@ -83,6 +126,10 @@ public class TradingPostService : MonoBehaviour
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
         ZRoutedRpc.instance?.Register<int>(ChartRpc, RPC_Chart);
         ZRoutedRpc.instance?.Register<ZPackage>(ChartReplyRpc, RPC_ChartReply);
+        ZRoutedRpc.instance?.Register<string>(SlotRpc, RPC_Slot);
+        ZRoutedRpc.instance?.Register<string, int, int>(SlotReplyRpc, RPC_SlotReply);
+        slots.Clear();
+        asked.Clear();
     }
 
     // On the server: an admin's request. Every request is checked: the sender must be an admin, and building must be on.
@@ -206,5 +253,36 @@ public class TradingPostService : MonoBehaviour
         }
 
         TradingPostCharts.Mark(positions);
+    }
+
+    // On the server: a post's place among the posts of its biome, by id. Anyone may ask; it only decides what is sold where.
+    private void RPC_Slot(long sender, string postId)
+    {
+        if (ZNet.instance == null || !ZNet.instance.IsServer() || string.IsNullOrEmpty(postId))
+        {
+            return;
+        }
+
+        ZDO[] markers = TradingPostBuilder.Markers().ToArray();
+        ZDO marker = markers.FirstOrDefault(zdo => zdo.GetString(TradingPostKeys.PostId) == postId);
+        int slot = -1;
+        int count = 0;
+        if (marker != null)
+        {
+            int biome = marker.GetInt(TradingPostKeys.Biome);
+            string[] ids = markers.Where(zdo => zdo.GetInt(TradingPostKeys.Biome) == biome).Select(zdo => zdo.GetString(TradingPostKeys.PostId)).ToArray();
+            slot = TradingGear.SlotOf(ids, postId);
+            count = ids.Distinct().Count();
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, SlotReplyRpc, postId, slot, count);
+    }
+
+    private void RPC_SlotReply(long sender, string postId, int slot, int count)
+    {
+        if (!string.IsNullOrEmpty(postId))
+        {
+            slots[postId] = (slot, count);
+        }
     }
 }

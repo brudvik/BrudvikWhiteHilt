@@ -295,6 +295,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             ExplorationSkill.SetIconFromMapTable();
             HusbandrySkill.SetIconFromBoarTrophy();
             Comfort.ComfortService.SetSkillIcon();
+            TradingPosts.TradingSkill.SetIconFromCoins();
             Mastery.ForagingSkill.SetIconFromMushroom();
             Mastery.MasteryEffects.Register();
             Pieces.Ships.ShipBell.Create();

@@ -624,6 +624,7 @@ public class EscortService : MonoBehaviour
         if (coins > 0)
         {
             Give(player, "Coins", coins);
+            TradingPosts.TradingSkill.Raise(player, coins);
         }
 
         if (Random.value * 100f < EscortSettings.RaidChartChance.Value)

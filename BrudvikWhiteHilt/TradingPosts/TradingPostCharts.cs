@@ -21,6 +21,9 @@ public static class TradingPostCharts
     private const float ChartLength = 0.35f;
     private const Minimap.PinType PinType = Minimap.PinType.Icon1;
 
+    // A post's pin may stand at its marker or by its trader; one this close to the trader is the post's.
+    private const float VisitedPinRange = 120f;
+
     // The biomes' names in English for the charts' names; the Norwegian ones are in Norwegian.json.
     private static readonly string[] biomeNames = { "Meadows", "Black Forest", "Swamp", "Mountains", "Plains", "Mistlands", "Ashlands", "Deep North" };
 
@@ -62,6 +65,7 @@ public static class TradingPostCharts
         }
 
         Translations.AddEnglish("whitehilt_tradepost_pin", "Trading post");
+        Translations.AddEnglish("whitehilt_tradepost_pin_known", "Trading post ($1)");
         Translations.AddEnglish("msg_whitehilt_tradechart_marked", "$1 trading posts marked on your map.");
         Translations.AddEnglish("msg_whitehilt_tradechart_none", "The chart shows no trading post on these coasts.");
         PrefabManager.OnVanillaPrefabsAvailable += AddCharts;
@@ -89,13 +93,54 @@ public static class TradingPostCharts
         string name = Localization.instance.Localize("$whitehilt_tradepost_pin");
         foreach (Vector3 position in positions)
         {
-            if (!Minimap.instance.HaveSimilarPin(position, PinType, name, save: true))
+            if (PostPin(position, name) == null)
             {
                 Minimap.instance.AddPin(position, PinType, name, save: true, isChecked: false);
             }
         }
 
         player.Message(MessageHud.MessageType.Center, Localization.instance.Localize("$msg_whitehilt_tradechart_marked", positions.Count.ToString()));
+    }
+
+    /// <summary>
+    /// Names a post's pin on the local player's map after what the post is known for, once they have traded there; a
+    /// post without a pin gets one.
+    /// </summary>
+    /// <param name="position">Where the post's trader stands.</param>
+    /// <param name="kind">What the post is known for.</param>
+    public static void MarkVisited(Vector3 position, GearKind kind)
+    {
+        if (Minimap.instance == null)
+        {
+            return;
+        }
+
+        string plain = Localization.instance.Localize("$whitehilt_tradepost_pin");
+        string known = Localization.instance.Localize("$whitehilt_tradepost_pin_known", TradingPostGear.KindName(kind));
+        Minimap.PinData pin = PostPin(position, plain);
+        if (pin != null && pin.m_name == known)
+        {
+            return;
+        }
+
+        Vector3 at = pin != null ? pin.m_pos : position;
+        bool done = pin != null && pin.m_checked;
+        if (pin != null)
+        {
+            Minimap.instance.RemovePin(pin);
+        }
+
+        Minimap.instance.AddPin(at, PinType, known, save: true, isChecked: done);
+    }
+
+    // The pin of the post at a place: the nearest trading post pin, named after what the post is known for or not.
+    private static Minimap.PinData PostPin(Vector3 position, string plain)
+    {
+        return Minimap.instance.m_pins
+            .Where(candidate => candidate.m_type == PinType && candidate.m_name != null && candidate.m_name.StartsWith(plain)
+                && Utils.DistanceXZ(candidate.m_pos, position) < VisitedPinRange)
+            .OrderBy(candidate => Utils.DistanceXZ(candidate.m_pos, position))
+            .FirstOrDefault();
     }
 
     // Registers the charts: a scrap of leather drawn as the treasure maps are, tinted towards each biome's colour.

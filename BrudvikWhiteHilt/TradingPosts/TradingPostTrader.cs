@@ -39,6 +39,7 @@ public class TradingPostTrader : MonoBehaviour
     private ZNetView view;
     private Trader trader;
     private int biome;
+    private string postId;
     private Animator animator;
     private HashSet<string> parameters;
     private float restYaw;
@@ -49,6 +50,11 @@ public class TradingPostTrader : MonoBehaviour
     /// Gets the index of the trader's biome in <see cref="TradingPostGoods.Biomes"/>.
     /// </summary>
     public int Biome => biome;
+
+    /// <summary>
+    /// Gets the id of the trader's post.
+    /// </summary>
+    public string PostId => postId;
 
     /// <summary>
     /// Registers the dialogue and the names. Call from the plugin's Awake, before the game loads its languages.
@@ -180,7 +186,9 @@ public class TradingPostTrader : MonoBehaviour
             TraderLook look = TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
             trader.m_name = "$" + look.NameKey;
             biome = Mathf.Max(0, TradingPostGoods.IndexOf(look.biome));
+            postId = view.GetZDO().GetString(TradingPostKeys.PostId);
             trader.m_items = TradingPostStore.BuildItems(biome);
+            TradingPostService.RequestSlot(postId);
         }
     }
 
