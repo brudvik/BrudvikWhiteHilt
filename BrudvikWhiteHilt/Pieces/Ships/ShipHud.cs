@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.HudLayout;
 using BrudvikWhiteHilt.Pieces.Navigation;
+using BrudvikWhiteHilt.SeaBattles;
 using BrudvikWhiteHilt.SeaBattles.Damage;
 using Jotunn.Managers;
 using UnityEngine;
@@ -134,6 +135,12 @@ public static class ShipHud
         if (water != null)
         {
             text += "\n" + water;
+        }
+
+        string held = RaiderShip.Loaded > 0 ? Pursuit.HudLine(ship) : null;
+        if (held != null)
+        {
+            text += "\n" + held;
         }
 
         if (console)

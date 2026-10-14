@@ -37,6 +37,36 @@ public static class RaiderShipPatches
         return patched;
     }
 
+    private static bool pursuitFailed;
+
+    /// <summary>
+    /// Holds a hunted ship below its hunters' speed, see <see cref="Pursuit"/>. Nothing happens while no Nail Ship is
+    /// loaded and no chase is kept.
+    /// </summary>
+    /// <param name="__instance">The ship.</param>
+    [HarmonyPatch(typeof(Ship), nameof(Ship.CustomFixedUpdate))]
+    [HarmonyPostfix]
+    public static void PursuitCap(Ship __instance)
+    {
+        if (RaiderShip.Loaded == 0 && !Pursuit.Active)
+        {
+            return;
+        }
+
+        try
+        {
+            Pursuit.Step(__instance);
+        }
+        catch (System.Exception ex)
+        {
+            if (!pursuitFailed)
+            {
+                pursuitFailed = true;
+                Jotunn.Logger.LogWarning($"Nail Ship: the pursuit speed cap failed: {ex}");
+            }
+        }
+    }
+
     /// <summary>
     /// Replaces every read of a list's count that directly follows a load of the given field with a call. The members
     /// are parameters so the logic is tested without loading the game's ship, which .NET Framework cannot.

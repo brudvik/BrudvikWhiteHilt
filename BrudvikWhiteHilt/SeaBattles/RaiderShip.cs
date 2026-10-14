@@ -97,6 +97,9 @@ public class RaiderShip : MonoBehaviour
     /// <summary>The ship's place in its fleet: 0 the flagship, 1 and 2 the escorts.</summary>
     public int Rank => nview != null && nview.IsValid() ? nview.GetZDO().GetInt(RaiderKeys.Rank) : 0;
 
+    /// <summary>The Nail Ships that are loaded on this machine.</summary>
+    public static IEnumerable<RaiderShip> All => byShip.Values;
+
     /// <summary>How many Nail Ships are loaded on this machine.</summary>
     public static int Loaded => byShip.Count;
 

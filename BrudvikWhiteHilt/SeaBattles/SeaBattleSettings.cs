@@ -89,6 +89,18 @@ public static class SeaBattleSettings
     /// <summary>Minutes a prize floats before it sinks.</summary>
     public static ConfigEntry<float> PrizeMinutes { get; private set; }
 
+    /// <summary>Whether the hunted ship is held below the Nail Ships' speed, see <see cref="Pursuit"/>.</summary>
+    public static ConfigEntry<bool> PursuitEnabled { get; private set; }
+
+    /// <summary>Seconds the hunted ship is held after the Nail Ships begin to hunt it.</summary>
+    public static ConfigEntry<float> PursuitShockSeconds { get; private set; }
+
+    /// <summary>Share of the Nail Ships' speed the hunted ship may keep.</summary>
+    public static ConfigEntry<float> PursuitSpeedFactor { get; private set; }
+
+    /// <summary>Least speed cap, in metres per second.</summary>
+    public static ConfigEntry<float> PursuitFloorSpeed { get; private set; }
+
     /// <summary>Loot list of the hold, in the format of <c>[Treasure] Loot</c>.</summary>
     public static ConfigEntry<string> Loot { get; private set; }
 
@@ -145,6 +157,16 @@ public static class SeaBattleSettings
             "It flees when this share of its crew is left.", new AcceptableValueRange<float>(0f, 1f));
         FleeHullShare = WhiteHiltConfig.BindAdminOnly(Section, "FleeHullShare", 0.2f,
             "It flees when this share of its hull health is left.", new AcceptableValueRange<float>(0f, 1f));
+        PursuitEnabled = WhiteHiltConfig.BindAdminOnly(Section, "PursuitEnabled", true,
+            "While Nail Ships hunt a ship, its top speed is held a little below theirs so they can catch it, and while their crew lives aboard.");
+        PursuitShockSeconds = WhiteHiltConfig.BindAdminOnly(Section, "PursuitShockSeconds", 60f,
+            "Seconds the hunted ship is held after the Nail Ships begin to hunt it. The hold stays longer while their crew lives aboard.",
+            new AcceptableValueRange<float>(0f, 600f));
+        PursuitSpeedFactor = WhiteHiltConfig.BindAdminOnly(Section, "PursuitSpeedFactor", 0.85f,
+            "Share of the Nail Ships' speed the held ship may keep. Below 1, so they catch up.", new AcceptableValueRange<float>(0.3f, 1f));
+        PursuitFloorSpeed = WhiteHiltConfig.BindAdminOnly(Section, "PursuitFloorSpeed", 4f,
+            "Least speed, in metres per second, the held ship is cut to, so it is not stopped while the Nail Ships turn.",
+            new AcceptableValueRange<float>(0f, 15f));
         DespawnRange = WhiteHiltConfig.BindAdminOnly(Section, "DespawnRange", 300f,
             "Metres. With no player this close, the Nail Ship sinks out of sight.", new AcceptableValueRange<float>(100f, 1000f));
         DespawnSeconds = WhiteHiltConfig.BindAdminOnly(Section, "DespawnSeconds", 60f,
@@ -186,6 +208,10 @@ public static class SeaBattleSettings
         Translations.AddEnglish("whitehilt_raider_prize_hover", "Prize: sinks in {0} min");
         Translations.AddEnglish("msg_whitehilt_raider_helm_held", "The dead still hold the helm.");
         Translations.AddEnglish("msg_whitehilt_raider_hold_guarded", "The crew guards the hold.");
+        Translations.AddEnglish("msg_whitehilt_pursuit_shock", "The Nail Ships close in. The wind fails your sail.");
+        Translations.AddEnglish("msg_whitehilt_pursuit_held", "The raiders aboard drag at your ship. You cannot outrun them.");
+        Translations.AddEnglish("msg_whitehilt_pursuit_free", "You shake off the ambush. Now you can run.");
+        Translations.AddEnglish("whitehilt_pursuit_hud", "Held by the Nail Ships");
         Translations.AddEnglish("whitehilt_boarding_leap", "Leap aboard");
         Translations.AddEnglish("whitehilt_ballista_man", "Man the ballista");
         Translations.AddEnglish("msg_whitehilt_ballista_noammo", "No ship ammunition");
