@@ -2,6 +2,20 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.136.1 - 2026-10-15
+
+### Fixed
+- **[The trading ship finds its way to port](docs/sea-battles.md#escorts)**: a merchant bought at a trading post used to
+  steer straight for the port and ran aground when islands lay between. The server now plans a sea route over the
+  world's ground, as the Navigator's Table does, and the merchant follows it turning point by turning point, easing the
+  sail in the sharp turns. If it cannot go on it plans a new route from where it lies.
+
+### Changed
+- **The escort pays by the route**: the pay for a voyage between trading posts follows the length of the planned sea
+  route, not the straight line over the islands. A port in shallows is moved to the nearest deep water, and the distance
+  shown on the ship is the way left along its route.
+- The contract is refused, and kept, when no sea route leads to the nearest other trading post.
+
 ## v0.136.0 - 2026-10-14
 
 ### Added
