@@ -104,11 +104,11 @@ public static class TradingPostPatches
         TradingPostTrader trader = __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null;
         if (trader != null && Player.m_localPlayer != null)
         {
-            __result = TradingPostStore.FirstSellable(trader.Biome, Player.m_localPlayer.GetInventory());
+            __result = TradingPostSellPicker.Current(trader.Biome, Player.m_localPlayer.GetInventory());
         }
     }
 
-    // Sells the first stack the post buys at the post's price, the way the game sells a valuable.
+    // Sells the stack chosen with the step button at the post's price, the way the game sells a valuable.
     [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.SellItem))]
     [HarmonyPrefix]
     private static bool SellPrefix(StoreGui __instance)
@@ -121,7 +121,7 @@ public static class TradingPostPatches
         }
 
         Inventory inventory = player.GetInventory();
-        ItemDrop.ItemData item = TradingPostStore.FirstSellable(trader.Biome, inventory);
+        ItemDrop.ItemData item = TradingPostSellPicker.Current(trader.Biome, inventory);
         int coins = item != null ? TradingPostStore.PayFor(trader.Biome, item) : 0;
         if (coins <= 0)
         {
@@ -154,6 +154,25 @@ public static class TradingPostPatches
 
         TradingPostService.RequestChart(biome);
         return false;
+    }
+
+    // At a post the sell button says what it sells and a button beside it steps to the next stack; elsewhere the window
+    // is the game's own.
+    [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.Update))]
+    [HarmonyPostfix]
+    private static void StoreUpdatePostfix(StoreGui __instance)
+    {
+        if (__instance.m_rootPanel != null && __instance.m_rootPanel.activeSelf)
+        {
+            TradingPostSellPicker.Update(__instance, __instance.m_trader != null ? __instance.m_trader.GetComponent<TradingPostTrader>() : null);
+        }
+    }
+
+    [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.Show))]
+    [HarmonyPostfix]
+    private static void StoreShowPostfix()
+    {
+        TradingPostSellPicker.Reset();
     }
 
     private static bool IsPostPart(WearNTear piece)

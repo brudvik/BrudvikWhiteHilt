@@ -85,24 +85,4 @@ public static class TradingPostStore
         float each = TradingPostGoods.BuyPrice(biome, prefab, item.m_quality, TradingPostSettings.BuyShare.Value, TradingPostSettings.ConfiguredPrices);
         return Mathf.FloorToInt(each * item.m_stack);
     }
-
-    /// <summary>
-    /// The first stack in the player's inventory a post buys, in inventory order, as the game's window sells the first
-    /// valuable it finds.
-    /// </summary>
-    /// <param name="biome">The post's biome index.</param>
-    /// <param name="inventory">The player's inventory.</param>
-    /// <returns>The stack, or null.</returns>
-    public static ItemDrop.ItemData FirstSellable(int biome, Inventory inventory)
-    {
-        foreach (ItemDrop.ItemData item in inventory.GetAllItemsInGridOrder())
-        {
-            if (!item.m_equipped && PayFor(biome, item) > 0)
-            {
-                return item;
-            }
-        }
-
-        return null;
-    }
 }

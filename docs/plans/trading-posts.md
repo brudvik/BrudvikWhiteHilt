@@ -427,3 +427,7 @@ Every English text has a Norwegian one in `Translations/Norwegian.json`.
   - Risk to check in the game: the nearest post may lie behind land; the merchant steers round obstacles it sees ahead
     but has no route planner, so a voyage around a continent may stall. If it does, a route check (nearest post with a
     clear sea route) is the fix to agree on.
+- 2026-10-14, the user: choose what to sell instead of the first stack. `TradingPostSellPicker`: at a post the store
+  window's sell button reads "Sell 20 Raw Fish (+10)" (the game's `$1`/`$2` words) and a » button, a copy of the sell
+  button without its click and gamepad hint, steps through the stacks the post buys (grid order); the choice restarts
+  when the window opens. At other traders the window is the game's own.

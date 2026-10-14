@@ -5239,6 +5239,8 @@
   "msg_whitehilt_tradechart_none": "Kartet viser ingen handelssteder på disse kystene.",
   "whitehilt_cfg_tradingposts_chartprice": "Pris på handelskart",
   "whitehilt_cfg_tradingposts_chartprice_desc": "Hva et handelskart koster hos Hildir, i mynter. Krever omstart.",
+  "whitehilt_trade_sell": "Selg $1 (+$2)",
+  "whitehilt_trade_sell_none": "Ingenting å selge",
   "whitehilt_trader_closed": "Jeg har ingenting til deg ennå. Kom tilbake når landet bortenfor er åpent for deg.",
   "whitehilt_cfgenum_treasurehintlevel_easy": "Lett",
   "whitehilt_cfgenum_treasurehintlevel_normal": "Normal",

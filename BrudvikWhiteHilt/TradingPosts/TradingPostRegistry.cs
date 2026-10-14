@@ -20,6 +20,7 @@ public static class TradingPostRegistry
         TraderClothes.RegisterTranslations();
         TradingPostTrader.RegisterTranslations();
         TradingPostCharts.Initialize();
+        TradingPostSellPicker.RegisterTranslations();
         PrefabManager.OnVanillaPrefabsAvailable += CreateMarker;
         CommandManager.Instance.AddConsoleCommand(new TradingPostCommand());
     }
