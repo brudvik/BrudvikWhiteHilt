@@ -2,6 +2,18 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.136.0 - 2026-10-14
+
+### Added
+- **[Sort recipes by what they give](docs/base.md#-crafting-panel)**: a sort button above every recipe list switches
+  between Name, Health, Stamina, Eitr, Total, Best for me and Strength. Best for me weighs a food's health, stamina and
+  eitr by your profile: Balanced, Warrior, Archer, Mage or your own weights. Strength sorts weapons and ammunition by
+  damage, armour by armour and shields by block.
+- **What each recipe gives, on its line**: a food's health, stamina and eitr in the game's colours and its minutes, a
+  potion's or mead's effect and time (a mead base shows the mead it ferments into), and gear's damage, armour or block
+  at the level the recipe makes. New settings in `[CraftingPanel]`: `SortBy`, `ShowStats`, `FoodProfile`,
+  `HealthWeight`, `StaminaWeight` and `EitrWeight`.
+
 ## v0.135.0 - 2026-10-14
 
 ### Added

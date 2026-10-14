@@ -33,7 +33,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.135.0
+## ✨ New in 0.136.0
+
+- **[Find the best food at a glance](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md#-crafting-panel)**: every recipe list shows what each recipe gives (a food's health, stamina and eitr, a potion's effect, a weapon's damage, armour or block), and a sort button orders it by health, stamina, eitr, all three, the best food for your profile (warrior, archer, mage or your own weights) or the strength of gear.
+
+### Also new in 0.135.0
 
 - **[Trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md) in every biome and worth the voyage**: posts now stand below the Swamp and the Mountains and on the broken Ashlands coast too; they pay **60 to 90 %** of their price for what you sell; and **White Hilt's own items** (food, meads, potions, ammunition, gear and the rest) are shared out among them, each sold at one post. A wider jetty, a larger dome for ships on both sides, and lanterns and a light over the trader for the night.
 
