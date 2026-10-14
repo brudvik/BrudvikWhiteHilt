@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.134.0 - 2026-10-14
 
 ### Added
 - **[Comfort in the whole room](docs/base.md#-comfort-in-the-whole-room)**: the **Husvette**, a carved house spirit with

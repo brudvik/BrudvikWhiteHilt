@@ -41,23 +41,21 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.133.0
+## ✨ New in 0.134.0
 
-- **[Trading posts](docs/trading-posts.md)**: harbours along the coasts of every biome, with a long jetty, two market stalls and a trader in the biome's colours, under a dome that keeps monsters out. **Buy the land's materials** instead of searching for hours, **sell the next land's goods and your fish**, and choose what to sell.
-- **[Escorts start at the posts](docs/sea-battles.md#escorts)**: the traders sell the Escort Contract. The merchant waits by the jetty until you board your own ship, sails to the nearest other post and pays by the length of the voyage.
-- **Hildir's Trading Post Charts**: one per biome, marking every post on your map.
-- **[Coins are worth something](docs/chests.md#coins-and-valuables)**: in Linear mode coins and valuables no longer become unlimited in the chests (`[Chests] UnlimitedValuables`).
+- **[Trading](docs/trading-posts.md#the-trading-skill)**, a new skill: the trading posts pay you more and ask less as it grows, and **every post sells gear of its own biome**, each piece at one post only, opening at Trading 20, 40, 60 and 80. The trader and the post's map pin tell what it is known for, so there is a reason to sail from post to post.
+- **[Comfort in the whole room](docs/base.md#-comfort-in-the-whole-room)**: the **Husvette**, a carved house spirit, makes every comfort piece within 30 m count for everyone under its roof. The **Book of the Hall** and the new **Homecraft** skill widen your own comfort reach, up to 40 m.
+- **[Workbench extensions fit where they fit](docs/build-tools.md#workbench-extensions)**: refused only where they really overlap another, up to 10 m from their station, with the station's reach shown as a ring while you place one.
+
+### Also new in 0.133.0
+
+- **[Trading posts](docs/trading-posts.md)**: harbours along the coasts of every biome with a trader in the biome's colours, under a dome that keeps monsters out. **Buy the land's materials**, **sell the next land's goods and your fish**, start **[escorts](docs/sea-battles.md#escorts)** from the posts, and find them with Hildir's Trading Post Charts.
 - **[A Deep North tier](docs/progression.md)**: Bloodgold unlocks it, and White Hilt gear upgrades to quality 9 with it.
 
 ### Also new in 0.132.0
 
-- **[Escorts](docs/sea-battles.md#escorts)**: buy an **Escort Contract** from Haldor and see a **trading ship** safely to port across open sea. Nail Ships come for the merchant, and every raider on its deck carries cargo off; bring it home for coins, a chance of a Raid Chart and a new deed in the [Saga](docs/saga.md).
-- **[No outrunning them at first](docs/sea-battles.md#no-outrunning-them-at-first)**: when Nail Ships attack, your ship is held just below their speed for a minute, and for as long as raiders stand on your deck. Then you may run.
-- **Nail Ships no longer wreck themselves**: their crews, ballistas and fleet-mates no longer damage their own ships.
-
-### Also new in 0.131.0
-
-- **No more players cut off on big worlds**: the server's lists of discoveries, map areas and portals now go out in pieces, and a message too large for Steam is dropped and logged instead of stopping everything behind it. Server and players all need this version.
+- **[Escorts](docs/sea-battles.md#escorts)**: see a **trading ship** safely to port across open sea while Nail Ships come for its cargo, for coins, a chance of a Raid Chart and a new deed in the [Saga](docs/saga.md).
+- **[No outrunning them at first](docs/sea-battles.md#no-outrunning-them-at-first)**: when Nail Ships attack, your ship is held just below their speed for a minute.
 
 See the [changelog](CHANGELOG.md) for everything else.
 
