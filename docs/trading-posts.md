@@ -19,7 +19,7 @@ Along the coasts of every biome stand **trading posts**: a long jetty out to dee
 
 <img src="images/trading_post_traders.png" alt="The eight traders" title="The traders, from the Meadows to the Deep North" height="160">
 
-Behind the goods stall stands the post's trader, in the colours of the biome: **Asbjørn** in the Meadows, **Gunnar** in the Black Forest, **Ragnhild** in the Swamp, **Hallvard** in the Mountains, **Sigrid** on the Plains, **Ylva** in the Mistlands, **Brand** in the Ashlands and **Frøydis** in the Deep North. They turn to you as you come, wave and greet you, talk now and then, point, shrug or give a thumbs up, and wave you goodbye. Their clothes are dyed copies of the game's own and are not for sale.
+Behind the goods stall stands the post's trader, in the colours of the biome: **Asbjørn** in the Meadows, **Gunnar** in the Black Forest, **Ragnhild** in the Swamp, **Hallvard** in the Mountains, **Sigrid** on the Plains, **Ylva** in the Mistlands, **Brand** in the Ashlands and **Frøydis** in the Deep North. They turn to you as you come, wave and greet you, talk now and then, point, shrug or give a thumbs up, and wave you goodbye. When a [great storm](storms.md) is coming they call you in under the dome, which keeps the storm out as it keeps the beasts out: under it you are as safe from the storm as in a cave. Their clothes are dyed copies of the game's own and are not for sale.
 
 <img src="images/trading_post_trader.png" alt="Gunnar at his stall" title="Gunnar at his stall in the Black Forest" height="200">
 
@@ -49,6 +49,8 @@ Talk to the trader to open the store.
 - **Buying:** a post sells the materials of its own biome once the world has slain the boss before it (the Meadows' at once, the Black Forest's after Eikthyr, and so on to the Deep North's after Fader). Before that the trader has nothing for you yet.
 - **Selling:** a post buys the goods of the **next biome** over (the Meadows' post buys the Black Forest's goods, and the Deep North's buys the Meadows'), and **every fish** from anywhere, raw or cooked fish meat included. The sell button says what it sells and for how much, and the **»** button beside it steps to the next stack the post buys.
 - **Prices:** a material's price is the biome's worth (Meadows 1, Black Forest 2, Swamp 3, Mountains 4, Plains 5, Mistlands 6, Ashlands 8, Deep North 10 coins) times half for bulk (wood, stone, grain, marble), twice for ore and metal and one and a half for hides. Bulk is sold 20 at a time, metal 5, the rest 10. A post pays **three fifths** of its own price (`BuyShare`), more with the [Trading skill](#the-trading-skill). A fish is worth four times its waters' worth, and half again for every star.
+- **Supply and demand:** a post pays less for what it has been sold lately: **10%** less for each stack of a good (`MarketDropPerStack`), never under **40%** of the full price (`MarketLeast`). It sells the goods on, **1.5 stacks** a game day (`MarketRecoverPerDay`), and the price comes back. Each post keeps its own market, shared by all players; when you sell what it has too much of, the trader says so. Spread your goods over several posts. `Market` turns it off.
+- **After a storm:** while a [great storm](storms.md) rages and for a game day after it, the posts pay **25%** more for everything (`StormDemand`).
 - **Unlimited goods:** the posts pay for goods even when they are unlimited in your chests (`BuyUnlimitedGoods`). Coins themselves are no longer unlimited in Linear mode (see [Restocking chests](chests.md#coins-and-valuables)).
 
 | At a Meadows post | Coins |
@@ -58,6 +60,15 @@ Talk to the trader to open the store.
 | 1 Copper Ore (sell) | 1 |
 | 1 Perch (sell) | 1, 2 with three stars |
 | 1 Northern Salmon (sell) | 10 |
+
+## The merchant at your jetty
+
+Now and then a trading ship comes to you. While you are at home within 30 m of a **Jetty Head** you built (see [Bridges, jetties & quays](harbour.md)), there is a **25%** chance a game day (`VisitChance`), at most every **3** days (`VisitMinDays`) and never in a storm, that a merchant moors beside its end and stays **a game day**: *A merchant ship has moored at your jetty. It stays for a day; trade at its helm.*
+
+- Look at its helm: **Travelling Merchant, [E] Trade with the merchant**.
+- It carries **8** goods (`VisitGoods`) of one land the world has opened, picked at random, at **1.25 times** the posts' prices (`VisitMarkup`), for coming to the door. Everyone who comes aboard sees the same goods.
+- It buys the valuables Haldor buys, not the posts' goods.
+- When its day is over it casts off and sails away. A merchant nobody is near when its day ends is taken away by the server.
 
 ## The Trading skill
 
@@ -156,6 +167,16 @@ Settings in section `[TradingPosts]`, all the server's:
 | `ExperiencePerCoins` | 5 | Coins traded (or earned on an escort) per point of Trading; 0: the skill does not rise |
 | `Prices` | empty | Prices that replace the built-in ones, in coins per piece: `Prefab:Price`, comma separated |
 | `BuyUnlimitedGoods` | true | Pay for goods that are unlimited in the world's chests |
+| `Market` | true | Supply and demand: a post pays less for what it has been sold lately |
+| `MarketDropPerStack` | 0.1 | How much less a post pays for each stack of a good it has been sold lately |
+| `MarketLeast` | 0.4 | The least share of the full price a post pays |
+| `MarketRecoverPerDay` | 1.5 | Stacks of a good a post sells on in a game day |
+| `StormDemand` | 0.25 | How much more the posts pay while a great storm rages and for a game day after |
+| `Visits` | true | A merchant now and then moors at a player's own Jetty Head |
+| `VisitChance` | 25 | Chance in percent per game day, at home by the jetty, that a merchant comes |
+| `VisitMinDays` | 3 | Game days at least between two visits to a player |
+| `VisitGoods` | 8 | How many goods a visiting merchant carries |
+| `VisitMarkup` | 1.25 | A visiting merchant's prices as a share of the posts' |
 | `ChartPrice` | 150 | Coins a Trading Post Chart costs at Hildir. Needs a restart |
 | `GarbWorth` | 120 | Coins a piece of a biome's garb costs per coin the biome's plain material is worth (Meadows 1, Deep North 10) |
 | `GarbTradeBonus` | 3 | Percent better prices at a biome's posts per piece of its garb worn, buying and selling |

@@ -127,6 +127,22 @@ public static class RaiderShipPatches
     /// <param name="repeat">True while the key is held.</param>
     /// <param name="__result">What the game's method returns; set when the helm is refused.</param>
     /// <returns>False when the helm is refused, so the game's method does not run.</returns>
+    /// <summary>
+    /// The helm of a merchant moored at a player's jetty offers its store.
+    /// </summary>
+    /// <param name="__instance">The helm.</param>
+    /// <param name="__result">The hover text.</param>
+    [HarmonyPatch(typeof(ShipControlls), nameof(ShipControlls.GetHoverText))]
+    [HarmonyPostfix]
+    public static void HelmHover(ShipControlls __instance, ref string __result)
+    {
+        TradeShip trade = __instance.m_ship != null && TradeShip.Is(__instance.m_ship) ? __instance.m_ship.GetComponent<TradeShip>() : null;
+        if (trade != null && trade.Visiting)
+        {
+            __result = Localization.instance.Localize("$whitehilt_merchant_name\n[<color=yellow><b>$KEY_Use</b></color>] $whitehilt_merchant_trade");
+        }
+    }
+
     [HarmonyPatch(typeof(ShipControlls), nameof(ShipControlls.Interact))]
     [HarmonyPrefix]
     public static bool Helm(ShipControlls __instance, Humanoid character, bool repeat, ref bool __result)
@@ -135,6 +151,19 @@ public static class RaiderShipPatches
         if (!trade && !RaiderShip.CrewHolds(__instance.m_ship))
         {
             return true;
+        }
+
+        // A merchant moored at a player's jetty trades at its helm.
+        TradeShip visiting = trade ? __instance.m_ship.GetComponent<TradeShip>() : null;
+        if (visiting != null && visiting.Visiting)
+        {
+            if (!repeat)
+            {
+                MerchantVisit.OpenStore(visiting);
+            }
+
+            __result = true;
+            return false;
         }
 
         if (!repeat)

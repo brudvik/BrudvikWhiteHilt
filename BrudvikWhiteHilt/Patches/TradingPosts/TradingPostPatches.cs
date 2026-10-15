@@ -13,6 +13,9 @@ namespace BrudvikWhiteHilt.Patches.TradingPosts;
 [HarmonyPatch]
 public static class TradingPostPatches
 {
+    // Under this share of the full price the trader says the post has too much of a good.
+    private const float GlutShare = 0.9f;
+
     [HarmonyPatch(typeof(Game), nameof(Game.Start))]
     [HarmonyPostfix]
     private static void GameStartPostfix(Game __instance)
@@ -20,6 +23,7 @@ public static class TradingPostPatches
         __instance.gameObject.AddComponent<TradingPostService>();
         __instance.gameObject.AddComponent<TradingPostPlacer>();
         __instance.gameObject.AddComponent<TerrorNotice>();
+        __instance.gameObject.AddComponent<global::BrudvikWhiteHilt.SeaBattles.Escorts.MerchantVisit>();
     }
 
     // The flags are not saved, so they are set again every time a post's piece comes to life.
@@ -88,6 +92,13 @@ public static class TradingPostPatches
     [HarmonyPrefix]
     private static bool TraderSayPrefix(Trader __instance, string text, string trigger)
     {
+        global::BrudvikWhiteHilt.SeaBattles.Escorts.VisitingMerchant merchant = __instance.GetComponent<global::BrudvikWhiteHilt.SeaBattles.Escorts.VisitingMerchant>();
+        if (merchant != null)
+        {
+            merchant.Say(text);
+            return false;
+        }
+
         TradingPostTrader trader = __instance.GetComponent<TradingPostTrader>();
         if (trader == null)
         {
@@ -152,6 +163,16 @@ public static class TradingPostPatches
         player.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_sold", sold, coins.ToString()), 0, icon);
         __instance.m_trader.OnSold();
         TradingSkill.Raise(player, coins);
+        if (!bounty && item.m_dropPrefab != null)
+        {
+            string prefab = item.m_dropPrefab.name;
+            bool glutted = trader.MarketShare(prefab) < GlutShare;
+            trader.Sold(prefab, item.m_stack);
+            if (glutted)
+            {
+                trader.SayGlut();
+            }
+        }
         if (bounty)
         {
             TradingPostTerror.Deliver(trader.PostId, player);
@@ -221,9 +242,11 @@ public static class TradingPostPatches
         TradingPostTrader post = trader != null ? trader.GetComponent<TradingPostTrader>() : null;
         if (post == null || Player.m_localPlayer == null)
         {
+            TradingPostStore.OpenTrader = null;
             return;
         }
 
+        TradingPostStore.OpenTrader = post.IsHunter ? null : post;
         if (post.IsHunter)
         {
             TradingPostStore.OpenPostId = null;

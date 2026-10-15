@@ -55,6 +55,12 @@ public class TradingPostTrader : MonoBehaviour
     private float restYaw;
     private bool greeted;
     private float nextTalk;
+    private int warnedStorm = -1;
+
+    private const string SoldRpc = "WhiteHiltTraderSold";
+
+    // The post's market (TradingMarket) in the trader's network data.
+    private static readonly int marketKey = "whitehilt_trader_market".GetStableHashCode();
 
     /// <summary>
     /// Gets the index of the trader's biome in <see cref="TradingPostGoods.Biomes"/>.
@@ -83,6 +89,8 @@ public class TradingPostTrader : MonoBehaviour
         Dialogue("start", "Let us see what you have.", "Take your time, friend.");
         Dialogue("buy", "A fine choice.", "That will serve you well.");
         Dialogue("sell", "A fair price for fair goods.", "Good, I can sell that on.");
+        Dialogue("storm", "A great storm is coming! Stay under the dome until it passes.", "Feel that wind? A storm. Shelter here, friend, and wait it out.");
+        Dialogue("glut", "I have more of that than I can sell. I pay less for it now.", "Not that again! My shed is full of it.");
         Translations.AddEnglish("whitehilt_trader_closed", "I have nothing for you yet. Come back when the land beyond is open to you.");
         foreach (TraderLook look in TraderLooks.All)
         {
@@ -260,6 +268,7 @@ public class TradingPostTrader : MonoBehaviour
                 trader.m_name = "$" + look.NameKey;
                 trader.m_items = TradingPostStore.BuildItems(biome);
                 TradingPostService.RequestSlot(postId);
+                view.Register<string, int>(SoldRpc, RPC_Sold);
             }
         }
     }
@@ -276,10 +285,82 @@ public class TradingPostTrader : MonoBehaviour
         SetBool("attach_chair", hunter);
     }
 
+    /// <summary>
+    /// The share of the full price this post pays for a good, after what it has been sold lately.
+    /// </summary>
+    /// <param name="prefab">The good's prefab name.</param>
+    /// <returns>From the least share to 1; 1 when the market is off or nothing is known.</returns>
+    public float MarketShare(string prefab)
+    {
+        if (!TradingPostSettings.Market.Value || hunter || view == null || !view.IsValid() || string.IsNullOrEmpty(prefab))
+        {
+            return 1f;
+        }
+
+        return TradingMarket.Read(view.GetZDO().GetString(marketKey)).TryGetValue(prefab, out TradingMarket.Entry entry)
+            ? TradingMarket.Share(GlutNow(entry), TradingPostSettings.MarketDropPerStack.Value, TradingPostSettings.MarketLeast.Value)
+            : 1f;
+    }
+
+    /// <summary>
+    /// Tells the post's owner that a good has been sold here, so the post pays less for more of it.
+    /// </summary>
+    /// <param name="prefab">The good's prefab name.</param>
+    /// <param name="units">Pieces sold.</param>
+    public void Sold(string prefab, int units)
+    {
+        if (TradingPostSettings.Market.Value && !hunter && view != null && view.IsValid() && !string.IsNullOrEmpty(prefab) && units > 0)
+        {
+            view.InvokeRPC(SoldRpc, prefab, units);
+        }
+    }
+
+    /// <summary>
+    /// Says, in a bubble and aloud, that the post has too much of a good.
+    /// </summary>
+    public void SayGlut()
+    {
+        Say(Pick(Lines("glut")), "Talk");
+    }
+
+    // On the post's owner: adds a sale to the market, after letting the glut run off since it was last written.
+    private void RPC_Sold(long sender, string prefab, int units)
+    {
+        if (view == null || !view.IsValid() || !view.IsOwner() || ZNet.instance == null)
+        {
+            return;
+        }
+
+        ZDO zdo = view.GetZDO();
+        Dictionary<string, TradingMarket.Entry> market = TradingMarket.Read(zdo.GetString(marketKey));
+        float glut = market.TryGetValue(prefab, out TradingMarket.Entry entry) ? GlutNow(entry) : 0f;
+        market[prefab] = new TradingMarket.Entry(TradingMarket.AfterSale(glut, units, TradingPostGoods.StackSold(prefab)), ZNet.instance.GetTime().Ticks);
+        zdo.Set(marketKey, TradingMarket.Write(market));
+    }
+
+    private static float GlutNow(TradingMarket.Entry entry)
+    {
+        if (ZNet.instance == null || EnvMan.instance == null)
+        {
+            return entry.Glut;
+        }
+
+        double days = (ZNet.instance.GetTime().Ticks - entry.Ticks) / (double)System.TimeSpan.TicksPerSecond / EnvMan.instance.m_dayLengthSec;
+        return TradingMarket.Glut(entry.Glut, days, TradingPostSettings.MarketRecoverPerDay.Value);
+    }
+
     private void Update()
     {
         Player player = Player.GetClosestPlayer(transform.position, StandRange);
         float targetYaw = restYaw;
+
+        // A storm coming: the trader calls the players near in under the dome, once a storm.
+        if (player != null && !hunter && Storms.StormState.Coming && warnedStorm != Storms.StormState.Number)
+        {
+            warnedStorm = Storms.StormState.Number;
+            Say(Pick(Lines("storm")), "Talk");
+        }
+
         if (player != null)
         {
             Vector3 toPlayer = player.transform.position - transform.position;

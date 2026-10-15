@@ -2,6 +2,29 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Supply and demand](docs/trading-posts.md#the-store)** at the trading posts: a post pays less for what it has been
+  sold lately, 10% a stack down to 40%, and the price comes back over the days. Each post keeps its own market, shared
+  by all players, and the trader tells you when it has too much. While a great storm rages and for a day after, the
+  posts pay 25% more.
+- **[The merchant at your jetty](docs/trading-posts.md#the-merchant-at-your-jetty)**: now and then a trading ship moors
+  beside a Jetty Head you built and stays a game day with goods of a land the world has opened. Trade at its helm.
+- **The traders and the storm**: they call you in under the dome when a storm is coming, aloud, and the dome keeps the
+  storm out. New voice lines made with ElevenLabs.
+
+### Fixed
+- **A waiting merchant no longer vanishes** when its caller goes to fetch their ship: the trading ship is kept in the
+  world, and the server ends what nobody comes back to (the contract goes back for a merchant that waited in vain).
+- **Nail Ships on a server**: they appeared 180 m away, beyond the area a server keeps alive (Valheim 1.0 agrees the
+  shorter simulation distance of the server and the player), and the game removed them at once: the escort's attack was
+  announced but no ship came. They now come closer where needed, down to 40 m, in escorts and natural encounters alike.
+- **[A merchant that runs aground](docs/sea-battles.md#escorts)** gives up after three new routes from the same place: the
+  ship is taken away, you get the contract back and can try again at once.
+- Reading a bounty notice or a Mine Chart from the inventory no longer locks the map and the inventory open.
+- A trading ship without its skipper says why in the log.
+
 ## v0.140.0 - 2026-10-15
 
 ### Added

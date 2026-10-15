@@ -155,6 +155,7 @@ public static class EscortSettings
         Translations.AddEnglish("msg_whitehilt_escort_arrived", "The trading ship is safe in port. The merchant pays you {0} coins.");
         Translations.AddEnglish("msg_whitehilt_escort_waiting", "A trading ship comes in to the post. Go aboard your own ship to set out; its port is marked on your map.");
         Translations.AddEnglish("msg_whitehilt_escort_setout", "The merchant casts off. Guard it to port!");
+        MerchantVisit.RegisterTranslations();
         Translations.AddEnglish("msg_whitehilt_escort_stranded", "The merchant ran aground and found no way on. The escort is called off; you get the contract back and can try again.");
         Translations.AddEnglish("msg_whitehilt_escort_expired", "Nobody came, so the merchant sailed off. You get the contract back.");
         Translations.AddEnglish("msg_whitehilt_escort_refused_post", "Use the contract at a trading post, under its dome.");

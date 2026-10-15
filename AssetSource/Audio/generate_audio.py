@@ -38,7 +38,8 @@ BIOMES = ["meadows", "blackforest", "swamp", "mountain", "plains", "mistlands", 
 
 LINE_SETS = {
     "trader": [f"whitehilt_trader_{kind}{n}" for kind, count in
-               (("greet", 3), ("bye", 2), ("talk", 4), ("start", 2), ("buy", 2), ("sell", 2)) for n in range(1, count + 1)]
+               (("greet", 3), ("bye", 2), ("talk", 4), ("start", 2), ("buy", 2), ("sell", 2), ("storm", 2), ("glut", 2))
+               for n in range(1, count + 1)]
               + ["whitehilt_trader_closed"]
               + [f"whitehilt_trader_terror_greet{n}" for n in (1, 2)] + [f"whitehilt_trader_terror_talk{n}" for n in (1, 2, 3)],
     "hunter": [f"whitehilt_trader_hunter_{kind}{n}" for kind, count in

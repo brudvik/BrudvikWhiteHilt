@@ -53,7 +53,7 @@ In the open, the meter is full after about 4 minutes (`MinutesToFull`). A storm 
 
 | Where | Exposure |
 |-------|----------|
-| A dungeon, crypt, cave or mine | Falls |
+| A dungeon, crypt, cave or mine, or under a trading post's dome | Falls |
 | Under a roof by a burning fire | Falls; from full to nothing in 1.5 minutes (`MinutesToRecover`) |
 | Under a roof without a fire | Holds |
 | In the lee of a rock, a cliff or a wall, upwind | Climbs at half the pace |

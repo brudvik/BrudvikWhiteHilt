@@ -160,6 +160,11 @@ public class StormService : MonoBehaviour
 
     private void End(double now)
     {
+        if (StormState.Raging)
+        {
+            StormState.Passed(now);
+        }
+
         StormState.Set(StormPhase.Calm, 0.0, number);
         calmUntil = now + StormSettings.MinutesBetween.Value * 60.0;
         Jotunn.Logger.LogInfo($"Storms: storm {number} passes");

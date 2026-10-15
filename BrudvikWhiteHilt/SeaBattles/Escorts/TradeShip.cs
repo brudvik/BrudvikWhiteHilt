@@ -477,6 +477,10 @@ public class TradeShip : MonoBehaviour
         {
             Wait(zdo);
         }
+        else if (State == TradeState.Visiting)
+        {
+            Visit(zdo);
+        }
         else
         {
             SailOff(zdo);
@@ -510,6 +514,78 @@ public class TradeShip : MonoBehaviour
             Jotunn.Logger.LogInfo("Trading Ship: nobody came; the merchant sails off and the contract goes back");
             EscortService.Notice(EscortNotice.Expired, this, 0f);
         }
+    }
+
+    // Moored at a player's jetty: lies still, and when the day is over casts off and sails away as an ended escort does.
+    private void Visit(ZDO zdo)
+    {
+        ship.m_speed = Ship.Speed.Stop;
+        steering = false;
+        if (ZNet.instance.GetTime().Ticks < zdo.GetLong(TradeKeys.VisitUntil))
+        {
+            return;
+        }
+
+        zdo.Set(TradeKeys.State, (int)TradeState.Lost);
+        zdo.Set(TradeKeys.EndedAt, ZNet.instance.GetTime().Ticks);
+        RefreshSailing();
+        GetComponent<TradeShipSkipper>()?.Shout("depart");
+        Jotunn.Logger.LogInfo("Trading Ship: the visiting merchant casts off");
+    }
+
+    /// <summary>
+    /// Whether this ship is a merchant moored at a player's jetty, to trade at its helm.
+    /// </summary>
+    public bool Visiting => State == TradeState.Visiting;
+
+    /// <summary>
+    /// Raises a merchant beside a player's jetty, to lie there for a while with goods of a land (see
+    /// <see cref="MerchantVisit"/>): in deep water clear of other ships, 12 to 24 m off the jetty's end, broadside to it.
+    /// The new ship belongs to this machine.
+    /// </summary>
+    /// <param name="jetty">The jetty's end.</param>
+    /// <param name="player">The player whose jetty it is.</param>
+    /// <param name="biome">The biome index of its goods.</param>
+    /// <param name="seconds">How long it stays.</param>
+    /// <returns>The ship, or null when there was no room in deep water.</returns>
+    public static TradeShip RaiseVisit(Transform jetty, long player, int biome, double seconds)
+    {
+        if (jetty == null || ZoneSystem.instance == null || ZNet.instance == null)
+        {
+            return null;
+        }
+
+        Vector2 centre = Flat(jetty.position);
+        foreach (float distance in new[] { 12f, 18f, 24f })
+        {
+            for (int step = 0; step < 8; step++)
+            {
+                float angle = jetty.eulerAngles.y + step * 45f;
+                Vector2 spot = centre + new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)) * distance;
+                bool clear = Ship.Instances.OfType<Ship>().All(other => other == null || Vector2.Distance(Flat(other.transform.position), spot) > ClearOfShips);
+                if (!clear || !SeaBattleService.DeepWater(spot.x, spot.y, SideDepth))
+                {
+                    continue;
+                }
+
+                TradeShip trade = Create(spot, Quaternion.Euler(0f, angle + 90f, 0f), spot, player, 0, waiting: false, null);
+                if (trade == null)
+                {
+                    return null;
+                }
+
+                ZDO zdo = trade.nview.GetZDO();
+                zdo.Set(TradeKeys.State, (int)TradeState.Visiting);
+                zdo.Set(TradeKeys.Waves, 0);
+                zdo.Set(TradeKeys.VisitBiome, biome);
+                zdo.Set(TradeKeys.VisitUntil, ZNet.instance.GetTime().Ticks + (long)(seconds * System.TimeSpan.TicksPerSecond));
+                Jotunn.Logger.LogInfo($"Trading Ship: a merchant moors at a jetty at {jetty.position} with the goods of {TradingPosts.TradingPostGoods.Biomes[Mathf.Clamp(biome, 0, TradingPosts.TradingPostGoods.Biomes.Length - 1)]}");
+                return trade;
+            }
+        }
+
+        Jotunn.Logger.LogInfo("Trading Ship: no deep, clear water beside the jetty for a visiting merchant");
+        return null;
     }
 
     // Whether the contractor stands on a ship of their own (not a trading or Nail Ship) within StartRange. Every machine

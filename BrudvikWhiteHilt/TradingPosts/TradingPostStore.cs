@@ -20,6 +20,9 @@ public static class TradingPostStore
     /// <summary>The post whose store the local player has open, or last had open.</summary>
     public static string OpenPostId { get; set; }
 
+    /// <summary>The trader whose store is open, for the post's market; null for the hunter.</summary>
+    public static TradingPostTrader OpenTrader { get; set; }
+
     // The gear in the store last made that the player's Trading has not opened, with the level each needs.
     private static readonly Dictionary<Trader.TradeItem, int> locked = new();
 
@@ -208,7 +211,21 @@ public static class TradingPostStore
 
         float each = TradingPostGoods.BuyPrice(biome, prefab, item.m_quality, TradingSkill.BuyShare(Player.m_localPlayer), TradingPostSettings.ConfiguredPrices);
         float plagued = plague != null ? 1f - TradingPostTerror.PlaguePenalty : 1f;
-        return Mathf.FloorToInt(each * item.m_stack * (1f + TraderGarb.TradeBonus(Player.m_localPlayer, biome)) * plagued);
+        return Mathf.FloorToInt(each * item.m_stack * (1f + TraderGarb.TradeBonus(Player.m_localPlayer, biome)) * plagued * MarketFactor(prefab));
+    }
+
+    /// <summary>
+    /// What the open post's market and a great storm do to what it pays for a good: less for what it has been sold
+    /// lately, more while a storm rages and for a day after.
+    /// </summary>
+    /// <param name="prefab">The good's prefab name.</param>
+    /// <returns>The factor.</returns>
+    public static float MarketFactor(string prefab)
+    {
+        float share = OpenTrader != null ? OpenTrader.MarketShare(prefab) : 1f;
+        float day = EnvMan.instance != null ? EnvMan.instance.m_dayLengthSec : 1800f;
+        bool storm = TradingMarket.StormDemand(Storms.StormState.Raging, Storms.StormState.SinceLastStorm(), day);
+        return share * (storm ? 1f + TradingPostSettings.StormDemand.Value : 1f);
     }
 
     // The post's gear at quality 1, cheapest first, behind the biome's key; what the player's Trading has not opened is

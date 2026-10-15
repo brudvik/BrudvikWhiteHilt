@@ -245,7 +245,8 @@ public class StormClient : MonoBehaviour
 
     private StormCover FindCover(Player player)
     {
-        bool interior = player.InInterior();
+        // A trading post's dome keeps the storm out as it keeps the beasts out.
+        bool interior = player.InInterior() || TradingPosts.TradingPostSite.Within(player.transform.position) != null;
         bool roof = player.InShelter() || StormLeanToArea.IsUnder(player.transform.position);
         bool fire = player.m_nearFireTimer < 0.25f;
         if (!RagingHere)

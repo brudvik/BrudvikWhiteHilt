@@ -35,6 +35,27 @@ public static class StormState
     /// <summary>Counts every storm, so a client sees a new one even if it missed the calm in between.</summary>
     public static int Number { get; private set; }
 
+    /// <summary>World time the last storm passed; 0 if none has since the world was loaded.</summary>
+    public static double LastEnded { get; private set; }
+
+    /// <summary>
+    /// Seconds since the last storm passed.
+    /// </summary>
+    /// <returns>Seconds, or -1 when none has.</returns>
+    public static double SinceLastStorm()
+    {
+        return LastEnded <= 0.0 || ZNet.instance == null ? -1.0 : ZNet.instance.GetTimeSeconds() - LastEnded;
+    }
+
+    /// <summary>
+    /// Notes that a storm has passed. On the server; sent with the state.
+    /// </summary>
+    /// <param name="time">World time it passed.</param>
+    public static void Passed(double time)
+    {
+        LastEnded = time;
+    }
+
     /// <summary>Whether a storm rages now.</summary>
     public static bool Raging => Phase == StormPhase.Raging;
 
@@ -108,6 +129,7 @@ public static class StormState
         package.Write((int)Phase);
         package.Write(PhaseEnds);
         package.Write(Number);
+        package.Write(LastEnded);
         return package;
     }
 
@@ -118,6 +140,7 @@ public static class StormState
     public static void Read(ZPackage package)
     {
         Set((StormPhase)package.ReadInt(), package.ReadDouble(), package.ReadInt());
+        LastEnded = package.ReadDouble();
     }
 
     /// <summary>
@@ -126,6 +149,7 @@ public static class StormState
     public static void Reset()
     {
         Set(StormPhase.Calm, 0.0, 0);
+        LastEnded = 0.0;
     }
 
     /// <summary>
