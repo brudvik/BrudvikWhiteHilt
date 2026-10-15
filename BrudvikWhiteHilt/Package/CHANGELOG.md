@@ -2,6 +2,52 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.138.0 - 2026-10-15
+
+### Added
+- **The White Hilt, the Husvette and Munin speak**: the White Hilt's own voice says its unlocks, the blood moon and
+  the land growing restless (new messages at a quarter, a half and three quarters of the pressure); the
+  [Husvette](docs/base.md#the-husvette-speaks) welcomes you home, murmurs as you rest, grumbles at a cold hearth;
+  [Munin](docs/navigation.md) caws and tells of new places on the map. English and Norwegian, made with ElevenLabs.
+- **[Fight music](docs/difficulty.md#heard-not-only-seen)**: a fight with one of the mod's great beasts, near a Nail
+  Ship's crew or under a blood moon has music of its own in place of the game's combat music, and a blood moon has
+  war drums and wolves at night.
+- **More sounds**: digging up treasure, the Rune Forge, runes hung and awakened, rune etching, a sound for each god's
+  gift and the meads, and the Black Bestiary, the School Bench and the saga.
+- **[Monster sounds](docs/monsters.md#sounds)**: every monster of the mod has new sounds made with ElevenLabs, three takes of
+  each so they do not repeat: the Giant Spider, Lindorm, Kraken, Greenland Shark, Desert Dragon, Mist Stag, Nidhogg
+  Spawn, Yggdrasil Warden and Garm Hound, and now also the Draugr Jarl, the White Dragon, the nine Black Beasts and the
+  eight plagues. The big ones walk heavily, dragons beat their wings, the Lindorm and the Kraken sound as they come,
+  a dread sounds when a Black Beast or a plague comes, spider nests rustle, and the Nail Ships' crews shout battle
+  cries and taunts.
+- **[The traders speak](docs/trading-posts.md#voices-and-sound)**: every line of the eight traders, Ulf the Hunter
+  and the trading ship's skipper is recorded, each with a voice of their own, in English and Norwegian (by the game's
+  language). The skipper shouts when the ship casts off, when the Nail Ships come and in port. The posts have the sound
+  of the sea and gulls and their own music under the dome, the plagues roar, and bounties, tracks and charts have their
+  sounds. Made with ElevenLabs; the volumes are in `[Sound]`.
+- **[Plagues](docs/trading-posts.md#plagues)**: now and then a named monster of the biome (Bristleback, Gnawtooth,
+  Mire Mother, Whiteclaw, Skullsplitter, Clickjaw, Ashfang, Icemaw) terrorises a trading post and comes down to its
+  yard at night. The trader hands out a free Bounty Notice with a search circle on the map, pays well for the
+  monster's head (800 coins in the Meadows, 8000 in the Deep North) and gives half off the post's garb. While a post
+  is plagued its prices are 20 % worse.
+- **[The traders' garb](docs/trading-posts.md#the-traders-garb)**: every biome's traders have a set of four pieces of
+  clothing in their colours (hood, tunic, trousers, cape), each sold at one of the biome's posts only. Light armour, a
+  small bonus of the biome's kind per piece, a set bonus for all four (the Swamp's keeps you dry, the Mountains' keeps
+  the cold out, and so on), and 3 % better prices per piece at the biome's posts, 15 % with the whole set.
+- **[The Mine Chart](docs/trading-posts.md#the-mine-chart)**: the trader at the Mistlands posts sells a chart (250
+  coins, `MineChartPrice`) that marks the nearest infested mine you have not found yet and shows it on the map.
+
+### Changed
+- **The sounds are a file of their own**, `whitehilt_audio`, next to `whitehilt_foraging` and `whitehilt_decor`. A mod
+  manager installs it by itself; by hand, copy all four files in `plugins/`.
+- **[The hunter at the trading posts](docs/trading-posts.md#the-hunter)** now sells the Elaking's trophy in the Deep
+  North, at a great beast's price.
+
+### Fixed
+- **Icons**: rendered icons fill their square. The maps, charts and many small items and pieces came out small in a
+  corner of their icon, because the icon renderer measured the hidden vanilla model too and framed the model from its
+  base instead of its centre.
+
 ## v0.137.0 - 2026-10-15
 
 ### Added
