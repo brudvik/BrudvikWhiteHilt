@@ -35,7 +35,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.139.0
+## ✨ New in 0.140.0
+
+- **[Great storms](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md)**: now and then a storm comes, foretold by the weather forecast and then announced three minutes ahead. Out in it, whatever you wear or have eaten, you tire, freeze, go half blind and in the end die. Each biome has its own: thunder in the forest, a cold sea storm, a blinding sandstorm, a blizzard you can hardly move in, bitter fog, a firestorm that sets you alight and the howling Deep North. Never in the Meadows.
+- **[Shelter](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md)**: a roof and a fire, a cave or a dungeon; the lee of a rock and close trees help a little. Put up a **[Storm Lean-to](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#the-storm-lean-to-vindskjul)** anywhere for 12 wood and light a fire in front of it.
+- **[Lightning and falling trees](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#lightning)**: lightning strikes trees, the ground or you with metal in hand, with a crackle to warn you; gusts fell trees with the wind.
+- **[Weathering](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#weathering-herdet)**, a new skill, **[finds](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#what-the-storm-leaves-behind)** the storm leaves behind, and a Husvette and a dog who feel it coming. Storm sounds and voices made with ElevenLabs.
+
+### Also new in 0.139.0
 
 - **[Nail Ships that fight back harder](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-nail-ship-fights-back)**: their crews throw **[grapnels](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#grapnels)** that haul your ship alongside (cut the rope at your rail), some carry an iron **[ram](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-ram)** for a ship that lies still, and later in the game a burning **[fire ship](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#fire-ships)** may come straight at you. A flagship's jarl who lives too long **[blows his horn](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-jarls-horn)** for one more ship.
 - **[Smarter raiders](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-fight)**: they come up level with a moving ship and match its speed, take the side with fewer defenders, chase you again if you pull away, give up when land keeps them off, and mend their own deck. You are told the bearing they come from, and the place is pinned on your map.
@@ -313,6 +320,12 @@ A world that grows harder as you progress: up to 5 stars, black beasts and the r
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_bestiary.png" alt="Black Bestiary" height="120">
 
 A field guide to the nine black beasts, with the arrows and weapon treatments that exploit their weaknesses.
+
+#### [Great storms](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_storms.png" alt="Great storms" height="120">
+
+Storms that tire, freeze, blind and kill you out in the open, a storm for each biome, lightning, falling trees and the lean-to that saves you.
 
 ### 🎒 Quality of life
 

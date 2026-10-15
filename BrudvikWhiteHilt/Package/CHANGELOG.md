@@ -2,6 +2,35 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.140.0 - 2026-10-15
+
+### Added
+- **[Great storms](docs/storms.md)**: now and then a storm comes, with three minutes' warning: the sky darkens, thunder
+  rolls far off and the clock counts down. Out in it, whatever you wear or have eaten, your stamina fails, you freeze,
+  the view closes in and in the end the storm kills you. Each biome has its own: thunder and rain in the Black Forest
+  and the Swamp, a cold storm at sea, a blinding sandstorm on the Plains, a blizzard on the Mountain you can hardly
+  move in, bitter fog in the Mistlands, a firestorm in the Ashlands that sets you alight, and the howling Deep North.
+  Never in the Meadows. Shelter under a roof by a fire, or in a cave or dungeon; the lee of a rock or a wall and close
+  trees slow it down. In the Ashlands only a stone roof shelters.
+- **[The Storm Lean-to](docs/storms.md#the-storm-lean-to-vindskjul)**: a vindskjul of logs for 12 wood, built anywhere
+  without a workbench. Under it you are under a roof; a fire in front of the opening keeps you alive.
+- **[Lightning](docs/storms.md#lightning)** strikes in the forest storm, at sea and in the Mistlands: a tree close by,
+  which falls, the ground, or you out in the open, more often with metal in hand or on a ship. A crackle warns you to
+  move.
+- **[Falling trees](docs/storms.md#falling-trees)**: gusts fell trees around you with the wind, never inside a base.
+- **Storm sounds** made with ElevenLabs: rain, sea, sand, blizzard, fog and fire storms, thunder that cracks overhead
+  with a flash of lightning, lightning strikes, creaking and cracking trees, and the warning's distant horn.
+- **[Foretold](docs/storms.md#foretold)**: the weather forecast shows a great storm 5 minutes before the warning, and
+  aboard a ship with a Navigator's Table everyone is told and the bell rings.
+- **[Weathering](docs/storms.md#weathering-herdet)**, a new skill (Herdet): it rises out in the storms and slows the
+  exposure meter, by 30% at level 100.
+- **[What the storm leaves behind](docs/storms.md#what-the-storm-leaves-behind)**: when it passes, amber and resin,
+  pearls, coins and rubies, crystals and frost glands lie about near those who were out in it; lightning leaves a
+  thunderstone now and then.
+- **[The Husvette and your dog](docs/storms.md#the-husvette-and-your-dog)** feel it coming: the Husvette calls you in
+  aloud and is glad of the walls while it rages; your dog whines and looks toward home.
+- `whitehilt_storm` shows the storm and your exposure; admins can `warn`, `start` and `stop` one.
+
 ## v0.139.0 - 2026-10-15
 
 ### Added
