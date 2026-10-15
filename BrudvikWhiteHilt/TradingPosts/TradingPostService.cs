@@ -18,6 +18,8 @@ public class TradingPostService : MonoBehaviour
     private const string ReplyRpc = "WhiteHiltTradePostReply";
     private const string ChartRpc = "WhiteHiltTradePostChart";
     private const string ChartReplyRpc = "WhiteHiltTradePostChartReply";
+    private const string MinesRpc = "WhiteHiltTradePostMines";
+    private const string MinesReplyRpc = "WhiteHiltTradePostMinesReply";
     private const string SlotRpc = "WhiteHiltTradePostSlot";
     private const string SlotReplyRpc = "WhiteHiltTradePostSlotReply";
 
@@ -63,6 +65,15 @@ public class TradingPostService : MonoBehaviour
     public static void RequestChart(int biome)
     {
         ZRoutedRpc.instance?.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), ChartRpc, biome);
+    }
+
+    /// <summary>
+    /// Asks the server where the infested mines nearest the local player lie, for a Mine Chart they read.
+    /// </summary>
+    /// <param name="position">Where the reader stands.</param>
+    public static void RequestMines(Vector3 position)
+    {
+        ZRoutedRpc.instance?.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), MinesRpc, position);
     }
 
     /// <summary>
@@ -126,6 +137,8 @@ public class TradingPostService : MonoBehaviour
         ZRoutedRpc.instance?.Register<string>(ReplyRpc, RPC_Reply);
         ZRoutedRpc.instance?.Register<int>(ChartRpc, RPC_Chart);
         ZRoutedRpc.instance?.Register<ZPackage>(ChartReplyRpc, RPC_ChartReply);
+        ZRoutedRpc.instance?.Register<Vector3>(MinesRpc, RPC_Mines);
+        ZRoutedRpc.instance?.Register<ZPackage>(MinesReplyRpc, RPC_MinesReply);
         ZRoutedRpc.instance?.Register<string>(SlotRpc, RPC_Slot);
         ZRoutedRpc.instance?.Register<string, int, int>(SlotReplyRpc, RPC_SlotReply);
         slots.Clear();
@@ -253,6 +266,38 @@ public class TradingPostService : MonoBehaviour
         }
 
         TradingPostCharts.Mark(positions);
+    }
+
+    // On the server: the infested mines nearest the reader of a Mine Chart, nearest first. The reader's machine picks the
+    // nearest one its map does not show yet, which only it knows.
+    private void RPC_Mines(long sender, Vector3 position)
+    {
+        if (ZNet.instance == null || !ZNet.instance.IsServer())
+        {
+            return;
+        }
+
+        List<Vector3> mines = TradingPostMineChart.NearestMines(position);
+        ZPackage reply = new();
+        reply.Write(mines.Count);
+        foreach (Vector3 mine in mines)
+        {
+            reply.Write(mine);
+        }
+
+        ZRoutedRpc.instance.InvokeRoutedRPC(sender, MinesReplyRpc, reply);
+    }
+
+    private void RPC_MinesReply(long sender, ZPackage reply)
+    {
+        int count = reply.ReadInt();
+        List<Vector3> mines = new();
+        for (int i = 0; i < count; i++)
+        {
+            mines.Add(reply.ReadVector3());
+        }
+
+        TradingPostMineChart.Mark(mines);
     }
 
     // On the server: a post's place among the posts of its biome, by id. Anyone may ask; it only decides what is sold where.

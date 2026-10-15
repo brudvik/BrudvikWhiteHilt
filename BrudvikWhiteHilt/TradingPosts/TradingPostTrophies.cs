@@ -7,8 +7,7 @@ namespace BrudvikWhiteHilt.TradingPosts;
 /// What the hunter who now and then sits at a trading post sells: the trophies of the creatures of the post's biome,
 /// the game's and White Hilt's own, never a boss's (those open the Forsaken powers). The trophies of the sea's
 /// creatures are sold where they are first met: the Serpent's by the Swamp, the Kraken's and the Greenland Shark's by
-/// the Mountains (both come after Bonemass), the Draugr Jarl's by the Plains. The Deep North's Elaking is left out, in
-/// case it is the land's boss. A trophy costs the plain material of its
+/// the Mountains (both come after Bonemass), the Draugr Jarl's by the Plains. A trophy costs the plain material of its
 /// biome times <see cref="TradingPostSettings.TrophyWorth"/>, three times that for the great beasts. Pure numbers, so
 /// the rules can be tested without the game.
 /// </summary>
@@ -52,7 +51,7 @@ public static class TradingPostTrophies
         new[]
         {
             "TrophyMoose", "TrophyDeerWhite", "TrophySeal", "TrophyMole", "TrophyBarka", "TrophyBlob_Frost", "TrophyWrithan",
-            "TrophyJotunWarrior", "TrophyJotunWitch"
+            "TrophyJotunWarrior", "TrophyJotunWitch", "TrophyElaking"
         }
     };
 
@@ -61,7 +60,7 @@ public static class TradingPostTrophies
     {
         "TrophyAbomination", "TrophySerpent", "TrophySGolem", "TrophyGjall", "TrophyFallenValkyrie", "TrophyMorgen", "TrophyBonemawSerpent",
         "WhiteHilt_TrophyLindorm", "WhiteHilt_TrophyKraken", "WhiteHilt_TrophyDesertDragon", "WhiteHilt_TrophyDraugrJarl",
-        "WhiteHilt_TrophyYggdrasilWarden", "TrophyJotunWarrior", "TrophyJotunWitch"
+        "WhiteHilt_TrophyYggdrasilWarden", "TrophyJotunWarrior", "TrophyJotunWitch", "TrophyElaking"
     };
 
     // How much more a great beast's trophy costs.

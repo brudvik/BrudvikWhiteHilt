@@ -21,6 +21,7 @@ public static class TradingPostRegistry
         TradingPostTrader.RegisterTranslations();
         TradingPostHunter.RegisterTranslations();
         TradingPostCharts.Initialize();
+        TradingPostMineChart.Initialize();
         TradingPostSellPicker.RegisterTranslations();
         TradingPostStore.RegisterTranslations();
         TradingPostGear.RegisterTranslations();

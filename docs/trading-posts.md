@@ -40,7 +40,7 @@ Talk to him to open his store. He sells **one of each trophy** of the post's bio
 | Ashlands | Charred Warrior, Charred Marksman, Charred Twitcher, Asksvin, Volture, Fallen Valkyrie, Morgen, Bonemaw, Lava Blob, Garm Hound |
 | Deep North | Moose, White Deer, Seal, Mole, Barka, Frost Blob, Writhan, Jotun Warrior, Jotun Witch |
 
-The sea's trophies are sold where the creature is first met: the Serpent's by the Swamp, the Kraken's and the Greenland Shark's by the Mountains (both come after Bonemass) and the Draugr Jarl's by the Plains. The Elaking's trophy is not sold, in case it is the Deep North's boss. A trophy costs the biome's worth (see [the store](#the-store)) times **15** (`TrophyWorth`), three times that for the great beasts (Abomination, Serpent, Stone Golem, Gjall, Fallen Valkyrie, Morgen, Bonemaw, Lindorm, Kraken, Desert Dragon, Draugr Jarl, Yggdrasil Warden and the two Jotuns), with your [Trading](#the-trading-skill) discount: a Boar trophy costs 15 coins, a Serpent trophy 135, a Garm Hound trophy 120.
+The sea's trophies are sold where the creature is first met: the Serpent's by the Swamp, the Kraken's and the Greenland Shark's by the Mountains (both come after Bonemass) and the Draugr Jarl's by the Plains. A trophy costs the biome's worth (see [the store](#the-store)) times **15** (`TrophyWorth`), three times that for the great beasts (Abomination, Serpent, Stone Golem, Gjall, Fallen Valkyrie, Morgen, Bonemaw, Lindorm, Kraken, Desert Dragon, Draugr Jarl, Yggdrasil Warden, the two Jotuns and the Elaking), with your [Trading](#the-trading-skill) discount: a Boar trophy costs 15 coins, a Serpent trophy 135, a Garm Hound trophy 120.
 
 ## The store
 
@@ -75,6 +75,10 @@ The skill book (the skills dialog) shows your share, your discount and how many 
 
 Every post's trader sells the **Escort Contract** (300 coins, once Bonemass is slain). Use it at the post: a trading ship comes in beside the jetty, on the side away from your ship, and waits. Go aboard your own ship within 150 m of it and it sets out for **the nearest other trading post**, however far. Guard it against the Nail Ships on the way; when it reaches port with its cargo, every player near it gets **400 coins per kilometre** of the voyage for a full cargo. If you do not come aboard within 10 minutes it sails off and you get the contract back. See [Escorts](sea-battles.md#escorts) for the attacks, the cargo and the pay.
 
+## The Mine Chart
+
+The trader at the Mistlands posts also sells a **Mine Chart** (250 coins, `MineChartPrice`, once Yagluth is slain, like the post's goods). Read it and the nearest **infested mine** you have not found yet gets a pin, and the map opens on it. A mine counts as found when the land around it is uncovered on your map or a pin already marks it. The chart is used up when it marks a mine; if every mine near you is found already, you keep it.
+
 ## Hildir's charts
 
 Hildir sells a **Trading Post Chart** for each biome (150 coins), once the world has reached that biome. Read it and every trading post on that biome's coasts gets a pin on your map. The chart is kept, so you can read it again or give it to a friend.
@@ -107,6 +111,7 @@ Settings in section `[TradingPosts]`, all the server's:
 | `Prices` | empty | Prices that replace the built-in ones, in coins per piece: `Prefab:Price`, comma separated |
 | `BuyUnlimitedGoods` | true | Pay for goods that are unlimited in the world's chests |
 | `ChartPrice` | 150 | Coins a Trading Post Chart costs at Hildir. Needs a restart |
+| `MineChartPrice` | 250 | Coins a Mine Chart costs at the Mistlands posts. 0: not sold |
 | `HunterChance` | 20 | Percent chance the hunter sits at a post when a player comes there; the answer holds for a game day. 0: no hunter |
 | `TrophyWorth` | 15 | A trophy at the hunter costs its biome's worth times this, three times for the great beasts |
 

@@ -117,6 +117,13 @@ public static class TradingPostStore
 
         AddGear(items, biome, postId, player);
 
+        // The Mistlands' trader also sells the way to an infested mine.
+        Trader.TradeItem mineChart = TradingPostMineChart.TradeItem(biome);
+        if (mineChart != null)
+        {
+            items.Add(mineChart);
+        }
+
         // And the Book of the Hall, the knowledge of furnishing a great hall.
         Trader.TradeItem book = Comfort.ComfortService.TradeItem();
         if (book != null)

@@ -11,8 +11,7 @@ public class TradingPostTrophiesTests
 {
     private static readonly string[] bosses =
     {
-        "TrophyEikthyr", "TrophyTheElder", "TrophyBonemass", "TrophyDragonQueen", "TrophyGoblinKing", "TrophySeekerQueen", "TrophyFader",
-        "TrophyElaking"
+        "TrophyEikthyr", "TrophyTheElder", "TrophyBonemass", "TrophyDragonQueen", "TrophyGoblinKing", "TrophySeekerQueen", "TrophyFader"
     };
 
     /// <summary>Every biome's hunter has trophies to sell.</summary>
@@ -42,6 +41,15 @@ public class TradingPostTrophiesTests
         Assert.Contains("WhiteHilt_TrophyDesertDragon", TradingPostTrophies.Of(TradingPostGoods.IndexOf("Plains")));
         Assert.Contains("WhiteHilt_TrophyMistStag", TradingPostTrophies.Of(TradingPostGoods.IndexOf("Mistlands")));
         Assert.Contains("WhiteHilt_TrophyGarmHound", TradingPostTrophies.Of(TradingPostGoods.IndexOf("AshLands")));
+    }
+
+    /// <summary>The Deep North's hunter sells the Elaking's trophy, at a great beast's price.</summary>
+    [Fact]
+    public void TheElakingIsSoldAsAGreatBeast()
+    {
+        int north = TradingPostGoods.Biomes.Length - 1;
+        Assert.Contains("TrophyElaking", TradingPostTrophies.Of(north));
+        Assert.Equal(3 * TradingPostTrophies.Price(north, "TrophyMoose", 15f), TradingPostTrophies.Price(north, "TrophyElaking", 15f));
     }
 
     /// <summary>A later biome's trophies cost more, and a great beast's three times an ordinary one's.</summary>

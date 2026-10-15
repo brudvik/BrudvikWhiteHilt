@@ -381,8 +381,12 @@ public static class VisualHelper
         });
     }
 
+    // The longest side of the model an icon is rendered from. The renderer frames the model with a fixed margin of
+    // 0.1 units, so a model of a third of a metre would fill only three quarters of the icon.
+    private const float IconModelSize = 2f;
+
     /// <summary>
-    /// Renders an inventory icon of a prefab.
+    /// Renders an inventory icon of a prefab, the model filling the icon.
     /// </summary>
     /// <param name="prefab">Prefab to render.</param>
     /// <returns>The icon, or null if the prefab has nothing visible to render.</returns>
@@ -396,18 +400,89 @@ public static class VisualHelper
         // Jotunn keeps rendered icons on disk and renders again only when the mod's version or the game's changes, so
         // the many White Hilt pieces and items are not all rendered at every start.
         BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue(BrudvikWhiteHilt.PluginGUID, out BepInEx.PluginInfo plugin);
-        Sprite icon = RenderManager.Instance.Render(new RenderManager.RenderRequest(prefab)
+        GameObject model = IconModel(prefab);
+        Sprite icon;
+        try
         {
-            Rotation = RenderManager.IsometricRotation,
-            UseCache = plugin != null,
-            TargetPlugin = plugin?.Metadata
-        });
+            icon = RenderManager.Instance.Render(new RenderManager.RenderRequest(model ?? prefab)
+            {
+                Rotation = model != null ? Quaternion.identity : RenderManager.IsometricRotation,
+                UseCache = plugin != null,
+                TargetPlugin = plugin?.Metadata
+            });
+        }
+        finally
+        {
+            if (model != null)
+            {
+                UnityEngine.Object.DestroyImmediate(model);
+            }
+        }
+
         if (icon == null)
         {
             Jotunn.Logger.LogWarning($"Could not render an icon for {prefab.name}, keeping the original icon.");
         }
 
         return icon;
+    }
+
+    // What Jotunn's renderer sees of a prefab, made right for it: only the meshes that show (not those a new model
+    // hides, nor the lower levels of detail), turned for the isometric view, centred and scaled up to a set size. The
+    // renderer frames a model by all its renderers, the hidden ones too, and measures it from the origin rather than
+    // from its centre, so a small model or one standing on its base came out small in a corner of its icon. Null for a
+    // prefab with skinned meshes or flames and smoke, which are rendered as they are.
+    private static GameObject IconModel(GameObject prefab)
+    {
+        Transform root = prefab.transform;
+        if (prefab.GetComponentsInChildren<SkinnedMeshRenderer>(true).Any(renderer => renderer.enabled && IsActiveBelow(renderer.transform, root))
+            || prefab.GetComponentsInChildren<ParticleSystem>(true).Any(particles => IsActiveBelow(particles.transform, root)))
+        {
+            return null;
+        }
+
+        HashSet<Renderer> lowerDetail = new(prefab.GetComponentsInChildren<LODGroup>(true)
+            .SelectMany(group => group.GetLODs().Skip(1))
+            .SelectMany(lod => lod.renderers)
+            .Where(renderer => renderer != null));
+        MeshRenderer[] renderers = prefab.GetComponentsInChildren<MeshRenderer>(true)
+            .Where(renderer => renderer.enabled && IsActiveBelow(renderer.transform, root) && !lowerDetail.Contains(renderer)
+                && renderer.shadowCastingMode != ShadowCastingMode.ShadowsOnly && renderer.GetComponent<MeshFilter>()?.sharedMesh != null)
+            .ToArray();
+        if (renderers.Length == 0)
+        {
+            return null;
+        }
+
+        GameObject model = new(prefab.name);
+        GameObject turned = new("turned");
+        turned.transform.SetParent(model.transform, false);
+        Matrix4x4 toPrefab = root.worldToLocalMatrix;
+        foreach (MeshRenderer renderer in renderers)
+        {
+            Matrix4x4 local = toPrefab * renderer.transform.localToWorldMatrix;
+            GameObject part = new(renderer.name);
+            part.transform.SetParent(turned.transform, false);
+            part.transform.localPosition = local.GetColumn(3);
+            part.transform.localRotation = local.rotation;
+            part.transform.localScale = local.lossyScale;
+            part.AddComponent<MeshFilter>().sharedMesh = renderer.GetComponent<MeshFilter>().sharedMesh;
+            part.AddComponent<MeshRenderer>().sharedMaterials = renderer.sharedMaterials;
+        }
+
+        turned.transform.localRotation = RenderManager.IsometricRotation;
+        Renderer[] parts = turned.GetComponentsInChildren<Renderer>();
+        Bounds bounds = parts[0].bounds;
+        foreach (Renderer part in parts.Skip(1))
+        {
+            bounds.Encapsulate(part.bounds);
+        }
+
+        float side = Mathf.Max(bounds.size.x, bounds.size.y);
+        float scale = side > 0.0001f ? IconModelSize / side : 1f;
+        turned.transform.localPosition = -bounds.center;
+        model.transform.localScale = Vector3.one * scale;
+        return model;
     }
 
     private static bool IsMeshRenderer(Renderer renderer)

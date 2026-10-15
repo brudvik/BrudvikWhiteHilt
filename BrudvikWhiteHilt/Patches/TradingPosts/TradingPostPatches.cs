@@ -152,11 +152,18 @@ public static class TradingPostPatches
         return false;
     }
 
-    // Reading a Trading Post Chart asks the server for the biome's posts instead of the game's own use of the item.
+    // Reading a Trading Post Chart asks the server for the biome's posts, and reading a Mine Chart for the mines near the
+    // reader, instead of the game's own use of the item.
     [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.UseItem))]
     [HarmonyPrefix]
     private static bool UseChartPrefix(Humanoid __instance, ItemDrop.ItemData item)
     {
+        if (TradingPostMineChart.Is(item) && __instance is Player reader && reader == Player.m_localPlayer)
+        {
+            TradingPostService.RequestMines(reader.transform.position);
+            return false;
+        }
+
         int biome = TradingPostCharts.BiomeOf(item);
         if (biome < 0 || __instance is not Player player || player != Player.m_localPlayer)
         {

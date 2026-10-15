@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[The Mine Chart](docs/trading-posts.md#the-mine-chart)**: the trader at the Mistlands posts sells a chart (250
+  coins, `MineChartPrice`) that marks the nearest infested mine you have not found yet and shows it on the map.
+
+### Changed
+- **[The hunter at the trading posts](docs/trading-posts.md#the-hunter)** now sells the Elaking's trophy in the Deep
+  North, at a great beast's price.
+
+### Fixed
+- **Icons**: rendered icons fill their square. The maps, charts and many small items and pieces came out small in a
+  corner of their icon, because the icon renderer measured the hidden vanilla model too and framed the model from its
+  base instead of its centre.
+
 ## v0.137.0 - 2026-10-15
 
 ### Added
