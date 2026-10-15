@@ -33,7 +33,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.138.0
+## ✨ New in 0.138.1
+
+- **Ready for Valheim 1.0.20**, and **[trophies that follow the stars](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#trophies-and-stars)**: like the game's own creatures, the mod's monsters now drop their trophy more often the more stars they have.
+
+### Also new in 0.138.0
 
 - **[The world speaks](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#voices-and-sound)**: the traders, Ulf the Hunter, the trading ship's skipper and the Nail Ships' crews talk aloud, each with a voice of their own, in English or Norwegian. The White Hilt itself speaks its unlocks and warns of the blood moon, the [Husvette](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/base.md#the-husvette-speaks) welcomes you home, and Munin tells of new places on the map.
 - **[Every monster sounds its own](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#sounds)**: new roars, growls and death cries for all the mod's monsters, the Black Beasts and the plagues, with heavy footsteps, dragon wings and the Lindorm and Kraken heard as they come. A fight with a great beast, a sea battle and a blood moon have [music of their own](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/difficulty.md#heard-not-only-seen), and the trading posts their sea, gulls and folk music.
