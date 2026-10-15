@@ -35,7 +35,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.140.0
+## ✨ New in 0.141.0
+
+- **[Supply and demand](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#the-store)**: a trading post pays less for what it has been sold lately and the price comes back over the days, each post with its own market shared by all players. After a great storm the posts pay a quarter more.
+- **[The merchant at your jetty](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#the-merchant-at-your-jetty)**: now and then a trading ship moors beside a Jetty Head you built and stays a day with goods of a land the world has opened. Trade at its helm.
+- **[The traders and the storm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md#the-traders)**: they call you in under the dome when a storm is coming, and the dome keeps the storm out.
+- **[Escorts on a server](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#escorts)**: the Nail Ships of an attack now come where the server keeps them alive, a waiting merchant stays at the post while you fetch your ship, and a merchant that runs aground gives up and gives the contract back so you can try again.
+- **Fixed**: reading a bounty notice or a Mine Chart from the inventory no longer locks the map and inventory open.
+
+### Also new in 0.140.0
 
 - **[Great storms](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md)**: now and then a storm comes, foretold by the weather forecast and then announced three minutes ahead. Out in it, whatever you wear or have eaten, you tire, freeze, go half blind and in the end die. Each biome has its own: thunder in the forest, a cold sea storm, a blinding sandstorm, a blizzard you can hardly move in, bitter fog, a firestorm that sets you alight and the howling Deep North. Never in the Meadows.
 - **[Shelter](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md)**: a roof and a fire, a cave or a dungeon; the lee of a rock and close trees help a little. Put up a **[Storm Lean-to](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#the-storm-lean-to-vindskjul)** anywhere for 12 wood and light a fire in front of it.
