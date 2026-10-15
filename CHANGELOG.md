@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.141.0 - 2026-10-16
 
 ### Added
 - **[Supply and demand](docs/trading-posts.md#the-store)** at the trading posts: a post pays less for what it has been
