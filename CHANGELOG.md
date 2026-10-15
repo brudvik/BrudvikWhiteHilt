@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.138.0 - 2026-10-15
 
 ### Added
 - **The White Hilt, the Husvette and Munin speak**: the White Hilt's own voice says its unlocks, the blood moon and
