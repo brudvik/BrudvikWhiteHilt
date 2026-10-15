@@ -37,7 +37,10 @@ public enum EscortNotice
     Expired = 6,
 
     /// <summary>The contractor went aboard, and the merchant has cast off from the trading post.</summary>
-    SetOut = 7
+    SetOut = 7,
+
+    /// <summary>The merchant ran aground and found no way on; the ship is gone and the contract goes back.</summary>
+    Stranded = 8
 }
 
 /// <summary>
@@ -106,7 +109,18 @@ public class EscortService : MonoBehaviour
     // The port lies this far off the destination post's origin along its jetty: 11 m past the jetty head.
     private const float PortOffJetty = 30f;
 
+    // The server's look through the trading ships: how often, how many sectors a frame, who counts as near, and how long
+    // an ended ship lies before it is taken away.
+    private const float SweepInterval = 60f;
+    private const int SweepSectorsPerFrame = 200;
+    private const float NearAnyone = 250f;
+    private const double EndedRemoveSeconds = 300.0;
+
     private static EscortService instance;
+    private readonly List<ZDO> swept = new();
+    private bool sweeping;
+    private int sweepIndex;
+    private float nextSweep;
     private static float requestedAt = float.NegativeInfinity;
 
     // On the server: the merchants on their way, by the contractor's player id, and when each player may call another.
@@ -325,6 +339,11 @@ public class EscortService : MonoBehaviour
 
     private void Update()
     {
+        if (ZNet.instance != null && ZNet.instance.IsServer())
+        {
+            SweepStep();
+        }
+
         if (marks.Count == 0 || Time.time < nextPinCheck)
         {
             return;
@@ -332,6 +351,110 @@ public class EscortService : MonoBehaviour
 
         nextPinCheck = Time.time + PinCheckInterval;
         CheckPins();
+    }
+
+    // On the server: now and then looks through the world's trading ships, a few sectors a frame as there may be
+    // millions of objects, and deals with those nobody is near (see Tidy).
+    private void SweepStep()
+    {
+        if (ZDOMan.instance == null)
+        {
+            return;
+        }
+
+        if (!sweeping)
+        {
+            if (Time.time < nextSweep)
+            {
+                return;
+            }
+
+            sweeping = true;
+            sweepIndex = 0;
+            swept.Clear();
+        }
+
+        for (int step = 0; step < SweepSectorsPerFrame; step++)
+        {
+            if (ZDOMan.instance.GetAllZDOsWithPrefabIterative(TradeShipRegistry.ShipName, swept, ref sweepIndex))
+            {
+                sweeping = false;
+                nextSweep = Time.time + SweepInterval;
+                foreach (ZDO zdo in swept)
+                {
+                    Tidy(zdo);
+                }
+
+                swept.Clear();
+                return;
+            }
+        }
+    }
+
+    // On the server: a trading ship that nobody is near no longer has anyone to look after it. One that waited at a post
+    // too long expires and its contract goes back; one left alone at sea is abandoned; one whose business is done is
+    // taken away, so none stays in the saved world. The server takes the ship over to write it.
+    private void Tidy(ZDO zdo)
+    {
+        if (zdo == null || !zdo.IsValid() || AnyoneNear(zdo.GetPosition()))
+        {
+            return;
+        }
+
+        long now = ZNet.instance.GetTime().Ticks;
+        StaleAction action = EscortRules.Stale((TradeState)zdo.GetInt(TradeKeys.State), Since(now, zdo.GetLong(TradeKeys.Seen)),
+            Since(now, zdo.GetLong(TradeKeys.RaisedAt)), Since(now, zdo.GetLong(TradeKeys.EndedAt)), -Since(now, zdo.GetLong(TradeKeys.VisitUntil)),
+            EscortSettings.WaitSeconds.Value, EscortSettings.AbandonSeconds.Value, EndedRemoveSeconds);
+        if (action == StaleAction.None)
+        {
+            return;
+        }
+
+        zdo.SetOwner(ZDOMan.GetSessionID());
+        long contractor = zdo.GetLong(TradeKeys.Contractor);
+        switch (action)
+        {
+            case StaleAction.Expire:
+            case StaleAction.Abandon:
+                zdo.Set(TradeKeys.State, (int)TradeState.Lost);
+                zdo.Set(TradeKeys.EndedAt, now);
+                EscortNotice notice = action == StaleAction.Expire ? EscortNotice.Expired : EscortNotice.Abandoned;
+                ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.Everybody, NoticeRpc, (int)notice, zdo.m_uid, contractor, zdo.GetPosition(), 0f);
+                if (active.TryGetValue(contractor, out Active record) && record.Ship == zdo.m_uid)
+                {
+                    active.Remove(contractor);
+                    if (action == StaleAction.Expire)
+                    {
+                        cooldownUntil.Remove(contractor);
+                    }
+                }
+
+                Jotunn.Logger.LogInfo($"Escort: the trading ship at {zdo.GetPosition()} was left alone; {action}");
+                break;
+            case StaleAction.Remove:
+                ZDOMan.instance.DestroyZDO(zdo);
+                break;
+        }
+    }
+
+    // Seconds since a time in world ticks; a time never written counts as long ago.
+    private static double Since(long now, long ticks)
+    {
+        return ticks == 0L ? double.MaxValue / 2.0 : (now - ticks) / (double)System.TimeSpan.TicksPerSecond;
+    }
+
+    // Whether any player online is within reach of a point, by where their machine keeps its world.
+    private static bool AnyoneNear(Vector3 position)
+    {
+        foreach (ZNetPeer peer in ZNet.instance.GetPeers())
+        {
+            if (Utils.DistanceXZ(peer.m_refPos, position) <= NearAnyone)
+            {
+                return true;
+            }
+        }
+
+        return Player.m_localPlayer != null && Utils.DistanceXZ(Player.m_localPlayer.transform.position, position) <= NearAnyone;
     }
 
     // On the server: a player used a contract. The server asks the same questions as for an admin's call, and more.
@@ -595,7 +718,7 @@ public class EscortService : MonoBehaviour
     // taken from the message, and the range is held to a sensible size.
     private void RPC_Notice(long sender, int kind, ZDOID shipId, long contractor, Vector3 position, float range)
     {
-        if (kind < (int)EscortNotice.Wave || kind > (int)EscortNotice.SetOut)
+        if (kind < (int)EscortNotice.Wave || kind > (int)EscortNotice.Stranded)
         {
             return;
         }
@@ -608,19 +731,26 @@ public class EscortService : MonoBehaviour
         }
 
         bool failure = notice == EscortNotice.Sunk || notice == EscortNotice.Plundered || notice == EscortNotice.Abandoned;
-        if (failure || notice == EscortNotice.Arrived || notice == EscortNotice.Expired)
+        bool returned = notice == EscortNotice.Expired || notice == EscortNotice.Stranded;
+        if (failure || returned || notice == EscortNotice.Arrived)
         {
             DropPin(shipId);
         }
 
-        Player player = Player.m_localPlayer;
-        if (notice == EscortNotice.Expired)
+        if (notice == EscortNotice.Stranded)
         {
-            // The merchant waited in vain: the contractor gets the contract back, once for the ship.
+            Release(sender, shipId, contractor);
+        }
+
+        Player player = Player.m_localPlayer;
+        if (returned)
+        {
+            // The merchant waited in vain or ran aground: the contractor gets the contract back, once for the ship.
             if (player != null && contractor != 0L && player.GetPlayerID() == contractor && paid.Add(shipId))
             {
                 Give(player, EscortContract.PrefabName, 1);
-                player.Message(MessageHud.MessageType.Center, Translations.Word("msg_whitehilt_escort_expired"));
+                string back = notice == EscortNotice.Stranded ? "msg_whitehilt_escort_stranded" : "msg_whitehilt_escort_expired";
+                player.Message(MessageHud.MessageType.Center, Translations.Word(back));
             }
 
             return;
@@ -654,6 +784,27 @@ public class EscortService : MonoBehaviour
         }
 
         player.Message(MessageHud.MessageType.Center, Translations.Word(token));
+    }
+
+    // On the server: a merchant that ran aground frees its contractor at once, without the cooldown, so they can try again
+    // with the contract they got back. Believed only from the ship's owner, for the ship the server has on record.
+    private void Release(long sender, ZDOID shipId, long contractor)
+    {
+        if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || contractor == 0L
+            || !active.TryGetValue(contractor, out Active record) || record.Ship != shipId)
+        {
+            return;
+        }
+
+        ZDO zdo = ZDOMan.instance.GetZDO(shipId);
+        if (zdo != null && zdo.GetOwner() != sender)
+        {
+            return;
+        }
+
+        active.Remove(contractor);
+        cooldownUntil.Remove(contractor);
+        Jotunn.Logger.LogInfo($"Escort: the merchant of {contractor} ran aground; they may take a new contract");
     }
 
     // On the client of a player who was near when the merchant came into port: adds the coins, rolls for a Raid Chart and

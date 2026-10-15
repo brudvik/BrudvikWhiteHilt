@@ -26,6 +26,24 @@ public enum EscortOutcome
 }
 
 /// <summary>
+/// What the server does with a trading ship nobody is near.
+/// </summary>
+public enum StaleAction
+{
+    /// <summary>Leave it be.</summary>
+    None,
+
+    /// <summary>It waited at a post too long: the contract goes back.</summary>
+    Expire,
+
+    /// <summary>It was left alone at sea too long: the escort has failed.</summary>
+    Abandon,
+
+    /// <summary>Its business is done: take it out of the world.</summary>
+    Remove
+}
+
+/// <summary>
 /// The plain rules of an escort: where the trading ship is going, when the waves come, how the raiders on the deck empty
 /// the hold, how the escort ends and what it pays. They take numbers and delegates, never game objects, so the server
 /// that approves a contract, the ship's owner and the tests all use the same code. Positions are world x and z as a
@@ -33,6 +51,42 @@ public enum EscortOutcome
 /// </summary>
 public static class EscortRules
 {
+    /// <summary>
+    /// Whether a stuck merchant gives up: it has planned as many new routes from about the same place as it may.
+    /// </summary>
+    /// <param name="replans">New routes planned since it last got on.</param>
+    /// <param name="most">The most it may plan.</param>
+    /// <returns>True when it gives up.</returns>
+    public static bool GivesUp(int replans, int most)
+    {
+        return replans >= most;
+    }
+
+    /// <summary>
+    /// What the server does with a trading ship nobody is near, from how long each part of its life has lasted.
+    /// </summary>
+    /// <param name="state">The ship's state.</param>
+    /// <param name="sinceSeen">Seconds since a player was last near it.</param>
+    /// <param name="sinceRaised">Seconds since it came to a post.</param>
+    /// <param name="sinceEnded">Seconds since its escort ended.</param>
+    /// <param name="visitLeft">Seconds left of a visit to a player's jetty.</param>
+    /// <param name="waitSeconds">How long it waits at a post.</param>
+    /// <param name="abandonSeconds">How long it may be left alone at sea.</param>
+    /// <param name="removeAfter">How long an ended ship lies before it is taken away.</param>
+    /// <returns>The action.</returns>
+    public static StaleAction Stale(TradeState state, double sinceSeen, double sinceRaised, double sinceEnded, double visitLeft,
+        double waitSeconds, double abandonSeconds, double removeAfter)
+    {
+        return state switch
+        {
+            TradeState.Waiting when sinceRaised > waitSeconds => StaleAction.Expire,
+            TradeState.Sailing when sinceSeen > abandonSeconds => StaleAction.Abandon,
+            TradeState.Visiting when visitLeft <= 0.0 => StaleAction.Remove,
+            TradeState.Arrived or TradeState.Lost when sinceEnded > removeAfter => StaleAction.Remove,
+            _ => StaleAction.None
+        };
+    }
+
     /// <summary>The destinations are tried at distances this far apart, from the farthest down to the nearest.</summary>
     public const float DistanceStep = 200f;
 

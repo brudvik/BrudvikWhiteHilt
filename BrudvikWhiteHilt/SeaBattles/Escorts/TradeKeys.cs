@@ -17,7 +17,10 @@ public enum TradeState
     Lost = 2,
 
     /// <summary>Lying at a trading post until the contractor goes aboard their own ship.</summary>
-    Waiting = 3
+    Waiting = 3,
+
+    /// <summary>Moored at a player's jetty for a day, to trade (<see cref="MerchantVisit"/>).</summary>
+    Visiting = 4
 }
 
 /// <summary>
@@ -71,6 +74,12 @@ internal static class TradeKeys
 
     /// <summary>The planned route: the turning points, packed by <see cref="RouteTrack.Pack"/> (a byte array); none for a straight run.</summary>
     public static readonly int Path = "whitehilt_trade_path".GetStableHashCode();
+
+    /// <summary>World ticks when a visit to a player's jetty ends (a long).</summary>
+    public static readonly int VisitUntil = "whitehilt_trade_visituntil".GetStableHashCode();
+
+    /// <summary>The biome index of the goods a visiting merchant carries (an int).</summary>
+    public static readonly int VisitBiome = "whitehilt_trade_visitbiome".GetStableHashCode();
 
     /// <summary>The index of the turning point the ship steers for (an int).</summary>
     public static readonly int Point = "whitehilt_trade_point".GetStableHashCode();

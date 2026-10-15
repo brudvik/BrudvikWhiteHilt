@@ -65,6 +65,12 @@ public class TradeShip : MonoBehaviour
     private const float PointReached = 20f;
     private const float StuckSeconds = 8f;
     private const float ReplanGap = 30f;
+
+    // A merchant stuck again after this many new routes from about the same place gives up; one that has sailed this far
+    // from where it last planned has got on, and starts counting anew. It is taken away this long after it gives up.
+    private const int MaxReplans = 3;
+    private const float ReplanProgress = 100f;
+    private const float StrandedRemoveSeconds = 3f;
     private const float SlowTurnDegrees = 50f;
 
     private static readonly Dictionary<Ship, TradeShip> byShip = new();
@@ -82,6 +88,8 @@ public class TradeShip : MonoBehaviour
     private int avoidSign = 1;
     private float stuckFor;
     private float nextReplan;
+    private int replans;
+    private Vector3 replannedAt;
     private bool planning;
     private bool hullDestroyed;
     private bool finishing;
@@ -874,12 +882,58 @@ public class TradeShip : MonoBehaviour
 
     // A ship that cannot go on in any direction (the sea ahead is shallow or has land in it all the way round, as when it
     // ran into a bay that its route did not know) waits a few seconds, then plans a new route from where it lies.
+    // After three new routes from about the same place it gives up (see Strand).
     private void CheckStuck(ZDO zdo, bool clear, float dt)
     {
-        stuckFor = clear ? 0f : stuckFor + dt;
-        if (stuckFor >= StuckSeconds && !planning && Time.time >= nextReplan)
+        if (replans > 0 && Vector3.Distance(transform.position, replannedAt) > ReplanProgress)
         {
-            StartCoroutine(Replan(zdo.GetVec3(TradeKeys.Destination, transform.position)));
+            replans = 0;
+        }
+
+        stuckFor = clear ? 0f : stuckFor + dt;
+        if (stuckFor < StuckSeconds || planning || Time.time < nextReplan)
+        {
+            return;
+        }
+
+        if (EscortRules.GivesUp(replans, MaxReplans))
+        {
+            Strand(zdo);
+            return;
+        }
+
+        replans++;
+        replannedAt = transform.position;
+        StartCoroutine(Replan(zdo.GetVec3(TradeKeys.Destination, transform.position)));
+    }
+
+    // The merchant has run aground for good: the escort ends without blame, the contractor gets the contract back and is
+    // free to take a new one at once, and the ship is taken away. Done once, by the owner.
+    private void Strand(ZDO zdo)
+    {
+        if (finishing || State != TradeState.Sailing)
+        {
+            return;
+        }
+
+        finishing = true;
+        zdo.Set(TradeKeys.State, (int)TradeState.Lost);
+        zdo.Set(TradeKeys.EndedAt, ZNet.instance.GetTime().Ticks);
+        ship.m_speed = Ship.Speed.Stop;
+        steering = false;
+        RefreshSailing();
+        Jotunn.Logger.LogInfo($"Trading Ship: stuck at {transform.position} after {replans} new routes; the escort is called off and the contract goes back");
+        EscortService.Notice(EscortNotice.Stranded, this, EscortSettings.AbandonRange.Value * 2f);
+        StartCoroutine(RemoveStranded());
+    }
+
+    // A moment later, so the notice can find the ship, it is gone.
+    private IEnumerator RemoveStranded()
+    {
+        yield return new WaitForSeconds(StrandedRemoveSeconds);
+        if (nview != null && nview.IsValid() && nview.IsOwner() && ZNetScene.instance != null)
+        {
+            ZNetScene.instance.Destroy(gameObject);
         }
     }
 

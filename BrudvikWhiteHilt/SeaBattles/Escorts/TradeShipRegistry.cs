@@ -9,8 +9,9 @@ namespace BrudvikWhiteHilt.SeaBattles.Escorts;
 /// <summary>
 /// Registers the trading ship: a clone of the vanilla longship, as the Nail Ship is, with a hull of its own health, a sail
 /// that pulls a little less than the longship's, no way for the hammer to take it apart, a merchant's look, a skipper at
-/// the helm (<see cref="TradeShipSkipper"/>) and the <see cref="TradeShip"/> that sails it. It is no piece in any table
-/// and its network object is not persistent, so a trading ship nobody sails with can never stay in the saved world.
+/// the helm (<see cref="TradeShipSkipper"/>) and the <see cref="TradeShip"/> that sails it. It is no piece in any table.
+/// Its network object is persistent, so it is still there when the player who owns it has gone to fetch their ship;
+/// the server takes away the trading ships nobody comes back to (<see cref="EscortService"/>).
 /// </summary>
 public static class TradeShipRegistry
 {
@@ -52,9 +53,9 @@ public static class TradeShipRegistry
             SetUpHull(prefab);
             prefab.GetComponent<Ship>().m_sailForceFactor *= EscortSettings.SailForceFactor.Value;
 
-            // A trading ship is an encounter, not a part of the world: left alone, the clone keeps the longship's
-            // persistent ZDO, and a merchant nobody sails near would sit in the saved world for ever.
-            prefab.GetComponent<ZNetView>().m_persistent = false;
+            // Persistent, as the longship: a ship that is not would be destroyed the moment its owner went beyond the
+            // zones their machine keeps alive (on a server only a short way), waiting merchant, escort and contract with it.
+            prefab.GetComponent<ZNetView>().m_persistent = true;
 
             prefab.AddComponent<TradeShip>();
             TradeShipLook.Apply(prefab);

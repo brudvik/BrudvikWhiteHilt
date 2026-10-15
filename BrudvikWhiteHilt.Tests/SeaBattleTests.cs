@@ -883,3 +883,56 @@ public class NearZoneTests
         Assert.True(distances.Last() * 0.8f < 40f);
     }
 }
+
+/// <summary>
+/// A merchant that cannot get on.
+/// </summary>
+public class StrandedMerchantTests
+{
+    /// <summary>It plans up to three new routes from the same place, and gives up on the fourth time it is stuck.</summary>
+    [Theory]
+    [InlineData(0, false)]
+    [InlineData(2, false)]
+    [InlineData(3, true)]
+    [InlineData(4, true)]
+    public void GivesUpAfterThreeRoutes(int replans, bool givesUp)
+    {
+        Assert.Equal(givesUp, global::BrudvikWhiteHilt.SeaBattles.Escorts.EscortRules.GivesUp(replans, 3));
+    }
+}
+
+/// <summary>
+/// What the server does with a trading ship nobody is near.
+/// </summary>
+public class StaleTradeShipTests
+{
+    private const double Wait = 600.0;
+    private const double Abandon = 180.0;
+    private const double Remove = 300.0;
+
+    /// <summary>A merchant that waited at its post too long expires; one left alone at sea too long is abandoned.</summary>
+    [Fact]
+    public void TooLongAloneEnds()
+    {
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.Expire, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Waiting, 0, 601, 0, 0));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.None, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Waiting, 0, 599, 0, 0));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.Abandon, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Sailing, 181, 0, 0, 0));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.None, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Sailing, 179, 0, 0, 0));
+    }
+
+    /// <summary>An ended escort lies a while before it is taken away; a visit ends when its day is over.</summary>
+    [Fact]
+    public void DoneIsTakenAway()
+    {
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.Remove, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Lost, 0, 0, 301, 0));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.None, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Arrived, 0, 0, 299, 0));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.Remove, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Visiting, 0, 0, 0, -1));
+        Assert.Equal(global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction.None, Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState.Visiting, 0, 0, 0, 60));
+    }
+
+    private static global::BrudvikWhiteHilt.SeaBattles.Escorts.StaleAction Stale(global::BrudvikWhiteHilt.SeaBattles.Escorts.TradeState state,
+        double seen, double raised, double ended, double visitLeft)
+    {
+        return global::BrudvikWhiteHilt.SeaBattles.Escorts.EscortRules.Stale(state, seen, raised, ended, visitLeft, Wait, Abandon, Remove);
+    }
+}

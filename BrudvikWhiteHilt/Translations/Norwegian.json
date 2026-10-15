@@ -7442,5 +7442,6 @@
   "whitehilt_cfg_storms_findscount": "Antall funn",
   "whitehilt_cfg_storms_findscount_desc": "Funn et uvær legger igjen rundt hver spiller som var ute i det.",
   "whitehilt_cfg_storms_skillreduction": "Virkning av Herdet",
-  "whitehilt_cfg_storms_skillreduction_desc": "Hvor mye saktere eksponeringen øker på Herdet 100 (0.3 = 30 %)."
+  "whitehilt_cfg_storms_skillreduction_desc": "Hvor mye saktere eksponeringen øker på Herdet 100 (0.3 = 30 %).",
+  "msg_whitehilt_escort_stranded": "Kjøpmannen gikk på grunn og fant ingen vei videre. Eskorten er avlyst; du får kontrakten tilbake og kan prøve igjen."
 }
