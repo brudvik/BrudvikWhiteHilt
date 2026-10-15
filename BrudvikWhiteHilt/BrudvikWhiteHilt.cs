@@ -162,6 +162,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Storms.StormSettings.Initialize();
         Storms.StormCommands.Register();
         Storms.StormExposureEffect.Register();
+        Storms.StormSkill.Register();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
@@ -325,6 +326,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
             Comfort.ComfortService.SetSkillIcon();
             TradingPosts.TradingSkill.SetIconFromCoins();
             Mastery.ForagingSkill.SetIconFromMushroom();
+            Storms.StormSkill.SetIcon();
             Mastery.MasteryEffects.Register();
             Pieces.Ships.ShipBell.Create();
             Pieces.Portals.Effects.PortalFx.CreateSounds();

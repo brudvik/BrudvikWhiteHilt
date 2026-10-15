@@ -14,7 +14,10 @@ public enum StormPhase
     Warning,
 
     /// <summary>The storm rages in every biome that has one.</summary>
-    Raging
+    Raging,
+
+    /// <summary>A storm is decided but not yet announced: only the weather forecast shows it.</summary>
+    Brewing
 }
 
 /// <summary>
@@ -37,6 +40,36 @@ public static class StormState
 
     /// <summary>Whether a storm is coming.</summary>
     public static bool Coming => Phase == StormPhase.Warning;
+
+    /// <summary>Whether a storm is announced or raging, so the sky, the sound and the clock show it.</summary>
+    public static bool Visible => Phase is StormPhase.Warning or StormPhase.Raging;
+
+    /// <summary>
+    /// Seconds until the storm breaks.
+    /// </summary>
+    /// <param name="warningSeconds">How long the warning lasts.</param>
+    /// <returns>Seconds, 0 when it rages or no storm is coming.</returns>
+    public static float SecondsToBreak(float warningSeconds)
+    {
+        return SecondsToBreak(Phase, SecondsLeft(), warningSeconds);
+    }
+
+    /// <summary>
+    /// Seconds until a storm breaks.
+    /// </summary>
+    /// <param name="phase">The phase.</param>
+    /// <param name="left">Seconds left of the phase.</param>
+    /// <param name="warningSeconds">How long the warning lasts.</param>
+    /// <returns>Seconds, 0 when it rages or no storm is coming.</returns>
+    public static float SecondsToBreak(StormPhase phase, float left, float warningSeconds)
+    {
+        return phase switch
+        {
+            StormPhase.Brewing => left + warningSeconds,
+            StormPhase.Warning => left,
+            _ => 0f
+        };
+    }
 
     /// <summary>
     /// Stores a new state.

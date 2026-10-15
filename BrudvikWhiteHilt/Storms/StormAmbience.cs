@@ -114,7 +114,7 @@ public class StormAmbience : MonoBehaviour
     private void Update()
     {
         Player player = Player.m_localPlayer;
-        bool here = player != null && StormSettings.Enabled.Value && StormState.Phase != StormPhase.Calm
+        bool here = player != null && StormSettings.Enabled.Value && StormState.Visible
             && StormSettings.HasStorms(player.GetCurrentBiome());
         StormProfile profile = here ? StormProfile.For(player.GetCurrentBiome()) : null;
         wanted = profile?.Ambience ?? wanted;

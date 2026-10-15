@@ -19,6 +19,11 @@ public class HusvetteVoice : MonoBehaviour
     private const float LinePause = 600f;
     private const float BubbleHeight = 0.9f;
     private const float BubbleTime = 5f;
+    private const float StormCallRange = 50f;
+
+    // The storm whose warning, and whose raging with the player inside, a Husvette has spoken of.
+    private static int warnedStorm = -1;
+    private static int shelteredStorm = -1;
 
     // Only one Husvette speaks at a time, wherever the player is.
     private static float lastSpoken = float.NegativeInfinity;
@@ -49,6 +54,12 @@ public class HusvetteVoice : MonoBehaviour
         Translations.AddEnglish("whitehilt_husvette_cosy1", "Oh, that is nice. Very homely.");
         Translations.AddEnglish("whitehilt_husvette_cosy2", "Now this feels like a real hall.");
         Translations.AddEnglish("whitehilt_husvette_cosy3", "Cosier and cosier. I like it here.");
+        Translations.AddEnglish("whitehilt_husvette_storm1", "A storm is coming! Inside with you, and light the fire!");
+        Translations.AddEnglish("whitehilt_husvette_storm2", "Feel that wind? A great storm. Hurry home!");
+        Translations.AddEnglish("whitehilt_husvette_storm3", "The sky turns black. Get under the roof, quickly!");
+        Translations.AddEnglish("whitehilt_husvette_shelter1", "Listen to it howl out there. Good thing we have walls.");
+        Translations.AddEnglish("whitehilt_husvette_shelter2", "Stay by the fire until it passes. Nobody goes out in that.");
+        Translations.AddEnglish("whitehilt_husvette_shelter3", "Let it rage. In here we are snug and dry.");
     }
 
     private void Awake()
@@ -70,9 +81,25 @@ public class HusvetteVoice : MonoBehaviour
             return;
         }
 
-        bool near = Vector3.Distance(player.transform.position, transform.position) <= NearRange && player.InShelter();
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+        bool near = distance <= NearRange && player.InShelter();
+
+        // A storm coming: the Husvette calls the player in from around the house, once per storm.
+        if (Storms.StormState.Coming && distance <= StormCallRange && warnedStorm != Storms.StormState.Number && Say("storm", force: true))
+        {
+            warnedStorm = Storms.StormState.Number;
+            return;
+        }
+
         if (!near)
         {
+            return;
+        }
+
+        if (Storms.StormState.Raging && shelteredStorm != Storms.StormState.Number && Say("shelter", force: true))
+        {
+            shelteredStorm = Storms.StormState.Number;
+            lastNear = Time.time;
             return;
         }
 
@@ -103,11 +130,11 @@ public class HusvetteVoice : MonoBehaviour
         lastComfort = comfort;
     }
 
-    private void Say(string kind)
+    private bool Say(string kind, bool force = false)
     {
-        if (Time.time - lastSpoken < 20f)
+        if (!force && Time.time - lastSpoken < 20f)
         {
-            return;
+            return false;
         }
 
         lastSpoken = Time.time;
@@ -119,5 +146,6 @@ public class HusvetteVoice : MonoBehaviour
         }
 
         WhiteHiltSound.Speak(voice, Speaker, token);
+        return true;
     }
 }

@@ -49,7 +49,7 @@ LINE_SETS = {
                   ("start", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth")]
                  + ["msg_whitehilt_bloodmoon_start", "msg_whitehilt_bloodmoon_end"]
                  + [f"msg_whitehilt_pressure_{n}" for n in (1, 2, 3)],
-    "husvette": [f"whitehilt_husvette_{kind}{n}" for kind in ("home", "rest", "cold", "cosy") for n in (1, 2, 3)],
+    "husvette": [f"whitehilt_husvette_{kind}{n}" for kind in ("home", "rest", "cold", "cosy", "storm", "shelter") for n in (1, 2, 3)],
     "munin": [f"whitehilt_munin_{kind}{n}" for kind in ("news", "idle") for n in (1, 2, 3)],
 }
 

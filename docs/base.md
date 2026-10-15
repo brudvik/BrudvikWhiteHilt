@@ -256,4 +256,4 @@ All settings are in the server's `Doors` section.
 
 ### The Husvette speaks
 
-The Husvette talks to you, aloud and in a speech bubble: he welcomes you home after a while away (*Home again! I kept the place for you.*), murmurs when you sit down to rest, grumbles when the room is cold with no fire burning at night (*Brr! Who let the fire go out?*), and is pleased when the room grows cosier. Each line comes at most every ten minutes.
+The Husvette talks to you, aloud and in a speech bubble: he welcomes you home after a while away (*Home again! I kept the place for you.*), murmurs when you sit down to rest, grumbles when the room is cold with no fire burning at night (*Brr! Who let the fire go out?*), and is pleased when the room grows cosier. Each line comes at most every ten minutes. When a [great storm](storms.md) is coming he calls you in, and while it rages he is glad of the walls.

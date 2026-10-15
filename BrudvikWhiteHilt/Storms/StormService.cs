@@ -80,7 +80,12 @@ public class StormService : MonoBehaviour
             changed = true;
         }
 
-        if (StormState.Phase == StormPhase.Warning && now >= StormState.PhaseEnds)
+        if (StormState.Phase == StormPhase.Brewing && now >= StormState.PhaseEnds)
+        {
+            Warn(now);
+            changed = true;
+        }
+        else if (StormState.Phase == StormPhase.Warning && now >= StormState.PhaseEnds)
         {
             Rage(now);
             changed = true;
@@ -95,7 +100,16 @@ public class StormService : MonoBehaviour
             nextCheck = now + CheckInterval;
             if (ShouldStart(now))
             {
-                Warn(now);
+                number++;
+                if (StormSettings.ForecastMinutes.Value > 0f)
+                {
+                    Brew(now);
+                }
+                else
+                {
+                    Warn(now);
+                }
+
                 changed = true;
             }
         }
@@ -122,9 +136,15 @@ public class StormService : MonoBehaviour
         return UnityEngine.Random.value < chance;
     }
 
+    // Decided, and foretold by the weather forecast before everyone is warned.
+    private void Brew(double now)
+    {
+        StormState.Set(StormPhase.Brewing, now + StormSettings.ForecastMinutes.Value * 60.0, number);
+        Jotunn.Logger.LogInfo($"Storms: storm {number} is brewing; the warning comes in {StormSettings.ForecastMinutes.Value:0.#} minutes");
+    }
+
     private void Warn(double now)
     {
-        number++;
         StormState.Set(StormPhase.Warning, now + StormSettings.WarningMinutes.Value * 60.0, number);
         Jotunn.Logger.LogInfo($"Storms: storm {number} is coming in {StormSettings.WarningMinutes.Value:0.#} minutes");
     }
@@ -181,6 +201,11 @@ public class StormService : MonoBehaviour
         switch (command?.ToLowerInvariant())
         {
             case "warn":
+                if (StormState.Phase == StormPhase.Calm)
+                {
+                    number++;
+                }
+
                 Warn(now);
                 Reply(sender, $"A storm is coming in {StormSettings.WarningMinutes.Value:0.#} minutes.");
                 break;

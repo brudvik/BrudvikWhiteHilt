@@ -1,5 +1,8 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.HudLayout;
+using BrudvikWhiteHilt.Navigation.Weather;
+using BrudvikWhiteHilt.Pieces.Navigation;
+using BrudvikWhiteHilt.Pieces.Ships;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +36,8 @@ public class StormClient : MonoBehaviour
     private StormPhase shownPhase = StormPhase.Calm;
     private int shownStage;
     private float owed;
+    private StormKind stormKind;
+    private float peakExposure;
     private GameObject[] suffering;
     private bool sufferingBurns;
 
@@ -52,12 +57,29 @@ public class StormClient : MonoBehaviour
     public static bool RagingHere { get; private set; }
 
     /// <summary>
+    /// The storm in the weather forecast: when it breaks, even before the warning, or how long it still rages.
+    /// </summary>
+    /// <param name="biome">The biome the forecast is for.</param>
+    /// <returns>The text, or null when no storm is coming there.</returns>
+    public static string ForecastText(Heightmap.Biome biome)
+    {
+        if (StormState.Phase == StormPhase.Calm || StormSettings.Enabled == null || !StormSettings.Enabled.Value || !StormSettings.HasStorms(biome))
+        {
+            return null;
+        }
+
+        return StormState.Raging
+            ? string.Format(Translations.Word("whitehilt_forecast_storm_raging"), StormState.Countdown(StormState.SecondsLeft()))
+            : string.Format(Translations.Word("whitehilt_forecast_storm"), StormState.Countdown(StormState.SecondsToBreak(StormSettings.WarningMinutes.Value * 60f)));
+    }
+
+    /// <summary>
     /// The storm on the clock: "Storm in 2:10" while it comes, "Storm, 3:05 left" while it rages.
     /// </summary>
     /// <returns>The text, or null when calm.</returns>
     public static string ClockText()
     {
-        if (StormState.Phase == StormPhase.Calm || StormSettings.Enabled == null || !StormSettings.Enabled.Value)
+        if (!StormState.Visible || StormSettings.Enabled == null || !StormSettings.Enabled.Value)
         {
             return null;
         }
@@ -135,6 +157,14 @@ public class StormClient : MonoBehaviour
                 }
 
                 StormAmbience.PlayWarning();
+                RingAboard(player);
+                StormCompanions.Warn(player);
+                break;
+            case StormPhase.Brewing when ShipChartTable.IsAboardWithTable(player):
+                string foretold = string.Format(Localization.instance.Localize("$msg_whitehilt_storm_foretold"),
+                    StormState.Countdown(StormState.SecondsToBreak(StormSettings.WarningMinutes.Value * 60f)));
+                HudAlerts.Warn(player, foretold, stormColor, WarningAlertSeconds);
+                RingAboard(player);
                 break;
             case StormPhase.Raging when here:
                 string kind = StormProfile.For(player.GetCurrentBiome()).Kind.ToString().ToLowerInvariant();
@@ -143,7 +173,40 @@ public class StormClient : MonoBehaviour
                 break;
             case StormPhase.Calm when was == StormPhase.Raging:
                 player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_storm_end");
+                Passed(player);
                 break;
+        }
+    }
+
+    // The ship's bell rings for everyone aboard with a Navigator's Table, as for the ordinary storms.
+    private static void RingAboard(Player player)
+    {
+        if (ForecastSettings.StormBell.Value && ShipChartTable.IsAboardWithTable(player))
+        {
+            ShipBell.Ring(player.transform.position);
+        }
+    }
+
+    // The storm is over: those who were out in it find what it left, and grow hardier for having lived through it.
+    private void Passed(Player player)
+    {
+        StormKind kind = stormKind;
+        bool weathered = peakExposure >= StormExposure.Weary;
+        stormKind = StormKind.None;
+        peakExposure = 0f;
+        if (kind == StormKind.None || player.IsDead())
+        {
+            return;
+        }
+
+        if (weathered)
+        {
+            StormSkill.Survived(player);
+        }
+
+        if (StormSettings.Finds.Value && StormFinds.Leave(player, kind, StormSettings.FindsCount.Value) > 0)
+        {
+            player.Message(MessageHud.MessageType.TopLeft, "$msg_whitehilt_storm_finds");
         }
     }
 
@@ -153,10 +216,26 @@ public class StormClient : MonoBehaviour
         Profile = StormProfile.For(biome);
         RagingHere = StormSettings.Enabled.Value && StormState.Raging && StormSettings.HasStorms(biome) && !player.IsDead();
         Cover = FindCover(player);
+        bool outside = RagingHere && Cover is StormCover.Open or StormCover.Lee or StormCover.Forest;
+
+        // The Weathering skill slows the meter as if the storm took longer to wear you down.
+        float pace = StormSkill.Pace(player.GetSkillFactor(StormSkill.Type), StormSettings.SkillReduction.Value);
         Exposure = player.IsDead()
             ? 0f
-            : StormExposure.Step(Exposure, seconds, RagingHere, Profile, Cover, StormSettings.MinutesToFull.Value, StormSettings.MinutesToRecover.Value);
-        SpeedFactor = RagingHere && Cover is StormCover.Open or StormCover.Lee or StormCover.Forest ? Profile.Speed : 1f;
+            : StormExposure.Step(Exposure, seconds, RagingHere, Profile, Cover, StormSettings.MinutesToFull.Value / Mathf.Max(0.1f, pace), StormSettings.MinutesToRecover.Value);
+        SpeedFactor = outside ? Profile.Speed : 1f;
+        if (RagingHere)
+        {
+            stormKind = Profile.Kind;
+            peakExposure = Mathf.Max(peakExposure, Exposure);
+        }
+
+        if (outside)
+        {
+            StormSkill.Weather(player, seconds);
+        }
+
+        StormCompanions.Tick(player);
 
         UpdateEffect(player);
         WarnOfStage(player);

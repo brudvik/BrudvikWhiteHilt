@@ -43,7 +43,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.139.0
+## ✨ New in 0.140.0
+
+- **[Great storms](docs/storms.md)**: now and then a storm comes, foretold by the weather forecast and then announced three minutes ahead. Out in it, whatever you wear or have eaten, you tire, freeze, go half blind and in the end die. Each biome has its own: thunder in the forest, a cold sea storm, a blinding sandstorm, a blizzard you can hardly move in, bitter fog, a firestorm that sets you alight and the howling Deep North. Never in the Meadows.
+- **[Shelter](docs/storms.md)**: a roof and a fire, a cave or a dungeon; the lee of a rock and close trees help a little. Put up a **[Storm Lean-to](docs/storms.md#the-storm-lean-to-vindskjul)** anywhere for 12 wood and light a fire in front of it.
+- **[Lightning and falling trees](docs/storms.md#lightning)**: lightning strikes trees, the ground or you with metal in hand, with a crackle to warn you; gusts fell trees with the wind.
+- **[Weathering](docs/storms.md#weathering-herdet)**, a new skill, **[finds](docs/storms.md#what-the-storm-leaves-behind)** the storm leaves behind, and a Husvette and a dog who feel it coming. Storm sounds and voices made with ElevenLabs.
+
+### Also new in 0.139.0
 
 - **[Nail Ships that fight back harder](docs/sea-battles.md#the-nail-ship-fights-back)**: their crews throw **[grapnels](docs/sea-battles.md#grapnels)** that haul your ship alongside (cut the rope at your rail), some carry an iron **[ram](docs/sea-battles.md#the-ram)** for a ship that lies still, and later in the game a burning **[fire ship](docs/sea-battles.md#fire-ships)** may come straight at you. A flagship's jarl who lives too long **[blows his horn](docs/sea-battles.md#the-jarls-horn)** for one more ship.
 - **[Smarter raiders](docs/sea-battles.md#the-fight)**: they come up level with a moving ship and match its speed, take the side with fewer defenders, chase you again if you pull away, give up when land keeps them off, and mend their own deck. You are told the bearing they come from, and the place is pinned on your map.
@@ -197,7 +204,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/bestiary.md"><img src="docs/images/readme/tile_bestiary.png" height="110" alt=""></a><br><b><a href="docs/bestiary.md">Black Bestiary</a></b><br><sub>A field guide to the nine black beasts, with the arrows and weapon treatments that exploit their weaknesses.</sub></td>
-<td></td>
+<td align="center" valign="top"><a href="docs/storms.md"><img src="docs/images/readme/tile_storms.png" height="110" alt=""></a><br><b><a href="docs/storms.md">Great storms</a></b><br><sub>Storms that tire, freeze, blind and kill you out in the open, a storm for each biome, lightning, falling trees and the lean-to that saves you.</sub></td>
 <td></td>
 </tr>
 </table>

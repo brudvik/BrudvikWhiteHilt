@@ -22,6 +22,7 @@ public class StormHazards : MonoBehaviour
     private const float CrackSeconds = 1.2f;
     private const float BoltHeight = 140f;
     private const float BoltSeconds = 0.25f;
+    private const float ThunderstoneChance = 0.15f;
 
     private static readonly string[] metals = { "iron", "bronze", "silver", "blackmetal", "flametal", "copper", "metal" };
     private static readonly string[] strikes = { "sfx_storm_strike", "sfx_storm_strike_2" };
@@ -122,6 +123,11 @@ public class StormHazards : MonoBehaviour
         if (tree != null)
         {
             Fell(tree, (tree.transform.position - player.transform.position).normalized);
+        }
+
+        if (StormSettings.Finds.Value)
+        {
+            StormFinds.AfterStrike(tree != null ? tree.transform.position + Vector3.up * 0.5f : point + Vector3.up * 0.5f, ThunderstoneChance);
         }
 
         if (distance <= StrikeRadius && !player.IsDead())

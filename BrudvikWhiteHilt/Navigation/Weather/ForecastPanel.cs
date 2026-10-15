@@ -91,35 +91,46 @@ public static class ForecastPanel
         string biome = Localization.instance.Localize("$biome_" + sector.Biome.ToString().ToLowerInvariant());
         title.text = string.Format(Localization.instance.Localize("$whitehilt_forecast_title"), biome);
 
-        while (rows.Count < periods.Count)
+        // A great storm coming or raging takes the first row, foretold before anyone is warned.
+        string storm = Storms.StormClient.ForecastText(sector.Biome);
+        int first = storm != null ? 1 : 0;
+        int count = periods.Count + first;
+        while (rows.Count < count)
         {
             rows.Add(CreateRow(rows.Count));
         }
 
-        for (int i = 0; i < rows.Count; i++)
+        if (storm != null)
         {
-            bool shown = i < periods.Count;
+            rows[0].Root.SetActive(true);
+            rows[0].Icon.sprite = GameClock.LoadIcon("Storm");
+            rows[0].Text.text = $"<b><color=#D9B3FF>{storm}</color></b>";
+        }
+
+        for (int i = first; i < rows.Count; i++)
+        {
+            bool shown = i < count;
             rows[i].Root.SetActive(shown);
             if (!shown)
             {
                 continue;
             }
 
-            WeatherForecast.Period period = periods[i];
-            string when = i == 0
+            WeatherForecast.Period period = periods[i - first];
+            string when = i == first
                 ? Localization.instance.Localize("$whitehilt_forecast_now")
                 : string.Format(Localization.instance.Localize("$whitehilt_forecast_in"), Mathf.Max(1, Mathf.CeilToInt((float)period.StartsIn / 60f)));
             rows[i].Icon.sprite = GameClock.LoadIcon(GameClock.WeatherKey(period.Env, period.Night));
             rows[i].Text.text = $"<b>{when}</b>  {WeatherForecast.Describe(period)}\n{WeatherForecast.DescribeWind(period)}";
         }
 
-        string noteText = WeatherForecast.Overridden()
+        string noteText = WeatherForecast.Overridden() && !Storms.StormState.Visible
             ? Localization.instance.Localize("$whitehilt_forecast_forced")
             : ExplorationSkill.GetLevel(player) < 100 && ForecastSettings.PeriodsAtLevel100.Value > ForecastSettings.PeriodsAtLevelZero.Value
                 ? Localization.instance.Localize("$whitehilt_forecast_more")
                 : string.Empty;
         note.text = noteText;
-        float y = Padding + TitleHeight + periods.Count * RowHeight;
+        float y = Padding + TitleHeight + count * RowHeight;
         note.rectTransform.anchoredPosition = new Vector2(Padding, -y);
         if (noteText.Length > 0)
         {

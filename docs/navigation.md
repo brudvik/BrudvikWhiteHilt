@@ -68,6 +68,8 @@ The game draws the weather for each period of about 11 minutes from the weathers
 - 1 period ahead at Exploration 0, up to 4 (about 45 minutes) at Exploration 100;
 - it holds for the biome where you are. Sailing into another biome brings that biome's weather. Weather forced by an event, a boss or a special place cannot be foretold, and the panel says so.
 
+**Great storms:** a [great storm](storms.md) shows in the forecast's first row from 5 minutes before anyone is warned, *Great storm in 8:00*, and while it rages, the time left. Aboard a ship with a Navigator's Table everyone is told and the bell rings.
+
 **Storm warning:** aboard a ship with a Navigator's Table, everyone is told *A storm is coming in 3 min!* and the ship's bell rings when the next period where you are brings thunder or a snowstorm.
 
 ## 📊 Exploration overview

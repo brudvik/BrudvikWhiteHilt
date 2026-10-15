@@ -165,6 +165,28 @@ public class StormTests
         Assert.Equal(covered, StormLeanTo.Covers(new UnityEngine.Vector3(x, y, z)));
     }
 
+    /// <summary>Weathering takes 30% off the pace at level 100 and nothing at 0, never more than set.</summary>
+    [Theory]
+    [InlineData(0f, 0.3f, 1f)]
+    [InlineData(0.5f, 0.3f, 0.85f)]
+    [InlineData(1f, 0.3f, 0.7f)]
+    [InlineData(2f, 0.3f, 0.7f)]
+    [InlineData(1f, 0f, 1f)]
+    public void WeatheringSlowsTheMeter(float skill, float reduction, float pace)
+    {
+        Assert.Equal(pace, StormSkill.Pace(skill, reduction), 3);
+    }
+
+    /// <summary>A brewing storm breaks after the forecast and the warning; a warned one after the warning alone.</summary>
+    [Fact]
+    public void TheForecastCountsToTheBreak()
+    {
+        Assert.Equal(480f, StormState.SecondsToBreak(StormPhase.Brewing, 300f, 180f), 3);
+        Assert.Equal(120f, StormState.SecondsToBreak(StormPhase.Warning, 120f, 180f), 3);
+        Assert.Equal(0f, StormState.SecondsToBreak(StormPhase.Raging, 200f, 180f), 3);
+        Assert.Equal(0f, StormState.SecondsToBreak(StormPhase.Calm, 0f, 180f), 3);
+    }
+
     /// <summary>The countdown reads minutes and seconds.</summary>
     [Theory]
     [InlineData(0f, "0:00")]

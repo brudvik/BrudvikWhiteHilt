@@ -39,7 +39,7 @@ public static class StormWeather
     public static string Override(EnvMan env)
     {
         Player player = Player.m_localPlayer;
-        if (player == null || StormState.Phase == StormPhase.Calm || !StormSettings.Enabled.Value)
+        if (player == null || !StormState.Visible || !StormSettings.Enabled.Value)
         {
             return null;
         }

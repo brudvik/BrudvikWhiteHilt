@@ -81,6 +81,18 @@ public static class StormSettings
     /// <summary>Seconds between felled trees on average.</summary>
     public static ConfigEntry<float> TreeFallSeconds { get; private set; }
 
+    /// <summary>Minutes before the warning that the weather forecast shows a storm.</summary>
+    public static ConfigEntry<float> ForecastMinutes { get; private set; }
+
+    /// <summary>Whether a storm leaves finds behind.</summary>
+    public static ConfigEntry<bool> Finds { get; private set; }
+
+    /// <summary>How many finds a storm leaves around each player who was out in it.</summary>
+    public static ConfigEntry<int> FindsCount { get; private set; }
+
+    /// <summary>The share the Weathering skill takes off the exposure's pace at level 100.</summary>
+    public static ConfigEntry<float> SkillReduction { get; private set; }
+
     /// <summary>Volume of the storm's sound, for each player.</summary>
     public static ConfigEntry<float> Volume { get; private set; }
 
@@ -131,6 +143,14 @@ public static class StormSettings
             "Gusts fell trees 10 to 35 m from players, with the wind; never inside a base. Mind the falling trunk, and take the timber.");
         TreeFallSeconds = WhiteHiltConfig.BindAdminOnly(Section, "TreeFallSeconds", 40f,
             "Seconds between felled trees near each player on average.", new AcceptableValueRange<float>(5f, 600f));
+        ForecastMinutes = WhiteHiltConfig.BindAdminOnly(Section, "ForecastMinutes", 5f,
+            "Minutes before the warning that the weather forecast shows a coming storm, near a map table or a Cartographer's Desk and aboard a ship with a Navigator's Table, where the bell rings. 0: not foretold.", new AcceptableValueRange<float>(0f, 30f));
+        Finds = WhiteHiltConfig.BindAdminOnly(Section, "Finds", true,
+            "When a storm passes, things it brought lie about near each player who was out in it: amber and resin, pearls, coins and rubies, crystals, frost glands and more, after the biome. Lightning leaves a thunderstone now and then.");
+        FindsCount = WhiteHiltConfig.BindAdminOnly(Section, "FindsCount", 4,
+            "Finds a storm leaves around each player who was out in it.", new AcceptableValueRange<int>(0, 20));
+        SkillReduction = WhiteHiltConfig.BindAdminOnly(Section, "SkillReduction", 0.3f,
+            "How much more slowly the exposure climbs at Weathering 100 (0.3 = 30%).", new AcceptableValueRange<float>(0f, 0.9f));
         Volume = WhiteHiltConfig.BindLocal(Section, "Volume", 1f,
             "Volume of the storm's wind and thunder, on top of the ambience and effects volumes.", new AcceptableValueRange<float>(0f, 1f));
 
@@ -148,6 +168,11 @@ public static class StormSettings
         Translations.AddEnglish("msg_whitehilt_storm_freezing", "You are freezing. Find shelter!");
         Translations.AddEnglish("msg_whitehilt_storm_burning", "You are on fire. Find a stone roof!");
         Translations.AddEnglish("msg_whitehilt_storm_dying", "The storm is killing you!");
+        Translations.AddEnglish("msg_whitehilt_storm_foretold", "The Navigator's Table foretells a great storm in {0}");
+        Translations.AddEnglish("msg_whitehilt_storm_finds", "The storm has left things lying about");
+        Translations.AddEnglish("msg_whitehilt_storm_dog", "{0} whines and looks toward home");
+        Translations.AddEnglish("whitehilt_forecast_storm", "Great storm in {0}");
+        Translations.AddEnglish("whitehilt_forecast_storm_raging", "Great storm, {0} left");
         Translations.AddEnglish("msg_whitehilt_storm_static", "Your hair stands on end. Move!");
         Translations.AddEnglish("msg_whitehilt_storm_struck", "Struck by lightning!");
         Translations.AddEnglish("whitehilt_storm_clock_coming", "Storm in {0}");

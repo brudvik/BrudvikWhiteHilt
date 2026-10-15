@@ -116,6 +116,10 @@ The skill already speeds up taming and breeding ([Animal husbandry](husbandry.md
 
 The Lookout (level 25) and the Pathfinder's Ruby Amulet (level 50) are milestones in the skills dialog. Everything the skill gives, from level 0 to 100, is in one table on the [Navigation](navigation.md#what-exploration-gives) page.
 
+### ⛈️ Weathering (new skill)
+
+Rises out in the [great storms](storms.md) and slows the exposure meter, by 30% at level 100.
+
 ### 💀 Skill loss on death
 
 `DeathLossMultiplier` scales the skill loss when you die: 0 keeps every skill, 1 is vanilla, 2 loses twice as much.

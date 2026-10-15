@@ -20,6 +20,15 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 - **[Falling trees](docs/storms.md#falling-trees)**: gusts fell trees around you with the wind, never inside a base.
 - **Storm sounds** made with ElevenLabs: rain, sea, sand, blizzard, fog and fire storms, thunder that cracks overhead
   with a flash of lightning, lightning strikes, creaking and cracking trees, and the warning's distant horn.
+- **[Foretold](docs/storms.md#foretold)**: the weather forecast shows a great storm 5 minutes before the warning, and
+  aboard a ship with a Navigator's Table everyone is told and the bell rings.
+- **[Weathering](docs/storms.md#weathering-herdet)**, a new skill (Herdet): it rises out in the storms and slows the
+  exposure meter, by 30% at level 100.
+- **[What the storm leaves behind](docs/storms.md#what-the-storm-leaves-behind)**: when it passes, amber and resin,
+  pearls, coins and rubies, crystals and frost glands lie about near those who were out in it; lightning leaves a
+  thunderstone now and then.
+- **[The Husvette and your dog](docs/storms.md#the-husvette-and-your-dog)** feel it coming: the Husvette calls you in
+  aloud and is glad of the walls while it rages; your dog whines and looks toward home.
 - `whitehilt_storm` shows the storm and your exposure; admins can `warn`, `start` and `stop` one.
 
 ## v0.139.0 - 2026-10-15
