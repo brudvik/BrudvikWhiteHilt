@@ -151,13 +151,7 @@ public class TerrorNotice : MonoBehaviour
         string name = terror != null ? Localization.instance.Localize("$" + terror.NameKey) : string.Empty;
         player.Message(MessageHud.MessageType.Center,
             Localization.instance.Localize("$msg_whitehilt_terror_notice", name, Mathf.Max(1, Mathf.CeilToInt((float)days)).ToString()));
-        // The notice is read from the inventory. The game takes no map input while the inventory shows, so with both
-        // open neither could be closed: the inventory goes first.
-        if (InventoryGui.instance != null && InventoryGui.IsVisible())
-        {
-            InventoryGui.instance.Hide();
-        }
-
+        Helpers.MapView.CloseInventory();
         Minimap.instance?.ShowPointOnMap(data.Tracked ? data.Lair : data.Centre);
     }
 
