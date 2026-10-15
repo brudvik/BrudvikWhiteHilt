@@ -53,7 +53,29 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     /// </summary>
     private void Awake()
     {
-        System.Diagnostics.Stopwatch awake = System.Diagnostics.Stopwatch.StartNew();
+        Diagnostics.StartupTimer.Laps laps = Diagnostics.StartupTimer.Begin("Awake");
+
+        // BepInEx writes the whole config file on every Bind; with thousands of entries that took most of a minute.
+        Config.SaveOnConfigSet = false;
+        try
+        {
+            StartUp(laps);
+        }
+        finally
+        {
+            Config.Save();
+            Config.SaveOnConfigSet = true;
+            laps.Lap("config saved");
+        }
+
+        laps.Report();
+        Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} has loaded! (start-up: Awake took {laps.TotalMs:0} ms)");
+    }
+
+    // Binds the settings, registers the texts, creatures, ships and chests, makes the items and pieces and applies the
+    // Harmony patches, marking each step for the start-up log.
+    private void StartUp(Diagnostics.StartupTimer.Laps laps)
+    {
         WhiteHiltConfig.Initialize(Config);
         Diagnostics.PerformanceSettings.Initialize();
         RanchingSettings.Initialize();
@@ -150,6 +172,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Runes.FlameRune.FlameRune.RegisterTranslations();
         Items.Runes.ColourRunes.RegisterTranslations();
         Items.Weapons.WeaponFlame.RegisterTranslations();
+        laps.Lap("settings and texts");
         Kraken.KrakenSettings.Initialize();
         SeaBattles.SeaBattleSettings.Initialize();
         SeaBattles.Damage.DamageSettings.Initialize();
@@ -177,22 +200,27 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();
+        laps.Lap("creatures and ships");
         Treasure.TreasureSettings.Initialize();
         TradingPosts.TradingPostRegistry.Initialize();
         Treasure.TreasureRegistry.Initialize();
         Pieces.Roofs.RoofSettings.Initialize();
         Items.Roofing.RoofMaterials.Initialize();
         Pieces.Roofs.RoofCatalog.Initialize();
+        laps.Lap("trading posts, treasure and roofs");
         chests = Chests.ChestModule.Start();
         Navigation.Discoveries.DiscoveryPanel.Chests = chests;
         Chests.Collection.CollectionSettings.Initialize();
         Chests.Collection.CollectionPostComponent.Module = chests;
         Quartermaster.QuartermasterStore.Module = chests;
         Diagnostics.PerfMonitor.Initialize();
+        laps.Lap("chests");
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.
         DiscoverCustomEntries();
+        laps.Lap("items and pieces");
         WhiteHiltConfig.ApplyMigrations();
+        laps.Lap("config migrations");
 
         // Saving many settings at once fires one event per setting; refresh once, on the next frame.
         Config.SettingChanged += (_, _) => refreshPending = true;
@@ -211,8 +239,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         // Apply Harmony patches using the plugin's GUID
         var harmony = new Harmony(PluginGUID);
         harmony.PatchAll();
-
-        Jotunn.Logger.LogInfo($"{PluginName} v{PluginVersion} has loaded! (start-up: Awake took {awake.Elapsed.TotalMilliseconds:0} ms)");
+        laps.Lap("Harmony patches");
     }
 
     /// <summary>

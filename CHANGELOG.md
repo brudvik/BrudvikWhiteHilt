@@ -5,6 +5,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Changed
+- **The game and the server start faster**: the mod's settings file was written again for every one of its some
+  3600 settings while the mod started (about half a minute on a fast machine, more on a server); it is now written
+  once. The log also shows how long each step of the mod's start takes (`Start-up: Awake took ...`).
 - **[The chests](docs/chests.md) keep their world progress in White Hilt's own folder**,
   `BepInEx/config/BrudvikWhiteHilt/chests/`. On the first start the mod moves it there from the old
   `BepInEx/config/BrudvikStackedChest/` folder, which it then removes when nothing else is left in it.

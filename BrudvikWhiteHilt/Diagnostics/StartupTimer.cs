@@ -47,4 +47,51 @@ public static class StartupTimer
         action();
         Jotunn.Logger.LogInfo($"Start-up: {phase} took {watch.Elapsed.TotalMilliseconds:0} ms");
     }
+
+    /// <summary>
+    /// Starts timing a phase made of steps that follow each other in one method.
+    /// </summary>
+    /// <param name="phase">Name of the phase in the log.</param>
+    /// <returns>The laps: mark the end of each step with <see cref="Laps.Lap"/>, then log them with
+    /// <see cref="Laps.Report"/>.</returns>
+    public static Laps Begin(string phase) => new(phase);
+
+    /// <summary>
+    /// The steps of one phase, timed one after the other and logged on one line.
+    /// </summary>
+    public sealed class Laps
+    {
+        private readonly string phase;
+        private readonly Stopwatch total = Stopwatch.StartNew();
+        private readonly Stopwatch step = Stopwatch.StartNew();
+        private readonly List<string> steps = new();
+
+        internal Laps(string phase)
+        {
+            this.phase = phase;
+        }
+
+        /// <summary>
+        /// Gets the time since the phase began, in milliseconds.
+        /// </summary>
+        public double TotalMs => total.Elapsed.TotalMilliseconds;
+
+        /// <summary>
+        /// Ends a step: the time since the previous one is its time.
+        /// </summary>
+        /// <param name="name">Name of the step in the log.</param>
+        public void Lap(string name)
+        {
+            steps.Add($"{name} {step.Elapsed.TotalMilliseconds:0} ms");
+            step.Restart();
+        }
+
+        /// <summary>
+        /// Logs the phase's total and every step's time.
+        /// </summary>
+        public void Report()
+        {
+            Jotunn.Logger.LogInfo($"Start-up: {phase} took {TotalMs:0} ms: {string.Join(", ", steps)}");
+        }
+    }
 }
