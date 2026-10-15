@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.138.1 - 2026-10-15
 
 ### Changed
 - **Valheim 1.0.20**: the mod is built for it and needs it.
