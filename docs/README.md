@@ -58,6 +58,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Monsters](monsters.md) | The Lindorm, giant spiders and their nests, the Desert Dragons, the Dragon Horn that calls a White Dragon to your side, and five wild beasts of the Mistlands, the Ashlands and the sea with their loot |
 | [Kraken & octopus](kraken.md) | Octopuses and the Kraken fight |
 | [Difficulty & blood moon](difficulty.md) | Stars, black beasts, the blood moon and the horn |
+| [Great storms](storms.md) | Storms with a warning first that tire, freeze, blind and in the end kill you out in the open, the storm of each biome, and shelter: a roof and a fire, a cave or the lee of a rock |
 | [Black Bestiary](bestiary.md) | The field guide to the black beasts and their material counters |
 
 ## 🎒 Quality of life

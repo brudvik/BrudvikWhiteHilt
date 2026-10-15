@@ -29,6 +29,7 @@ public static class GameClock
 
     private static readonly Color dayColor = new(1f, 0.95f, 0.85f);
     private static readonly Color warningColor = new(1f, 0.6f, 0.2f);
+    private static readonly Color stormColor = new(0.85f, 0.7f, 1f);
     private static readonly Color iconBackColor = new(0.03f, 0.04f, 0.04f, 0.7f);
     private static readonly Dictionary<string, Sprite> icons = new();
 
@@ -137,9 +138,15 @@ public static class GameClock
         string text = ClockSettings.ShowDay.Value
             ? $"{string.Format(Localization.instance.Localize("$whitehilt_clock_day"), EnvMan.instance.GetDay())}  ·  {time}"
             : time;
+        string storm = Storms.StormClient.ClockText();
+        if (storm != null)
+        {
+            text = $"{text}  ·  {storm}";
+        }
 
         float warning = ClockSettings.DuskWarningHours.Value;
-        label.color = warning > 0f && hours >= Nightfall - warning && hours < Nightfall ? warningColor : dayColor;
+        label.color = storm != null ? stormColor
+            : warning > 0f && hours >= Nightfall - warning && hours < Nightfall ? warningColor : dayColor;
         label.fontSize = Mathf.Clamp(ClockSettings.FontSize.Value, 10, 60);
         if (label.text != text)
         {
@@ -292,7 +299,10 @@ public static class GameClock
 
     private static Sprite WeatherIcon(float hours)
     {
-        return LoadIcon(WeatherKey(EnvMan.instance.GetCurrentEnvironment(), hours < 6f || hours >= Nightfall));
+        // A coming storm shows before the sky has turned.
+        return LoadIcon(Storms.StormState.Coming && Storms.StormClient.ClockText() != null
+            ? "Storm"
+            : WeatherKey(EnvMan.instance.GetCurrentEnvironment(), hours < 6f || hours >= Nightfall));
     }
 
     private static void SetVisible(bool visible)

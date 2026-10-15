@@ -2,6 +2,26 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Great storms](docs/storms.md)**: now and then a storm comes, with three minutes' warning: the sky darkens, thunder
+  rolls far off and the clock counts down. Out in it, whatever you wear or have eaten, your stamina fails, you freeze,
+  the view closes in and in the end the storm kills you. Each biome has its own: thunder and rain in the Black Forest
+  and the Swamp, a cold storm at sea, a blinding sandstorm on the Plains, a blizzard on the Mountain you can hardly
+  move in, bitter fog in the Mistlands, a firestorm in the Ashlands that sets you alight, and the howling Deep North.
+  Never in the Meadows. Shelter under a roof by a fire, or in a cave or dungeon; the lee of a rock or a wall and close
+  trees slow it down. In the Ashlands only a stone roof shelters.
+- **[The Storm Lean-to](docs/storms.md#the-storm-lean-to-vindskjul)**: a vindskjul of logs for 12 wood, built anywhere
+  without a workbench. Under it you are under a roof; a fire in front of the opening keeps you alive.
+- **[Lightning](docs/storms.md#lightning)** strikes in the forest storm, at sea and in the Mistlands: a tree close by,
+  which falls, the ground, or you out in the open, more often with metal in hand or on a ship. A crackle warns you to
+  move.
+- **[Falling trees](docs/storms.md#falling-trees)**: gusts fell trees around you with the wind, never inside a base.
+- **Storm sounds** made with ElevenLabs: rain, sea, sand, blizzard, fog and fire storms, thunder that cracks overhead
+  with a flash of lightning, lightning strikes, creaking and cracking trees, and the warning's distant horn.
+- `whitehilt_storm` shows the storm and your exposure; admins can `warn`, `start` and `stop` one.
+
 ## v0.139.0 - 2026-10-15
 
 ### Added

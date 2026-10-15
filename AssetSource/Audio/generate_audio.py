@@ -1,6 +1,6 @@
 """Makes the mod's recorded voices, effect sounds and music with ElevenLabs, as audio.json describes them.
 
-    python AssetSource/Audio/generate_audio.py --key-file <file with the API key> [voices] [lines] [effects] [music]
+    python AssetSource/Audio/generate_audio.py [--key-file <file with the API key>] [voices] [lines] [effects] [music]
 
 voices   gives every speaker without a voice_id one from Voice Design (the first of its previews; the others are saved
          next to it in the previews folder to listen to) and writes the id back into audio.json.
@@ -11,13 +11,15 @@ creatures writes Creatures/<prefix><action>.mp3, <prefix><action>_2.mp3 ... for 
          hit and death (and its own attacks), the names MonsterRegistry.AddCreatureSounds looks for.
 music    writes Music/<name>.mp3 from the prompts.
 With no step named, all five run. Only what is new or changed is made again (cache.json keeps a hash of what each file
-was made from), so running it again after changing a line costs only that line. The key is read from the file and
-never written anywhere. Then build the audio bundle: AssetSource/build_foraging_bundle.ps1 -AudioOnly.
+was made from), so running it again after changing a line costs only that line. The key is read from the file, or
+from ELEVENLABS_API_KEY without one, and never written anywhere. Then build the audio bundle:
+AssetSource/build_foraging_bundle.ps1 -AudioOnly.
 """
 import argparse
 import base64
 import hashlib
 import json
+import os
 import pathlib
 import re
 import sys
@@ -281,7 +283,7 @@ def save_cache(cache):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("steps", nargs="*", choices=["voices", "lines", "effects", "creatures", "music"], default=[])
-    parser.add_argument("--key-file", required=True, help="text file holding the ElevenLabs API key")
+    parser.add_argument("--key-file", help="text file holding the ElevenLabs API key (default: ELEVENLABS_API_KEY)")
     parser.add_argument("--previews", default=str(pathlib.Path.home() / "whitehilt_voice_previews"),
                         help="folder for the Voice Design previews")
     parser.add_argument("--list", action="store_true", help="only print the lines and their length, make nothing")
@@ -301,7 +303,9 @@ def main():
         print(f"{total} characters")
         return
 
-    key = pathlib.Path(args.key_file).read_text(encoding="utf-8").strip()
+    key = (pathlib.Path(args.key_file).read_text(encoding="utf-8") if args.key_file else os.environ.get("ELEVENLABS_API_KEY", "")).strip()
+    if not key:
+        sys.exit("No API key: pass --key-file or set ELEVENLABS_API_KEY")
     client = Client(key)
     cache = load_cache()
     if "voices" in steps:

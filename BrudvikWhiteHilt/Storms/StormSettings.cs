@@ -1,0 +1,192 @@
+using BepInEx.Configuration;
+using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Progression;
+using System;
+using System.Collections.Generic;
+
+namespace BrudvikWhiteHilt.Storms;
+
+/// <summary>
+/// Config for the great storms, section "Storms". Everything but the sound is admin-only and synced from the server.
+/// </summary>
+public static class StormSettings
+{
+    private const string Section = "Storms";
+
+    private const string DefaultBiomes = "BlackForest, Swamp, Mountain, Plains, Mistlands, AshLands, DeepNorth, Ocean";
+
+    private static readonly HashSet<Heightmap.Biome> biomes = new();
+    private static string parsedBiomes;
+
+    /// <summary>Whether storms come at all.</summary>
+    public static ConfigEntry<bool> Enabled { get; private set; }
+
+    /// <summary>Storms per game day on average.</summary>
+    public static ConfigEntry<float> StormsPerDay { get; private set; }
+
+    /// <summary>World days without storms at the start.</summary>
+    public static ConfigEntry<int> GraceDays { get; private set; }
+
+    /// <summary>Minutes of calm after a storm before the next can come.</summary>
+    public static ConfigEntry<float> MinutesBetween { get; private set; }
+
+    /// <summary>Minutes of warning before a storm.</summary>
+    public static ConfigEntry<float> WarningMinutes { get; private set; }
+
+    /// <summary>Shortest storm in minutes.</summary>
+    public static ConfigEntry<float> MinMinutes { get; private set; }
+
+    /// <summary>Longest storm in minutes.</summary>
+    public static ConfigEntry<float> MaxMinutes { get; private set; }
+
+    /// <summary>Biomes that have storms.</summary>
+    public static ConfigEntry<string> Biomes { get; private set; }
+
+    /// <summary>Minutes in the open from no exposure to full, in a storm of pace 1.</summary>
+    public static ConfigEntry<float> MinutesToFull { get; private set; }
+
+    /// <summary>Minutes in shelter from full exposure to none.</summary>
+    public static ConfigEntry<float> MinutesToRecover { get; private set; }
+
+    /// <summary>Multiplier of the health lost.</summary>
+    public static ConfigEntry<float> DamageMultiplier { get; private set; }
+
+    /// <summary>Whether a storm can kill.</summary>
+    public static ConfigEntry<bool> CanKill { get; private set; }
+
+    /// <summary>How hard the view closes in, 0 to 1.</summary>
+    public static ConfigEntry<float> VisionStrength { get; private set; }
+
+    /// <summary>Whether the lee of rocks, cliffs and walls gives some shelter.</summary>
+    public static ConfigEntry<bool> LeeShelters { get; private set; }
+
+    /// <summary>Whether the storms keep away during a blood moon.</summary>
+    public static ConfigEntry<bool> NotWithBloodMoon { get; private set; }
+
+    /// <summary>Whether lightning strikes in the storms that thunder.</summary>
+    public static ConfigEntry<bool> Lightning { get; private set; }
+
+    /// <summary>Seconds between strikes on average.</summary>
+    public static ConfigEntry<float> LightningSeconds { get; private set; }
+
+    /// <summary>Chance in percent that a strike seeks out a player in the open.</summary>
+    public static ConfigEntry<float> PlayerStrikeChance { get; private set; }
+
+    /// <summary>Lightning damage as a share of maximum health.</summary>
+    public static ConfigEntry<float> LightningDamage { get; private set; }
+
+    /// <summary>Whether gusts fell trees.</summary>
+    public static ConfigEntry<bool> FallingTrees { get; private set; }
+
+    /// <summary>Seconds between felled trees on average.</summary>
+    public static ConfigEntry<float> TreeFallSeconds { get; private set; }
+
+    /// <summary>Volume of the storm's sound, for each player.</summary>
+    public static ConfigEntry<float> Volume { get; private set; }
+
+    /// <summary>
+    /// Binds the config entries and registers the English texts. Call from the plugin's Awake.
+    /// </summary>
+    public static void Initialize()
+    {
+        AcceptableValueRange<float> minutes = new(0.5f, 30f);
+
+        Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true,
+            "Now and then a great storm comes, with a warning first. Out in it you tire, freeze and in the end die, whatever you wear or have eaten. Shelter is a roof and a fire, a cave or a dungeon. Never in the Meadows.");
+        StormsPerDay = WhiteHiltConfig.BindAdminOnly(Section, "StormsPerDay", 0.4f,
+            "Storms per game day on average (a day is about 30 minutes).", new AcceptableValueRange<float>(0f, 5f));
+        GraceDays = WhiteHiltConfig.BindAdminOnly(Section, "GraceDays", 5,
+            "World days at the start without storms.", new AcceptableValueRange<int>(0, 100));
+        MinutesBetween = WhiteHiltConfig.BindAdminOnly(Section, "MinutesBetween", 25f,
+            "Minutes of calm after a storm before the next can come.", new AcceptableValueRange<float>(0f, 300f));
+        WarningMinutes = WhiteHiltConfig.BindAdminOnly(Section, "WarningMinutes", 3f,
+            "Minutes of warning before a storm breaks, to get home, into shelter or build one.", minutes);
+        MinMinutes = WhiteHiltConfig.BindAdminOnly(Section, "MinMinutes", 3f, "Shortest storm in minutes.", minutes);
+        MaxMinutes = WhiteHiltConfig.BindAdminOnly(Section, "MaxMinutes", 6f, "Longest storm in minutes.", minutes);
+        Biomes = WhiteHiltConfig.BindAdminOnly(Section, "Biomes", DefaultBiomes,
+            "Biomes that have storms, comma separated. The Meadows never do.");
+        MinutesToFull = WhiteHiltConfig.BindAdminOnly(Section, "MinutesToFull", 4f,
+            "Minutes out in the open from no exposure to full. The Mountain and the sea are a quarter faster, the Mistlands and the Ashlands half as fast again, the Deep North twice as fast.", minutes);
+        MinutesToRecover = WhiteHiltConfig.BindAdminOnly(Section, "MinutesToRecover", 1.5f,
+            "Minutes in shelter from full exposure to none.", minutes);
+        DamageMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplier", 1f,
+            "Multiplier of the health lost to the storm.", new AcceptableValueRange<float>(0f, 5f));
+        CanKill = WhiteHiltConfig.BindAdminOnly(Section, "CanKill", true,
+            "Whether a storm can kill. Off, it leaves you at 1 health.");
+        VisionStrength = WhiteHiltConfig.BindAdminOnly(Section, "VisionStrength", 1f,
+            "How hard the view closes in, from 0 (not at all) to 1.", new AcceptableValueRange<float>(0f, 1f));
+        LeeShelters = WhiteHiltConfig.BindAdminOnly(Section, "LeeShelters", true,
+            "In the lee of a rock, a cliff or a wall, exposure climbs at half the pace; among close trees in the forest storm, at three quarters.");
+        NotWithBloodMoon = WhiteHiltConfig.BindAdminOnly(Section, "NotWithBloodMoon", true,
+            "No storm comes during a blood moon.");
+        Lightning = WhiteHiltConfig.BindAdminOnly(Section, "Lightning", true,
+            "Lightning strikes in the forest storm, at sea and in the Mistlands: a tree close by, which falls, the ground, or a player out in the open (more often with metal in hand or on a ship). A crackle warns you first; move away.");
+        LightningSeconds = WhiteHiltConfig.BindAdminOnly(Section, "LightningSeconds", 30f,
+            "Seconds between strikes near each player on average.", new AcceptableValueRange<float>(5f, 600f));
+        PlayerStrikeChance = WhiteHiltConfig.BindAdminOnly(Section, "PlayerStrikeChance", 15f,
+            "Chance in percent that a strike seeks out a player in the open; twice with metal in hand, half as much again on a ship.", new AcceptableValueRange<float>(0f, 100f));
+        LightningDamage = WhiteHiltConfig.BindAdminOnly(Section, "LightningDamage", 0.4f,
+            "Lightning damage of a direct hit as a share of maximum health, before lightning resistance.", new AcceptableValueRange<float>(0f, 2f));
+        FallingTrees = WhiteHiltConfig.BindAdminOnly(Section, "FallingTrees", true,
+            "Gusts fell trees 10 to 35 m from players, with the wind; never inside a base. Mind the falling trunk, and take the timber.");
+        TreeFallSeconds = WhiteHiltConfig.BindAdminOnly(Section, "TreeFallSeconds", 40f,
+            "Seconds between felled trees near each player on average.", new AcceptableValueRange<float>(5f, 600f));
+        Volume = WhiteHiltConfig.BindLocal(Section, "Volume", 1f,
+            "Volume of the storm's wind and thunder, on top of the ambience and effects volumes.", new AcceptableValueRange<float>(0f, 1f));
+
+        Translations.AddEnglish("msg_whitehilt_storm_warning", "A great storm is coming! Find shelter within {0}: a roof and a fire, or a cave.");
+        Translations.AddEnglish("msg_whitehilt_storm_warning_safe", "A great storm is gathering beyond the Meadows.");
+        Translations.AddEnglish("msg_whitehilt_storm_tempest", "The storm breaks!");
+        Translations.AddEnglish("msg_whitehilt_storm_sea", "The sea rises in the storm!");
+        Translations.AddEnglish("msg_whitehilt_storm_sand", "A sandstorm sweeps over the plains!");
+        Translations.AddEnglish("msg_whitehilt_storm_blizzard", "A blizzard swallows the mountain!");
+        Translations.AddEnglish("msg_whitehilt_storm_mist", "The mist thickens and turns bitter cold!");
+        Translations.AddEnglish("msg_whitehilt_storm_fire", "A firestorm rains down!");
+        Translations.AddEnglish("msg_whitehilt_storm_arctic", "The north wind howls!");
+        Translations.AddEnglish("msg_whitehilt_storm_end", "The storm passes");
+        Translations.AddEnglish("msg_whitehilt_storm_tired", "The storm saps your strength");
+        Translations.AddEnglish("msg_whitehilt_storm_freezing", "You are freezing. Find shelter!");
+        Translations.AddEnglish("msg_whitehilt_storm_burning", "You are on fire. Find a stone roof!");
+        Translations.AddEnglish("msg_whitehilt_storm_dying", "The storm is killing you!");
+        Translations.AddEnglish("msg_whitehilt_storm_static", "Your hair stands on end. Move!");
+        Translations.AddEnglish("msg_whitehilt_storm_struck", "Struck by lightning!");
+        Translations.AddEnglish("whitehilt_storm_clock_coming", "Storm in {0}");
+        Translations.AddEnglish("whitehilt_storm_clock_raging", "Storm, {0} left");
+        Translations.AddEnglish("se_whitehiltstorm", "Storm exposure");
+        Translations.AddEnglish("se_whitehiltstorm_tooltip", "Out in the storm. Shelter under a roof by a fire, or in a cave, to recover.");
+        Translations.AddEnglish("whitehilt_storm_cover_open", "Out in the open");
+        Translations.AddEnglish("whitehilt_storm_cover_lee", "In the lee: half the exposure");
+        Translations.AddEnglish("whitehilt_storm_cover_forest", "Among the trees: less exposure");
+        Translations.AddEnglish("whitehilt_storm_cover_roof", "Under a roof: light a fire to recover");
+        Translations.AddEnglish("whitehilt_storm_cover_roofandfire", "Under a roof by a fire: recovering");
+        Translations.AddEnglish("whitehilt_storm_cover_interior", "Inside: recovering");
+    }
+
+    /// <summary>
+    /// Whether a biome has storms.
+    /// </summary>
+    /// <param name="biome">The biome.</param>
+    /// <returns>True if storms are on there; never for the Meadows.</returns>
+    public static bool HasStorms(Heightmap.Biome biome)
+    {
+        if (biome == Heightmap.Biome.Meadows || StormProfile.For(biome).Kind == StormKind.None)
+        {
+            return false;
+        }
+
+        if (parsedBiomes != Biomes.Value)
+        {
+            parsedBiomes = Biomes.Value;
+            biomes.Clear();
+            foreach (string part in parsedBiomes.Split(','))
+            {
+                if (Enum.TryParse(part.Trim(), true, out Heightmap.Biome parsed))
+                {
+                    biomes.Add(parsed);
+                }
+            }
+        }
+
+        return biomes.Contains(biome);
+    }
+}

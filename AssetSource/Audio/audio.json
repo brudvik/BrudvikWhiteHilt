@@ -403,6 +403,81 @@
       "name": "drink_giftofvolva",
       "prompt": "A person drinking a magic potion, a gulp followed by an eerie seeress chanting softly and rattling bones",
       "duration": 3
+    },
+    {
+      "name": "sfx_storm_thunder",
+      "prompt": "A massive thunder strike right overhead: a sharp, deafening explosive crack splitting the sky, then a deep heavy rumble rolling away. Realistic, powerful, cinematic. No rain, no music.",
+      "duration": 6,
+      "variants": 3
+    },
+    {
+      "name": "sfx_storm_thunder_far",
+      "prompt": "Distant thunder far away over the hills: a long low rolling rumble that swells and fades. Realistic, no rain, no music.",
+      "duration": 7,
+      "variants": 2
+    },
+    {
+      "name": "sfx_storm_warning",
+      "prompt": "An ominous change in the weather: distant thunder rolling over the horizon and a cold gust of wind rising, then a long low viking warning horn blown far away. No music.",
+      "duration": 7
+    },
+    {
+      "name": "sfx_storm_ignite",
+      "prompt": "A burst of fire catching on clothes: a sudden whoosh of flames igniting and crackling. Short, no music.",
+      "duration": 2
+    },
+    {
+      "name": "amb_storm_rain",
+      "prompt": "A violent storm outdoors: torrential heavy rain lashing down, strong gusting wind howling through trees and branches creaking. Steady and continuous, no thunder cracks, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "amb_storm_blizzard",
+      "prompt": "A fierce mountain blizzard: howling icy wind gusts, blowing snow hissing across ice and rock, a bitter roaring gale. Steady and continuous, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "amb_storm_sand",
+      "prompt": "A desert sandstorm: a roaring dry wind and the constant hiss of blowing sand and grit whipping past, gusts swelling and falling. Steady and continuous, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "amb_storm_mist",
+      "prompt": "A freezing fog storm: a low moaning wind in dense mist, eerie creaking of frozen branches, faint icy whistling. Cold and oppressive, steady and continuous, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "amb_storm_sea",
+      "prompt": "A storm at sea: heavy rain on open water, large waves crashing, howling wind, a wooden ship creaking under strain. Steady and continuous, no thunder, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "amb_storm_fire",
+      "prompt": "A firestorm: roaring walls of flame, crackling burning embers raining down, hot rushing wind gusts and a deep volcanic rumble. Steady and continuous, no music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "sfx_storm_strike",
+      "prompt": "A lightning bolt striking the ground right beside you: an instant deafening electric snap and sizzle, a blinding crack, then a heavy explosive boom and debris falling. No rain, no music.",
+      "duration": 4,
+      "variants": 2
+    },
+    {
+      "name": "sfx_storm_static",
+      "prompt": "Electric static crackling and buzzing in the air, rising quickly in pitch and intensity, the tense moment right before a lightning strike. No music.",
+      "duration": 2
+    },
+    {
+      "name": "sfx_storm_treecrack",
+      "prompt": "A large tree giving way in a storm: loud groaning and creaking wood, a sharp splitting crack of the trunk, then the tree crashing down through branches and hitting the ground with a heavy thud. No music.",
+      "duration": 6,
+      "variants": 2
     }
   ],
   "music": [

@@ -159,6 +159,9 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Accessories.MegingjordUpgrade.Initialize();
         Difficulty.DifficultySettings.Initialize();
         Difficulty.DifficultyCommands.Register();
+        Storms.StormSettings.Initialize();
+        Storms.StormCommands.Register();
+        Storms.StormExposureEffect.Register();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
