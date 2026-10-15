@@ -17,6 +17,10 @@ public class TradingPostSite : MonoBehaviour
     // after the post's objects load, and the post's own pieces load around the same time.
     private static readonly float[] passDelays = { 1f, 5f, 15f };
 
+    // The sounds of the post (AssetSource/Audio).
+    private const string AmbienceClip = "amb_tradingpost";
+    private const string MusicClip = "music_tradingpost";
+
     // How often the post's owner looks whether a player has come, for the hunter.
     private const float HunterInterval = 5f;
 
@@ -63,6 +67,22 @@ public class TradingPostSite : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// The network data of a loaded post's marker, by the post's id.
+    /// </summary>
+    /// <param name="postId">The post's id.</param>
+    /// <returns>The marker's network data, or null when the post is not loaded here.</returns>
+    public static ZDO Marker(string postId)
+    {
+        if (string.IsNullOrEmpty(postId))
+        {
+            return null;
+        }
+
+        TradingPostSite site = loaded.FirstOrDefault(candidate => candidate != null && candidate.view != null && candidate.view.IsValid() && candidate.PostId == postId);
+        return site != null ? site.view.GetZDO() : null;
+    }
+
     private void OnEnable()
     {
         loaded.Add(this);
@@ -83,16 +103,71 @@ public class TradingPostSite : MonoBehaviour
 
         TradingPostLayout layout = TradingPostLayout.Load();
         TradingPostDome.Attach(transform, TradingPostLayout.ToVector(layout.dome.centre), layout.dome.radius);
+        AddSound(TradingPostLayout.ToVector(layout.dome.centre), layout.dome.radius);
         Invoke(nameof(Pass), passDelays[0]);
         InvokeRepeating(nameof(HunterPass), passDelays[0], HunterInterval);
     }
 
-    // The owner decides whether the hunter sits at the post (TradingPostHunter).
+    // The sea and the gulls under the dome, and its music, which the game's own location music component fades in as a
+    // player comes under it and out as they leave, and keeps quiet while enemies are near.
+    private void AddSound(Vector3 centre, float radius)
+    {
+        if (Helpers.VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        AudioClip ambience = Helpers.AudioAssets.TryLoad(AmbienceClip);
+        float ambienceVolume = Helpers.SoundSettings.AmbienceVolume.Value;
+        if (ambience != null && ambienceVolume > 0f)
+        {
+            GameObject holder = new("whitehilt_post_ambience");
+            holder.transform.SetParent(transform, false);
+            holder.transform.localPosition = centre;
+            AudioSource source = holder.AddComponent<AudioSource>();
+            Helpers.WhiteHiltSound.Place(source, radius * 0.6f, radius + 30f);
+            source.outputAudioMixerGroup = AudioMan.instance != null ? AudioMan.instance.m_ambientMixer : source.outputAudioMixerGroup;
+            source.clip = ambience;
+            source.loop = true;
+            source.volume = ambienceVolume;
+            source.time = Random.Range(0f, ambience.length);
+            source.Play();
+        }
+
+        AudioClip music = Helpers.AudioAssets.TryLoad(MusicClip);
+        float musicVolume = Helpers.SoundSettings.MusicVolume.Value;
+        if (music != null && musicVolume > 0f && MusicMan.instance != null)
+        {
+            GameObject holder = new("whitehilt_post_music");
+            holder.SetActive(false);
+            holder.transform.SetParent(transform, false);
+            holder.transform.localPosition = centre;
+            AudioSource source = holder.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.spatialBlend = 0f;
+            source.loop = true;
+            source.clip = music;
+            source.volume = musicVolume;
+            source.bypassReverbZones = true;
+            source.outputAudioMixerGroup = MusicMan.instance.m_musicMixer;
+            MusicLocation location = holder.AddComponent<MusicLocation>();
+            location.m_addRadiusFromLocation = false;
+            location.m_radius = radius + 10f;
+            location.m_oneTime = false;
+            location.m_notIfEnemies = true;
+            holder.SetActive(true);
+        }
+    }
+
+    // The owner decides whether the hunter sits at the post (TradingPostHunter) and whether a monster plagues it
+    // (TradingPostTerror).
     private void HunterPass()
     {
         if (view != null && view.IsValid() && view.IsOwner() && ZNetScene.instance != null)
         {
-            TradingPostHunter.Check(transform, view.GetZDO(), Mathf.Max(0, TradingPostGoods.IndexOf(Look.biome)));
+            int biome = Mathf.Max(0, TradingPostGoods.IndexOf(Look.biome));
+            TradingPostHunter.Check(transform, view.GetZDO(), biome);
+            TradingPostTerror.Check(transform, view.GetZDO(), biome);
         }
     }
 

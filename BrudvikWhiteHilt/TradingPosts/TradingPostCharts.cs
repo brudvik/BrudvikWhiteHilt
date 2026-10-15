@@ -90,6 +90,7 @@ public static class TradingPostCharts
             return;
         }
 
+        WhiteHiltSound.PlayLocal("sfx_parchment");
         string name = Localization.instance.Localize("$whitehilt_tradepost_pin");
         foreach (Vector3 position in positions)
         {

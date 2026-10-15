@@ -300,6 +300,8 @@ internal static class WildMonsterRegistry
             MonsterRegistry.AddCreatureSounds(humanoid, ai, weapons[0], monster.SoundPrefix, "attack", two ? weapons[1] : null, two ? "attack2" : null);
         }
 
+        AddAtmosphere(monster.Id, prefab);
+
         monster.Configure?.Invoke(new WildMonsterParts { Settings = settings, Prefab = prefab, Humanoid = humanoid, AI = ai, Model = model });
         CreatureManager.Instance.AddCreature(creature);
         SpawnSystem.SpawnData spawn = creature.Spawns?.FirstOrDefault();
@@ -409,6 +411,24 @@ internal static class WildMonsterRegistry
         if (amount != 0f && material.HasProperty(property))
         {
             material.SetFloat(property, material.GetFloat(property) + amount);
+        }
+    }
+
+    // The big ones' heavy feet, and the breath of the serpent and the ancient tree around them.
+    private static void AddAtmosphere(string id, GameObject prefab)
+    {
+        switch (id)
+        {
+            case "yggdrasilwarden":
+                MonsterRegistry.SetFootsteps(prefab, "step_wood");
+                prefab.AddComponent<LoopSound>().clip = "amb_warden";
+                break;
+            case "draugrjarl":
+                MonsterRegistry.SetFootsteps(prefab, "step_heavy");
+                break;
+            case "nidhoggspawn":
+                prefab.AddComponent<LoopSound>().clip = "amb_nidhogg";
+                break;
         }
     }
 }

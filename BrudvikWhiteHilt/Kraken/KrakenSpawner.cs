@@ -48,6 +48,7 @@ public static class KrakenSpawner
             nview.GetZDO().Set(KrakenBody.ShipKey, ship.m_nview.GetZDO().m_uid);
             nview.GetZDO().Set(KrakenBody.CrewKey, Mathf.Max(1, ship.m_players.Count));
             nview.GetZDO().Set(Items.Summoning.SummoningHornService.SummonedKey, summoned);
+            Monsters.ArrivalSound.Mark(nview.GetZDO());
             Jotunn.Logger.LogInfo($"The Kraken rises at {point} beside the ship at {centre}");
             return true;
         }

@@ -1,0 +1,556 @@
+{
+  "note": "What generate_audio.py makes with ElevenLabs. Speakers get a voice from Voice Design once (voice_id is written back here); their lines are read from the mod's English texts in the C# source and the Norwegian ones in Translations/Norwegian.json. Effects and music are made from the prompts.",
+  "model": "eleven_multilingual_v2",
+  "voice_format": "mp3_44100_64",
+  "effect_format": "mp3_44100_128",
+  "speakers": [
+    {
+      "id": "meadows",
+      "name": "WhiteHilt Asbjorn",
+      "description": "A warm, friendly middle-aged Norse farmer and coastal trader. Round, hearty male voice with a gentle Scandinavian accent, cheerful and welcoming.",
+      "lines": "trader",
+      "voice_id": "ACaOMLGCIb8xqwUQZVbe"
+    },
+    {
+      "id": "blackforest",
+      "name": "WhiteHilt Gunnar",
+      "description": "A gruff, weathered Norse woodsman trader in his fifties. Deep, slightly rough male voice with a Scandinavian accent, dry humour, steady and calm.",
+      "lines": "trader",
+      "voice_id": "3teLCCcDlneBNHIlykvO"
+    },
+    {
+      "id": "swamp",
+      "name": "WhiteHilt Ragnhild",
+      "description": "A shrewd, no-nonsense Norse woman trader from the marshes, around fifty. Firm, slightly husky female voice with a Scandinavian accent, wry and practical.",
+      "lines": "trader",
+      "voice_id": "S22aJzgMnj46dbxd72L7"
+    },
+    {
+      "id": "mountain",
+      "name": "WhiteHilt Hallvard",
+      "description": "A hardy old Norse mountain trader. Strong, clear, booming male voice with a Scandinavian accent, proud and good-natured, used to shouting over the wind.",
+      "lines": "trader",
+      "voice_id": "NQTJEYWlwpw3SIqX46i5"
+    },
+    {
+      "id": "plains",
+      "name": "WhiteHilt Sigrid",
+      "description": "A lively, confident young Norse woman merchant of the golden plains, around thirty. Bright, energetic female voice with a Scandinavian accent, quick and charming.",
+      "lines": "trader",
+      "voice_id": "g592XYUUKazlaSLDOtbs"
+    },
+    {
+      "id": "mistlands",
+      "name": "WhiteHilt Ylva",
+      "description": "A mysterious Norse woman trader from the misty lands, around forty. Low, soft, slightly breathy female voice with a Scandinavian accent, calm and secretive.",
+      "lines": "trader",
+      "voice_id": "0r3arIprTV4HwLHUrcgZ"
+    },
+    {
+      "id": "ashlands",
+      "name": "WhiteHilt Brand",
+      "description": "A battle-scarred Norse trader from the burning ash lands. Very deep, smoky, gravelly male voice with a Scandinavian accent, intense and blunt.",
+      "lines": "trader",
+      "voice_id": "PptBBQV6VD0yTvwI2zVv"
+    },
+    {
+      "id": "deepnorth",
+      "name": "WhiteHilt Froydis",
+      "description": "A composed Norse woman trader from the frozen far north, around sixty. Cool, crisp, slightly hoarse female voice with a Scandinavian accent, measured and dignified.",
+      "lines": "trader",
+      "voice_id": "P0YqJjZWE2lYciSk2YQy"
+    },
+    {
+      "id": "hunter",
+      "name": "WhiteHilt Ulf",
+      "description": "A rugged Norse hunter who lives in the woods, around forty-five. Rough, low male voice with a Scandinavian accent, relaxed, proud of his kills, a little boastful.",
+      "lines": "hunter",
+      "voice_id": "AWvZUdAs6ZIK5Lpcw3mG"
+    },
+    {
+      "id": "skipper",
+      "name": "WhiteHilt Skipper",
+      "description": "A loud, seasoned Norse ship captain shouting orders on deck. Strong, carrying male voice with a Scandinavian accent, energetic and commanding.",
+      "lines": "skipper",
+      "voice_id": "7n9xRuIFq1zw8NyYFjuD"
+    },
+    {
+      "id": "raider1",
+      "name": "WhiteHilt Raider One",
+      "description": "An undead draugr pirate raider. Raspy, hollow, gravelly male voice with a Scandinavian accent, menacing and cruel, as if from the grave.",
+      "lines": "raider",
+      "voice_id": "zmlEEMntLxr9wU6o5IRg"
+    },
+    {
+      "id": "raider2",
+      "name": "WhiteHilt Raider Two",
+      "description": "A wild undead viking sea raider. Harsh, hissing, cackling male voice with a Scandinavian accent, bloodthirsty and mocking.",
+      "lines": "raider",
+      "voice_id": "N2FoumtiLbvmpiePoyhc"
+    },
+    {
+      "id": "raiderchief",
+      "name": "WhiteHilt Raider Chief",
+      "description": "An undead draugr jarl commanding a ghost ship. Very deep, booming, echoing male voice with a Scandinavian accent, ancient and terrifying.",
+      "lines": "raider",
+      "voice_id": "3GKVWRsNgEJFWVcmnzd7"
+    }
+  ],
+  "effects": [
+    {
+      "name": "amb_tradingpost",
+      "prompt": "Calm seaside harbour ambience: gentle waves lapping against a wooden jetty, distant seagulls, wooden boards creaking softly, a light breeze. No music, no voices.",
+      "duration": 22,
+      "loop": true
+    },
+    {
+      "name": "sfx_bounty",
+      "prompt": "A heavy pouch of gold coins poured onto a wooden table, followed by a short triumphant viking war horn",
+      "duration": 3
+    },
+    {
+      "name": "sfx_tracks",
+      "prompt": "A short ominous low drum hit with a deep rumble, a tense discovery stinger",
+      "duration": 2
+    },
+    {
+      "name": "sfx_parchment",
+      "prompt": "An old parchment map being unrolled and flattened",
+      "duration": 1.5
+    },
+    {
+      "name": "step_heavy",
+      "prompt": "A single very heavy footstep of a giant creature on earth, a deep thud",
+      "duration": 0.8,
+      "variants": 3
+    },
+    {
+      "name": "step_wood",
+      "prompt": "A single heavy footstep of a giant creature made of wood, a deep thud with creaking timber",
+      "duration": 0.8,
+      "variants": 3
+    },
+    {
+      "name": "wings_dragon",
+      "prompt": "Huge leathery dragon wings flapping slowly and powerfully, steady rhythm, wind gusts",
+      "duration": 4,
+      "loop": true
+    },
+    {
+      "name": "arrival_lindorm",
+      "prompt": "The ground rumbling and bursting open as a huge serpent breaks out of the earth, rocks and soil crashing",
+      "duration": 3
+    },
+    {
+      "name": "arrival_kraken",
+      "prompt": "A colossal sea monster surfacing from the deep, a huge surge of water, deep rumble and crashing waves",
+      "duration": 4
+    },
+    {
+      "name": "arrival_beast",
+      "prompt": "An ominous dark stinger: a deep distant horn, low rumble and eerie ghostly whispers, something terrible approaches",
+      "duration": 4
+    },
+    {
+      "name": "arrival_terror",
+      "prompt": "A tense stinger: a sudden low drum hit and a distant monstrous roar echoing over the land at night",
+      "duration": 3.5
+    },
+    {
+      "name": "amb_spidernest",
+      "prompt": "Creepy spider nest ambience: many small legs skittering, rustling silk threads, faint clicking in the dark. No music.",
+      "duration": 12,
+      "loop": true
+    },
+    {
+      "name": "amb_nidhogg",
+      "prompt": "A giant serpent lurking: slow heavy breathing, scales slithering on stone, a low venomous hiss now and then. No music.",
+      "duration": 10,
+      "loop": true
+    },
+    {
+      "name": "amb_warden",
+      "prompt": "An ancient living tree resting: branches creaking, leaves rustling, very deep slow wooden breathing. No music.",
+      "duration": 12,
+      "loop": true
+    }
+  ],
+  "music": [
+    {
+      "name": "music_tradingpost",
+      "prompt": "Calm, warm Nordic folk music for a peaceful seaside trading post in the Viking age: soft lyre, gentle frame drum, wooden flute and a low hummed male choir. Relaxed, welcoming, instrumental, no lyrics, loopable.",
+      "length_ms": 90000
+    }
+  ],
+  "creature_variants": 3,
+  "creatures": [
+    {
+      "prefix": "spider",
+      "description": "A giant spider the size of a horse",
+      "voice": "chittering hiss with clicking mandibles",
+      "actions": [
+        "idle",
+        "alert",
+        "bite",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "bite": "A giant spider lunging and biting, a fast venomous snap with a wet crunch and a hiss"
+      }
+    },
+    {
+      "prefix": "lindorm",
+      "description": "A huge wingless forest serpent dragon",
+      "voice": "deep reptilian growl and rattling hiss",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "kraken",
+      "description": "A colossal sea monster with huge tentacles",
+      "voice": "deep watery bellow with churning water",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "lash",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A colossal tentacle slamming down onto a wooden ship deck, heavy crash and splintering wood and splashing water",
+        "lash": "A giant wet tentacle whipping through the air and lashing the sea surface"
+      }
+    },
+    {
+      "prefix": "shark",
+      "description": "A huge ancient Greenland shark",
+      "voice": "muffled underwater rumble and violent thrashing water",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "dragon",
+      "description": "A gigantic fire-breathing desert dragon",
+      "voice": "thunderous roar with crackling fire",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A gigantic dragon breathing a long roaring blast of fire, whooshing flames"
+      }
+    },
+    {
+      "prefix": "miststag",
+      "description": "A ghostly giant stag in the mist",
+      "voice": "deep echoing stag bellow",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "attack2",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A giant stag charging and goring with its antlers, galloping hooves and a fierce snort",
+        "attack2": "A giant stag rearing up and stomping the ground hard with its hooves, heavy impact"
+      }
+    },
+    {
+      "prefix": "nidhogg",
+      "description": "A venomous giant serpent spawn",
+      "voice": "wet venomous hiss and gurgling growl",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "attack2",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A huge venomous serpent striking and biting, fast lunge with a wet snap and hiss",
+        "attack2": "A huge serpent body slamming and crushing the ground, heavy thud and scraping scales"
+      }
+    },
+    {
+      "prefix": "warden",
+      "description": "A huge ancient tree guardian made of living wood",
+      "voice": "deep creaking wooden groan",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A huge tree creature slamming a massive wooden arm into the ground, heavy thud and cracking wood"
+      }
+    },
+    {
+      "prefix": "garm",
+      "description": "A monstrous hellhound from a land of fire",
+      "voice": "savage growl and bark with fiery breath",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "jarl",
+      "description": "An undead draugr viking chieftain in heavy armour",
+      "voice": "raspy ghostly war cry and gravelly growl",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "attack2",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "An undead viking chieftain swinging a huge axe overhead with a raspy grunt, heavy whoosh",
+        "attack2": "An undead viking chieftain sweeping a huge axe sideways with a ghostly snarl, wide whoosh"
+      }
+    },
+    {
+      "prefix": "whitedragon",
+      "description": "A gigantic ice dragon",
+      "voice": "thunderous roar with cracking ice and freezing wind",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "attack": "A gigantic dragon breathing a long blast of freezing frost, icy crackling wind"
+      }
+    },
+    {
+      "prefix": "bristleback",
+      "description": "A giant monstrous wild boar",
+      "voice": "furious squeals and deep grunts",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "gnawtooth",
+      "description": "A huge troll-like forest brute made of wood and moss",
+      "voice": "growling roar with creaking wood",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "miremother",
+      "description": "An enormous swamp abomination of mud and roots",
+      "voice": "gurgling wet bellow with bubbling mud",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "whiteclaw",
+      "description": "A giant white werewolf",
+      "voice": "vicious snarl and chilling howl",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "skullsplitter",
+      "description": "A brutish giant goblin warrior",
+      "voice": "savage guttural battle roar",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "clickjaw",
+      "description": "A giant insect monster",
+      "voice": "rapid clicking mandibles and piercing chittering screech",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "ashfang",
+      "description": "A large fiery reptile beast",
+      "voice": "hissing roar with crackling embers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "icemaw",
+      "description": "A massive frost beast",
+      "voice": "deep rumbling roar with cracking ice",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blacktroll",
+      "description": "A giant black troll of the night",
+      "voice": "deep booming troll roar with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackabomination",
+      "description": "A huge black swamp abomination of the night",
+      "voice": "deep gurgling bellow with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackstonegolem",
+      "description": "A huge black stone golem of the night",
+      "voice": "grinding rock rumble and roar with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackfulingberserker",
+      "description": "A black goblin berserker of the night",
+      "voice": "savage guttural roar with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackdragon",
+      "description": "A black dragon of the night",
+      "voice": "shrieking dragon roar with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackseekersoldier",
+      "description": "A black giant insect soldier of the night",
+      "voice": "clicking screech with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackmorgen",
+      "description": "A black demonic beast of the night",
+      "voice": "guttural demonic growl with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackserpent",
+      "description": "A black sea serpent of the night",
+      "voice": "hissing roar with crashing waves with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    },
+    {
+      "prefix": "blackbonemaw",
+      "description": "A black bone sea serpent of the night",
+      "voice": "deep rattling roar with boiling water with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
+    }
+  ]
+}

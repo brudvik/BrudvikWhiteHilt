@@ -561,11 +561,11 @@ public class DraugrJarlTests
     }
 
     [Fact]
-    public void TheJarlKeepsTheSoundsOfTheDraugrHeIsClonedFrom()
+    public void TheJarlIsADraugrWithSoundsOfHisOwn()
     {
         // His faction (undead, like the crew) is checked in the game: the enum lives in a type the tests cannot load.
         Assert.Equal("Draugr_Elite", Jarl.TemplateCreature);
-        Assert.Null(Jarl.SoundPrefix);
+        Assert.Equal("jarl", Jarl.SoundPrefix);
     }
 
     [Fact]

@@ -195,6 +195,7 @@ public static class DesertDragonRegistry
             MonsterRegistry.AddCreatureSounds(humanoid, ai, flame, "dragon");
         }
         prefab.AddComponent<DragonFire>();
+        prefab.AddComponent<WingBeats>();
         CreatureManager.Instance.AddCreature(creature);
     }
 

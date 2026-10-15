@@ -268,7 +268,7 @@ A refusal costs you nothing: you keep the contract. The contract is used up only
 
 ### The trading ship
 
-The trading ship is the vanilla longship with a blue and cream sail and barrels and crates on its deck. The merchant's skipper stands at the helm, dressed like the traders of the posts; every ship has its own, and everyone sees the same one. The skipper is only for the eye: the ship sails itself, and you cannot talk to or hurt the skipper.
+The trading ship is the vanilla longship with a blue and cream sail and barrels and crates on its deck. The merchant's skipper stands at the helm, dressed like the traders of the posts; every ship has its own, and everyone sees the same one. The skipper does not steer: the ship sails itself, and you cannot talk to or hurt the skipper. But the skipper shouts from the helm, aloud and in a speech bubble, when the ship casts off, when the Nail Ships come and when it reaches port. The Nail Ships' crews shout too: battle cries and taunts while they fight, and a cry as they leap aboard, the draugr jarl in a voice of his own.
 
 - It sails at full sail with the wind astern, but its sail pulls only **0.8 times** as hard as a longship's (`SailForceFactor`), so you can keep up. It follows the route the server planned, turning point by turning point, eases the sail in the sharp turns, and steers round shallows and rocks close ahead. If it finds no clear way for 8 seconds it plans a new route from where it lies, no more often than every 30 seconds.
 - Its helm (*The merchant's skipper keeps the helm.*) and its hold (*The merchant's cargo is not yours to open.*) are shut, it cannot be pushed or moored, and it cannot be taken apart with the Hammer. You can stand on its deck.

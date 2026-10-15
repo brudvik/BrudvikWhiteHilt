@@ -5,8 +5,8 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Builds the asset bundle with the meshes, textures and sounds used by White Hilt items.
-/// Every <c>*.obj</c>, <c>*_albedo</c> and <c>*_emission</c> texture (.png / .jpg) and <c>*.wav</c> in Assets/Foraging is included,
+/// Builds the asset bundle with the meshes and textures used by White Hilt items; the sounds are in their own bundle
+/// (<see cref="BuildAudioBundle"/>). Every <c>*.obj</c>, <c>*_albedo</c> and <c>*_emission</c> texture (.png / .jpg) in Assets/Foraging is included,
 /// and the animated creature prefabs from Assets/Creatures (see <see cref="BuildCreatures"/>) and the attack clips from
 /// Assets/Animations (see <see cref="BuildAttackClips"/>).
 /// Run from the command line with <c>-executeMethod BuildForagingBundle.Build</c>.
@@ -54,12 +54,6 @@ public static class BuildForagingBundle
             ConfigureTexture(texture);
         }
 
-        string[] sounds = FindAssets("*.wav");
-        foreach (string sound in sounds)
-        {
-            ConfigureSound(sound);
-        }
-
         string[] creatures = BuildCreatures.Prepare();
         string[] animations = BuildAttackClips.Prepare();
 
@@ -69,7 +63,7 @@ public static class BuildForagingBundle
         AssetBundleBuild build = new()
         {
             assetBundleName = BundleName,
-            assetNames = models.Concat(textures).Concat(sounds).Concat(creatures).Concat(animations).ToArray()
+            assetNames = models.Concat(textures).Concat(creatures).Concat(animations).ToArray()
         };
 
         AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
@@ -94,13 +88,7 @@ public static class BuildForagingBundle
             Debug.Log($"[WhiteHilt] Texture '{Path.GetFileNameWithoutExtension(texture)}'");
         }
 
-        foreach (string sound in sounds)
-        {
-            AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>(sound);
-            Debug.Log($"[WhiteHilt] Sound '{clip.name}': {clip.length:0.00} s");
-        }
-
-        Debug.Log($"[WhiteHilt] Built {BundleName} with {models.Length} models, {textures.Length} textures, {sounds.Length} sounds, {creatures.Length} creatures and {animations.Length} animations");
+        Debug.Log($"[WhiteHilt] Built {BundleName} with {models.Length} models, {textures.Length} textures, {creatures.Length} creatures and {animations.Length} animations");
     }
 
     private static string[] FindAssets(string pattern)
@@ -140,19 +128,6 @@ public static class BuildForagingBundle
         importer.maxTextureSize = LargeTiles.Contains(name) ? 1024 : tiles > 1 ? Mathf.Min(4096, Mathf.NextPowerOfTwo(512 * tiles)) : 512;
         importer.textureCompression = TextureImporterCompression.Compressed;
         importer.isReadable = false;
-        importer.SaveAndReimport();
-    }
-
-    // Short effect sounds: mono, decompressed when loaded so they play without delay.
-    private static void ConfigureSound(string path)
-    {
-        AudioImporter importer = (AudioImporter)AssetImporter.GetAtPath(path);
-        importer.forceToMono = true;
-        AudioImporterSampleSettings settings = importer.defaultSampleSettings;
-        settings.loadType = AudioClipLoadType.DecompressOnLoad;
-        settings.compressionFormat = AudioCompressionFormat.Vorbis;
-        settings.quality = 0.7f;
-        importer.defaultSampleSettings = settings;
         importer.SaveAndReimport();
     }
 }

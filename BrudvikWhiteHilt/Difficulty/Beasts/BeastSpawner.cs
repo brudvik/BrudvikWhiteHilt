@@ -45,6 +45,7 @@ public static class BeastSpawner
         zdo.Set(CreatureStars.HealthKey, DifficultySettings.BeastHealth.Value);
         zdo.Set(CreatureStars.DamageKey, DifficultySettings.BeastDamage.Value);
         character.SetLevel(CreatureStars.MaxLevel);
+        Monsters.ArrivalSound.Mark(zdo);
         BaseAI ai = character.GetBaseAI();
         if (ai != null)
         {

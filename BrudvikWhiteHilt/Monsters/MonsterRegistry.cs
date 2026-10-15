@@ -244,6 +244,7 @@ public static class MonsterRegistry
             AddCreatureSounds(humanoid, ai, bite, "lindorm");
         }
         prefab.AddComponent<LindormBurrow>();
+        prefab.AddComponent<ArrivalSound>().clip = "arrival_lindorm";
         CreatureManager.Instance.AddCreature(creature);
     }
 
@@ -343,47 +344,127 @@ public static class MonsterRegistry
     }
 
     /// <summary>
-    /// Gives a creature its own sounds from the bundle: clones of a vanilla sound effect with the clip swapped, so the
-    /// game's volume and mixing apply to them. A creature with a second attack gives it its own sound too.
+    /// Gives a creature its own sounds from the audio bundle: clones of a vanilla sound effect with the clips swapped,
+    /// so the game's volume and mixing apply to them, each with every variant of its sound for the game to pick from. A
+    /// creature with a second attack gives it its own sound too.
     /// </summary>
     internal static void AddCreatureSounds(Humanoid humanoid, MonsterAI ai, CustomItem weapon, string prefix, string attack = "attack",
         CustomItem secondWeapon = null, string secondAttack = null)
     {
-        GameObject source = (ai.m_alertedEffects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
-            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
-        source ??= PrefabManager.Instance.GetPrefab("Wolf")?.GetComponent<MonsterAI>()?.m_alertedEffects.m_effectPrefabs
-            ?.Select(effect => effect.m_prefab)
-            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
-        if (source == null)
-        {
-            Jotunn.Logger.LogWarning($"{prefix}: no alert sound prefab to clone");
-            return;
-        }
-
         Dictionary<string, GameObject> sounds = new();
         foreach (string action in new[] { "idle", "alert", attack, "hit", "death", secondAttack }.Where(action => action != null))
         {
-            string name = prefix + action;
-            if (!creatureSounds.TryGetValue(name, out GameObject effect))
+            GameObject effect = SoundEffect(ai, prefix + action);
+            if (effect == null)
             {
-                AudioClip clip = ForagingAssets.LoadAudio(name);
-                effect = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
-                effect.GetComponentInChildren<ZSFX>(true).m_audioClips = new[] { clip };
-                creatureSounds[name] = effect;
+                return;
             }
+
             sounds[action] = effect;
         }
 
-        ai.m_idleSound = ReplaceSound(ai.m_idleSound, sounds["idle"]);
-        ai.m_alertedEffects = ReplaceSound(ai.m_alertedEffects, sounds["alert"]);
-        humanoid.m_hitEffects = ReplaceSound(humanoid.m_hitEffects, sounds["hit"]);
-        humanoid.m_critHitEffects = ReplaceSound(humanoid.m_critHitEffects, sounds["hit"]);
-        humanoid.m_deathEffects = ReplaceSound(humanoid.m_deathEffects, sounds["death"]);
+        SetVoice(humanoid, ai, sounds);
         SetAttackSound(weapon, sounds[attack]);
         if (secondWeapon != null && secondAttack != null)
         {
             SetAttackSound(secondWeapon, sounds[secondAttack]);
         }
+    }
+
+    /// <summary>
+    /// Gives a creature cloned from a vanilla one its own sounds: idle, alert, hit and death from the audio bundle, and
+    /// its attack played from the creature itself (<see cref="CreatureAttackVoice"/>), as its weapons are the vanilla
+    /// creature's.
+    /// </summary>
+    /// <param name="prefab">The creature's prefab.</param>
+    /// <param name="prefix">Its sounds' prefix (AssetSource/Audio/Creatures).</param>
+    internal static void AddCloneSounds(GameObject prefab, string prefix)
+    {
+        Character character = prefab.GetComponent<Character>();
+        MonsterAI ai = prefab.GetComponent<MonsterAI>();
+        if (character == null || ai == null)
+        {
+            return;
+        }
+
+        Dictionary<string, GameObject> sounds = new();
+        foreach (string action in new[] { "idle", "alert", "hit", "death" })
+        {
+            GameObject effect = SoundEffect(ai, prefix + action);
+            if (effect == null)
+            {
+                return;
+            }
+
+            sounds[action] = effect;
+        }
+
+        SetVoice(character, ai, sounds);
+        if (CreatureSoundNames.Clips(prefix + "attack").Length > 0)
+        {
+            prefab.AddComponent<CreatureAttackVoice>().sound = prefix + "attack";
+        }
+    }
+
+    /// <summary>
+    /// Gives a big creature heavy footsteps from the audio bundle in place of its own, on every ground.
+    /// </summary>
+    /// <param name="prefab">The creature's prefab.</param>
+    /// <param name="step">The steps' sound: step_heavy or step_wood.</param>
+    internal static void SetFootsteps(GameObject prefab, string step)
+    {
+        FootStep feet = prefab.GetComponentInChildren<FootStep>(true);
+        MonsterAI ai = prefab.GetComponent<MonsterAI>();
+        GameObject effect = feet != null && ai != null ? SoundEffect(ai, step) : null;
+        if (effect == null)
+        {
+            return;
+        }
+
+        foreach (FootStep.StepEffect stepEffect in feet.m_effects)
+        {
+            stepEffect.m_effectPrefabs = (stepEffect.m_effectPrefabs ?? Array.Empty<GameObject>())
+                .Where(prefabEffect => prefabEffect != null && prefabEffect.GetComponentInChildren<ZSFX>(true) == null)
+                .Append(effect)
+                .ToArray();
+        }
+    }
+
+    // The idle and alert sounds, and the hit and death sounds.
+    private static void SetVoice(Character character, MonsterAI ai, Dictionary<string, GameObject> sounds)
+    {
+        ai.m_idleSound = ReplaceSound(ai.m_idleSound, sounds["idle"]);
+        ai.m_alertedEffects = ReplaceSound(ai.m_alertedEffects, sounds["alert"]);
+        character.m_hitEffects = ReplaceSound(character.m_hitEffects, sounds["hit"]);
+        character.m_critHitEffects = ReplaceSound(character.m_critHitEffects, sounds["hit"]);
+        character.m_deathEffects = ReplaceSound(character.m_deathEffects, sounds["death"]);
+    }
+
+    // A sound effect prefab playing every variant of a sound: a clone of the creature's own alert sound effect (or the
+    // wolf's), so it is mixed as the game's creature sounds are. Made once per sound; null when the bundle lacks it.
+    private static GameObject SoundEffect(MonsterAI ai, string name)
+    {
+        if (creatureSounds.TryGetValue(name, out GameObject made))
+        {
+            return made;
+        }
+
+        AudioClip[] clips = CreatureSoundNames.Clips(name);
+        GameObject source = (ai.m_alertedEffects?.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
+            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
+        source ??= PrefabManager.Instance.GetPrefab("Wolf")?.GetComponent<MonsterAI>()?.m_alertedEffects.m_effectPrefabs
+            ?.Select(effect => effect.m_prefab)
+            .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
+        if (clips.Length == 0 || source == null)
+        {
+            Jotunn.Logger.LogWarning($"Sound {name}: {(clips.Length == 0 ? "not in the audio bundle" : "no sound effect to clone")}");
+            return null;
+        }
+
+        GameObject effectPrefab = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
+        effectPrefab.GetComponentInChildren<ZSFX>(true).m_audioClips = clips;
+        creatureSounds[name] = effectPrefab;
+        return effectPrefab;
     }
 
     // Clears the weapon's inherited sounds and plays the creature's own when the attack lands.
@@ -465,6 +546,11 @@ public static class MonsterRegistry
                 m_dropChance = 1f
             };
         }
+
+        LoopSound rustle = nest.AddComponent<LoopSound>();
+        rustle.clip = "amb_spidernest";
+        rustle.near = 3f;
+        rustle.far = 25f;
 
         // The greydwarf magic (glowing trails, smoke, light and whispers) does not belong in a spider's nest.
         foreach (string child in new[] { "particles", "sfx" })

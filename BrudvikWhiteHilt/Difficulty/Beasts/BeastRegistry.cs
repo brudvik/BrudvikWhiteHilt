@@ -101,7 +101,25 @@ public static class BeastRegistry
         DarkenCorpses(beast, character);
         AddGlow(prefab);
         prefab.AddComponent<BeastBehaviour>();
+        AddSounds(beast, prefab);
         CreatureManager.Instance.AddCreature(creature);
+    }
+
+    // Its own darker sounds (AssetSource/Audio/Creatures), and the sound of its coming, which everyone near hears.
+    private static void AddSounds(BeastDefinition beast, GameObject prefab)
+    {
+        MonsterRegistry.AddCloneSounds(prefab, beast.Key.ToLowerInvariant());
+        if (beast.Key is "BlackTroll" or "BlackStoneGolem" or "BlackAbomination")
+        {
+            MonsterRegistry.SetFootsteps(prefab, "step_heavy");
+        }
+
+        if (beast.Key == "BlackDragon" && prefab.GetComponent<WingBeats>() == null)
+        {
+            prefab.AddComponent<WingBeats>();
+        }
+
+        prefab.AddComponent<ArrivalSound>().clip = "arrival_beast";
     }
 
     // A beast cloned from one of the mod's monsters would otherwise leave that monster's coloured corpse.

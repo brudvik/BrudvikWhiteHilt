@@ -67,6 +67,12 @@ public static class TradingPostSettings
     /// <summary>Percent better prices more at a biome's posts for the whole garb worn.</summary>
     public static ConfigEntry<float> GarbSetTradeBonus { get; private set; }
 
+    /// <summary>Percent chance, once a game day, that a monster plagues a post when a player comes there.</summary>
+    public static ConfigEntry<int> TerrorChance { get; private set; }
+
+    /// <summary>Coins per plain material of a biome that the head of its plague's monster is paid.</summary>
+    public static ConfigEntry<float> TerrorBounty { get; private set; }
+
     /// <summary>Percent chance that the hunter sits at a post when a player comes there.</summary>
     public static ConfigEntry<int> HunterChance { get; private set; }
 
@@ -158,6 +164,12 @@ public static class TradingPostSettings
         GarbSetTradeBonus = WhiteHiltConfig.BindAdminOnly(Section, "GarbSetTradeBonus", 3f,
             "Percent better prices more at a biome's trading posts for the whole of its traders' garb worn.",
             new AcceptableValueRange<float>(0f, 20f));
+        TerrorChance = WhiteHiltConfig.BindAdminOnly(Section, "TerrorChance", 15,
+            "Percent chance, once a game day, that a named monster plagues a trading post when a player comes there. The trader hands out a bounty " +
+            "notice and pays for the monster's head. 0: no plagues.", new AcceptableValueRange<int>(0, 100));
+        TerrorBounty = WhiteHiltConfig.BindAdminOnly(Section, "TerrorBounty", 800f,
+            "Coins paid for a plague's head per coin the biome's plain material is worth (Meadows 1, Deep North 10).",
+            new AcceptableValueRange<float>(1f, 10000f));
         HunterChance = WhiteHiltConfig.BindAdminOnly(Section, "HunterChance", 20,
             "Percent chance that a hunter who sells the biome's trophies sits at a trading post when a player comes there. The answer holds " +
             "for a game day. 0: no hunter.", new AcceptableValueRange<int>(0, 100));

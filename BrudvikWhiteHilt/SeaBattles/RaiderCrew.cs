@@ -86,7 +86,9 @@ public class RaiderCrew : MonoBehaviour
         if (crew == null)
         {
             // Its Awake reads the ZDO.
-            return creature.gameObject.AddComponent<RaiderCrew>();
+            crew = creature.gameObject.AddComponent<RaiderCrew>();
+            RaiderVoice.Attach(crew);
+            return crew;
         }
 
         crew.Read();

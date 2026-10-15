@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 namespace BrudvikWhiteHilt.Helpers;
 
 /// <summary>
-/// Loads meshes and textures from the main asset bundle, <c>whitehilt_foraging</c>, a file next to the mod's DLL.
+/// Loads meshes, textures, prefabs and animations from the main asset bundle, <c>whitehilt_foraging</c>, a file next to the mod's DLL.
 /// </summary>
 /// <remarks>
 /// The bundle used to be embedded in the DLL. Loading it from memory meant a managed copy and a native copy of the
@@ -70,14 +70,11 @@ public static class ForagingAssets
     }
 
     /// <summary>
-    /// Loads a sound from the bundle.
+    /// Loads a sound. The sounds are in a bundle of their own (<see cref="AudioAssets"/>).
     /// </summary>
-    /// <param name="name">Sound name (the .wav file name in lower case, without extension).</param>
+    /// <param name="name">Sound name (the file name in lower case, without extension).</param>
     /// <returns>The sound.</returns>
-    public static AudioClip LoadAudio(string name)
-    {
-        return Find<AudioClip>(name) ?? throw new InvalidOperationException($"Sound '{name}' not found in {BundleName}.");
-    }
+    public static AudioClip LoadAudio(string name) => AudioAssets.LoadAudio(name);
 
     /// <summary>
     /// Loads a prefab from the bundle, such as an animated creature visual (&lt;name&gt;_visual).

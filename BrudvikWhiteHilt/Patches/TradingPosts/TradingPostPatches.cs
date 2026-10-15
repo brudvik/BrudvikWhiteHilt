@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.TradingPosts;
 using HarmonyLib;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.TradingPosts;
@@ -18,6 +19,7 @@ public static class TradingPostPatches
     {
         __instance.gameObject.AddComponent<TradingPostService>();
         __instance.gameObject.AddComponent<TradingPostPlacer>();
+        __instance.gameObject.AddComponent<TerrorNotice>();
     }
 
     // The flags are not saved, so they are set again every time a post's piece comes to life.
@@ -138,6 +140,8 @@ public static class TradingPostPatches
             return false;
         }
 
+        TerrorDefinition plague = TradingPostTerror.PlagueOn(trader.PostId);
+        bool bounty = plague != null && item.m_dropPrefab != null && item.m_dropPrefab.name == plague.TrophyName;
         ItemDrop coin = __instance.m_coinPrefab;
         bool cheated = inventory.ItemCheated(item.m_shared.m_name);
         string sold = item.m_stack <= 1 ? item.m_shared.m_name : $"{item.m_stack}x{item.m_shared.m_name}";
@@ -148,6 +152,14 @@ public static class TradingPostPatches
         player.Message(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_sold", sold, coins.ToString()), 0, icon);
         __instance.m_trader.OnSold();
         TradingSkill.Raise(player, coins);
+        if (bounty)
+        {
+            TradingPostTerror.Deliver(trader.PostId, player);
+            Helpers.WhiteHiltSound.PlayLocal("sfx_bounty");
+            player.Message(MessageHud.MessageType.Center,
+                Localization.instance.Localize("$msg_whitehilt_terror_paid", Localization.instance.Localize("$" + plague.NameKey), coins.ToString()));
+        }
+
         __instance.FillList();
         return false;
     }
@@ -161,6 +173,12 @@ public static class TradingPostPatches
         if (TradingPostMineChart.Is(item) && __instance is Player reader && reader == Player.m_localPlayer)
         {
             TradingPostService.RequestMines(reader.transform.position);
+            return false;
+        }
+
+        if (TerrorNotice.Is(item) && __instance is Player hunter && hunter == Player.m_localPlayer)
+        {
+            TerrorNotice.Read(hunter, item);
             return false;
         }
 
@@ -208,13 +226,16 @@ public static class TradingPostPatches
 
         if (post.IsHunter)
         {
+            TradingPostStore.OpenPostId = null;
             trader.m_items = TradingPostTrophies.BuildItems(post.Biome, Player.m_localPlayer);
             WearersPrices(trader.m_items, post.Biome);
             return;
         }
 
+        TradingPostStore.OpenPostId = post.PostId;
         trader.m_items = TradingPostStore.BuildItems(post.Biome, post.PostId, Player.m_localPlayer);
         WearersPrices(trader.m_items, post.Biome);
+        PlaguedPrices(trader.m_items, post.PostId);
         GearKind? kind = TradingPostGear.Specialty(post.Biome, post.PostId);
         if (kind != null)
         {
@@ -222,11 +243,25 @@ public static class TradingPostPatches
         }
     }
 
+    // A plagued post's trader asks more, the notice aside, which is free.
+    private static void PlaguedPrices(System.Collections.Generic.List<Trader.TradeItem> items, string postId)
+    {
+        if (TradingPostTerror.PlagueOn(postId) == null)
+        {
+            return;
+        }
+
+        foreach (Trader.TradeItem item in items.Where(item => item.m_price > 0))
+        {
+            item.m_price = Mathf.RoundToInt(item.m_price * (1f + TradingPostTerror.PlaguePenalty));
+        }
+    }
+
     // The garb of the post's biome worn gets the player better prices there.
     private static void WearersPrices(System.Collections.Generic.List<Trader.TradeItem> items, int biome)
     {
         float bonus = TraderGarb.TradeBonus(Player.m_localPlayer, biome);
-        foreach (Trader.TradeItem item in items)
+        foreach (Trader.TradeItem item in items.Where(item => item.m_price > 0))
         {
             item.m_price = TraderGarb.Lowered(item.m_price, bonus);
         }
@@ -271,9 +306,24 @@ public static class TradingPostPatches
     [HarmonyPostfix]
     private static void BoughtPostfix(Trader __instance, Trader.TradeItem item)
     {
-        if (item != null && __instance.GetComponent<TradingPostTrader>() != null)
+        TradingPostTrader post = __instance.GetComponent<TradingPostTrader>();
+        Player player = Player.m_localPlayer;
+        if (item == null || post == null || player == null)
         {
-            TradingSkill.Raise(Player.m_localPlayer, item.m_price);
+            return;
+        }
+
+        TradingSkill.Raise(player, item.m_price);
+        string prefab = item.m_prefab != null ? item.m_prefab.name : string.Empty;
+        if (prefab == TradingPostTerrors.NoticeName)
+        {
+            // The notice just handed out learns the post's plague; the store no longer offers another.
+            TerrorNotice.FillNew(player, post.PostId);
+            __instance.m_items.Remove(item);
+        }
+        else if (prefab.StartsWith("WhiteHilt_TraderGarb_", System.StringComparison.Ordinal))
+        {
+            TradingPostTerror.UseFavour(player, post.PostId);
         }
     }
 
@@ -287,6 +337,14 @@ public static class TradingPostPatches
         if (kind != null)
         {
             __result += "\n" + Localization.instance.Localize("$whitehilt_trader_known", TradingPostGear.KindName(kind.Value));
+        }
+
+        TerrorDefinition plague = post != null && !post.IsHunter ? TradingPostTerror.PlagueOn(post.PostId) : null;
+        if (plague != null)
+        {
+            string name = Localization.instance.Localize("$" + plague.NameKey);
+            __result += "\n<color=#E05A40>" + Localization.instance.Localize(TerrorNotice.Carries(Player.m_localPlayer, post.PostId)
+                ? "$whitehilt_terror_plagued" : "$whitehilt_terror_ask", name) + "</color>";
         }
     }
 

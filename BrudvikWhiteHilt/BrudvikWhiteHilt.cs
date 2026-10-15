@@ -112,6 +112,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Pieces.Ships.Ram.RamSettings.Initialize();
         Pieces.Ships.Skidbladnir.SkidbladnirSettings.Initialize();
         Clock.ClockSettings.Initialize();
+        Helpers.SoundSettings.Initialize();
         HudLayout.HudSettings.Initialize();
         HudLayout.HudAlerts.Register();
         HudLayout.HudConsole.Register();

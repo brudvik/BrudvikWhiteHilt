@@ -599,6 +599,12 @@ public class EscortService : MonoBehaviour
         }
 
         EscortNotice notice = (EscortNotice)kind;
+        string shout = notice switch { EscortNotice.SetOut => "depart", EscortNotice.Arrived => "arrive", EscortNotice.Wave => "wave", _ => null };
+        if (shout != null && ZNetScene.instance != null)
+        {
+            ZNetScene.instance.FindInstance(shipId)?.GetComponent<TradeShipSkipper>()?.Shout(shout);
+        }
+
         bool failure = notice == EscortNotice.Sunk || notice == EscortNotice.Plundered || notice == EscortNotice.Abandoned;
         if (failure || notice == EscortNotice.Arrived || notice == EscortNotice.Expired)
         {

@@ -17,9 +17,49 @@ public class TradeShipSkipper : MonoBehaviour
 {
     private const string TemplateName = "WhiteHilt_TradeShipSkipper";
 
+    /// <summary>Whose recorded voice the skipper speaks with (<see cref="WhiteHiltSound.Speak"/>).</summary>
+    public const string Speaker = "skipper";
+
+    private const float ShoutHeight = 2.2f;
+    private const float ShoutTime = 5f;
+
     private static GameObject template;
 
     private GameObject skipper;
+    private AudioSource voice;
+
+    /// <summary>
+    /// Registers the skipper's shouts. Call from the plugin's Awake, before the game loads its languages.
+    /// </summary>
+    public static void RegisterTranslations()
+    {
+        Translations.AddEnglish("whitehilt_skipper_depart1", "Cast off! Keep close, friend!");
+        Translations.AddEnglish("whitehilt_skipper_depart2", "Hoist the sail, we are away!");
+        Translations.AddEnglish("whitehilt_skipper_arrive1", "Land ho! We made it!");
+        Translations.AddEnglish("whitehilt_skipper_arrive2", "Safe in port, thanks to you!");
+        Translations.AddEnglish("whitehilt_skipper_wave1", "Nail Ships! Protect the cargo!");
+        Translations.AddEnglish("whitehilt_skipper_wave2", "Raiders on the horizon! To arms!");
+    }
+
+    /// <summary>
+    /// The skipper shouts at the helm when the trading ship sets out, comes under attack or reaches port.
+    /// </summary>
+    /// <param name="kind">What happened: depart, wave or arrive.</param>
+    public void Shout(string kind)
+    {
+        if (skipper == null)
+        {
+            return;
+        }
+
+        string token = $"$whitehilt_skipper_{kind}{Random.Range(1, 3)}";
+        if (Chat.instance != null)
+        {
+            Chat.instance.SetNpcText(skipper, Vector3.up * ShoutHeight, 30f, ShoutTime, string.Empty, token, false);
+        }
+
+        WhiteHiltSound.Speak(voice, Speaker, token);
+    }
 
     /// <summary>
     /// Makes the skipper's body from the player prefab, once, when the vanilla prefabs are available. It is never
@@ -76,6 +116,11 @@ public class TradeShipSkipper : MonoBehaviour
         skipper.transform.localRotation = Quaternion.identity;
         Dress(skipper.GetComponent<VisEquipment>(), view.GetZDO().m_uid);
         Pose(skipper.GetComponentInChildren<Animator>(), helm.m_attachAnimation);
+        voice = WhiteHiltSound.AddVoice(skipper);
+        if (voice != null)
+        {
+            voice.maxDistance = 45f;
+        }
     }
 
     private void OnDestroy()

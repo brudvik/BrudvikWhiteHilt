@@ -60,7 +60,7 @@ Once **Moder** is slain, sand-coloured dragons about 8 m from wingtip to wingtip
 - It is immune to fire and spirit damage, weak to frost, resists poison and ignores chop and pickaxe damage. Bring a bow.
 - When slain it tumbles out of the sky and lies where it fell for a while.
 - It keeps beating its wings while it breathes fire, lowering its head and opening its jaws into the stream.
-- It has deep roars and growls for idle (with the beat of its wings), alert, attack, injury and death, made from CC0 recordings slowed down and deepened (`AssetSource/Tools/make_dragon_sounds.py`). The Black Dragon inherits them, and its flapping breath, too.
+- It has deep roars and growls for idle, alert, attack, injury and death, three of each so it does not repeat itself, and you hear the beat of its wings while it flies.
 
 In the dark hour and under a blood moon, its black cousin, the **Black Dragon**, may come for you in the Mountains and the Plains, like the other black beasts (see [Difficulty](difficulty.md)).
 
@@ -103,7 +103,7 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 
 ## The wild beasts
 
-Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there. The Draugr Jarl is the exception: he has no sounds of his own and never spawns in the wild.
+Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there. The Draugr Jarl is the exception: he never spawns in the wild.
 
 | | Where | When | Health | Attacks | Speed (walk / run) |
 |---|---|---|---|---|---|
@@ -136,7 +136,7 @@ A slow, grey, dead-eyed shark about **5 m long**, in the open sea, once **Bonema
 
 ### Draugr Jarl
 
-A huge undead viking with a fur cloak, glowing blue-green eyes and a great axe, about **2.3 m tall**, who sailed with Naglfar. He **never spawns in the wild**: he only appears as the leader of the crew of a Nail Ship **flagship**, where he keeps a post near the mast, leaps across last of all and does not flee (see [Fleets](sea-battles.md#fleets) and [The draugr jarl](sea-battles.md#the-draugr-jarl)). He is of the undead faction like his crew, and he keeps the sounds of the Draugr Elite he is cloned from.
+A huge undead viking with a fur cloak, glowing blue-green eyes and a great axe, about **2.3 m tall**, who sailed with Naglfar. He **never spawns in the wild**: he only appears as the leader of the crew of a Nail Ship **flagship**, where he keeps a post near the mast, leaps across last of all and does not flee (see [Fleets](sea-battles.md#fleets) and [The draugr jarl](sea-battles.md#the-draugr-jarl)). He is of the undead faction like his crew, and he has his own raspy war cries and heavy steps.
 
 - **Attacks:** an overhead **chop** of 70 slash damage (reach 3 m, every 3 seconds, a hard knock-back) and a wide **sweep** of 45 slash damage (reach 3.2 m, a 140° arc, every 5 seconds).
 - **Strength:** 600 health and the damage above are **per level**, and his level grows with the world (`[SeaBattles.Fleets] JarlLevels`): level 3 (two stars) after Moder, 4 after Yagluth, 5 after the Queen and 6 after Fader. That is about **1800 / 2400 / 3000 / 3600 health**, and his attacks hit 2, 2.5, 3 and 3.5 times the numbers above, before pressure bonuses (see [Difficulty](difficulty.md)). Each star makes him 8% bigger up to two stars, so about 2.7 m from level 3; higher stars also use the difficulty size settings.
@@ -211,7 +211,7 @@ Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilW
 | `WakeRange` | 8 | Yggdrasil Warden only: metres at which a player wakes it (after a restart) |
 | `RequiredKey` | defeated_bonemass | Greenland Shark only: global key needed first; empty for none |
 
-Section `[Monsters.DraugrJarl]` (admin only, synced from the server) has no `Enabled`, spawn, `Sounds` or `RequiredKey` settings, as he never spawns in the wild:
+Section `[Monsters.DraugrJarl]` (admin only, synced from the server) has no `Enabled`, spawn or `RequiredKey` settings, as he never spawns in the wild:
 
 | Setting | Default | What it does |
 |---|---|---|
@@ -362,3 +362,15 @@ On upgrade to 0.123.0, the previous defaults (`Health` 600, `FireDamage` 8, `Fla
 - `whitehilt_lindorm` shows every condition where you are, and whether it holds.
 - `whitehilt_lindorm summon` (admins) lets the Lindorm break out near you now.
 - With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm` and `spawn WhiteHilt_DesertDragon`.
+
+## Sounds
+
+Every monster of the mod has its own sounds, made with [ElevenLabs](https://elevenlabs.io): idle, alert, attack, injury and death, three takes of each that the game picks between, so the same roar is not heard twice in a row. That goes for the monsters above, the Draugr Jarl, the White Dragon, the [Black Beasts](difficulty.md) (darker, with an eerie echo, so you know one is near) and the [plagues](trading-posts.md#plagues).
+
+- The big ones walk heavily: the Yggdrasil Warden's steps creak like timber, and the Draugr Jarl, the Black Troll, the Black Stone Golem, the Black Abomination, the Mire Mother, Gnawtooth and Icemaw thud.
+- The dragons beat their wings while they fly.
+- The Lindorm's ground rumbles and bursts as it comes up, the sea surges as the Kraken rises, and a dread sounds when a Black Beast or a plague comes.
+- A spider nest rustles and skitters, a Nidhogg Spawn breathes and hisses as it lurks, and a Yggdrasil Warden creaks and breathes as it stands like a tree.
+
+The monsters' `Sounds` settings switch their own sounds off (after a restart). The loops follow `AmbienceVolume` and the rest `EffectsVolume` in `[Sound]`.
+

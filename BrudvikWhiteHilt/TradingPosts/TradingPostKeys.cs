@@ -32,6 +32,36 @@ public static class TradingPostKeys
     /// <summary>On the marker: the second part of the hunter's network id.</summary>
     public static readonly int HunterObject = "whitehilt_post_hunter_id".GetStableHashCode();
 
+    /// <summary>On the marker: the world time, in whole seconds, a plague on the post was last decided.</summary>
+    public static readonly int TerrorDecided = "whitehilt_post_terror_time".GetStableHashCode();
+
+    /// <summary>On the marker: the world time, in whole seconds, the plague on the post lasts until; 0 for none.</summary>
+    public static readonly int TerrorUntil = "whitehilt_post_terror_until".GetStableHashCode();
+
+    /// <summary>On the marker: where the post's plague has its lair.</summary>
+    public static readonly int TerrorLair = "whitehilt_post_terror_lair".GetStableHashCode();
+
+    /// <summary>On the marker: the middle of the search circle the bounty notice shows, near the lair.</summary>
+    public static readonly int TerrorCentre = "whitehilt_post_terror_centre".GetStableHashCode();
+
+    /// <summary>On the marker: the network id of the plague's monster, in two parts.</summary>
+    public static readonly int TerrorUser = "whitehilt_post_terror_user".GetStableHashCode();
+
+    /// <summary>On the marker: the second part of the monster's network id.</summary>
+    public static readonly int TerrorObject = "whitehilt_post_terror_id".GetStableHashCode();
+
+    /// <summary>On the marker: the last night, by the game's day count, the monster came down to the post.</summary>
+    public static readonly int TerrorVisited = "whitehilt_post_terror_visited".GetStableHashCode();
+
+    /// <summary>On a plague's monster: the post it plagues.</summary>
+    public static readonly int TerrorPost = "whitehilt_terror_post".GetStableHashCode();
+
+    /// <summary>On a plague's monster: its lair, where it goes back to by day.</summary>
+    public static readonly int TerrorHome = "whitehilt_terror_lair".GetStableHashCode();
+
+    /// <summary>On a plague's monster: the world time, in whole seconds, it leaves the land at.</summary>
+    public static readonly int TerrorLeaves = "whitehilt_terror_until".GetStableHashCode();
+
     /// <summary>Prefab hash of the marker.</summary>
     public static readonly int MarkerHash = MarkerPrefabName.GetStableHashCode();
 

@@ -78,6 +78,7 @@ public static class NailShipRegistry
     /// </summary>
     public static void Initialize()
     {
+        RaiderVoice.RegisterTranslations();
         PrefabManager.OnVanillaPrefabsAvailable += Add;
     }
 

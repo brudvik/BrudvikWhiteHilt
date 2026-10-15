@@ -128,6 +128,7 @@ public static class TradingPostMineChart
         }
 
         player.GetInventory().RemoveOneItem(chart);
+        WhiteHiltSound.PlayLocal("sfx_parchment");
         map.DiscoverLocation(mine.Value, PinType, Localization.instance.Localize("$whitehilt_minechart_pin"), showMap: true);
     }
 

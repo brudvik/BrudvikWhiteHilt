@@ -49,6 +49,8 @@ public class TradingPostTrader : MonoBehaviour
     private int biome;
     private string postId;
     private Animator animator;
+    private AudioSource voice;
+    private string speaker;
     private HashSet<string> parameters;
     private float restYaw;
     private bool greeted;
@@ -195,11 +197,23 @@ public class TradingPostTrader : MonoBehaviour
             text = "$whitehilt_trader_closed";
         }
 
+        // A plagued post's trader greets and talks of nothing but the monster.
+        bool greeting = trader != null && trader.m_randomGreets.Contains(text);
+        bool talking = trader != null && trader.m_randomTalk.Contains(text);
+        TerrorDefinition plague = !hunter && (greeting || talking) ? TradingPostTerror.PlagueOn(postId) : null;
+        string spoken = text;
+        if (plague != null)
+        {
+            spoken = greeting ? $"$whitehilt_trader_terror_greet{Random.Range(1, 3)}" : $"$whitehilt_trader_terror_talk{Random.Range(1, 4)}";
+            text = Localization.instance.Localize(spoken, Localization.instance.Localize("$" + plague.NameKey));
+        }
+
         if (Chat.instance != null && !string.IsNullOrEmpty(text))
         {
             Chat.instance.SetNpcText(gameObject, Vector3.up * DialogHeight, 20f, DialogShowTime, string.Empty, text, false);
         }
 
+        WhiteHiltSound.Speak(voice, hunter ? TradingPostHunter.Speaker : speaker, spoken);
         Emote(emotes.TryGetValue(trigger ?? string.Empty, out string emote) ? emote : trigger);
     }
 
@@ -235,6 +249,8 @@ public class TradingPostTrader : MonoBehaviour
             TraderLook look = TraderLooks.Get((Heightmap.Biome)view.GetZDO().GetInt(TradingPostKeys.Biome));
             biome = Mathf.Max(0, TradingPostGoods.IndexOf(look.biome));
             postId = view.GetZDO().GetString(TradingPostKeys.PostId);
+            speaker = look.biome.ToLowerInvariant();
+            voice = WhiteHiltSound.AddVoice(gameObject);
             if (hunter)
             {
                 trader.m_items = TradingPostTrophies.BuildItems(biome);

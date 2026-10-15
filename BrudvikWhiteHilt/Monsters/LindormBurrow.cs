@@ -125,6 +125,7 @@ public class LindormBurrow : MonoBehaviour
     // Only the owner creates them: the effect prefabs are networked objects.
     private void Burst()
     {
+        ArrivalSound.Mark(nview.GetZDO());
         foreach (string name in burstEffects)
         {
             GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(name) : null;

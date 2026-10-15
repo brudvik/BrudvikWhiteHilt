@@ -36,6 +36,7 @@ public static class TradeShipRegistry
     /// </summary>
     public static void Initialize()
     {
+        TradeShipSkipper.RegisterTranslations();
         PrefabManager.OnVanillaPrefabsAvailable += Add;
     }
 

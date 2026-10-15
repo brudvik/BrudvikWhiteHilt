@@ -132,10 +132,10 @@ Almost every item and piece has a `TryApplyVisual` (or `ApplyLook`) method, and 
 
 > 🎬 On video: [EP05 · A Piece From a Pole](https://youtu.be/_5UT5RH4YnM)
 
-The 3D models, textures and sounds are in one asset bundle, `whitehilt_foraging`, a file next to the DLL that
+The 3D models and textures are in one asset bundle, `whitehilt_foraging`, a file next to the DLL that
 `ForagingAssets` loads with `AssetBundle.LoadFromFile`. Unity then reads from disk what it needs; an embedded bundle
 would be held in memory twice, once as a managed byte array and once by Unity. The bundle is built outside the game: `AssetSource/build_foraging_bundle.ps1`
-takes `.glb` models and `.wav` sounds and builds them with Unity, the same version as Valheim. The
+takes `.glb` models and builds them with Unity, the same version as Valheim. The
 [README](../README.MD) has the details under *Building from source*.
 
 The defences, stonework and navigation pieces are **data, not code**. `AssetSource/Preview/build_defenses.py` lays
@@ -150,7 +150,9 @@ parts of a vanilla prefab, so a decorative bush keeps Valheim's wind but cannot 
 from a second bundle, `whitehilt_decor`, which `prepare_decor.py` and Blender fill from Poly Haven and downloaded
 models. That bundle is a second file next to the DLL, so a player without it still gets every other piece.
 
-> Read next: `Pieces/Defenses/DefenseLayout.cs`, `Pieces/Defenses/DefenseModelBuilder.cs`, `Helpers/ForagingAssets.cs`,
+Every sound is in a third bundle, `whitehilt_audio`, which `AudioAssets` loads: the effect sounds of `AssetSource/Sounds` and the recorded voices, effects, ambience and music that `AssetSource/Audio/generate_audio.py` makes with ElevenLabs. The voices are named after the line they say (`voice_<speaker>_<en|no>_<line>`), so `WhiteHiltSound` finds the recording of any line a trader shows in its speech bubble, in the player's language, and a line without one is only shown. A changed line costs only that line again: the script keeps a hash of what each file was made from.
+
+> Read next: `Pieces/Defenses/DefenseLayout.cs`, `Pieces/Defenses/DefenseModelBuilder.cs`, `Helpers/ForagingAssets.cs`, `Helpers/AudioAssets.cs`,
 > `Decor/DecorPieceFactory.cs` with `AssetSource/Decor/README.md`.
 
 ## 🌐 Multiplayer

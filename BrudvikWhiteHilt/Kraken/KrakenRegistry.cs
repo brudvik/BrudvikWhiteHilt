@@ -265,6 +265,9 @@ public static class KrakenRegistry
         }
         DressBody(visual);
         prefab.AddComponent<KrakenBody>();
+        ArrivalSound rising = prefab.AddComponent<ArrivalSound>();
+        rising.clip = "arrival_kraken";
+        rising.far = 200f;
         CreatureManager.Instance.AddCreature(creature);
     }
 

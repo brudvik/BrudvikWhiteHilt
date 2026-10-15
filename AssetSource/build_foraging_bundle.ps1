@@ -11,12 +11,15 @@
     project, e.g. after changing only AssetSource/Unity/*.cs.
     The Decor Hammer's models (AssetSource/Decor/Models, made by AssetSource/Decor/prepare_decor.py) go into a second
     bundle, BrudvikWhiteHilt/Assets/whitehilt_decor, shipped as a file next to the DLL. -DecorOnly builds only that one.
+    Every sound goes into a third, BrudvikWhiteHilt/Assets/whitehilt_audio: the effect sounds in AssetSource/Sounds and the
+    voices, effects, ambience and music made by AssetSource/Audio/generate_audio.py. -AudioOnly builds only that one.
 #>
 param(
     [string]$UnityPath = "C:\Program Files\Unity\Hub\Editor\6000.0.75f1\Editor\Unity.exe",
     [string]$BlenderPath = "",
     [switch]$UnityOnly,
-    [switch]$DecorOnly
+    [switch]$DecorOnly,
+    [switch]$AudioOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -28,6 +31,8 @@ $bundleTarget = Join-Path $repoRoot 'BrudvikWhiteHilt\Assets\whitehilt_foraging'
 $foragingAssets = Join-Path $project 'Assets\Foraging'
 $decorAssets = Join-Path $project 'Assets\Decor'
 $decorTarget = Join-Path $repoRoot 'BrudvikWhiteHilt\Assets\whitehilt_decor'
+$audioAssets = Join-Path $project 'Assets\Audio'
+$audioTarget = Join-Path $repoRoot 'BrudvikWhiteHilt\Assets\whitehilt_audio'
 $creatureAssets = Join-Path $project 'Assets\Creatures'
 $editorScripts = Join-Path $project 'Assets\Editor'
 
@@ -58,14 +63,6 @@ function Convert-Models {
         }
     }
 
-    # The file name, in lower case, becomes the AudioClip name.
-    $sounds = Join-Path $PSScriptRoot 'Sounds'
-    if (Test-Path $sounds) {
-        foreach ($sound in Get-ChildItem $sounds -Filter *.wav) {
-            Copy-Item $sound.FullName (Join-Path $foragingAssets $sound.Name.ToLowerInvariant()) -Force
-        }
-    }
-
     # Tiling textures made by Tools/make_roof_textures.py (<name>_albedo / <name>_normal).
     $textures = Join-Path $PSScriptRoot 'Textures'
     if (Test-Path $textures) {
@@ -73,6 +70,28 @@ function Convert-Models {
             Copy-Item $texture.FullName (Join-Path $foragingAssets $texture.Name.ToLowerInvariant()) -Force
         }
     }
+}
+
+# Every sound, in its own bundle; the file name, in lower case, becomes the AudioClip name.
+function Copy-Audio {
+    if (Test-Path $audioAssets) {
+        Remove-Item (Join-Path $audioAssets '*') -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force $audioAssets | Out-Null
+    $folders = @((Join-Path $PSScriptRoot 'Sounds'), (Join-Path $PSScriptRoot 'Audio'))
+    foreach ($folder in $folders | Where-Object { Test-Path $_ }) {
+        foreach ($sound in Get-ChildItem $folder -Include *.wav, *.mp3 -File -Recurse) {
+            Copy-Item $sound.FullName (Join-Path $audioAssets $sound.Name.ToLowerInvariant()) -Force
+        }
+    }
+}
+
+function Build-Audio {
+    Write-Host "Building audio bundle (log: $logFile)"
+    Invoke-Unity @('-batchmode', '-quit', '-nographics', '-projectPath', "`"$project`"", '-executeMethod', 'BuildAudioBundle.Build', '-logFile', "`"$logFile`"")
+    Copy-Item (Join-Path $project 'AssetBundlesAudio\whitehilt_audio') $audioTarget -Force
+    Select-String -Path $logFile -Pattern '\[WhiteHilt\] Built' | ForEach-Object { Write-Host $_.Line }
+    Write-Host "Copied audio bundle to $audioTarget ($((Get-Item $audioTarget).Length) bytes)"
 }
 
 # The decor models are named decor_<id>, so they cannot clash with the main bundle's.
@@ -144,6 +163,13 @@ Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildForagingBundle.cs') $editorScript
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildCreatures.cs') $editorScripts -Force
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildDecorBundle.cs') $editorScripts -Force
 Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildAttackClips.cs') $editorScripts -Force
+Copy-Item (Join-Path $PSScriptRoot 'Unity\BuildAudioBundle.cs') $editorScripts -Force
+
+if ($AudioOnly) {
+    Copy-Audio
+    Build-Audio
+    return
+}
 
 if ($DecorOnly) {
     if (-not $UnityOnly) {
@@ -155,6 +181,7 @@ if ($DecorOnly) {
 
 if (-not $UnityOnly) {
     Convert-Models
+    Copy-Audio
     Convert-Decor
     Export-Creatures
     & (Join-Path $PSScriptRoot 'build_skidbladnir.ps1') -BlenderPath $BlenderPath
@@ -180,3 +207,5 @@ Select-String -Path $logFile -Pattern '\[WhiteHilt\]' | ForEach-Object { Write-H
 Write-Host "Copied bundle to $bundleTarget ($((Get-Item $bundleTarget).Length) bytes)"
 
 Build-Decor
+
+Build-Audio

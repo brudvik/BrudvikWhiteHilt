@@ -94,6 +94,33 @@ The garb is clothing, not armour: 2 armour per piece in the Meadows up to 16 in 
 
 **The trading bonus**: worn at the posts of its own biome, every piece gets you **3 %** better prices there (`GarbTradeBonus`), buying and selling, and the whole set **3 %** more (`GarbSetTradeBonus`): 15 % with all four. It counts at the hunter's too.
 
+## Plagues
+
+Now and then a named monster makes its lair a few hundred metres inland of a post and terrorises it. When you come to a post there is a **15 %** chance a day (`TerrorChance`) that it is plagued, once the post's goods are open. The trader talks of nothing else, the hover text says who plagues the post, and while it lasts the trader asks **20 %** more and pays 20 % less. At night the monster comes down to the yard; by day it goes back to its lair.
+
+Each biome has its own monster, bigger than its kin, in its own colour, glowing, at three stars:
+
+| Biome | Monster | Kin |
+|---|---|---|
+| Meadows | Bristleback | Boar |
+| Black Forest | Gnawtooth | Greydwarf Brute |
+| Swamp | Mire Mother | Abomination |
+| Mountains | Whiteclaw | Fenring |
+| Plains | Skullsplitter | Fuling Berserker |
+| Mistlands | Clickjaw | Seeker |
+| Ashlands | Ashfang | Asksvin |
+| Deep North | Icemaw | Barka |
+
+The trader hands out a free **Bounty Notice**, one to each player. While you carry it, a circle on your map shows where the monster was last seen (read the notice to open the map on it); close to the lair you find fresh tracks and the circle narrows to the lair. The monster always drops its head. Sell the head to the plagued post's trader: the bounty is the biome's worth times **800** (`TerrorBounty`), 800 coins in the Meadows and 8000 in the Deep North, and the trader gives you **half off** the post's piece of [the traders' garb](#the-traders-garb), once. The plague ends then, or after three game days, when the monster leaves.
+
+## Voices and sound
+
+The traders speak. Each of the eight has a voice of their own, and Ulf the Hunter and the trading ship's skipper have theirs: every line in a speech bubble is also heard, in English or, with the game in Norwegian, in Norwegian. A plagued post's trader names the monster aloud. The skipper shouts from the helm when the trading ship casts off, when the Nail Ships come and when it reaches port.
+
+Under a post's dome you hear the sea on the jetty, gulls and creaking boards, and a calm piece of Nordic folk music fades in as you come under the dome (not while enemies are near). Each plague's monster roars when it sees you, a bounty paid jingles with coins and a horn, fresh tracks sound a low drum, and reading a chart or a bounty notice rustles parchment.
+
+The voices, effects and music were made with [ElevenLabs](https://elevenlabs.io). Each player sets the volumes in `[Sound]`: `VoiceVolume`, `AmbienceVolume`, `MusicVolume` (times the game's music volume) and `EffectsVolume`; 0 turns each off.
+
 ## The Mine Chart
 
 The trader at the Mistlands posts also sells a **Mine Chart** (250 coins, `MineChartPrice`, once Yagluth is slain, like the post's goods). Read it and the nearest **infested mine** you have not found yet gets a pin, and the map opens on it. A mine counts as found when the land around it is uncovered on your map or a pin already marks it. The chart is used up when it marks a mine; if every mine near you is found already, you keep it.
@@ -133,6 +160,8 @@ Settings in section `[TradingPosts]`, all the server's:
 | `GarbWorth` | 120 | Coins a piece of a biome's garb costs per coin the biome's plain material is worth (Meadows 1, Deep North 10) |
 | `GarbTradeBonus` | 3 | Percent better prices at a biome's posts per piece of its garb worn, buying and selling |
 | `GarbSetTradeBonus` | 3 | Percent better prices more for the whole garb |
+| `TerrorChance` | 15 | Percent chance, once a game day, that a monster plagues a post when a player comes there. 0: no plagues |
+| `TerrorBounty` | 800 | Coins paid for a plague's head per coin the biome's plain material is worth (Meadows 1, Deep North 10) |
 | `MineChartPrice` | 250 | Coins a Mine Chart costs at the Mistlands posts. 0: not sold |
 | `HunterChance` | 20 | Percent chance the hunter sits at a post when a player comes there; the answer holds for a game day. 0: no hunter |
 | `TrophyWorth` | 15 | A trophy at the hunter costs its biome's worth times this, three times for the great beasts |

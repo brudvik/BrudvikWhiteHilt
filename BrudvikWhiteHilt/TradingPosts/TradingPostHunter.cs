@@ -15,6 +15,9 @@ public static class TradingPostHunter
     /// <summary>Prefab name of the hunter.</summary>
     public const string PrefabName = "WhiteHilt_TradingPostHunter";
 
+    /// <summary>Whose recorded voice the hunter speaks with (<see cref="WhiteHiltSound.Speak"/>).</summary>
+    public const string Speaker = "hunter";
+
     /// <summary>Translation key of the hunter's name.</summary>
     public const string NameKey = "npc_whitehilt_hunter";
 

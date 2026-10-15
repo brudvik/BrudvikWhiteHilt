@@ -5,6 +5,22 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **[Monster sounds](docs/monsters.md#sounds)**: every monster of the mod has new sounds made with ElevenLabs, three takes of
+  each so they do not repeat: the Giant Spider, Lindorm, Kraken, Greenland Shark, Desert Dragon, Mist Stag, Nidhogg
+  Spawn, Yggdrasil Warden and Garm Hound, and now also the Draugr Jarl, the White Dragon, the nine Black Beasts and the
+  eight plagues. The big ones walk heavily, dragons beat their wings, the Lindorm and the Kraken sound as they come,
+  a dread sounds when a Black Beast or a plague comes, spider nests rustle, and the Nail Ships' crews shout battle
+  cries and taunts.
+- **[The traders speak](docs/trading-posts.md#voices-and-sound)**: every line of the eight traders, Ulf the Hunter
+  and the trading ship's skipper is recorded, each with a voice of their own, in English and Norwegian (by the game's
+  language). The skipper shouts when the ship casts off, when the Nail Ships come and in port. The posts have the sound
+  of the sea and gulls and their own music under the dome, the plagues roar, and bounties, tracks and charts have their
+  sounds. Made with ElevenLabs; the volumes are in `[Sound]`.
+- **[Plagues](docs/trading-posts.md#plagues)**: now and then a named monster of the biome (Bristleback, Gnawtooth,
+  Mire Mother, Whiteclaw, Skullsplitter, Clickjaw, Ashfang, Icemaw) terrorises a trading post and comes down to its
+  yard at night. The trader hands out a free Bounty Notice with a search circle on the map, pays well for the
+  monster's head (800 coins in the Meadows, 8000 in the Deep North) and gives half off the post's garb. While a post
+  is plagued its prices are 20 % worse.
 - **[The traders' garb](docs/trading-posts.md#the-traders-garb)**: every biome's traders have a set of four pieces of
   clothing in their colours (hood, tunic, trousers, cape), each sold at one of the biome's posts only. Light armour, a
   small bonus of the biome's kind per piece, a set bonus for all four (the Swamp's keeps you dry, the Mountains' keeps
@@ -13,6 +29,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   coins, `MineChartPrice`) that marks the nearest infested mine you have not found yet and shows it on the map.
 
 ### Changed
+- **The sounds are a file of their own**, `whitehilt_audio`, next to `whitehilt_foraging` and `whitehilt_decor`. A mod
+  manager installs it by itself; by hand, copy all four files in `plugins/`.
 - **[The hunter at the trading posts](docs/trading-posts.md#the-hunter)** now sells the Elaking's trophy in the Deep
   North, at a great beast's price.
 

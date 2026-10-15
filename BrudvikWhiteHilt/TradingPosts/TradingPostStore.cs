@@ -17,6 +17,9 @@ public static class TradingPostStore
 {
     private const string LockedColour = "#8A8A8A";
 
+    /// <summary>The post whose store the local player has open, or last had open.</summary>
+    public static string OpenPostId { get; set; }
+
     // The gear in the store last made that the player's Trading has not opened, with the level each needs.
     private static readonly Dictionary<Trader.TradeItem, int> locked = new();
 
@@ -117,8 +120,32 @@ public static class TradingPostStore
 
         AddGear(items, biome, postId, player);
 
-        // The piece of the biome's traders' garb that only this post sells.
-        items.AddRange(TraderGarb.TradeItems(biome, postId, player));
+        // The piece of the biome's traders' garb that only this post sells, at half price for the bringer of the head
+        // of the monster that plagued the post.
+        foreach (Trader.TradeItem garb in TraderGarb.TradeItems(biome, postId, player))
+        {
+            if (TradingPostTerror.HasFavour(player, postId))
+            {
+                garb.m_price = Mathf.Max(1, Mathf.RoundToInt(garb.m_price * (1f - TradingPostTerror.Favour)));
+            }
+
+            items.Add(garb);
+        }
+
+        // A plagued post's trader hands out the bounty notice, one to each player.
+        ItemDrop notice = ObjectDB.instance.GetItemPrefab(TradingPostTerrors.NoticeName)?.GetComponent<ItemDrop>();
+        if (notice != null && postId != null && TradingPostTerror.PlagueOn(postId) != null && !TerrorNotice.Carries(player, postId))
+        {
+            items.Insert(0, new Trader.TradeItem
+            {
+                m_prefab = notice,
+                m_stack = 1,
+                m_tooltip = string.Empty,
+                m_price = 0,
+                m_requiredGlobalKey = string.Empty,
+                m_buyPlayerEffects = new EffectList()
+            });
+        }
 
         // The Mistlands' trader also sells the way to an infested mine.
         Trader.TradeItem mineChart = TradingPostMineChart.TradeItem(biome);
@@ -167,13 +194,21 @@ public static class TradingPostStore
         }
 
         string prefab = item.m_dropPrefab.name;
+
+        // The head of the monster that plagues the post is paid its bounty.
+        TerrorDefinition plague = TradingPostTerror.PlagueOn(OpenPostId);
+        if (plague != null && prefab == plague.TrophyName)
+        {
+            return TradingPostTerrors.Bounty(biome, TradingPostSettings.TerrorBounty.Value) * item.m_stack;
+        }
         if (!TradingPostSettings.BuyUnlimitedGoods.Value && NearbyContainers.Unlimited?.GetUnlimitedChest(prefab, item.m_shared) != null)
         {
             return 0;
         }
 
         float each = TradingPostGoods.BuyPrice(biome, prefab, item.m_quality, TradingSkill.BuyShare(Player.m_localPlayer), TradingPostSettings.ConfiguredPrices);
-        return Mathf.FloorToInt(each * item.m_stack * (1f + TraderGarb.TradeBonus(Player.m_localPlayer, biome)));
+        float plagued = plague != null ? 1f - TradingPostTerror.PlaguePenalty : 1f;
+        return Mathf.FloorToInt(each * item.m_stack * (1f + TraderGarb.TradeBonus(Player.m_localPlayer, biome)) * plagued);
     }
 
     // The post's gear at quality 1, cheapest first, behind the biome's key; what the player's Trading has not opened is

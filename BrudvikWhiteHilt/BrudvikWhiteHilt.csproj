@@ -67,9 +67,10 @@
     <EmbeddedResource Include="..\AssetSource\Preview\tradingpost.json" LogicalName="BrudvikWhiteHilt.TradingPost.json" Link="TradingPosts\tradingpost.json" />
     <EmbeddedResource Include="..\AssetSource\Preview\traders.json" LogicalName="BrudvikWhiteHilt.Traders.json" Link="TradingPosts\traders.json" />
     <EmbeddedResource Include="Translations\Norwegian.json" />
-    <!-- The bundles are files next to the DLL, not embedded: Unity reads them from disk (ForagingAssets, DecorAssets). -->
+    <!-- The bundles are files next to the DLL, not embedded: Unity reads them from disk (ForagingAssets, DecorAssets, AudioAssets). -->
     <None Include="Assets\whitehilt_foraging" Link="whitehilt_foraging" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Assets\whitehilt_decor" Link="whitehilt_decor" Condition="Exists('Assets\whitehilt_decor')" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\whitehilt_audio" Link="whitehilt_audio" Condition="Exists('Assets\whitehilt_audio')" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="Chests\Translations\English.json" />
     <EmbeddedResource Include="Chests\Translations\Norwegian.json" />
     <EmbeddedResource Include="Assets\GiftOfFreya.png;Assets\GiftOfLoki.png;Assets\GiftOfOdin.png;Assets\GiftOfHugin.png;Assets\GiftOfMunin.png;Assets\GiftOfBaldur.png;Assets\GiftOfBrokkr.png;Assets\GiftOfFenrir.png;Assets\GiftOfFreyr.png;Assets\GiftOfHel.png;Assets\GiftOfNjord.png;Assets\GiftOfRatatoskr.png;Assets\GiftOfSkadi.png;Assets\GiftOfSleipnir.png;Assets\GiftOfSurt.png;Assets\GiftOfThor.png;Assets\GiftOfTyr.png;Assets\GiftOfIdunn.png" CopyToOutputDirectory="Always" />

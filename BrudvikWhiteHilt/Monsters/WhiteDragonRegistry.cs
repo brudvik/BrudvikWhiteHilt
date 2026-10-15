@@ -87,19 +87,19 @@ public static class WhiteDragonRegistry
         try
         {
             AddEffects();
-            List<GameObject> breaths = new();
+            List<CustomItem> breaths = new();
             DragonBreath breath = DragonHorn.Breath.Value;
             if (breath != DragonBreath.Frost)
             {
-                breaths.Add(AddFlame().ItemPrefab);
+                breaths.Add(AddFlame());
             }
 
             if (breath != DragonBreath.Fire)
             {
-                breaths.Add(AddFrost().ItemPrefab);
+                breaths.Add(AddFrost());
             }
 
-            AddDragon(breaths.ToArray());
+            AddDragon(breaths);
             Jotunn.Logger.LogInfo("White Dragon added!");
         }
         catch (Exception ex)
@@ -226,7 +226,7 @@ public static class WhiteDragonRegistry
         }
     }
 
-    private static void AddDragon(GameObject[] breaths)
+    private static void AddDragon(List<CustomItem> breaths)
     {
         string name = Translations.Token("enemy_whitehilt_whitedragon");
         CustomCreature creature = new(DragonName, DesertDragonRegistry.DragonName, new CreatureConfig { Name = name });
@@ -238,7 +238,7 @@ public static class WhiteDragonRegistry
         Humanoid humanoid = prefab.GetComponent<Humanoid>();
         humanoid.m_name = name;
         humanoid.m_health = DragonHorn.Health.Value;
-        humanoid.m_defaultItems = breaths;
+        humanoid.m_defaultItems = breaths.Select(breath => breath.ItemPrefab).ToArray();
         humanoid.m_hitEffects = Louder(humanoid.m_hitEffects);
         humanoid.m_critHitEffects = Louder(humanoid.m_critHitEffects);
         humanoid.m_deathEffects = Louder(humanoid.m_deathEffects);
@@ -268,6 +268,11 @@ public static class WhiteDragonRegistry
 
         prefab.AddComponent<WhiteDragonAlly>();
         prefab.AddComponent<DragonBlast>();
+        MonsterRegistry.AddCreatureSounds(humanoid, ai, breaths[0], "whitedragon", "attack", breaths.Count > 1 ? breaths[1] : null, breaths.Count > 1 ? "attack" : null);
+        if (prefab.GetComponent<WingBeats>() == null)
+        {
+            prefab.AddComponent<WingBeats>();
+        }
         AddAura(prefab);
         Whiten(prefab);
         WhitenCorpses(humanoid);

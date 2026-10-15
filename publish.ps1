@@ -52,10 +52,13 @@ if ($Target.Equals("Debug")) {
     Write-Host "Copy $TargetAssembly to $plug"
     Copy-Item -Path "$TargetPath\$name.dll" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.pdb" -Destination "$plug" -Force
-    # The asset bundles are files next to the DLL (Helpers/ForagingAssets.cs, Decor/DecorAssets.cs).
+    # The asset bundles are files next to the DLL (Helpers/ForagingAssets.cs, Decor/DecorAssets.cs, Helpers/AudioAssets.cs).
     Copy-Item -Path "$TargetPath\whitehilt_foraging" -Destination "$plug" -Force
     if (Test-Path -Path "$TargetPath\whitehilt_decor") {
         Copy-Item -Path "$TargetPath\whitehilt_decor" -Destination "$plug" -Force
+    }
+    if (Test-Path -Path "$TargetPath\whitehilt_audio") {
+        Copy-Item -Path "$TargetPath\whitehilt_audio" -Destination "$plug" -Force
     }
     if (Test-Path -Path "$TargetPath\$name.dll.mdb") {
         Copy-Item -Path "$TargetPath\$name.dll.mdb" -Destination "$plug" -Force
@@ -72,6 +75,7 @@ if($Target.Equals("Release")) {
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
     Copy-Item -Path "$TargetPath\whitehilt_foraging" -Destination "$PackagePath\plugins\whitehilt_foraging" -Force -ErrorAction Stop
     Copy-Item -Path "$TargetPath\whitehilt_decor" -Destination "$PackagePath\plugins\whitehilt_decor" -Force -ErrorAction Stop
+    Copy-Item -Path "$TargetPath\whitehilt_audio" -Destination "$PackagePath\plugins\whitehilt_audio" -Force -ErrorAction Stop
     # Thunderstore shows the GitHub README's HTML poorly, so the package gets a plain markdown version of it.
     & "$ProjectPath\..\build_thunderstore_readme.ps1" -Source "$ProjectPath\..\README.MD" -Target "$PackagePath\README.md"
     Copy-Item -Path "$ProjectPath\..\CHANGELOG.md" -Destination "$PackagePath\CHANGELOG.md" -Force -ErrorAction Stop

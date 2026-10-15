@@ -18,6 +18,17 @@ public static class MonsterPatches
         __instance.gameObject.AddComponent<DragonGroundFireDamage>();
     }
 
+    // A creature cloned from a vanilla one plays its own attack sound as it starts an attack.
+    [HarmonyPatch(typeof(Humanoid), nameof(Humanoid.StartAttack))]
+    [HarmonyPostfix]
+    private static void AttackVoicePostfix(Humanoid __instance, bool __result)
+    {
+        if (__result && !__instance.IsPlayer())
+        {
+            __instance.GetComponent<CreatureAttackVoice>()?.Attack();
+        }
+    }
+
     [HarmonyPatch(typeof(Attack), nameof(Attack.ProjectileAttackTriggered))]
     [HarmonyPrefix]
     private static void BreathPrefix(Attack __instance)

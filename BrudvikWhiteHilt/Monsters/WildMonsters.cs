@@ -285,7 +285,7 @@ internal static class WildMonsters
 
     /// <summary>
     /// The draugr jarl who leads the crew of a Nail flagship. He never spawns in the wild: the flagship's owner raises him
-    /// on its deck. He keeps the sounds of the Draugr Elite he is cloned from, and the undead look is baked into his
+    /// on its deck. He has his own sounds, a raspy undead chieftain's, and the undead look is baked into his
     /// texture. Health and damage are per level; a jarl of level 3 (the flagship's default) has three times the health.
     /// </summary>
     public static readonly WildMonster DraugrJarl = new()
@@ -295,7 +295,7 @@ internal static class WildMonsters
         EnglishName = "Draugr Jarl",
         TemplateCreature = "Draugr_Elite",
         Faction = Character.Faction.Undead,
-        SoundPrefix = null,
+        SoundPrefix = "jarl",
         ModelScale = 0.0126f,
         SizeText = "about 2.3 m tall",
         CapsuleCenter = new Vector3(0f, 1.15f, 0f),
