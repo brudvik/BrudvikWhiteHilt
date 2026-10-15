@@ -119,6 +119,27 @@ public class SeaBattleService : MonoBehaviour
             && WorldGenerator.instance.GetHeight(x, z) < ZoneSystem.instance.m_waterLevel - depth;
     }
 
+    /// <summary>
+    /// Whether a point lies in the near zones this machine keeps its own objects alive in. A Nail Ship is not persistent:
+    /// raised outside them, the game destroys it the moment it is made. How far that reaches is the simulation distance
+    /// the server and this machine agree on, the lower of the two, so on a server it may be far less than alone.
+    /// </summary>
+    /// <param name="point">The point.</param>
+    /// <param name="margin">Zones to keep clear of the edge, so a ship is not lost the moment the player moves on.</param>
+    /// <returns>True when a ship raised there lives.</returns>
+    public static bool InNearArea(Vector3 point, int margin)
+    {
+        if (ZNet.instance == null || ZoneSystem.instance == null)
+        {
+            return true;
+        }
+
+        SimulationDistance distance = ZNet.instance.GetSyncedSimulationDistance();
+        Vector2s centre = ZoneSystem.GetZone(ZNet.instance.GetReferencePosition());
+        Vector2s zone = ZoneSystem.GetZone(point);
+        return EncounterRules.InNearZones(zone.x - centre.x, zone.y - centre.y, distance.NearSimulationDistance - margin, distance.IsClassic);
+    }
+
     internal static bool IsOcean(Vector3 position)
     {
         return WorldGenerator.instance != null && WorldGenerator.instance.GetBiome(position) == Heightmap.Biome.Ocean;

@@ -214,6 +214,42 @@ public static class EncounterRules
     }
 
     /// <summary>
+    /// Whether a zone lies among the near zones the game keeps a machine's own objects alive in, as
+    /// ZDOMan.FindSectorObjects picks them: within <paramref name="near"/> zones each way, and on a round area unless the
+    /// simulation distance is the classic square one.
+    /// </summary>
+    /// <param name="dx">Zones east of the centre zone.</param>
+    /// <param name="dy">Zones north of the centre zone.</param>
+    /// <param name="near">The near simulation distance in zones.</param>
+    /// <param name="classic">Whether the area is the classic square.</param>
+    /// <returns>True when inside.</returns>
+    public static bool InNearZones(int dx, int dy, int near, bool classic)
+    {
+        if (near < 0 || Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy)) > near)
+        {
+            return false;
+        }
+
+        // ZoneSystem.ZonesWithinRadius: zone centres closer than the radius plus half a zone.
+        float radius = near + 0.5f;
+        return classic || dx * dx + dy * dy < radius * radius;
+    }
+
+    /// <summary>
+    /// The distances to try a spawn at: the set one, then shorter by a fifth each time down to the least.
+    /// </summary>
+    /// <param name="distance">The set distance.</param>
+    /// <param name="least">The shortest distance to try.</param>
+    /// <returns>The distances, longest first.</returns>
+    public static IEnumerable<float> ShorterDistances(float distance, float least)
+    {
+        for (float d = distance; d >= least; d *= 0.8f)
+        {
+            yield return d;
+        }
+    }
+
+    /// <summary>
     /// Picks the first candidate place ahead of a ship that the caller accepts.
     /// </summary>
     /// <param name="centre">World x and z of the ship.</param>

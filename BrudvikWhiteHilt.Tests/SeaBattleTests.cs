@@ -841,3 +841,45 @@ public class EncounterRulesTests
         Assert.Equal(old, EncounterRules.SmoothedVelocity(Vector3.zero, new Vector3(100f, 0f, 0f), 0f, old, 1f));
     }
 }
+
+/// <summary>
+/// Where a Nail Ship can be raised and live: the near zones the game keeps a machine's own objects in.
+/// </summary>
+public class NearZoneTests
+{
+    /// <summary>The classic square takes every zone within the distance, corners too.</summary>
+    [Theory]
+    [InlineData(0, 0, 1, true)]
+    [InlineData(1, 1, 1, true)]
+    [InlineData(2, 0, 1, false)]
+    [InlineData(2, 2, 2, true)]
+    public void TheClassicAreaIsSquare(int dx, int dy, int near, bool inside)
+    {
+        Assert.Equal(inside, EncounterRules.InNearZones(dx, dy, near, true));
+    }
+
+    /// <summary>The newer areas are round: a corner two zones out is beyond a distance of 2, as the game counts it.</summary>
+    [Theory]
+    [InlineData(2, 0, 2, true)]
+    [InlineData(2, 1, 2, true)]
+    [InlineData(2, 2, 2, false)]
+    [InlineData(3, 0, 2, false)]
+    [InlineData(0, 0, 0, true)]
+    [InlineData(0, 0, -1, false)]
+    public void TheNewerAreasAreRound(int dx, int dy, int near, bool inside)
+    {
+        Assert.Equal(inside, EncounterRules.InNearZones(dx, dy, near, false));
+    }
+
+    /// <summary>A spawn is tried at the set distance first, then a fifth shorter each time, never under the least.</summary>
+    [Fact]
+    public void ShorterDistancesStepDown()
+    {
+        List<float> distances = EncounterRules.ShorterDistances(180f, 40f).ToList();
+
+        Assert.Equal(180f, distances[0], 3);
+        Assert.Equal(144f, distances[1], 3);
+        Assert.True(distances.Last() >= 40f);
+        Assert.True(distances.Last() * 0.8f < 40f);
+    }
+}

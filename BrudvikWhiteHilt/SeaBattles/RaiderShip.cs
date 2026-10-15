@@ -52,6 +52,7 @@ public class RaiderShip : MonoBehaviour
     private const float SpawnArc = 45f;
     private const int SpawnAttempts = 12;
     private const float SpawnDepth = 6f;
+    private const float LeastSpawnDistance = 40f;
 
     // A moored ship keeps its place and heading and only bobs, as a ship at a drift anchor does.
     private const RigidbodyConstraints MooredConstraints =
@@ -369,11 +370,9 @@ public class RaiderShip : MonoBehaviour
         }
 
         Vector3 centre = target.transform.position;
-        // The depth comes from the world generator, not from a ray at the seabed, as the zone out there may not be loaded.
-        if (!EncounterRules.TryPickSpawn(new Vector2(centre.x, centre.z), ShipAssist.Heading(target.transform), SeaBattleSettings.SpawnDistance.Value,
-            EncounterRules.Offsets(SpawnArc, SpawnAttempts, Random.value), spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth), out Vector2 spawn))
+        if (!TryPickNear(target, SeaBattleSettings.SpawnDistance.Value, SpawnArc, out Vector2 spawn))
         {
-            Jotunn.Logger.LogInfo("Nail Ship: no deep water at the spawn distance");
+            Jotunn.Logger.LogInfo("Nail Ship: no deep water within reach");
             return null;
         }
 
@@ -401,9 +400,9 @@ public class RaiderShip : MonoBehaviour
         for (int rank = 1; rank < size && escortPrefab != null; rank++)
         {
             Vector2 slot = FleetRules.SlotPoint(spawn, heading, rank, FleetSettings.FormationSpacing.Value);
-            if (!SeaBattleService.DeepWater(slot.x, slot.y, SpawnDepth))
+            if (!SeaBattleService.DeepWater(slot.x, slot.y, SpawnDepth) || !SeaBattleService.InNearArea(new Vector3(slot.x, 0f, slot.y), 0))
             {
-                Jotunn.Logger.LogInfo($"Nail Ship: no deep water for escort {rank} of the fleet, left out");
+                Jotunn.Logger.LogInfo($"Nail Ship: no deep water within reach for escort {rank} of the fleet, left out");
                 continue;
             }
 
@@ -424,9 +423,7 @@ public class RaiderShip : MonoBehaviour
     {
         GameObject prefab = ZNetScene.instance.GetPrefab(NailShipRegistry.ShipName);
         Vector3 centre = target.transform.position;
-        if (prefab == null || !EncounterRules.TryPickSpawn(new Vector2(centre.x, centre.z), ShipAssist.Heading(target.transform),
-            SeaBattleSettings.SpawnDistance.Value, EncounterRules.Offsets(SpawnArc, SpawnAttempts, Random.value),
-            spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth), out Vector2 spawn))
+        if (prefab == null || !TryPickNear(target, SeaBattleSettings.SpawnDistance.Value, SpawnArc, out Vector2 spawn))
         {
             Jotunn.Logger.LogInfo("Nail Ship: no deep water for the fire ship, left out");
             return;
@@ -457,9 +454,7 @@ public class RaiderShip : MonoBehaviour
         int tierIndex = zdo.GetInt(RaiderKeys.Tier, -1);
         CrewTier tier = tierIndex >= 0 && tierIndex < tiers.Count ? tiers[tierIndex] : CrewTable.Pick(tiers, key => ZoneSystem.instance.GetGlobalKey(key));
         Vector3 centre = target.transform.position;
-        if (tier == null || !EncounterRules.TryPickSpawn(new Vector2(centre.x, centre.z), ShipAssist.Heading(target.transform),
-            SeaBattleSettings.SpawnDistance.Value * ReinforceDistanceShare, EncounterRules.Offsets(ReinforceArc, SpawnAttempts, Random.value),
-            spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth), out Vector2 spawn))
+        if (tier == null || !TryPickNear(target, SeaBattleSettings.SpawnDistance.Value * ReinforceDistanceShare, ReinforceArc, out Vector2 spawn))
         {
             Jotunn.Logger.LogInfo("Nail Flagship: no deep water for the reinforcement");
             return null;
@@ -472,6 +467,32 @@ public class RaiderShip : MonoBehaviour
         added.Set(RaiderKeys.Rank, FleetRules.ReinforcementRank);
         Jotunn.Logger.LogInfo($"The jarl's horn calls a Nail Ship at {point} to the ship at {centre}");
         return reinforcement;
+    }
+
+    // A place in deep water in the arc ahead of the target, at the set distance or, where that lies beyond the near zones
+    // this machine keeps alive, closer: on a server the agreed simulation distance may be short, and a Nail Ship raised
+    // outside it is destroyed at once. A place a zone inside the edge is tried first. The depth comes from the world
+    // generator, not from a ray at the seabed, as the zone out there may not be loaded.
+    private static bool TryPickNear(Ship target, float distance, float arc, out Vector2 spawn)
+    {
+        Vector3 centre = target.transform.position;
+        Vector2 flat = new(centre.x, centre.z);
+        float heading = ShipAssist.Heading(target.transform);
+        foreach (int margin in new[] { 1, 0 })
+        {
+            foreach (float tried in EncounterRules.ShorterDistances(distance, LeastSpawnDistance))
+            {
+                if (EncounterRules.TryPickSpawn(flat, heading, tried, EncounterRules.Offsets(arc, SpawnAttempts, Random.value),
+                    spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth) && SeaBattleService.InNearArea(new Vector3(spot.x, 0f, spot.y), margin),
+                    out spawn))
+                {
+                    return true;
+                }
+            }
+        }
+
+        spawn = flat;
+        return false;
     }
 
     private static Quaternion Facing(Vector3 from, Vector3 to)

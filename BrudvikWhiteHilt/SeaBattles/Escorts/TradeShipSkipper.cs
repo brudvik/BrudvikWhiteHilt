@@ -96,6 +96,12 @@ public class TradeShipSkipper : MonoBehaviour
         ShipControlls helm = GetComponentInChildren<ShipControlls>(true);
         if (template == null || view == null || !view.IsValid() || helm == null || helm.m_attachPoint == null)
         {
+            // Nothing is drawn on a dedicated server; anywhere else a ship without its skipper says why.
+            if (!VisualHelper.IsHeadless)
+            {
+                Jotunn.Logger.LogWarning($"Trading Ship: no skipper (template {template != null}, network {view != null && view.IsValid()}, helm {helm != null && helm.m_attachPoint != null})");
+            }
+
             return;
         }
 
