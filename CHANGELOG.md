@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.140.0 - 2026-10-15
 
 ### Added
 - **[Great storms](docs/storms.md)**: now and then a storm comes, with three minutes' warning: the sky darkens, thunder
