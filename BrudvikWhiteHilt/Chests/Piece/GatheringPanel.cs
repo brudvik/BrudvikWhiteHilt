@@ -23,8 +23,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
     /// </summary>
     public class GatheringPanel
     {
-        private const string ButtonName = "BrudvikStackedChest_GatheringButton";
-        private const string PanelName = "BrudvikStackedChest_GatheringPanel";
+        private const string ButtonName = "WhiteHilt_ChestGatheringButton";
+        private const string PanelName = "WhiteHilt_ChestGatheringPanel";
         private const float PanelWidth = 640f;
         private const float PanelHeight = 620f;
         private const float ListWidth = PanelWidth - 50f;

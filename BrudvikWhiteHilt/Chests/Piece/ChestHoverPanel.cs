@@ -138,7 +138,7 @@ namespace BrudvikWhiteHilt.Chests.Piece
 
             // The HUD is recreated for every world, taking the old panel with it.
             cells.Clear();
-            root = new GameObject("BrudvikStackedChest_HoverPanel", typeof(RectTransform));
+            root = new GameObject("WhiteHilt_ChestHoverPanel", typeof(RectTransform));
             root.transform.SetParent(hud.m_rootObject.transform, false);
 
             var rect = (RectTransform)root.transform;

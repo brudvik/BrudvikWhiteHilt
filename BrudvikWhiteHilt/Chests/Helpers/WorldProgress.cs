@@ -31,6 +31,10 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         private const int MaxStockAmount = 1000000;
         private const int MaxChests = 2000;
         private const int MaxItemsPerChest = 300;
+        private const string RpcName = "WhiteHilt_ChestProgress";
+
+        // Where BrudvikStackedChest kept the record before its chests became White Hilt's.
+        private const string LegacyFolder = "BrudvikStackedChest";
 
         private readonly HashSet<string> keys = new(StringComparer.Ordinal);
         private readonly Dictionary<string, Dictionary<string, int>> stockByChest = new(StringComparer.Ordinal);
@@ -44,13 +48,14 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         private bool hasFullRecord;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorldProgress"/> class and registers its network RPC.
+        /// Initializes a new instance of the <see cref="WorldProgress"/> class, moves the record out of the old mod's
+        /// folder and registers its network RPC.
         /// </summary>
-        /// <param name="pluginName">The plugin name, used for the save folder and the RPC name.</param>
-        public WorldProgress(string pluginName)
+        public WorldProgress()
         {
-            saveFolder = Path.Combine(Paths.ConfigPath, pluginName);
-            rpc = NetworkManager.Instance.AddRPC($"{pluginName}_WorldProgress", OnServerReceive, OnClientReceive);
+            saveFolder = Path.Combine(Paths.ConfigPath, "BrudvikWhiteHilt", "chests");
+            MoveLegacyFolder();
+            rpc = NetworkManager.Instance.AddRPC(RpcName, OnServerReceive, OnClientReceive);
         }
 
         /// <summary>
@@ -105,7 +110,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         /// Tells the server how much a chest holds of the items it can still unlock. Call this from the owner of the
         /// chest; nothing is sent when the amounts have not changed since the last report.
         /// </summary>
-        /// <param name="chestId">The chest's network id.</param>
+        /// <param name="chestId">The chest's lasting id (<see cref="Extensions.ContainerExtension.GetChestId"/>).</param>
         /// <param name="amounts">The stored amount per item prefab name; empty when the chest is removed.</param>
         public void ReportStock(string chestId, Dictionary<string, int> amounts)
         {
@@ -245,6 +250,67 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 LoadStock();
             }
 
+            return true;
+        }
+
+        // Moves the record out of BrudvikStackedChest's folder (MoveLegacyFiles). Runs once on every machine, as a host
+        // or a former host may have the folder too.
+        private void MoveLegacyFolder()
+        {
+            var legacy = Path.Combine(Paths.ConfigPath, LegacyFolder);
+            if (!Directory.Exists(legacy)) return;
+
+            try
+            {
+                if (MoveLegacyFiles(legacy, saveFolder))
+                {
+                    Jotunn.Logger.LogInfo($"Chests: moved the world progress from {legacy} to {saveFolder}.");
+                }
+                else
+                {
+                    Jotunn.Logger.LogWarning($"Chests: moved the world progress to {saveFolder}; {legacy} still holds files White Hilt does not know, they are left there.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Jotunn.Logger.LogError($"Chests: could not move the world progress from {legacy} to {saveFolder}.");
+                Jotunn.Logger.LogError(ex);
+            }
+        }
+
+        // Moves each world's record from the old folder into the new one, merged with one already there, and deletes
+        // the rest of what the old folder holds: stock files whose chests were told apart by network ids, which the
+        // game renumbers at every start, and the census taken during the move. Files it does not know are left.
+        // Returns whether the old folder is gone.
+        internal static bool MoveLegacyFiles(string legacy, string target)
+        {
+            Directory.CreateDirectory(target);
+            foreach (var path in Directory.GetFiles(legacy, "*.txt"))
+            {
+                var name = Path.GetFileName(path);
+                var moved = Path.Combine(target, name);
+                if (name.EndsWith("_stock.txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    File.Delete(path);
+                }
+                else if (File.Exists(moved))
+                {
+                    var known = new HashSet<string>(File.ReadAllLines(moved), StringComparer.Ordinal);
+                    File.AppendAllLines(moved, File.ReadAllLines(path).Where(line => line.Length > 0 && known.Add(line)));
+                    File.Delete(path);
+                }
+                else
+                {
+                    File.Move(path, moved);
+                }
+            }
+
+            var census = Path.Combine(legacy, "census");
+            if (Directory.Exists(census)) Directory.Delete(census, true);
+
+            if (Directory.EnumerateFileSystemEntries(legacy).Any()) return false;
+
+            Directory.Delete(legacy);
             return true;
         }
 
@@ -446,10 +512,11 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             return name.Length > 0 && name.Length <= MaxKeyLength && name.IndexOfAny(new[] { '\t', '\r', '\n' }) < 0;
         }
 
+        // Chest ids are GUIDs without dashes (ContainerExtension.GetChestId).
         private static bool IsValidChestId(string chestId)
         {
             return chestId.Length > 0 && chestId.Length <= MaxChestIdLength &&
-                   chestId.All(c => char.IsDigit(c) || c == ':' || c == '-');
+                   chestId.All(c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'));
         }
 
         private static bool IsKnownItem(string name)

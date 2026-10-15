@@ -77,5 +77,22 @@ public class TradingPostTests
         Assert.True(outside.Count == 0, "Outside the dome: " + string.Join(", ", outside));
     }
 
+    /// <summary>
+    /// A player walks under every beam across the house and its porch: the 0.4 m beam's underside lies at least a
+    /// player's height (the capsule's 1.85 m) over the plank floor's top, 0.08 m over its origin.
+    /// </summary>
+    [Fact]
+    public void APlayerWalksUnderTheBeams()
+    {
+        float floor = Parts().Where(part => ((string)part["prefab"]!).StartsWith("piece_whitehilt_plankegulv"))
+            .Max(part => (float)part["position"]![1]!) + 0.08f;
+        List<string> low = Parts()
+            .Where(part => (string)part["prefab"]! == "wood_beam" && (float)part["yaw"]! % 180f == 0f)
+            .Where(part => (float)part["position"]![1]! - 0.2f - floor < 1.85f)
+            .Select(part => string.Join(" ", part["position"]!.Select(value => (float)value)))
+            .ToList();
+        Assert.True(low.Count == 0, "Beams too low to walk under: " + string.Join("; ", low));
+    }
+
     private static IEnumerable<JObject> Parts() => layout["parts"]!.Cast<JObject>();
 }

@@ -2,6 +2,32 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **[The chests](docs/chests.md) keep their world progress in White Hilt's own folder**,
+  `BepInEx/config/BrudvikWhiteHilt/chests/`. On the first start the mod moves it there from the old
+  `BepInEx/config/BrudvikStackedChest/` folder, which it then removes when nothing else is left in it.
+- The server and every player need this version: the chests' world progress has a new network message.
+
+### Fixed
+- **[Trading posts](docs/trading-posts.md)**: a post whose trader had gone missing stayed without one. The post now
+  puts out a new trader when none is there.
+- The beam across the front of the trader's porch hung 1.5 m over the floor, so nobody could walk in to the door. It
+  is gone; the posts are built again to the new plan.
+- **The gathering panel's "closest to unlocking"** could show amounts from chests that no longer held them, and after
+  many restarts stop taking new chests into account: the server told the chests apart by a number the game gives
+  anew every time a world loads. Each chest now has an id of its own that lasts; the old record is dropped and fills
+  again as the chests are used.
+
+### Removed
+- **The chest census** (`whitehilt_chest_census`) and the count the server took at every start. It was made for the
+  move from BrudvikStackedChest, long done, and its warnings that chests were "gone" were false: the game numbers its
+  objects anew every time a world loads, and the census told the chests apart by that number. No chest was lost.
+- **What was left of BrudvikStackedChest**: White Hilt no longer waits for the old mod when it is installed, and no
+  longer takes over its config file. Coming from the old mod, set `[Chests] Mode` by hand before the first start
+  (see [Moving over](docs/chests.md#moving-over-from-brudvikstackedchest)).
+
 ## v0.138.1 - 2026-10-15
 
 ### Changed

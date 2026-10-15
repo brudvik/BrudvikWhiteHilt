@@ -28,8 +28,6 @@ namespace BrudvikWhiteHilt;
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 [BepInDependency(Jotunn.Main.ModGuid)]
 [BepInDependency(Patches.Portals.PortalStationsRunePatch.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
-// Loads the old chest mod first, so ChestModule can see it and leave its chests alone.
-[BepInDependency(Chests.ChestModule.OldModGuid, BepInDependency.DependencyFlags.SoftDependency)]
 [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
 [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
 internal class BrudvikWhiteHilt : BaseUnityPlugin
@@ -190,7 +188,6 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Chests.Collection.CollectionSettings.Initialize();
         Chests.Collection.CollectionPostComponent.Module = chests;
         Quartermaster.QuartermasterStore.Module = chests;
-        Chests.ChestCensus.RegisterCommand();
         Diagnostics.PerfMonitor.Initialize();
 
         // Entries are discovered here, not when prefabs register, so their config entries exist before server sync.

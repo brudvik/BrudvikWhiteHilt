@@ -24,6 +24,9 @@ namespace BrudvikWhiteHilt.Chests.Extensions
         // Restocking changes the inventory, which reports the change and would restock again.
         private static bool restocking;
 
+        // A chest's own lasting id, kept in its network data.
+        private static readonly int ChestIdKey = "whitehilt_chest_id".GetStableHashCode();
+
         /// <summary>
         /// Keeps the unlimited stacks in the container full, removes surplus stacks, combines partial stacks and adds
         /// the unlimited items that are missing. Only the owner of the container changes it, and it is only saved
@@ -366,14 +369,26 @@ namespace BrudvikWhiteHilt.Chests.Extensions
         }
 
         /// <summary>
-        /// Gets an id for the container that stays the same across game sessions.
+        /// Gets an id for the container that stays the same across game sessions and wherever it moves (a drawer on a
+        /// ship). It is kept in the container's network data and given on first use by its owner: the network id
+        /// cannot serve, as the game numbers its objects anew every time a world loads.
         /// </summary>
         /// <param name="container">The container.</param>
-        /// <returns>The id of the container's network object, or null if it is not a placed, networked instance.</returns>
+        /// <returns>The id, or null if it is not a placed, networked instance, or has no id yet and this machine does not
+        /// own it.</returns>
         public static string? GetChestId(this Container container)
         {
             var zdo = container.m_nview != null && container.m_nview.IsValid() ? container.m_nview.GetZDO() : null;
-            return zdo == null ? null : $"{zdo.m_uid.UserID}:{zdo.m_uid.ID}";
+            if (zdo == null) return null;
+
+            var id = zdo.GetString(ChestIdKey);
+            if (id.Length == 0 && container.m_nview!.IsOwner())
+            {
+                id = Guid.NewGuid().ToString("N");
+                zdo.Set(ChestIdKey, id);
+            }
+
+            return id.Length == 0 ? null : id;
         }
     }
 }

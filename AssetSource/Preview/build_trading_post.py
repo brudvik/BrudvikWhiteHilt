@@ -57,7 +57,7 @@ TRADER = (-1.7, 0.0, -3.05)  # behind the goods stall, facing the jetty
 HUNTER_CHAIR = (2.0, -3.3)
 HUNTER = (2.0, 0.07, -3.3)
 # Raised whenever the layout changes: the mod builds the posts of an older layout again, keeping their ids.
-LAYOUT_VERSION = 4
+LAYOUT_VERSION = 5
 
 # The ground behind the landing levelled at the bank's height: (x, z, radius); the smoothing reaches SMOOTH out.
 LEVEL = ((-3.0, -11.0, 9.0), (6.0, -11.0, 9.0))
@@ -305,13 +305,13 @@ def trader_house(post):
     for lx in (-4, -2, 0, 2, 4, 6):
         vanilla("wood_roof_45", lx, 4, 1)
         vanilla("wood_roof_45", lx, 4, -1, 180)
-    # The porch: a post on each front cornerstone and beams to them under the eaves, a tie beam across the room.
+    # The porch: a post on each front cornerstone and beams to them under the eaves, a tie beam across the room. No
+    # beam across the porch's front: under the eaves it would hang 1.5 m over the floor, and a player is 1.85 m tall.
     for lz in (-1.8, 1.8):
         vanilla("wood_pole", 6, 1.5, lz)
         vanilla("wood_pole", 6, 2.5, lz)
         vanilla("wood_beam", 5.05, 2.8, lz)
     for lz in (-0.9, 0.9):
-        vanilla("wood_beam", 6, 2.8, lz, 90)
         vanilla("wood_beam", 0, 3.2, lz, 90)
 
     # On the porch: a cask and a stool by the door, a lamp at each side of the way in.

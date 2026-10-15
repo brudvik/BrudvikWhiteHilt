@@ -160,11 +160,16 @@ public class TradingPostSite : MonoBehaviour
     }
 
     // The owner decides whether the hunter sits at the post (TradingPostHunter) and whether a monster plagues it
-    // (TradingPostTerror).
+    // (TradingPostTerror), and puts the trader out again if the post has lost it.
     private void HunterPass()
     {
         if (view != null && view.IsValid() && view.IsOwner() && ZNetScene.instance != null)
         {
+            if (pass >= passDelays.Length)
+            {
+                ReplaceLostTrader();
+            }
+
             int biome = Mathf.Max(0, TradingPostGoods.IndexOf(Look.biome));
             TradingPostHunter.Check(transform, view.GetZDO(), biome);
             TradingPostTerror.Check(transform, view.GetZDO(), biome);
@@ -257,6 +262,31 @@ public class TradingPostSite : MonoBehaviour
         Look.WriteTo(trader);
         site.Set(TradingPostKeys.HasTrader, true);
         Jotunn.Logger.LogInfo($"Trading posts: {Look.name} came to the post at {position.x:0} {position.z:0}.");
+    }
+
+    // The marker says its trader was put out, yet no trader of the post is in the world data round the trader's spot:
+    // a new one is put out. Runs only after the first passes, when the area's objects have reached this machine.
+    private void ReplaceLostTrader()
+    {
+        ZDO site = view.GetZDO();
+        if (!site.GetBool(TradingPostKeys.HasTrader) || HasTraderNear())
+        {
+            return;
+        }
+
+        Jotunn.Logger.LogWarning($"Trading posts: the trader of post {PostId} was gone, a new one is put out.");
+        site.Set(TradingPostKeys.HasTrader, false);
+        PutOutTrader();
+    }
+
+    private bool HasTraderNear()
+    {
+        Vector3 spot = transform.TransformPoint(TradingPostLayout.ToVector(TradingPostLayout.Load().trader.position));
+        List<ZDO> found = new();
+        ZDOMan.instance.FindSectorObjects(ZoneSystem.GetZone(spot), new SimulationDistance(1, 0, classic: true), found);
+        int hash = TradingPostTrader.PrefabName.GetStableHashCode();
+        string id = PostId;
+        return found.Any(zdo => zdo.GetPrefab() == hash && zdo.GetString(TradingPostKeys.PostId) == id);
     }
 
     private void Dye(List<ZNetView> near)

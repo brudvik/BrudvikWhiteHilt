@@ -1,6 +1,5 @@
 #nullable enable annotations
 
-using BepInEx.Bootstrap;
 using BrudvikWhiteHilt.Chests.Commands;
 using BrudvikWhiteHilt.Chests.Configuration;
 using BrudvikWhiteHilt.Chests.Constants;
@@ -24,18 +23,11 @@ namespace BrudvikWhiteHilt.Chests
 {
     /// <summary>
     /// The chests of the former BrudvikStackedChest mod: chests that restock their items automatically. The prefab
-    /// names, the ZDO key and the world progress folder are the old mod's, so chests placed with it keep their contents.
+    /// names and the ZDO key that remembers a chest's mode are the old mod's, so chests placed with it keep their
+    /// contents.
     /// </summary>
     internal class ChestModule : global::BrudvikWhiteHilt.Crafting.IUnlimitedItems
     {
-        /// <summary>
-        /// GUID of the former stand-alone mod. While it is loaded it keeps its own chests and this module stays off.
-        /// </summary>
-        public const string OldModGuid = "com.jotunn.BrudvikStackedChest";
-
-        // The old mod's name: its world progress folder and RPC prefix.
-        private const string LegacyName = "BrudvikStackedChest";
-
         // Root namespace of the embedded icons.
         private const string ResourceRoot = "BrudvikWhiteHilt";
 
@@ -77,18 +69,11 @@ namespace BrudvikWhiteHilt.Chests
         private readonly ConditionalWeakTable<Container, object> destroyedContainers = new();
 
         /// <summary>
-        /// Starts the chests, unless the former stand-alone mod is loaded. Call from the plugin's Awake.
+        /// Starts the chests. Call from the plugin's Awake.
         /// </summary>
-        /// <returns>The module, or null while the old mod is loaded.</returns>
-        public static ChestModule? Start()
+        /// <returns>The module.</returns>
+        public static ChestModule Start()
         {
-            if (Chainloader.PluginInfos.ContainsKey(OldModGuid))
-            {
-                Jotunn.Logger.LogWarning("BrudvikStackedChest is installed. Its chests are now part of White Hilt, which leaves them to the old mod " +
-                    "while it is loaded. Remove BrudvikStackedChest to switch over, but keep its config file and the BepInEx/config/BrudvikStackedChest folder.");
-                return null;
-            }
-
             var module = new ChestModule();
             module.Initialize();
             return module;
@@ -102,7 +87,7 @@ namespace BrudvikWhiteHilt.Chests
 
             settings = new ChestSettings();
             itemCatalog = new ItemCatalog(settings);
-            worldProgress = new WorldProgress(LegacyName);
+            worldProgress = new WorldProgress();
             chestSupply = new ChestSupply(settings, itemCatalog, worldProgress);
             progressUi = new ChestProgressUi(chestSupply, FindPiece, IsCargo);
             hoverPanel = new ChestHoverPanel(chestSupply, FindPiece, () => settings.ShowHoverPanel.Value);

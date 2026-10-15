@@ -158,6 +158,9 @@ def walk(transform, depth, materials, values=False):
             elif kind == "BoxCollider":
                 box = pointer.read()
                 notes.append(f"Box[c={vector(box.m_Center)} s={vector(box.m_Size)}]")
+            elif kind == "CapsuleCollider":
+                capsule = pointer.read()
+                notes.append(f"Capsule[c={vector(capsule.m_Center)} h={capsule.m_Height:.3f} r={capsule.m_Radius:.3f}]")
             elif kind != "Transform":
                 notes.append(kind)
         except Exception:

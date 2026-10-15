@@ -139,7 +139,7 @@ Carts and ship holds keep unlimited items full like the Everlasting Chest, so wh
 
 In Linear and Discovered:
 
-- Unlocked and discovered items are shared by everyone in the world and saved by the server in `BepInEx/config/BrudvikStackedChest/`.
+- Unlocked and discovered items are shared by everyone in the world and saved by the server in `BepInEx/config/BrudvikWhiteHilt/chests/`.
 - Items that do not stack, like weapons and armor, are never duplicated; those chests work as normal chests.
 - Items that come in levels, like fish, count each level on its own in Linear mode: a full stack of level 2 Perch unlocks level 2 Perch, and from then on every chest of that type also keeps a stack of it. In Full and Discovered mode every level of such an item is unlimited once it is stored.
 - The Everlasting Chest makes any stackable item unlimited once it holds a full stack (Linear) or once it is discovered (Discovered).
@@ -200,13 +200,12 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 | Command | Description |
 |---------|-------------|
 | `whitehilt_chest_progress` | Lists how many items of each chest are unlimited (was `bsc_progress`) |
-| `whitehilt_chest_census` | Counts the contents of every chest and compares them with the previous count (server or host) |
 
 ## 🔁 Moving over from BrudvikStackedChest
 
-The chests keep their old prefab names, size and saved data, and the server keeps its progress files in `BepInEx/config/BrudvikStackedChest/`, so placed chests and their contents carry over.
+The chests keep their old prefab names, size and saved data, so placed chests and their contents carry over. White Hilt moves the world progress the old mod kept in `BepInEx/config/BrudvikStackedChest/` into `BepInEx/config/BrudvikWhiteHilt/chests/` on its first start.
 
 1. Back up the world (`worlds_local/<world>.db` and `.fwl`, on the server too).
-2. Install this version of White Hilt on the server and every client **while BrudvikStackedChest is still installed**. As long as the old mod is loaded, White Hilt leaves the chests to it and only counts them: at every world start the server writes a census to `BepInEx/config/BrudvikStackedChest/census/`.
-3. Remove BrudvikStackedChest everywhere, but **keep** `BepInEx/config/com.jotunn.BrudvikStackedChest.cfg` and the `BepInEx/config/BrudvikStackedChest/` folder. On the first start White Hilt takes over the old settings, above all `Mode`, and logs each value it took over. A wrong mode would make the chests remove the stacks they no longer supply.
-4. Start the server. The census at the start compares the chests with the previous count and logs any chest that is gone or any item that decreased. Visit some chests and restart once more to check again; taking items out also counts as a decrease.
+2. Remove BrudvikStackedChest everywhere, but **keep** the `BepInEx/config/BrudvikStackedChest/` folder on the server.
+3. Install White Hilt on the server and every client. **Before the first start**, set `[Chests] Mode` in the server's `com.jotunn.BrudvikWhiteHilt.cfg` to the `Mode` the old mod had in `com.jotunn.BrudvikStackedChest.cfg`: in another mode the chests remove the stacks the new mode does not supply.
+4. Start the server and visit some chests to check that their contents are there.

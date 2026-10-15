@@ -13,7 +13,7 @@ namespace BrudvikWhiteHilt.Chests.Models
         /// <summary>
         /// The internal name of the chest (prefab name).
         /// </summary>
-        public string Name { get; set; } = "BrudvikStackedChest";
+        public string Name { get; set; } = "WhiteHiltChest";
 
         /// <summary>
         /// The display name shown in-game.
@@ -23,7 +23,7 @@ namespace BrudvikWhiteHilt.Chests.Models
         /// <summary>
         /// The description shown in the build menu.
         /// </summary>
-        public string Description { get; set; } = "BrudvikStackedChestDesc";
+        public string Description { get; set; } = "WhiteHiltChestDesc";
 
         /// <summary>
         /// The icon filename for the chest.

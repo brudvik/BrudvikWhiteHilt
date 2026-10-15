@@ -18,8 +18,8 @@ namespace BrudvikWhiteHilt.Chests.Piece
     /// </summary>
     public class ChestLearnUi
     {
-        private const string MarkerName = "BrudvikStackedChest_Unknown";
-        private const string ButtonName = "BrudvikStackedChest_LearnAll";
+        private const string MarkerName = "WhiteHilt_ChestUnknown";
+        private const string ButtonName = "WhiteHilt_ChestLearnAll";
         private const string Gold = "#FFD24D";
         private static readonly Color MarkerColor = new(1f, 0.85f, 0.1f, 1f);
 
