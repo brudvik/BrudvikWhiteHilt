@@ -12,11 +12,13 @@
 <p align="center">
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/releases/latest"><img src="https://img.shields.io/github/v/release/brudvik/BrudvikWhiteHilt?style=flat-square&color=d4a72c&label=release" alt="Latest release"></a>
   <a href="https://github.com/brudvik/BrudvikWhiteHilt/releases"><img src="https://img.shields.io/github/downloads/brudvik/BrudvikWhiteHilt/total?style=flat-square&color=4a6b7c" alt="Downloads"></a>
-  <img src="https://img.shields.io/badge/Valheim-mod-3a5568?style=flat-square" alt="Valheim mod">
+  <a href="https://store.steampowered.com/app/892970/Valheim/"><img src="https://img.shields.io/badge/Valheim-1.0.20-3a5568?style=flat-square&logo=steam&logoColor=white" alt="Valheim 1.0.20"></a>
   <img src="https://img.shields.io/badge/BepInEx-5.4-6e4a2e?style=flat-square" alt="BepInEx 5.4">
   <img src="https://img.shields.io/badge/J%C3%B6tunn-2.30-6e4a2e?style=flat-square" alt="Jötunn 2.30">
   <img src="https://img.shields.io/badge/multiplayer-everyone%20needs%20it-555?style=flat-square" alt="Everyone needs the mod in multiplayer">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/brudvik/BrudvikWhiteHilt?style=flat-square&color=555" alt="License"></a>
+  <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/built%20with-Claude-d97757?style=flat-square&logo=claude&logoColor=white" alt="Built with Claude"></a>
+  <a href="https://elevenlabs.io"><img src="https://img.shields.io/badge/voices-ElevenLabs-222?style=flat-square&logo=elevenlabs&logoColor=white" alt="Voices and sound by ElevenLabs"></a>
   <a href="https://www.youtube.com/@WhiteHilt"><img src="https://img.shields.io/badge/YouTube-White%20Hilt-c4302b?style=flat-square&logo=youtube&logoColor=white" alt="YouTube channel"></a>
 </p>
 
