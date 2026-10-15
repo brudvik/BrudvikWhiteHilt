@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.139.0 - 2026-10-15
 
 ### Added
 - **[Grapnels](docs/sea-battles.md#grapnels)**: a Nail Ship's crew throws a grapnel at your rail while it lies
