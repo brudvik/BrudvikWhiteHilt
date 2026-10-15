@@ -209,15 +209,41 @@ public static class TradingPostPatches
         if (post.IsHunter)
         {
             trader.m_items = TradingPostTrophies.BuildItems(post.Biome, Player.m_localPlayer);
+            WearersPrices(trader.m_items, post.Biome);
             return;
         }
 
         trader.m_items = TradingPostStore.BuildItems(post.Biome, post.PostId, Player.m_localPlayer);
+        WearersPrices(trader.m_items, post.Biome);
         GearKind? kind = TradingPostGear.Specialty(post.Biome, post.PostId);
         if (kind != null)
         {
             TradingPostCharts.MarkVisited(trader.transform.position, kind.Value);
         }
+    }
+
+    // The garb of the post's biome worn gets the player better prices there.
+    private static void WearersPrices(System.Collections.Generic.List<Trader.TradeItem> items, int biome)
+    {
+        float bonus = TraderGarb.TradeBonus(Player.m_localPlayer, biome);
+        foreach (Trader.TradeItem item in items)
+        {
+            item.m_price = TraderGarb.Lowered(item.m_price, bonus);
+        }
+    }
+
+    // The whole Swamp garb keeps its wearer dry.
+    [HarmonyPatch(typeof(SEMan), nameof(SEMan.AddStatusEffect), typeof(int), typeof(bool), typeof(int), typeof(float), typeof(short))]
+    [HarmonyPrefix]
+    private static bool KeepDryPrefix(SEMan __instance, int nameHash, ref StatusEffect __result)
+    {
+        if (nameHash != SEMan.s_statusEffectWet || !TraderGarb.KeepsDry(__instance.m_character))
+        {
+            return true;
+        }
+
+        __result = null;
+        return false;
     }
 
     [HarmonyPatch(typeof(StoreGui), "FillList")]

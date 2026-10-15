@@ -117,6 +117,9 @@ public static class TradingPostStore
 
         AddGear(items, biome, postId, player);
 
+        // The piece of the biome's traders' garb that only this post sells.
+        items.AddRange(TraderGarb.TradeItems(biome, postId, player));
+
         // The Mistlands' trader also sells the way to an infested mine.
         Trader.TradeItem mineChart = TradingPostMineChart.TradeItem(biome);
         if (mineChart != null)
@@ -170,7 +173,7 @@ public static class TradingPostStore
         }
 
         float each = TradingPostGoods.BuyPrice(biome, prefab, item.m_quality, TradingSkill.BuyShare(Player.m_localPlayer), TradingPostSettings.ConfiguredPrices);
-        return Mathf.FloorToInt(each * item.m_stack);
+        return Mathf.FloorToInt(each * item.m_stack * (1f + TraderGarb.TradeBonus(Player.m_localPlayer, biome)));
     }
 
     // The post's gear at quality 1, cheapest first, behind the biome's key; what the player's Trading has not opened is

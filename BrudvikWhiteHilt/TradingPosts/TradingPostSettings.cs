@@ -58,6 +58,15 @@ public static class TradingPostSettings
     /// <summary>Coins a Mine Chart costs at the Mistlands posts; 0 takes it out of their stores.</summary>
     public static ConfigEntry<int> MineChartPrice { get; private set; }
 
+    /// <summary>Coins per plain material of a biome that a piece of its traders' garb costs.</summary>
+    public static ConfigEntry<float> GarbWorth { get; private set; }
+
+    /// <summary>Percent better prices at a biome's posts per piece of its traders' garb worn.</summary>
+    public static ConfigEntry<float> GarbTradeBonus { get; private set; }
+
+    /// <summary>Percent better prices more at a biome's posts for the whole garb worn.</summary>
+    public static ConfigEntry<float> GarbSetTradeBonus { get; private set; }
+
     /// <summary>Percent chance that the hunter sits at a post when a player comes there.</summary>
     public static ConfigEntry<int> HunterChance { get; private set; }
 
@@ -140,6 +149,15 @@ public static class TradingPostSettings
         MineChartPrice = WhiteHiltConfig.BindAdminOnly(Section, "MineChartPrice", 250,
             "Coins a Mine Chart costs at the Mistlands trading posts. It marks the nearest infested mine the reader has not found. 0: not sold.",
             new AcceptableValueRange<int>(0, 5000));
+        GarbWorth = WhiteHiltConfig.BindAdminOnly(Section, "GarbWorth", 120f,
+            "Coins a piece of a biome's traders' garb costs per coin the biome's plain material is worth (Meadows 1, Deep North 10).",
+            new AcceptableValueRange<float>(1f, 2000f));
+        GarbTradeBonus = WhiteHiltConfig.BindAdminOnly(Section, "GarbTradeBonus", 3f,
+            "Percent better prices at a biome's trading posts for each piece of its traders' garb worn, buying and selling.",
+            new AcceptableValueRange<float>(0f, 20f));
+        GarbSetTradeBonus = WhiteHiltConfig.BindAdminOnly(Section, "GarbSetTradeBonus", 3f,
+            "Percent better prices more at a biome's trading posts for the whole of its traders' garb worn.",
+            new AcceptableValueRange<float>(0f, 20f));
         HunterChance = WhiteHiltConfig.BindAdminOnly(Section, "HunterChance", 20,
             "Percent chance that a hunter who sells the biome's trophies sits at a trading post when a player comes there. The answer holds " +
             "for a game day. 0: no hunter.", new AcceptableValueRange<int>(0, 100));

@@ -5,6 +5,10 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **[The traders' garb](docs/trading-posts.md#the-traders-garb)**: every biome's traders have a set of four pieces of
+  clothing in their colours (hood, tunic, trousers, cape), each sold at one of the biome's posts only. Light armour, a
+  small bonus of the biome's kind per piece, a set bonus for all four (the Swamp's keeps you dry, the Mountains' keeps
+  the cold out, and so on), and 3 % better prices per piece at the biome's posts, 15 % with the whole set.
 - **[The Mine Chart](docs/trading-posts.md#the-mine-chart)**: the trader at the Mistlands posts sells a chart (250
   coins, `MineChartPrice`) that marks the nearest infested mine you have not found yet and shows it on the map.
 

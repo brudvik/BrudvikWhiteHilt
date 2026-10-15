@@ -75,6 +75,25 @@ The skill book (the skills dialog) shows your share, your discount and how many 
 
 Every post's trader sells the **Escort Contract** (300 coins, once Bonemass is slain). Use it at the post: a trading ship comes in beside the jetty, on the side away from your ship, and waits. Go aboard your own ship within 150 m of it and it sets out for **the nearest other trading post**, however far. Guard it against the Nail Ships on the way; when it reaches port with its cargo, every player near it gets **400 coins per kilometre** of the voyage for a full cargo. If you do not come aboard within 10 minutes it sails off and you get the contract back. See [Escorts](sea-battles.md#escorts) for the attacks, the cargo and the pay.
 
+## The traders' garb
+
+Every biome's traders have their own **garb**, four pieces of clothing in the trader's colours: a hood, a tunic, trousers and a cape (Asbjørn's Hood, Ylva's Cape and so on). **Each post sells one piece only**, by its place among the biome's posts, so the whole set takes a visit to every post of the biome (with fewer than four posts some sell two pieces). A piece costs the biome's worth times **120** (`GarbWorth`): 120 coins in the Meadows, 1200 in the Deep North, with your Trading discount, once the biome's boss is slain like the post's goods.
+
+The garb is clothing, not armour: 2 armour per piece in the Meadows up to 16 in the Deep North, no durability to wear out, and a small bonus that adds up over the pieces. The whole set worn gives the set's own bonus:
+
+| Biome | Each piece | The whole set |
+|---|---|---|
+| Meadows | +1.5 % movement speed | +20 % stamina regeneration |
+| Black Forest | −10 % sneak stamina | −30 % noise, harder to spot when sneaking |
+| Swamp | −10 % swim stamina | Resistant to poison, never wet |
+| Mountains | −10 % jump stamina | Resistant to frost (no cold or freezing) |
+| Plains | −5 % run stamina | +50 carry weight |
+| Mistlands | +5 % eitr regeneration | −50 % fall damage, +15 % jump |
+| Ashlands | +10 % heat resistance | Resistant to fire |
+| Deep North | −4 % attack stamina | Very resistant to frost, +15 % health regeneration |
+
+**The trading bonus**: worn at the posts of its own biome, every piece gets you **3 %** better prices there (`GarbTradeBonus`), buying and selling, and the whole set **3 %** more (`GarbSetTradeBonus`): 15 % with all four. It counts at the hunter's too.
+
 ## The Mine Chart
 
 The trader at the Mistlands posts also sells a **Mine Chart** (250 coins, `MineChartPrice`, once Yagluth is slain, like the post's goods). Read it and the nearest **infested mine** you have not found yet gets a pin, and the map opens on it. A mine counts as found when the land around it is uncovered on your map or a pin already marks it. The chart is used up when it marks a mine; if every mine near you is found already, you keep it.
@@ -111,6 +130,9 @@ Settings in section `[TradingPosts]`, all the server's:
 | `Prices` | empty | Prices that replace the built-in ones, in coins per piece: `Prefab:Price`, comma separated |
 | `BuyUnlimitedGoods` | true | Pay for goods that are unlimited in the world's chests |
 | `ChartPrice` | 150 | Coins a Trading Post Chart costs at Hildir. Needs a restart |
+| `GarbWorth` | 120 | Coins a piece of a biome's garb costs per coin the biome's plain material is worth (Meadows 1, Deep North 10) |
+| `GarbTradeBonus` | 3 | Percent better prices at a biome's posts per piece of its garb worn, buying and selling |
+| `GarbSetTradeBonus` | 3 | Percent better prices more for the whole garb |
 | `MineChartPrice` | 250 | Coins a Mine Chart costs at the Mistlands posts. 0: not sold |
 | `HunterChance` | 20 | Percent chance the hunter sits at a post when a player comes there; the answer holds for a game day. 0: no hunter |
 | `TrophyWorth` | 15 | A trophy at the hunter costs its biome's worth times this, three times for the great beasts |
