@@ -363,6 +363,10 @@ On upgrade to 0.123.0, the previous defaults (`Health` 600, `FireDamage` 8, `Fla
 - `whitehilt_lindorm summon` (admins) lets the Lindorm break out near you now.
 - With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm` and `spawn WhiteHilt_DesertDragon`.
 
+## Trophies and stars
+
+A monster's `TrophyChance` is the chance at no stars. Each star raises it, as for the game's own creatures since Valheim 1.0.20: twice as often at one star, four times at two, and by the [difficulty's loot multiplier](difficulty.md) at three to five stars. A trophy still drops one at a time. That goes for every monster of the mod, the Black Beasts and the plagues included.
+
 ## Sounds
 
 Every monster of the mod has its own sounds, made with [ElevenLabs](https://elevenlabs.io): idle, alert, attack, injury and death, three takes of each that the game picks between, so the same roar is not heard twice in a row. That goes for the monsters above, the Draugr Jarl, the White Dragon, the [Black Beasts](difficulty.md) (darker, with an eerie echo, so you know one is near) and the [plagues](trading-posts.md#plagues).

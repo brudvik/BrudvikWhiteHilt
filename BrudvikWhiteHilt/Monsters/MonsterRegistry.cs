@@ -61,6 +61,7 @@ public static class MonsterRegistry
     /// </summary>
     public static void Initialize()
     {
+        TrophyDrops.Initialize();
         Translations.AddEnglish("enemy_whitehilt_lindorm", "Lindorm");
         Translations.AddEnglish("enemy_whitehilt_giantspider", "Giant Spider");
         Translations.AddEnglish("enemy_whitehilt_spidernest", "Spider Nest");

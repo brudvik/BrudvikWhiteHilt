@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Changed
+- **Valheim 1.0.20**: the mod is built for it and needs it.
+- **[Trophies and stars](docs/monsters.md#trophies-and-stars)**: the trophies of the mod's own monsters now drop as
+  the game's own do since 1.0.20: each star raises the chance (twice at one star, four times at two, the loot
+  multiplier above that), one trophy at a time. A starred monster of the mod is no longer harder to get a trophy from
+  than a vanilla one.
+
 ## v0.138.0 - 2026-10-15
 
 ### Added
