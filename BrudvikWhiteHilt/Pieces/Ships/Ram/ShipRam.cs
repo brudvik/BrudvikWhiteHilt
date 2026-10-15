@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.ShipUpgrades;
 using BrudvikWhiteHilt.Pieces.Ships.WhiteHiltShip;
+using BrudvikWhiteHilt.SeaBattles;
 using BrudvikWhiteHilt.SeaBattles.Damage;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,9 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Ships.Ram;
 
 /// <summary>
-/// Lets a White Hilt Ship with the Ram Prow ram what it strikes bow-first: another ship, which it always holes, or a
-/// creature, which it hurts and pushes. Sits on the ship's root, where the game delivers the ship's collisions. Only the
-/// ship's owner rams, so a ram happens once however many players are near.
+/// Lets a White Hilt Ship with the Ram Prow, or a Nail Ship that carries a ram, ram what it strikes bow-first: another ship,
+/// which it always holes, or a creature, which it hurts and pushes. Sits on the ship's root, where the game delivers the
+/// ship's collisions. Only the ship's owner rams, so a ram happens once however many players are near.
 /// </summary>
 public class ShipRam : MonoBehaviour
 {
@@ -45,19 +46,21 @@ public class ShipRam : MonoBehaviour
 
     // The game sends this to the ship's root for every body the hull strikes, on every machine that simulates it; only the
     // ship's owner goes on. A ram is a strike by the bow's front quarter at a closing speed of at least the setting, on a ship
-    // or a creature that has not been rammed within the cooldown.
+    // or a creature that has not been rammed within the cooldown. A Nail Ship with a ram strikes only other ships, never one
+    // of its own fleet, and tells its captain the blow has landed.
     private void OnCollisionEnter(Collision collision)
     {
-        if (ship == null || nview == null || !nview.IsValid() || !nview.IsOwner() || upgrades == null
-            || !RamSettings.Enabled.Value || !upgrades.Has(ShipRamUpgrade.Bit))
+        RaiderShip raider = RaiderShip.Of(ship);
+        bool armed = raider != null ? raider.HasRam : upgrades != null && upgrades.Has(ShipRamUpgrade.Bit);
+        if (ship == null || nview == null || !nview.IsValid() || !nview.IsOwner() || !armed || !RamSettings.Enabled.Value)
         {
             return;
         }
 
         Rigidbody otherBody = collision.rigidbody;
         Ship otherShip = otherBody != null ? otherBody.GetComponent<Ship>() : null;
-        Character creature = otherShip == null ? collision.collider.GetComponentInParent<Character>() : null;
-        if ((otherShip == null && !IsRammable(creature)) || otherShip == ship)
+        Character creature = otherShip == null && raider == null ? collision.collider.GetComponentInParent<Character>() : null;
+        if ((otherShip == null && !IsRammable(creature)) || otherShip == ship || (raider != null && RaiderShip.Is(otherShip)))
         {
             return;
         }
@@ -88,6 +91,10 @@ public class ShipRam : MonoBehaviour
 
         SelfDamage(damage);
         Effects(contact, speed);
+        if (raider != null)
+        {
+            raider.NoteRammed();
+        }
         Jotunn.Logger.LogDebug($"Ram: {name} struck {(otherShip != null ? otherShip.name : creature.name)} at {speed:F1} m/s for {damage:F0}");
     }
 

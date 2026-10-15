@@ -116,6 +116,24 @@ public class DeckFires : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Puts out a fire on the owner, as a Nail Ship's crew does on its own deck.
+    /// </summary>
+    /// <param name="index">Index of the fire in <see cref="Points"/>.</param>
+    /// <returns>True if a fire was put out.</returns>
+    public bool PutOutByCrew(int index)
+    {
+        if (!IsOwner() || index < 0 || index >= fires.Count)
+        {
+            return false;
+        }
+
+        List<DeckFire> next = new(fires);
+        next.RemoveAt(index);
+        Write(next);
+        return true;
+    }
+
     private void Awake()
     {
         ship = GetComponent<Ship>();

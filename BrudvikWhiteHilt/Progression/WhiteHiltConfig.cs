@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -220,6 +221,31 @@ public static class WhiteHiltConfig
     public static ConfigEntry<T> BindAdminOnly<T>(string section, string key, T defaultValue, string description, AcceptableValueBase acceptableValues = null)
     {
         return configFile.Bind(section, key, defaultValue, new ConfigDescription(description, acceptableValues, new ConfigurationManagerAttributes { IsAdminOnly = true }));
+    }
+
+    /// <summary>
+    /// Gives an entry its new default when it still holds an old one, so a config file written by an earlier version gets
+    /// what the new version brings (more tiers, say) while a value the admin has changed is kept.
+    /// </summary>
+    /// <param name="entry">The bound entry.</param>
+    /// <param name="oldDefaults">The defaults earlier versions wrote.</param>
+    public static void UpgradeDefault(ConfigEntry<string> entry, params string[] oldDefaults)
+    {
+        if (entry == null || oldDefaults == null)
+        {
+            return;
+        }
+
+        string value = entry.Value?.Trim();
+        foreach (string old in oldDefaults)
+        {
+            if (string.Equals(value, old?.Trim(), StringComparison.Ordinal))
+            {
+                entry.Value = (string)entry.DefaultValue;
+                Jotunn.Logger.LogInfo($"Settings: [{entry.Definition.Section}] {entry.Definition.Key} had the old default and was given the new one");
+                return;
+            }
+        }
     }
 
     /// <summary>

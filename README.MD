@@ -43,7 +43,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.138.1
+## ✨ New in 0.139.0
+
+- **[Nail Ships that fight back harder](docs/sea-battles.md#the-nail-ship-fights-back)**: their crews throw **[grapnels](docs/sea-battles.md#grapnels)** that haul your ship alongside (cut the rope at your rail), some carry an iron **[ram](docs/sea-battles.md#the-ram)** for a ship that lies still, and later in the game a burning **[fire ship](docs/sea-battles.md#fire-ships)** may come straight at you. A flagship's jarl who lives too long **[blows his horn](docs/sea-battles.md#the-jarls-horn)** for one more ship.
+- **[Smarter raiders](docs/sea-battles.md#the-fight)**: they come up level with a moving ship and match its speed, take the side with fewer defenders, chase you again if you pull away, give up when land keeps them off, and mend their own deck. You are told the bearing they come from, and the place is pinned on your map.
+- **[Sea battles that grow with the world](docs/sea-battles.md#the-crew)**: new crews after the Queen and Fader, a stronger hull and a richer hold for every boss slain, more fleets, and two warriors leaping at a time. Night, storms and fog bring them more often.
+- **The game and the server start faster**, and [the chests](docs/chests.md) keep their world progress in White Hilt's own folder.
+
+### Also new in 0.138.1
 
 - **Ready for Valheim 1.0.20**, and **[trophies that follow the stars](docs/monsters.md#trophies-and-stars)**: like the game's own creatures, the mod's monsters now drop their trophy more often the more stars they have.
 
@@ -143,7 +150,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" valign="top"><a href="docs/treasure.md"><img src="docs/images/treasure_chest.png" height="110" alt=""></a><br><b><a href="docs/treasure.md">Treasure maps</a></b><br><sub>Buy a map from Hildir, match its scrap of land to your own map and dig up the chest.</sub></td>
 <td align="center" valign="top"><a href="docs/harbour.md"><img src="docs/images/water_havn.png" height="110" alt=""></a><br><b><a href="docs/harbour.md">Bridges, jetties & quays</a></b><br><sub>Jetties on piles, stone quays with steps down to the water, and log, rope and stone bridges.</sub></td>
-<td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.</sub></td>
+<td align="center" valign="top"><a href="docs/sea-battles.md"><img src="docs/images/skidbladnir.png" height="110" alt=""></a><br><b><a href="docs/sea-battles.md">Sea battles & raids</a></b><br><sub>Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl, with grapnels, rams and fire ships that grow with the world: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.</sub></td>
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/trading-posts.md"><img src="docs/images/trading_post_trader.png" height="110" alt=""></a><br><b><a href="docs/trading-posts.md">Trading posts</a></b><br><sub>Harbours along every coast with a trader in the biome's colours: buy the land's materials, sell the next land's goods and your fish, buy trophies from the hunter, start escorts, and find them on Hildir's charts.</sub></td>

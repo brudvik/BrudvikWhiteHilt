@@ -3,6 +3,7 @@ using BrudvikWhiteHilt.SeaBattles.Raids;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.SeaBattles;
@@ -29,7 +30,7 @@ public static class SeaBattleCommands
     {
         public override string Name => "whitehilt_seabattle";
 
-        public override string Help => "[status|summon|fleet [2|3]|raid|escort [wave]|hole [count]] Shows the conditions for a Nail Ship and the ships loaded; admins can send a Nail Ship or a fleet after their ship, make a draugr harbour on the nearest coast, call a trading ship to escort (escort) or send its next wave at once (escort wave); with cheats on, hole knocks holes in the ship you stand on.";
+        public override string Help => "[status|summon [fire] [ram]|fleet [2|3] [fire] [ram]|raid|escort [wave]|hole [count]] Shows the conditions for a Nail Ship and the ships loaded; admins can send a Nail Ship or a fleet after their ship (fire brings a fire ship along, ram gives the lead ship a ram), make a draugr harbour on the nearest coast, call a trading ship to escort (escort) or send its next wave at once (escort wave); with cheats on, hole knocks holes in the ship you stand on.";
 
         public override void Run(string[] args)
         {
@@ -41,13 +42,14 @@ public static class SeaBattleCommands
 
             if (args.Length > 0 && args[0] == "summon")
             {
-                SeaBattleService.Summon();
+                SeaBattleService.Summon(args.Contains("fire"), args.Contains("ram"));
                 return;
             }
 
             if (args.Length > 0 && args[0] == "fleet")
             {
-                SeaBattleService.SummonFleet(args.Length > 1 && int.TryParse(args[1], out int size) ? Mathf.Clamp(size, 2, 3) : 2);
+                SeaBattleService.SummonFleet(args.Length > 1 && int.TryParse(args[1], out int size) ? Mathf.Clamp(size, 2, 3) : 2,
+                    args.Contains("fire"), args.Contains("ram"));
                 return;
             }
 

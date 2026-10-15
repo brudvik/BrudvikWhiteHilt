@@ -40,6 +40,9 @@ public static class FleetRules
     /// <summary>Most ships in a fleet: the flagship and two escorts.</summary>
     public const int MaxSize = 3;
 
+    /// <summary>The rank of the Nail Ship a flagship's horn calls in, after its two escorts.</summary>
+    public const int ReinforcementRank = 3;
+
     /// <summary>Seconds the flagship's data may be missing before it counts as gone.</summary>
     public const float MissingGraceSeconds = 5f;
 
@@ -253,31 +256,47 @@ public static class FleetRules
 
     /// <summary>
     /// The side of the target an escort lies on once the formation is broken: rank 1 takes the side the flagship does
-    /// not, the others the flagship's.
+    /// not, rank 2 the flagship's, and the reinforcement (rank 3) the side of rank 1 again.
     /// </summary>
-    /// <param name="rank">0 for the flagship, 1 or 2 for an escort.</param>
+    /// <param name="rank">0 for the flagship, 1 to 3 for an escort.</param>
     /// <param name="flagshipSide">The flagship's side: -1 port, 1 starboard (0 counts as starboard).</param>
     /// <returns>-1 for port, 1 for starboard.</returns>
     public static int EscortSide(int rank, int flagshipSide)
     {
         int side = flagshipSide < 0 ? -1 : 1;
-        return rank == 1 ? -side : side;
+        return rank == 1 || rank == ReinforcementRank ? -side : side;
     }
 
     /// <summary>
-    /// The distance an escort keeps from the target once the formation is broken: the broadside distance, or
-    /// <paramref name="spread"/> times it for an escort on the same side as the flagship, so two ships on one side do
-    /// not lie on top of each other.
+    /// The distance an escort keeps from the target once the formation is broken: the broadside distance for the first
+    /// escort, or <paramref name="spread"/> times it for the second, which shares the flagship's side, and for the
+    /// reinforcement, which shares the first escort's, so two ships on one side do not lie on top of each other.
     /// </summary>
-    /// <param name="rank">0 for the flagship, 1 or 2 for an escort.</param>
+    /// <param name="rank">0 for the flagship, 1 to 3 for an escort.</param>
     /// <param name="flagshipSide">The flagship's side: -1 port, 1 starboard.</param>
     /// <param name="broadside">The broadside distance, in metres.</param>
-    /// <param name="spread">The factor for the same side, at least 1.</param>
+    /// <param name="spread">The factor for the outer ships, at least 1.</param>
     /// <returns>Metres from the target.</returns>
     public static float EscortDistance(int rank, int flagshipSide, float broadside, float spread)
     {
         bool sameSideAsFlagship = rank > 0 && EscortSide(rank, flagshipSide) == (flagshipSide < 0 ? -1 : 1);
-        return sameSideAsFlagship ? broadside * Mathf.Max(1f, spread) : broadside;
+        return sameSideAsFlagship || rank == ReinforcementRank ? broadside * Mathf.Max(1f, spread) : broadside;
+    }
+
+    /// <summary>
+    /// Whether the flagship blows its horn for a reinforcement now: it carries a living jarl, has not called one yet, fights
+    /// alongside or boards, and has fought for the minutes the setting asks (0 never calls).
+    /// </summary>
+    /// <param name="state">The flagship's state.</param>
+    /// <param name="jarlAlive">Whether its jarl lives.</param>
+    /// <param name="alreadyCalled">Whether it has called one before.</param>
+    /// <param name="fightingMinutes">Minutes since it first came alongside.</param>
+    /// <param name="reinforceMinutes">The setting <c>ReinforceMinutes</c>.</param>
+    /// <returns>True when the horn sounds.</returns>
+    public static bool CallsReinforcement(RaiderState state, bool jarlAlive, bool alreadyCalled, double fightingMinutes, float reinforceMinutes)
+    {
+        return reinforceMinutes > 0f && jarlAlive && !alreadyCalled && fightingMinutes >= reinforceMinutes
+            && (state == RaiderState.Broadside || state == RaiderState.Board || state == RaiderState.Ram);
     }
 
     /// <summary>

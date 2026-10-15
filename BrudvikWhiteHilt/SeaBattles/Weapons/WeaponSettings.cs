@@ -46,6 +46,48 @@ public static class WeaponSettings
     /// <summary>Spread of a Nail Ship's ballista, in degrees.</summary>
     public static ConfigEntry<float> NailBallistaAccuracy { get; private set; }
 
+    /// <summary>Nail Ship crews throw grapnels at the ship they fight.</summary>
+    public static ConfigEntry<bool> Grapnels { get; private set; }
+
+    /// <summary>Global key from which Nail Ship crews throw grapnels; empty for always.</summary>
+    public static ConfigEntry<string> GrapnelKey { get; private set; }
+
+    /// <summary>Seconds between two grapnels from one Nail Ship.</summary>
+    public static ConfigEntry<float> GrapnelSeconds { get; private set; }
+
+    /// <summary>Metres within which a Nail Ship's crew throws a grapnel.</summary>
+    public static ConfigEntry<float> GrapnelRange { get; private set; }
+
+    /// <summary>Chance that a Nail Ship carries a ram.</summary>
+    public static ConfigEntry<float> RamChance { get; private set; }
+
+    /// <summary>Global key from which Nail Ships may carry a ram; empty for always.</summary>
+    public static ConfigEntry<string> RamKey { get; private set; }
+
+    /// <summary>Seconds between two charges of a Nail Ship with a ram.</summary>
+    public static ConfigEntry<float> RamSeconds { get; private set; }
+
+    /// <summary>A Nail Ship charges a target no faster than this, in metres per second.</summary>
+    public static ConfigEntry<float> RamTargetSpeed { get; private set; }
+
+    /// <summary>Metres within which a Nail Ship with a ram charges.</summary>
+    public static ConfigEntry<float> RamRange { get; private set; }
+
+    /// <summary>Chance that a fire ship comes along with an encounter.</summary>
+    public static ConfigEntry<float> FireShipChance { get; private set; }
+
+    /// <summary>Global key from which fire ships come; empty for always.</summary>
+    public static ConfigEntry<string> FireShipKey { get; private set; }
+
+    /// <summary>Seconds a fire ship burns before it sinks by itself.</summary>
+    public static ConfigEntry<float> FireShipSeconds { get; private set; }
+
+    /// <summary>Fires a fire ship lights on the deck it strikes.</summary>
+    public static ConfigEntry<int> FireShipFires { get; private set; }
+
+    /// <summary>Share of a Nail Ship's hull health a fire ship has.</summary>
+    public static ConfigEntry<float> FireShipHullShare { get; private set; }
+
     /// <summary>
     /// Binds the config entries and adds the English texts. Call from the plugin's Awake, after
     /// <see cref="SeaBattleSettings.Initialize"/>, whose switch the Pitch Pot follows.
@@ -72,6 +114,36 @@ public static class WeaponSettings
             "Metres within which a Nail Ship's ballista shoots.", new AcceptableValueRange<float>(10f, 150f));
         NailBallistaAccuracy = WhiteHiltConfig.BindAdminOnly(Section, "NailBallistaAccuracy", 3f,
             "Spread of a Nail Ship's ballista, in degrees.", new AcceptableValueRange<float>(0f, 20f));
+        Grapnels = WhiteHiltConfig.BindAdminOnly(Section, "Grapnels", true,
+            "Nail Ship crews throw grapnels at the ship they fight, which bind the two ships until the rope is cut, snaps or frays.");
+        GrapnelKey = WhiteHiltConfig.BindAdminOnly(Section, "GrapnelKey", string.Empty,
+            "Global key from which Nail Ship crews throw grapnels. Empty: always.");
+        GrapnelSeconds = WhiteHiltConfig.BindAdminOnly(Section, "GrapnelSeconds", 40f,
+            "Seconds between two grapnels from one Nail Ship.", new AcceptableValueRange<float>(5f, 300f));
+        GrapnelRange = WhiteHiltConfig.BindAdminOnly(Section, "GrapnelRange", 30f,
+            "Metres within which a Nail Ship's crew throws a grapnel.", new AcceptableValueRange<float>(5f, 60f));
+        RamChance = WhiteHiltConfig.BindAdminOnly(Section, "RamChance", 0.3f,
+            "Chance that a Nail Ship carries an iron ram on its bow, once the world has reached RamKey.", new AcceptableValueRange<float>(0f, 1f));
+        RamKey = WhiteHiltConfig.BindAdminOnly(Section, "RamKey", "defeated_dragon",
+            "Global key from which Nail Ships may carry a ram (defeated_dragon = Moder is slain). Empty: always.");
+        RamSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RamSeconds", 45f,
+            "Seconds between two charges of a Nail Ship with a ram.", new AcceptableValueRange<float>(10f, 600f));
+        RamTargetSpeed = WhiteHiltConfig.BindAdminOnly(Section, "RamTargetSpeed", 2.5f,
+            "A Nail Ship with a ram charges a ship that lies still or sails no faster than this, in metres per second.",
+            new AcceptableValueRange<float>(0f, 15f));
+        RamRange = WhiteHiltConfig.BindAdminOnly(Section, "RamRange", 60f,
+            "Metres within which a Nail Ship with a ram charges.", new AcceptableValueRange<float>(20f, 150f));
+        FireShipChance = WhiteHiltConfig.BindAdminOnly(Section, "FireShipChance", 0.25f,
+            "Chance that a burning fire ship comes along when Nail Ships are sent, once the world has reached FireShipKey.",
+            new AcceptableValueRange<float>(0f, 1f));
+        FireShipKey = WhiteHiltConfig.BindAdminOnly(Section, "FireShipKey", "defeated_goblinking",
+            "Global key from which fire ships come (defeated_goblinking = Yagluth is slain). Empty: always.");
+        FireShipSeconds = WhiteHiltConfig.BindAdminOnly(Section, "FireShipSeconds", 90f,
+            "Seconds a fire ship burns before it sinks by itself.", new AcceptableValueRange<float>(20f, 600f));
+        FireShipFires = WhiteHiltConfig.BindAdminOnly(Section, "FireShipFires", 3,
+            "Fires a fire ship lights on the deck of the ship it strikes.", new AcceptableValueRange<int>(1, 10));
+        FireShipHullShare = WhiteHiltConfig.BindAdminOnly(Section, "FireShipHullShare", 0.4f,
+            "Share of a Nail Ship's hull health a fire ship has.", new AcceptableValueRange<float>(0.05f, 2f));
 
         // There is no switch of its own for the Pitch Pot: it belongs to the sea battles.
         WhiteHiltConfig.AddFeatureGate(PitchPotName, SeaBattleSettings.Enabled);
@@ -87,6 +159,10 @@ public static class WeaponSettings
         Translations.AddEnglish("whitehilt_ship_cut", "Cut the rope");
         Translations.AddEnglish("msg_whitehilt_ship_grappled", "The ships are bound together!");
         Translations.AddEnglish("msg_whitehilt_ship_rope_snaps", "The rope snaps.");
+        Translations.AddEnglish("msg_whitehilt_ship_raider_grapnel", "A grapnel bites into the rail! Cut the rope, or they will haul you alongside.");
+        Translations.AddEnglish("whitehilt_fireship", "Fire Ship");
+        Translations.AddEnglish("msg_whitehilt_ship_fireship", "A fire ship comes at you! Sink it before it strikes.");
+        Translations.AddEnglish("msg_whitehilt_ship_fireship_strikes", "The fire ship strikes! The deck is ablaze.");
         Translations.AddEnglish("whitehilt_ballista_ammo", "Ammunition: {0} ({1})");
         Translations.AddEnglish("whitehilt_ballista_switch", "Switch ammunition");
 

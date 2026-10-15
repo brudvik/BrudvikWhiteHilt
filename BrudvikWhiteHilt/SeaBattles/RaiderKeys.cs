@@ -69,6 +69,33 @@ internal static class RaiderKeys
     /// <summary>On the flagship: its jarl has been slain.</summary>
     public static readonly int JarlFallen = "whitehilt_raider_jarlfallen".GetStableHashCode();
 
+    /// <summary>World ticks when the ship's state last changed, so a new owner keeps counting the same time.</summary>
+    public static readonly int StateSince = "whitehilt_raider_statesince".GetStableHashCode();
+
+    /// <summary>Index of the second melee crew member whose turn it is to leap, when two leap at once; -1 for nobody.</summary>
+    public static readonly int Leap2 = "whitehilt_raider_leap2".GetStableHashCode();
+
+    /// <summary>The Nail Ship carries a ram on its bow.</summary>
+    public static readonly int Ram = "whitehilt_raider_ram".GetStableHashCode();
+
+    /// <summary>World ticks when the ship last ended a charge with its ram; 0 for never.</summary>
+    public static readonly int RamTime = "whitehilt_raider_ramtime".GetStableHashCode();
+
+    /// <summary>The Nail Ship is a fire ship: no crew, a burning deck, and it sails at its target to set it alight.</summary>
+    public static readonly int FireShip = "whitehilt_raider_fireship".GetStableHashCode();
+
+    /// <summary>World ticks when a fire ship was raised, from which it burns down.</summary>
+    public static readonly int Lit = "whitehilt_raider_lit".GetStableHashCode();
+
+    /// <summary>The hull's full health, chosen when the ship was raised, so every machine agrees on it.</summary>
+    public static readonly int HullMax = "whitehilt_raider_hullmax".GetStableHashCode();
+
+    /// <summary>On the flagship: world ticks when it first came alongside its target; 0 before.</summary>
+    public static readonly int FightStart = "whitehilt_raider_fightstart".GetStableHashCode();
+
+    /// <summary>On the flagship: its jarl has blown his horn for another ship.</summary>
+    public static readonly int Reinforced = "whitehilt_raider_reinforced".GetStableHashCode();
+
     /// <summary>On the flagship: the fleet is broken (the flagship is a prize or sunk) and the saga deed has been given.</summary>
     public static readonly int Broken = "whitehilt_raider_broken".GetStableHashCode();
 }

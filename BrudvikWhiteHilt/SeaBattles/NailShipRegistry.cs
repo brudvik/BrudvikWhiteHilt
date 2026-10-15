@@ -1,5 +1,6 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Pieces.Ships.Ballista;
+using BrudvikWhiteHilt.Pieces.Ships.Ram;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
 using BrudvikWhiteHilt.SeaBattles.Raids;
 using BrudvikWhiteHilt.SeaBattles.Weapons;
@@ -165,7 +166,9 @@ public static class NailShipRegistry
     }
 
     // The ship's weapons, and the player ballista's part on its bow, built for show: nobody can man it, it stays hidden until
-    // the world has reached the stage from which Nail Ships carry one, and the crew's weapons run from NailShipWeapons.
+    // the world has reached the stage from which Nail Ships carry one, and the crew's weapons run from NailShipWeapons. The
+    // Ram Prow's iron stem and the ram itself are added too; the stem shows and the ram strikes only on a ship that carries
+    // one (see RaiderShip).
     private static void AddWeapons(GameObject prefab)
     {
         ShipBallista ballista = BallistaModel.Build(prefab.transform);
@@ -175,6 +178,8 @@ public static class NailShipRegistry
         }
 
         prefab.AddComponent<NailShipWeapons>();
+        prefab.AddComponent<ShipRam>();
+        RamProw.Build(prefab.transform);
     }
 
     // The Raid Chart is a scrap of leather drawn as the treasure maps are, in the green-grey of Naglfar's fleet. It has

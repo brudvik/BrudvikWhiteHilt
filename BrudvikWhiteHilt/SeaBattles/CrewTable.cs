@@ -144,10 +144,11 @@ public static class CrewTable
     /// Whether a creature shoots from a distance, by its prefab name.
     /// </summary>
     /// <param name="prefab">The prefab name.</param>
-    /// <returns>True for names with Ranged or Archer in them.</returns>
+    /// <returns>True for names with Ranged, Archer or Mage in them.</returns>
     public static bool IsArcher(string prefab)
     {
         return prefab != null && (prefab.IndexOf("Ranged", StringComparison.OrdinalIgnoreCase) >= 0
-            || prefab.IndexOf("Archer", StringComparison.OrdinalIgnoreCase) >= 0);
+            || prefab.IndexOf("Archer", StringComparison.OrdinalIgnoreCase) >= 0
+            || prefab.IndexOf("Mage", StringComparison.OrdinalIgnoreCase) >= 0);
     }
 }

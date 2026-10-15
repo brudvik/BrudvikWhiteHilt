@@ -41,13 +41,20 @@ public class JarlLevelTests
 public class FleetTierTests
 {
     [Fact]
-    public void TheDefaultTextHasTwoTiers()
+    public void TheDefaultTextHasFourTiers()
     {
         IReadOnlyList<FleetTier> tiers = FleetRules.ParseTiers(FleetSettings.DefaultFleetTiers);
 
-        Assert.Equal(new[] { "defeated_dragon", "defeated_goblinking" }, tiers.Select(tier => tier.Key));
-        Assert.Equal(new[] { 2, 3 }, tiers.Select(tier => tier.Size));
-        Assert.Equal(new[] { 35f, 50f }, tiers.Select(tier => tier.Chance));
+        Assert.Equal(new[] { "defeated_dragon", "defeated_goblinking", "defeated_queen", "defeated_fader" }, tiers.Select(tier => tier.Key));
+        Assert.Equal(new[] { 2, 3, 3, 3 }, tiers.Select(tier => tier.Size));
+        Assert.Equal(new[] { 35f, 50f, 65f, 80f }, tiers.Select(tier => tier.Chance));
+    }
+
+    [Fact]
+    public void TheOldDefaultIsTheNewOneCutAtYagluth()
+    {
+        Assert.StartsWith(FleetSettings.OldDefaultFleetTiers, FleetSettings.DefaultFleetTiers);
+        Assert.Equal(2, FleetRules.ParseTiers(FleetSettings.OldDefaultFleetTiers).Count);
     }
 
     [Fact]
@@ -281,6 +288,9 @@ public class FleetFightTests
     [InlineData(2, -1, -1)]
     [InlineData(0, 1, 1)]
     [InlineData(0, -1, -1)]
+    // The reinforcement takes the first escort's side.
+    [InlineData(3, 1, -1)]
+    [InlineData(3, -1, 1)]
     public void RankOneTakesTheOtherSideAndTheOthersTheFlagshipsSide(int rank, int flagshipSide, int expected)
     {
         Assert.Equal(expected, FleetRules.EscortSide(rank, flagshipSide));
@@ -304,9 +314,29 @@ public class FleetFightTests
     [InlineData(0, 1, 25f, 1.6f, 25f)]
     // A spread under one never brings an escort closer than the broadside distance.
     [InlineData(2, 1, 25f, 0.5f, 25f)]
+    // The reinforcement shares the first escort's side, so it keeps the spread too.
+    [InlineData(3, 1, 25f, 1.6f, 40f)]
+    [InlineData(3, -1, 25f, 1.6f, 40f)]
     public void AnEscortOnTheFlagshipsSideKeepsTheSpreadDistance(int rank, int flagshipSide, float broadside, float spread, float expected)
     {
         Assert.Equal(expected, FleetRules.EscortDistance(rank, flagshipSide, broadside, spread), 3);
+    }
+
+    [Theory]
+    [InlineData(RaiderState.Broadside, true, false, 3.0, 3f, true)]
+    [InlineData(RaiderState.Board, true, false, 5.0, 3f, true)]
+    [InlineData(RaiderState.Ram, true, false, 3.0, 3f, true)]
+    // Not yet long enough.
+    [InlineData(RaiderState.Broadside, true, false, 2.9, 3f, false)]
+    // The jarl is dead, the horn has sounded, the flagship is not fighting, or the setting is off.
+    [InlineData(RaiderState.Broadside, false, false, 9.0, 3f, false)]
+    [InlineData(RaiderState.Broadside, true, true, 9.0, 3f, false)]
+    [InlineData(RaiderState.Approach, true, false, 9.0, 3f, false)]
+    [InlineData(RaiderState.Flee, true, false, 9.0, 3f, false)]
+    [InlineData(RaiderState.Broadside, true, false, 9.0, 0f, false)]
+    public void TheJarlCallsOneReinforcementAfterHisMinutes(RaiderState state, bool jarlAlive, bool called, double minutes, float setting, bool expected)
+    {
+        Assert.Equal(expected, FleetRules.CallsReinforcement(state, jarlAlive, called, minutes, setting));
     }
 
     [Theory]

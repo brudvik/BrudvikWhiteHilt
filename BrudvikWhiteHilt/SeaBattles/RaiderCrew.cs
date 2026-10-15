@@ -69,6 +69,20 @@ public class RaiderCrew : MonoBehaviour
     public bool Boarded => nview != null && nview.IsValid() && nview.GetZDO().GetBool(RaiderKeys.Boarded);
 
     /// <summary>
+    /// Whether the ship this creature fights against is a merchant: the ship it stands on once it has leapt, else the
+    /// ship its Nail Ship hunts. False for a shore guard, or when neither is loaded here.
+    /// </summary>
+    public bool FightsMerchant
+    {
+        get
+        {
+            RaiderShip raider = Boarded ? null : FindShip();
+            Ship against = Boarded ? character.GetStandingOnShip() : raider != null ? raider.TargetShip : null;
+            return Escorts.TradeShip.Is(against);
+        }
+    }
+
+    /// <summary>
     /// Makes a creature part of a crew, if its ZDO says so. Safe to call more than once; call it again after the ZDO
     /// has been filled in for a creature made by this machine, as the creature woke before that.
     /// </summary>
@@ -229,7 +243,7 @@ public class RaiderCrew : MonoBehaviour
     // hands out the turns, so two owners never send the same warrior; once he has leapt he is an ordinary creature.
     private bool TryLeap(RaiderShip raider)
     {
-        if (raider.State != RaiderState.Board || index < 0 || raider.LeapTurn != index)
+        if (raider.State != RaiderState.Board || index < 0 || (raider.LeapTurn != index && raider.LeapTurn2 != index))
         {
             return false;
         }

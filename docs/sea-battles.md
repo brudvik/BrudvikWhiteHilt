@@ -6,7 +6,7 @@ Out on the open sea, a dark longship may come for your ship. It is a **Nail Ship
 
 The Nail Ship needs no new model: it is the vanilla longship with a dark hull, a dim sail and bone-white shields, and the crew are creatures from the game. Later in the game it may come with company: a [fleet](#fleets) led by a flagship with a blood-red sail and a draugr jarl on deck. The fight is built for the [Ship Ballista](ships.md#the-ship-ballista), but a bow and a good crew will do.
 
-The fight is not one-sided. The Nail Ship's bolts and rams knock [holes in your hull](#damage-at-sea) and its pitch pots set your [deck alight](#fire-on-deck), so keep wood and resin in the pack and a free hand for the bailing.
+The fight is not one-sided. The Nail Ship's bolts and rams knock [holes in your hull](#damage-at-sea), its pitch pots set your [deck alight](#fire-on-deck), its crew throws [grapnels](#grapnels) to haul you alongside, and later in the game it may bring a [fire ship](#fire-ships). Keep wood and resin in the pack and a free hand for the bailing.
 
 You can also take a job at a [trading post](trading-posts.md). Its trader sells an **Escort Contract**: use it at the post, and a [trading ship](#escorts) comes in beside the jetty. When you go aboard your own ship it sets out for the nearest other trading post. The Nail Ships come for the merchant, not for you, and you are paid for seeing it safely to port, more for a longer voyage.
 
@@ -23,9 +23,9 @@ A Nail Ship only comes when everything lines up:
 - The world's **cooldown** is over: at most one Nail Ship every **45 real minutes** (`CooldownMinutes`) in the whole world. The server forgets the cooldown when it restarts.
 - The crew list has a tier for the world. With `RequiredKey` empty and no tier's key set yet, the first tier sails (see [Crew](#the-crew)).
 
-Once a minute, the client that owns the ship asks the server, which checks all of this again and rolls the dice once per ship: **4% per minute** with one player aboard, **2 more percentage points** for each extra player aboard (`ChancePerMinute`, `ChancePerExtraPlayer`; 0 means none come by themselves). The cooldown starts only when a Nail Ship is sent, and the order to raise it goes to whichever machine owns your ship.
+Once a minute, the client that owns the ship asks the server, which checks all of this again and rolls the dice once per ship: **4% per minute** with one player aboard, **2 more percentage points** for each extra player aboard (`ChancePerMinute`, `ChancePerExtraPlayer`; 0 means none come by themselves). The sea is more dangerous in the dark and in bad weather: the chance is multiplied by **1.5** at night (`ChanceAtNight`), **1.5** in a storm (`ChanceInStorm`) and **1.5** in fog or mist (`ChanceInFog`), so a foggy night more than doubles it. The cooldown starts only when a Nail Ship is sent, and the order to raise it goes to whichever machine owns your ship.
 
-When one comes, a **horn** sounds near your ship and everyone aboard sees *Sails on the horizon! A Nail Ship comes for you.* The Nail Ship appears **180 m** away (`SpawnDistance`) in the quarter ahead of you, in deep water, facing your ship. It has no helmsman and no player aboard: its crew sails it.
+When one comes, a **horn** sounds near your ship and everyone aboard is told where it is, for example *Sails on the horizon, off the starboard bow! A Nail Ship comes for you.* (dead ahead, off the port or starboard bow, to port or starboard, off a quarter, or astern). The place is pinned on your map as *Nail Ship sighted* for **90 seconds** (`SightingPinSeconds`, 0 for no pin). The Nail Ship appears **180 m** away (`SpawnDistance`) in the quarter ahead of you, in deep water, facing your ship. It has no helmsman and no player aboard: its crew sails it.
 
 A [Lookout](navigation.md#what-exploration-gives) shows it as a sea monster. It never shows on a [Harbour Anchor](ships.md)'s map, it cannot be pushed, moored or taken apart with the Hammer, and the Kraken does not rise beside it.
 
@@ -38,19 +38,29 @@ The crew depends on how far the world has come. Each tier belongs to a global ke
 | Bonemass | 3 Draugr and 2 Draugr Archers |
 | Moder | 3 Draugr, 2 Draugr Archers and 1 Draugr Elite |
 | Yagluth | 3 Fulings, 2 Fuling Archers and 1 Fuling Brute |
+| The Queen | 4 Draugr Elites, 3 Draugr Archers and 1 Fuling Brute, all at least one star |
+| Fader | 4 Charred Warriors, 2 Charred Marksmen and 1 Charred Warlock, all at least one star |
 
-Each extra player aboard your ship adds **1 more warrior** (`CrewPerExtraPlayer`). Players counted are those within 60 m of your ship. A creature with *Ranged* or *Archer* in its prefab name is an archer; the others fight in melee. The crew are ordinary creatures of their kind, with stars rolled as for any other spawn, and they hunt players.
+Each extra player aboard your ship adds **1 more warrior** (`CrewPerExtraPlayer`). Players counted are those within 60 m of your ship. A creature with *Ranged*, *Archer* or *Mage* in its prefab name shoots from its post; the others fight in melee. The crew are ordinary creatures of their kind, with stars rolled as for any other spawn, and they hunt players. From the Queen on, every crew member is at least level 2, one star (`CrewLevels`).
 
-The Nail Ship has **1200 health** (`HullHealth`). It takes pierce damage in full, so arrows and ballista bolts hurt it, is weak to fire and shrugs off chop, pickaxe, poison and spirit damage. It is not indestructible.
+The Nail Ship has **1200 health** (`HullHealth`), and more as the world goes on (`HullTiers`): ×1.25 after Moder (1500), ×1.5 after Yagluth (1800), ×2 after the Queen (2400) and ×2.5 after Fader (3000). It takes pierce damage in full, so arrows and ballista bolts hurt it, is weak to fire and shrugs off chop, pickaxe, poison and spirit damage. It is not indestructible.
+
+An older config file that still has the crew list of earlier versions (which ended at Yagluth) is given the new one when the game starts; a list you have changed is kept.
 
 ## The fight
 
-1. **Approach.** It sails at full sail with the wind straight behind it (`Tailwind`), aiming ahead of where you are going. It steers round shallows and rocks, and stops if it finds no clear way.
-2. **Broadside.** Within about 38 m (1.5 × `BroadsideDistance`) it turns and lies alongside at half sail, **25 m** off one side of your ship (chosen at random). Its archers shoot, and its warriors wait on its deck. It sails faster again if you pull more than 50 m away.
-3. **Boarding.** After **40 seconds** (`BroadsideSeconds`, 0 means never) it closes in until the gap is about 4 m. Then, every **4 seconds** (`BoardIntervalSeconds`), the next of its warriors leaps across onto your deck, one at a time and in number order, once he is within **6 m** (`BoardDistance`) of it. Once he is aboard he is an ordinary creature on your ship. A ship with only archers left never boards.
+1. **Approach.** It sails at full sail with the wind straight behind it (`Tailwind`), aiming ahead of where you are going. It steers round shallows and rocks; where nothing ahead is clear it turns about at slow speed, and where nothing at all is clear it backs off.
+2. **Broadside.** Within about 38 m (1.5 × `BroadsideDistance`) it turns and lies alongside, **25 m** off one side of your ship. It takes the side it comes from, unless fewer of your crew stand at the other rail. It aims a little ahead of a moving ship so it comes up level with it, and then matches your speed: full sail when it falls behind, half sail when level, no sail when it has run past. Its archers shoot, and its warriors wait on its deck. It sails at full sail again whenever you are more than 50 m away.
+3. **Boarding.** After **40 seconds** alongside (`BroadsideSeconds`, 0 means never) it closes in until the gap is about 4 m. Then, every **4 seconds** (`BoardIntervalSeconds`), the next of its warriors leaps across onto your deck, in number order, once he is within **6 m** (`BoardDistance`) of it. From Yagluth on, **two** leap at a time (`LeapTiers`). Once he is aboard he is an ordinary creature on your ship. A ship with only archers left never boards.
 4. **Flee.** When only **25%** of its crew is left (`FleeCrewShare`) or **20%** of its hull (`FleeHullShare`), it turns and runs at full sail for good, and everyone within 100 m is told *The Nail Ship turns and runs.* A fleeing ship gives no prize unless you catch it and kill the crew.
 
+If you get more than **75 m** away (3 × `BroadsideDistance`) while it lies alongside or boards, it goes back to the approach at full sail, and its 40 seconds start over when it is alongside again. A ship that is kept from you by land or shallows for **45 seconds** (`StuckSeconds`, 0 for never) without getting any nearer gives up: *The Nail Ship cannot reach you and turns away.* It then flees like a beaten ship. Hiding in a shallow bay is a way out, but not a way to shoot a stranded raider to pieces.
+
+The time it has spent in each step is kept in world time in the ship's data, so the boarding does not start over when another player's machine takes over the ship.
+
 While nobody is on a Nail Ship's deck, its crew keep to their posts. Archers shoot from where they stand and warriors wait for their turn. If you leap aboard, the warriors fight you, but one who walks off the deck is put back.
+
+**The crew mends its ship.** Every **10 seconds** (`CrewRepairSeconds`, 0 for never), while a crew member is still aboard, the crew puts out one fire on its deck or, if none burns, patches one hole. A patch closes the hole but does not give back hull health. Sweep the deck, or keep the fire and the bolts coming faster than they can mend.
 
 The helm of a Nail Ship stays shut (*The dead still hold the helm.*) and so does its hold (*The crew guards the hold.*) while its crew lives. You cannot use the hold for crafting either.
 
@@ -81,7 +91,7 @@ When the last of the crew is dead, the Nail Ship is yours:
 - The hull shows *Prize: sinks in N min*. After **10 minutes** (`PrizeMinutes`, world time) the nails give way and it sinks. The hold drops as a **cargo crate**.
 - A prize at sea is not kept in the world. If everyone sails far away, it is gone with its hold.
 
-The hold holds **4 draws** from a loot list (`Loot`, `LootRolls`): by default coins, iron, chain, withered bone, amber, amber pearls, rubies, Ship Bolts and a draugr trophy. By chance (**35%**, `RaidChartChance`) it also holds a **Raid Chart**.
+The hold holds **4 draws** from a loot list (`Loot`, `LootRolls`): by default coins, iron, chain, withered bone, amber, amber pearls, rubies, Ship Bolts and a draugr trophy. Later in the world the hold carries the goods of the latest biome instead (`LootTiers`): silver, obsidian, wolf pelts and freeze glands after Moder; black metal, linen thread, tar and needles after Yagluth; black marble, eitr, Yggdrasil wood, carapace and sap after the Queen; flametal, charred bones, charred skulls and molten cores after Fader; each with more coins, rubies and Ship Bolts. By chance (**35%**, `RaidChartChance`) it also holds a **Raid Chart**.
 
 If you sink the hull instead, the deed counts too and the hold drops as a cargo crate, but the crew goes down with the ship and leaves no loot.
 
@@ -97,10 +107,12 @@ A fleet is a Nail Ship encounter that the server has made bigger, so everything 
 |---|---|---|
 | Moder | 35% | 2 |
 | Yagluth | 50% | 3 |
+| The Queen | 65% | 3 |
+| Fader | 80% | 3 |
 
-The last key that is set decides. If the roll fails, or no key is set, a lone Nail Ship comes as before. With `Enabled` off, only lone ships come.
+The last key that is set decides. If the roll fails, or no key is set, a lone Nail Ship comes as before. With `Enabled` off, only lone ships come. An older config file that still has the two tiers of earlier versions is given the new four when the game starts.
 
-The horn sounds and everyone aboard sees *A fleet on the horizon! The Nail Ships come in force.* The flagship appears at the usual spawn distance, and the escorts at their places in the wedge behind it, in deep water: an escort with no deep water at its place is left out, so a fleet can be a ship smaller than the server chose. Every ship has the crew a lone Nail Ship has, including the extra warriors for the players aboard your ship, and the escorts are plain Nail Ships.
+The horn sounds and everyone aboard is told where the fleet is, for example *A fleet on the horizon, dead ahead! The Nail Ships come in force.* The flagship appears at the usual spawn distance, and the escorts at their places in the wedge behind it, in deep water: an escort with no deep water at its place is left out, so a fleet can be a ship smaller than the server chose. Every ship has the crew a lone Nail Ship has, including the extra warriors for the players aboard your ship, and the escorts are plain Nail Ships.
 
 ### The wedge
 
@@ -122,7 +134,7 @@ An escort holds the wedge only while the flagship is loaded on the machine that 
 The **Nail Flagship** is a Nail Ship with:
 
 - a **blood-red sail**;
-- a stronger hull: **2000 health** (`FlagshipHullHealth`), against 1200;
+- a stronger hull: **2000 health** (`FlagshipHullHealth`), against 1200, and as much more as a Nail Ship gets from `HullTiers`;
 - a bigger crew: the tier's crew, **2 more warriors** (`FlagshipExtraCrew`) of the tier's first warrior kind, and the jarl. Every member is at least **level 2** (one star, `FlagshipCrewLevel`);
 - the **ballista on its bow** always, whatever `NailBallistaKey` says (`NailBallista` still switches it off);
 - a fuller hold: **4 more draws** from the loot list (`FlagshipLootRolls`, 8 in all by default) and always a **Raid Chart** (`FlagshipRaidChart`).
@@ -148,6 +160,10 @@ The escorts turn and run, at full sail and for good, when:
 - **the flagship is taken or sunk**, or gives up and sails out of sight (`FleeWhenFlagshipFalls`).
 
 A running escort says *The fleet breaks and runs!* A flagship that only flees because its own crew or hull is low does not break the morale: the escorts leave the wedge and fight on. An escort that a [grapnel rope](ships.md#the-ship-ballista) binds still cannot run: it keeps alongside and sends its warriors across.
+
+### The jarl's horn
+
+Kill the jarl quickly. When a flagship has fought alongside for **3 minutes** (`ReinforceMinutes`, 0 for never) and its jarl still lives, he blows his horn: it is heard far over the sea, everyone within 100 m of the flagship sees *The jarl blows his horn! Another Nail Ship answers.*, and one more Nail Ship appears about 145 m from your ship, from any side, with the flagship's crew tier. It joins the fleet: it lies alongside on the first escort's side, but as far out as the second escort, and it runs with the rest when the morale breaks. The horn sounds once per fleet.
 
 Breaking a fleet is a [saga](saga.md) deed, **A Nail fleet was broken**, given once when the flagship is taken or sunk, besides the deed for the ship itself (see [Saga deeds](#saga-deeds)).
 
@@ -201,12 +217,28 @@ A [Pitch Pot](#the-pitch-pot) that lands on a deck sets it alight, wherever it c
 
 ## The Nail Ship fights back
 
-A Nail Ship has two weapons besides its crew's arrows and swords:
+A Nail Ship has more weapons than its crew's arrows and swords:
 
 - **Pitch pots.** While it lies alongside or closes in to board, a living crew member still aboard throws a pot at your deck every **12** seconds (`PitchPotSeconds`), within **35 m** (`PitchPotRange`). It aims beside one of the players on your deck, or anywhere on it if nobody stands there, and leads a moving ship. The pot belongs to the thrower, so it does not hurt his own side. `PitchPots` switches it off.
 - **A ballista.** Once the world has reached `NailBallistaKey` (**Moder** is slain, `defeated_dragon`, by default; empty for always) the Nail Ship carries a ballista on its bow (`NailBallista` switches it off entirely). It turns towards your ship, and while the Nail Ship approaches, lies alongside or closes in to board it shoots a Ship Bolt at your hull at the waterline every **10** seconds (`NailBallistaSeconds`), within **60 m** (`NailBallistaRange`), off by up to **3** degrees (`NailBallistaAccuracy`). The bolt has the damage of a Ship Bolt (`[Ships.Ballista] Damage`, 80), so every hit that lands knocks a [hole](#holes) in your hull. Nobody owns the bolt, so it hurts whatever it hits. A [flagship](#the-flagship) always carries the ballista, whatever `NailBallistaKey` says.
 
 If the Nail Ship is bound to your ship by a [grapnel rope](ships.md#the-ship-ballista), it cannot flee: it keeps alongside and sends its warriors across.
+
+### Grapnels
+
+While it lies alongside or closes in to board, a living crew member throws a **grapnel** at your rail every **40 seconds** (`GrapnelSeconds`), when the two rails are within **30 m** (`GrapnelRange`). Everyone aboard both ships sees *A grapnel bites into the rail! Cut the rope, or they will haul you alongside.* The rope is the same as a Grapnel Bolt's: it pulls the two ships together (`[Ships.Ballista] GrappleLength`, `GrapplePull`), snaps when they are pulled more than 60 m apart and frays after 90 seconds. A ship that is bound throws no other rope, and a bound Nail Ship cannot flee or give up.
+
+**Cut it** at either end: look at the end of the rope on your own rail and press **Use** (*Grapnel rope, Cut the rope*). Off with `Grapnels`; `GrapnelKey` sets a global key from which they are thrown (empty: always).
+
+### The ram
+
+From Moder on (`RamKey`, `defeated_dragon`), **3 in 10** Nail Ships (`RamChance`) carry an iron-shod **ram** on the bow: the same stem as the [Ram Prow](ships.md#the-ram-prow). A ship that lies still or sails slower than **2.5 m/s** (`RamTargetSpeed`) and is **15 to 60 m** away (`RamRange`) is charged: *The Nail Ship turns to ram you!* It sails at full sail straight at you, and its bow knocks a hole in your hull and hurts it as a Ram Prow does (`[Ships.Ram]` settings). The charge ends when it strikes, after 15 seconds, or when you get up speed, and it then comes alongside again. It charges again after **45 seconds** (`RamSeconds`). A ram never strikes another Nail Ship. Keep way on the ship and the ram has nothing to aim at.
+
+### Fire ships
+
+From Yagluth on (`FireShipKey`, `defeated_goblinking`), **1 in 4** encounters (`FireShipChance`), lone ships, fleets and escort waves alike, bring a **Fire Ship** along: a Nail Ship with no crew, its deck ablaze, that comes from its own bearing and sails at full sail straight for you. When it is within 120 m you are warned: *A fire ship comes at you! Sink it before it strikes.* If it comes alongside it strikes: the blow burns your hull, and it lights **3** fires (`FireShipFires`) on your deck one after the other before it goes down (*The fire ship strikes! The deck is ablaze.*). See [Fire on deck](#fire-on-deck).
+
+It has only **0.4** of a Nail Ship's hull (`FireShipHullShare`), so a few bolts sink it; it carries no ballista, no hold and no deed. Left alone it burns down and sinks by itself after **90 seconds** (`FireShipSeconds`). Outrun it, or sink it before it reaches you.
 
 ## The Pitch Pot
 
@@ -338,17 +370,21 @@ Slaying the [Draugr Jarl](#the-draugr-jarl) is a deed too: he is one of the crea
 - The crew are owned apart from the ship, so a crew member shot by one player and a ship steered by another still work together.
 - The aim of a ballista is kept on the gunner, so nobody has to own the ship to shoot.
 - The prize timer uses world time, so it runs also while nobody is near.
+- The ship's state and the time it began, a ram's cooldown, a fire ship's burning time and the hull's full health are kept in the ship's data, so a new owner carries on where the old one stopped, and every machine shows the same ram, the same burning deck and the same share of health.
+- A grapnel thrown by a Nail Ship's crew is made fast by the Nail Ship's owner on its own ship, as a Grapnel Bolt's rope is; the owner of your ship pulls your ship, and you cut the rope through the owner of the Nail Ship, who checks that you stand near either ship.
+- The jarl's horn is raised by the flagship's owner, and the horn is sounded on every machine near the flagship.
+- The weather in an encounter request comes from the client that asks; the server adds the night it knows itself. A client can only raise the chance for its own ship by it.
 - Holes, water, fires, a torn sail and a grapnel rope are kept on the ship, and its owner decides. Patching, bailing, stamping out a fire and cutting a rope are asked of the owner, who checks that you stand near the ship. The flood is counted in world time, so it goes on if the ship changes owner.
 
 ## Console
 
-`whitehilt_seabattle [status|summon|fleet [2|3]|raid|escort [wave]|hole [n]]`
+`whitehilt_seabattle [status|summon [fire] [ram]|fleet [2|3] [fire] [ram]|raid|escort [wave]|hole [n]]`
 
 | Command | Who | What it does |
 |---|---|---|
-| `status` | Everyone | Shows the conditions for a Nail Ship where you are (on a ship, owner, players aboard, chance, ocean, depth, nearest land, key) and the Nail Ships loaded here. Each of those shows its state, whether it sails `alone` or in a fleet (`fleet <id>, flagship` or `escort 1`/`escort 2`), its crew, its distance and whether you own it |
-| `summon` | Admins | Sends a Nail Ship after the ship you are aboard, with no dice, no cooldown, no key and no ocean test. It needs deep water in the quarter ahead; the machine that owns your ship raises it. With no crew key set in the world, the first crew tier is used. It starts the cooldown |
-| `fleet [2\|3]` | Admins | Sends a whole [fleet](#fleets) of 2 ships (3 with `fleet 3`; other numbers are held to 2 to 3) after your ship, on the same terms as `summon`: no dice, no cooldown, no key and no ocean test, `FleetTiers` ignored, the first crew tier when no crew key is set. It starts the cooldown. With `[SeaBattles.Fleets] Enabled` off it says so and sends nothing |
+| `status` | Everyone | Shows the conditions for a Nail Ship where you are (on a ship, owner, players aboard, chance with the weather, ocean, depth, nearest land, key) and the Nail Ships loaded here. Each of those shows its state, whether it is a fire ship or carries a ram, whether it sails `alone` or in a fleet (`fleet <id>, flagship` or `escort 1`/`escort 2`/`escort 3`), its crew, its hull, its distance and whether you own it |
+| `summon [fire] [ram]` | Admins | Sends a Nail Ship after the ship you are aboard, with no dice, no cooldown, no key and no ocean test. It needs deep water in the quarter ahead; the machine that owns your ship raises it. With no crew key set in the world, the first crew tier is used. It starts the cooldown. `fire` brings a [fire ship](#fire-ships) along and `ram` gives the Nail Ship a [ram](#the-ram), whatever their keys and chances say |
+| `fleet [2\|3] [fire] [ram]` | Admins | Sends a whole [fleet](#fleets) of 2 ships (3 with `fleet 3`; other numbers are held to 2 to 3) after your ship, on the same terms as `summon`: no dice, no cooldown, no key and no ocean test, `FleetTiers` ignored, the first crew tier when no crew key is set. It starts the cooldown. `fire` and `ram` work as for `summon`; the ram goes on the flagship. With `[SeaBattles.Fleets] Enabled` off it says so and sends nothing |
 | `raid` | Admins | Makes a draugr harbour on the coast nearest you, 50 m to `MaxDistance` away. You need not have explored it, and `MaxActive` still counts. The console says where it is and a pin is set |
 | `escort` | Admins | Calls a [trading ship](#escorts) for the ship you are aboard, with no contract, no key, no cooldown and no check for a merchant already on its way. The same server checks and the same port search apply (open sea, a line of deep water), and the ship is raised beside yours. It needs `[SeaBattles.Escorts] Enabled` and `[SeaBattles] Enabled` |
 | `escort wave` | Admins | Sends the next wave of Nail Ships against the trading ship nearest to you at once, whatever the progress. It counts as the next of the planned waves. The first crew tier is used if the world has no crew key |
@@ -370,9 +406,11 @@ All admin only, synced from the server. Settings in section `[SeaBattles]`:
 | `MinDepth` | 20 | Least depth of water under your ship, in metres; 5 to 200 |
 | `MinShoreDistance` | 100 | No land within this many metres of your ship; 0 to 500 (0 accepts any shore) |
 | `SpawnDistance` | 180 | Metres from your ship where the Nail Ship appears; 80 to 400 |
-| `CrewTiers` | `defeated_bonemass=Draugr:3,Draugr_Ranged:2; defeated_dragon=Draugr:3,Draugr_Ranged:2,Draugr_Elite:1; defeated_goblinking=Goblin:3,GoblinArcher:2,GoblinBrute:1` | The crew per global key: `key=Prefab:count,Prefab:count; next key=...`. The last key that is set wins. A name with *Ranged* or *Archer* is an archer. Unknown prefabs are skipped with a warning |
+| `CrewTiers` | `defeated_bonemass=Draugr:3,Draugr_Ranged:2; defeated_dragon=Draugr:3,Draugr_Ranged:2,Draugr_Elite:1; defeated_goblinking=Goblin:3,GoblinArcher:2,GoblinBrute:1; defeated_queen=Draugr_Elite:4,Draugr_Ranged:3,GoblinBrute:1; defeated_fader=Charred_Melee:4,Charred_Archer:2,Charred_Mage:1` | The crew per global key: `key=Prefab:count,Prefab:count; next key=...`. The last key that is set wins. A name with *Ranged*, *Archer* or *Mage* shoots from its post. Unknown prefabs are skipped with a warning. The list of earlier versions is replaced by this one when the game starts |
+| `CrewLevels` | `defeated_queen=2; defeated_fader=2` | Least level (stars + 1) of the crew per global key, `key=level; ...`; the last key that is set wins; none when no key is set |
 | `CrewPerExtraPlayer` | 1 | Extra warriors per extra player aboard; 0 to 5 |
-| `HullHealth` | 1200 | Health of a Nail Ship's hull; 100 to 20000. Applies after a restart |
+| `HullHealth` | 1200 | Health of a Nail Ship's hull before `HullTiers`; 100 to 20000. Applies to new Nail Ships |
+| `HullTiers` | `defeated_dragon=1.25; defeated_goblinking=1.5; defeated_queen=2; defeated_fader=2.5` | Factor on `HullHealth` and `FlagshipHullHealth` per global key, `key=factor; ...`; the last key that is set wins; 1 when no key is set |
 | `SailForceFactor` | 1 | Multiplier on the longship's sail force; 0.2 to 5. Applies after a restart |
 | `Tailwind` | true | Nail Ships under sail always have the wind behind them |
 | `PursuitEnabled` | true | A hunted ship is held below the Nail Ships' speed at first, and while raiders stand on its deck |
@@ -383,15 +421,23 @@ All admin only, synced from the server. Settings in section `[SeaBattles]`:
 | `BroadsideSeconds` | 40 | Seconds alongside before it closes in to board; 0 to 300. 0: it never boards |
 | `BoardDistance` | 6 | Metres within which its warriors leap across; 3 to 15 |
 | `BoardIntervalSeconds` | 4 | Seconds between two warriors leaping; 1 to 30 |
+| `LeapTiers` | `defeated_goblinking=2` | How many warriors leap at once per global key, `key=count; ...` (1 or 2); the last key that is set wins; 1 when no key is set |
 | `FleeCrewShare` | 0.25 | It flees when this share of its crew is left; 0 to 1 |
 | `FleeHullShare` | 0.2 | It flees when this share of its hull health is left; 0 to 1 |
+| `StuckSeconds` | 45 | Seconds land or shallows may keep a Nail Ship from its target, with no progress, before it gives up and turns away; 0 to 600. 0: never |
+| `CrewRepairSeconds` | 10 | Seconds between two repairs by a Nail Ship's crew (one fire put out or one hole patched); 0 to 300. 0: never |
 | `DespawnRange` | 300 | Metres. With no player this close it sinks out of sight; 100 to 1000 |
 | `DespawnSeconds` | 60 | Seconds without a player in range before it goes; 10 to 600 |
 | `PrizeMinutes` | 10 | Minutes a Nail Ship without a crew floats before it sinks; 1 to 60 |
 | `Loot` | `Coins:40-120:10, Iron:3-8:6, Chain:1-2:4, WitheredBone:4-8:6, Amber:1-2:4, AmberPearl:1-2:3, Ruby:1-2:2, WhiteHiltShipBolt:5-10:6, TrophyDraugr:1-1:2` | The hold's loot list, `Item:min-max:weight` separated by commas, as in `[Treasure] Loot` |
 | `LootRolls` | 4 | Draws from the loot list; 0 to 20 |
+| `LootTiers` | one list each for `defeated_dragon`, `defeated_goblinking`, `defeated_queen` and `defeated_fader` | The hold's loot list per global key, `key=Item:min-max:weight, ...; next key=...`, in place of `Loot` once the key is set; the last key that is set wins |
 | `RaidChartChance` | 0.35 | Chance that the hold carries a Raid Chart; 0 to 1 |
 | `BoardingLeapRange` | 10 | Metres you can leap from deck to deck; 3 to 25 |
+| `ChanceAtNight` | 1.5 | Factor on the chance per minute at night; 0 to 5 |
+| `ChanceInStorm` | 1.5 | Factor on the chance per minute in a storm; 0 to 5 |
+| `ChanceInFog` | 1.5 | Factor on the chance per minute in fog or mist; 0 to 5 |
+| `SightingPinSeconds` | 90 | Seconds the place where Nail Ships were sighted stays on your map; 0 to 600. 0: no pin |
 
 Settings in section `[SeaBattles.Raids]`:
 
@@ -412,11 +458,11 @@ Settings in section `[SeaBattles.Fleets]` (see [Fleets](#fleets)):
 | Setting | Default | What it does |
 |---|---|---|
 | `Enabled` | true | Nail Ships can come as fleets. Off: only lone ships come |
-| `FleetTiers` | `defeated_dragon=2:35; defeated_goblinking=3:50` | The fleet size per global key: `key=size:chance%; next key=...`. Size is 1 to 3 ships and the chance, in percent, may be left out (always). The last key that is set wins; if its roll fails, or no key is set, one ship comes |
+| `FleetTiers` | `defeated_dragon=2:35; defeated_goblinking=3:50; defeated_queen=3:65; defeated_fader=3:80` | The fleet size per global key: `key=size:chance%; next key=...`. Size is 1 to 3 ships and the chance, in percent, may be left out (always). The last key that is set wins; if its roll fails, or no key is set, one ship comes. The two tiers of earlier versions are replaced by these when the game starts |
 | `FormationSpacing` | 30 | Metres between the ships in the wedge; 10 to 80 |
 | `FormationBreak` | 80 | The escorts leave the wedge when the flagship is this many metres from its target, or no longer approaches; 20 to 300 |
 | `EscortSpread` | 1.6 | An escort on the same side as the flagship keeps this many times the broadside distance; 1 to 3 |
-| `FlagshipHullHealth` | 2000 | Health of the flagship's hull; 100 to 20000. Applies after a restart |
+| `FlagshipHullHealth` | 2000 | Health of the flagship's hull before `[SeaBattles] HullTiers`; 100 to 20000. Applies to new flagships |
 | `FlagshipExtraCrew` | 2 | Extra warriors on the flagship besides the jarl; 0 to 10 |
 | `FlagshipCrewLevel` | 2 | Least level (stars + 1) of the flagship's crew; 1 to 6 |
 | `JarlLevels` | `defeated_dragon=3; defeated_goblinking=4; defeated_queen=5; defeated_fader=6` | Level (stars + 1) of the jarl per global key, `key=level; ...`; the last key that is set wins, levels 1 to 6; no key set: the first entry's level |
@@ -424,6 +470,7 @@ Settings in section `[SeaBattles.Fleets]` (see [Fleets](#fleets)):
 | `FlagshipRaidChart` | true | The flagship's hold always carries a Raid Chart |
 | `FleeWhenFlagshipFalls` | true | The escorts flee when the flagship is taken, sunk or gone |
 | `FleeWhenJarlFalls` | true | The escorts flee when the jarl is slain |
+| `ReinforceMinutes` | 3 | Minutes a flagship fights alongside with its jarl alive before he blows his horn and one more Nail Ship comes, once per fleet; 0 to 60. 0: never |
 
 Settings in section `[SeaBattles.Escorts]` (see [Escorts](#escorts)):
 
@@ -492,7 +539,21 @@ Settings in section `[SeaBattles.Weapons]` (the Nail Ships' weapons and the Pitc
 | `NailBallistaSeconds` | 10 | Seconds between two shots of a Nail Ship's ballista; 2 to 120 |
 | `NailBallistaRange` | 60 | Metres within which a Nail Ship's ballista shoots; 10 to 150 |
 | `NailBallistaAccuracy` | 3 | Spread of a Nail Ship's ballista, in degrees; 0 to 20 |
+| `Grapnels` | true | Nail Ship crews throw [grapnels](#grapnels) at the ship they fight |
+| `GrapnelKey` | (empty) | Global key from which they throw grapnels; empty for always |
+| `GrapnelSeconds` | 40 | Seconds between two grapnels from one Nail Ship; 5 to 300 |
+| `GrapnelRange` | 30 | Metres between the rails within which a grapnel is thrown; 5 to 60 |
+| `RamChance` | 0.3 | Chance that a Nail Ship carries a [ram](#the-ram); 0 to 1 |
+| `RamKey` | defeated_dragon | Global key from which Nail Ships may carry a ram; empty for always |
+| `RamSeconds` | 45 | Seconds between two charges of one Nail Ship; 10 to 600 |
+| `RamTargetSpeed` | 2.5 | A ship no faster than this, in m/s, is charged; 0 to 15 |
+| `RamRange` | 60 | Metres within which a Nail Ship with a ram charges (and at least 15); 20 to 150 |
+| `FireShipChance` | 0.25 | Chance that a [fire ship](#fire-ships) comes along with an encounter; 0 to 1 |
+| `FireShipKey` | defeated_goblinking | Global key from which fire ships come; empty for always |
+| `FireShipSeconds` | 90 | Seconds a fire ship burns before it sinks by itself; 20 to 600 |
+| `FireShipFires` | 3 | Fires a fire ship lights on the deck it strikes; 1 to 10 |
+| `FireShipHullShare` | 0.4 | Share of a Nail Ship's hull health a fire ship has; 0.05 to 2 |
 
-The Chain Shot, the Grapnel Bolt and the rope are set in `[Ships.Ballista]`, and the Ram Prow in `[Ships.Ram]`, both on the [Ships](ships.md#config) page.
+The Chain Shot, the Grapnel Bolt and the rope are set in `[Ships.Ballista]`, and the Ram Prow in `[Ships.Ram]`, both on the [Ships](ships.md#config) page. The rope a Nail Ship's grapnel makes fast and the blow of its ram follow those settings too.
 
 The harbours' spacing, their clearance from buildings and their biomes come from `[Treasure]` (`MinTreasureDistance`, `MinBaseDistance`, `AllowedBiomes`), see [Treasure maps](treasure.md). The deeds' renown is `RenownSeaBattle`, `RenownRaid`, `RenownFleet` and `RenownEscort` in `[Saga]`. The Draugr Jarl's own settings are in `[Monsters.DraugrJarl]`, see [Monsters](monsters.md#config). The ballista and the bolts have their own section, `[Ships.Ballista]`, on the [Ships](ships.md) page.

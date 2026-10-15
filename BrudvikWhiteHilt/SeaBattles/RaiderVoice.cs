@@ -54,6 +54,23 @@ public class RaiderVoice : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The number of the taunt a crew member shouts: the second one mocks a merchant and is only shouted at one; the first
+    /// and the third are for any ship.
+    /// </summary>
+    /// <param name="atMerchant">Whether the crew fights a merchant's ship.</param>
+    /// <param name="roll">A random number from 0 up to but not including 1.</param>
+    /// <returns>1, 2 or 3.</returns>
+    public static int TauntNumber(bool atMerchant, float roll)
+    {
+        if (atMerchant)
+        {
+            return 1 + Mathf.Clamp(Mathf.FloorToInt(roll * 3f), 0, 2);
+        }
+
+        return roll < 0.5f ? 1 : 3;
+    }
+
     private void Start()
     {
         voice = WhiteHiltSound.AddVoice(gameObject);
@@ -89,11 +106,11 @@ public class RaiderVoice : MonoBehaviour
         BaseAI ai = crew.Character.GetBaseAI();
         if (ai != null && ai.IsAlerted() && Time.time >= nextOwn && Random.value < ShoutChance)
         {
-            Shout(Random.value < 0.5f ? "attack" : "taunt");
+            Shout(Random.value < 0.5f ? "attack" : "taunt", TauntNumber(crew.FightsMerchant, Random.value));
         }
     }
 
-    private void Shout(string kind)
+    private void Shout(string kind, int taunt = 0)
     {
         if (Time.time - lastShout < AnyPause)
         {
@@ -102,7 +119,8 @@ public class RaiderVoice : MonoBehaviour
 
         lastShout = Time.time;
         nextOwn = Time.time + OwnPause;
-        string token = $"$whitehilt_raider_{kind}{Random.Range(1, 4)}";
+        int number = kind == "taunt" && taunt > 0 ? taunt : Random.Range(1, 4);
+        string token = $"$whitehilt_raider_{kind}{number}";
         if (Chat.instance != null)
         {
             Chat.instance.SetNpcText(gameObject, Vector3.up * BubbleHeight, 30f, BubbleTime, string.Empty, token, false);

@@ -555,15 +555,16 @@ public class EscortService : MonoBehaviour
 
         int bonus = EncounterRules.CrewBonus(SeaBattleService.PlayersNear(zdo.GetPosition()), SeaBattleSettings.CrewPerExtraPlayer.Value);
         int size = SeaBattleService.PickFleetSize();
-        Jotunn.Logger.LogInfo($"Escort: wave {index + 1} against the merchant: {(size > 1 ? $"a fleet of {size}" : "one ship")}, tier {tier.Key}, {bonus} extra crew");
-        ZRoutedRpc.instance.InvokeRoutedRPC(zdo.GetOwner(), SpawnRpc, zdo.m_uid, index, tier.Index, bonus, size);
+        bool fireShip = SeaBattleService.PickFireShip();
+        Jotunn.Logger.LogInfo($"Escort: wave {index + 1} against the merchant: {(size > 1 ? $"a fleet of {size}" : "one ship")}{(fireShip ? " and a fire ship" : string.Empty)}, tier {tier.Key}, {bonus} extra crew");
+        ZRoutedRpc.instance.InvokeRoutedRPC(zdo.GetOwner(), SpawnRpc, zdo.m_uid, index, tier.Index, bonus, EncounterRules.PackShips(size, fireShip));
         return true;
     }
 
     // On the trading ship's owner: raises the Nail Ships of a wave against it, as a natural encounter would, but with the
     // merchant as the target. Only the server may order this, and only for the next wave of a ship this machine owns. The
     // wave is counted when the ships are up; if there was no deep water for them the owner asks again.
-    private void RPC_Spawn(long sender, ZDOID shipId, int index, int tierIndex, int crewBonus, int size)
+    private void RPC_Spawn(long sender, ZDOID shipId, int index, int tierIndex, int crewBonus, int packed)
     {
         if (sender != ZRoutedRpc.instance.GetServerPeerID())
         {
@@ -578,7 +579,8 @@ public class EscortService : MonoBehaviour
             return;
         }
 
-        RaiderShip lead = RaiderShip.SpawnFleet(trade.Ship, Mathf.Max(0, crewBonus), tiers[tierIndex], Mathf.Clamp(size, 1, FleetRules.MaxSize));
+        int size = EncounterRules.UnpackShips(packed, out bool fireShip, out bool ram);
+        RaiderShip lead = RaiderShip.SpawnFleet(trade.Ship, Mathf.Max(0, crewBonus), tiers[tierIndex], Mathf.Clamp(size, 1, FleetRules.MaxSize), fireShip, ram);
         if (lead == null)
         {
             return;

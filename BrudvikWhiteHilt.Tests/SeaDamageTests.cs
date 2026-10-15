@@ -1122,6 +1122,7 @@ public class WeaponRulesTests
     [InlineData(RaiderState.Flee, false)]
     [InlineData(RaiderState.Prize, false)]
     [InlineData(RaiderState.Moored, false)]
+    [InlineData(RaiderState.Ram, false)]
     public void PotsAreThrownAlongsideAndWhileBoarding(RaiderState state, bool expected)
     {
         Assert.Equal(expected, WeaponRules.CanThrow(state));
@@ -1131,12 +1132,57 @@ public class WeaponRulesTests
     [InlineData(RaiderState.Approach, true)]
     [InlineData(RaiderState.Broadside, true)]
     [InlineData(RaiderState.Board, true)]
+    [InlineData(RaiderState.Ram, true)]
     [InlineData(RaiderState.Flee, false)]
     [InlineData(RaiderState.Prize, false)]
     [InlineData(RaiderState.Moored, false)]
     public void TheBallistaShootsInEveryFightingState(RaiderState state, bool expected)
     {
         Assert.Equal(expected, WeaponRules.CanShoot(state));
+    }
+
+    [Theory]
+    [InlineData(RaiderState.Approach, false)]
+    [InlineData(RaiderState.Broadside, true)]
+    [InlineData(RaiderState.Board, true)]
+    [InlineData(RaiderState.Ram, false)]
+    [InlineData(RaiderState.Flee, false)]
+    [InlineData(RaiderState.Prize, false)]
+    [InlineData(RaiderState.Moored, false)]
+    public void GrapnelsAreThrownAlongsideAndWhileBoarding(RaiderState state, bool expected)
+    {
+        Assert.Equal(expected, WeaponRules.CanGrapple(state));
+    }
+
+    [Theory]
+    [InlineData(true, false, 0f, 0.99f, true)]
+    [InlineData(false, true, 0.3f, 0.29f, true)]
+    [InlineData(false, true, 0.3f, 0.3f, false)]
+    [InlineData(false, false, 1f, 0f, false)]
+    public void ARamComesWithAnOrderOrWithTheKeyAndTheRoll(bool forced, bool keyReached, float chance, float roll, bool expected)
+    {
+        Assert.Equal(expected, WeaponRules.GetsRam(forced, keyReached, chance, roll));
+    }
+
+    [Fact]
+    public void ARamIsReadyWhenItsCooldownIsOver()
+    {
+        long now = 1_000_000L * TimeSpan.TicksPerSecond;
+
+        Assert.False(WeaponRules.RamReady(false, 0L, now, 45f));
+        Assert.True(WeaponRules.RamReady(true, 0L, now, 45f));
+        Assert.False(WeaponRules.RamReady(true, now - 44L * TimeSpan.TicksPerSecond, now, 45f));
+        Assert.True(WeaponRules.RamReady(true, now - 45L * TimeSpan.TicksPerSecond, now, 45f));
+    }
+
+    [Fact]
+    public void AFireShipBurnsDownAfterItsSeconds()
+    {
+        long lit = 500L * TimeSpan.TicksPerSecond;
+
+        Assert.False(WeaponRules.BurntDown(lit, lit + 89L * TimeSpan.TicksPerSecond, 90f));
+        Assert.True(WeaponRules.BurntDown(lit, lit + 90L * TimeSpan.TicksPerSecond, 90f));
+        Assert.False(WeaponRules.BurntDown(0L, lit, 90f));
     }
 
     [Theory]

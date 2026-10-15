@@ -243,6 +243,11 @@ All patches live in `Patches/`, in folders named after the features they serve. 
 - **Renaming a setting does not lose the player's value.** `WhiteHiltConfig` moves values from old names to new ones
   (`MoveRenamedEntries`) and removes settings that no longer exist, so the config file does not fill up with dead
   entries.
+- **A new default reaches old config files.** BepInEx keeps the value a file already holds, so a list that grows (the
+  Nail Ships' crew and fleet tiers) would never reach a world that started earlier. `WhiteHiltConfig.UpgradeDefault`
+  gives such an entry its new default when it still holds an old one, and leaves a value the admin changed alone.
+- **Settings that grow with the world** are written `key=value; key=value` per global key, and `SeaBattles/TierValues.cs`
+  picks the value of the last key the world has set; the code only ever asks for a number or a text.
 
 > Read next: `Progression/WhiteHiltConfig.cs`, `Progression/ProgressionManager.cs`.
 

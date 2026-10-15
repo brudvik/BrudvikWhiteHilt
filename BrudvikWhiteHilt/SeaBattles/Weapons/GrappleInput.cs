@@ -6,8 +6,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.SeaBattles.Weapons;
 
 /// <summary>
-/// The local player's hands on a grapnel rope: look at the end of the rope on the rail of the ship it was shot from and
-/// press Use to cut it. The end is a point, not an object to hover (a collider on a ship's child would be counted as aboard
+/// The local player's hands on a grapnel rope: look at either end of the rope, on the rail of the ship it was shot from or of
+/// the ship it caught, and press Use to cut it. The end is a point, not an object to hover (a collider on a ship's child would be counted as aboard
 /// by the ship), so the player's line of sight is tested against the point, as <see cref="DeckFireInput"/> does for fires,
 /// and it takes Use the same way: only when nothing else is under the crosshair and no hole or fire is aimed at. Runs only
 /// for the local player, on its own machine.
@@ -25,6 +25,7 @@ public static class GrappleInput
 
     private static readonly List<Vector3> one = new() { Vector3.zero };
     private static GrappleLink aimed;
+    private static Ship aimedShip;
     private static float nextCut;
     private static bool failed;
 
@@ -35,7 +36,7 @@ public static class GrappleInput
     /// <returns>True if the end of a rope on that ship is aimed at.</returns>
     public static bool IsAimedAt(Ship ship)
     {
-        return aimed != null && aimed.Ship == ship;
+        return aimed != null && aimedShip == ship;
     }
 
     /// <summary>
@@ -65,7 +66,7 @@ public static class GrappleInput
     {
         try
         {
-            if (aimed == null || player == null || ShipDamageInput.IsAimedAt(aimed.Ship) || DeckFireInput.IsAimedAt(aimed.Ship))
+            if (aimed == null || player == null || ShipDamageInput.IsAimedAt(aimedShip) || DeckFireInput.IsAimedAt(aimedShip))
             {
                 return;
             }
@@ -94,6 +95,7 @@ public static class GrappleInput
     private static void TickCore(Player player)
     {
         aimed = null;
+        aimedShip = null;
         if (!GrappleLink.Any || player == null || player.IsDead() || !player.TakeInput() || BackpackInput.Typing())
         {
             return;
@@ -101,7 +103,7 @@ public static class GrappleInput
 
         FindAimed(player);
         if (aimed == null || !(ZInput.GetButtonDown("Use") || ZInput.GetButtonDown("JoyUse")) || ShipDamageInput.AltHeld()
-            || ShipDamageInput.HandledFrame == Time.frameCount || !ShipDamageInput.HoverAllows(player, aimed.Ship))
+            || ShipDamageInput.HandledFrame == Time.frameCount || !ShipDamageInput.HoverAllows(player, aimedShip))
         {
             return;
         }
@@ -114,8 +116,8 @@ public static class GrappleInput
         }
     }
 
-    // The nearest rope end to the player that the line of sight passes, over every ship that holds a rope; the camera's
-    // line, as the game's own hover uses, but the reach is measured from the player's eyes.
+    // The nearest rope end to the player that the line of sight passes, over both ends of every rope; the camera's line, as
+    // the game's own hover uses, but the reach is measured from the player's eyes.
     private static void FindAimed(Player player)
     {
         Camera camera = GameCamera.instance != null ? GameCamera.instance.m_camera : null;
@@ -137,19 +139,30 @@ public static class GrappleInput
                 continue;
             }
 
-            Vector3 end = link.HolderPoint;
-            one[0] = end;
-            if (HoleRules.Aimed(one, origin, camera.transform.forward, AimRadius, reach + Vector3.Distance(origin, eye)) < 0)
+            TryEnd(link, link.HolderPoint, link.Ship, origin, camera.transform.forward, eye, reach, ref nearest);
+            if (link.HasPartner)
             {
-                continue;
+                TryEnd(link, link.PartnerPoint, link.Partner, origin, camera.transform.forward, eye, reach, ref nearest);
             }
+        }
+    }
 
-            float distance = Vector3.Distance(eye, end);
-            if (distance <= reach && distance < nearest)
-            {
-                nearest = distance;
-                aimed = link;
-            }
+    // One end of a rope, on the given ship: aimed at when the line of sight passes it within reach and nearer than the best
+    // so far.
+    private static void TryEnd(GrappleLink link, Vector3 end, Ship endShip, Vector3 origin, Vector3 forward, Vector3 eye, float reach, ref float nearest)
+    {
+        one[0] = end;
+        if (HoleRules.Aimed(one, origin, forward, AimRadius, reach + Vector3.Distance(origin, eye)) < 0)
+        {
+            return;
+        }
+
+        float distance = Vector3.Distance(eye, end);
+        if (distance <= reach && distance < nearest)
+        {
+            nearest = distance;
+            aimed = link;
+            aimedShip = endShip;
         }
     }
 }

@@ -50,6 +50,7 @@ public class NailShipWeapons : MonoBehaviour
     private float nextKeyCheck;
     private float nextPot;
     private float nextBolt;
+    private float nextGrapnel;
     private bool warnedPot;
     private bool warnedBolt;
 
@@ -96,7 +97,7 @@ public class NailShipWeapons : MonoBehaviour
 
         RaiderState state = raider.State;
         target = raider.TargetShip;
-        if (!nview.IsOwner() || target == null)
+        if (!nview.IsOwner() || target == null || raider.IsFireShip)
         {
             return;
         }
@@ -110,13 +111,49 @@ public class NailShipWeapons : MonoBehaviour
         {
             TryShootBolt();
         }
+
+        if (WeaponSettings.Grapnels.Value && WeaponRules.CanGrapple(state)
+            && WeaponRules.KeyReached(WeaponSettings.GrapnelKey.Value, key => ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key)))
+        {
+            TryThrowGrapnel();
+        }
+    }
+
+    // A grapnel, every GrapnelSeconds, from a living crew member still aboard: it binds this ship to the target's rail at
+    // once, as a hooked rope thrown across the gap does. The rope pulls the two ships together until a player cuts it at
+    // either end, or it snaps or frays as a ballista's grapnel rope does. A ship that is bound already throws none.
+    private void TryThrowGrapnel()
+    {
+        if (Time.time < nextGrapnel)
+        {
+            return;
+        }
+
+        if (nextGrapnel <= 0f)
+        {
+            nextGrapnel = Time.time + WeaponSettings.GrapnelSeconds.Value * Random.Range(0.5f, 1f);
+            return;
+        }
+
+        GrappleLink link = GrappleLink.Of(ship);
+        if (link == null || GrappleLink.IsBound(ship) || PickThrower() == null
+            || !RaiderDeck.TryDeckPoint(ship, target.transform.position, out Vector3 here)
+            || !RaiderDeck.TryDeckPoint(target, transform.position, out Vector3 there)
+            || !WeaponRules.InRange(Vector3.Distance(here, there), WeaponSettings.GrapnelRange.Value))
+        {
+            nextGrapnel = Time.time + RetrySeconds;
+            return;
+        }
+
+        nextGrapnel = Time.time + WeaponSettings.GrapnelSeconds.Value;
+        link.MakeFast(target, ship.transform.InverseTransformPoint(here), target.transform.InverseTransformPoint(there), "$msg_whitehilt_ship_raider_grapnel");
     }
 
     // Switches the ballista's model on or off with the world's key, on every client; a flagship always has it. A ship whose
     // model found no deck stays without one, and a dedicated server keeps the state without a model.
     private void RefreshBallista()
     {
-        ballistaOn = WeaponRules.BallistaOn(WeaponSettings.NailBallista.Value, raider.IsFlagship,
+        ballistaOn = !raider.IsFireShip && WeaponRules.BallistaOn(WeaponSettings.NailBallista.Value, raider.IsFlagship,
             WeaponRules.KeyReached(WeaponSettings.NailBallistaKey.Value, key => ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key)));
         if (ballista != null && !VisualHelper.IsHeadless && !ballista.PlaceFailed && ballista.gameObject.activeSelf != ballistaOn)
         {

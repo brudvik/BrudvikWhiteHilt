@@ -12,8 +12,11 @@ namespace BrudvikWhiteHilt.SeaBattles.Fleets;
 /// </summary>
 public static class FleetSettings
 {
-    /// <summary>The fleet sizes a new config file starts with: two ships after Moder, three after Yagluth.</summary>
-    public const string DefaultFleetTiers = "defeated_dragon=2:35; defeated_goblinking=3:50";
+    /// <summary>The fleet sizes a new config file starts with: two ships after Moder, three after Yagluth, more often later.</summary>
+    public const string DefaultFleetTiers = "defeated_dragon=2:35; defeated_goblinking=3:50; defeated_queen=3:65; defeated_fader=3:80";
+
+    /// <summary>The fleet sizes of earlier versions, which ended at Yagluth; a config file that still holds them gets the new ones.</summary>
+    public const string OldDefaultFleetTiers = "defeated_dragon=2:35; defeated_goblinking=3:50";
 
     /// <summary>The jarl's level per boss a new config file starts with: two stars after Moder, up to five after Fader.</summary>
     public const string DefaultJarlLevels = "defeated_dragon=3; defeated_goblinking=4; defeated_queen=5; defeated_fader=6";
@@ -59,6 +62,9 @@ public static class FleetSettings
     /// <summary>The escorts flee when the jarl is slain.</summary>
     public static ConfigEntry<bool> FleeWhenJarlFalls { get; private set; }
 
+    /// <summary>Minutes a flagship fights with its jarl alive before it blows its horn for another ship; 0 never.</summary>
+    public static ConfigEntry<float> ReinforceMinutes { get; private set; }
+
     /// <summary>
     /// Binds the config entries and adds the English texts. Call from the plugin's Awake, after
     /// <see cref="SeaBattleSettings.Initialize"/>.
@@ -79,7 +85,7 @@ public static class FleetSettings
             "An escort on the same side as the flagship keeps this many times the broadside distance.",
             new AcceptableValueRange<float>(1f, 3f));
         FlagshipHullHealth = WhiteHiltConfig.BindAdminOnly(Section, "FlagshipHullHealth", 2000f,
-            "Health of the flagship's hull. Applies after a restart.", new AcceptableValueRange<float>(100f, 20000f));
+            "Health of the flagship's hull, before [SeaBattles] HullTiers. Applies to new flagships.", new AcceptableValueRange<float>(100f, 20000f));
         FlagshipExtraCrew = WhiteHiltConfig.BindAdminOnly(Section, "FlagshipExtraCrew", 2,
             "Extra crew on the flagship besides the jarl.", new AcceptableValueRange<int>(0, 10));
         FlagshipCrewLevel = WhiteHiltConfig.BindAdminOnly(Section, "FlagshipCrewLevel", 2,
@@ -95,6 +101,10 @@ public static class FleetSettings
             "The other ships of the fleet turn and run when the flagship is taken or sunk.");
         FleeWhenJarlFalls = WhiteHiltConfig.BindAdminOnly(Section, "FleeWhenJarlFalls", true,
             "The other ships of the fleet turn and run when the jarl is slain.");
+        ReinforceMinutes = WhiteHiltConfig.BindAdminOnly(Section, "ReinforceMinutes", 3f,
+            "Minutes a flagship fights alongside with its jarl alive before the jarl blows his horn and one more Nail Ship comes, once per fleet. 0: never.",
+            new AcceptableValueRange<float>(0f, 60f));
+        WhiteHiltConfig.UpgradeDefault(FleetTiers, OldDefaultFleetTiers);
 
         AddTranslations();
     }
@@ -103,7 +113,8 @@ public static class FleetSettings
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_nailflagship", "Nail Flagship");
-        Translations.AddEnglish("msg_whitehilt_fleet_sighted", "A fleet on the horizon! The Nail Ships come in force.");
+        Translations.AddEnglish("msg_whitehilt_fleet_sighted", "A fleet on the horizon, {0}! The Nail Ships come in force.");
+        Translations.AddEnglish("msg_whitehilt_fleet_horn", "The jarl blows his horn! Another Nail Ship answers.");
         Translations.AddEnglish("msg_whitehilt_jarl_falls", "The jarl has fallen!");
         Translations.AddEnglish("msg_whitehilt_fleet_breaks", "The fleet breaks and runs!");
     }

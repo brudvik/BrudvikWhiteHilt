@@ -13,7 +13,8 @@ namespace BrudvikWhiteHilt.SeaBattles.Weapons;
 /// own body towards the other end, half the pull each, so no machine ever pushes a body it does not own: the holder's owner
 /// reads its own record, and the owner of the other ship finds the record in the static list of links loaded on its machine.
 /// The holder's owner also lets the rope snap when it is stretched too far, has held too long or its ship is gone. Every
-/// client draws the rope, and a player cuts it with Use at its end on the holder's rail (see <see cref="GrappleInput"/>).
+/// client draws the rope, and a player cuts it with Use at either end, on the rail of either ship (see <see cref="GrappleInput"/>).
+/// A Nail Ship's crew makes a rope fast from their own ship with <see cref="MakeFast"/>.
 /// </summary>
 public class GrappleLink : MonoBehaviour
 {
@@ -79,6 +80,15 @@ public class GrappleLink : MonoBehaviour
 
     /// <summary>Where the rope is made fast on this ship, in world space; the ship's own place when it holds none.</summary>
     public Vector3 HolderPoint => holding ? transform.TransformPoint(record.Here) : transform.position;
+
+    /// <summary>The other ship of the rope this ship holds, when it is loaded here; otherwise null.</summary>
+    public Ship Partner => holding ? partner : null;
+
+    /// <summary>Whether the other ship of the rope this ship holds is loaded here, so its end can be seen and cut.</summary>
+    public bool HasPartner => holding && partner != null;
+
+    /// <summary>Where the rope is made fast on the other ship, in world space; the holder's point when that ship is not loaded.</summary>
+    public Vector3 PartnerPoint => HasPartner ? partner.transform.TransformPoint(record.There) : HolderPoint;
 
     /// <summary>
     /// Adds the link to a ship. Safe to call more than once.
@@ -165,6 +175,34 @@ public class GrappleLink : MonoBehaviour
         {
             nview.InvokeRPC(CutRpc);
         }
+    }
+
+    /// <summary>
+    /// Makes a rope fast from this ship to another at once, on this ship's owner, as a Nail Ship's crew does with a thrown
+    /// grapnel. A rope that is there is replaced. Those aboard both ships are told with the given text.
+    /// </summary>
+    /// <param name="other">The ship the grapnel caught.</param>
+    /// <param name="here">Where the rope is made fast on this ship, in its local space.</param>
+    /// <param name="there">Where it is made fast on the other ship, in that ship's local space.</param>
+    /// <param name="token">The text, which must start with <c>$msg_whitehilt_ship_</c>.</param>
+    /// <returns>True if the rope was made fast.</returns>
+    public bool MakeFast(Ship other, Vector3 here, Vector3 there, string token)
+    {
+        ZNetView otherView = other != null ? other.GetComponent<ZNetView>() : null;
+        if (!IsOwner() || otherView == null || !otherView.IsValid() || other == ship)
+        {
+            return false;
+        }
+
+        ZDOID id = otherView.GetZDO().m_uid;
+        record = new GrappleRecord(id.UserID, id.ID, here, there, ZNet.instance.GetTime().Ticks);
+        recordBytes = record.Encode();
+        nview.GetZDO().Set(GrappleKey, recordBytes);
+        holding = true;
+        partner = other;
+        SetActive(true);
+        Tell(token, other);
+        return true;
     }
 
     private void Awake()
@@ -480,15 +518,21 @@ public class GrappleLink : MonoBehaviour
         Tell(GrappledMessage, target);
     }
 
-    // A player cut the rope: it goes if the player is near the ship it is made fast to.
+    // A player cut the rope: it goes if the player is near either ship it is made fast to, as a rope a Nail Ship threw is
+    // cut at the rail of the ship it caught.
     private void RPC_Cut(long sender)
     {
-        if (!IsOwner() || !holding || !ShipDamage.SenderNear(sender, transform.position, CutReach))
+        if (!IsOwner() || !holding)
         {
             return;
         }
 
-        Clear(false);
+        bool near = ShipDamage.SenderNear(sender, transform.position, CutReach)
+            || (partner != null && ShipDamage.SenderNear(sender, partner.transform.position, CutReach));
+        if (near)
+        {
+            Clear(false);
+        }
     }
 
     // Whether a point sent over the network is a place on a ship.

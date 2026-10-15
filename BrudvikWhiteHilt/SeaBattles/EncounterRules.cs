@@ -14,8 +14,87 @@ public static class EncounterRules
     /// <summary>How many directions are sampled when looking for land round a ship.</summary>
     public const int ShoreDirections = 16;
 
+    /// <summary>Weather flag of an encounter request: it is night.</summary>
+    public const int WeatherNight = 1;
+
+    /// <summary>Weather flag of an encounter request: a storm blows.</summary>
+    public const int WeatherStorm = 2;
+
+    /// <summary>Weather flag of an encounter request: fog or mist lies on the sea.</summary>
+    public const int WeatherFog = 4;
+
+    /// <summary>
+    /// The names of the eight bearings <see cref="Bearing"/> gives, clockwise from dead ahead; the texts are
+    /// <c>whitehilt_bearing_&lt;name&gt;</c>.
+    /// </summary>
+    public static readonly string[] BearingNames =
+    {
+        "ahead", "starboardbow", "starboard", "starboardquarter", "astern", "portquarter", "port", "portbow"
+    };
+
+    // The ships an encounter order raises are one number: the size in the low bits, then a fire ship and a ram to force.
+    private const int SizeMask = 0xF;
+    private const int FireShipBit = 0x10;
+    private const int ForceRamBit = 0x20;
+
     // The rings of samples lie this far apart, so a small island between the ship and the limit is still found.
     private const float ShoreRingStep = 25f;
+
+    /// <summary>
+    /// The factor on the chance of an encounter from the weather: each of night, storm and fog that holds multiplies it by
+    /// its setting.
+    /// </summary>
+    /// <param name="weather">The flags <see cref="WeatherNight"/>, <see cref="WeatherStorm"/> and <see cref="WeatherFog"/>.</param>
+    /// <param name="night">The factor at night.</param>
+    /// <param name="storm">The factor in a storm.</param>
+    /// <param name="fog">The factor in fog.</param>
+    /// <returns>The factor, never negative.</returns>
+    public static float WeatherFactor(int weather, float night, float storm, float fog)
+    {
+        float factor = 1f;
+        factor *= (weather & WeatherNight) != 0 ? Mathf.Max(0f, night) : 1f;
+        factor *= (weather & WeatherStorm) != 0 ? Mathf.Max(0f, storm) : 1f;
+        factor *= (weather & WeatherFog) != 0 ? Mathf.Max(0f, fog) : 1f;
+        return factor;
+    }
+
+    /// <summary>
+    /// Which of eight bearings a point lies on, as seen from a ship: 0 dead ahead, then clockwise in steps of 45 degrees, so
+    /// 1 is off the starboard bow and 7 off the port bow. See <see cref="BearingNames"/>.
+    /// </summary>
+    /// <param name="relativeDegrees">The point's direction less the ship's heading, in degrees, any range.</param>
+    /// <returns>0 to 7.</returns>
+    public static int Bearing(float relativeDegrees)
+    {
+        float angle = Mathf.Repeat(float.IsNaN(relativeDegrees) ? 0f : relativeDegrees, 360f);
+        return Mathf.FloorToInt((angle + 22.5f) / 45f) % 8;
+    }
+
+    /// <summary>
+    /// Packs the ships of an encounter order into the one number the order carries.
+    /// </summary>
+    /// <param name="size">Ships in the fleet, 1 to 3.</param>
+    /// <param name="fireShip">Whether a fire ship comes along.</param>
+    /// <param name="forceRam">Whether the lead ship carries a ram whatever the chance says (an admin's order).</param>
+    /// <returns>The packed number.</returns>
+    public static int PackShips(int size, bool fireShip, bool forceRam = false)
+    {
+        return (Mathf.Clamp(size, 1, SizeMask) & SizeMask) | (fireShip ? FireShipBit : 0) | (forceRam ? ForceRamBit : 0);
+    }
+
+    /// <summary>
+    /// Reads a number packed by <see cref="PackShips"/>. A plain size, as older orders send, reads as that size alone.
+    /// </summary>
+    /// <param name="packed">The packed number.</param>
+    /// <param name="fireShip">Whether a fire ship comes along.</param>
+    /// <param name="forceRam">Whether the lead ship carries a ram whatever the chance says.</param>
+    /// <returns>The size of the fleet.</returns>
+    public static int UnpackShips(int packed, out bool fireShip, out bool forceRam)
+    {
+        fireShip = (packed & FireShipBit) != 0;
+        forceRam = (packed & ForceRamBit) != 0;
+        return packed & SizeMask;
+    }
 
     /// <summary>
     /// The chance, in percent, that a ship is found by a Nail Ship this minute.

@@ -10,14 +10,23 @@ namespace BrudvikWhiteHilt.Tests;
 public class CrewTableTests
 {
     [Fact]
-    public void TheDefaultTextHasThreeTiers()
+    public void TheDefaultTextHasFiveTiers()
     {
         IReadOnlyList<CrewTier> tiers = CrewTable.Parse(SeaBattleSettings.DefaultCrewTiers);
 
-        Assert.Equal(new[] { "defeated_bonemass", "defeated_dragon", "defeated_goblinking" }, tiers.Select(tier => tier.Key));
-        Assert.Equal(new[] { 0, 1, 2 }, tiers.Select(tier => tier.Index));
+        Assert.Equal(new[] { "defeated_bonemass", "defeated_dragon", "defeated_goblinking", "defeated_queen", "defeated_fader" },
+            tiers.Select(tier => tier.Key));
+        Assert.Equal(new[] { 0, 1, 2, 3, 4 }, tiers.Select(tier => tier.Index));
         Assert.Equal(new[] { "Draugr", "Draugr_Ranged", "Draugr_Elite" }, tiers[1].Entries.Select(entry => entry.Prefab));
         Assert.Equal(new[] { 3, 2, 1 }, tiers[1].Entries.Select(entry => entry.Count));
+        Assert.Equal(new[] { false, true, true }, tiers[4].Entries.Select(entry => entry.Archer));
+    }
+
+    [Fact]
+    public void TheOldDefaultIsTheNewOneCutAtYagluth()
+    {
+        Assert.StartsWith(SeaBattleSettings.OldDefaultCrewTiers, SeaBattleSettings.DefaultCrewTiers);
+        Assert.Equal(3, CrewTable.Parse(SeaBattleSettings.OldDefaultCrewTiers).Count);
     }
 
     [Fact]
@@ -65,7 +74,7 @@ public class CrewTableTests
 
         Assert.Equal("defeated_bonemass", CrewTable.Pick(tiers, key => key == "defeated_bonemass").Key);
         Assert.Equal("defeated_dragon", CrewTable.Pick(tiers, key => key is "defeated_bonemass" or "defeated_dragon").Key);
-        Assert.Equal("defeated_goblinking", CrewTable.Pick(tiers, _ => true).Key);
+        Assert.Equal("defeated_fader", CrewTable.Pick(tiers, _ => true).Key);
         // A later key wins even when an earlier one is not set.
         Assert.Equal("defeated_goblinking", CrewTable.Pick(tiers, key => key == "defeated_goblinking").Key);
     }
@@ -86,6 +95,8 @@ public class CrewTableTests
     [InlineData("Draugr", false)]
     [InlineData("Draugr_Elite", false)]
     [InlineData("GoblinBrute", false)]
+    [InlineData("Charred_Mage", true)]
+    [InlineData("Charred_Melee", false)]
     public void ArchersAreFoundByName(string prefab, bool archer)
     {
         Assert.Equal(archer, CrewTable.IsArcher(prefab));
@@ -108,10 +119,10 @@ public class RaiderTacticsTests
 
     private static RaiderInput Input(RaiderState state, Vector2 self, Vector2 target, float secondsInState = 0f,
         float crewShare = 1f, float hullShare = 1f, bool hasMelee = true, Vector2 targetVelocity = default,
-        float targetHeading = 0f, int side = 1, float selfHeading = 0f)
+        float targetHeading = 0f, int side = 1, float selfHeading = 0f, bool canRam = false)
     {
         return new RaiderInput(state, self, selfHeading, target, targetVelocity, targetHeading, crewShare, hullShare,
-            secondsInState, side, hasMelee);
+            secondsInState, side, hasMelee, false, canRam);
     }
 
     [Fact]
@@ -316,6 +327,216 @@ public class RaiderTacticsTests
     public void CoursesRunClockwiseFromNorth(float x, float z, float course)
     {
         Assert.Equal(course, RaiderTactics.CourseTo(Vector2.zero, new Vector2(x, z), 0f), 3);
+    }
+
+    [Theory]
+    [InlineData(RaiderState.Broadside)]
+    [InlineData(RaiderState.Board)]
+    [InlineData(RaiderState.Ram)]
+    public void AShipThatFallsFarBehindGoesBackToTheApproach(RaiderState state)
+    {
+        // Three broadside distances is 75 m.
+        Assert.Equal(state == RaiderState.Ram ? RaiderState.Ram : state,
+            RaiderTactics.Decide(Input(state, new Vector2(74f, 0f), Vector2.zero, canRam: true), tuning).State);
+        RaiderOrder order = RaiderTactics.Decide(Input(state, new Vector2(76f, 0f), Vector2.zero), tuning);
+
+        Assert.Equal(RaiderState.Approach, order.State);
+        Assert.Equal(RaiderSail.Full, order.Sail);
+    }
+
+    [Fact]
+    public void BoardingSailsFullWhenTheTargetGetsAway()
+    {
+        Assert.Equal(RaiderSail.Full, RaiderTactics.Decide(Input(RaiderState.Board, new Vector2(60f, 0f), Vector2.zero), tuning).Sail);
+    }
+
+    [Fact]
+    public void AlongsideAMovingTargetTheStationIsLed()
+    {
+        // The target sails north at 8 m/s; the ship is 40 m south-east of its starboard station, so it is led 4 s ahead.
+        Vector2 self = new(25f, -40f);
+        Vector2 velocity = new(0f, 8f);
+        RaiderOrder order = RaiderTactics.Decide(Input(RaiderState.Broadside, self, Vector2.zero, targetVelocity: velocity), tuning);
+
+        Vector2 led = RaiderTactics.StationPoint(velocity * 4f, 0f, 1, 25f);
+        Assert.Equal(RaiderTactics.CourseTo(self, led, 0f), order.Course, 2);
+    }
+
+    [Fact]
+    public void NearAMovingTargetTheShipMatchesItsSpeed()
+    {
+        Vector2 velocity = new(0f, 6f);
+
+        // Level with the station: half sail. Behind it: full. Run past it: no sail.
+        Assert.Equal(RaiderSail.Half, RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(25f, 0f), Vector2.zero, targetVelocity: velocity), tuning).Sail);
+        Assert.Equal(RaiderSail.Full, RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(25f, -8f), Vector2.zero, targetVelocity: velocity), tuning).Sail);
+        Assert.Equal(RaiderSail.Stop, RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(25f, 8f), Vector2.zero, targetVelocity: velocity), tuning).Sail);
+    }
+
+    [Fact]
+    public void AShipWithAReadyRamChargesASlowTargetInRange()
+    {
+        RaiderOrder order = RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(30f, 0f), Vector2.zero, canRam: true), tuning);
+
+        Assert.Equal(RaiderState.Ram, order.State);
+        Assert.Equal(RaiderSail.Full, order.Sail);
+        Assert.Equal(270f, order.Course, 2);
+    }
+
+    [Fact]
+    public void NoChargeAtAFastTargetTooCloseOrWithoutARam()
+    {
+        Assert.Equal(RaiderState.Broadside,
+            RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(30f, 0f), Vector2.zero, canRam: true, targetVelocity: new Vector2(0f, 3f)), tuning).State);
+        Assert.Equal(RaiderState.Broadside,
+            RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(10f, 0f), Vector2.zero, canRam: true), tuning).State);
+        Assert.Equal(RaiderState.Broadside,
+            RaiderTactics.Decide(Input(RaiderState.Broadside, new Vector2(30f, 0f), Vector2.zero), tuning).State);
+    }
+
+    [Fact]
+    public void AChargeEndsWhenItStrikesTakesTooLongOrTheTargetRuns()
+    {
+        Assert.Equal(RaiderState.Ram, RaiderTactics.Decide(Input(RaiderState.Ram, new Vector2(20f, 0f), Vector2.zero, secondsInState: 5f), tuning).State);
+        Assert.Equal(RaiderState.Broadside, RaiderTactics.Decide(Input(RaiderState.Ram, new Vector2(5f, 0f), Vector2.zero), tuning).State);
+        Assert.Equal(RaiderState.Broadside, RaiderTactics.Decide(Input(RaiderState.Ram, new Vector2(20f, 0f), Vector2.zero, secondsInState: 15f), tuning).State);
+        Assert.Equal(RaiderState.Broadside,
+            RaiderTactics.Decide(Input(RaiderState.Ram, new Vector2(20f, 0f), Vector2.zero, targetVelocity: new Vector2(0f, 6f)), tuning).State);
+    }
+
+    [Theory]
+    // The ship lies east of a target sailing north: on its starboard side.
+    [InlineData(0, 0, 1)]
+    [InlineData(1, 1, 1)]
+    // More defenders at the starboard rail: it crosses to port.
+    [InlineData(0, 2, -1)]
+    // More at port: it stays.
+    [InlineData(2, 0, 1)]
+    public void TheShipKeepsItsSideUnlessFewerDefendTheOther(int port, int starboard, int expected)
+    {
+        Assert.Equal(expected, RaiderTactics.PickSide(new Vector2(30f, 0f), Vector2.zero, 0f, port, starboard));
+    }
+
+    [Fact]
+    public void AShipOnThePortSideKeepsPort()
+    {
+        Assert.Equal(-1, RaiderTactics.PickSide(new Vector2(-30f, 5f), Vector2.zero, 0f, 0, 0));
+        Assert.Equal(1, RaiderTactics.PickSide(new Vector2(-30f, 5f), Vector2.zero, 0f, 3, 1));
+    }
+}
+
+public class TierValueTests
+{
+    private static readonly string[] reached = { "defeated_bonemass", "defeated_dragon" };
+
+    [Fact]
+    public void TheLastKeyThatIsSetGivesTheNumber()
+    {
+        string text = "defeated_dragon=1.25; defeated_goblinking=1.5; defeated_bonemass=1.1";
+
+        Assert.Equal(1.1f, TierValues.PickNumber(text, key => reached.Contains(key), 1f), 4);
+        Assert.Equal(1.25f, TierValues.PickNumber("defeated_dragon=1.25; defeated_goblinking=1.5", key => reached.Contains(key), 1f), 4);
+        Assert.Equal(1f, TierValues.PickNumber(text, _ => false, 1f), 4);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("broken")]
+    [InlineData("=2")]
+    [InlineData("defeated_dragon=lots")]
+    [InlineData("defeated_dragon=NaN")]
+    public void ABrokenTextGivesTheFallback(string text)
+    {
+        Assert.Equal(3f, TierValues.PickNumber(text, key => reached.Contains(key), 3f), 4);
+        Assert.Equal(3f, TierValues.PickNumber(text, null, 3f), 4);
+    }
+
+    [Fact]
+    public void ALootListKeepsItsCommasAndColons()
+    {
+        string text = "defeated_dragon=Silver:3-8:6, Iron:1-2:4; defeated_goblinking=BlackMetal:3-8:6";
+
+        Assert.Equal("Silver:3-8:6, Iron:1-2:4", TierValues.PickText(text, key => reached.Contains(key)));
+        Assert.Equal("BlackMetal:3-8:6", TierValues.PickText(text, _ => true));
+        Assert.Null(TierValues.PickText(text, _ => false));
+        Assert.Null(TierValues.PickText("defeated_dragon=  ", _ => true));
+        Assert.Null(TierValues.PickText(text, null));
+    }
+
+    [Fact]
+    public void TheDefaultTiersRead()
+    {
+        Assert.Equal(2.5f, TierValues.PickNumber(SeaBattleSettings.DefaultHullTiers, _ => true, 1f), 4);
+        Assert.Equal(2f, TierValues.PickNumber(SeaBattleSettings.DefaultCrewLevels, _ => true, 1f), 4);
+        Assert.Equal(2f, TierValues.PickNumber(SeaBattleSettings.DefaultLeapTiers, _ => true, 1f), 4);
+        Assert.Equal(1f, TierValues.PickNumber(SeaBattleSettings.DefaultLeapTiers, key => reached.Contains(key), 1f), 4);
+        Assert.StartsWith("Coins:120-300:10, FlametalNew", TierValues.PickText(SeaBattleSettings.DefaultLootTiers, _ => true));
+        Assert.Null(TierValues.PickText(SeaBattleSettings.DefaultLootTiers, key => key == "defeated_bonemass"));
+    }
+}
+
+public class EncounterExtrasTests
+{
+    [Theory]
+    [InlineData(0f, 0)]
+    [InlineData(22f, 0)]
+    [InlineData(-22f, 0)]
+    [InlineData(45f, 1)]
+    [InlineData(90f, 2)]
+    [InlineData(135f, 3)]
+    [InlineData(180f, 4)]
+    [InlineData(-135f, 5)]
+    [InlineData(270f, 6)]
+    [InlineData(-45f, 7)]
+    [InlineData(float.NaN, 0)]
+    public void BearingsRunClockwiseFromDeadAhead(float relative, int expected)
+    {
+        Assert.Equal(expected, EncounterRules.Bearing(relative));
+        Assert.Equal(8, EncounterRules.BearingNames.Length);
+    }
+
+    [Fact]
+    public void TheWeatherMultipliesTheChance()
+    {
+        Assert.Equal(1f, EncounterRules.WeatherFactor(0, 1.5f, 2f, 3f), 4);
+        Assert.Equal(1.5f, EncounterRules.WeatherFactor(EncounterRules.WeatherNight, 1.5f, 2f, 3f), 4);
+        Assert.Equal(9f, EncounterRules.WeatherFactor(EncounterRules.WeatherNight | EncounterRules.WeatherStorm | EncounterRules.WeatherFog, 1.5f, 2f, 3f), 4);
+        Assert.Equal(0f, EncounterRules.WeatherFactor(EncounterRules.WeatherFog, 1f, 1f, -2f), 4);
+    }
+
+    [Theory]
+    [InlineData(1, false, false)]
+    [InlineData(3, true, false)]
+    [InlineData(2, true, true)]
+    [InlineData(1, false, true)]
+    public void TheShipsOfAnOrderPackIntoOneNumber(int size, bool fireShip, bool ram)
+    {
+        int packed = EncounterRules.PackShips(size, fireShip, ram);
+
+        Assert.Equal(size, EncounterRules.UnpackShips(packed, out bool fire, out bool forced));
+        Assert.Equal(fireShip, fire);
+        Assert.Equal(ram, forced);
+    }
+
+    [Fact]
+    public void APlainSizeReadsAsThatSize()
+    {
+        Assert.Equal(3, EncounterRules.UnpackShips(3, out bool fire, out bool ram));
+        Assert.False(fire);
+        Assert.False(ram);
+    }
+
+    [Theory]
+    [InlineData(false, 0f, 1)]
+    [InlineData(false, 0.49f, 1)]
+    [InlineData(false, 0.5f, 3)]
+    [InlineData(true, 0f, 1)]
+    [InlineData(true, 0.4f, 2)]
+    [InlineData(true, 0.99f, 3)]
+    public void TheMerchantsTauntIsOnlyShoutedAtAMerchant(bool atMerchant, float roll, int expected)
+    {
+        Assert.Equal(expected, RaiderVoice.TauntNumber(atMerchant, roll));
     }
 }
 

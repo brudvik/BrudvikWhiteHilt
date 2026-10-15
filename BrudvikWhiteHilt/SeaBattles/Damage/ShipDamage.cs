@@ -248,6 +248,25 @@ public class ShipDamage : MonoBehaviour
     }
 
     /// <summary>
+    /// Patches a hole on the owner, as a Nail Ship's crew does on its own ship: the hole closes, but the hull's health is not
+    /// mended as a player's patch mends it.
+    /// </summary>
+    /// <param name="index">Index of the hole.</param>
+    /// <returns>True if a hole was patched.</returns>
+    public bool PatchByCrew(int index)
+    {
+        if (!IsOwner() || !HoleRules.ValidIndex(index, holes.Count))
+        {
+            return false;
+        }
+
+        List<Vector3> next = new(holes);
+        next.RemoveAt(index);
+        WriteHoles(next);
+        return true;
+    }
+
+    /// <summary>
     /// Asks the owner to bail water. The stamina is taken by the caller.
     /// </summary>
     public void RequestBail()

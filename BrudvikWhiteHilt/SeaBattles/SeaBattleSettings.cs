@@ -13,12 +13,42 @@ public static class SeaBattleSettings
     /// <summary>The crew a new config file starts with: one tier per progression key, the last set key wins.</summary>
     public const string DefaultCrewTiers =
         "defeated_bonemass=Draugr:3,Draugr_Ranged:2; defeated_dragon=Draugr:3,Draugr_Ranged:2,Draugr_Elite:1; " +
+        "defeated_goblinking=Goblin:3,GoblinArcher:2,GoblinBrute:1; " +
+        "defeated_queen=Draugr_Elite:4,Draugr_Ranged:3,GoblinBrute:1; " +
+        "defeated_fader=Charred_Melee:4,Charred_Archer:2,Charred_Mage:1";
+
+    /// <summary>The crew list of earlier versions, which ended at Yagluth; a config file that still holds it gets the new one.</summary>
+    public const string OldDefaultCrewTiers =
+        "defeated_bonemass=Draugr:3,Draugr_Ranged:2; defeated_dragon=Draugr:3,Draugr_Ranged:2,Draugr_Elite:1; " +
         "defeated_goblinking=Goblin:3,GoblinArcher:2,GoblinBrute:1";
+
+    /// <summary>The factor on the hull's health per progression key a new config file starts with.</summary>
+    public const string DefaultHullTiers = "defeated_dragon=1.25; defeated_goblinking=1.5; defeated_queen=2; defeated_fader=2.5";
+
+    /// <summary>The least level (stars plus one) of the crew per progression key a new config file starts with.</summary>
+    public const string DefaultCrewLevels = "defeated_queen=2; defeated_fader=2";
+
+    /// <summary>How many warriors leap at once per progression key, as a new config file has it.</summary>
+    public const string DefaultLeapTiers = "defeated_goblinking=2";
 
     /// <summary>The hold's loot list a new config file starts with.</summary>
     public const string DefaultLoot =
         "Coins:40-120:10, Iron:3-8:6, Chain:1-2:4, WitheredBone:4-8:6, Amber:1-2:4, AmberPearl:1-2:3, Ruby:1-2:2, " +
         "WhiteHiltShipBolt:5-10:6, TrophyDraugr:1-1:2";
+
+    /// <summary>
+    /// The hold's loot list per progression key a new config file starts with, in place of <see cref="DefaultLoot"/> once
+    /// the key is set: the materials of the biome the world has reached.
+    /// </summary>
+    public const string DefaultLootTiers =
+        "defeated_dragon=Coins:60-160:10, Silver:3-8:6, Iron:3-6:4, Obsidian:4-10:4, WolfPelt:2-4:4, FreezeGland:2-4:3, " +
+        "AmberPearl:1-2:3, Ruby:1-3:3, WhiteHiltShipBolt:5-10:6, TrophyDraugrElite:1-1:2; " +
+        "defeated_goblinking=Coins:80-200:10, BlackMetal:3-8:6, Silver:2-5:3, LinenThread:4-10:4, Tar:4-8:4, Needle:2-5:3, " +
+        "AmberPearl:1-3:4, Ruby:1-3:3, WhiteHiltShipBolt:6-12:6, TrophyGoblin:1-1:2; " +
+        "defeated_queen=Coins:100-250:10, BlackMarble:4-10:5, Eitr:2-5:4, YggdrasilWood:4-10:4, Carapace:2-5:4, Sap:2-5:3, " +
+        "BlackMetal:3-6:3, Ruby:2-4:3, WhiteHiltShipBolt:8-14:6, TrophyDraugrElite:1-1:2; " +
+        "defeated_fader=Coins:120-300:10, FlametalNew:2-6:5, CharredBone:4-8:4, Charredskull:1-2:3, MoltenCore:1-2:3, " +
+        "Eitr:3-6:3, Ruby:2-4:3, WhiteHiltShipBolt:8-14:6, TrophyCharredMelee:1-1:2";
 
     private const string Section = "SeaBattles";
     private const string RaidSection = "SeaBattles.Raids";
@@ -113,6 +143,36 @@ public static class SeaBattleSettings
     /// <summary>Metres a player can leap from deck to deck.</summary>
     public static ConfigEntry<float> BoardingLeapRange { get; private set; }
 
+    /// <summary>Factor on the hull's health per global key, see <see cref="TierValues"/>.</summary>
+    public static ConfigEntry<string> HullTiers { get; private set; }
+
+    /// <summary>The hold's loot list per global key, in place of <see cref="Loot"/>.</summary>
+    public static ConfigEntry<string> LootTiers { get; private set; }
+
+    /// <summary>Least level of the crew per global key.</summary>
+    public static ConfigEntry<string> CrewLevels { get; private set; }
+
+    /// <summary>How many warriors leap at once per global key.</summary>
+    public static ConfigEntry<string> LeapTiers { get; private set; }
+
+    /// <summary>Seconds a Nail Ship may be kept from its target before it gives up; 0 never.</summary>
+    public static ConfigEntry<float> StuckSeconds { get; private set; }
+
+    /// <summary>Seconds between two repairs of a Nail Ship's crew; 0 never.</summary>
+    public static ConfigEntry<float> CrewRepairSeconds { get; private set; }
+
+    /// <summary>Factor on the chance at night.</summary>
+    public static ConfigEntry<float> ChanceAtNight { get; private set; }
+
+    /// <summary>Factor on the chance in a storm.</summary>
+    public static ConfigEntry<float> ChanceInStorm { get; private set; }
+
+    /// <summary>Factor on the chance in fog.</summary>
+    public static ConfigEntry<float> ChanceInFog { get; private set; }
+
+    /// <summary>Seconds the place a Nail Ship was sighted stays on the map; 0 for no pin.</summary>
+    public static ConfigEntry<float> SightingPinSeconds { get; private set; }
+
     /// <summary>
     /// Binds the config entries and adds the English texts. Call from the plugin's Awake.
     /// </summary>
@@ -137,11 +197,11 @@ public static class SeaBattleSettings
             "Metres from the target ship where the Nail Ship appears.", new AcceptableValueRange<float>(80f, 400f));
         CrewTiers = WhiteHiltConfig.BindAdminOnly(Section, "CrewTiers", DefaultCrewTiers,
             "The crew per global key: key=Prefab:count,Prefab:count; next key=... The last tier whose key is set wins. " +
-            "A prefab with Ranged or Archer in its name is an archer, the others fight in melee.");
+            "A prefab with Ranged, Archer or Mage in its name shoots from its post, the others fight in melee.");
         CrewPerExtraPlayer = WhiteHiltConfig.BindAdminOnly(Section, "CrewPerExtraPlayer", 1,
             "Extra melee crew per additional player aboard the target ship.", new AcceptableValueRange<int>(0, 5));
         HullHealth = WhiteHiltConfig.BindAdminOnly(Section, "HullHealth", 1200f,
-            "Health of a Nail Ship's hull. Applies to new Nail Ships after a restart.", new AcceptableValueRange<float>(100f, 20000f));
+            "Health of a Nail Ship's hull, before HullTiers. Applies to new Nail Ships.", new AcceptableValueRange<float>(100f, 20000f));
         SailForceFactor = WhiteHiltConfig.BindAdminOnly(Section, "SailForceFactor", 1f,
             "Multiplier on the vanilla longship's sail force. Applies after a restart.", new AcceptableValueRange<float>(0.2f, 5f));
         Tailwind = WhiteHiltConfig.BindAdminOnly(Section, "Tailwind", true, "Nail Ships always have the wind behind them.");
@@ -181,6 +241,29 @@ public static class SeaBattleSettings
             "Chance that the hold carries a Raid Chart.", new AcceptableValueRange<float>(0f, 1f));
         BoardingLeapRange = WhiteHiltConfig.BindAdminOnly(Section, "BoardingLeapRange", 10f,
             "Metres a player can leap from one ship's deck to another.", new AcceptableValueRange<float>(3f, 25f));
+        HullTiers = WhiteHiltConfig.BindAdminOnly(Section, "HullTiers", DefaultHullTiers,
+            "Factor on HullHealth (and the flagship's) per global key: key=factor; next key=... The last key that is set wins; 1 when none is.");
+        LootTiers = WhiteHiltConfig.BindAdminOnly(Section, "LootTiers", DefaultLootTiers,
+            "The hold's loot list per global key, in place of Loot once the key is set: key=Item:min-max:weight, Item:...; next key=... The last key that is set wins.");
+        CrewLevels = WhiteHiltConfig.BindAdminOnly(Section, "CrewLevels", DefaultCrewLevels,
+            "Least level of the crew per global key (2 = one star): key=level; next key=... The last key that is set wins; no least level when none is.");
+        LeapTiers = WhiteHiltConfig.BindAdminOnly(Section, "LeapTiers", DefaultLeapTiers,
+            "How many warriors leap aboard at once per global key: key=count; next key=... The last key that is set wins; 1 when none is.");
+        StuckSeconds = WhiteHiltConfig.BindAdminOnly(Section, "StuckSeconds", 45f,
+            "Seconds a Nail Ship may be kept from its target by land or shallows before it gives up and turns away. 0: never.",
+            new AcceptableValueRange<float>(0f, 600f));
+        CrewRepairSeconds = WhiteHiltConfig.BindAdminOnly(Section, "CrewRepairSeconds", 10f,
+            "Seconds between two repairs by a Nail Ship's crew: each puts out a fire on its deck or patches a hole. 0: the crew never repairs.",
+            new AcceptableValueRange<float>(0f, 300f));
+        ChanceAtNight = WhiteHiltConfig.BindAdminOnly(Section, "ChanceAtNight", 1.5f,
+            "Factor on the chance per minute at night.", new AcceptableValueRange<float>(0f, 5f));
+        ChanceInStorm = WhiteHiltConfig.BindAdminOnly(Section, "ChanceInStorm", 1.5f,
+            "Factor on the chance per minute in a storm.", new AcceptableValueRange<float>(0f, 5f));
+        ChanceInFog = WhiteHiltConfig.BindAdminOnly(Section, "ChanceInFog", 1.5f,
+            "Factor on the chance per minute in fog or mist.", new AcceptableValueRange<float>(0f, 5f));
+        SightingPinSeconds = WhiteHiltConfig.BindAdminOnly(Section, "SightingPinSeconds", 90f,
+            "Seconds the place where Nail Ships were sighted stays on the map. 0: no pin.", new AcceptableValueRange<float>(0f, 600f));
+        WhiteHiltConfig.UpgradeDefault(CrewTiers, OldDefaultCrewTiers);
 
         Raids.Initialize();
         WhiteHiltConfig.AddFeatureGate(NailShipRegistry.RaidChartName, Enabled);
@@ -194,14 +277,25 @@ public static class SeaBattleSettings
     public static RaiderTuning Tuning()
     {
         return new RaiderTuning(BroadsideDistance.Value, BroadsideSeconds.Value, BoardDistance.Value,
-            FleeCrewShare.Value, FleeHullShare.Value);
+            FleeCrewShare.Value, FleeHullShare.Value, Weapons.WeaponSettings.RamRange.Value, Weapons.WeaponSettings.RamTargetSpeed.Value);
     }
 
     // English texts of the whole feature. The items of later phases are named here so one place holds every word.
     private static void AddTranslations()
     {
         Translations.AddEnglish("whitehilt_nailship", "Nail Ship");
-        Translations.AddEnglish("msg_whitehilt_raider_sighted", "Sails on the horizon! A Nail Ship comes for you.");
+        Translations.AddEnglish("msg_whitehilt_raider_sighted", "Sails on the horizon, {0}! A Nail Ship comes for you.");
+        Translations.AddEnglish("whitehilt_bearing_ahead", "dead ahead");
+        Translations.AddEnglish("whitehilt_bearing_starboardbow", "off the starboard bow");
+        Translations.AddEnglish("whitehilt_bearing_starboard", "to starboard");
+        Translations.AddEnglish("whitehilt_bearing_starboardquarter", "off the starboard quarter");
+        Translations.AddEnglish("whitehilt_bearing_astern", "astern");
+        Translations.AddEnglish("whitehilt_bearing_portquarter", "off the port quarter");
+        Translations.AddEnglish("whitehilt_bearing_port", "to port");
+        Translations.AddEnglish("whitehilt_bearing_portbow", "off the port bow");
+        Translations.AddEnglish("whitehilt_raider_sighted_pin", "Nail Ship sighted");
+        Translations.AddEnglish("msg_whitehilt_raider_gives_up", "The Nail Ship cannot reach you and turns away.");
+        Translations.AddEnglish("msg_whitehilt_raider_rams", "The Nail Ship turns to ram you!");
         Translations.AddEnglish("msg_whitehilt_raider_flees", "The Nail Ship turns and runs.");
         Translations.AddEnglish("msg_whitehilt_raider_prize",
             "The crew is dead. The Nail Ship is yours, but its nails will not hold for long.");

@@ -1,8 +1,12 @@
 using BrudvikWhiteHilt.Difficulty;
+using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Items.Summoning;
 using BrudvikWhiteHilt.Kraken;
 using BrudvikWhiteHilt.Monsters;
 using BrudvikWhiteHilt.Pieces.Ships;
+using BrudvikWhiteHilt.Pieces.Ships.Ram;
 using BrudvikWhiteHilt.Saga;
+using BrudvikWhiteHilt.SeaBattles.Damage;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
 using BrudvikWhiteHilt.SeaBattles.Weapons;
 using BrudvikWhiteHilt.Treasure;
@@ -18,10 +22,13 @@ namespace BrudvikWhiteHilt.SeaBattles;
 /// On the Nail Ship, on every client. Only the ship's owner thinks: four times a second it counts the crew, lets
 /// <see cref="RaiderTactics"/> decide the state, course and sail, and steers with the same help the route autopilot
 /// uses. The owner also spawns the crew and fills the hold when the ship is new, hands out the warriors' turns to leap,
-/// makes the ship a prize when the crew is dead, and lets it sink or sail out of sight. Everyone reads the state from
-/// the ZDO, so the hover text, the locks on the helm and the hold, and the messages are the same for all. The same
+/// lets the crew mend its own deck, gives up a hunt that land keeps it from, makes the ship a prize when the crew is dead,
+/// and lets it sink or sail out of sight. Everyone reads the state from the ZDO, so the hover text, the locks on the helm
+/// and the hold, the messages, the hull's health and the looks (a ram, a burning deck) are the same for all. The same
 /// component sails the flagship of a fleet and its escorts: the owner of each reads the fleet's facts (the flagship's
-/// state, whether its jarl has fallen) from the flagship's data, so a ship never writes to another ship.
+/// state, whether its jarl has fallen) from the flagship's data, so a ship never writes to another ship; the flagship's
+/// owner raises the ship its jarl's horn calls. A fire ship is a Nail Ship with no crew that sails at its target and sets
+/// it alight.
 /// </summary>
 public class RaiderShip : MonoBehaviour
 {
@@ -38,6 +45,7 @@ public class RaiderShip : MonoBehaviour
 
     private const float MessageRange = 100f;
     private const string MessageRpc = "WhiteHiltRaiderMessage";
+    private const string HornMessage = "$msg_whitehilt_fleet_horn";
 
     // The Nail Ship appears in the arc this many degrees either side of the target's heading, tried at this many bearings,
     // where the sea is at least this deep.
@@ -48,6 +56,30 @@ public class RaiderShip : MonoBehaviour
     // A moored ship keeps its place and heading and only bobs, as a ship at a drift anchor does.
     private const RigidbodyConstraints MooredConstraints =
         RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationY;
+
+    // A fire ship strikes the ship it comes for when their middles are this close: about side to side.
+    private const float FireStrikeDistance = 12f;
+
+    // A fire ship warns the ship it comes for once it is this close.
+    private const float FireWarnDistance = 120f;
+
+    // A ship that keeps away from its target must have closed in by this many metres to count as getting anywhere.
+    private const float StuckProgress = 10f;
+
+    // A reinforcement appears this share of the spawn distance from the target, anywhere round it.
+    private const float ReinforceDistanceShare = 0.8f;
+    private const float ReinforceArc = 180f;
+
+    // Players this far off a ship's centre line stand at its rail, as a Nail Ship choosing its side counts them.
+    private const float RailOffset = 0.5f;
+
+    // The flames a fire ship's deck shows: this many, on posts spread over its deck as a crew's are, or at these points in
+    // its own space when no deck is found.
+    private const int FireShipFlames = 4;
+    private static readonly Vector3[] fireShipFlames =
+    {
+        new(0f, 1.2f, 4f), new(-0.8f, 1.2f, 0f), new(0.8f, 1.2f, -3f), new(0f, 1.2f, -6f)
+    };
 
     private static readonly Dictionary<Ship, RaiderShip> byShip = new();
     private static readonly List<float> slotErrors = new();
@@ -60,8 +92,6 @@ public class RaiderShip : MonoBehaviour
     private Rigidbody body;
     private float awakeTime;
     private float nextThink;
-    private float stateSince;
-    private RaiderState knownState;
     private float steerCourse;
     private bool steering;
     private bool crewSpawnTried;
@@ -81,6 +111,17 @@ public class RaiderShip : MonoBehaviour
     private float flagshipMissingSince;
     private bool jarlAlive;
     private bool sawJarl;
+    private float blockedSince;
+    private float blockedDistance;
+    private bool justRammed;
+    private float nextRepair;
+    private float hullApplied;
+    private bool ramShown;
+    private GameObject ramProw;
+    private DeckFireLook fireLook;
+    private bool fireWarned;
+    private int strikesLeft;
+    private Vector3 strikeNear;
 
     /// <summary>The longship this component sails.</summary>
     public Ship Ship => ship;
@@ -88,8 +129,14 @@ public class RaiderShip : MonoBehaviour
     /// <summary>Whether this is the flagship of a fleet.</summary>
     public bool IsFlagship => isFlagship;
 
-    /// <summary>The translation token of the ship's name: the flagship has its own.</summary>
-    public string NameToken => isFlagship ? "$whitehilt_nailflagship" : "$whitehilt_nailship";
+    /// <summary>Whether this is a fire ship: no crew, a burning deck, and it sails at its target to set it alight.</summary>
+    public bool IsFireShip => nview != null && nview.IsValid() && nview.GetZDO().GetBool(RaiderKeys.FireShip);
+
+    /// <summary>Whether the ship carries a ram on its bow.</summary>
+    public bool HasRam => nview != null && nview.IsValid() && nview.GetZDO().GetBool(RaiderKeys.Ram);
+
+    /// <summary>The translation token of the ship's name: the flagship and the fire ship have their own.</summary>
+    public string NameToken => IsFireShip ? "$whitehilt_fireship" : isFlagship ? "$whitehilt_nailflagship" : "$whitehilt_nailship";
 
     /// <summary>The flagship of the fleet this ship belongs to, from its data; none for a lone ship.</summary>
     public ZDOID FleetId => nview != null && nview.IsValid() ? nview.GetZDO().GetZDOID(RaiderKeys.Fleet) : ZDOID.None;
@@ -117,6 +164,9 @@ public class RaiderShip : MonoBehaviour
 
     /// <summary>The index of the melee crew member whose turn it is to leap, or -1.</summary>
     public int LeapTurn => nview != null && nview.IsValid() ? nview.GetZDO().GetInt(RaiderKeys.Leap, -1) : -1;
+
+    /// <summary>The index of a second melee crew member who may leap at the same time, or -1.</summary>
+    public int LeapTurn2 => nview != null && nview.IsValid() ? nview.GetZDO().GetInt(RaiderKeys.Leap2, -1) : -1;
 
     /// <summary>The ship it hunts, when that ship is loaded here.</summary>
     public Ship TargetShip
@@ -254,7 +304,11 @@ public class RaiderShip : MonoBehaviour
 
             float distance = Player.m_localPlayer != null ? Vector3.Distance(Player.m_localPlayer.transform.position, raider.transform.position) : 0f;
             string fleet = raider.FleetId.IsNone() ? "alone" : $"fleet {raider.FleetId.ID}, {(raider.isFlagship ? "flagship" : "escort " + raider.Rank)}";
-            lines.Add($"  {raider.State}, {fleet}, crew {crew}/{raider.CrewSize()}, {distance:0} m away, owner here: {raider.nview != null && raider.nview.IsOwner()}");
+            string kind = raider.IsFireShip ? ", fire ship" : raider.HasRam ? ", ram" : string.Empty;
+            float hullMax = raider.hull != null ? raider.hull.m_health : 0f;
+            float hullNow = raider.nview != null && raider.nview.IsValid() ? raider.HullShare(raider.nview.GetZDO()) * hullMax : 0f;
+            lines.Add($"  {raider.State}{kind}, {fleet}, crew {crew}/{raider.CrewSize()}, hull {hullNow:0}/{hullMax:0}, " +
+                $"{distance:0} m away, owner here: {raider.nview != null && raider.nview.IsOwner()}");
         }
 
         return string.Join("\n", lines);
@@ -278,14 +332,17 @@ public class RaiderShip : MonoBehaviour
     /// Raises a Nail Ship, or a fleet of two or three: the flagship at the spawn point as <see cref="Spawn"/> places a
     /// lone ship, and the escorts at their places in the wedge behind it, in deep water (an escort with no deep water at
     /// its place is left out). Every ship belongs to this machine, so the fleet is whole and placed in one go, and each
-    /// carries the flagship's id and its own rank in its data.
+    /// carries the flagship's id and its own rank in its data. A fire ship, when the order brings one, comes from another
+    /// bearing in the same arc and sails on its own.
     /// </summary>
     /// <param name="target">The ship to hunt.</param>
     /// <param name="crewBonus">Extra melee crew for the players aboard the target.</param>
     /// <param name="tier">The crew tier, or null for the one the world has reached.</param>
     /// <param name="size">The number of ships the server chose, 1 to 3; 1 is a plain Nail Ship.</param>
+    /// <param name="fireShip">Whether a fire ship comes along.</param>
+    /// <param name="forceRam">Whether the lead ship carries a ram whatever the chance says, as an admin may order.</param>
     /// <returns>The flagship (the lone ship when the size is 1), or null when there was no deep water or no prefab.</returns>
-    public static RaiderShip SpawnFleet(Ship target, int crewBonus, CrewTier tier, int size)
+    public static RaiderShip SpawnFleet(Ship target, int crewBonus, CrewTier tier, int size, bool fireShip = false, bool forceRam = false)
     {
         size = Mathf.Clamp(size, 1, FleetRules.MaxSize);
         ZNetScene scene = ZNetScene.instance;
@@ -321,12 +378,15 @@ public class RaiderShip : MonoBehaviour
         }
 
         Vector3 point = new(spawn.x, ZoneSystem.instance.m_waterLevel, spawn.y);
-        Vector3 toTarget = centre - point;
-        toTarget.y = 0f;
-        Quaternion facing = Quaternion.LookRotation(toTarget);
+        Quaternion facing = Facing(point, centre);
         ZDOID targetId = target.m_nview.GetZDO().m_uid;
-        RaiderShip lead = Raise(prefab, point, facing, targetId, tier, crewBonus);
+        RaiderShip lead = Raise(prefab, point, facing, targetId, tier, crewBonus, forceRam, false);
         ZDO leadZdo = lead.nview.GetZDO();
+        if (fireShip)
+        {
+            RaiseFireShip(target, targetId, tier);
+        }
+
         if (size == 1)
         {
             Jotunn.Logger.LogInfo($"A Nail Ship sails up at {point} to the ship at {centre}");
@@ -347,7 +407,7 @@ public class RaiderShip : MonoBehaviour
                 continue;
             }
 
-            RaiderShip escort = Raise(escortPrefab, new Vector3(slot.x, point.y, slot.y), facing, targetId, tier, crewBonus);
+            RaiderShip escort = Raise(escortPrefab, new Vector3(slot.x, point.y, slot.y), facing, targetId, tier, crewBonus, false, false);
             ZDO escortZdo = escort.nview.GetZDO();
             escortZdo.Set(RaiderKeys.Fleet, leadZdo.m_uid);
             escortZdo.Set(RaiderKeys.Rank, rank);
@@ -358,18 +418,111 @@ public class RaiderShip : MonoBehaviour
         return lead;
     }
 
+    // A fire ship at the spawn distance, from a bearing of its own in the arc ahead of the target. It has no crew and sails
+    // alone, so a fire ship that finds no deep water is simply left out.
+    private static void RaiseFireShip(Ship target, ZDOID targetId, CrewTier tier)
+    {
+        GameObject prefab = ZNetScene.instance.GetPrefab(NailShipRegistry.ShipName);
+        Vector3 centre = target.transform.position;
+        if (prefab == null || !EncounterRules.TryPickSpawn(new Vector2(centre.x, centre.z), ShipAssist.Heading(target.transform),
+            SeaBattleSettings.SpawnDistance.Value, EncounterRules.Offsets(SpawnArc, SpawnAttempts, Random.value),
+            spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth), out Vector2 spawn))
+        {
+            Jotunn.Logger.LogInfo("Nail Ship: no deep water for the fire ship, left out");
+            return;
+        }
+
+        Vector3 point = new(spawn.x, ZoneSystem.instance.m_waterLevel, spawn.y);
+        Raise(prefab, point, Facing(point, centre), targetId, tier, 0, false, true);
+        Jotunn.Logger.LogInfo($"A fire ship drifts up at {point} to the ship at {centre}");
+    }
+
+    /// <summary>
+    /// Raises one more Nail Ship for a fleet, as the jarl's horn calls it: a plain ship with the flagship's crew tier and
+    /// extra crew, somewhere round the target at most of the spawn distance, in deep water. It joins the fleet as the
+    /// reinforcement, so it takes its own side and keeps the fleet's morale. Only on the flagship's owner.
+    /// </summary>
+    /// <param name="target">The ship the fleet hunts.</param>
+    /// <returns>The new ship, or null when there was no deep water or no prefab.</returns>
+    public RaiderShip RaiseReinforcement(Ship target)
+    {
+        GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(NailShipRegistry.ShipName) : null;
+        if (prefab == null || target == null || target.m_nview == null || !target.m_nview.IsValid() || !nview.IsOwner())
+        {
+            return null;
+        }
+
+        ZDO zdo = nview.GetZDO();
+        IReadOnlyList<CrewTier> tiers = CrewTable.Parse(SeaBattleSettings.CrewTiers.Value);
+        int tierIndex = zdo.GetInt(RaiderKeys.Tier, -1);
+        CrewTier tier = tierIndex >= 0 && tierIndex < tiers.Count ? tiers[tierIndex] : CrewTable.Pick(tiers, key => ZoneSystem.instance.GetGlobalKey(key));
+        Vector3 centre = target.transform.position;
+        if (tier == null || !EncounterRules.TryPickSpawn(new Vector2(centre.x, centre.z), ShipAssist.Heading(target.transform),
+            SeaBattleSettings.SpawnDistance.Value * ReinforceDistanceShare, EncounterRules.Offsets(ReinforceArc, SpawnAttempts, Random.value),
+            spot => SeaBattleService.DeepWater(spot.x, spot.y, SpawnDepth), out Vector2 spawn))
+        {
+            Jotunn.Logger.LogInfo("Nail Flagship: no deep water for the reinforcement");
+            return null;
+        }
+
+        Vector3 point = new(spawn.x, ZoneSystem.instance.m_waterLevel, spawn.y);
+        RaiderShip reinforcement = Raise(prefab, point, Facing(point, centre), target.m_nview.GetZDO().m_uid, tier, zdo.GetInt(RaiderKeys.Bonus), false, false);
+        ZDO added = reinforcement.nview.GetZDO();
+        added.Set(RaiderKeys.Fleet, zdo.m_uid);
+        added.Set(RaiderKeys.Rank, FleetRules.ReinforcementRank);
+        Jotunn.Logger.LogInfo($"The jarl's horn calls a Nail Ship at {point} to the ship at {centre}");
+        return reinforcement;
+    }
+
+    private static Quaternion Facing(Vector3 from, Vector3 to)
+    {
+        Vector3 toTarget = to - from;
+        toTarget.y = 0f;
+        return toTarget.sqrMagnitude > 1e-4f ? Quaternion.LookRotation(toTarget) : Quaternion.identity;
+    }
+
     // One ship of the kind the prefab is, with the data every Nail Ship starts with; the caller adds the fleet keys. Its
-    // side is random, and an escort's is replaced by the fleet's rules when it fights.
-    private static RaiderShip Raise(GameObject prefab, Vector3 point, Quaternion rotation, ZDOID targetId, CrewTier tier, int crewBonus)
+    // side is random until it comes alongside, and an escort's is replaced by the fleet's rules when it fights. The hull's
+    // full health is chosen here, from the settings and the world's keys, and written to the data so every machine uses
+    // the same; whether the ship carries a ram is rolled here too. A fire ship gets its own share of the health and the
+    // time it was lit.
+    private static RaiderShip Raise(GameObject prefab, Vector3 point, Quaternion rotation, ZDOID targetId, CrewTier tier, int crewBonus,
+        bool forceRam, bool fireShip)
     {
         GameObject instance = Instantiate(prefab, point, rotation);
         ZDO zdo = instance.GetComponent<ZNetView>().GetZDO();
+        long now = ZNet.instance.GetTime().Ticks;
         zdo.Set(RaiderKeys.Target, targetId);
         zdo.Set(RaiderKeys.Tier, tier.Index);
         zdo.Set(RaiderKeys.Side, Random.value < 0.5f ? -1 : 1);
         zdo.Set(RaiderKeys.Bonus, Mathf.Max(0, crewBonus));
         zdo.Set(RaiderKeys.State, (int)RaiderState.Approach);
-        return instance.GetComponent<RaiderShip>();
+        zdo.Set(RaiderKeys.StateSince, now);
+
+        bool flagship = NailShipRegistry.IsFlagship(instance);
+        float hullMax = (flagship ? FleetSettings.FlagshipHullHealth.Value : SeaBattleSettings.HullHealth.Value)
+            * Mathf.Max(0.1f, TierValues.PickNumber(SeaBattleSettings.HullTiers.Value, HasKey, 1f));
+        if (fireShip)
+        {
+            hullMax *= WeaponSettings.FireShipHullShare.Value;
+            zdo.Set(RaiderKeys.FireShip, true);
+            zdo.Set(RaiderKeys.Lit, now);
+        }
+        else if (WeaponRules.GetsRam(forceRam, WeaponRules.KeyReached(WeaponSettings.RamKey.Value, HasKey), WeaponSettings.RamChance.Value, Random.value))
+        {
+            zdo.Set(RaiderKeys.Ram, true);
+        }
+
+        zdo.Set(RaiderKeys.HullMax, hullMax);
+        zdo.Set(ZDOVars.s_health, hullMax);
+        RaiderShip raider = instance.GetComponent<RaiderShip>();
+        raider.ApplyHull();
+        return raider;
+    }
+
+    private static bool HasKey(string key)
+    {
+        return ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(key);
     }
 
     /// <summary>
@@ -404,6 +557,28 @@ public class RaiderShip : MonoBehaviour
         return text;
     }
 
+    /// <summary>
+    /// Tells the ship that its ram has struck its target, so it breaks off the charge. Called by the ram on the ship's owner.
+    /// </summary>
+    public void NoteRammed()
+    {
+        justRammed = true;
+    }
+
+    /// <summary>
+    /// Gives the hull the full health chosen when the ship was raised, on every machine, so the share of health left, the
+    /// hover and the flight from a broken hull agree. A ship with none chosen (a draugr harbour's) keeps its prefab's.
+    /// </summary>
+    public void ApplyHull()
+    {
+        float max = nview != null && nview.IsValid() ? nview.GetZDO().GetFloat(RaiderKeys.HullMax) : 0f;
+        if (hull != null && max > 0f && max != hullApplied)
+        {
+            hullApplied = max;
+            hull.m_health = max;
+        }
+    }
+
     private void Awake()
     {
         ship = GetComponent<Ship>();
@@ -422,7 +597,6 @@ public class RaiderShip : MonoBehaviour
         hold = GetComponentInChildren<Container>(true);
         awakeTime = Time.time;
         nextThink = Time.time + Random.Range(0f, ThinkInterval);
-        stateSince = Time.time;
         nview.Register<string>(MessageRpc, RPC_Message);
         if (hull != null)
         {
@@ -451,6 +625,8 @@ public class RaiderShip : MonoBehaviour
             byShip.Remove(ship);
             SailingShips.Remove(ship.m_players);
         }
+
+        fireLook?.Dispose();
     }
 
     private void Update()
@@ -473,8 +649,9 @@ public class RaiderShip : MonoBehaviour
         }
     }
 
-    // Keeps the set of sailing ships right on every machine, so a new owner already has its ship in it. The rest is
-    // the owner's: spawning the crew, counting it, the prize, the despawn, and the AI.
+    // Keeps the set of sailing ships, the hull's health and the looks (a ram, a burning deck) right on every machine, so a
+    // new owner already has them. The rest is the owner's: spawning the crew, counting it, the prize, the despawn, the
+    // crew's repairs and the AI. A fire ship has no crew and goes its own way.
     private void Think()
     {
         if (!nview.IsValid())
@@ -484,14 +661,10 @@ public class RaiderShip : MonoBehaviour
 
         RefreshSailing();
         RefreshMooring();
+        ApplyHull();
+        RefreshLooks();
         ZDO zdo = nview.GetZDO();
         RaiderState state = State;
-        if (state != knownState)
-        {
-            knownState = state;
-            stateSince = Time.time;
-        }
-
         if (!nview.IsOwner())
         {
             steering = false;
@@ -499,6 +672,12 @@ public class RaiderShip : MonoBehaviour
         }
 
         assist ??= GetComponent<ShipAssist>();
+        if (IsFireShip)
+        {
+            SailFireShip(zdo);
+            return;
+        }
+
         if (CrewSize() == 0)
         {
             if (!crewSpawnTried && Time.time - awakeTime >= SpawnDelay)
@@ -509,7 +688,7 @@ public class RaiderShip : MonoBehaviour
             return;
         }
 
-        CountCrew(zdo, out int alive, out int melee);
+        CountCrew(zdo, out int alive, out int melee, out int onDeck);
         if (state != RaiderState.Prize)
         {
             WatchJarl(zdo);
@@ -528,6 +707,11 @@ public class RaiderShip : MonoBehaviour
             return;
         }
 
+        if (onDeck > 0)
+        {
+            Repair();
+        }
+
         if (state != RaiderState.Moored && ShouldDespawn(zdo))
         {
             Despawn();
@@ -541,6 +725,169 @@ public class RaiderShip : MonoBehaviour
         }
 
         Sail(zdo, state, alive, melee);
+    }
+
+    // On every machine: the ram on the bow shows on a ship that carries one, and a fire ship's deck burns. A dedicated
+    // server draws nothing, and a look that fails is left off without touching the ship's rules.
+    private void RefreshLooks()
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        try
+        {
+            bool ram = HasRam;
+            if (ram != ramShown)
+            {
+                ramShown = ram;
+                ramProw ??= transform.Find(RamProw.ObjectName)?.gameObject;
+                ramProw?.SetActive(ram);
+            }
+
+            if (fireLook == null && IsFireShip && !sinking)
+            {
+                List<Vector3> posts = RaiderDeck.Posts(ship, FireShipFlames);
+                fireLook = new DeckFireLook(transform);
+                fireLook.Sync(posts.Count > 0 ? posts : fireShipFlames);
+            }
+        }
+        catch (Exception ex)
+        {
+            ramShown = HasRam;
+            Jotunn.Logger.LogWarning($"Nail Ship: the look of {name} could not be set: {ex.Message}");
+        }
+    }
+
+    // The crew mends its own ship now and then: one fire on the deck is put out, or else one hole is patched. Only the
+    // owner does it, and only while a living crew member is still aboard, so a ship whose crew has all leapt across burns.
+    private void Repair()
+    {
+        float seconds = SeaBattleSettings.CrewRepairSeconds.Value;
+        if (seconds <= 0f || Time.time < nextRepair)
+        {
+            return;
+        }
+
+        nextRepair = Time.time + seconds;
+        DeckFires fires = DeckFires.Of(ship);
+        if (fires != null && fires.Points.Count > 0 && fires.PutOutByCrew(0))
+        {
+            return;
+        }
+
+        ShipDamage damage = ShipDamage.Of(ship);
+        if (damage != null && damage.Holes.Count > 0)
+        {
+            damage.PatchByCrew(0);
+        }
+    }
+
+    // A fire ship, on its owner: it sails at full sail straight for its target, warns it when near, and strikes when it
+    // comes alongside: it lights its fires on the target's deck one by one (the deck's owner takes one fire at a time) and
+    // then goes down. It burns down and sinks by itself when its time is out, and leaves when nobody is near, as any Nail
+    // Ship does.
+    private void SailFireShip(ZDO zdo)
+    {
+        if (sinking)
+        {
+            return;
+        }
+
+        Ship target = TargetShip;
+        if (strikesLeft > 0)
+        {
+            steering = false;
+            ship.m_speed = Ship.Speed.Stop;
+            DeckFires fires = target != null ? DeckFires.Of(target) : null;
+            Vector2 scatter = Random.insideUnitCircle * 2f;
+            if (fires != null && RaiderDeck.TryDeckPoint(target, strikeNear + new Vector3(scatter.x, 0f, scatter.y), out Vector3 spot))
+            {
+                fires.RequestFire(spot);
+            }
+
+            if (--strikesLeft == 0)
+            {
+                Sink();
+            }
+
+            return;
+        }
+
+        if (WeaponRules.BurntDown(zdo.GetLong(RaiderKeys.Lit), ZNet.instance.GetTime().Ticks, WeaponSettings.FireShipSeconds.Value))
+        {
+            Sink();
+            return;
+        }
+
+        if (ShouldDespawn(zdo))
+        {
+            Despawn();
+            return;
+        }
+
+        if (target == null || assist == null)
+        {
+            ship.m_speed = Ship.Speed.Half;
+            return;
+        }
+
+        Vector3 targetPosition = target.transform.position;
+        TrackTarget(targetPosition);
+        float distance = Vector2.Distance(Flat(transform.position), Flat(targetPosition));
+        if (!fireWarned && distance <= FireWarnDistance)
+        {
+            fireWarned = true;
+            ShipDamage.Of(target)?.Tell("$msg_whitehilt_ship_fireship");
+        }
+
+        if (distance <= FireStrikeDistance)
+        {
+            Strike(target);
+            return;
+        }
+
+        float course = RaiderTactics.CourseTo(Flat(transform.position), RaiderTactics.LeadPoint(Flat(transform.position), Flat(targetPosition), targetVelocity),
+            ShipAssist.Heading(transform));
+        ship.m_speed = Ship.Speed.Full;
+        steerCourse = ChooseCourse(course, target.GetComponent<Rigidbody>(), out bool clear, out bool turnAbout);
+        steering = true;
+        if (!clear || turnAbout)
+        {
+            ship.m_speed = clear ? Ship.Speed.Slow : Ship.Speed.Back;
+        }
+    }
+
+    // The fire ship has come alongside: the blow burns the target's hull, and its fires are lit over the next ticks.
+    private void Strike(Ship target)
+    {
+        int fires = Mathf.Max(1, WeaponSettings.FireShipFires.Value);
+        strikesLeft = fires;
+        strikeNear = target.transform.position + (transform.position - target.transform.position) * 0.3f;
+        ShipDamage.Of(target)?.Tell("$msg_whitehilt_ship_fireship_strikes");
+        WearNTear targetHull = target.GetComponent<WearNTear>();
+        if (targetHull != null)
+        {
+            HitData hit = new() { m_point = strikeNear, m_dir = target.transform.position - transform.position, m_hitType = HitData.HitType.Burning };
+            hit.m_damage.m_fire = 25f * fires;
+            targetHull.Damage(hit);
+        }
+    }
+
+    // The ship goes down: its hull is destroyed, as a prize's is when its time is out.
+    private void Sink()
+    {
+        if (sinking || hull == null)
+        {
+            return;
+        }
+
+        sinking = true;
+        steering = false;
+        fireLook?.Dispose();
+        fireLook = null;
+        hull.Remove(true);
     }
 
     // The set the ship's physics reads: a ship sails on its own in every state but prize and moored.
@@ -619,10 +966,12 @@ public class RaiderShip : MonoBehaviour
             }
         }
 
-        // The jarl takes his post first, and the warriors share the rest.
+        // The jarl takes his post first, and the warriors share the rest. The crew is at least the level the world's keys
+        // give, and a flagship's at least its own.
         int jarlPost = jarlPrefab != null ? FleetRules.NearestPost(posts, meleePosts, MastPosition()) : -1;
         meleePosts.Remove(jarlPost);
-        int level = isFlagship ? FleetSettings.FlagshipCrewLevel.Value : 1;
+        int level = Mathf.Max(isFlagship ? FleetSettings.FlagshipCrewLevel.Value : 1,
+            Mathf.RoundToInt(TierValues.PickNumber(SeaBattleSettings.CrewLevels.Value, HasKey, 1f)));
         int spawned = 0;
         int melee = 0;
         int nextArcher = 0;
@@ -739,8 +1088,9 @@ public class RaiderShip : MonoBehaviour
         return ship.m_mastObject != null ? ship.transform.InverseTransformPoint(ship.m_mastObject.transform.position) : Vector3.zero;
     }
 
-    // The hold gets a few draws from the loot list and, by chance, a Raid Chart; a flagship's hold gets more draws and
-    // its chart for sure when the settings say so. A chart that is not registered (a failed load) is left out.
+    // The hold gets a few draws from the loot list of the stage the world has reached and, by chance, a Raid Chart; a
+    // flagship's hold gets more draws and its chart for sure when the settings say so. A chart that is not registered (a
+    // failed load) is left out.
     private void FillHold()
     {
         if (hold == null || hold.GetInventory() == null)
@@ -748,7 +1098,8 @@ public class RaiderShip : MonoBehaviour
             return;
         }
 
-        TreasureLoot.Roll(hold.GetInventory(), SeaBattleSettings.Loot.Value,
+        string loot = TierValues.PickText(SeaBattleSettings.LootTiers.Value, HasKey) ?? SeaBattleSettings.Loot.Value;
+        TreasureLoot.Roll(hold.GetInventory(), loot,
             FleetRules.HoldRolls(SeaBattleSettings.LootRolls.Value, isFlagship, FleetSettings.FlagshipLootRolls.Value));
         if (FleetRules.ChartInHold(isFlagship, FleetSettings.FlagshipRaidChart.Value, SeaBattleSettings.RaidChartChance.Value, Random.value))
         {
@@ -762,13 +1113,14 @@ public class RaiderShip : MonoBehaviour
         hold.Save();
     }
 
-    // Counts the crew that is loaded here. A new owner that has not seen the crew yet trusts the last count in the ZDO
-    // for a few seconds, so it does not take a ship it has just got for a prize. It also notes whether a living jarl is
-    // among them.
-    private void CountCrew(ZDO zdo, out int alive, out int melee)
+    // Counts the crew that is loaded here, and how many of it still stand on this ship's deck. A new owner that has not
+    // seen the crew yet trusts the last count in the ZDO for a few seconds, so it does not take a ship it has just got for
+    // a prize. It also notes whether a living jarl is among them.
+    private void CountCrew(ZDO zdo, out int alive, out int melee, out int onDeck)
     {
         alive = 0;
         melee = 0;
+        onDeck = 0;
         jarlAlive = false;
         ZDOID id = zdo.m_uid;
         foreach (RaiderCrew member in RaiderCrew.All)
@@ -777,6 +1129,7 @@ public class RaiderShip : MonoBehaviour
             {
                 alive++;
                 melee += member.Archer ? 0 : 1;
+                onDeck += member.Boarded ? 0 : 1;
                 jarlAlive |= member.Jarl;
             }
         }
@@ -841,10 +1194,11 @@ public class RaiderShip : MonoBehaviour
         hull.Remove(true);
     }
 
-    // A hull sunk in battle is a deed too, if the crew did not give the ship away first; a flagship that sinks breaks its fleet.
+    // A hull sunk in battle is a deed too, if the crew did not give the ship away first; a flagship that sinks breaks its
+    // fleet. A fire ship that goes down is no deed.
     private void OnHullDestroyed()
     {
-        if (nview != null && nview.IsValid() && nview.IsOwner())
+        if (nview != null && nview.IsValid() && nview.IsOwner() && !IsFireShip)
         {
             AnnounceDeed(nview.GetZDO());
             BreakFleet(nview.GetZDO());
@@ -964,7 +1318,8 @@ public class RaiderShip : MonoBehaviour
     // movement, as a ship owned by another machine has no velocity here. The fleet's rules come on top of the tactics:
     // an escort runs when the fleet's morale breaks, keeps its place in the wedge until the flagship closes in, and then
     // fights from the side and distance the fleet gives it; the flagship waits for escorts that have fallen behind. Every
-    // fleet fact comes from the flagship's data, which is read even when the flagship is not loaded here.
+    // fleet fact comes from the flagship's data, which is read even when the flagship is not loaded here. The time in a
+    // state is world time kept in the data, so a new owner goes on counting where the old one stopped.
     private void Sail(ZDO zdo, RaiderState state, int alive, int melee)
     {
         Ship target = TargetShip;
@@ -977,6 +1332,7 @@ public class RaiderShip : MonoBehaviour
 
         Vector3 targetPosition = target.transform.position;
         TrackTarget(targetPosition);
+        long now = ZNet.instance.GetTime().Ticks;
         int rank = zdo.GetInt(RaiderKeys.Rank);
         ZDOID fleet = zdo.GetZDOID(RaiderKeys.Fleet);
         bool escort = rank > 0 && !fleet.IsNone();
@@ -991,41 +1347,159 @@ public class RaiderShip : MonoBehaviour
             tuning = tuning.WithBroadside(FleetRules.EscortDistance(rank, flagship.Side, tuning.BroadsideDistance, FleetSettings.EscortSpread.Value));
         }
 
+        // A charge that has struck is over; the tactics then come alongside again.
+        RaiderState current = state == RaiderState.Ram && justRammed ? RaiderState.Broadside : state;
+        justRammed = false;
+        bool canRam = RamSettings.Enabled.Value && WeaponRules.RamReady(HasRam, zdo.GetLong(RaiderKeys.RamTime), now, WeaponSettings.RamSeconds.Value);
         float crewShare = Mathf.Clamp01(alive / (float)Mathf.Max(1, CrewSize()));
-        RaiderInput input = new(morale ? RaiderState.Flee : state, Flat(transform.position), ShipAssist.Heading(transform), Flat(targetPosition),
-            targetVelocity, ShipAssist.Heading(target.transform), crewShare, HullShare(zdo), Time.time - stateSince, side, melee > 0,
-            GrappleLink.IsBound(ship));
+        RaiderInput input = new(morale ? RaiderState.Flee : current, Flat(transform.position), ShipAssist.Heading(transform), Flat(targetPosition),
+            targetVelocity, ShipAssist.Heading(target.transform), crewShare, HullShare(zdo), StateSeconds(zdo, now), side, melee > 0,
+            GrappleLink.IsBound(ship), canRam);
         RaiderOrder order = RaiderTactics.Decide(input, tuning);
         if (order.State == RaiderState.Approach)
         {
             order = FleetOrder(order, escort, rank, flagship, Flat(targetPosition));
         }
 
-        if (order.State != state)
+        float distance = Vector2.Distance(Flat(transform.position), Flat(targetPosition));
+        steerCourse = ChooseCourse(order.Course, target.GetComponent<Rigidbody>(), out bool clear, out bool turnAbout);
+        bool gaveUp = order.State != RaiderState.Flee && !GrappleLink.IsBound(ship) && GivesUp(order.Course, clear, distance);
+        if (gaveUp)
         {
-            zdo.Set(RaiderKeys.State, (int)order.State);
-            knownState = order.State;
-            stateSince = Time.time;
-            if (order.State == RaiderState.Flee)
-            {
-                Message(morale && state != RaiderState.Flee ? "$msg_whitehilt_fleet_breaks" : "$msg_whitehilt_raider_flees");
-            }
+            order = new RaiderOrder(RaiderState.Flee, order.Course, RaiderSail.Full);
+            Message("$msg_whitehilt_raider_gives_up");
         }
 
-        ship.m_speed = order.Sail switch
+        if (order.State != state)
+        {
+            ChangeState(zdo, state, order.State, now, escort, target, morale, gaveUp);
+        }
+
+        ship.m_speed = !clear ? Ship.Speed.Back : turnAbout ? Ship.Speed.Slow : order.Sail switch
         {
             RaiderSail.Full => Ship.Speed.Full,
             RaiderSail.Half => Ship.Speed.Half,
             _ => Ship.Speed.Stop
         };
-        steerCourse = ChooseCourse(order.Course, target.GetComponent<Rigidbody>(), out bool clear);
         steering = true;
-        if (!clear)
+        if (isFlagship)
         {
-            ship.m_speed = Ship.Speed.Stop;
+            CallReinforcement(zdo, order.State, target, now);
         }
 
         HandOutLeap(zdo, order.State);
+    }
+
+    // Writes a new state on the owner, with the world time it began, and does what the change brings: a ship that comes
+    // alongside on its own picks its side; a charge that ends starts the ram's cooldown; and those near are told when it
+    // flees (unless it gave up, which has its own words) or charges.
+    private void ChangeState(ZDO zdo, RaiderState from, RaiderState to, long now, bool escort, Ship target, bool morale, bool gaveUp)
+    {
+        zdo.Set(RaiderKeys.State, (int)to);
+        zdo.Set(RaiderKeys.StateSince, now);
+        if (to == RaiderState.Broadside && from == RaiderState.Approach && !escort)
+        {
+            zdo.Set(RaiderKeys.Side, PickSide(target));
+        }
+
+        if (from == RaiderState.Ram)
+        {
+            zdo.Set(RaiderKeys.RamTime, now);
+        }
+
+        if (to == RaiderState.Ram)
+        {
+            Message("$msg_whitehilt_raider_rams");
+        }
+        else if (to == RaiderState.Flee && !gaveUp)
+        {
+            Message(morale ? "$msg_whitehilt_fleet_breaks" : "$msg_whitehilt_raider_flees");
+        }
+    }
+
+    // Seconds since the state began, by the world clock in the data. A ship raised by an older version has no start yet;
+    // it gets one now.
+    private float StateSeconds(ZDO zdo, long now)
+    {
+        long since = zdo.GetLong(RaiderKeys.StateSince);
+        if (since == 0L)
+        {
+            zdo.Set(RaiderKeys.StateSince, now);
+            return 0f;
+        }
+
+        return (float)((now - since) / (double)TimeSpan.TicksPerSecond);
+    }
+
+    // The side to come alongside on: the one the ship is on, unless fewer of the target's players stand at the other rail.
+    private int PickSide(Ship target)
+    {
+        int port = 0;
+        int starboard = 0;
+        foreach (Player player in Player.GetAllPlayers())
+        {
+            if (player == null || player.IsDead() || !target.IsPlayerInBoat(player))
+            {
+                continue;
+            }
+
+            float x = target.transform.InverseTransformPoint(player.transform.position).x;
+            port += x < -RailOffset ? 1 : 0;
+            starboard += x > RailOffset ? 1 : 0;
+        }
+
+        return RaiderTactics.PickSide(Flat(transform.position), Flat(target.transform.position), ShipAssist.Heading(target.transform), port, starboard);
+    }
+
+    // Whether the ship gives up the hunt: land or shallows have kept it off its course for the setting's seconds and it has
+    // got no nearer to its target in that time. Coming nearer starts the count again, so a ship that sails round an island
+    // keeps hunting.
+    private bool GivesUp(float wanted, bool clear, float distance)
+    {
+        float seconds = SeaBattleSettings.StuckSeconds.Value;
+        bool kept = !clear || Mathf.Abs(Mathf.DeltaAngle(wanted, steerCourse)) > 1f;
+        if (!kept || seconds <= 0f)
+        {
+            blockedSince = 0f;
+            return false;
+        }
+
+        if (blockedSince == 0f || distance < blockedDistance - StuckProgress)
+        {
+            blockedSince = Time.time;
+            blockedDistance = distance;
+            return false;
+        }
+
+        return Time.time - blockedSince > seconds;
+    }
+
+    // The flagship's owner: notes when the fight began and, when the jarl has fought long enough and still lives, blows
+    // his horn once and raises one more Nail Ship for the fleet.
+    private void CallReinforcement(ZDO zdo, RaiderState state, Ship target, long now)
+    {
+        bool fighting = state == RaiderState.Broadside || state == RaiderState.Board || state == RaiderState.Ram;
+        long start = zdo.GetLong(RaiderKeys.FightStart);
+        if (start == 0L)
+        {
+            if (fighting)
+            {
+                zdo.Set(RaiderKeys.FightStart, now);
+            }
+
+            return;
+        }
+
+        double minutes = (now - start) / (double)TimeSpan.TicksPerMinute;
+        bool alive = jarlAlive && !zdo.GetBool(RaiderKeys.JarlFallen);
+        if (!FleetRules.CallsReinforcement(state, alive, zdo.GetBool(RaiderKeys.Reinforced), minutes, FleetSettings.ReinforceMinutes.Value))
+        {
+            return;
+        }
+
+        zdo.Set(RaiderKeys.Reinforced, true);
+        Message(HornMessage);
+        RaiseReinforcement(target);
     }
 
     // What the fleet makes of an order to approach: an escort that has not broken formation sails for its place in the
@@ -1153,24 +1627,27 @@ public class RaiderShip : MonoBehaviour
     }
 
     // The course asked for if the sea ahead is clear, else the nearest clear one 30, 60 or 90 degrees off it, as the
-    // route autopilot does; the side taken last is tried first so it does not swing back and forth. The target ship's
-    // own hull does not count, as the Nail Ship is meant to come close to it.
-    private float ChooseCourse(float course, Rigidbody target, out bool clear)
+    // route autopilot does; the side taken last is tried first so it does not swing back and forth. With none of those
+    // clear it turns about, up to 150 degrees off, at slow speed (turnAbout); with no clear way at all it backs off
+    // (clear is false). The target ship's own hull does not count, as the Nail Ship is meant to come close to it.
+    private float ChooseCourse(float course, Rigidbody target, out bool clear, out bool turnAbout)
     {
         clear = true;
+        turnAbout = false;
         float look = assist.Lookahead();
         if (!assist.ShallowAhead() && !assist.Blocked(course, look, target))
         {
             return course;
         }
 
-        for (float angle = 30f; angle <= 90f; angle += 30f)
+        for (float angle = 30f; angle <= 150f; angle += 30f)
         {
             foreach (int sign in new[] { avoidSign, -avoidSign })
             {
                 if (!assist.Blocked(course + sign * angle, look, target))
                 {
                     avoidSign = sign;
+                    turnAbout = angle > 90f;
                     return course + sign * angle;
                 }
             }
@@ -1180,15 +1657,16 @@ public class RaiderShip : MonoBehaviour
         return course;
     }
 
-    // While boarding, lets one warrior at a time leap: every few seconds the next living warrior gets the turn. Leaving
-    // the boarding state gives the turn back.
+    // While boarding, lets one warrior at a time leap, or two once the world has reached the setting's key: every few
+    // seconds the next living warriors get the turn. Leaving the boarding state gives the turns back.
     private void HandOutLeap(ZDO zdo, RaiderState state)
     {
         if (state != RaiderState.Board)
         {
-            if (zdo.GetInt(RaiderKeys.Leap, -1) != -1)
+            if (zdo.GetInt(RaiderKeys.Leap, -1) != -1 || zdo.GetInt(RaiderKeys.Leap2, -1) != -1)
             {
                 zdo.Set(RaiderKeys.Leap, -1);
+                zdo.Set(RaiderKeys.Leap2, -1);
             }
 
             lastLeap = -1;
@@ -1201,7 +1679,10 @@ public class RaiderShip : MonoBehaviour
         }
 
         nextLeap = Time.time + SeaBattleSettings.BoardIntervalSeconds.Value;
-        zdo.Set(RaiderKeys.Leap, NextLeap(zdo.m_uid));
+        int first = NextLeap(zdo.m_uid);
+        int second = Mathf.RoundToInt(TierValues.PickNumber(SeaBattleSettings.LeapTiers.Value, HasKey, 1f)) >= 2 ? NextLeap(zdo.m_uid) : -1;
+        zdo.Set(RaiderKeys.Leap, first);
+        zdo.Set(RaiderKeys.Leap2, second != first ? second : -1);
     }
 
     // The next living warrior who has not leapt, after the one who had the last turn; the first one when the numbers
@@ -1235,8 +1716,15 @@ public class RaiderShip : MonoBehaviour
         nview.InvokeRPC(ZNetView.Everybody, MessageRpc, token);
     }
 
+    // On every machine: shows the message to the local player if near, and sounds the jarl's horn, which is heard farther
+    // than the message is shown.
     private void RPC_Message(long sender, string token)
     {
+        if (token == HornMessage)
+        {
+            HornCaller.PlayAt(transform.position, SeaBattleSettings.SpawnDistance.Value * 2f);
+        }
+
         Player player = Player.m_localPlayer;
         if (player != null && Vector3.Distance(player.transform.position, transform.position) <= MessageRange)
         {
