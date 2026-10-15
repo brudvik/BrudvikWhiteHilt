@@ -43,7 +43,20 @@ LINE_SETS = {
                (("greet", 2), ("bye", 2), ("talk", 4), ("start", 2), ("buy", 2), ("sell", 2)) for n in range(1, count + 1)],
     "skipper": [f"whitehilt_skipper_{kind}{n}" for kind in ("depart", "arrive", "wave") for n in (1, 2)],
     "raider": [f"whitehilt_raider_{kind}{n}" for kind in ("board", "attack", "taunt") for n in (1, 2, 3)],
+    "whitehilt": [f"whitehilt_unlock_{tier}" for tier in
+                  ("start", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth")]
+                 + ["msg_whitehilt_bloodmoon_start", "msg_whitehilt_bloodmoon_end"]
+                 + [f"msg_whitehilt_pressure_{n}" for n in (1, 2, 3)],
+    "husvette": [f"whitehilt_husvette_{kind}{n}" for kind in ("home", "rest", "cold", "cosy") for n in (1, 2, 3)],
+    "munin": [f"whitehilt_munin_{kind}{n}" for kind in ("news", "idle") for n in (1, 2, 3)],
 }
+
+# Line names drop these prefixes, as WhiteHiltSound.LineName does.
+LINE_PREFIXES = ("msg_whitehilt_", "whitehilt_trader_", "whitehilt_")
+
+# The unlock texts are put together in ProgressionManager from the tier's name.
+TIER_NAMES = {"start": "Start", "blackforest": "Black Forest", "swamp": "Swamp", "mountain": "Mountain", "plains": "Plains",
+              "mistlands": "Mistlands", "ashlands": "Ashlands", "deepnorth": "Deep North"}
 
 # What each of a monster's sounds is, from its description and voice; an action of its own is in its "custom".
 ACTIONS = {
@@ -78,6 +91,8 @@ def english_texts():
             lines = re.findall(STRING, match.group(2))
             for number, line in enumerate(lines, 1):
                 texts[f"whitehilt_trader_{match.group(1)}{number}"] = unescape(line)
+    for tier, name in TIER_NAMES.items():
+        texts.setdefault(f"whitehilt_unlock_{tier}", f"The White Hilt answers: {name} gear unlocked")
     return texts
 
 
@@ -98,7 +113,7 @@ def speaker_lines(speaker, english, norwegian, monsters):
     """(clip name, language, text) for each line a speaker says."""
     result = []
     for key in LINE_SETS[speaker["lines"]]:
-        line = key[len("whitehilt_trader_"):] if key.startswith("whitehilt_trader_") else key[len("whitehilt_"):]
+        line = next(key[len(prefix):] for prefix in LINE_PREFIXES if key.startswith(prefix))
         for language, table in (("en", english), ("no", norwegian)):
             text = table.get(key)
             if not text:

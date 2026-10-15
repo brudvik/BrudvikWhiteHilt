@@ -319,6 +319,7 @@ public static class ProgressionManager
             }
 
             player.Message(MessageHud.MessageType.Center, message);
+            WhiteHiltSound.SpeakLocal(WhiteHiltSound.HiltSpeaker, "$" + GetUnlockKey(unlockedTier));
         }
 
         trackedTier = unlockedTier;

@@ -8,6 +8,8 @@ All potions are crafted in the **Cauldron** as Mead Base, then fermented in the 
 
 Several of them are brewed from what the mod adds to the world: lingonberries for Idunn, crowberries and roseroot for Skadi, sphagnum moss and bog bean for Eir, meadowsweet and angelica for Kvasir, juniper and angelica for Ullr, angelica for Heimdall, henbane, ergot and rock lichen for the Völva ([Foraging & food](foraging.md)), spider silk for Loki, who made the first fishing net, and a spider's poison gland for Hel ([Lindorm & giant spiders](monsters.md)).
 
+Each god's gift sounds of its god as you drink it: thunder for Thor, an icy wind for Skadi, galloping hooves for Sleipnir, a horn call for Heimdall and so on. The meads, ales and wines are gulped down with a satisfied sigh.
+
 ### Timed Effects (20 minutes duration)
 
 | Potion | Effect | Mead Base Requirements |

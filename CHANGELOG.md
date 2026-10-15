@@ -5,6 +5,15 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **The White Hilt, the Husvette and Munin speak**: the White Hilt's own voice says its unlocks, the blood moon and
+  the land growing restless (new messages at a quarter, a half and three quarters of the pressure); the
+  [Husvette](docs/base.md#the-husvette-speaks) welcomes you home, murmurs as you rest, grumbles at a cold hearth;
+  [Munin](docs/navigation.md) caws and tells of new places on the map. English and Norwegian, made with ElevenLabs.
+- **[Fight music](docs/difficulty.md#heard-not-only-seen)**: a fight with one of the mod's great beasts, near a Nail
+  Ship's crew or under a blood moon has music of its own in place of the game's combat music, and a blood moon has
+  war drums and wolves at night.
+- **More sounds**: digging up treasure, the Rune Forge, runes hung and awakened, rune etching, a sound for each god's
+  gift and the meads, and the Black Bestiary, the School Bench and the saga.
 - **[Monster sounds](docs/monsters.md#sounds)**: every monster of the mod has new sounds made with ElevenLabs, three takes of
   each so they do not repeat: the Giant Spider, Lindorm, Kraken, Greenland Shark, Desert Dragon, Mist Stag, Nidhogg
   Spawn, Yggdrasil Warden and Garm Hound, and now also the Draugr Jarl, the White Dragon, the nine Black Beasts and the

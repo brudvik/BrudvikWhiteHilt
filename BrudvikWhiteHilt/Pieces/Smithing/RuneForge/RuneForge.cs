@@ -86,6 +86,7 @@ public class RuneForge : IWhiteHiltCustomPiece
             station.m_craftRequireRoof = false;
             station.m_craftRequireFire = false;
             station.m_showBasicRecipies = false;
+            global::BrudvikWhiteHilt.Monsters.MonsterRegistry.SetSound(ref station.m_craftItemEffects, "sfx_runeforge");
 
             TryApplyVisual(piece, station);
             instance.AddPiece(piece);

@@ -65,6 +65,7 @@ public class SagaPanel : MonoBehaviour
 
         instance.gameObject.SetActive(true);
         GUIManager.BlockInput(true);
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_saga_open");
         Refresh();
     }
 

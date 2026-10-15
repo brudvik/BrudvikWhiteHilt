@@ -77,5 +77,6 @@ public class HusvettePiece : DefensePieceBase
         }
 
         prefab.AddComponent<Husvette>();
+        prefab.AddComponent<HusvetteVoice>();
     }
 }

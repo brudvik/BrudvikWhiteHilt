@@ -95,3 +95,7 @@ The default loot list holds the five meads, smoked fish, wolf jerky and sweet ga
 ## Testing with devcommands
 
 `spawn WhiteHiltTreasureMap` gives an unmarked map. Use it to have a treasure buried for it, just like one bought from Hildir (no coins are given back if no place is found). `spawn WhiteHiltTreasureHunt` gives a hunt map, but only a bought one starts a hunt; a spawned one is a single map.
+
+## Sounds
+
+The pickaxe bites the earth as you dig, a soft shimmer tells you the treasure is near and a faint chime sounds with each puff of dust over it, and the chest bursts up out of the ground with a jingle of coins that everyone near hears.

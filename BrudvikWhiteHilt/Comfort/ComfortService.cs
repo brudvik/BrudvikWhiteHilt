@@ -45,6 +45,7 @@ public static class ComfortService
     public static void Initialize()
     {
         ComfortSettings.Initialize();
+        HusvetteVoice.RegisterTranslations();
         Translations.AddEnglishNameAndDescription(SkillNameKey, "Homecraft",
             "Making a home. Your own reach of comfort grows with it, so the pieces of a larger room count for you.");
         skillConfig = new SkillConfig

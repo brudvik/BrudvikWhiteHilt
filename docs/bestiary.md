@@ -89,3 +89,7 @@ The existing `[Content]` and `[Recipes]` settings control each item and `piece_w
 ## Testing
 
 Build and offline behavior checks do not replace in-game testing. Verify all nine counters against their matching and nonmatching beasts, shot-then-weapon-switch behavior, treatment charges and weapon restrictions, sketch readability, paging and scrolling at different HUD scales, Escape/input release and dedicated-server ownership. No asset bundle rebuild is needed: existing vanilla arrows, oil-flask/whetstone models and guestbook stand are reused; trophy icons are processed into cached paper sketches only for the book.
+
+## Sounds
+
+The book creaks open and its pages turn as you leaf through it. The [School Bench](school.md) opens the same way and its quill scratches as you write, and the [saga](saga.md) opens with a few notes on a lyre.

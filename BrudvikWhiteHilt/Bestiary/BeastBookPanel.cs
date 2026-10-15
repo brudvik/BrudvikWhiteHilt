@@ -55,6 +55,7 @@ public sealed class BeastBookPanel : MonoBehaviour
         instance.Refresh();
         instance.scroll.verticalNormalizedPosition = 1f;
         GUIManager.BlockInput(true);
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_book_open");
     }
 
     /// <summary>Closes the guide and returns control to the player.</summary>
@@ -160,7 +161,13 @@ public sealed class BeastBookPanel : MonoBehaviour
         {
             return;
         }
+        int before = page;
         page = Mathf.Clamp(page + step, 0, pages.Length - 1);
+        if (page != before)
+        {
+            global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal(global::BrudvikWhiteHilt.Monsters.CreatureSoundNames.Pick("sfx_page_turn"));
+        }
+
         Refresh();
         Canvas.ForceUpdateCanvases();
         scroll.verticalNormalizedPosition = 1f;

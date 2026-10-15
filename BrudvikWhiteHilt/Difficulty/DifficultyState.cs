@@ -11,6 +11,13 @@ namespace BrudvikWhiteHilt.Difficulty;
 /// </summary>
 public static class DifficultyState
 {
+    /// <summary>
+    /// Which quarter of the pressure a value is in: 0 below a quarter, then 1, 2 and 3 from three quarters up.
+    /// </summary>
+    /// <param name="pressure">The pressure, 0 to 1.</param>
+    /// <returns>The band.</returns>
+    public static int PressureBand(float pressure) => UnityEngine.Mathf.Clamp(UnityEngine.Mathf.FloorToInt(pressure * 4f), 0, 3);
+
     /// <summary>Pressure from 0 to 1.</summary>
     public static float Pressure { get; private set; }
 

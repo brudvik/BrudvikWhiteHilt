@@ -94,6 +94,27 @@
       "description": "An undead draugr jarl commanding a ghost ship. Very deep, booming, echoing male voice with a Scandinavian accent, ancient and terrifying.",
       "lines": "raider",
       "voice_id": "3GKVWRsNgEJFWVcmnzd7"
+    },
+    {
+      "id": "whitehilt",
+      "name": "WhiteHilt Voice of the Hilt",
+      "description": "An ancient, mystical, otherworldly voice of a legendary sword speaking to its bearer. Deep, resonant, calm and solemn, slightly echoing, genderless and timeless, with a faint Scandinavian accent.",
+      "lines": "whitehilt",
+      "voice_id": "1Lsmd8fle9C4ICp6FUun"
+    },
+    {
+      "id": "husvette",
+      "name": "WhiteHilt Husvette",
+      "description": "A tiny, very old Norse house spirit, a gnome-like tomte with a red cap. Crackly, warm, slightly grumpy and mumbling old male voice with a Scandinavian accent, kindly underneath.",
+      "lines": "husvette",
+      "voice_id": "JmSffrNcoFdWLaAQ4tkl"
+    },
+    {
+      "id": "munin",
+      "name": "WhiteHilt Munin",
+      "description": "Odin's talking raven of memory. A raspy, croaking, sharp and clever voice like a bird that has learned to speak, quick and a little eerie, with a Scandinavian accent.",
+      "lines": "munin",
+      "voice_id": "9JdjVND9iWmRlmqaKV2s"
     }
   ],
   "effects": [
@@ -173,12 +194,236 @@
       "prompt": "An ancient living tree resting: branches creaking, leaves rustling, very deep slow wooden breathing. No music.",
       "duration": 12,
       "loop": true
+    },
+    {
+      "name": "sfx_raven_caw",
+      "prompt": "A large raven cawing, croaky and loud, a short call",
+      "duration": 1.2,
+      "variants": 3
+    },
+    {
+      "name": "amb_bloodmoon",
+      "prompt": "Ominous night ambience: slow distant war drums like a heavy heartbeat, wolves howling far away, an eerie cold wind. No melody.",
+      "duration": 20,
+      "loop": true
+    },
+    {
+      "name": "sfx_bloodmoon_rise",
+      "prompt": "An ominous stinger as a blood moon rises: a deep low horn, a rumbling boom and a dark choir swell",
+      "duration": 4
+    },
+    {
+      "name": "sfx_dig",
+      "prompt": "A pickaxe digging into hard earth and small stones, one strike",
+      "duration": 0.8,
+      "variants": 3
+    },
+    {
+      "name": "sfx_treasure_chest",
+      "prompt": "A heavy wooden treasure chest bursting up out of the ground, earth and stones falling away, then gold coins jingling inside",
+      "duration": 3.5
+    },
+    {
+      "name": "sfx_treasure_warm",
+      "prompt": "A soft magical shimmer and a faint golden twinkle, a hint that treasure is near",
+      "duration": 2
+    },
+    {
+      "name": "sfx_treasure_near",
+      "prompt": "A very faint sparkling chime, a single soft twinkle",
+      "duration": 1
+    },
+    {
+      "name": "sfx_runeforge",
+      "prompt": "A smith's hammer striking glowing iron runes on an anvil, a metallic ring with a magical shimmer",
+      "duration": 1.5,
+      "variants": 3
+    },
+    {
+      "name": "sfx_rune_hung",
+      "prompt": "An iron rune hung on a hook of a wooden post, a clear magical metallic chime",
+      "duration": 1.5,
+      "variants": 3
+    },
+    {
+      "name": "sfx_runes_complete",
+      "prompt": "Six magical runes awakening together: a rising shimmering choir and a deep resonant magical hum",
+      "duration": 4
+    },
+    {
+      "name": "amb_runes",
+      "prompt": "A steady, deep, soft magical hum with faint shimmering sparkles, calm and constant. No music.",
+      "duration": 8,
+      "loop": true
+    },
+    {
+      "name": "sfx_rune_etch",
+      "prompt": "A chisel etching runes into steel with sparks, ending in a glowing magical ring",
+      "duration": 2.5
+    },
+    {
+      "name": "drink_mead",
+      "prompt": "A person gulping mead from a drinking horn, then a satisfied sigh",
+      "duration": 2,
+      "variants": 3
+    },
+    {
+      "name": "sfx_book_open",
+      "prompt": "A heavy old leather-bound book being opened, creaking spine and pages",
+      "duration": 1.5
+    },
+    {
+      "name": "sfx_page_turn",
+      "prompt": "A single page of an old parchment book being turned",
+      "duration": 0.8,
+      "variants": 3
+    },
+    {
+      "name": "sfx_quill",
+      "prompt": "A quill pen scratching quickly on parchment, writing a few words",
+      "duration": 2,
+      "variants": 3
+    },
+    {
+      "name": "sfx_saga_open",
+      "prompt": "A short gentle strum on an old Norse lyre, a few warm plucked notes",
+      "duration": 2.5
+    },
+    {
+      "name": "drink_giftofbaldur",
+      "prompt": "A person drinking a magic potion, a gulp followed by a warm radiant shimmer of golden light and a soft bright choir note",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofbrokkr",
+      "prompt": "A person drinking a magic potion, a gulp followed by a dwarven forge hammer clanging on an anvil with sparks",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofeir",
+      "prompt": "A person drinking a magic potion, a gulp followed by a gentle healing harp shimmer and a soft sigh of relief",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftoffenrir",
+      "prompt": "A person drinking a magic potion, a gulp followed by a deep wolf growl rising from the drinker",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftoffreya",
+      "prompt": "A person drinking a magic potion, a gulp followed by a soft magical shimmer with falcon wings fluttering",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftoffreyr",
+      "prompt": "A person drinking a magic potion, a gulp followed by rustling leaves and flowers blooming, a warm summer breeze",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofheimdall",
+      "prompt": "A person drinking a magic potion, a gulp followed by a distant mighty horn call echoing over the land",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofhel",
+      "prompt": "A person drinking a magic potion, a gulp followed by cold ghostly whispers and a chilling breath",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofhugin",
+      "prompt": "A person drinking a magic potion, a gulp followed by raven wings flapping and a sharp caw",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofidunn",
+      "prompt": "A person drinking a magic potion, a gulp followed by a crisp apple bite and a youthful sparkling chime",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofkvasir",
+      "prompt": "A person drinking a magic potion, a gulp followed by a wise mystical whisper and a clear crystal chime",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofloki",
+      "prompt": "A person drinking a magic potion, a gulp followed by a mischievous chuckle and a magical puff of smoke",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofmunin",
+      "prompt": "A person drinking a magic potion, a gulp followed by an echoing raven caw fading like a memory",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofnjord",
+      "prompt": "A person drinking a magic potion, a gulp followed by ocean waves washing in and a fresh sea wind",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofodin",
+      "prompt": "A person drinking a magic potion, a gulp followed by a deep resonant mystical hum and distant raven calls",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofratatoskr",
+      "prompt": "A person drinking a magic potion, a gulp followed by a squirrel chittering and scampering quickly up a tree",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofskadi",
+      "prompt": "A person drinking a magic potion, a gulp followed by a howling icy mountain wind and crunching snow",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofsleipnir",
+      "prompt": "A person drinking a magic potion, a gulp followed by thundering galloping hooves passing by",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofsurt",
+      "prompt": "A person drinking a magic potion, a gulp followed by a roaring burst of fire and crackling embers",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofthor",
+      "prompt": "A person drinking a magic potion, a gulp followed by a mighty crack of thunder and rumbling sky",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftoftyr",
+      "prompt": "A person drinking a magic potion, a gulp followed by a short battle horn and a ringing sword being drawn",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofullr",
+      "prompt": "A person drinking a magic potion, a gulp followed by a bowstring twang and skis gliding on snow",
+      "duration": 3
+    },
+    {
+      "name": "drink_giftofvolva",
+      "prompt": "A person drinking a magic potion, a gulp followed by an eerie seeress chanting softly and rattling bones",
+      "duration": 3
     }
   ],
   "music": [
     {
       "name": "music_tradingpost",
       "prompt": "Calm, warm Nordic folk music for a peaceful seaside trading post in the Viking age: soft lyre, gentle frame drum, wooden flute and a low hummed male choir. Relaxed, welcoming, instrumental, no lyrics, loopable.",
+      "length_ms": 90000
+    },
+    {
+      "name": "music_bloodmoon",
+      "prompt": "Dark, driving Viking battle music for a night under a blood moon: pounding war drums, low droning horns, tense deep strings, a grim chanting male choir. Intense, menacing, instrumental with wordless chant, loopable.",
+      "length_ms": 90000
+    },
+    {
+      "name": "music_seabattle",
+      "prompt": "Epic Viking naval battle music: fast rowing drums, bold horns, tense strings, crashing cymbals like waves, heroic and urgent. Instrumental, loopable.",
+      "length_ms": 90000
+    },
+    {
+      "name": "music_bigbeast",
+      "prompt": "Huge monster fight music in Norse style: thunderous taiko-like drums, deep brass, dissonant strings, a booming wordless choir. Overwhelming, dramatic, instrumental, loopable.",
       "length_ms": 90000
     }
   ],

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Difficulty.Beasts;
+using BrudvikWhiteHilt.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,7 @@ public class DifficultyService : MonoBehaviour
     private int clientRequests;
     private float lastRequest;
     private bool shownBloodMoon;
+    private int shownPressureBand = -1;
     private int publishedBiomes = -1;
 
     /// <summary>
@@ -274,6 +276,7 @@ public class DifficultyService : MonoBehaviour
         nextClient = Time.time + ClientInterval;
         PublishBiomes(player);
         AnnounceBloodMoon(player);
+        AnnouncePressure(player);
         WatchForBeast(player);
     }
 
@@ -298,7 +301,36 @@ public class DifficultyService : MonoBehaviour
         }
 
         shownBloodMoon = up;
-        player.Message(MessageHud.MessageType.Center, up ? "$msg_whitehilt_bloodmoon_start" : "$msg_whitehilt_bloodmoon_end");
+        string token = up ? "$msg_whitehilt_bloodmoon_start" : "$msg_whitehilt_bloodmoon_end";
+        player.Message(MessageHud.MessageType.Center, token);
+        if (up)
+        {
+            WhiteHiltSound.PlayLocal("sfx_bloodmoon_rise");
+        }
+
+        WhiteHiltSound.SpeakLocal(WhiteHiltSound.HiltSpeaker, token);
+    }
+
+    // On a client: when the pressure climbs past a quarter, a half or three quarters, the White Hilt says the land
+    // grows restless. Not when the player comes into a world where it is already that high.
+    private void AnnouncePressure(Player player)
+    {
+        int band = DifficultyState.PressureBand(DifficultyState.Pressure);
+        if (shownPressureBand < 0 || band < shownPressureBand)
+        {
+            shownPressureBand = band;
+            return;
+        }
+
+        if (band == shownPressureBand)
+        {
+            return;
+        }
+
+        shownPressureBand = band;
+        string token = $"$msg_whitehilt_pressure_{band}";
+        player.Message(MessageHud.MessageType.Center, token);
+        WhiteHiltSound.SpeakLocal(WhiteHiltSound.HiltSpeaker, token);
     }
 
     // On a client: in bad weather at night (or any night with a blood moon) away from bases, asks the server whether a

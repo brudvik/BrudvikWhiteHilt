@@ -41,7 +41,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.137.0
+## ✨ New in 0.138.0
+
+- **[The world speaks](docs/trading-posts.md#voices-and-sound)**: the traders, Ulf the Hunter, the trading ship's skipper and the Nail Ships' crews talk aloud, each with a voice of their own, in English or Norwegian. The White Hilt itself speaks its unlocks and warns of the blood moon, the [Husvette](docs/base.md#the-husvette-speaks) welcomes you home, and Munin tells of new places on the map.
+- **[Every monster sounds its own](docs/monsters.md#sounds)**: new roars, growls and death cries for all the mod's monsters, the Black Beasts and the plagues, with heavy footsteps, dragon wings and the Lindorm and Kraken heard as they come. A fight with a great beast, a sea battle and a blood moon have [music of their own](docs/difficulty.md#heard-not-only-seen), and the trading posts their sea, gulls and folk music.
+- **[Plagues](docs/trading-posts.md#plagues)**: now and then a named monster terrorises a trading post. Take the trader's bounty notice, hunt it down and bring back its head for a rich bounty.
+- **[The traders' garb](docs/trading-posts.md#the-traders-garb)**: a set of clothing for every biome, one piece at each of its posts, with a bonus of the land, a set bonus and better prices at its posts.
+- **[A Mine Chart](docs/trading-posts.md#the-mine-chart)** at the Mistlands posts shows the way to the next infested mine, and icons now fill their square.
+
+### Also new in 0.137.0
 
 - **[A hunter at the trading posts](docs/trading-posts.md#the-hunter)**: one time in five, Ulf the Hunter sits behind a post's fish stall and sells the trophies of the land, White Hilt's own monsters included.
 - **[Trading posts that look lived in](docs/trading-posts.md#the-posts)**: a larger laft house with a porch, windows and furniture inside, a fenced yard with a fire, a wood yard, stone paths and lanterns, no grass through the floors, flowers and shrubs along the edges, and shells and an old fish rack by the shore.

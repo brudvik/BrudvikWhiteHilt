@@ -71,6 +71,7 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         }
 
         m_hitEffect.Create(hit.m_point, Quaternion.identity, transform);
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal(global::BrudvikWhiteHilt.Monsters.CreatureSoundNames.Pick("sfx_dig"));
         nview.InvokeRPC(DigRpc, hit.m_point);
     }
 
@@ -143,12 +144,14 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         if (distance <= warm && warned.Add(id))
         {
             player.Message(MessageHud.MessageType.Center, Translations.Word("msg_whitehilt_treasure_warm"));
+            global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_treasure_warm");
         }
 
         if (distance <= dust && Time.time >= nextDust)
         {
             nextDust = Time.time + DustInterval;
             TreasureRegistry.DustEffect?.Create(transform.position + Vector3.up * 0.2f, Quaternion.identity);
+            global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_treasure_near");
         }
     }
 
@@ -229,6 +232,7 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         }
 
         GameObject chest = Instantiate(prefab, transform.position, transform.rotation);
+        global::BrudvikWhiteHilt.Monsters.ArrivalSound.Mark(chest.GetComponent<ZNetView>()?.GetZDO());
         Container container = chest.GetComponent<Container>();
         ZDO zdo = nview.GetZDO();
         int step = Mathf.Max(1, zdo.GetInt(StepKey, 1));

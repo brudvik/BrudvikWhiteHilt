@@ -26,6 +26,8 @@ Looking at the portal shows which runes it has. Use the post to take the last ru
 | **Flametal Rune** | Flametal (ore, also the legacy kind) | Rune Forge | Iron ×10 |
 | **Gold Rune** | Gold (ore) | Rune Forge | Iron ×12 |
 
+The Rune Forge rings as it smiths, each rune hung on a post chimes, and when the sixth is hung the runes awaken together and the post hums while all six hang. Etching a rune into a weapon at the Rune Etching Table has its own ringing sound.
+
 ### Valkyrie Stone
 
 A carved runestone with glowing gold knotwork. Use it and a valkyrie carries you to where you last fell in this world (the death marker on the map) for **one Surtling Core**. You arrive with everything you carry. Each death can be travelled to once; after the next death the stone works again, even if you die immediately after arrival at exactly the same coordinates.

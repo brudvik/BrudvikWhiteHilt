@@ -32,7 +32,7 @@ public class WhiteHiltSoundTests
             return;
         }
 
-        string[] speakers = { "meadows", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth", "hunter", "skipper", "raider1", "raider2", "raiderchief" };
+        string[] speakers = { "meadows", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth", "hunter", "skipper", "raider1", "raider2", "raiderchief", "whitehilt", "husvette", "munin" };
         foreach (string name in Directory.GetFiles(folder, "*.mp3").Select(Path.GetFileNameWithoutExtension))
         {
             string[] parts = name.Split('_');
@@ -58,5 +58,26 @@ public class WhiteHiltSoundTests
                 }
             }
         }
+    }
+
+    /// <summary>Every god's gift has its own drinking sound.</summary>
+    [Fact]
+    public void EveryGiftHasItsSound()
+    {
+        string effects = Repository.Path("AssetSource", "Audio", "Effects");
+        foreach (string gift in Directory.GetDirectories(Repository.Path("BrudvikWhiteHilt", "Items", "Potions")).Select(Path.GetFileName))
+        {
+            Assert.True(File.Exists(Path.Combine(effects, $"drink_{gift.ToLowerInvariant()}.mp3")), gift);
+        }
+    }
+
+    /// <summary>The White Hilt warns at a quarter, a half and three quarters of the pressure.</summary>
+    [Fact]
+    public void PressureComesInQuarters()
+    {
+        Assert.Equal(0, Difficulty.DifficultyState.PressureBand(0.1f));
+        Assert.Equal(1, Difficulty.DifficultyState.PressureBand(0.25f));
+        Assert.Equal(2, Difficulty.DifficultyState.PressureBand(0.6f));
+        Assert.Equal(3, Difficulty.DifficultyState.PressureBand(1f));
     }
 }

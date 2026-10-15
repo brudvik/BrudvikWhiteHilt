@@ -74,6 +74,8 @@ public class SchoolBench : MonoBehaviour, Hoverable, Interactable
             return;
         }
 
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal(global::BrudvikWhiteHilt.Monsters.CreatureSoundNames.Pick("sfx_quill"));
+
         int day = EnvMan.instance != null ? EnvMan.instance.GetDay() : 0;
         ZPackage package = new();
         package.Write(SchoolLibrary.FromPlayer(player, day).ToBytes());

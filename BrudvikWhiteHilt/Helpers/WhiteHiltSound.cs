@@ -10,8 +10,13 @@ namespace BrudvikWhiteHilt.Helpers;
 /// </summary>
 public static class WhiteHiltSound
 {
+    /// <summary>The White Hilt's own voice, which speaks its unlocks and its warnings.</summary>
+    public const string HiltSpeaker = "whitehilt";
+
     private const string VoicePrefix = "voice_";
-    private static readonly string[] tokenPrefixes = { "$whitehilt_trader_", "$whitehilt_" };
+    private static readonly string[] tokenPrefixes = { "$msg_whitehilt_", "$whitehilt_trader_", "$whitehilt_" };
+
+    private static AudioSource localVoice;
 
     private static AudioMixerGroup effects;
 
@@ -59,8 +64,8 @@ public static class WhiteHiltSound
     /// <summary>
     /// A line's name from its translation token: the token without $whitehilt_trader_ or $whitehilt_.
     /// </summary>
-    /// <param name="token">The token, such as $whitehilt_trader_greet2 or $whitehilt_skipper_depart1.</param>
-    /// <returns>The name, such as greet2 or skipper_depart1; null for anything but a token of the mod.</returns>
+    /// <param name="token">The token, such as $whitehilt_trader_greet2, $whitehilt_skipper_depart1 or $msg_whitehilt_bloodmoon_start.</param>
+    /// <returns>The name, such as greet2, skipper_depart1 or bloodmoon_start; null for anything but a token of the mod.</returns>
     public static string LineName(string token)
     {
         string prefix = token == null ? null : tokenPrefixes.FirstOrDefault(candidate => token.StartsWith(candidate, System.StringComparison.Ordinal));
@@ -108,6 +113,30 @@ public static class WhiteHiltSound
         voice.clip = clip;
         voice.volume = volume;
         voice.Play();
+    }
+
+    /// <summary>
+    /// Says a recorded line to the local player alone, not from anywhere in the world: the White Hilt's own voice.
+    /// </summary>
+    /// <param name="speaker">Whose voice it is.</param>
+    /// <param name="token">The line's translation token.</param>
+    public static void SpeakLocal(string speaker, string token)
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        if (localVoice == null)
+        {
+            GameObject holder = new("whitehilt_local_voice");
+            Object.DontDestroyOnLoad(holder);
+            localVoice = holder.AddComponent<AudioSource>();
+            localVoice.playOnAwake = false;
+            localVoice.spatialBlend = 0f;
+        }
+
+        Speak(localVoice, speaker, token);
     }
 
     /// <summary>

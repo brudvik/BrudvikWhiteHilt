@@ -288,6 +288,9 @@ public static class DifficultySettings
         Translations.AddEnglish("msg_whitehilt_beast_near", "Something big stirs in the dark...");
         Translations.AddEnglish("msg_whitehilt_bloodmoon_start", "The moon bleeds...");
         Translations.AddEnglish("msg_whitehilt_bloodmoon_end", "The blood moon fades");
+        Translations.AddEnglish("msg_whitehilt_pressure_1", "The land stirs. Its beasts grow bolder.");
+        Translations.AddEnglish("msg_whitehilt_pressure_2", "The land grows restless. Darker things walk at night.");
+        Translations.AddEnglish("msg_whitehilt_pressure_3", "The land rages. Nowhere is safe after dark.");
         foreach (BeastDefinition beast in BeastDefinition.All)
         {
             Translations.AddEnglish(beast.NameKey, beast.EnglishName);

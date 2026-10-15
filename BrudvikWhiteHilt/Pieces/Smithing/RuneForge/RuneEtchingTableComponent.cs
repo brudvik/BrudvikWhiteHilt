@@ -136,6 +136,7 @@ public class RuneEtchingTableComponent : RuneForgeExtensionComponent
 
         GearBinding.Infuse(weapon, infusion);
         PlayEffect(forge);
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_rune_etch");
         player.Message(MessageHud.MessageType.Center, string.Format(Localization.instance.Localize("$msg_whitehilt_etch_done"),
             Localization.instance.Localize(Translations.Token(infusion.NameKey)), Localization.instance.Localize(weapon.m_shared.m_name)));
         return true;

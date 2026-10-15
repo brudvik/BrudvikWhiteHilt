@@ -40,6 +40,11 @@ public static class DiscoveryOverlay
     public static IReadOnlyList<DiscoveryKind> Kinds => kinds;
 
     /// <summary>
+    /// How many discoveries the local player's map can show.
+    /// </summary>
+    public static int Count => entries.Count;
+
+    /// <summary>
     /// Goes up every time new data arrives.
     /// </summary>
     public static int DataVersion => dataVersion;

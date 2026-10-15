@@ -46,6 +46,8 @@ Near a map table you also get the weather forecast (below).
 
 The table and the amulet do not add up; the wider one counts.
 
+Munin talks, too. Walk up to his perch and he caws and tells you when there are new places on the map since you last listened (*Kraa! New places, new places! Look at the map!*), or now and then just croaks a word.
+
 ## 💎 Pathfinder's Ruby Amulet: a target on the map
 
 While you wear the Pathfinder's Ruby Amulet, as trinket or in one of the backpack's extra accessory slots:

@@ -253,3 +253,7 @@ Vanilla and White Hilt drawbridges use the gate closing settings; closing raises
 | `RaidIgnoresHoldOpen` | true | Enemies also close doors held open |
 
 All settings are in the server's `Doors` section.
+
+### The Husvette speaks
+
+The Husvette talks to you, aloud and in a speech bubble: he welcomes you home after a while away (*Home again! I kept the place for you.*), murmurs when you sit down to rest, grumbles when the room is cold with no fire burning at night (*Brr! Who let the fire go out?*), and is pleased when the room grows cosier. Each line comes at most every ten minutes.

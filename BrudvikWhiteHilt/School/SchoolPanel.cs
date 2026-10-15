@@ -43,6 +43,7 @@ public class SchoolPanel : MonoBehaviour
             return;
         }
 
+        global::BrudvikWhiteHilt.Helpers.WhiteHiltSound.PlayLocal("sfx_book_open");
         if (instance == null)
         {
             instance = Build();

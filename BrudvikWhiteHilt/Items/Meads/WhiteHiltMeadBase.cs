@@ -95,6 +95,9 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     /// </summary>
     protected string ConfigSection => $"Meads.{FullName.Replace(" ", string.Empty).Replace("'", string.Empty)}";
 
+    // The prefab names of every mead, for the sound of drinking one.
+    private static readonly System.Collections.Generic.HashSet<string> meads = new();
+
     private string MeadBaseName => $"{BaseName}Base";
 
     private string NameKey => Translations.ItemKey(BaseName);
@@ -111,6 +114,7 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
     protected WhiteHiltMeadBase(ItemManager instance)
     {
         this.instance = instance;
+        meads.Add(BaseName);
         WhiteHiltConfig.SetSectionLabel(ConfigSection, Translations.Token(NameKey));
         durationMinutes = WhiteHiltConfig.BindAdminOnly(ConfigSection, "DurationMinutes", DurationSeconds / 60f, "How long the effect lasts.",
             new AcceptableValueRange<float>(1f, 120f));
@@ -119,6 +123,13 @@ public abstract class WhiteHiltMeadBase : IWhiteHiltCustomItem, IWhiteHiltConfig
         Translations.AddEnglish(TooltipKey, EffectTooltip);
         Translations.AddDynamic(TooltipKey, () => TooltipValues);
     }
+
+    /// <summary>
+    /// Whether a prefab is one of the mod's meads, ales and wines.
+    /// </summary>
+    /// <param name="prefabName">The prefab's name.</param>
+    /// <returns>True for a mead.</returns>
+    public static bool IsMead(string prefabName) => prefabName != null && meads.Contains(prefabName);
 
     /// <summary>
     /// Adds the mead base, the mead, its status effect and the fermenter conversion.

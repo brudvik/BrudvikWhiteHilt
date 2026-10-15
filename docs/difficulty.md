@@ -63,6 +63,10 @@ A rare night, at most one in every 6 nights and only after a boss is defeated. T
 - The chance of a beast is three times as high, and each player gets up to two rolls.
 - Every star chance is 1.5× higher.
 
+### Heard, not only seen
+
+The White Hilt speaks to you: when the pressure climbs past a quarter, a half and three quarters (*The land stirs. Its beasts grow bolder.*, *The land grows restless...*, *The land rages...*) and when a blood moon rises and fades. A blood moon rises with a deep horn, and while it is up you hear slow war drums like a heartbeat and wolves far away, outdoors at night. In a fight under it the game's combat music gives way to dark battle music of its own; a fight with one of the mod's great beasts (the Kraken, a Lindorm, a Desert Dragon, a Black Beast or a plague) has its own huge monster music, and a fight near a Nail Ship's crew its sea battle music. The volumes are in `[Sound]`.
+
 ## Horn of the Deep
 
 **Dypets horn** in Norwegian. An ivory horn with black metal trim, based on the Horn of Celebration. Equip it from the hotbar, then press attack to lift its narrow end to your mouth and blow a long, deep note. Nearby players see the pose and hear the sound. The default call lasts 5 seconds; moving, swimming, attacking, attaching to a seat/helm or putting away the horn cancels it.

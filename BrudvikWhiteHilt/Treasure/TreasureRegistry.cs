@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Monsters;
 using BrudvikWhiteHilt.Helpers;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -247,6 +248,9 @@ public static class TreasureRegistry
                 AddCairn(chest.transform, template);
             }
 
+            ArrivalSound burst = chest.AddComponent<ArrivalSound>();
+            burst.clip = "sfx_treasure_chest";
+            burst.far = 40f;
             PrefabManager.Instance.AddPrefab(new CustomPrefab(chest, false));
         }
         catch (Exception ex)

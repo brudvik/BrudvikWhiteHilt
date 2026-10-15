@@ -65,6 +65,7 @@ public class MuninsPerch : IWhiteHiltCustomPiece
         this.instance = instance;
         Translations.AddEnglishNameAndDescription(PrefabName, FullName, Description);
         Translations.AddEnglish("whitehilt_perch_active", "Munin remembers what is on this map table");
+        MuninVoice.RegisterTranslations();
     }
 
     /// <summary>
@@ -93,6 +94,7 @@ public class MuninsPerch : IWhiteHiltCustomPiece
             CustomPiece piece = new(PrefabName, "piece_table", pieceConfig);
             GameObject prefab = piece.PiecePrefab;
             prefab.AddComponent<MapTableExtensionComponent>().ActiveToken = "$whitehilt_perch_active";
+            prefab.AddComponent<MuninVoice>();
             piece.Piece.m_comfort = 0;
             WearNTear wearNTear = prefab.GetComponent<WearNTear>();
             if (wearNTear != null)

@@ -430,6 +430,21 @@ public static class MonsterRegistry
         }
     }
 
+    /// <summary>
+    /// Plays a sound of the audio bundle, every variant of it, in place of the sounds of an effect list, such as a
+    /// station's crafting sound.
+    /// </summary>
+    /// <param name="effects">The effect list.</param>
+    /// <param name="name">The sound's name.</param>
+    internal static void SetSound(ref EffectList effects, string name)
+    {
+        GameObject effect = SoundEffect(null, name);
+        if (effect != null)
+        {
+            effects = ReplaceSound(effects ?? new EffectList(), effect);
+        }
+    }
+
     // The idle and alert sounds, and the hit and death sounds.
     private static void SetVoice(Character character, MonsterAI ai, Dictionary<string, GameObject> sounds)
     {
@@ -450,7 +465,7 @@ public static class MonsterRegistry
         }
 
         AudioClip[] clips = CreatureSoundNames.Clips(name);
-        GameObject source = (ai.m_alertedEffects?.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
+        GameObject source = (ai?.m_alertedEffects?.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>()).Select(effect => effect.m_prefab)
             .FirstOrDefault(effect => effect != null && effect.GetComponentInChildren<ZSFX>(true) != null);
         source ??= PrefabManager.Instance.GetPrefab("Wolf")?.GetComponent<MonsterAI>()?.m_alertedEffects.m_effectPrefabs
             ?.Select(effect => effect.m_prefab)

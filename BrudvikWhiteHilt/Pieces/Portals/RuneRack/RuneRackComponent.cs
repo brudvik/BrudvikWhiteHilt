@@ -38,6 +38,9 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
     private GameObject[] rings;
     private Renderer[] ringRenderers;
     private MaterialPropertyBlock glowBlock;
+    private AudioSource voice;
+    private Monsters.LoopSound hum;
+    private bool heard;
     private EffectFade fullSetEffect;
     private int shownMask = -1;
     private bool glowing;
@@ -252,6 +255,7 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
     private void UpdateVisuals()
     {
         int mask = Mask;
+        RuneSound(shownMask, mask);
         shownMask = mask;
         for (int i = 0; i < rings.Length; i++)
         {
@@ -266,6 +270,38 @@ public class RuneRackComponent : MonoBehaviour, Hoverable, Interactable
         }
 
         glowing = full;
+    }
+
+    // A rune hung chimes and all six awaken; the first look at a post that already has runes makes no sound. While all
+    // six hang, the post hums.
+    private void RuneSound(int before, int after)
+    {
+        if (Helpers.VisualHelper.IsHeadless)
+        {
+            return;
+        }
+
+        voice ??= Helpers.WhiteHiltSound.AddVoice(gameObject);
+        if (heard && (after & ~before) != 0)
+        {
+            Helpers.WhiteHiltSound.PlayFrom(voice, after == WhiteHiltRuneBase.FullMask ? "sfx_runes_complete" : Monsters.CreatureSoundNames.Pick("sfx_rune_hung"));
+        }
+
+        heard = true;
+        bool full = after == WhiteHiltRuneBase.FullMask;
+        if (full && hum == null)
+        {
+            hum = gameObject.AddComponent<Monsters.LoopSound>();
+            hum.clip = "amb_runes";
+            hum.near = 2f;
+            hum.far = 14f;
+        }
+        else if (!full && hum != null)
+        {
+            Destroy(GetComponents<AudioSource>().LastOrDefault(source => source.loop));
+            Destroy(hum);
+            hum = null;
+        }
     }
 
     private void SetGlow(float strength)
