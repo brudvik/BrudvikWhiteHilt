@@ -9,11 +9,13 @@ Ships and sea routes, stonework and turf roofs, foraging and feasts, forts, beas
 
 [![Latest release](https://img.shields.io/github/v/release/brudvik/BrudvikWhiteHilt?style=flat-square&color=d4a72c&label=release)](https://github.com/brudvik/BrudvikWhiteHilt/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/brudvik/BrudvikWhiteHilt/total?style=flat-square&color=4a6b7c)](https://github.com/brudvik/BrudvikWhiteHilt/releases)
-![Valheim mod](https://img.shields.io/badge/Valheim-mod-3a5568?style=flat-square)
+[![Valheim 1.0.20](https://img.shields.io/badge/Valheim-1.0.20-3a5568?style=flat-square&logo=steam&logoColor=white)](https://store.steampowered.com/app/892970/Valheim/)
 ![BepInEx 5.4](https://img.shields.io/badge/BepInEx-5.4-6e4a2e?style=flat-square)
 ![Jötunn 2.30](https://img.shields.io/badge/J%C3%B6tunn-2.30-6e4a2e?style=flat-square)
 ![Everyone needs the mod in multiplayer](https://img.shields.io/badge/multiplayer-everyone%20needs%20it-555?style=flat-square)
 [![License](https://img.shields.io/github/license/brudvik/BrudvikWhiteHilt?style=flat-square&color=555)](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/LICENSE)
+[![Built with Claude](https://img.shields.io/badge/built%20with-Claude-d97757?style=flat-square&logo=claude&logoColor=white)](https://claude.com/claude-code)
+[![Voices and sound by ElevenLabs](https://img.shields.io/badge/voices-ElevenLabs-222?style=flat-square&logo=elevenlabs&logoColor=white)](https://elevenlabs.io)
 [![YouTube channel](https://img.shields.io/badge/YouTube-White%20Hilt-c4302b?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@WhiteHilt)
 
 [Install](#-installation) ·
@@ -33,7 +35,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.138.1
+## ✨ New in 0.139.0
+
+- **[Nail Ships that fight back harder](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-nail-ship-fights-back)**: their crews throw **[grapnels](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#grapnels)** that haul your ship alongside (cut the rope at your rail), some carry an iron **[ram](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-ram)** for a ship that lies still, and later in the game a burning **[fire ship](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#fire-ships)** may come straight at you. A flagship's jarl who lives too long **[blows his horn](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-jarls-horn)** for one more ship.
+- **[Smarter raiders](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-fight)**: they come up level with a moving ship and match its speed, take the side with fewer defenders, chase you again if you pull away, give up when land keeps them off, and mend their own deck. You are told the bearing they come from, and the place is pinned on your map.
+- **[Sea battles that grow with the world](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/sea-battles.md#the-crew)**: new crews after the Queen and Fader, a stronger hull and a richer hold for every boss slain, more fleets, and two warriors leaping at a time. Night, storms and fog bring them more often.
+- **The game and the server start faster**, and [the chests](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md) keep their world progress in White Hilt's own folder.
+
+### Also new in 0.138.1
 
 - **Ready for Valheim 1.0.20**, and **[trophies that follow the stars](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#trophies-and-stars)**: like the game's own creatures, the mod's monsters now drop their trophy more often the more stars they have.
 
@@ -201,7 +210,7 @@ Jetties on piles, stone quays with steps down to the water, and log, rope and st
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/skidbladnir.png" alt="Sea battles & raids" height="120">
 
-Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.
+Draugr Nail Ships hunt your ship at sea, alone or in a fleet behind a flagship with a draugr jarl, with grapnels, rams and fire ships that grow with the world: holes, flooding and fire on deck, a ballista with chain shot and grapnels to answer, a ram prow, boarding leaps, prize ships, raid charts that lead to a draugr harbour to sack, and trading ships to escort to port.
 
 #### [Trading posts](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/trading-posts.md)
 

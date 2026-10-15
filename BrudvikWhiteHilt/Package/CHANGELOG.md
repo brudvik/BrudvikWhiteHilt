@@ -2,6 +2,68 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.139.0 - 2026-10-15
+
+### Added
+- **[Grapnels](docs/sea-battles.md#grapnels)**: a Nail Ship's crew throws a grapnel at your rail while it lies
+  alongside, and the rope hauls the two ships together. Cut it with Use at your own rail. Any grapnel rope can now be
+  cut at either end.
+- **[The ram](docs/sea-battles.md#the-ram)**: from Moder on, some Nail Ships carry an iron ram on the bow and charge a
+  ship that lies still or sails slowly. Keep way on.
+- **[Fire ships](docs/sea-battles.md#fire-ships)**: from Yagluth on, an attack may bring a burning fire ship with no
+  crew that sails straight at you, sets your deck alight when it strikes and then goes down. Sink it or outrun it.
+- **[The jarl's horn](docs/sea-battles.md#the-jarls-horn)**: a flagship whose jarl still lives after three minutes of
+  fighting blows its horn, and one more Nail Ship joins the fleet.
+- **Nail Ships after the Queen and Fader**: new crews (draugr elites with a fuling brute, then charred warriors,
+  marksmen and warlocks, all at least one star), a stronger hull for every boss slain, a hold with the goods of the
+  latest biome, fleets that come more often, and from Yagluth on two warriors leap aboard at a time. Old config files
+  that still hold the earlier crew and fleet lists get the new ones.
+- **The sighting tells you where**: *Sails on the horizon, off the starboard bow!*, and the place is pinned on your
+  map for a while.
+- **Night, storms and fog** make an attack more likely (×1.5 each).
+- **The crew mends its ship**: every ten seconds a Nail Ship's crew puts out a fire on its deck or patches a hole.
+
+### Changed
+- **[Nail Ships](docs/sea-battles.md#the-fight) fight smarter**: they come up level with a moving ship instead of
+  trailing it, match its speed alongside, and take the side with fewer defenders. A ship that is kept from you by land
+  or shallows gives up after a while instead of lying stranded under your ballista.
+- `whitehilt_seabattle summon` and `fleet` take `fire` and `ram`, and `status` shows a ship's hull and whether it is a
+  fire ship or carries a ram.
+- `HullHealth` and `FlagshipHullHealth` now apply to new Nail Ships at once, without a restart.
+- **The game and the server start faster**: the mod's settings file was written again for every one of its some
+  3600 settings while the mod started (about half a minute on a fast machine, more on a server); it is now written
+  once. The log also shows how long each step of the mod's start takes (`Start-up: Awake took ...`).
+- **[The chests](docs/chests.md) keep their world progress in White Hilt's own folder**,
+  `BepInEx/config/BrudvikWhiteHilt/chests/`. On the first start the mod moves it there from the old
+  `BepInEx/config/BrudvikStackedChest/` folder, which it then removes when nothing else is left in it.
+- The server and every player need this version: the chests' world progress has a new network message, and the sea
+  battles' network messages have changed.
+
+### Fixed
+- **A Nail Ship never caught a ship that ran from it once it had begun to board**: it went on closing in at half sail,
+  however far away you were. It now goes back to the chase at full sail, and its time alongside before boarding starts
+  over.
+- In multiplayer, a Nail Ship started its 40 seconds alongside over again whenever another player's machine took it
+  over. The time is now kept with the ship.
+- A Nail Ship that found no clear way stopped dead and stayed there; it now turns about or backs off.
+- The raiders' taunt *Run, little merchant, run!* is only shouted at a merchant's ship.
+- **[Trading posts](docs/trading-posts.md)**: a post whose trader had gone missing stayed without one. The post now
+  puts out a new trader when none is there.
+- The beam across the front of the trader's porch hung 1.5 m over the floor, so nobody could walk in to the door. It
+  is gone; the posts are built again to the new plan.
+- **The gathering panel's "closest to unlocking"** could show amounts from chests that no longer held them, and after
+  many restarts stop taking new chests into account: the server told the chests apart by a number the game gives
+  anew every time a world loads. Each chest now has an id of its own that lasts; the old record is dropped and fills
+  again as the chests are used.
+
+### Removed
+- **The chest census** (`whitehilt_chest_census`) and the count the server took at every start. It was made for the
+  move from BrudvikStackedChest, long done, and its warnings that chests were "gone" were false: the game numbers its
+  objects anew every time a world loads, and the census told the chests apart by that number. No chest was lost.
+- **What was left of BrudvikStackedChest**: White Hilt no longer waits for the old mod when it is installed, and no
+  longer takes over its config file. Coming from the old mod, set `[Chests] Mode` by hand before the first start
+  (see [Moving over](docs/chests.md#moving-over-from-brudvikstackedchest)).
+
 ## v0.138.1 - 2026-10-15
 
 ### Changed
