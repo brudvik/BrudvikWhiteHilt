@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.141.2 - 2026-10-16
 
 ### Changed
 - **[Odin and Freya wane in a great storm](docs/potions.md#out-in-a-great-storm)**: out in the storm, the Gift of
