@@ -35,7 +35,12 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.141.1
+## ✨ New in 0.141.2
+
+- **[Odin and Freya wane in a great storm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md#out-in-a-great-storm)**: the two potions no longer cancel the storm; out in it they give less and less, and nothing once you freeze.
+- **Fixed**: lag and stuck objects after a fire storm in multiplayer, the storm's finds failing to drop, and the mod's monsters now heard by every player.
+
+### Also new in 0.141.1
 
 - **Fixed heavy lag in multiplayer near the great beasts**: their heavy footsteps no longer flood the other players' games with network objects they cannot build.
 

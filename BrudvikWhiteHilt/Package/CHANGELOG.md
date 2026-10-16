@@ -2,6 +2,23 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.141.2 - 2026-10-16
+
+### Changed
+- **[Odin and Freya wane in a great storm](docs/potions.md#out-in-a-great-storm)**: out in the storm, the Gift of
+  Odin's healing and all of the Gift of Freya give half from 20% exposure, a quarter from 40% and nothing once you
+  freeze at 60%. Before, the two potions together all but cancelled the storm.
+
+### Fixed
+- **Lag and stuck objects after a fire storm** in multiplayer: the flames on the player were removed in a way that
+  left a dead network object behind, and the game then failed to unload anything around you, every frame.
+- **[What the storm leaves behind](docs/storms.md#what-the-storm-leaves-behind)** is left again: the finds failed to
+  drop when the storm passed.
+- **The mod's monsters and the White Dragon are heard by every player**: their alert, hit, death and idle sounds
+  reached only the player whose game ran the creature.
+- The Root and Stone Dowser's pings, the ship's bell and the White Dragon's roar no longer make network objects other
+  players' games cannot build.
+
 ## v0.141.1 - 2026-10-16
 
 ### Fixed
