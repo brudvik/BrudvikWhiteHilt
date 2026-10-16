@@ -35,7 +35,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.141.2
+## ✨ New in 0.142.0
+
+- **[Creeping darkness](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md)**: below ground (crypts, caves, mines, troll caves and every other dungeon) the light now and then flickers, fades and goes almost black for a while, more often and for longer the longer you stay. Only a torch in hand, a circlet or a fire you built holds it off.
+- **[Fear of the dark](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#fear-of-the-dark)** grows without a light: your stamina slows, your heart pounds, your legs fail and in the end it kills. From half fear a **[shadow](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#something-is-down-there)** comes for you, and in the black eyes blink, claws scrape and something breathes behind you.
+- **[The eye of the storm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#the-eye-of-the-storm)**: a great storm comes in two waves around a still eye, and the last wave is fiercer.
+- **[Ragnarok](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#ragnarok)**: after a boss falls the worst storm of all comes, over the Meadows too, with rare finds after. **[The storm remembers](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#the-storm-remembers-you)** who braves it, and deep in it you **[hear and see things](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#visions-in-the-storm)**.
+
+### Also new in 0.141.2
 
 - **[Odin and Freya wane in a great storm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/potions.md#out-in-a-great-storm)**: the two potions no longer cancel the storm; out in it they give less and less, and nothing once you freeze.
 - **Fixed**: lag and stuck objects after a fire storm in multiplayer, the storm's finds failing to drop, and the mod's monsters now heard by every player.
@@ -343,6 +350,12 @@ A field guide to the nine black beasts, with the arrows and weapon treatments th
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_storms.png" alt="Great storms" height="120">
 
 Storms that tire, freeze, blind and kill you out in the open, a storm for each biome, lightning, falling trees and the lean-to that saves you.
+
+#### [Creeping darkness](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md)
+
+<img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_darkness.png" alt="Creeping darkness" height="120">
+
+Below ground the light flickers and goes black; only a torch, a circlet or your own fire holds it off, and out of the light fear grows and shadows come.
 
 ### 🎒 Quality of life
 
