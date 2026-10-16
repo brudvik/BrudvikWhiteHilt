@@ -416,7 +416,7 @@ public static class MonsterRegistry
     {
         FootStep feet = prefab.GetComponentInChildren<FootStep>(true);
         MonsterAI ai = prefab.GetComponent<MonsterAI>();
-        GameObject effect = feet != null && ai != null ? SoundEffect(ai, step) : null;
+        GameObject effect = feet != null && ai != null ? SoundEffect(ai, step, local: true) : null;
         if (effect == null)
         {
             return;
@@ -458,9 +458,12 @@ public static class MonsterRegistry
 
     // A sound effect prefab playing every variant of a sound: a clone of the creature's own alert sound effect (or the
     // wolf's), so it is mixed as the game's creature sounds are. Made once per sound; null when the bundle lacks it.
-    private static GameObject SoundEffect(MonsterAI ai, string name)
+    // Voices are made on the creature's owner, so the clone is registered and its network view brings the sound to
+    // the other players, as the game's own; footsteps are made on every client, so theirs is local.
+    private static GameObject SoundEffect(MonsterAI ai, string name, bool local = false)
     {
-        if (creatureSounds.TryGetValue(name, out GameObject made))
+        string key = local ? name + "_local" : name;
+        if (creatureSounds.TryGetValue(key, out GameObject made))
         {
             return made;
         }
@@ -477,29 +480,20 @@ public static class MonsterRegistry
             return null;
         }
 
-        GameObject effectPrefab = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
+        GameObject effectPrefab;
+        if (local)
+        {
+            effectPrefab = VisualHelper.CloneLocalEffect("sfx_whitehilt_" + key, source);
+        }
+        else
+        {
+            effectPrefab = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + key, source);
+            PrefabManager.Instance.AddPrefab(new CustomPrefab(effectPrefab, false));
+        }
+
         effectPrefab.GetComponentInChildren<ZSFX>(true).m_audioClips = clips;
-        LocalOnly(effectPrefab);
-        creatureSounds[name] = effectPrefab;
+        creatureSounds[key] = effectPrefab;
         return effectPrefab;
-    }
-
-    /// <summary>
-    /// Takes the network view off a cloned sound effect. The clone is not in ZNetScene, so each spawn (every footstep)
-    /// would make a ZDO that no other client can build: they warn "Missing prefab hash" for it every frame.
-    /// </summary>
-    /// <param name="effect">The cloned effect prefab.</param>
-    internal static void LocalOnly(GameObject effect)
-    {
-        foreach (ZSyncTransform sync in effect.GetComponentsInChildren<ZSyncTransform>(true))
-        {
-            UnityEngine.Object.DestroyImmediate(sync);
-        }
-
-        foreach (ZNetView view in effect.GetComponentsInChildren<ZNetView>(true))
-        {
-            UnityEngine.Object.DestroyImmediate(view);
-        }
     }
 
     // Clears the weapon's inherited sounds and plays the creature's own when the attack lands.

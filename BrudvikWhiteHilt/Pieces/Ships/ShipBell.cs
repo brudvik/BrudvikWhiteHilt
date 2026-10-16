@@ -39,7 +39,7 @@ public static class ShipBell
             }
 
             AudioClip clip = ForagingAssets.LoadAudio(ClipName);
-            effect = PrefabManager.Instance.CreateClonedPrefab(EffectName, source);
+            effect = VisualHelper.CloneLocalEffect(EffectName, source);
             ZSFX sfx = effect.GetComponentInChildren<ZSFX>(true);
             sfx.m_audioClips = new[] { clip };
             sfx.m_minPitch = 1f;

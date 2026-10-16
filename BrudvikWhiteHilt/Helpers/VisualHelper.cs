@@ -21,6 +21,31 @@ public static class VisualHelper
     public static bool IsHeadless => SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null;
 
     /// <summary>
+    /// Clones a vanilla sound or visual effect to be played on each client by itself, without its network view. The
+    /// clone is not registered in ZNetScene, so with the view every spawn (every footstep) made a ZDO no other client
+    /// could build: they warned "Missing prefab hash" for it every frame, and the view left a dead entry in the scene
+    /// once the effect destroyed itself.
+    /// </summary>
+    /// <param name="name">Name of the clone.</param>
+    /// <param name="source">The vanilla effect.</param>
+    /// <returns>The clone.</returns>
+    public static GameObject CloneLocalEffect(string name, GameObject source)
+    {
+        GameObject effect = PrefabManager.Instance.CreateClonedPrefab(name, source);
+        foreach (ZSyncTransform sync in effect.GetComponentsInChildren<ZSyncTransform>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(sync);
+        }
+
+        foreach (ZNetView view in effect.GetComponentsInChildren<ZNetView>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(view);
+        }
+
+        return effect;
+    }
+
+    /// <summary>
     /// Hides the existing meshes under <paramref name="visualRoot"/> and shows <paramref name="mesh"/> in their place,
     /// scaled to the same height and standing on the same base.
     /// </summary>

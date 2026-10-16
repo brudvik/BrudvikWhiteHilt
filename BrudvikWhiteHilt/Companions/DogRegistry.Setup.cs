@@ -279,8 +279,7 @@ public static partial class DogRegistry
                 continue;
             }
 
-            GameObject effect = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
-            Monsters.MonsterRegistry.LocalOnly(effect);
+            GameObject effect = VisualHelper.CloneLocalEffect("sfx_whitehilt_" + name, source);
             ZSFX sfx = effect.GetComponentInChildren<ZSFX>(true);
             sfx.m_audioClips = new[] { clip };
             sfx.m_minPitch = 0.92f;

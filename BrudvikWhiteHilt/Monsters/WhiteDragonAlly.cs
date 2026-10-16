@@ -311,6 +311,17 @@ public class WhiteDragonAlly : MonoBehaviour
     {
         nextRoar = Time.time + Mathf.Max(1f, DragonHorn.RoarSeconds.Value);
         view.InvokeRPC(ZNetView.Everybody, RoarRpc);
+
+        // The roar's networked sounds once, here; they reach every player by themselves.
+        foreach (EffectList.EffectData sound in ai.m_alertedEffects.m_effectPrefabs ?? Array.Empty<EffectList.EffectData>())
+        {
+            if (sound.m_enabled && sound.m_prefab != null && sound.m_prefab.GetComponent<ZNetView>() != null
+                && sound.m_prefab.GetComponentInChildren<ZSFX>(true) != null)
+            {
+                Instantiate(sound.m_prefab, transform.position, transform.rotation);
+            }
+        }
+
         Vector3 below = transform.position;
         below.y = ZoneSystem.instance.GetGroundHeight(below);
         GameObject effect = ZNetScene.instance.GetPrefab(RoarEffect);

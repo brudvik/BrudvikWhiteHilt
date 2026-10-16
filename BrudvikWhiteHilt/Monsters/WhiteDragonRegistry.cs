@@ -318,7 +318,8 @@ public static class WhiteDragonRegistry
     }
 
     // A copy of a sound at full volume, heard RoarLoudness times further, with its clips pushed louder. The copy is made
-    // on a dedicated server too, so every machine knows the same effects; only the clips are left alone there.
+    // on a dedicated server too, so every machine knows the same effects; only the clips are left alone there. It is
+    // registered, as these sounds are made on the dragon's owner and a networked one must reach the other players.
     private static GameObject LouderSound(GameObject original)
     {
         if (louderSounds.TryGetValue(original, out GameObject cached))
@@ -328,6 +329,7 @@ public static class WhiteDragonRegistry
 
         float loudness = DragonHorn.RoarLoudness.Value;
         GameObject copy = PrefabManager.Instance.CreateClonedPrefab(original.name + "_whitedragon", original);
+        PrefabManager.Instance.AddPrefab(new CustomPrefab(copy, false));
         foreach (ZSFX sound in copy.GetComponentsInChildren<ZSFX>(true))
         {
             sound.m_minVol = 1f;

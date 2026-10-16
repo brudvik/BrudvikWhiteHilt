@@ -113,7 +113,7 @@ public class RootDowser : IWhiteHiltCustomItem
                 GameObject signal = PrefabManager.Instance.GetPrefab(name);
                 if (signal == null)
                 {
-                    signal = PrefabManager.Instance.CreateClonedPrefab(name, data.m_prefab);
+                    signal = VisualHelper.CloneLocalEffect(name, data.m_prefab);
                     foreach (ZSFX sound in signal.GetComponentsInChildren<ZSFX>(true))
                     {
                         sound.m_minPitch *= RootDowsingSettings.PingPitch.Value;

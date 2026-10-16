@@ -143,7 +143,7 @@ public class StoneDowser : IWhiteHiltCustomItem
         GameObject sound = PrefabManager.Instance.GetPrefab(name);
         if (sound == null)
         {
-            sound = PrefabManager.Instance.CreateClonedPrefab(name, source.m_prefab);
+            sound = VisualHelper.CloneLocalEffect(name, source.m_prefab);
             foreach (ZSFX sfx in sound.GetComponentsInChildren<ZSFX>(true))
             {
                 sfx.m_minPitch *= PingPitch;
