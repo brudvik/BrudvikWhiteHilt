@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.142.0 - 2026-10-16
 
 ### Added
 - **[Creeping darkness](docs/darkness.md)**: below ground (crypts, caves, mines, troll caves and every other dungeon)
