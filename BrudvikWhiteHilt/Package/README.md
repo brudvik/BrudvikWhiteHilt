@@ -35,7 +35,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.142.0
+## ✨ New in 0.143.0
+
+- **[A darker dark](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md)**: below ground the sounds fall silent before the black, doors slam shut or swing open by themselves, the light you carry reaches less far the longer you stay, and a voice calls from down the passage.
+- **[The shadows come](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#something-is-down-there)**: the shadow failed to load and never came; now it does, and fear of the dark builds up as it should.
+- **Norwegian voices**: every speaker has a new Norwegian voice, a native Eastern Norwegian, and every Norwegian line is spoken again. Before they sounded Danish.
+
+### Also new in 0.142.0
 
 - **[Creeping darkness](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md)**: below ground (crypts, caves, mines, troll caves and every other dungeon) the light now and then flickers, fades and goes almost black for a while, more often and for longer the longer you stay. Only a torch in hand, a circlet or a fire you built holds it off.
 - **[Fear of the dark](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#fear-of-the-dark)** grows without a light: your stamina slows, your heart pounds, your legs fail and in the end it kills. From half fear a **[shadow](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#something-is-down-there)** comes for you, and in the black eyes blink, claws scrape and something breathes behind you.
