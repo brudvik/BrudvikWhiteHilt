@@ -3,125 +3,151 @@
   "model": "eleven_multilingual_v2",
   "voice_format": "mp3_44100_64",
   "effect_format": "mp3_44100_128",
+  "norwegian": {
+    "model": "eleven_v4",
+    "language_code": "no",
+    "design_model": "eleven_ttv_v3"
+  },
   "speakers": [
     {
       "id": "meadows",
       "name": "WhiteHilt Asbjorn",
       "description": "A warm, friendly middle-aged Norse farmer and coastal trader. Round, hearty male voice with a gentle Scandinavian accent, cheerful and welcoming.",
       "lines": "trader",
-      "voice_id": "ACaOMLGCIb8xqwUQZVbe"
+      "voice_id": "ACaOMLGCIb8xqwUQZVbe",
+      "voice_id_no": "xE7w0567MZLKLqM7lpgF"
     },
     {
       "id": "blackforest",
       "name": "WhiteHilt Gunnar",
       "description": "A gruff, weathered Norse woodsman trader in his fifties. Deep, slightly rough male voice with a Scandinavian accent, dry humour, steady and calm.",
       "lines": "trader",
-      "voice_id": "3teLCCcDlneBNHIlykvO"
+      "voice_id": "3teLCCcDlneBNHIlykvO",
+      "voice_id_no": "SaFUsqvX0pMB9KGzCTD8"
     },
     {
       "id": "swamp",
       "name": "WhiteHilt Ragnhild",
       "description": "A shrewd, no-nonsense Norse woman trader from the marshes, around fifty. Firm, slightly husky female voice with a Scandinavian accent, wry and practical.",
       "lines": "trader",
-      "voice_id": "S22aJzgMnj46dbxd72L7"
+      "voice_id": "S22aJzgMnj46dbxd72L7",
+      "voice_id_no": "p8S49CCqi4E6e1W4ia4I"
     },
     {
       "id": "mountain",
       "name": "WhiteHilt Hallvard",
       "description": "A hardy old Norse mountain trader. Strong, clear, booming male voice with a Scandinavian accent, proud and good-natured, used to shouting over the wind.",
       "lines": "trader",
-      "voice_id": "NQTJEYWlwpw3SIqX46i5"
+      "voice_id": "NQTJEYWlwpw3SIqX46i5",
+      "voice_id_no": "dL9SqeMOTwYSBepSEzIW"
     },
     {
       "id": "plains",
       "name": "WhiteHilt Sigrid",
       "description": "A lively, confident young Norse woman merchant of the golden plains, around thirty. Bright, energetic female voice with a Scandinavian accent, quick and charming.",
       "lines": "trader",
-      "voice_id": "g592XYUUKazlaSLDOtbs"
+      "voice_id": "g592XYUUKazlaSLDOtbs",
+      "voice_id_no": "DXemuNrnomEVno8L1jqu"
     },
     {
       "id": "mistlands",
       "name": "WhiteHilt Ylva",
       "description": "A mysterious Norse woman trader from the misty lands, around forty. Low, soft, slightly breathy female voice with a Scandinavian accent, calm and secretive.",
       "lines": "trader",
-      "voice_id": "0r3arIprTV4HwLHUrcgZ"
+      "voice_id": "0r3arIprTV4HwLHUrcgZ",
+      "voice_id_no": "kJjweZhbDecgb57uwGJF"
     },
     {
       "id": "ashlands",
       "name": "WhiteHilt Brand",
       "description": "A battle-scarred Norse trader from the burning ash lands. Very deep, smoky, gravelly male voice with a Scandinavian accent, intense and blunt.",
       "lines": "trader",
-      "voice_id": "PptBBQV6VD0yTvwI2zVv"
+      "voice_id": "PptBBQV6VD0yTvwI2zVv",
+      "voice_id_no": "POPs8LLpzorMyrZD8o3a"
     },
     {
       "id": "deepnorth",
       "name": "WhiteHilt Froydis",
       "description": "A composed Norse woman trader from the frozen far north, around sixty. Cool, crisp, slightly hoarse female voice with a Scandinavian accent, measured and dignified.",
       "lines": "trader",
-      "voice_id": "P0YqJjZWE2lYciSk2YQy"
+      "voice_id": "P0YqJjZWE2lYciSk2YQy",
+      "voice_id_no": "VLrXeu5ZL4y2rmIgxUAk"
     },
     {
       "id": "hunter",
       "name": "WhiteHilt Ulf",
       "description": "A rugged Norse hunter who lives in the woods, around forty-five. Rough, low male voice with a Scandinavian accent, relaxed, proud of his kills, a little boastful.",
       "lines": "hunter",
-      "voice_id": "AWvZUdAs6ZIK5Lpcw3mG"
+      "voice_id": "AWvZUdAs6ZIK5Lpcw3mG",
+      "voice_id_no": "gmbJpCEm3TIXnNlcLnhQ"
     },
     {
       "id": "skipper",
       "name": "WhiteHilt Skipper",
       "description": "A loud, seasoned Norse ship captain shouting orders on deck. Strong, carrying male voice with a Scandinavian accent, energetic and commanding.",
       "lines": "skipper",
-      "voice_id": "7n9xRuIFq1zw8NyYFjuD"
+      "voice_id": "7n9xRuIFq1zw8NyYFjuD",
+      "voice_id_no": "azs1hc3mIPy1fVFR6Mc0",
+      "voice_freed": true
     },
     {
       "id": "raider1",
       "name": "WhiteHilt Raider One",
       "description": "An undead draugr pirate raider. Raspy, hollow, gravelly male voice with a Scandinavian accent, menacing and cruel, as if from the grave.",
       "lines": "raider",
-      "voice_id": "zmlEEMntLxr9wU6o5IRg"
+      "voice_id": "zmlEEMntLxr9wU6o5IRg",
+      "voice_id_no": "XuzKVs6VI2j8BpbWYW6s",
+      "voice_freed": true
     },
     {
       "id": "raider2",
       "name": "WhiteHilt Raider Two",
       "description": "A wild undead viking sea raider. Harsh, hissing, cackling male voice with a Scandinavian accent, bloodthirsty and mocking.",
       "lines": "raider",
-      "voice_id": "N2FoumtiLbvmpiePoyhc"
+      "voice_id": "N2FoumtiLbvmpiePoyhc",
+      "voice_id_no": "C1PCyV3yWkpfh86IKEVb",
+      "voice_freed": true
     },
     {
       "id": "raiderchief",
       "name": "WhiteHilt Raider Chief",
       "description": "An undead draugr jarl commanding a ghost ship. Very deep, booming, echoing male voice with a Scandinavian accent, ancient and terrifying.",
       "lines": "raider",
-      "voice_id": "3GKVWRsNgEJFWVcmnzd7"
+      "voice_id": "3GKVWRsNgEJFWVcmnzd7",
+      "voice_id_no": "jG7N24Rc0shNc8KObvsH",
+      "voice_freed": true
     },
     {
       "id": "whitehilt",
       "name": "WhiteHilt Voice of the Hilt",
       "description": "An ancient, mystical, otherworldly voice of a legendary sword speaking to its bearer. Deep, resonant, calm and solemn, slightly echoing, genderless and timeless, with a faint Scandinavian accent.",
       "lines": "whitehilt",
-      "voice_id": "1Lsmd8fle9C4ICp6FUun"
+      "voice_id": "1Lsmd8fle9C4ICp6FUun",
+      "voice_id_no": "8rLtSH1ByA5CO9u9yuGO"
     },
     {
       "id": "husvette",
       "name": "WhiteHilt Husvette",
       "description": "A tiny, very old Norse house spirit, a gnome-like tomte with a red cap. Crackly, warm, slightly grumpy and mumbling old male voice with a Scandinavian accent, kindly underneath.",
       "lines": "husvette",
-      "voice_id": "JmSffrNcoFdWLaAQ4tkl"
+      "voice_id": "JmSffrNcoFdWLaAQ4tkl",
+      "voice_id_no": "QuqAOB7HTaFzEtJPWGIO"
     },
     {
       "id": "munin",
       "name": "WhiteHilt Munin",
       "description": "Odin's talking raven of memory. A raspy, croaking, sharp and clever voice like a bird that has learned to speak, quick and a little eerie, with a Scandinavian accent.",
       "lines": "munin",
-      "voice_id": "9JdjVND9iWmRlmqaKV2s"
+      "voice_id": "9JdjVND9iWmRlmqaKV2s",
+      "voice_id_no": "ssGtPu9W0dkE0GHXJhIh"
     },
     {
       "id": "stormvoice",
       "name": "WhiteHilt Storm Voice",
       "description": "A hollow, ghostly voice calling out through a howling storm, as if from far away in thick fog. Breathy, echoing, sorrowful and eerie, neither clearly male nor female, ageless, with a faint Scandinavian accent.",
       "lines": "stormvoice",
-      "voice_id": "t5OOCt4h38CUIacDS2Gf"
+      "voice_id": "t5OOCt4h38CUIacDS2Gf",
+      "voice_id_no": "SV1o3XhdmRzrjQWBWS6L"
     }
   ],
   "effects": [

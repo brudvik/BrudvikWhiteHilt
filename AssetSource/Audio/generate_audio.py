@@ -3,9 +3,12 @@
     python AssetSource/Audio/generate_audio.py [--key-file <file with the API key>] [voices] [lines] [effects] [music]
 
 voices   gives every speaker without a voice_id one from Voice Design (the first of its previews; the others are saved
-         next to it in the previews folder to listen to) and writes the id back into audio.json.
+         next to it in the previews folder to listen to) and writes the id back into audio.json; and the same for its
+         Norwegian voice (voice_id_no), designed as a native Eastern Norwegian speaker from Norwegian text.
 lines    reads every speaker's lines, in English from the C# source and in Norwegian from Translations/Norwegian.json,
-         and writes Voices/voice_<speaker>_<en|no>_<line>.mp3, the names WhiteHiltSound.VoiceClip looks for.
+         and writes Voices/voice_<speaker>_<en|no>_<line>.mp3, the names WhiteHiltSound.VoiceClip looks for. The
+         Norwegian lines are spoken by the Norwegian voice with the model and language code in audio.json's
+         "norwegian" (the multilingual v2 model has no Norwegian and made it sound Danish).
 effects  writes Effects/<name>.mp3 from the prompts (<name>_2.mp3 and so on for an effect with variants).
 creatures writes Creatures/<prefix><action>.mp3, <prefix><action>_2.mp3 ... for every monster's idle, alert, attack,
          hit and death (and its own attacks), the names MonsterRegistry.AddCreatureSounds looks for.
@@ -52,7 +55,7 @@ LINE_SETS = {
                  + [f"msg_whitehilt_pressure_{n}" for n in (1, 2, 3)],
     "husvette": [f"whitehilt_husvette_{kind}{n}" for kind in ("home", "rest", "cold", "cosy", "storm", "shelter") for n in (1, 2, 3)],
     "munin": [f"whitehilt_munin_{kind}{n}" for kind in ("news", "idle") for n in (1, 2, 3)],
-    "stormvoice": [f"whitehilt_stormvoice_call{n}" for n in range(1, 7)],
+    "stormvoice": [f"whitehilt_stormvoice_{kind}{n}" for kind in ("call", "cave") for n in range(1, 7)],
 }
 
 # Line names drop these prefixes, as WhiteHiltSound.LineName does.
@@ -78,6 +81,10 @@ ACTIONS = {
 VARIANT_HINTS = ["", ", a different take, sharper and shorter", ", a different take, deeper and rougher"]
 
 VOICE_SETTINGS = {"stability": 0.45, "similarity_boost": 0.8, "style": 0.25, "use_speaker_boost": True}
+
+# What makes a Norwegian voice Norwegian; the speaker's own description loses its "Scandinavian accent".
+NORWEGIAN_ACCENT = ("A native Norwegian speaker from Eastern Norway who speaks Norwegian Bokmål with a natural Eastern "
+                    "Norwegian (Oslo) accent and pronunciation; clearly Norwegian, not Danish and not Swedish.")
 
 STRING = r'"((?:[^"\\]|\\.)*)"'
 
@@ -175,6 +182,35 @@ def make_voices(client, spec, english, previews):
         print(f"voice {speaker['id']}: {speaker['voice_id']}")
 
 
+def norwegian_description(speaker):
+    base = speaker.get("description_no") or re.sub(r",?\s*with an? [^,.]*Scandinavian accent", "", speaker["description"])
+    return (base.rstrip(". ") + ". " + NORWEGIAN_ACCENT)[:1000]
+
+
+def make_norwegian_voices(client, spec, norwegian, previews):
+    settings = spec["norwegian"]
+    monsters = monster_names(norwegian)
+    for speaker in spec["speakers"]:
+        if speaker.get("voice_id_no"):
+            continue
+        lines = [text for _, language, text in speaker_lines(speaker, {k: "x" for k in LINE_SETS[speaker["lines"]]}, norwegian, monsters)
+                 if language == "no"]
+        sample = " ".join(lines[:8])
+        while len(sample) < 120:
+            sample += " " + sample
+        designed = client.json("/v1/text-to-voice/design", {
+            "voice_description": norwegian_description(speaker), "model_id": settings["design_model"], "text": sample[:900]})
+        options = designed["previews"]
+        for number, preview in enumerate(options):
+            (previews / f"{speaker['id']}_no_{number}.mp3").write_bytes(base64.b64decode(preview["audio_base_64"]))
+        created = client.json("/v1/text-to-voice", {
+            "voice_name": f"{speaker['name']} (norsk)", "voice_description": norwegian_description(speaker),
+            "generated_voice_id": options[speaker.get("preview_no", 0)]["generated_voice_id"]})
+        speaker["voice_id_no"] = created["voice_id"]
+        save_spec(spec)
+        print(f"voice {speaker['id']} (no): {speaker['voice_id_no']}")
+
+
 def make_lines(client, spec, english, norwegian, cache):
     out = HERE / "Voices"
     out.mkdir(exist_ok=True)
@@ -184,13 +220,25 @@ def make_lines(client, spec, english, norwegian, cache):
         if not speaker.get("voice_id"):
             sys.exit(f"{speaker['id']} has no voice yet: run the voices step first")
         for name, language, text in speaker_lines(speaker, english, norwegian, monsters):
-            stamp = digest(speaker["voice_id"], spec["model"], json.dumps(VOICE_SETTINGS, sort_keys=True), text)
+            # Norwegian with a model that knows the language, and the Norwegian voice where the speaker has one (the
+            # account's custom voices may run out; then its own voice speaks Norwegian with the right model).
+            norsk = language == "no" and bool(spec.get("norwegian"))
+            voice = speaker.get("voice_id_no") or speaker["voice_id"] if norsk else speaker["voice_id"]
+            model = spec["norwegian"]["model"] if norsk else spec["model"]
+            settings = spec["norwegian"].get("voice_settings", VOICE_SETTINGS) if norsk else VOICE_SETTINGS
+            body = {"text": text, "model_id": model, "voice_settings": settings}
+            if norsk:
+                body["language_code"] = spec["norwegian"]["language_code"]
+            stamp = digest(voice, model, json.dumps(settings, sort_keys=True), text)
             target = out / f"{name}.mp3"
             if target.exists() and cache.get(name) == stamp:
                 continue
-            audio, _ = client.post(f"/v1/text-to-speech/{speaker['voice_id']}",
-                                   {"text": text, "model_id": spec["model"], "voice_settings": VOICE_SETTINGS},
-                                   {"output_format": spec["voice_format"]})
+            # A speaker's English voice may have been deleted to free a slot for its Norwegian one; its English lines
+            # stay as they were recorded.
+            if not norsk and speaker.get("voice_freed"):
+                print(f"{name}: not made, {speaker['id']}'s English voice was freed (give it a new voice_id to record it)")
+                continue
+            audio, _ = client.post(f"/v1/text-to-speech/{voice}", body, {"output_format": spec["voice_format"]})
             target.write_bytes(audio)
             cache[name] = stamp
             save_cache(cache)
@@ -312,6 +360,8 @@ def main():
     cache = load_cache()
     if "voices" in steps:
         make_voices(client, spec, english, pathlib.Path(args.previews))
+        if spec.get("norwegian"):
+            make_norwegian_voices(client, spec, norwegian, pathlib.Path(args.previews))
     if "lines" in steps:
         make_lines(client, spec, english, norwegian, cache)
     if "effects" in steps:
