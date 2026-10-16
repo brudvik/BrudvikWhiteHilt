@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.141.1 - 2026-10-16
 
 ### Fixed
 - **Heavy lag near the great beasts in multiplayer**: the heavy footsteps of the Black Beasts and the trading posts'
