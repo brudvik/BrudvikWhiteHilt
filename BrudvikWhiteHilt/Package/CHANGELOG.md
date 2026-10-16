@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.141.1 - 2026-10-16
+
+### Fixed
+- **Heavy lag near the great beasts in multiplayer**: the heavy footsteps of the Black Beasts and the trading posts'
+  terrors (and the dog's sounds) made a network object at every step that no other player's game could build, so
+  every client warned of a "Missing prefab hash" thousands of times a second. The sounds are now local, as the game's
+  own footsteps are.
+- An error when a removed object was unloaded no longer stops the game cleaning up the objects around you.
+
 ## v0.141.0 - 2026-10-16
 
 ### Added
