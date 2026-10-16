@@ -73,8 +73,8 @@ public static class DarknessSettings
             "Seconds of black at first.", new AcceptableValueRange<float>(3f, 120f));
         LongestBlackSeconds = WhiteHiltConfig.BindAdminOnly(Section, "LongestBlackSeconds", 45f,
             "Seconds of black once it has crept in fully.", new AcceptableValueRange<float>(3f, 300f));
-        FearSeconds = WhiteHiltConfig.BindAdminOnly(Section, "FearSeconds", 75f,
-            "Seconds in the black without a light from no fear to full. Fear falls twice as fast in the light.", new AcceptableValueRange<float>(10f, 600f));
+        FearSeconds = WhiteHiltConfig.BindAdminOnly(Section, "FearSeconds", 40f,
+            "Seconds in the black without a light from no fear to full. It holds while the dark comes and goes, falls as fast once the place is lit and twice as fast with a light of your own.", new AcceptableValueRange<float>(10f, 600f));
         FearDamage = WhiteHiltConfig.BindAdminOnly(Section, "FearDamage", 0.02f,
             "Share of maximum health lost per second at full fear. 0: fear never hurts.", new AcceptableValueRange<float>(0f, 0.2f));
         Shadows = WhiteHiltConfig.BindAdminOnly(Section, "Shadows", true,
@@ -100,5 +100,6 @@ public static class DarknessSettings
         Translations.AddEnglish("whitehilt_dark_lit", "In the light: the fear falls");
         Translations.AddEnglish("whitehilt_dark_unlit", "In the dark: the fear grows");
         Translations.AddEnglish("enemy_whitehilt_shadow", "Shadow");
+        DarknessSounds.AddTexts();
     }
 }

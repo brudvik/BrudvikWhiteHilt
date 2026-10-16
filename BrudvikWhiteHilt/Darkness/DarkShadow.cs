@@ -27,6 +27,7 @@ public class DarkShadow : MonoBehaviour
     private const float PlaceReach = 40f;
     private const float NearestSpawn = 8f;
     private const float FarthestSpawn = 12f;
+    private const float MinimumSpawn = 4f;
 
     private static readonly List<DarkShadow> instances = new();
     private static int solidMask;
@@ -50,18 +51,23 @@ public class DarkShadow : MonoBehaviour
     /// </summary>
     /// <param name="player">The local player.</param>
     /// <param name="place">The place below ground.</param>
-    public static void Summon(Player player, string place)
+    /// <returns>Whether one came, or the place has its fill; false to try again in a moment.</returns>
+    public static bool Summon(Player player, string place)
     {
         GameObject prefab = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(PrefabName) : null;
-        if (prefab == null || player == null
-            || instances.Count(shadow => shadow != null && Vector3.Distance(shadow.transform.position, player.transform.position) < PlaceReach) >= DarknessSettings.MaxShadows.Value)
+        if (prefab == null || player == null)
         {
-            return;
+            return false;
+        }
+
+        if (instances.Count(shadow => shadow != null && Vector3.Distance(shadow.transform.position, player.transform.position) < PlaceReach) >= DarknessSettings.MaxShadows.Value)
+        {
+            return true;
         }
 
         if (!SpawnPoint(player, out Vector3 point))
         {
-            return;
+            return false;
         }
 
         Vector3 toPlayer = player.transform.position - point;
@@ -78,6 +84,8 @@ public class DarkShadow : MonoBehaviour
         {
             madeView.GetZDO().Set(PlaceKey, place ?? string.Empty);
         }
+
+        return true;
     }
 
     // One star for every two bosses fallen, up to two, so the shadow keeps up with the world.
@@ -87,7 +95,8 @@ public class DarkShadow : MonoBehaviour
         return 1 + Mathf.Min(2, bosses / 2);
     }
 
-    // Behind the player, short of any wall, on the floor.
+    // Behind the player if there is room, else to a side, else ahead: short of any wall, on the floor. In a narrow
+    // crypt the way behind is often a wall within a step or two.
     private static bool SpawnPoint(Player player, out Vector3 point)
     {
         if (solidMask == 0)
@@ -96,23 +105,28 @@ public class DarkShadow : MonoBehaviour
         }
 
         Vector3 head = player.GetHeadPoint();
-        Vector3 behind = -player.transform.forward;
-        behind.y = 0f;
-        behind = Quaternion.Euler(0f, Random.Range(-40f, 40f), 0f) * behind.normalized;
-        float distance = Random.Range(NearestSpawn, FarthestSpawn);
-        if (Physics.Raycast(head, behind, out RaycastHit wall, distance, solidMask))
+        Vector3 forward = player.transform.forward;
+        forward.y = 0f;
+        forward = forward.sqrMagnitude > 0.01f ? forward.normalized : Vector3.forward;
+        foreach (float turn in new[] { 180f, 140f, 220f, 90f, 270f, 40f, 320f, 0f })
         {
-            distance = wall.distance - 1f;
+            Vector3 way = Quaternion.Euler(0f, turn + Random.Range(-15f, 15f), 0f) * forward;
+            float distance = Random.Range(NearestSpawn, FarthestSpawn);
+            if (Physics.Raycast(head, way, out RaycastHit wall, distance, solidMask))
+            {
+                distance = wall.distance - 1f;
+            }
+
+            Vector3 at = head + way * distance;
+            if (distance >= MinimumSpawn && Physics.Raycast(at, Vector3.down, out RaycastHit floor, 6f, solidMask))
+            {
+                point = floor.point + Vector3.up * 0.2f;
+                return true;
+            }
         }
 
-        point = head + behind * Mathf.Max(0f, distance);
-        if (distance < 3f || !Physics.Raycast(point, Vector3.down, out RaycastHit floor, 6f, solidMask))
-        {
-            return false;
-        }
-
-        point = floor.point + Vector3.up * 0.2f;
-        return true;
+        point = Vector3.zero;
+        return false;
     }
 
     /// <summary>
@@ -275,7 +289,12 @@ public class DarkShadow : MonoBehaviour
         }
 
         Transform head = body.m_eye != null ? body.m_eye : prefab.transform;
-        Material eyeMaterial = new(Shader.Find("Unlit/Color") ?? Shader.Find("Standard")) { color = new Color(1f, 0.9f, 0.6f) };
+        Material eyeMaterial = VisualHelper.UnlitMaterial(new Color(1f, 0.9f, 0.6f));
+        if (eyeMaterial == null)
+        {
+            return;
+        }
+
         foreach (float side in new[] { -0.08f, 0.08f })
         {
             GameObject eye = GameObject.CreatePrimitive(PrimitiveType.Sphere);

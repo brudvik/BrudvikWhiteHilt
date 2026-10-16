@@ -33,6 +33,17 @@ The darkness of a place is the same for everyone in it, counted from when the fi
 Every gap and every black differs a little, by up to a fifth. Once a place has stood empty for 5 minutes, its darkness
 starts over.
 
+### The silence before
+
+While the lights flicker the place's sounds fall away: the dripping and humming of the place, the wind and the music.
+By the time it goes black it is almost silent, and the sounds come back with the light. The darkness's own sounds and
+the creatures are not quietened.
+
+### Doors in the dark
+
+As the black falls, an open door close by slams shut, or a shut one swings open; while the black lasts, now and then
+another. Only the place's own doors move, never a locked one or one a player built, and everyone hears and sees it.
+
 ### What holds it off
 
 - **A torch in hand** (or anything else alight in your hand).
@@ -41,10 +52,15 @@ starts over.
   dark, so it pays to make small camps on the way down.
 - **A friend with a light**, within 5 m.
 
+The longer the place has been in use, the less far a carried light reaches in the dark: once the dark has crept in
+fully, a torch or a circlet lights only a step or two around you while it is black.
+
 ### Fear of the dark
 
-A fear meter, shown as a status effect with its percentage, fills in the black without a light, to full in 75 seconds
-(`FearSeconds`), and falls twice as fast in the light or when the dark lifts. It is gone when you leave.
+A fear meter, shown as a status effect with its percentage, fills in the black without a light, to full in 40 seconds
+(`FearSeconds`). It holds while the dark is coming or going, falls as fast once the place is lit again, and twice as
+fast with a light of your own. It is gone when you leave. A first, short darkness leaves you afraid; a long one later
+on brings the shadows.
 
 | Fear | What happens |
 |------|--------------|
@@ -69,7 +85,8 @@ a half (*Your torch gutters!*). A circlet flickers while it is at its blackest.
 ### Eyes and sounds
 
 In the black, every 6 to 14 seconds: a pair of pale eyes off in the dark that blinks once and is gone, claws scraping
-along the stone, slow breathing right behind you, or whispers at your ear. None of it is real and no one else hears or
+along the stone, slow breathing right behind you, whispers at your ear, or the voice from the storm calling from down a
+passage: *Turn back...*, *It is right behind you.*, *Can you hear it breathing?* None of it is real and no one else hears or
 sees it. It is your own setting (`EyesAndSounds`), with its own volume (`Volume`). The sounds are made with ElevenLabs
 (`AssetSource/Audio/audio.json`).
 
@@ -92,7 +109,7 @@ Section `Darkness`. Everything but `EyesAndSounds` and `Volume` is admin-only an
 | `RampMinutes` | 10 | Minutes after the first darkness until it is at its worst |
 | `ShortestBlackSeconds` | 15 | Seconds of black at first |
 | `LongestBlackSeconds` | 45 | Seconds of black at its worst |
-| `FearSeconds` | 75 | Seconds in the black without a light to full fear |
+| `FearSeconds` | 40 | Seconds in the black without a light to full fear |
 | `FearDamage` | 0.02 | Share of maximum health lost per second at full fear; 0 never hurts |
 | `Shadows` | true | Shadows come for those without a light |
 | `MaxShadows` | 3 | The most shadows in one place |

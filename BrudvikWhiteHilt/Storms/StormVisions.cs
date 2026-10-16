@@ -38,7 +38,7 @@ public class StormVisions : MonoBehaviour
     };
 
     private static GameObject template;
-    private static Material shade;
+    private static readonly System.Collections.Generic.Dictionary<Material, Material> shades = new();
 
     private bool haunting;
     private float nextVision;
@@ -228,13 +228,14 @@ public class StormVisions : MonoBehaviour
             DestroyImmediate(body);
         }
 
-        shade ??= new Material(Shader.Find("Unlit/Color") ?? Shader.Find("Standard")) { color = new Color(0.02f, 0.02f, 0.03f) };
+        // The body's own materials gone dark, so the fog still swallows it with distance; the game has no plain
+        // shader to draw it with.
         foreach (Renderer renderer in prefab.GetComponentsInChildren<Renderer>(true))
         {
             Material[] materials = new Material[renderer.sharedMaterials.Length];
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i] = shade;
+                materials[i] = Darkened(renderer.sharedMaterials[i]);
             }
 
             renderer.sharedMaterials = materials;
@@ -243,5 +244,36 @@ public class StormVisions : MonoBehaviour
 
         template = prefab;
         return template;
+    }
+
+    private static Material Darkened(Material source)
+    {
+        if (source == null)
+        {
+            return null;
+        }
+
+        if (!shades.TryGetValue(source, out Material dark))
+        {
+            dark = new Material(source);
+            if (dark.HasProperty("_Color"))
+            {
+                dark.color = new Color(0.02f, 0.02f, 0.03f, dark.color.a);
+            }
+
+            if (dark.HasProperty("_MainTex"))
+            {
+                dark.mainTexture = Texture2D.blackTexture;
+            }
+
+            if (dark.HasProperty("_EmissionColor"))
+            {
+                dark.SetColor("_EmissionColor", Color.black);
+            }
+
+            shades[source] = dark;
+        }
+
+        return dark;
     }
 }

@@ -60,6 +60,12 @@ public class DarknessClient : MonoBehaviour
     /// <summary>Whether the local player has a light.</summary>
     public static bool Lit { get; private set; }
 
+    /// <summary>How quiet the place is, 0 to 1 (<see cref="DarknessSchedule.Silence"/>).</summary>
+    public static float Silence { get; private set; }
+
+    /// <summary>How far the darkness has crept into the place, 0 to 1 (<see cref="DarknessSchedule.Creep"/>).</summary>
+    public static float Creep { get; private set; }
+
     /// <summary>The local player's fear, 0 to 100.</summary>
     public static float Fear { get; private set; }
 
@@ -188,18 +194,20 @@ public class DarknessClient : MonoBehaviour
     }
 
     /// <summary>
-    /// The fear after some time.
+    /// The fear after some time: it grows in the black without a light, holds while the dark is coming or going,
+    /// falls slowly when the place is lit again and twice as fast with a light of your own.
     /// </summary>
     /// <param name="fear">The fear now.</param>
     /// <param name="seconds">Seconds that passed.</param>
     /// <param name="black">Whether it is black (or near enough) where the player is.</param>
+    /// <param name="calm">Whether the place is lit as ever.</param>
     /// <param name="lit">Whether the player has a light.</param>
     /// <param name="secondsToFull">Seconds in the black without a light to full fear.</param>
     /// <returns>The new fear, 0 to <see cref="MaxFear"/>.</returns>
-    public static float StepFear(float fear, float seconds, bool black, bool lit, float secondsToFull)
+    public static float StepFear(float fear, float seconds, bool black, bool calm, bool lit, float secondsToFull)
     {
         float rate = MaxFear / Mathf.Max(1f, secondsToFull);
-        float change = black && !lit ? rate : -rate * 2f;
+        float change = lit ? -rate * 2f : black ? rate : calm ? -rate : 0f;
         return Mathf.Clamp(fear + change * seconds, 0f, MaxFear);
     }
 
@@ -246,11 +254,16 @@ public class DarknessClient : MonoBehaviour
         {
             Phase = DarkPhase.Calm;
             Level = Mathf.MoveTowards(Level, 0f, Time.deltaTime);
+            Silence = Mathf.MoveTowards(Silence, 0f, Time.deltaTime);
             return;
         }
 
-        Phase = DarknessSchedule.At(ZNet.instance.GetTimeSeconds() - start, DarknessSchedule.Seed(PlaceKey), Timing(), out float into, out float length);
+        double elapsed = ZNet.instance.GetTimeSeconds() - start;
+        DarknessSchedule.Timing timing = Timing();
+        Phase = DarknessSchedule.At(elapsed, DarknessSchedule.Seed(PlaceKey), timing, out float into, out float length);
         Level = DarknessSchedule.Level(Phase, into, length, Time.time);
+        Silence = DarknessSchedule.Silence(Phase, into, length);
+        Creep = DarknessSchedule.Creep(elapsed, timing);
     }
 
     private void Tick(Player player, float seconds)
@@ -273,7 +286,7 @@ public class DarknessClient : MonoBehaviour
 
         Lit = key != null && IsLit(player);
         bool black = Level >= 0.85f;
-        Fear = key == null || player.IsDead() ? 0f : StepFear(Fear, seconds, black, Lit, DarknessSettings.FearSeconds.Value);
+        Fear = key == null || player.IsDead() ? 0f : StepFear(Fear, seconds, black, Phase == DarkPhase.Calm, Lit, DarknessSettings.FearSeconds.Value);
         SetUnlit(player, key != null && Level >= 0.5f && !Lit);
 
         Announce(player);
@@ -417,7 +430,6 @@ public class DarknessClient : MonoBehaviour
             return;
         }
 
-        spawnedThisDarkness = true;
-        DarkShadow.Summon(player, PlaceKey);
+        spawnedThisDarkness = DarkShadow.Summon(player, PlaceKey);
     }
 }

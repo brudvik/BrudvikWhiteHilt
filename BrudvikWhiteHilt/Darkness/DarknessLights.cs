@@ -6,8 +6,8 @@ namespace BrudvikWhiteHilt.Darkness;
 /// <summary>
 /// The darkness seen, on the local player's machine: the place's ambient light and fog fade to black, and its own
 /// lights (wall torches, braziers, glowing things) dim and go out with their flames. The players' own lights stay: what
-/// they carry, and the fires they built. A guttering torch goes out for a moment, and a circlet flickers in the black.
-/// On the <see cref="Game"/> object.
+/// they carry, and the fires they built, though what they carry reaches less far the deeper the dark has crept in. A
+/// guttering torch goes out for a moment, and a circlet flickers in the black. On the <see cref="Game"/> object.
 /// </summary>
 public class DarknessLights : MonoBehaviour
 {
@@ -15,10 +15,12 @@ public class DarknessLights : MonoBehaviour
     private const float RefreshSeconds = 1f;
     private const float FlamesOut = 0.85f;
     private const float AmbientLeft = 0.03f;
+    private const float ShortestReach = 0.2f;
 
     private readonly Dictionary<Light, Dimmed> dimmed = new();
     private readonly List<Light> guttered = new();
     private readonly Dictionary<LightFlicker, float> circlet = new();
+    private readonly Dictionary<Light, float> carried = new();
     private float nextRefresh;
     private float nextCircletFlicker;
 
@@ -46,6 +48,7 @@ public class DarknessLights : MonoBehaviour
     private void LateUpdate()
     {
         float level = DarknessClient.Level;
+        ShrinkCarried(level);
         if (level <= 0.001f && dimmed.Count == 0)
         {
             RestoreHeld();
@@ -85,6 +88,59 @@ public class DarknessLights : MonoBehaviour
 
         dimmed.Clear();
         RestoreHeld();
+        ShrinkCarried(0f);
+    }
+
+    // What every player carries reaches less far in the dark, down to a fifth once the dark has crept in fully: a
+    // torch lights a step or two around you.
+    private void ShrinkCarried(float level)
+    {
+        float share = Mathf.Lerp(1f, Mathf.Lerp(1f, ShortestReach, DarknessClient.Creep), level);
+        if (share >= 0.999f)
+        {
+            if (carried.Count > 0)
+            {
+                foreach (KeyValuePair<Light, float> pair in carried)
+                {
+                    if (pair.Key != null)
+                    {
+                        pair.Key.range = pair.Value;
+                    }
+                }
+
+                carried.Clear();
+            }
+
+            return;
+        }
+
+        foreach (Player player in Player.GetAllPlayers())
+        {
+            VisEquipment equipment = player != null ? player.m_visEquipment : null;
+            if (equipment == null)
+            {
+                continue;
+            }
+
+            foreach (GameObject held in new[] { equipment.m_rightItemInstance, equipment.m_leftItemInstance, equipment.m_helmetItemInstance })
+            {
+                if (held == null)
+                {
+                    continue;
+                }
+
+                foreach (Light light in held.GetComponentsInChildren<Light>(true))
+                {
+                    if (!carried.TryGetValue(light, out float range))
+                    {
+                        range = light.range;
+                        carried[light] = range;
+                    }
+
+                    light.range = range * share;
+                }
+            }
+        }
     }
 
     // The place's own lights close to the player; not the players' lights, the fires they built or the sun.

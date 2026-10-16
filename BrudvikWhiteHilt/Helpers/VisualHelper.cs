@@ -21,6 +21,18 @@ public static class VisualHelper
     public static bool IsHeadless => SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null;
 
     /// <summary>
+    /// A flat, unlit material of one colour. The game's build has only some of Unity's built-in shaders: not
+    /// "Unlit/Color" or "Standard", but "Sprites/Default" (or "UI/Default").
+    /// </summary>
+    /// <param name="color">The colour.</param>
+    /// <returns>The material, or null when neither shader is there.</returns>
+    public static Material UnlitMaterial(Color color)
+    {
+        Shader shader = Shader.Find("Sprites/Default") ?? Shader.Find("UI/Default");
+        return shader != null ? new Material(shader) { color = color } : null;
+    }
+
+    /// <summary>
     /// Clones a vanilla sound or visual effect to be played on each client by itself, without its network view. The
     /// clone is not registered in ZNetScene, so with the view every spawn (every footstep) made a ZDO no other client
     /// could build: they warned "Missing prefab hash" for it every frame, and the view left a dead entry in the scene

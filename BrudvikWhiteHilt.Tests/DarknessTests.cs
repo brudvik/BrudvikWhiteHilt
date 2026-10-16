@@ -100,6 +100,30 @@ public class DarknessTests
         Assert.Equal(level, DarknessSchedule.Level((DarkPhase)phase, into, length, 0f), 3);
     }
 
+    /// <summary>The sounds fall away while the lights flicker, stay away in the dark and come back with the light.</summary>
+    [Theory]
+    [InlineData((int)DarkPhase.Calm, 0f, 10f, 0f)]
+    [InlineData((int)DarkPhase.Flicker, 4f, 8f, 0.5f)]
+    [InlineData((int)DarkPhase.Fading, 1f, 5f, 1f)]
+    [InlineData((int)DarkPhase.Black, 10f, 20f, 1f)]
+    [InlineData((int)DarkPhase.Returning, 2.25f, 3f, 0.25f)]
+    public void SilenceComesBeforeTheDark(int phase, float into, float length, float silence)
+    {
+        Assert.Equal(silence, DarknessSchedule.Silence((DarkPhase)phase, into, length), 3);
+    }
+
+    /// <summary>The dark creeps in from the first darkness to its worst over the ramp, and no further.</summary>
+    [Theory]
+    [InlineData(100.0, 0f)]
+    [InlineData(180.0, 0f)]
+    [InlineData(480.0, 0.5f)]
+    [InlineData(780.0, 1f)]
+    [InlineData(5000.0, 1f)]
+    public void TheDarkCreepsIn(double elapsed, float creep)
+    {
+        Assert.Equal(creep, DarknessSchedule.Creep(elapsed, timing), 3);
+    }
+
     /// <summary>The flicker dips, but never all the way to black.</summary>
     [Fact]
     public void TheFlickerDipsButIsNotBlack()
@@ -110,15 +134,19 @@ public class DarknessTests
         }
     }
 
-    /// <summary>Fear fills in the black without a light, falls twice as fast with one or in the light.</summary>
+    /// <summary>
+    /// Fear fills in the black without a light, holds while the dark comes and goes, falls once the place is lit and
+    /// twice as fast with a light of your own.
+    /// </summary>
     [Fact]
     public void FearGrowsInTheDarkAndFallsInTheLight()
     {
-        Assert.Equal(40f, DarknessClient.StepFear(0f, 30f, true, false, 75f), 3);
-        Assert.Equal(100f, DarknessClient.StepFear(90f, 30f, true, false, 75f), 3);
-        Assert.Equal(20f, DarknessClient.StepFear(40f, 7.5f, true, true, 75f), 3);
-        Assert.Equal(20f, DarknessClient.StepFear(40f, 7.5f, false, false, 75f), 3);
-        Assert.Equal(0f, DarknessClient.StepFear(10f, 60f, false, false, 75f), 3);
+        Assert.Equal(40f, DarknessClient.StepFear(0f, 30f, true, false, false, 75f), 3);
+        Assert.Equal(100f, DarknessClient.StepFear(90f, 30f, true, false, false, 75f), 3);
+        Assert.Equal(20f, DarknessClient.StepFear(40f, 7.5f, true, false, true, 75f), 3);
+        Assert.Equal(40f, DarknessClient.StepFear(40f, 7.5f, false, false, false, 75f), 3);
+        Assert.Equal(20f, DarknessClient.StepFear(40f, 15f, false, true, false, 75f), 3);
+        Assert.Equal(0f, DarknessClient.StepFear(10f, 60f, false, true, false, 75f), 3);
     }
 
     /// <summary>Afraid from 25, terrified from 50, panic from 75, dying at the top.</summary>

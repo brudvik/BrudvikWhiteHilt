@@ -27,6 +27,12 @@ public class DarknessSounds : MonoBehaviour
     private const float EyesFarthest = 15f;
     private const float ShakeSeconds = 0.5f;
 
+    private static readonly string[] caveLines =
+    {
+        "$whitehilt_stormvoice_cave1", "$whitehilt_stormvoice_cave2", "$whitehilt_stormvoice_cave3",
+        "$whitehilt_stormvoice_cave4", "$whitehilt_stormvoice_cave5", "$whitehilt_stormvoice_cave6"
+    };
+
     private static Material eyeMaterial;
     private static int solidMask;
 
@@ -36,6 +42,20 @@ public class DarknessSounds : MonoBehaviour
     private GameObject eyes;
     private float eyesGone;
     private float eyesBlink;
+
+    /// <summary>
+    /// Registers the English lines the voice in the dark says, the storm's voice come below ground. Call from the
+    /// plugin's Awake.
+    /// </summary>
+    public static void AddTexts()
+    {
+        Translations.AddEnglish("whitehilt_stormvoice_cave1", "Turn back...");
+        Translations.AddEnglish("whitehilt_stormvoice_cave2", "It is right behind you.");
+        Translations.AddEnglish("whitehilt_stormvoice_cave3", "We have waited so long for you...");
+        Translations.AddEnglish("whitehilt_stormvoice_cave4", "Let the light go out...");
+        Translations.AddEnglish("whitehilt_stormvoice_cave5", "You should never have come down here.");
+        Translations.AddEnglish("whitehilt_stormvoice_cave6", "Can you hear it breathing?");
+    }
 
     /// <summary>
     /// Plays one of a darkness sound's takes at a place, at the darkness's volume.
@@ -115,14 +135,38 @@ public class DarknessSounds : MonoBehaviour
         {
             Play(scrapes, player.transform.position + aside * Random.Range(4f, 9f) + Vector3.up, 2f, 18f);
         }
-        else if (roll < 0.85f)
+        else if (roll < 0.8f)
         {
             Play(breaths, player.GetHeadPoint() - player.transform.forward * 1.2f, 1f, 6f);
         }
-        else
+        else if (roll < 0.88f)
         {
             Play(whispers, player.GetHeadPoint() + aside * 1.5f, 1f, 8f);
         }
+        else
+        {
+            Speak(player, aside);
+        }
+    }
+
+    // The voice from down a passage: where the way is open, as far as it goes, up to 20 m.
+    private static void Speak(Player player, Vector3 aside)
+    {
+        Vector3 head = player.GetHeadPoint();
+        float distance = Physics.Raycast(head, aside, out RaycastHit hit, 20f, solidMask) ? Mathf.Max(3f, hit.distance - 0.5f) : 20f;
+        AudioClip clip = WhiteHiltSound.VoiceClip("stormvoice", caveLines[Random.Range(0, caveLines.Length)]);
+        float volume = (SoundSettings.VoiceVolume?.Value ?? 1f) * DarknessSettings.Volume.Value;
+        if (clip == null || volume <= 0f)
+        {
+            return;
+        }
+
+        GameObject holder = new($"whitehilt_sound_{clip.name}");
+        holder.transform.position = head + aside * distance;
+        AudioSource source = holder.AddComponent<AudioSource>();
+        WhiteHiltSound.Place(source, 4f, 30f);
+        source.PlayOneShot(clip, volume);
+        Destroy(holder, clip.length + 0.5f);
     }
 
     // From half fear the heart pounds, louder the worse it is, and the view trembles.
@@ -168,12 +212,17 @@ public class DarknessSounds : MonoBehaviour
             return;
         }
 
+        eyeMaterial ??= VisualHelper.UnlitMaterial(new Color(1f, 0.85f, 0.45f));
+        if (eyeMaterial == null)
+        {
+            return;
+        }
+
         Vector3 at = head + aside * distance + Vector3.up * Random.Range(-0.6f, 0.2f);
         eyes = new GameObject("whitehilt_dark_eyes");
         eyes.AddComponent<DarknessKeep>();
         eyes.transform.position = at;
         eyes.transform.rotation = Quaternion.LookRotation(head - at);
-        eyeMaterial ??= new Material(Shader.Find("Unlit/Color") ?? Shader.Find("Standard")) { color = new Color(1f, 0.85f, 0.45f) };
         foreach (float side in new[] { -0.07f, 0.07f })
         {
             GameObject eye = GameObject.CreatePrimitive(PrimitiveType.Sphere);

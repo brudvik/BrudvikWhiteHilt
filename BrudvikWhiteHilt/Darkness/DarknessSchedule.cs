@@ -158,6 +158,34 @@ public static class DarknessSchedule
     }
 
     /// <summary>
+    /// How quiet the place is, from 0 (as ever) to 1 (silent): the sounds fall away while the lights flicker, before the
+    /// dark, stay away in it and come back with the light.
+    /// </summary>
+    /// <param name="phase">The phase.</param>
+    /// <param name="into">Seconds into it.</param>
+    /// <param name="length">Its length.</param>
+    /// <returns>The silence.</returns>
+    public static float Silence(DarkPhase phase, float into, float length)
+    {
+        float share = length > 0f ? Mathf.Clamp01(into / length) : 1f;
+        return phase switch
+        {
+            DarkPhase.Flicker => share,
+            DarkPhase.Fading or DarkPhase.Black => 1f,
+            DarkPhase.Returning => 1f - share,
+            _ => 0f
+        };
+    }
+
+    /// <summary>
+    /// How far the darkness has crept into a place, from 0 at its first darkness to 1 at its worst.
+    /// </summary>
+    /// <param name="elapsed">Seconds since the place was first gone into.</param>
+    /// <param name="timing">The timing.</param>
+    /// <returns>0 to 1.</returns>
+    public static float Creep(double elapsed, Timing timing) => Worse(elapsed, timing);
+
+    /// <summary>
     /// A place's number from where it is, the same on every machine.
     /// </summary>
     /// <param name="key">The place's key.</param>

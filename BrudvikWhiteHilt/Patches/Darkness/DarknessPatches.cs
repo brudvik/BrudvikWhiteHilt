@@ -18,6 +18,8 @@ public static class DarknessPatches
         __instance.gameObject.AddComponent<DarknessClient>();
         __instance.gameObject.AddComponent<DarknessLights>();
         __instance.gameObject.AddComponent<DarknessSounds>();
+        __instance.gameObject.AddComponent<DarknessSilence>();
+        __instance.gameObject.AddComponent<DarknessDoors>();
     }
 
     [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.SetEnv))]
