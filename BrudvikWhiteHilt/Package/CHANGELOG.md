@@ -2,6 +2,31 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.143.0 - 2026-10-16
+
+### Added
+- **[The silence before the dark](docs/darkness.md#the-silence-before)**: while the lights flicker below ground the
+  place's sounds, the wind and the music fall away, and it is almost silent in the black.
+- **[Doors in the dark](docs/darkness.md#doors-in-the-dark)**: as the black falls a door close by slams shut or swings
+  open, and now and then again while it lasts; everyone hears it.
+- **The light shrinks**: the longer a place has been in use, the less far a torch or a circlet reaches in the dark,
+  down to a step or two.
+- **A voice down the passage**: the voice from the storm calls from the dark below ground, with six new lines.
+
+### Changed
+- **Every Norwegian voice is new**: each speaker has a Norwegian voice of its own, a native Eastern Norwegian speaker,
+  and every Norwegian line is spoken again with ElevenLabs' newest model, which knows Norwegian. Before they sounded
+  Danish.
+
+### Fixed
+- **[The shadows](docs/darkness.md#something-is-down-there) come at last**: the shadow failed to load (its eyes asked
+  for a shader the game does not have), so it never came. It also gave up for the whole darkness when the way behind
+  was a wall; it now tries the sides and ahead.
+- **[Fear of the dark](docs/darkness.md#fear-of-the-dark)** holds while the dark comes and goes instead of falling,
+  and fills in 40 seconds (`FearSeconds`, was 75), so a long darkness brings the shadows. A server that already has
+  the setting keeps its value.
+- The glowing eyes in the dark and the figure in the storm failed in the same way and are now seen.
+
 ## v0.142.0 - 2026-10-16
 
 ### Added
