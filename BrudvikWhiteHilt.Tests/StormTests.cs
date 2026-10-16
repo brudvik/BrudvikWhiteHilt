@@ -91,6 +91,18 @@ public class StormTests
         Assert.Equal(regen, StormExposure.StaminaRegen(exposure), 3);
     }
 
+    /// <summary>The potions give half from 20, a quarter from 40 and nothing from 60, when you freeze.</summary>
+    [Theory]
+    [InlineData(0f, 1f)]
+    [InlineData(20f, 0.5f)]
+    [InlineData(40f, 0.25f)]
+    [InlineData(60f, 0f)]
+    [InlineData(100f, 0f)]
+    public void PotionsFadeInTheStorm(float exposure, float share)
+    {
+        Assert.Equal(share, StormExposure.PotionShare(exposure), 3);
+    }
+
     /// <summary>Health goes from 80, sooner in the fire storm, and never in the sandstorm.</summary>
     [Fact]
     public void HealthGoesLast()

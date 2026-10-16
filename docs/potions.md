@@ -54,6 +54,10 @@ Within 40 m of a living [black beast](difficulty.md), Odin retains 80% of its he
 
 Full healing strength returns when the beast dies or you leave its range. This includes horn-called beasts and beasts at sea, but not ordinary starred creatures. Multiple beasts do not stack; near both a beast and Kraken, only the strongest healing attenuation applies. These are defaults, before other effects.
 
+### Out in a great storm
+
+The exposure meter of a [great storm](storms.md#out-in-it) wears down Odin's healing (the heal over time, the faster regeneration and the heal when drunk) and all of Freya: half from 20% exposure, a quarter from 40%, and nothing once you freeze at 60%. Odin's maximum HP, fall-damage reduction and duration are unchanged. In shelter the meter falls and the potions come back with it.
+
 Server settings in `[Difficulty.Beasts]`: `OdinHealingRange` (default 40 m; 0 disables attenuation) and `OdinHealingShare` (default 0.8; 1 retains full healing strength).
 
 ### Emergency Draught (2 minutes)

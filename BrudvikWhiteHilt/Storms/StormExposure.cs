@@ -145,6 +145,23 @@ public static class StormExposure
     }
 
     /// <summary>
+    /// The share of a potion's healing and stamina that is left: half when tired, a quarter when weary, none once
+    /// freezing, so a potion cannot outlast the storm.
+    /// </summary>
+    /// <param name="exposure">The meter.</param>
+    /// <returns>1 when unexposed, down to 0.</returns>
+    public static float PotionShare(float exposure)
+    {
+        return Stage(exposure) switch
+        {
+            0 => 1f,
+            1 => 0.5f,
+            2 => 0.25f,
+            _ => 0f
+        };
+    }
+
+    /// <summary>
     /// How far the view has closed in, 0 to 1.
     /// </summary>
     /// <param name="exposure">The meter.</param>

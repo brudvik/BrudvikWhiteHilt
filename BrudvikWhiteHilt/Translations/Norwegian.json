@@ -1791,7 +1791,7 @@
   "item_giftoffreyameadbase": "Mjødbase: Frøyas gave",
   "se_giftoffreya_start": "Du har fått Frøyas gave!",
   "se_giftoffreya_stop": "Frøyas gave er borte!",
-  "se_giftoffreya_tooltip": "Fyller utholdenheten når du drikker. Løping, hopping, angrep, blokkering, unnamanøvrer, svømming, bygging og sniking gir litt utholdenhet i stedet for å bruke den. Utholdenheten fornyes {0} ganger så raskt. Svakere nær Kraken",
+  "se_giftoffreya_tooltip": "Fyller utholdenheten når du drikker. Løping, hopping, angrep, blokkering, unnamanøvrer, svømming, bygging og sniking gir litt utholdenhet i stedet for å bruke den. Utholdenheten fornyes {0} ganger så raskt. Svakere nær Kraken og ute i et kraftig uvær",
 
   "item_giftoffreyrmead": "Frøys gave",
   "item_giftoffreyrmead_description": "Gir deg velsignelsen fra guden for grøde og fred",
@@ -1876,7 +1876,7 @@
   "item_giftofodinmeadbase": "Mjødbase: Odins gave",
   "se_giftofodin_start": "Du føler deg enormt mektig med Odins gave!",
   "se_giftofodin_stop": "Odins gave har bleknet!",
-  "se_giftofodin_tooltip": "+{0} maks helse. Leger deg helt når du drikker, deretter {1} helse hvert sekund og {2} ganger så rask helsefornyelse. {3} % mindre fallskade. Svakere nær Kraken og svarte beist",
+  "se_giftofodin_tooltip": "+{0} maks helse. Leger deg helt når du drikker, deretter {1} helse hvert sekund og {2} ganger så rask helsefornyelse. {3} % mindre fallskade. Svakere nær Kraken og svarte beist, og ute i et kraftig uvær",
 
   "item_giftofratatoskrmead": "Ratatosks gave",
   "item_giftofratatoskrmead_description": "Gir deg smidigheten til ekornet som løper i Yggdrasil",

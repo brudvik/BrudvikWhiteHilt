@@ -57,6 +57,17 @@ public class StormClient : MonoBehaviour
     public static bool RagingHere { get; private set; }
 
     /// <summary>
+    /// How much of a potion's healing and stamina is left to a character out in the storm, so the Gift of Odin and the
+    /// Gift of Freya do not cancel it.
+    /// </summary>
+    /// <param name="character">The character the potion is on.</param>
+    /// <returns>1 for anyone but the local player, else <see cref="StormExposure.PotionShare"/>.</returns>
+    public static float PotionFactor(Character character)
+    {
+        return character != null && character == Player.m_localPlayer ? StormExposure.PotionShare(Exposure) : 1f;
+    }
+
+    /// <summary>
     /// The storm in the weather forecast: when it breaks, even before the warning, or how long it still rages.
     /// </summary>
     /// <param name="biome">The biome the forecast is for.</param>
@@ -426,9 +437,22 @@ public class StormClient : MonoBehaviour
             return;
         }
 
+        // As StatusEffect.RemoveStartEffects: an effect with a network view goes through ZNetScene, or the scene keeps
+        // the dead view and ZNetScene.RemoveObjects throws on it every frame.
         foreach (GameObject effect in suffering)
         {
-            if (effect != null)
+            if (effect == null)
+            {
+                continue;
+            }
+
+            ZNetView view = effect.GetComponent<ZNetView>();
+            if (view != null && view.IsValid())
+            {
+                view.ClaimOwnership();
+                view.Destroy();
+            }
+            else
             {
                 Destroy(effect);
             }

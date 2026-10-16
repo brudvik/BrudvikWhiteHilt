@@ -1,6 +1,7 @@
 ﻿using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Kraken;
+using BrudvikWhiteHilt.Storms;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Items.Potions.GiftOfFreya;
@@ -26,7 +27,7 @@ public class GiftOfFreyaEffect : SE_Stats
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} is no more!";
         m_tooltip = "Fills your stamina when drunk. Running, jumping, attacking, blocking, dodging, swimming, building and "
-            + "sneaking restore a little stamina instead of using it. Stamina regenerates {0}x as fast. Weaker near the Kraken";
+            + "sneaking restore a little stamina instead of using it. Stamina regenerates {0}x as fast. Weaker near the Kraken and out in a great storm";
     }
 
     /// <summary>
@@ -145,14 +146,20 @@ public class GiftOfFreyaEffect : SE_Stats
     /// <param name="staminaRegen">Multiplier of stamina regeneration; changed in place, as the game passes it on to the other effects and then uses it.</param>
     public override void ModifyStaminaRegen(ref float staminaRegen)
     {
-        staminaRegen += PotionSettings.Freya.StaminaRegenBonus.Value * KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value);
+        staminaRegen += PotionSettings.Freya.StaminaRegenBonus.Value * Share();
     }
 
     private float StaminaCost(float baseCost)
     {
-        float share = KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value);
+        float share = Share();
         float cost = Mathf.Lerp(baseCost, PotionSettings.Freya.StaminaUse.Value, share);
         return share < 1f ? Mathf.Max(0f, cost) : cost;
+    }
+
+    // Near the Kraken and out in a great storm the potion gives less.
+    private float Share()
+    {
+        return Mathf.Min(KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value), StormClient.PotionFactor(m_character));
     }
 
 }

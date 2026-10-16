@@ -37,6 +37,9 @@ An exposure meter, shown as a status effect with its percentage, climbs while yo
 
 In the open, the meter is full after about 4 minutes (`MinutesToFull`). A storm of the worst biomes is faster.
 
+The [Gift of Odin and the Gift of Freya](potions.md) wane with the meter: half their healing and stamina from 20%, a
+quarter from 40%, and nothing once you freeze at 60%.
+
 ### The storm of each biome
 
 | Biome | Storm | Pace | Also |

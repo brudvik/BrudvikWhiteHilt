@@ -115,7 +115,10 @@ public static class StormFinds
             return false;
         }
 
-        ItemDrop.DropItem(prefab.m_itemData.Clone(), amount, point.Value + Vector3.up * 0.3f, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+        // The prefab's own item data has no drop prefab (the game sets it on items made from it), and DropItem needs one.
+        ItemDrop.ItemData item = prefab.m_itemData.Clone();
+        item.m_dropPrefab = prefab.gameObject;
+        ItemDrop.DropItem(item, amount, point.Value + Vector3.up * 0.3f, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
         return true;
     }
 
