@@ -2,6 +2,32 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.142.0 - 2026-10-16
+
+### Added
+- **[Creeping darkness](docs/darkness.md)**: below ground (crypts, caves, mines, troll caves and every other dungeon)
+  the light now and then flickers, fades and goes almost black for a while: after a calm of 3 minutes, every 4 minutes
+  and then more and more often and for longer the longer the place is in use, the same for everyone in it. A torch in
+  hand, a circlet, a fire you built or a friend's light holds it off. Without one, fear grows: slower stamina, a
+  pounding heart, failing legs and in the end lost health. From half fear a shadow comes that hunts only those without
+  a light and is easy to hurt in the light. Torches burn down faster and gutter in the black, circlets flicker, and
+  eyes, scraping, breathing and whispers come out of the dark. New sounds made with ElevenLabs; admins can call it with
+  `whitehilt_darkness start`.
+- **[The eye of the storm](docs/storms.md#the-eye-of-the-storm)**: a storm comes in two waves with a still eye
+  between them. In the eye the wind dies, the meter holds out in the open and falls only in real shelter, and nothing
+  strikes; the clock counts down to its return. The last wave drives the meter on half as fast again, with more
+  lightning, thunder and falling trees.
+- **[Ragnarok](docs/storms.md#ragnarok)**: once a boss has fallen, the first storm after a new boss falls, and now and
+  then another, is Ragnarok: foretold and warned of twice as early, half as long and half as hard again, over the
+  Meadows too, with lightning in every storm, and twice the finds after, some of them rare. Admins can call it with
+  `whitehilt_storm ragnarok`.
+- **[The storm remembers you](docs/storms.md#the-storm-remembers-you)**: each storm you live through out in it makes
+  the meter climb 5% faster for you the next time, up to 50%, and leaves you more finds; each storm you sit out in
+  shelter it forgets you a little.
+- **[Visions in the storm](docs/storms.md#visions-in-the-storm)**: deep in the storm you hear footsteps behind you,
+  whispers and a voice calling from the fog, and once you freeze a dark figure stands at the edge of your view and is
+  gone when you look. A new voice and sounds made with ElevenLabs; your own setting, `Visions`.
+
 ## v0.141.2 - 2026-10-16
 
 ### Changed
