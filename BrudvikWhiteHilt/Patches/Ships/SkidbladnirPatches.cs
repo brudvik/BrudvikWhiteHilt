@@ -62,6 +62,8 @@ public static class SkidbladnirPatches
     [HarmonyPrefix]
     public static void Unload(ZNetView __instance)
     {
+        // A view destroyed without ZNetScene.Destroy is still listed and reset here; throwing would stop the cleanup.
+        if (__instance == null) return;
         if (__instance.GetComponent<SkidbladnirShip>() != null) ShipFurniture.BeforeShipUnload(__instance.gameObject);
     }
 

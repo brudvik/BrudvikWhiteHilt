@@ -479,8 +479,27 @@ public static class MonsterRegistry
 
         GameObject effectPrefab = PrefabManager.Instance.CreateClonedPrefab("sfx_whitehilt_" + name, source);
         effectPrefab.GetComponentInChildren<ZSFX>(true).m_audioClips = clips;
+        LocalOnly(effectPrefab);
         creatureSounds[name] = effectPrefab;
         return effectPrefab;
+    }
+
+    /// <summary>
+    /// Takes the network view off a cloned sound effect. The clone is not in ZNetScene, so each spawn (every footstep)
+    /// would make a ZDO that no other client can build: they warn "Missing prefab hash" for it every frame.
+    /// </summary>
+    /// <param name="effect">The cloned effect prefab.</param>
+    internal static void LocalOnly(GameObject effect)
+    {
+        foreach (ZSyncTransform sync in effect.GetComponentsInChildren<ZSyncTransform>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(sync);
+        }
+
+        foreach (ZNetView view in effect.GetComponentsInChildren<ZNetView>(true))
+        {
+            UnityEngine.Object.DestroyImmediate(view);
+        }
     }
 
     // Clears the weapon's inherited sounds and plays the creature's own when the attack lands.
