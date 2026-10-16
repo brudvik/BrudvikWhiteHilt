@@ -5,6 +5,14 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **[Creeping darkness](docs/darkness.md)**: below ground (crypts, caves, mines, troll caves and every other dungeon)
+  the light now and then flickers, fades and goes almost black for a while: after a calm of 3 minutes, every 4 minutes
+  and then more and more often and for longer the longer the place is in use, the same for everyone in it. A torch in
+  hand, a circlet, a fire you built or a friend's light holds it off. Without one, fear grows: slower stamina, a
+  pounding heart, failing legs and in the end lost health. From half fear a shadow comes that hunts only those without
+  a light and is easy to hurt in the light. Torches burn down faster and gutter in the black, circlets flicker, and
+  eyes, scraping, breathing and whispers come out of the dark. New sounds made with ElevenLabs; admins can call it with
+  `whitehilt_darkness start`.
 - **[The eye of the storm](docs/storms.md#the-eye-of-the-storm)**: a storm comes in two waves with a still eye
   between them. In the eye the wind dies, the meter holds out in the open and falls only in real shelter, and nothing
   strikes; the clock counts down to its return. The last wave drives the meter on half as fast again, with more

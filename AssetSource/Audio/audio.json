@@ -497,6 +497,40 @@
       "prompt": "Ghostly whispering right at your ear: several hushed, breathy voices murmuring over each other, no words that can be made out, fading away into wind. Eerie, close, no music.",
       "duration": 3,
       "variants": 3
+    },
+    {
+      "name": "sfx_dark_gutter",
+      "prompt": "Torch flames in a stone crypt guttering and sputtering in a sudden cold draft, flickering and wavering, with a low eerie moan of air through the tunnels. No music, no voices.",
+      "duration": 4,
+      "variants": 2
+    },
+    {
+      "name": "sfx_dark_out",
+      "prompt": "Every torch in a stone crypt snuffed out at once by a cold gust: a sharp whoosh, flames dying with a hiss, then deep silence with a faint low rumble. No music, no voices.",
+      "duration": 3
+    },
+    {
+      "name": "sfx_dark_return",
+      "prompt": "Torches in a stone crypt flaring back to life one after another: soft whooshes of fire catching and crackling. No music, no voices.",
+      "duration": 3
+    },
+    {
+      "name": "sfx_dark_scrape",
+      "prompt": "Something unseen slowly scraping long claws along a stone wall in a pitch-black cave, close by, then stopping. Eerie, no music, no voices.",
+      "duration": 3,
+      "variants": 3
+    },
+    {
+      "name": "sfx_dark_breath",
+      "prompt": "Slow, heavy, wet breathing of something unseen right behind you in a pitch-black cave, a few breaths and a low growl in its throat. Eerie, no music, no words.",
+      "duration": 3,
+      "variants": 2
+    },
+    {
+      "name": "sfx_dark_heartbeat",
+      "prompt": "A loud, fast human heartbeat: heavy muffled thudding as if heard from inside your own chest, steady and continuous. No music, no breathing.",
+      "duration": 8,
+      "loop": true
     }
   ],
   "music": [

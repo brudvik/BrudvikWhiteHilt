@@ -59,6 +59,7 @@ One page per feature: what it does, how to build or craft it, and every setting.
 | [Kraken & octopus](kraken.md) | Octopuses and the Kraken fight |
 | [Difficulty & blood moon](difficulty.md) | Stars, black beasts, the blood moon and the horn |
 | [Great storms](storms.md) | Storms with a warning first that tire, freeze, blind and in the end kill you out in the open, the storm of each biome, and shelter: a roof and a fire, a cave or the lee of a rock |
+| [Creeping darkness](darkness.md) | Below ground the light flickers, fades and goes black for a while; a torch, a circlet or a fire you built holds it off, and out of the light fear grows and shadows come |
 | [Black Bestiary](bestiary.md) | The field guide to the black beasts and their material counters |
 
 ## 🎒 Quality of life

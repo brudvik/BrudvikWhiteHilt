@@ -163,6 +163,10 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Storms.StormCommands.Register();
         Storms.StormExposureEffect.Register();
         Storms.StormSkill.Register();
+        Darkness.DarknessSettings.Initialize();
+        Darkness.DarknessCommands.Register();
+        Darkness.FearEffect.Register();
+        Darkness.DarkShadow.Register();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
