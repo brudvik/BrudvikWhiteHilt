@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.143.0 - 2026-10-16
 
 ### Added
 - **[The silence before the dark](docs/darkness.md#the-silence-before)**: while the lights flicker below ground the
