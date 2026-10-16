@@ -43,7 +43,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.141.0
+## ✨ New in 0.141.1
+
+- **Fixed heavy lag in multiplayer near the great beasts**: their heavy footsteps no longer flood the other players' games with network objects they cannot build.
+
+### Also new in 0.141.0
 
 - **[Supply and demand](docs/trading-posts.md#the-store)**: a trading post pays less for what it has been sold lately and the price comes back over the days, each post with its own market shared by all players. After a great storm the posts pay a quarter more.
 - **[The merchant at your jetty](docs/trading-posts.md#the-merchant-at-your-jetty)**: now and then a trading ship moors beside a Jetty Head you built and stays a day with goods of a land the world has opened. Trade at its helm.
