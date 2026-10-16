@@ -6,7 +6,7 @@
 
 Now and then a great storm comes. No clothes, food or mead keep it out: out in it you tire, freeze, go half blind
 and in the end die. You are warned first, in time to get home, find shelter or build one. The Meadows never have a
-storm.
+storm, but for Ragnarok.
 
 ### The warning
 - The sky darkens and the wind picks up, distant thunder rolls and a horn sounds far away.
@@ -39,6 +39,57 @@ In the open, the meter is full after about 4 minutes (`MinutesToFull`). A storm 
 
 The [Gift of Odin and the Gift of Freya](potions.md) wane with the meter: half their healing and stamina from 20%, a
 quarter from 40%, and nothing once you freeze at 60%.
+
+### The eye of the storm
+
+A storm comes in two waves with a still eye between them, somewhere near the middle of it:
+
+- *The wind dies: the eye of the storm. It returns in 1:00, worse than before!* For 60 seconds (`EyeSeconds`) the
+  rain and snow stop and the wind drops to what it was while the storm gathered. Out in the open your meter holds where
+  it is; it falls only under a roof by a fire, in a cave or a dungeon. Nothing hurts you, no lightning strikes and no
+  tree falls. The clock counts down to the storm's return. Make for shelter.
+- *The storm returns, fiercer!* The last wave drives the meter on half as fast again (`LastWaveFury`), and lightning,
+  thunder and falling trees come that much more often.
+
+The eye adds its time to the storm. A storm shorter than 2 minutes has no eye.
+
+### Ragnarok
+
+Once a boss has fallen, now and then the storm is **Ragnarok**, the worst of all. The first storm after a new boss
+falls is always Ragnarok, and any other is one time in twenty (`RagnarokChance`).
+
+- It is foretold and warned of twice as early: *Ragnarok! The worst storm of all is coming, over the Meadows too. Find
+  shelter within 6:00!* The clock and the forecast name it.
+- It rages half as long again and drives the meter half as hard again (`RagnarokFury`), on top of the waves: its last
+  wave is more than twice an ordinary first one.
+- It reaches the Meadows, with the forest's storm, and lightning strikes in every storm, the sandstorm, the blizzard
+  and the firestorm too. The view closes in further.
+- Those who were out in it find twice as much after, and some of it rare: thunderstones, rubies, amber pearls, silver
+  necklaces, surtling cores and now and then Ymir flesh.
+
+Admins can call it with `whitehilt_storm ragnarok`.
+
+### The storm remembers you
+
+Each storm you live through out in it, with the meter past 40%, the storm remembers: *The storm remembers you. It will
+come harder for you next time.* For every storm it remembers your meter climbs 5% faster (`GrudgeStep`), up to ten
+storms and 50%. Each storm you sit out, the meter never past 20%, it forgets you a little. In return it leaves you one
+more find for every two storms it remembers. The exposure's tooltip shows how much faster it is for you, and the
+grudge stays with your character. Turn it off with `Grudge`.
+
+### Visions in the storm
+
+Deep in the storm you hear and see things. Out in it with the meter past 40%, every 14 to 35 seconds (twice as often
+at the top of the meter, more often in Ragnarok), something comes:
+
+- footsteps crunching right behind you, that stop;
+- whispers at your ear;
+- a voice calling from the fog: *Over here...*, *Help me... I cannot see...*, *You will not make it home.*;
+- once you freeze, a dark figure standing off to one side of where you look, 24 to 34 m away, facing you. It is gone
+  when you look straight at it or come close.
+
+None of it is real, none of it can hurt you, and no one else hears or sees it. It is your own setting (`Visions`). The
+voice and sounds are made with ElevenLabs.
 
 ### The storm of each biome
 
@@ -131,12 +182,14 @@ at sea and in the Mistlands. Under a roof the storm is heard through the walls; 
 made with ElevenLabs (`AssetSource/Audio/audio.json`).
 
 ### Commands
-- `whitehilt_storm` or `whitehilt_storm status` shows the storm, the time left, and your cover and exposure.
-- `whitehilt_storm warn` (admin) warns of a storm now; `start` lets one break at once; `stop` ends it.
+- `whitehilt_storm` or `whitehilt_storm status` shows the storm, its wave, the time left, and your cover, exposure,
+  fury and grudge.
+- `whitehilt_storm warn` (admin) warns of a storm now; `start` lets one break at once; `ragnarok` lets Ragnarok break
+  at once; `stop` ends it.
 
 ### Settings
 
-Section `Storms`. Everything but `Volume` is admin-only and synced from the server.
+Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced from the server.
 
 | Setting | Default | What it does |
 |---------|---------|--------------|
@@ -165,11 +218,21 @@ Section `Storms`. Everything but `Volume` is admin-only and synced from the serv
 | `FindsCount` | 4 | Finds around each player |
 | `SkillReduction` | 0.3 | How much more slowly the meter climbs at Weathering 100 |
 | `Volume` | 1 | Volume of the storm's wind and thunder (your own setting) |
+| `EyeSeconds` | 60 | Seconds of the still eye in the middle of a storm; 0 no eye |
+| `LastWaveFury` | 1.5 | How much faster the meter climbs in the last wave, after the eye |
+| `Ragnarok` | true | Ragnarok comes once a boss has fallen |
+| `RagnarokChance` | 5 | Chance in percent that another storm is Ragnarok |
+| `RagnarokFury` | 1.5 | How much faster the meter climbs in Ragnarok, on top of the wave |
+| `Grudge` | true | The storm remembers who braves it |
+| `GrudgeStep` | 0.05 | How much faster the meter climbs per storm remembered, up to 10 |
+| `Visions` | true | Footsteps, whispers, a voice and a figure deep in the storm (your own setting) |
 
 ### How it works
 
-The server decides when a storm comes (5 minutes before the warning, so the forecast can show it) and sends the phase and when it ends to every client, in the world's time, so
-everyone counts down alike. Each client works out its own player's exposure from the biome they are in and their
+The server decides when a storm comes (5 minutes before the warning, so the forecast can show it), whether it is
+Ragnarok and when its eye opens and closes, and sends the phase and when it ends to every client, in the world's time,
+so everyone counts down alike. It counts the fallen bosses (their global keys) while calm; a world just loaded starts
+from the count it has. Each client works out its own player's exposure from the biome they are in and their
 shelter: `Player.InInterior`, `Player.InShelter` (or under a lean-to's roof) and the game's near-fire timer, rays upwind for the lee, the trees
 within 8 m, and the material of the piece overhead in the Ashlands. The health is lost as a hit that no armour or
 resistance changes.
@@ -178,6 +241,9 @@ The storm's weather is a copy of the game's nearest one (the thunderstorm, the s
 Plains sky for the sandstorm) with thicker fog, harder wind and colours of its own, added to the game's weathers. The
 game is told to use it after its own forced weathers, so a dungeon, a raid or a boss still has its own, and the sky
 blends into and out of the storm as into any other weather. The warning has a darker copy without rain or snow.
+
+The visions and the grudge are the local player's own: the grudge is kept in the character's custom data, and the
+figure is a copy of the player's body in one flat dark colour, with no network object, collider or physics.
 
 Lightning and falling trees are worked out on each client around its own player. A tree is felled with one hit as hard
 as it is sound, from the direction of the wind or the strike, so the game drops it as it would for a woodcutter and

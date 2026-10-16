@@ -96,6 +96,30 @@ public static class StormSettings
     /// <summary>Volume of the storm's sound, for each player.</summary>
     public static ConfigEntry<float> Volume { get; private set; }
 
+    /// <summary>Seconds of the still eye in the middle of a storm; 0 for none.</summary>
+    public static ConfigEntry<float> EyeSeconds { get; private set; }
+
+    /// <summary>How much harder the storm's last wave, after the eye, drives the exposure on.</summary>
+    public static ConfigEntry<float> LastWaveFury { get; private set; }
+
+    /// <summary>Whether Ragnarok, the worst storm, comes.</summary>
+    public static ConfigEntry<bool> Ragnarok { get; private set; }
+
+    /// <summary>Chance in percent that a storm is Ragnarok, once a boss has fallen.</summary>
+    public static ConfigEntry<float> RagnarokChance { get; private set; }
+
+    /// <summary>How much harder Ragnarok drives the exposure on.</summary>
+    public static ConfigEntry<float> RagnarokFury { get; private set; }
+
+    /// <summary>Whether the storm remembers who braves it.</summary>
+    public static ConfigEntry<bool> Grudge { get; private set; }
+
+    /// <summary>How much faster the meter climbs for each storm the storm remembers.</summary>
+    public static ConfigEntry<float> GrudgeStep { get; private set; }
+
+    /// <summary>Whether a player deep in the storm hears and sees things, for each player.</summary>
+    public static ConfigEntry<bool> Visions { get; private set; }
+
     /// <summary>
     /// Binds the config entries and registers the English texts. Call from the plugin's Awake.
     /// </summary>
@@ -153,6 +177,22 @@ public static class StormSettings
             "How much more slowly the exposure climbs at Weathering 100 (0.3 = 30%).", new AcceptableValueRange<float>(0f, 0.9f));
         Volume = WhiteHiltConfig.BindLocal(Section, "Volume", 1f,
             "Volume of the storm's wind and thunder, on top of the ambience and effects volumes.", new AcceptableValueRange<float>(0f, 1f));
+        EyeSeconds = WhiteHiltConfig.BindAdminOnly(Section, "EyeSeconds", 60f,
+            "Seconds of the still eye in the middle of a storm: the wind dies and the exposure holds, then the storm comes back harder. 0: no eye.", new AcceptableValueRange<float>(0f, 300f));
+        LastWaveFury = WhiteHiltConfig.BindAdminOnly(Section, "LastWaveFury", 1.5f,
+            "How much faster the exposure climbs in the storm's last wave, after the eye.", new AcceptableValueRange<float>(1f, 3f));
+        Ragnarok = WhiteHiltConfig.BindAdminOnly(Section, "Ragnarok", true,
+            "Once a boss has fallen, now and then the storm is Ragnarok: always the first after a new boss falls, foretold and warned of twice as early, half as long again, half as hard again, with lightning in every storm, over the Meadows too, and rare finds after.");
+        RagnarokChance = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokChance", 5f,
+            "Chance in percent that any other storm is Ragnarok, once a boss has fallen.", new AcceptableValueRange<float>(0f, 100f));
+        RagnarokFury = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFury", 1.5f,
+            "How much faster the exposure climbs in Ragnarok, on top of the wave.", new AcceptableValueRange<float>(1f, 3f));
+        Grudge = WhiteHiltConfig.BindAdminOnly(Section, "Grudge", true,
+            "The storm remembers who braves it: each storm a player lives through out in it makes the meter climb faster for them the next time, and leaves them more finds; each storm they sit out in shelter it forgets them a little.");
+        GrudgeStep = WhiteHiltConfig.BindAdminOnly(Section, "GrudgeStep", 0.05f,
+            "How much faster the meter climbs for each storm the storm remembers, up to 10 (0.05 = 5%, so 50% at most).", new AcceptableValueRange<float>(0f, 0.2f));
+        Visions = WhiteHiltConfig.BindLocal(Section, "Visions", true,
+            "Deep in the storm you hear and see things: footsteps behind you, whispers and a voice in the wind, and a dark figure at the edge of the fog that is gone when you look. Your own setting.");
 
         Translations.AddEnglish("msg_whitehilt_storm_warning", "A great storm is coming! Find shelter within {0}: a roof and a fire, or a cave.");
         Translations.AddEnglish("msg_whitehilt_storm_warning_safe", "A great storm is gathering beyond the Meadows.");
@@ -185,16 +225,37 @@ public static class StormSettings
         Translations.AddEnglish("whitehilt_storm_cover_roof", "Under a roof: light a fire to recover");
         Translations.AddEnglish("whitehilt_storm_cover_roofandfire", "Under a roof by a fire: recovering");
         Translations.AddEnglish("whitehilt_storm_cover_interior", "Inside: recovering");
+        Translations.AddEnglish("msg_whitehilt_storm_eye", "The wind dies: the eye of the storm. It returns in {0}, worse than before!");
+        Translations.AddEnglish("msg_whitehilt_storm_returns", "The storm returns, fiercer!");
+        Translations.AddEnglish("whitehilt_storm_clock_eye", "Eye of the storm, {0}");
+        Translations.AddEnglish("msg_whitehilt_storm_ragnarok_warning", "Ragnarok! The worst storm of all is coming, over the Meadows too. Find shelter within {0}!");
+        Translations.AddEnglish("msg_whitehilt_storm_ragnarok", "Ragnarok breaks over the world!");
+        Translations.AddEnglish("msg_whitehilt_storm_ragnarok_foretold", "The Navigator's Table foretells Ragnarok in {0}");
+        Translations.AddEnglish("msg_whitehilt_storm_ragnarok_finds", "Ragnarok has left rare things lying about");
+        Translations.AddEnglish("whitehilt_forecast_ragnarok", "Ragnarok in {0}");
+        Translations.AddEnglish("whitehilt_forecast_ragnarok_raging", "Ragnarok, {0} left");
+        Translations.AddEnglish("whitehilt_storm_clock_ragnarok_coming", "Ragnarok in {0}");
+        Translations.AddEnglish("whitehilt_storm_clock_ragnarok", "Ragnarok, {0} left");
+        Translations.AddEnglish("msg_whitehilt_storm_grudge_up", "The storm remembers you. It will come harder for you next time");
+        Translations.AddEnglish("msg_whitehilt_storm_grudge_down", "The storm forgets you a little");
+        Translations.AddEnglish("whitehilt_storm_grudge", "The storm remembers you: {0}% faster");
+        StormVisions.AddTexts();
     }
 
     /// <summary>
     /// Whether a biome has storms.
     /// </summary>
     /// <param name="biome">The biome.</param>
-    /// <returns>True if storms are on there; never for the Meadows.</returns>
+    /// <returns>True if storms are on there; for the Meadows, only in Ragnarok.</returns>
     public static bool HasStorms(Heightmap.Biome biome)
     {
-        if (biome == Heightmap.Biome.Meadows || StormProfile.For(biome).Kind == StormKind.None)
+        // Ragnarok spares nowhere.
+        if (biome == Heightmap.Biome.Meadows)
+        {
+            return StormState.Ragnarok && StormState.Phase != StormPhase.Calm;
+        }
+
+        if (StormProfile.For(biome).Kind == StormKind.None)
         {
             return false;
         }

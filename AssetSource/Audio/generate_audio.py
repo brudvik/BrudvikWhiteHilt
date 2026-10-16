@@ -52,6 +52,7 @@ LINE_SETS = {
                  + [f"msg_whitehilt_pressure_{n}" for n in (1, 2, 3)],
     "husvette": [f"whitehilt_husvette_{kind}{n}" for kind in ("home", "rest", "cold", "cosy", "storm", "shelter") for n in (1, 2, 3)],
     "munin": [f"whitehilt_munin_{kind}{n}" for kind in ("news", "idle") for n in (1, 2, 3)],
+    "stormvoice": [f"whitehilt_stormvoice_call{n}" for n in range(1, 7)],
 }
 
 # Line names drop these prefixes, as WhiteHiltSound.LineName does.

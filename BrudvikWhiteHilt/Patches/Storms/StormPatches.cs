@@ -18,6 +18,7 @@ public static class StormPatches
         __instance.gameObject.AddComponent<StormClient>();
         __instance.gameObject.AddComponent<StormAmbience>();
         __instance.gameObject.AddComponent<StormHazards>();
+        __instance.gameObject.AddComponent<StormVisions>();
     }
 
     // After the game's own forced weathers: a dungeon, a raid, a boss or a special place still wins.

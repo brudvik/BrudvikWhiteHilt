@@ -2,6 +2,24 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[The eye of the storm](docs/storms.md#the-eye-of-the-storm)**: a storm comes in two waves with a still eye
+  between them. In the eye the wind dies, the meter holds out in the open and falls only in real shelter, and nothing
+  strikes; the clock counts down to its return. The last wave drives the meter on half as fast again, with more
+  lightning, thunder and falling trees.
+- **[Ragnarok](docs/storms.md#ragnarok)**: once a boss has fallen, the first storm after a new boss falls, and now and
+  then another, is Ragnarok: foretold and warned of twice as early, half as long and half as hard again, over the
+  Meadows too, with lightning in every storm, and twice the finds after, some of them rare. Admins can call it with
+  `whitehilt_storm ragnarok`.
+- **[The storm remembers you](docs/storms.md#the-storm-remembers-you)**: each storm you live through out in it makes
+  the meter climb 5% faster for you the next time, up to 50%, and leaves you more finds; each storm you sit out in
+  shelter it forgets you a little.
+- **[Visions in the storm](docs/storms.md#visions-in-the-storm)**: deep in the storm you hear footsteps behind you,
+  whispers and a voice calling from the fog, and once you freeze a dark figure stands at the edge of your view and is
+  gone when you look. A new voice and sounds made with ElevenLabs; your own setting, `Visions`.
+
 ## v0.141.2 - 2026-10-16
 
 ### Changed

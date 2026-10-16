@@ -44,14 +44,15 @@ public static class StormWeather
             return null;
         }
 
-        StormProfile profile = StormProfile.For(player.GetCurrentBiome());
+        StormProfile profile = StormProfile.Here(player.GetCurrentBiome());
         if (!StormSettings.HasStorms(player.GetCurrentBiome()))
         {
             return null;
         }
 
+        // The eye has the warning's sky: dark and windy, without the rain or snow.
         Register(env);
-        string name = Name(profile.Kind, StormState.Coming);
+        string name = Name(profile.Kind, StormState.Coming || StormState.InEye);
         return env.GetEnv(name) != null ? name : null;
     }
 

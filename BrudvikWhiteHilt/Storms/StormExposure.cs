@@ -93,10 +93,12 @@ public static class StormExposure
     /// <param name="cover">Where they are.</param>
     /// <param name="minutesToFull">Minutes out in the open, at the profile's pace 1, from 0 to full.</param>
     /// <param name="minutesToRecover">Minutes in shelter from full to 0.</param>
+    /// <param name="fury">How hard the storm drives the meter now (<see cref="StormState.Fury"/>): 0 in the eye, where
+    /// the meter holds out in the open and falls only in real shelter.</param>
     /// <returns>The new meter, 0 to <see cref="Max"/>.</returns>
-    public static float Step(float exposure, float seconds, bool raging, StormProfile profile, StormCover cover, float minutesToFull, float minutesToRecover)
+    public static float Step(float exposure, float seconds, bool raging, StormProfile profile, StormCover cover, float minutesToFull, float minutesToRecover, float fury = 1f)
     {
-        float rise = Max / Mathf.Max(0.1f, minutesToFull * 60f) * profile.Rate;
+        float rise = Max / Mathf.Max(0.1f, minutesToFull * 60f) * profile.Rate * Mathf.Max(0f, fury);
         float recover = Max / Mathf.Max(0.1f, minutesToRecover * 60f);
         float change;
         if (!raging || profile.Kind == StormKind.None)

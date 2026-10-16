@@ -115,6 +115,13 @@
       "description": "Odin's talking raven of memory. A raspy, croaking, sharp and clever voice like a bird that has learned to speak, quick and a little eerie, with a Scandinavian accent.",
       "lines": "munin",
       "voice_id": "9JdjVND9iWmRlmqaKV2s"
+    },
+    {
+      "id": "stormvoice",
+      "name": "WhiteHilt Storm Voice",
+      "description": "A hollow, ghostly voice calling out through a howling storm, as if from far away in thick fog. Breathy, echoing, sorrowful and eerie, neither clearly male nor female, ageless, with a faint Scandinavian accent.",
+      "lines": "stormvoice",
+      "voice_id": "t5OOCt4h38CUIacDS2Gf"
     }
   ],
   "effects": [
@@ -478,6 +485,18 @@
       "prompt": "A large tree giving way in a storm: loud groaning and creaking wood, a sharp splitting crack of the trunk, then the tree crashing down through branches and hitting the ground with a heavy thud. No music.",
       "duration": 6,
       "variants": 2
+    },
+    {
+      "name": "sfx_storm_steps",
+      "prompt": "Slow heavy footsteps crunching through snow and frozen mud right behind you, three or four steps coming closer, then they stop. Close and eerie, no wind, no music, no voices.",
+      "duration": 3,
+      "variants": 2
+    },
+    {
+      "name": "sfx_storm_whisper",
+      "prompt": "Ghostly whispering right at your ear: several hushed, breathy voices murmuring over each other, no words that can be made out, fading away into wind. Eerie, close, no music.",
+      "duration": 3,
+      "variants": 3
     }
   ],
   "music": [

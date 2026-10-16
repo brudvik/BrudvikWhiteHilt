@@ -9,9 +9,9 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Storms;
 
 /// <summary>
-/// Runs on the <see cref="Game"/> object of every machine with a player. Tells the player of a storm coming, breaking
-/// and passing, keeps their exposure meter from where they are, and makes them tired, cold, half blind and in the end
-/// dead out in the open.
+/// Runs on the <see cref="Game"/> object of every machine with a player. Tells the player of a storm coming, breaking,
+/// falling still in its eye, coming back and passing, keeps their exposure meter from where they are, and makes them
+/// tired, cold, half blind and in the end dead out in the open.
 /// </summary>
 public class StormClient : MonoBehaviour
 {
@@ -22,6 +22,7 @@ public class StormClient : MonoBehaviour
     private const int ForestTrees = 4;
     private const float RoofReach = 30f;
     private const float WarningAlertSeconds = 60f;
+    private const float RagnarokVision = 0.15f;
 
     private static readonly Color stormColor = new(0.85f, 0.7f, 1f);
     private static readonly float[] leeHeights = { 0.5f, 1.2f, 1.8f };
@@ -35,9 +36,11 @@ public class StormClient : MonoBehaviour
     private int shownNumber = -1;
     private StormPhase shownPhase = StormPhase.Calm;
     private int shownStage;
+    private StormWave shownWave;
     private float owed;
     private StormKind stormKind;
     private float peakExposure;
+    private bool passedRagnarok;
     private GameObject[] suffering;
     private bool sufferingBurns;
 
@@ -53,8 +56,11 @@ public class StormClient : MonoBehaviour
     /// <summary>The storm where the local player is.</summary>
     public static StormProfile Profile { get; private set; } = StormProfile.For(Heightmap.Biome.Meadows);
 
-    /// <summary>Whether a storm rages where the local player is.</summary>
+    /// <summary>Whether a storm rages where the local player is; not in its eye.</summary>
     public static bool RagingHere { get; private set; }
+
+    /// <summary>How hard the storm drives the exposure on where the local player is (<see cref="StormState.Fury"/>).</summary>
+    public static float Fury { get; private set; }
 
     /// <summary>
     /// How much of a potion's healing and stamina is left to a character out in the storm, so the Gift of Odin and the
@@ -79,13 +85,15 @@ public class StormClient : MonoBehaviour
             return null;
         }
 
+        string name = StormState.Ragnarok ? "ragnarok" : "storm";
         return StormState.Raging
-            ? string.Format(Translations.Word("whitehilt_forecast_storm_raging"), StormState.Countdown(StormState.SecondsLeft()))
-            : string.Format(Translations.Word("whitehilt_forecast_storm"), StormState.Countdown(StormState.SecondsToBreak(StormSettings.WarningMinutes.Value * 60f)));
+            ? string.Format(Translations.Word($"whitehilt_forecast_{name}_raging"), StormState.Countdown(StormState.SecondsLeft()))
+            : string.Format(Translations.Word($"whitehilt_forecast_{name}"), StormState.Countdown(StormState.SecondsToBreak(WarningSeconds())));
     }
 
     /// <summary>
-    /// The storm on the clock: "Storm in 2:10" while it comes, "Storm, 3:05 left" while it rages.
+    /// The storm on the clock: "Storm in 2:10" while it comes, "Storm, 3:05 left" while it rages, and in its eye the time
+    /// until it comes back.
     /// </summary>
     /// <returns>The text, or null when calm.</returns>
     public static string ClockText()
@@ -95,9 +103,20 @@ public class StormClient : MonoBehaviour
             return null;
         }
 
-        string key = StormState.Coming ? "whitehilt_storm_clock_coming" : "whitehilt_storm_clock_raging";
+        if (StormState.InEye)
+        {
+            return string.Format(Translations.Word("whitehilt_storm_clock_eye"), StormState.Countdown(EyeLeft()));
+        }
+
+        string name = StormState.Ragnarok ? "whitehilt_storm_clock_ragnarok" : "whitehilt_storm_clock";
+        string key = StormState.Coming ? $"{name}_coming" : StormState.Ragnarok ? name : $"{name}_raging";
         return string.Format(Translations.Word(key), StormState.Countdown(StormState.SecondsLeft()));
     }
+
+    // The warning's length, twice as long for Ragnarok as the server makes it.
+    private static float WarningSeconds() => StormSettings.WarningMinutes.Value * 60f * (StormState.Ragnarok ? 2f : 1f);
+
+    private static float EyeLeft() => ZNet.instance == null ? 0f : Mathf.Max(0f, (float)(StormState.EyeEnds - ZNet.instance.GetTimeSeconds()));
 
     private void Start()
     {
@@ -123,6 +142,7 @@ public class StormClient : MonoBehaviour
         }
 
         Announce(player);
+        AnnounceWave(player);
         if (Time.time >= nextTick)
         {
             float seconds = Mathf.Clamp(Time.time - lastTick, 0f, 2f);
@@ -132,7 +152,8 @@ public class StormClient : MonoBehaviour
         }
 
         bool outside = RagingHere && Cover is StormCover.Open or StormCover.Lee or StormCover.Forest;
-        float target = player.IsDead() ? 0f : StormExposure.Vision(Exposure, Profile, outside) * StormSettings.VisionStrength.Value;
+        float seen = Mathf.Max(StormExposure.Vision(Exposure, Profile, outside), outside && StormState.Ragnarok ? Profile.BaseVision + RagnarokVision : 0f);
+        float target = player.IsDead() ? 0f : seen * StormSettings.VisionStrength.Value;
         vision = Mathf.MoveTowards(vision, target, Time.deltaTime / VisionFade);
         StormVision.Show(vision, Profile.Tint);
         StormWeather.SetVision(vision);
@@ -158,8 +179,9 @@ public class StormClient : MonoBehaviour
         switch (StormState.Phase)
         {
             case StormPhase.Warning:
+                string warning = StormState.Ragnarok ? "$msg_whitehilt_storm_ragnarok_warning" : "$msg_whitehilt_storm_warning";
                 string text = here
-                    ? string.Format(Localization.instance.Localize("$msg_whitehilt_storm_warning"), StormState.Countdown(StormState.SecondsLeft()))
+                    ? string.Format(Localization.instance.Localize(warning), StormState.Countdown(StormState.SecondsLeft()))
                     : Localization.instance.Localize("$msg_whitehilt_storm_warning_safe");
                 player.Message(MessageHud.MessageType.Center, text);
                 if (HudSettings.WhiteHilt)
@@ -172,20 +194,53 @@ public class StormClient : MonoBehaviour
                 StormCompanions.Warn(player);
                 break;
             case StormPhase.Brewing when ShipChartTable.IsAboardWithTable(player):
-                string foretold = string.Format(Localization.instance.Localize("$msg_whitehilt_storm_foretold"),
-                    StormState.Countdown(StormState.SecondsToBreak(StormSettings.WarningMinutes.Value * 60f)));
+                string foretell = StormState.Ragnarok ? "$msg_whitehilt_storm_ragnarok_foretold" : "$msg_whitehilt_storm_foretold";
+                string foretold = string.Format(Localization.instance.Localize(foretell), StormState.Countdown(StormState.SecondsToBreak(WarningSeconds())));
                 HudAlerts.Warn(player, foretold, stormColor, WarningAlertSeconds);
                 RingAboard(player);
                 break;
             case StormPhase.Raging when here:
-                string kind = StormProfile.For(player.GetCurrentBiome()).Kind.ToString().ToLowerInvariant();
-                player.Message(MessageHud.MessageType.Center, $"$msg_whitehilt_storm_{kind}");
+                string kind = StormProfile.Here(player.GetCurrentBiome()).Kind.ToString().ToLowerInvariant();
+                player.Message(MessageHud.MessageType.Center, StormState.Ragnarok ? "$msg_whitehilt_storm_ragnarok" : $"$msg_whitehilt_storm_{kind}");
                 StormAmbience.Thunder(true);
                 break;
             case StormPhase.Calm when was == StormPhase.Raging:
                 player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_storm_end");
                 Passed(player);
                 break;
+        }
+    }
+
+    // Tells the player when the storm falls still in its eye and when it comes back, where it rages.
+    private void AnnounceWave(Player player)
+    {
+        StormWave wave = StormState.Wave;
+        if (wave == shownWave)
+        {
+            return;
+        }
+
+        StormWave was = shownWave;
+        shownWave = wave;
+        if (!StormSettings.Enabled.Value || !StormSettings.HasStorms(player.GetCurrentBiome()))
+        {
+            return;
+        }
+
+        if (wave == StormWave.Eye)
+        {
+            string text = string.Format(Localization.instance.Localize("$msg_whitehilt_storm_eye"), StormState.Countdown(EyeLeft()));
+            player.Message(MessageHud.MessageType.Center, text);
+            if (HudSettings.WhiteHilt)
+            {
+                HudAlerts.Warn(player, text, stormColor, EyeLeft());
+            }
+        }
+        else if (wave == StormWave.Last && was == StormWave.Eye)
+        {
+            player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_storm_returns");
+            StormAmbience.PlayWarning();
+            StormAmbience.Thunder(true);
         }
     }
 
@@ -198,14 +253,33 @@ public class StormClient : MonoBehaviour
         }
     }
 
-    // The storm is over: those who were out in it find what it left, and grow hardier for having lived through it.
+    // The storm is over: those who were out in it find what it left, and grow hardier for having lived through it. The
+    // storm remembers who braved it, and forgets a little who sat it out.
     private void Passed(Player player)
     {
         StormKind kind = stormKind;
-        bool weathered = peakExposure >= StormExposure.Weary;
+        float peak = peakExposure;
+        bool weathered = peak >= StormExposure.Weary;
+        bool ragnarok = passedRagnarok;
         stormKind = StormKind.None;
         peakExposure = 0f;
-        if (kind == StormKind.None || player.IsDead())
+        passedRagnarok = false;
+        if (player.IsDead())
+        {
+            return;
+        }
+
+        int grudge = StormGrudge.Of(player);
+        if (StormSettings.Grudge.Value)
+        {
+            int change = StormGrudge.Remember(player, peak);
+            if (change != 0)
+            {
+                player.Message(MessageHud.MessageType.TopLeft, change > 0 ? "$msg_whitehilt_storm_grudge_up" : "$msg_whitehilt_storm_grudge_down");
+            }
+        }
+
+        if (kind == StormKind.None)
         {
             return;
         }
@@ -215,30 +289,40 @@ public class StormClient : MonoBehaviour
             StormSkill.Survived(player);
         }
 
-        if (StormSettings.Finds.Value && StormFinds.Leave(player, kind, StormSettings.FindsCount.Value) > 0)
+        // More finds for whom the storm already remembers, and twice as many after Ragnarok.
+        int count = (StormSettings.FindsCount.Value + (StormSettings.Grudge.Value ? StormGrudge.ExtraFinds(grudge) : 0)) * (ragnarok ? 2 : 1);
+        if (StormSettings.Finds.Value && StormFinds.Leave(player, kind, count, ragnarok) > 0)
         {
-            player.Message(MessageHud.MessageType.TopLeft, "$msg_whitehilt_storm_finds");
+            player.Message(MessageHud.MessageType.TopLeft, ragnarok ? "$msg_whitehilt_storm_ragnarok_finds" : "$msg_whitehilt_storm_finds");
         }
     }
 
     private void Tick(Player player, float seconds)
     {
         Heightmap.Biome biome = player.GetCurrentBiome();
-        Profile = StormProfile.For(biome);
-        RagingHere = StormSettings.Enabled.Value && StormState.Raging && StormSettings.HasStorms(biome) && !player.IsDead();
+        Profile = StormProfile.Here(biome);
+
+        // In the eye the storm still holds the meter, but neither hurts nor strikes.
+        bool storming = StormSettings.Enabled.Value && StormState.Raging && StormSettings.HasStorms(biome) && !player.IsDead();
+        RagingHere = storming && !StormState.InEye;
+        Fury = storming ? StormState.Fury(StormState.Wave, StormState.Ragnarok, StormSettings.LastWaveFury.Value, StormSettings.RagnarokFury.Value) : 0f;
         Cover = FindCover(player);
         bool outside = RagingHere && Cover is StormCover.Open or StormCover.Lee or StormCover.Forest;
 
-        // The Weathering skill slows the meter as if the storm took longer to wear you down.
-        float pace = StormSkill.Pace(player.GetSkillFactor(StormSkill.Type), StormSettings.SkillReduction.Value);
+        // The Weathering skill slows the meter as if the storm took longer to wear you down; the storm's grudge
+        // quickens it.
+        float pace = StormSkill.Pace(player.GetSkillFactor(StormSkill.Type), StormSettings.SkillReduction.Value)
+            * (StormSettings.Grudge.Value ? StormGrudge.Pace(StormGrudge.Of(player), StormSettings.GrudgeStep.Value) : 1f);
         Exposure = player.IsDead()
             ? 0f
-            : StormExposure.Step(Exposure, seconds, RagingHere, Profile, Cover, StormSettings.MinutesToFull.Value / Mathf.Max(0.1f, pace), StormSettings.MinutesToRecover.Value);
+            : StormExposure.Step(Exposure, seconds, storming, Profile, Cover, StormSettings.MinutesToFull.Value / Mathf.Max(0.1f, pace),
+                StormSettings.MinutesToRecover.Value, Fury);
         SpeedFactor = outside ? Profile.Speed : 1f;
-        if (RagingHere)
+        if (storming)
         {
             stormKind = Profile.Kind;
             peakExposure = Mathf.Max(peakExposure, Exposure);
+            passedRagnarok |= StormState.Ragnarok;
         }
 
         if (outside)

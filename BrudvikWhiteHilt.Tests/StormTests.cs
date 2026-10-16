@@ -199,6 +199,92 @@ public class StormTests
         Assert.Equal(0f, StormState.SecondsToBreak(StormPhase.Calm, 0f, 180f), 3);
     }
 
+    /// <summary>The eye comes after the first wave and lasts its time, and the storm is that much longer.</summary>
+    [Fact]
+    public void TheEyeComesInTheMiddle()
+    {
+        (double opens, double closes, double ends) = StormState.PlanEye(1000.0, 300f, 60f, 0.5f);
+        Assert.Equal(1150.0, opens, 3);
+        Assert.Equal(1210.0, closes, 3);
+        Assert.Equal(1360.0, ends, 3);
+
+        (opens, closes, ends) = StormState.PlanEye(1000.0, 300f, 0f, 0.5f);
+        Assert.Equal(0.0, opens, 3);
+        Assert.Equal(0.0, closes, 3);
+        Assert.Equal(1300.0, ends, 3);
+    }
+
+    /// <summary>A raging storm is in its first wave until the eye, then still, then in its last wave.</summary>
+    [Theory]
+    [InlineData((int)StormPhase.Raging, 1100.0, 1150.0, 1210.0, (int)StormWave.First)]
+    [InlineData((int)StormPhase.Raging, 1150.0, 1150.0, 1210.0, (int)StormWave.Eye)]
+    [InlineData((int)StormPhase.Raging, 1210.0, 1150.0, 1210.0, (int)StormWave.Last)]
+    [InlineData((int)StormPhase.Raging, 5000.0, 0.0, 0.0, (int)StormWave.First)]
+    [InlineData((int)StormPhase.Warning, 1180.0, 1150.0, 1210.0, (int)StormWave.None)]
+    public void TheWavesFollowTheEye(int phase, double now, double opens, double closes, int wave)
+    {
+        Assert.Equal((StormWave)wave, StormState.WaveAt((StormPhase)phase, now, opens, closes));
+    }
+
+    /// <summary>The eye drives nothing on; the last wave and Ragnarok drive harder, and together harder still.</summary>
+    [Theory]
+    [InlineData((int)StormWave.First, false, 1f)]
+    [InlineData((int)StormWave.Eye, false, 0f)]
+    [InlineData((int)StormWave.Last, false, 1.5f)]
+    [InlineData((int)StormWave.First, true, 1.5f)]
+    [InlineData((int)StormWave.Last, true, 2.25f)]
+    [InlineData((int)StormWave.Eye, true, 0f)]
+    [InlineData((int)StormWave.None, true, 0f)]
+    public void FuryGrowsWithTheWaves(int wave, bool ragnarok, float fury)
+    {
+        Assert.Equal(fury, StormState.Fury((StormWave)wave, ragnarok, 1.5f, 1.5f), 3);
+    }
+
+    /// <summary>In the eye the meter holds out in the open and falls only in real shelter; fury quickens it.</summary>
+    [Fact]
+    public void TheEyeHoldsTheMeterAndFuryQuickensIt()
+    {
+        Assert.Equal(50f, StormExposure.Step(50f, 60f, true, forest, StormCover.Open, 4f, 3f, 0f), 3);
+        Assert.Equal(50f, StormExposure.Step(50f, 60f, true, forest, StormCover.Lee, 4f, 3f, 0f), 3);
+        Assert.Equal(16.667f, StormExposure.Step(50f, 60f, true, forest, StormCover.RoofAndFire, 4f, 3f, 0f), 2);
+        Assert.Equal(37.5f, StormExposure.Step(0f, 60f, true, forest, StormCover.Open, 4f, 3f, 1.5f), 3);
+    }
+
+    /// <summary>The storm remembers who brave it, up to ten storms, and forgets a little who sit it out.</summary>
+    [Theory]
+    [InlineData(0, 45f, 1)]
+    [InlineData(10, 90f, 10)]
+    [InlineData(3, 30f, 3)]
+    [InlineData(3, 10f, 2)]
+    [InlineData(0, 0f, 0)]
+    public void TheStormRemembers(int before, float peak, int after)
+    {
+        Assert.Equal(after, StormGrudge.After(before, peak));
+    }
+
+    /// <summary>Each storm remembered quickens the meter by the step, and every two leave one more find.</summary>
+    [Theory]
+    [InlineData(0, 1f, 0)]
+    [InlineData(4, 1.2f, 2)]
+    [InlineData(10, 1.5f, 5)]
+    [InlineData(25, 1.5f, 5)]
+    public void TheGrudgeQuickensAndRewards(int grudge, float pace, int finds)
+    {
+        Assert.Equal(pace, StormGrudge.Pace(grudge, 0.05f), 3);
+        Assert.Equal(finds, StormGrudge.ExtraFinds(grudge));
+    }
+
+    /// <summary>The visions come every 14 to 35 seconds when weary, twice as often at the top, more often in Ragnarok.</summary>
+    [Theory]
+    [InlineData(40f, false, 0f, 14f)]
+    [InlineData(40f, false, 1f, 35f)]
+    [InlineData(100f, false, 1f, 17.5f)]
+    [InlineData(40f, true, 0f, 9.8f)]
+    public void VisionsComeOftenerTheWorseItIs(float exposure, bool ragnarok, float roll, float seconds)
+    {
+        Assert.Equal(seconds, StormVisions.Interval(exposure, ragnarok, roll), 3);
+    }
+
     /// <summary>The countdown reads minutes and seconds.</summary>
     [Theory]
     [InlineData(0f, "0:00")]

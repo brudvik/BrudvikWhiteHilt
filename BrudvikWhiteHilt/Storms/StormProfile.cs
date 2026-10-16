@@ -102,6 +102,32 @@ public sealed class StormProfile
     /// <returns>Its profile; Meadows and unknown biomes get none.</returns>
     public static StormProfile For(Heightmap.Biome biome)
     {
+        return For(biome, false);
+    }
+
+    /// <summary>
+    /// The storm of a biome now: in Ragnarok the Meadows have the forest's storm.
+    /// </summary>
+    /// <param name="biome">The biome.</param>
+    /// <returns>Its profile.</returns>
+    public static StormProfile Here(Heightmap.Biome biome)
+    {
+        return For(biome, StormState.Ragnarok && StormState.Phase != StormPhase.Calm);
+    }
+
+    /// <summary>
+    /// The storm of a biome.
+    /// </summary>
+    /// <param name="biome">The biome.</param>
+    /// <param name="ragnarok">Whether Ragnarok rages, which reaches the Meadows.</param>
+    /// <returns>Its profile; Meadows outside Ragnarok and unknown biomes get none.</returns>
+    public static StormProfile For(Heightmap.Biome biome, bool ragnarok)
+    {
+        if (ragnarok && biome == Heightmap.Biome.Meadows)
+        {
+            return tempest;
+        }
+
         return biome switch
         {
             Heightmap.Biome.BlackForest or Heightmap.Biome.Swamp => tempest,

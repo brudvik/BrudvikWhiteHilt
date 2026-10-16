@@ -52,16 +52,18 @@ public class StormHazards : MonoBehaviour
             nextTree = Time.time + Random.Range(10f, 25f);
         }
 
+        // A fiercer storm strikes and fells more often; Ragnarok thunders in every storm.
         StormProfile profile = StormClient.Profile;
-        if (StormSettings.Lightning.Value && profile.Thunders && Time.time >= nextStrike)
+        float often = Mathf.Max(1f, StormClient.Fury);
+        if (StormSettings.Lightning.Value && (profile.Thunders || StormState.Ragnarok) && Time.time >= nextStrike)
         {
-            nextStrike = Time.time + StormSettings.LightningSeconds.Value * Random.Range(0.5f, 1.5f);
+            nextStrike = Time.time + StormSettings.LightningSeconds.Value * Random.Range(0.5f, 1.5f) / often;
             StartCoroutine(Strike(player));
         }
 
         if (StormSettings.FallingTrees.Value && profile.Kind != StormKind.Sand && profile.Kind != StormKind.Fire && Time.time >= nextTree)
         {
-            nextTree = Time.time + StormSettings.TreeFallSeconds.Value * Random.Range(0.5f, 1.5f);
+            nextTree = Time.time + StormSettings.TreeFallSeconds.Value * Random.Range(0.5f, 1.5f) / often;
             TreeBase tree = PickTree(player.transform.position, TreeNearest, TreeFarthest);
             if (tree != null)
             {
@@ -213,20 +215,43 @@ public class StormHazards : MonoBehaviour
                 || (item.m_dropPrefab != null && item.m_dropPrefab.name.ToLowerInvariant().Contains(metal))));
     }
 
-    private static void PlayAt(string name, Vector3 position, float near, float far)
+    /// <summary>
+    /// Plays a storm sound at a place in the world, at the storm's volume.
+    /// </summary>
+    /// <param name="name">The sound.</param>
+    /// <param name="position">Where.</param>
+    /// <param name="near">Distance it is heard at full volume.</param>
+    /// <param name="far">Distance it fades out at.</param>
+    internal static void PlayAt(string name, Vector3 position, float near, float far)
     {
-        AudioClip clip = VisualHelper.IsHeadless ? null : AudioAssets.TryLoad(name);
+        PlayAt(VisualHelper.IsHeadless ? null : AudioAssets.TryLoad(name), position, near, far);
+    }
+
+    /// <summary>
+    /// Plays a clip at a place in the world, at the storm's volume.
+    /// </summary>
+    /// <param name="clip">The clip; nothing when null.</param>
+    /// <param name="position">Where.</param>
+    /// <param name="near">Distance it is heard at full volume.</param>
+    /// <param name="far">Distance it fades out at.</param>
+    internal static void PlayAt(AudioClip clip, Vector3 position, float near, float far)
+    {
         if (clip == null)
         {
             return;
         }
 
-        GameObject holder = new($"whitehilt_sound_{name}");
+        float volume = (SoundSettings.EffectsVolume?.Value ?? 1f) * StormSettings.Volume.Value;
+        if (volume <= 0f)
+        {
+            return;
+        }
+
+        GameObject holder = new($"whitehilt_sound_{clip.name}");
         holder.transform.position = position;
         AudioSource source = holder.AddComponent<AudioSource>();
         WhiteHiltSound.Place(source, near, far);
-        source.volume = StormSettings.Volume.Value;
-        WhiteHiltSound.PlayFrom(source, name);
+        source.PlayOneShot(clip, volume);
         Destroy(holder, clip.length + 0.5f);
     }
 

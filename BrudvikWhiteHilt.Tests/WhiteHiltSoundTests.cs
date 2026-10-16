@@ -19,6 +19,7 @@ public class WhiteHiltSoundTests
         Assert.Equal("skipper_depart1", WhiteHiltSound.LineName("$whitehilt_skipper_depart1"));
         Assert.Null(WhiteHiltSound.LineName("$msg_sold"));
         Assert.Null(WhiteHiltSound.LineName(null));
+        Assert.Equal("stormvoice_call3", WhiteHiltSound.LineName("$whitehilt_stormvoice_call3"));
         Assert.Equal("voice_mistlands_no_terror_talk2", WhiteHiltSound.ClipName("mistlands", "no", "terror_talk2"));
     }
 
@@ -32,7 +33,7 @@ public class WhiteHiltSoundTests
             return;
         }
 
-        string[] speakers = { "meadows", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth", "hunter", "skipper", "raider1", "raider2", "raiderchief", "whitehilt", "husvette", "munin" };
+        string[] speakers = { "meadows", "blackforest", "swamp", "mountain", "plains", "mistlands", "ashlands", "deepnorth", "hunter", "skipper", "raider1", "raider2", "raiderchief", "whitehilt", "husvette", "munin", "stormvoice" };
         foreach (string name in Directory.GetFiles(folder, "*.mp3").Select(Path.GetFileNameWithoutExtension))
         {
             string[] parts = name.Split('_');

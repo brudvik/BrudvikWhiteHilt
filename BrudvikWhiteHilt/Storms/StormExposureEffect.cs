@@ -54,6 +54,13 @@ public class StormExposureEffect : StatusEffect
     public override string GetTooltipString()
     {
         string cover = Translations.Word($"whitehilt_storm_cover_{StormClient.Cover.ToString().ToLowerInvariant()}");
+        int grudge = StormSettings.Grudge.Value ? StormGrudge.Of(Player.m_localPlayer) : 0;
+        if (grudge > 0)
+        {
+            int faster = Mathf.RoundToInt((StormGrudge.Pace(grudge, StormSettings.GrudgeStep.Value) - 1f) * 100f);
+            cover += "\n" + string.Format(Translations.Word("whitehilt_storm_grudge"), faster);
+        }
+
         return $"{base.GetTooltipString()}\n{cover}";
     }
 

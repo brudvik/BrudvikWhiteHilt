@@ -116,10 +116,11 @@ public class StormAmbience : MonoBehaviour
         Player player = Player.m_localPlayer;
         bool here = player != null && StormSettings.Enabled.Value && StormState.Visible
             && StormSettings.HasStorms(player.GetCurrentBiome());
-        StormProfile profile = here ? StormProfile.For(player.GetCurrentBiome()) : null;
+        StormProfile profile = here ? StormProfile.Here(player.GetCurrentBiome()) : null;
         wanted = profile?.Ambience ?? wanted;
 
-        float share = !here ? 0f : StormState.Coming ? WarningShare : 1f;
+        // In the eye the wind dies down to what it was while the storm gathered.
+        float share = !here ? 0f : StormState.Coming || StormState.InEye ? WarningShare : 1f;
         float target = share * Muffle() * SoundSettings.AmbienceVolume.Value * StormSettings.Volume.Value;
 
         // A new storm's sound fades the old one out first.
@@ -160,9 +161,9 @@ public class StormAmbience : MonoBehaviour
             return;
         }
 
-        if (StormState.Raging)
+        if (StormState.Raging && !StormState.InEye)
         {
-            nextThunder = Time.time + Random.Range(8f, 25f);
+            nextThunder = Time.time + Random.Range(8f, 25f) / Mathf.Max(1f, StormClient.Fury);
             Thunder(Random.value < 0.6f);
         }
         else

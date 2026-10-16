@@ -7,7 +7,8 @@ namespace BrudvikWhiteHilt.Storms;
 /// <summary>
 /// What a storm leaves behind: when it passes, things lie about near each player who was out in it, from the storm's
 /// own biome: amber and resin after the forest storm, pearls and scales after the sea storm, coins and rubies the sand
-/// laid bare, crystals and frost glands after the blizzard. Lightning leaves a thunderstone now and then.
+/// laid bare, crystals and frost glands after the blizzard. Lightning leaves a thunderstone now and then, and Ragnarok
+/// leaves rare things among the rest.
 /// </summary>
 public static class StormFinds
 {
@@ -15,6 +16,7 @@ public static class StormFinds
     private const float Farthest = 22f;
     private const int Attempts = 6;
     private const string Thunderstone = "Thunderstone";
+    private const float RareShare = 0.4f;
 
     // What each storm leaves: prefab, least and most, weight. Prefabs this game does not know are left out.
     private static readonly Dictionary<StormKind, Find[]> finds = new()
@@ -28,6 +30,13 @@ public static class StormFinds
         [StormKind.Arctic] = new Find[] { new("FreezeGland", 1, 3, 3), new("Crystal", 1, 3, 3), new("Obsidian", 2, 4, 2) }
     };
 
+    // What Ragnarok leaves besides the storm's own finds.
+    private static readonly Find[] rare =
+    {
+        new(Thunderstone, 1, 2, 3), new("Ruby", 1, 3, 3), new("AmberPearl", 2, 4, 3), new("SilverNecklace", 1, 2, 2),
+        new("SurtlingCore", 2, 4, 2), new("YmirRemains", 1, 1, 1)
+    };
+
     private static readonly HashSet<string> reported = new();
 
     /// <summary>
@@ -36,8 +45,9 @@ public static class StormFinds
     /// <param name="player">The local player.</param>
     /// <param name="kind">The storm they were out in.</param>
     /// <param name="count">How many finds.</param>
+    /// <param name="ragnarok">After Ragnarok, some of the finds are rare.</param>
     /// <returns>How many were left.</returns>
-    public static int Leave(Player player, StormKind kind, int count)
+    public static int Leave(Player player, StormKind kind, int count, bool ragnarok = false)
     {
         if (player == null || ObjectDB.instance == null || !finds.TryGetValue(kind, out Find[] table))
         {
@@ -45,10 +55,11 @@ public static class StormFinds
         }
 
         List<Find> known = table.Where(find => Prefab(find.Prefab) != null).ToList();
+        List<Find> rareKnown = ragnarok ? rare.Where(find => Prefab(find.Prefab) != null).ToList() : new List<Find>();
         int left = 0;
         for (int i = 0; i < count && known.Count > 0; i++)
         {
-            Find find = Pick(known);
+            Find find = rareKnown.Count > 0 && Random.value < RareShare ? Pick(rareKnown) : Pick(known);
             if (Drop(find.Prefab, Random.Range(find.Least, find.Most + 1), Around(player.transform.position)))
             {
                 left++;
