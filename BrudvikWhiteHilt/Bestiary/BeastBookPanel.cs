@@ -394,9 +394,9 @@ public sealed class BeastBookPanel : MonoBehaviour
         book.body.horizontalOverflow = HorizontalWrapMode.Wrap;
         book.body.verticalOverflow = VerticalWrapMode.Overflow;
         book.previous = ButtonAt(root.transform, "<", new Vector2(-150f, 40f), 56f, () => book.ChangePage(-1));
-        (book.previous.GetComponent<UITooltip>() ?? book.previous.gameObject.AddComponent<UITooltip>()).m_text = "$whitehilt_bestiary_previous";
+        Tooltip(book.previous, "$whitehilt_bestiary_previous");
         book.next = ButtonAt(root.transform, ">", new Vector2(150f, 40f), 56f, () => book.ChangePage(1));
-        (book.next.GetComponent<UITooltip>() ?? book.next.gameObject.AddComponent<UITooltip>()).m_text = "$whitehilt_bestiary_next";
+        Tooltip(book.next, "$whitehilt_bestiary_next");
         book.pageLabel = TextAt(root.transform, string.Empty, bottom, new Vector2(0f, 40f), 110f, 36f, 17);
         book.pageLabel.alignment = TextAnchor.MiddleCenter;
         ButtonAt(root.transform, Local("$whitehilt_bestiary_close"), new Vector2(Width / 2f - 88f, 40f), 106f, Close);
@@ -412,6 +412,27 @@ public sealed class BeastBookPanel : MonoBehaviour
         Button button = GUIManager.Instance.CreateButton(label, parent, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), position, width, 36f).GetComponent<Button>();
         button.onClick.AddListener(action);
         return button;
+    }
+
+    // The game's own tooltip, borrowed from the inventory grid. Without its prefab a hover throws, so the button then
+    // goes without.
+    private static void Tooltip(Button button, string key)
+    {
+        GameObject prefab = InventoryGui.instance?.m_playerGrid?.m_elementPrefab?.GetComponent<UITooltip>()?.m_tooltipPrefab;
+        if (prefab == null)
+        {
+            return;
+        }
+
+        UITooltip tooltip = button.GetComponent<UITooltip>();
+        if (tooltip == null)
+        {
+            tooltip = button.gameObject.AddComponent<UITooltip>();
+        }
+
+        tooltip.m_tooltipPrefab = prefab;
+        tooltip.m_topic = string.Empty;
+        tooltip.m_text = Local(key);
     }
 
     private static string Local(string text) => Localization.instance.Localize(text);
