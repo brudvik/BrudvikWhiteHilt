@@ -2,6 +2,24 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.147.0 - 2026-10-17
+
+### Added
+- **[Wood floor triangles & octagons](docs/building-pieces.md#-wood-floor-triangles--octagons)**: the vanilla wood
+  floor sawn to shape, every cut plank and joist with a closed end: Triangle 2×2 and 1×1, a 2×1 floor with a 45°
+  end (and mirrored), and octagons with 2 m and 4 m sides that a vanilla wall stands on.
+- **[Wood walls 4 m & window](docs/building-pieces.md#-wood-walls-4-m--window)**: Wood Wall 4×2 and 4×4, and a
+  2×2 wall with a window sawn into it and the vanilla window's shutter.
+- **[Lattices & braces](docs/building-pieces.md#lattices--braces)**: Wood Lattice 2×2 and 2×1, and braces at 45°
+  (0.5, 1 and 2 m) for the corner under a beam.
+- **[Wide stair, landing & bargeboards](docs/building-pieces.md#wide-stair-landing--bargeboards)**: the Wide Wood
+  Stair (4 m), a Wood Stair with a 2×2 m landing, and plain bargeboards at 26°, 45° and 67° that follow the vanilla roof pieces down to the eave.
+
+### Changed
+- The White Hilt settings in the inventory are now a small round gear button in the bottom left corner, with a
+  short line beside it showing the key (F7). The old, taller panel lay over big chests and an inventory widened to
+  eight rows.
+
 ## v0.146.0 - 2026-10-17
 
 ### Added
