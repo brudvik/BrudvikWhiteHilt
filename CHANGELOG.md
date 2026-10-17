@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.145.0 - 2026-10-17
 
 ### Added
 - **[Ashlands foraging](docs/foraging.md#growing-ingredients)**: six new things to gather, each with its own generated
