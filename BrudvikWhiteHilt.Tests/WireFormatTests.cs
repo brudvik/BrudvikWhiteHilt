@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Difficulty;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Navigation.Areas;
+using BrudvikWhiteHilt.Navigation.Discoveries;
 using BrudvikWhiteHilt.Navigation.Portraits;
 using BrudvikWhiteHilt.Painting;
 using System.Collections.Generic;
@@ -249,8 +250,8 @@ public class ServerListTests
     [Fact]
     public void ANewerListReplacesOneCutShort()
     {
-        List<ZPackage> older = ServerLists.Split(Noise(500_000), 1);
-        byte[] newer = Noise(300_000);
+        List<ZPackage> older = ServerLists.Split(Noise(ServerLists.PieceBytes * 3), 1);
+        byte[] newer = Noise(ServerLists.PieceBytes + 100);
         List<ZPackage> newerPieces = ServerLists.Split(newer, 2);
         ServerLists.Assembler assembler = new();
 
@@ -271,6 +272,232 @@ public class ServerListTests
         Assert.Null(assembler.Add(Received(pieces[2])));
         Assert.Null(assembler.Add(Received(pieces[1])));
         Assert.Null(assembler.Add(Received(pieces[2])));
+    }
+
+    [Fact]
+    public void AListLargerThanAllowedIsDroppedAsItComes()
+    {
+        List<ZPackage> pieces = ServerLists.Split(Noise(ServerLists.PieceBytes * 3), 1);
+        ServerLists.Assembler assembler = new();
+
+        Assert.Null(assembler.Add(Received(pieces[0]), ServerLists.PieceBytes * 2));
+        Assert.Null(assembler.Add(Received(pieces[1]), ServerLists.PieceBytes * 2));
+        Assert.Null(assembler.Add(Received(pieces[2]), ServerLists.PieceBytes * 2));
+    }
+
+    [Fact]
+    public void PackingCanLeaveDataThatIsGzippedAlready()
+    {
+        ZPackage list = List(20000);
+
+        ZPackage packed = ServerLists.Pack(list, compress: false);
+
+        Assert.True(packed.Size() > list.Size());
+        Assert.Equal(list.GetArray(), ServerLists.Unpack(new ZPackage(packed.GetArray())).GetArray());
+    }
+}
+
+public class DiscoveryPackageTests
+{
+    private static readonly List<DiscoveryKind> Kinds = new()
+    {
+        new DiscoveryKind { Key = "berries", Group = DiscoveryGroup.Plants },
+        new DiscoveryKind { Key = "copper", Group = DiscoveryGroup.Resources },
+        new DiscoveryKind { Key = "crypt", Group = DiscoveryGroup.Dungeons }
+    };
+
+    private static DiscoveryEntry Entry(int kind, float x, float z, int count = 1, int ripe = -1) =>
+        new() { Kind = kind, Position = new Vector3(x, 0f, z), Count = count, Ripe = ripe };
+
+    private static void AssertSame(List<DiscoveryEntry> expected, List<DiscoveryEntry> actual)
+    {
+        Assert.Equal(expected.Count, actual.Count);
+        for (int i = 0; i < expected.Count; i++)
+        {
+            Assert.Equal(expected[i].Kind, actual[i].Kind);
+            Assert.Equal(expected[i].Position.x, actual[i].Position.x);
+            Assert.Equal(expected[i].Position.z, actual[i].Position.z);
+            Assert.Equal(expected[i].Count, actual[i].Count);
+            Assert.Equal(expected[i].Ripe, actual[i].Ripe);
+        }
+    }
+
+    [Fact]
+    public void TheWholeListReadsBackTheSame()
+    {
+        List<DiscoveryEntry> entries = new() { Entry(0, 1f, 2f, 5, 3), Entry(2, -40f, 7.5f) };
+
+        ZPackage written = DiscoveryPackage.WriteWhole(7, Kinds, entries);
+        Assert.True(DiscoveryPackage.Read(new ZPackage(written.GetArray()), out int version, out List<DiscoveryKind> kinds,
+            out List<DiscoveryEntry> read, out DiscoveryChanges changes));
+
+        Assert.Equal(7, version);
+        Assert.Null(changes);
+        Assert.Equal(new[] { "berries", "copper", "crypt" }, kinds.ConvertAll(kind => kind.Key));
+        Assert.Equal(DiscoveryGroup.Dungeons, kinds[2].Group);
+        AssertSame(entries, read);
+    }
+
+    [Fact]
+    public void ChangesMakeTheSameListOnBothSides()
+    {
+        List<DiscoveryEntry> old = new() { Entry(0, 1f, 1f, 4, 0), Entry(1, 2f, 2f, 3), Entry(0, 5f, 5f, 2, 2), Entry(2, 9f, 9f) };
+        List<DiscoveryEntry> current = new() { Entry(2, 9f, 9f), Entry(0, 1f, 1f, 4, 4), Entry(0, 6f, 6f, 2, 1), Entry(1, 7f, 7f, 1) };
+
+        DiscoveryChanges changes = DiscoveryPackage.Diff(old, current);
+        changes.BaseVersion = 3;
+        changes.Version = 4;
+        changes.Kinds = Kinds;
+        List<DiscoveryEntry> server = DiscoveryPackage.Apply(old, changes);
+
+        Assert.True(DiscoveryPackage.Read(new ZPackage(DiscoveryPackage.WriteChanges(changes).GetArray()), out int version,
+            out _, out _, out DiscoveryChanges received));
+        List<DiscoveryEntry> client = DiscoveryPackage.Apply(old, received);
+
+        Assert.Equal(4, version);
+        Assert.Equal(3, received.BaseVersion);
+        Assert.Equal(new[] { 1, 2 }, changes.Removed);
+        Assert.Single(changes.Changed);
+        Assert.Equal(2, changes.Added.Count);
+        AssertSame(server, client);
+        Assert.Equal(current.Count, client.Count);
+        Assert.Contains(client, entry => entry.Kind == 0 && entry.Position.x == 1f && entry.Ripe == 4);
+        Assert.DoesNotContain(client, entry => entry.Kind == 1 && entry.Position.x == 2f);
+    }
+
+    [Fact]
+    public void NothingChangedIsEmpty()
+    {
+        List<DiscoveryEntry> list = new() { Entry(0, 1f, 1f, 4, 0), Entry(1, 2f, 2f, 3) };
+
+        Assert.True(DiscoveryPackage.Diff(list, new List<DiscoveryEntry> { Entry(1, 2f, 2f, 3), Entry(0, 1f, 1f, 4, 0) }).IsEmpty);
+    }
+
+    [Fact]
+    public void TwoMarkersInOnePlaceAreSentWhole()
+    {
+        Assert.Null(DiscoveryPackage.Diff(new List<DiscoveryEntry>(), new List<DiscoveryEntry> { Entry(0, 1f, 1f), Entry(0, 1f, 1f, 2) }));
+    }
+
+    [Fact]
+    public void ChangesThatDoNotFitAreRefused()
+    {
+        List<DiscoveryEntry> old = new() { Entry(0, 1f, 1f) };
+
+        Assert.Null(DiscoveryPackage.Apply(old, new DiscoveryChanges { Kinds = Kinds, Removed = { 3 } }));
+        Assert.Null(DiscoveryPackage.Apply(old, new DiscoveryChanges { Kinds = Kinds, Changed = { (5, 1, 1) } }));
+        Assert.Null(DiscoveryPackage.Apply(old, new DiscoveryChanges { Kinds = Kinds, Added = { Entry(9, 0f, 0f) } }));
+    }
+
+    [Fact]
+    public void TheMapGetsOnlyKindsInUseWithTotals()
+    {
+        List<DiscoveryEntry> entries = new() { Entry(2, 0f, 0f), Entry(0, 1f, 1f, 4, 1), Entry(0, 2f, 2f, 3, 0) };
+
+        DiscoveryPackage.ForMap(Kinds, entries, out List<DiscoveryKind> shown, out List<DiscoveryEntry> shownEntries);
+
+        Assert.Equal(new[] { "crypt", "berries" }, shown.ConvertAll(kind => kind.Key));
+        Assert.Equal(1, shown[0].Total);
+        Assert.Equal(7, shown[1].Total);
+        Assert.Equal(new[] { 0, 1, 1 }, shownEntries.ConvertAll(entry => entry.Kind));
+        Assert.Equal(2, entries[0].Kind);
+    }
+}
+
+public class SendQueueTests
+{
+    private static List<ZPackage> Pieces(int count, int bytes = 100)
+    {
+        List<ZPackage> pieces = new();
+        for (int i = 0; i < count; i++)
+        {
+            ZPackage piece = new();
+            piece.Write(new byte[bytes]);
+            pieces.Add(piece);
+        }
+
+        return pieces;
+    }
+
+    private static List<string> TakeAll(SendQueue queue, ref float now)
+    {
+        List<string> sent = new();
+        for (int step = 0; step < 1000 && !queue.IsEmpty; step++)
+        {
+            now += 1f;
+            while (queue.TryTake(now, 0, out string rpc, out _))
+            {
+                sent.Add(rpc);
+            }
+        }
+
+        return sent;
+    }
+
+    [Fact]
+    public void ListsGoOutInTheOrderTheyWereQueued()
+    {
+        SendQueue queue = new();
+        queue.Add("a", Pieces(2));
+        queue.Add("b", Pieces(1));
+        float now = 0f;
+
+        Assert.Equal(new[] { "a", "a", "b" }, TakeAll(queue, ref now));
+    }
+
+    [Fact]
+    public void ANewerListReplacesOneThatHasNotStarted()
+    {
+        SendQueue queue = new();
+        queue.Add("a", Pieces(1));
+        queue.Add("b", Pieces(1));
+        queue.Add("a", Pieces(2));
+        float now = 0f;
+
+        Assert.True(queue.IsWaiting("a"));
+        Assert.Equal(new[] { "b", "a", "a" }, TakeAll(queue, ref now));
+    }
+
+    [Fact]
+    public void AListBeingSentIsFinishedFirst()
+    {
+        SendQueue queue = new();
+        queue.Add("a", Pieces(2));
+        Assert.True(queue.TryTake(0f, 0, out _, out _));
+
+        queue.Add("a", Pieces(1));
+        float now = 0f;
+
+        Assert.True(queue.IsWaiting("a"));
+        Assert.Equal(new[] { "a", "a" }, TakeAll(queue, ref now));
+    }
+
+    [Fact]
+    public void NothingGoesWhileTheConnectionIsBusy()
+    {
+        SendQueue queue = new();
+        queue.Add("a", Pieces(1));
+
+        Assert.False(queue.TryTake(0f, SendQueue.QueueLimit + 1, out _, out _));
+        Assert.True(queue.TryTake(0f, SendQueue.QueueLimit, out _, out _));
+    }
+
+    [Fact]
+    public void ListsKeepToTheirShareOfTheLine()
+    {
+        SendQueue queue = new();
+        queue.Add("a", Pieces(100, ServerLists.PieceBytes));
+        int sent = 0;
+        for (float now = 0f; now <= 10f; now += 0.02f)
+        {
+            while (queue.TryTake(now, 0, out _, out _))
+            {
+                sent++;
+            }
+        }
+
+        float bytes = sent * (ServerLists.PieceBytes + 4f);
+        Assert.InRange(bytes, 9f * SendQueue.BytesPerSecond, 11f * SendQueue.BytesPerSecond + 2 * ServerLists.PieceBytes);
     }
 }
 

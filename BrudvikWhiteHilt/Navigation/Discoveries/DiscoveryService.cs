@@ -11,11 +11,16 @@ namespace BrudvikWhiteHilt.Navigation.Discoveries;
 /// <summary>
 /// Runs on the <see cref="Game"/> object. On the server it searches the world for caves, settlements, wild plants,
 /// deposits and landmarks while Munin's Perch stands at a map table, keeps what is uncovered on that table's map, counts
-/// plants and deposits per square and sends the list to every player. On a client it receives that list.
+/// plants and deposits per square and sends the list to every player: the whole list once, after that only what changed.
+/// On a client it receives that list.
 /// </summary>
 public class DiscoveryService : MonoBehaviour
 {
     private const string RpcName = "WhiteHiltDiscoveries";
+    private const string ResyncRpcName = "WhiteHiltDiscoveriesResync";
+
+    // A client that missed a version asks for the whole list again, but not more often than this.
+    private const float ResyncPause = 10f;
 
     // Non-empty sectors read per frame, as the game's own iterative ZDO search does.
     private const int SectorsPerFrame = 400;
@@ -41,6 +46,10 @@ public class DiscoveryService : MonoBehaviour
     private readonly List<DiscoveryKind> kinds = new();
     private readonly Dictionary<string, int> locationKinds = new();
 
+    // The table of kinds as sent; it only grows, so the markers players hold keep their kind.
+    private readonly List<DiscoveryKind> sentKinds = new();
+    private readonly Dictionary<string, int> sentKindIndex = new();
+
     private Dictionary<int, PrefabInfo> prefabs;
     private HashSet<int> piecePrefabs;
     private HashSet<int> mapTablePrefabs;
@@ -49,18 +58,25 @@ public class DiscoveryService : MonoBehaviour
     private string exploredKey;
     private bool[] explored;
     private int exploredSize;
-    private ZPackage package;
-    private byte[] packageBytes;
-    private byte[] packedBytes;
-    private int packageVersion;
+    private List<DiscoveryEntry> snapshot;
+    private int version;
+    private byte[] wholeBytes;
+    private byte[] changesBytes;
     private int sectorIndex = -1;
     private float nextScan;
     private float nextPublish;
+
+    // On a client: the list as the server sent it, in the server's order.
+    private List<DiscoveryKind> clientKinds;
+    private List<DiscoveryEntry> clientEntries;
+    private int clientVersion = -1;
+    private float resyncAt = float.NegativeInfinity;
 
     private void Start()
     {
         DiscoveryOverlay.SetData(new List<DiscoveryKind>(), new List<DiscoveryEntry>());
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_Discoveries);
+        ZRoutedRpc.instance?.Register(ResyncRpcName, RPC_Resync);
     }
 
     // On the server: scans the world now and then, a few sectors per frame, and sends the result to the players.
@@ -83,7 +99,7 @@ public class DiscoveryService : MonoBehaviour
                 ContinueScan();
             }
 
-            if (package != null && Time.time >= nextPublish)
+            if (snapshot != null && Time.time >= nextPublish)
             {
                 nextPublish = Time.time + PublishInterval;
                 Publish();
@@ -391,58 +407,85 @@ public class DiscoveryService : MonoBehaviour
         return x >= 0 && y >= 0 && x < exploredSize && y < exploredSize && explored[y * exploredSize + x];
     }
 
-    // Only the kinds in use are sent, numbered afresh.
+    // Makes the new version of the list from a scan: the old list with what changed, in the order the players build it
+    // too, and the changes packed for those who have the old version.
     private void SetPackage(List<DiscoveryEntry> entries)
     {
-        Dictionary<int, int> used = new();
-        List<DiscoveryKind> sentKinds = new();
-        foreach (DiscoveryEntry entry in entries)
+        // A kind moved to another group by the settings: the table starts over, and everyone gets the whole list.
+        if (sentKinds.Exists(sent => kindIndex.TryGetValue(sent.Key, out int kind) && kinds[kind].Group != sent.Group))
         {
-            if (!used.TryGetValue(entry.Kind, out int index))
-            {
-                index = sentKinds.Count;
-                used[entry.Kind] = index;
-                sentKinds.Add(new DiscoveryKind { Key = kinds[entry.Kind].Key, Group = kinds[entry.Kind].Group });
-            }
-
-            entry.Kind = index;
+            sentKinds.Clear();
+            sentKindIndex.Clear();
+            snapshot = null;
         }
 
-        ZPackage newPackage = DiscoveryPackage.Write(sentKinds, entries);
-        byte[] bytes = newPackage.GetArray();
-        if (packageBytes == null || !bytes.SequenceEqual(packageBytes))
-        {
-            package = newPackage;
-            packageBytes = bytes;
-            packedBytes = ServerLists.Pack(newPackage).GetArray();
-            packageVersion++;
-        }
-
+        entries.ForEach(entry => entry.Kind = SentKind(entry.Kind));
         nextPublish = 0f;
+        DiscoveryChanges changes = snapshot != null ? DiscoveryPackage.Diff(snapshot, entries) : null;
+        if (changes != null && changes.IsEmpty)
+        {
+            return;
+        }
+
+        version++;
+        List<DiscoveryEntry> next = null;
+        if (changes != null)
+        {
+            changes.BaseVersion = version - 1;
+            changes.Version = version;
+            changes.Kinds = sentKinds;
+            next = DiscoveryPackage.Apply(snapshot, changes);
+        }
+
+        changesBytes = next != null ? ServerLists.Pack(DiscoveryPackage.WriteChanges(changes)).GetArray() : null;
+        snapshot = next ?? entries;
+        wholeBytes = ServerLists.Pack(DiscoveryPackage.WriteWhole(version, sentKinds, snapshot)).GetArray();
+        if (changesBytes != null && changesBytes.Length >= wholeBytes.Length)
+        {
+            changesBytes = null;
+        }
     }
 
-    // Sends each player the latest markers, only when they have not had this version yet; the host playing on its own
-    // machine gets them directly.
+    private int SentKind(int kind)
+    {
+        string key = kinds[kind].Key;
+        if (!sentKindIndex.TryGetValue(key, out int index))
+        {
+            index = sentKinds.Count;
+            sentKindIndex[key] = index;
+            sentKinds.Add(new DiscoveryKind { Key = key, Group = kinds[kind].Group });
+        }
+
+        return index;
+    }
+
+    // Sends each player who has not had this version yet what changed since the version before, or the whole list to
+    // one who joined, missed a version or has an older list still waiting to be sent. The host playing on its own
+    // machine gets it directly.
     private void Publish()
     {
         HashSet<long> current = new();
         foreach (ZNetPeer peer in ZNet.instance.GetPeers().Where(peer => peer.IsReady()))
         {
             current.Add(peer.m_uid);
-            if (!lastSent.TryGetValue(peer.m_uid, out int sent) || sent != packageVersion)
+            bool known = lastSent.TryGetValue(peer.m_uid, out int sent);
+            if (known && sent == version)
             {
-                lastSent[peer.m_uid] = packageVersion;
-                ServerLists.SendPacked(peer.m_uid, RpcName, packedBytes);
+                continue;
             }
+
+            bool changesFit = known && sent == version - 1 && changesBytes != null && !ServerLists.IsWaiting(peer.m_uid, RpcName);
+            ServerLists.SendPacked(peer.m_uid, RpcName, changesFit ? changesBytes : wholeBytes);
+            lastSent[peer.m_uid] = version;
         }
 
         if (!ZNet.instance.IsDedicated() && Game.instance != null)
         {
             current.Add(LocalKey);
-            if (!lastSent.TryGetValue(LocalKey, out int sent) || sent != packageVersion)
+            if (!lastSent.TryGetValue(LocalKey, out int sent) || sent != version)
             {
-                lastSent[LocalKey] = packageVersion;
-                Apply(new ZPackage(packageBytes));
+                lastSent[LocalKey] = version;
+                ShowOnMap(sentKinds, snapshot);
             }
         }
 
@@ -584,19 +627,63 @@ public class DiscoveryService : MonoBehaviour
         }
     }
 
-    private static void Apply(ZPackage received)
+    // On the server: a player missed a version, so the next round sends them the whole list.
+    private void RPC_Resync(long sender)
+    {
+        if (ZNet.instance != null && ZNet.instance.IsServer())
+        {
+            lastSent.Remove(sender);
+        }
+    }
+
+    // Takes the whole list, or changes to the list this client has. Changes to another version are of no use, and the
+    // whole list is asked for again.
+    private void Apply(ZPackage received)
     {
         try
         {
-            if (DiscoveryPackage.Read(received, out List<DiscoveryKind> receivedKinds, out List<DiscoveryEntry> receivedEntries))
+            if (!DiscoveryPackage.Read(received, out int receivedVersion, out List<DiscoveryKind> receivedKinds,
+                    out List<DiscoveryEntry> receivedEntries, out DiscoveryChanges changes))
             {
-                DiscoveryOverlay.SetData(receivedKinds, receivedEntries);
+                return;
             }
+
+            if (changes != null)
+            {
+                receivedKinds = changes.Kinds;
+                receivedEntries = changes.BaseVersion == clientVersion && clientEntries != null ? DiscoveryPackage.Apply(clientEntries, changes) : null;
+                if (receivedEntries == null)
+                {
+                    AskForWholeList();
+                    return;
+                }
+            }
+
+            clientKinds = receivedKinds;
+            clientEntries = receivedEntries;
+            clientVersion = receivedVersion;
+            ShowOnMap(clientKinds, clientEntries);
         }
         catch (Exception ex)
         {
             Jotunn.Logger.LogWarning($"Discoveries: could not read the server's list: {ex.Message}");
         }
+    }
+
+    private void AskForWholeList()
+    {
+        clientVersion = -1;
+        if (Time.time - resyncAt >= ResyncPause && ZRoutedRpc.instance != null)
+        {
+            resyncAt = Time.time;
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), ResyncRpcName);
+        }
+    }
+
+    private static void ShowOnMap(List<DiscoveryKind> kinds, List<DiscoveryEntry> entries)
+    {
+        DiscoveryPackage.ForMap(kinds, entries, out List<DiscoveryKind> shownKinds, out List<DiscoveryEntry> shownEntries);
+        DiscoveryOverlay.SetData(shownKinds, shownEntries);
     }
 
     private struct RawFind

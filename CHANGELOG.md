@@ -2,6 +2,19 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- **Other players no longer hang in the air** for a moment before they drop into place. The game stops sending
+  positions while a player's connection is busy, and carries on the last movement in a straight line meanwhile, so a
+  player who jumped kept rising on the other screens. White Hilt now sends its own data so that positions come first:
+  - The portal map sent every portal again every two seconds while a ship was loaded, since a ship bobs on the waves.
+    Ships now go in a small list of their own, sent again only when a ship has moved 8 m.
+  - Discoveries are sent whole only once; after that a player gets only what changed, such as berries ripening.
+  - Large lists and shared blueprints go out in small pieces, and only while the connection has room, taking at most
+    64 KB/s; before, they went in 192 KB pieces that held back positions for seconds.
+  See [the analysis](docs/plans/network-stalls.md).
+
 ## v0.143.0 - 2026-10-16
 
 ### Added

@@ -88,10 +88,11 @@ public class SharedBlueprints : MonoBehaviour
             return;
         }
 
+        // In paced pieces: one large message would hold back everything else the server and this player send each other.
         ZPackage package = new();
         package.Write(blueprint.Name ?? string.Empty);
         package.Write(packed);
-        ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), ShareRpc, package);
+        ServerLists.Send(ZRoutedRpc.instance.GetServerPeerID(), ShareRpc, package, compress: false);
     }
 
     /// <summary>
@@ -182,9 +183,9 @@ public class SharedBlueprints : MonoBehaviour
         }
     }
 
-    // On the server: checks and saves a shared blueprint. The blueprint is read and written again, so the file holds
-    // only what the parser understood, with the pieces this server does not know left out.
-    private void RPC_Share(long sender, ZPackage package)
+    // On the server: checks and saves a shared blueprint, once all its pieces are in. The blueprint is read and written
+    // again, so the file holds only what the parser understood, with the pieces this server does not know left out.
+    private void RPC_Share(long sender, ZPackage piece)
     {
         if (!IsServer)
         {
@@ -193,6 +194,13 @@ public class SharedBlueprints : MonoBehaviour
 
         string identity = RoutedRpcSender.Verify(sender, out string creator);
         if (identity == null)
+        {
+            return;
+        }
+
+        // The name and the packing around the blueprint take a little more than the blueprint itself.
+        int maxPacked = SharedBlueprintSettings.MaxKilobytes.Value * 1024 + 1024;
+        if (ServerLists.Receive(sender, ShareRpc, piece, maxPacked) is not ZPackage package)
         {
             return;
         }
@@ -291,7 +299,7 @@ public class SharedBlueprints : MonoBehaviour
         reply.Write(entry.Name);
         reply.Write(entry.Creator);
         reply.Write(Utils.Compress(Encoding.UTF8.GetBytes(text)));
-        ZRoutedRpc.instance.InvokeRoutedRPC(sender, DataRpc, reply);
+        ServerLists.Send(sender, DataRpc, reply, compress: false);
     }
 
     private void RPC_Unshare(long sender, string id)
@@ -349,10 +357,10 @@ public class SharedBlueprints : MonoBehaviour
         Changed?.Invoke();
     }
 
-    // On the client: saves the fetched copy among the player's own blueprints.
-    private void RPC_Data(long sender, ZPackage package)
+    // On the client: saves the fetched copy among the player's own blueprints, once all its pieces are in.
+    private void RPC_Data(long sender, ZPackage piece)
     {
-        if (!FromServer(sender))
+        if (!FromServer(sender) || ServerLists.Receive(sender, DataRpc, piece) is not ZPackage package)
         {
             return;
         }

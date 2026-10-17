@@ -28,6 +28,7 @@ public class PortalMapService : MonoBehaviour
     public static float ActivationRange => NavigationSettings.MapTableRange?.Value ?? 5f;
 
     private const string RpcName = "WhiteHiltPortalMap";
+    private const string ShipRpcName = "WhiteHiltShipMap";
     private const string TravelRpcName = "WhiteHiltPortalList";
     private const string PortalStationType = "PortalStations.Stations.PortalStation";
     private const float ScanPause = 10f;
@@ -35,6 +36,10 @@ public class PortalMapService : MonoBehaviour
 
     // A ship portal is sent again once its ship has sailed this far; travellers are put on the deck where it is.
     private const float ShipPortalResend = 10f;
+
+    // A ship's pin is sent again once it has moved this far. A ship in water bobs all the time; sending every bob would
+    // fill the players' connections, and the game sends no positions while they are full.
+    private const float ShipMoveResend = 8f;
 
     // Non-empty sectors read per frame, as the game's own iterative ZDO search does.
     private const int SectorsPerFrame = 400;
@@ -54,6 +59,7 @@ public class PortalMapService : MonoBehaviour
     private readonly List<Vector3> astrolabes = new();
     private readonly List<Vector3> anchors = new();
     private readonly Dictionary<long, ulong> lastSent = new();
+    private readonly Dictionary<long, ulong> lastSentShips = new();
     private readonly Dictionary<long, ulong> lastSentTravel = new();
     private readonly List<PortalDestination> scanTravel = new();
     private readonly List<(ZDOID Id, PortalDestination Destination)> scanTravelShips = new();
@@ -65,6 +71,8 @@ public class PortalMapService : MonoBehaviour
 
     private List<PortalMapEntry> portals = new();
     private List<(ZDOID Id, PortalMapEntry Entry)> ships = new();
+    private List<PortalMapEntry> receivedPortals = new();
+    private List<PortalMapEntry> receivedShips = new();
     private HashSet<int> portalPrefabs;
     private HashSet<int> stationPrefabs;
     private HashSet<int> mapTablePrefabs;
@@ -84,6 +92,7 @@ public class PortalMapService : MonoBehaviour
         PortalMapPins.SetEntries(new List<PortalMapEntry>());
         PortalTravel.SetDestinations(new List<PortalDestination>());
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_PortalMap);
+        ZRoutedRpc.instance?.Register<ZPackage>(ShipRpcName, RPC_ShipMap);
         ZRoutedRpc.instance?.Register<ZPackage>(TravelRpcName, RPC_PortalList);
     }
 
@@ -114,7 +123,7 @@ public class PortalMapService : MonoBehaviour
                 nextShipUpdate = Time.time + ShipUpdateInterval;
                 ships.RemoveAll(ship => !UpdateShip(ship.Id, ship.Entry));
                 UpdateShipPortals();
-                Publish();
+                Publish(false);
             }
         }
         catch (Exception ex)
@@ -133,7 +142,12 @@ public class PortalMapService : MonoBehaviour
             return false;
         }
 
-        entry.Position = zdo.GetPosition();
+        Vector3 position = zdo.GetPosition();
+        if (Vector3.Distance(position, entry.Position) >= ShipMoveResend)
+        {
+            entry.Position = position;
+        }
+
         return true;
     }
 
@@ -364,9 +378,20 @@ public class PortalMapService : MonoBehaviour
             }
         }
 
+        // A ship keeps the position it was last sent at until it has really moved, so the scan sends nothing new.
+        Dictionary<ZDOID, Vector3> sentShips = new();
+        ships.ForEach(ship => sentShips[ship.Id] = ship.Entry.Position);
+        foreach ((ZDOID id, PortalMapEntry ship) in scanShips)
+        {
+            if (sentShips.TryGetValue(id, out Vector3 sent) && Vector3.Distance(sent, ship.Position) < ShipMoveResend)
+            {
+                ship.Position = sent;
+            }
+        }
+
         portals = AtMapTable(astrolabes) ? scanPortals.ToList() : new List<PortalMapEntry>();
         ships = AtMapTable(anchors) ? scanShips.ToList() : new List<(ZDOID, PortalMapEntry)>();
-        Publish();
+        Publish(true);
     }
 
     private bool AtMapTable(List<Vector3> extensions)
@@ -375,8 +400,9 @@ public class PortalMapService : MonoBehaviour
     }
 
     // Sends each player what they may see: public portals, their own private ones and those of their group, and the
-    // ships with their builders' names, sending only to those whose list changed.
-    private void Publish()
+    // ships with their builders' names, sending only to those whose list changed. Ships go in a list of their own, so a
+    // sailing ship does not send every portal again; the portals are looked at only after a scan.
+    private void Publish(bool scanned)
     {
         Dictionary<long, string> online = new();
         List<(ZNetPeer Peer, long PlayerID)> peers = new();
@@ -406,9 +432,14 @@ public class PortalMapService : MonoBehaviour
         foreach ((ZNetPeer peer, long playerID) in peers)
         {
             current.Add(peer.m_uid);
-            if (TryGetChanged(peer.m_uid, playerID, out ZPackage package))
+            if (scanned && TryGetChanged(peer.m_uid, playerID, out ZPackage package))
             {
                 ServerLists.Send(peer.m_uid, RpcName, package);
+            }
+
+            if (TryGetShipsChanged(peer.m_uid, out ZPackage shipPackage))
+            {
+                ServerLists.Send(peer.m_uid, ShipRpcName, shipPackage);
             }
 
             if (TryGetTravelChanged(peer.m_uid, playerID, out ZPackage travelPackage))
@@ -420,10 +451,24 @@ public class PortalMapService : MonoBehaviour
         if (hostPlays)
         {
             current.Add(LocalKey);
-            if (TryGetChanged(LocalKey, hostID, out ZPackage package))
+            bool changed = false;
+            if (scanned && TryGetChanged(LocalKey, hostID, out ZPackage package))
             {
                 package.SetPos(0);
-                PortalMapPins.SetEntries(PortalMapEntry.Read(package));
+                receivedPortals = PortalMapEntry.Read(package);
+                changed = true;
+            }
+
+            if (TryGetShipsChanged(LocalKey, out ZPackage shipPackage))
+            {
+                shipPackage.SetPos(0);
+                receivedShips = PortalMapEntry.Read(shipPackage);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                ShowEntries();
             }
 
             if (TryGetTravelChanged(LocalKey, hostID, out ZPackage travelPackage))
@@ -436,6 +481,7 @@ public class PortalMapService : MonoBehaviour
         foreach (long gone in lastSent.Keys.Where(key => !current.Contains(key)).ToList())
         {
             lastSent.Remove(gone);
+            lastSentShips.Remove(gone);
             lastSentTravel.Remove(gone);
         }
     }
@@ -468,12 +514,11 @@ public class PortalMapService : MonoBehaviour
         return true;
     }
 
-    // Public stations, portals and ships for everyone; other stations only for the player who built them.
+    // Public stations and portals for everyone; other stations only for the player who built them.
     private bool TryGetChanged(long key, long playerID, out ZPackage package)
     {
         List<PortalMapEntry> visible = portals
             .Where(portal => portal.Privacy == PortalMapEntry.Public || (portal.Creator != 0L && portal.Creator == playerID))
-            .Concat(ships.Select(ship => ship.Entry))
             .ToList();
         package = PortalMapEntry.Write(visible);
         ulong content = ServerLists.Fingerprint(package);
@@ -483,6 +528,20 @@ public class PortalMapService : MonoBehaviour
         }
 
         lastSent[key] = content;
+        return true;
+    }
+
+    // Every ship, for everyone.
+    private bool TryGetShipsChanged(long key, out ZPackage package)
+    {
+        package = PortalMapEntry.Write(ships.Select(ship => ship.Entry).ToList());
+        ulong content = ServerLists.Fingerprint(package);
+        if (lastSentShips.TryGetValue(key, out ulong sent) && sent == content)
+        {
+            return false;
+        }
+
+        lastSentShips[key] = content;
         return true;
     }
 
@@ -553,6 +612,24 @@ public class PortalMapService : MonoBehaviour
             return;
         }
 
-        PortalMapPins.SetEntries(PortalMapEntry.Read(list));
+        receivedPortals = PortalMapEntry.Read(list);
+        ShowEntries();
+    }
+
+    private void RPC_ShipMap(long sender, ZPackage package)
+    {
+        if (sender != ZRoutedRpc.instance.GetServerPeerID() || ServerLists.Receive(sender, ShipRpcName, package) is not ZPackage list)
+        {
+            return;
+        }
+
+        receivedShips = PortalMapEntry.Read(list);
+        ShowEntries();
+    }
+
+    // The portals and the ships arrive apart; the map shows them together.
+    private void ShowEntries()
+    {
+        PortalMapPins.SetEntries(receivedPortals.Concat(receivedShips).ToList());
     }
 }

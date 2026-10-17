@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrudvikWhiteHilt.Helpers;
 
 /// <summary>
-/// Packs the lists the server services send to each player (portals, map areas, discoveries). A large list is gzipped,
-/// since Steam connections send data as it is; a fingerprint tells whether a player already has the same list.
-/// A packed list is sent in pieces: Steam refuses a message over 512 KB, and the game then retries that one message
-/// forever, so nothing else ever reaches the player again.
+/// Packs the lists the server services send to each player (portals, map areas, discoveries) and the blueprints players
+/// share. A large list is gzipped, since Steam connections send data as it is; a fingerprint tells whether a player
+/// already has the same list. A packed list is sent in small pieces through one <see cref="SendQueue"/> per player,
+/// paced so the game's own data comes first: while more than 10 KB waits on a connection the game sends no positions,
+/// and other players are seen hanging in the air. Steam also refuses a message over 512 KB.
 /// </summary>
 public static class ServerLists
 {
@@ -18,8 +20,8 @@ public static class ServerLists
     /// <summary>Most bytes a received list may unpack to.</summary>
     public const int MaxUnpackedBytes = 16 * 1024 * 1024;
 
-    /// <summary>Most bytes of a packed list in one message, well under Steam's limit.</summary>
-    public const int PieceBytes = 192 * 1024;
+    /// <summary>Most bytes of a packed list in one message: about a tenth of a second of Steam's 150 KB/s.</summary>
+    public const int PieceBytes = 16 * 1024;
 
     /// <summary>Most pieces one list may be sent in.</summary>
     public const int MaxPieces = MaxUnpackedBytes / PieceBytes + 1;
@@ -27,24 +29,25 @@ public static class ServerLists
     private const byte Plain = 0;
     private const byte Gzip = 1;
 
-    private static readonly Dictionary<(long Peer, string Rpc), int> sending = new();
+    private static readonly Dictionary<long, SendQueue> queues = new();
     private static readonly Dictionary<(long Peer, string Rpc), Assembler> receiving = new();
     private static int nextTransfer;
 
     /// <summary>
-    /// Packs a list and sends it to one player, in pieces if it is large. A newer list for the same player and call
-    /// stops the pieces of an older one still being sent.
+    /// Packs a list and queues it for one player. A newer list for the same player and call replaces an older one that
+    /// has not started yet.
     /// </summary>
     /// <param name="target">The player's peer id.</param>
     /// <param name="rpcName">The routed call that receives the pieces, see <see cref="Receive"/>.</param>
     /// <param name="list">The list as written by its feature.</param>
-    public static void Send(long target, string rpcName, ZPackage list)
+    /// <param name="compress">False for data that is gzipped already.</param>
+    public static void Send(long target, string rpcName, ZPackage list, bool compress = true)
     {
-        SendPacked(target, rpcName, Pack(list).GetArray());
+        SendPacked(target, rpcName, Pack(list, compress).GetArray());
     }
 
     /// <summary>
-    /// Sends a list packed by <see cref="Pack"/> to one player, in pieces if it is large.
+    /// Queues a list packed by <see cref="Pack"/> for one player. A call to this machine itself is made at once.
     /// </summary>
     /// <param name="target">The player's peer id.</param>
     /// <param name="rpcName">The routed call that receives the pieces, see <see cref="Receive"/>.</param>
@@ -56,16 +59,36 @@ public static class ServerLists
             return;
         }
 
-        int transfer = ++nextTransfer;
-        List<ZPackage> pieces = Split(packed, transfer);
-        sending[(target, rpcName)] = transfer;
-        if (pieces.Count == 1)
+        List<ZPackage> pieces = Split(packed, ++nextTransfer);
+        if (target == ZDOMan.GetSessionID())
         {
-            ZRoutedRpc.instance.InvokeRoutedRPC(target, rpcName, pieces[0]);
+            pieces.ForEach(piece => ZRoutedRpc.instance.InvokeRoutedRPC(target, rpcName, piece));
             return;
         }
 
-        ZNet.instance.StartCoroutine(SendPieces(target, rpcName, transfer, pieces));
+        if (!queues.TryGetValue(target, out SendQueue queue))
+        {
+            queue = new SendQueue();
+            queues[target] = queue;
+        }
+
+        queue.Add(rpcName, pieces);
+        if (!ReferenceEquals(queue.Driver, ZNet.instance))
+        {
+            queue.Driver = ZNet.instance;
+            ZNet.instance.StartCoroutine(Pump(target, queue));
+        }
+    }
+
+    /// <summary>
+    /// Whether a list of this call for this player waits and has not started, so the next one replaces it.
+    /// </summary>
+    /// <param name="target">The player's peer id.</param>
+    /// <param name="rpcName">The call.</param>
+    /// <returns>True if one waits.</returns>
+    public static bool IsWaiting(long target, string rpcName)
+    {
+        return queues.TryGetValue(target, out SendQueue queue) && queue.IsWaiting(rpcName);
     }
 
     /// <summary>
@@ -74,8 +97,9 @@ public static class ServerLists
     /// <param name="sender">Who sent it; check that it is the server first.</param>
     /// <param name="rpcName">The routed call it came by.</param>
     /// <param name="piece">The piece.</param>
+    /// <param name="maxPacked">Most bytes the packed list may have; pieces beyond it are dropped as they come.</param>
     /// <returns>The list, ready to read, once its last piece is in; otherwise null.</returns>
-    public static ZPackage Receive(long sender, string rpcName, ZPackage piece)
+    public static ZPackage Receive(long sender, string rpcName, ZPackage piece, int maxPacked = int.MaxValue)
     {
         if (!receiving.TryGetValue((sender, rpcName), out Assembler assembler))
         {
@@ -83,7 +107,7 @@ public static class ServerLists
             receiving[(sender, rpcName)] = assembler;
         }
 
-        byte[] packed = assembler.Add(piece);
+        byte[] packed = assembler.Add(piece, maxPacked);
         return packed != null ? Unpack(new ZPackage(packed)) : null;
     }
 
@@ -117,12 +141,13 @@ public static class ServerLists
     /// Packs a list for sending.
     /// </summary>
     /// <param name="list">The list as written by its feature.</param>
+    /// <param name="compress">False for data that is gzipped already.</param>
     /// <returns>The package to send.</returns>
-    public static ZPackage Pack(ZPackage list)
+    public static ZPackage Pack(ZPackage list, bool compress = true)
     {
         byte[] bytes = list.GetArray();
         ZPackage packed = new();
-        if (bytes.Length >= CompressFrom)
+        if (compress && bytes.Length >= CompressFrom)
         {
             packed.Write(Gzip);
             packed.Write(Utils.Compress(bytes));
@@ -172,41 +197,44 @@ public static class ServerLists
         return hash;
     }
 
-    // On the server: sends the pieces one at a time, each once the player's connection has room for it, as the game
-    // does with its own data. Stops when a newer list replaced this one or the player left.
-    private static IEnumerator SendPieces(long target, string rpcName, int transfer, List<ZPackage> pieces)
+    // Sends one player's queue, a piece at a time as the queue allows, until it is empty or the player has left.
+    private static IEnumerator Pump(long target, SendQueue queue)
     {
-        (long, string) key = (target, rpcName);
-        foreach (ZPackage piece in pieces)
+        while (PumpOnce(target, queue))
         {
-            while (true)
-            {
-                if (ZRoutedRpc.instance == null || !sending.TryGetValue(key, out int current) || current != transfer)
-                {
-                    yield break;
-                }
-
-                ZNetPeer peer = ZNet.instance != null ? ZNet.instance.GetPeer(target) : null;
-                if (peer == null || peer.m_socket == null)
-                {
-                    sending.Remove(key);
-                    yield break;
-                }
-
-                if (peer.m_socket.GetSendQueueSize() <= PieceBytes)
-                {
-                    break;
-                }
-
-                yield return null;
-            }
-
-            ZRoutedRpc.instance.InvokeRoutedRPC(target, rpcName, piece);
+            yield return null;
         }
 
-        if (sending.TryGetValue(key, out int last) && last == transfer)
+        if (queues.TryGetValue(target, out SendQueue current) && current == queue)
         {
-            sending.Remove(key);
+            queues.Remove(target);
+        }
+
+        queue.Driver = null;
+    }
+
+    // Sends what may go now; false when the queue is done with.
+    private static bool PumpOnce(long target, SendQueue queue)
+    {
+        try
+        {
+            ZNetPeer peer = ZNet.instance != null && ZRoutedRpc.instance != null ? ZNet.instance.GetPeer(target) : null;
+            if (peer == null || peer.m_socket == null || !ReferenceEquals(queue.Driver, ZNet.instance))
+            {
+                return false;
+            }
+
+            while (queue.TryTake(Time.unscaledTime, peer.m_socket.GetSendQueueSize(), out string rpcName, out ZPackage piece))
+            {
+                ZRoutedRpc.instance.InvokeRoutedRPC(target, rpcName, piece);
+            }
+
+            return !queue.IsEmpty;
+        }
+        catch (Exception ex)
+        {
+            Jotunn.Logger.LogWarning($"Network: could not send a list to {target}: {ex.Message}");
+            return false;
         }
     }
 
@@ -225,8 +253,9 @@ public static class ServerLists
         /// Adds a piece made by <see cref="Split"/>.
         /// </summary>
         /// <param name="piece">The piece, read from its start.</param>
+        /// <param name="maxPacked">Most bytes the whole list may have.</param>
         /// <returns>The bytes of the packed list once its last piece is in; otherwise null.</returns>
-        public byte[] Add(ZPackage piece)
+        public byte[] Add(ZPackage piece, int maxPacked = int.MaxValue)
         {
             int pieceTransfer;
             int index;
@@ -258,7 +287,7 @@ public static class ServerLists
             }
 
             bool fits = part != null && part.Length <= PieceBytes && count >= 1 && count <= MaxPieces;
-            if (!fits || pieceCount != count || index != parts.Count)
+            if (!fits || pieceCount != count || index != parts.Count || size + part.Length > maxPacked)
             {
                 Clear();
                 return null;
