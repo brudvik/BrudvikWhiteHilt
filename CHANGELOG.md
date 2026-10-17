@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.149.1 - 2026-10-17
+
+### Changed
+- **The Mast Wisp clears the way ahead.** The wisp's force field only pushed the mist, slower than the ship sails, so
+  the ship was well into the Mistlands mist before it gave way. Now the mist melts away round the ship and ahead of
+  it, as far as two and a half seconds of sailing at its present speed, and the ordinary fog thins in under a second
+  instead of two. The reach is doubled: 30 m at Exploration 0, growing to 60 m at 100 (`MastWispReach` and
+  `MastWispReachMax` in `[Ships]`; the old defaults 15 and 30 are moved up once, custom values are kept).
+
 ## v0.149.0 - 2026-10-17
 
 ### Added

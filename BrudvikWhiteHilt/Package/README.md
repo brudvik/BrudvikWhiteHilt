@@ -35,7 +35,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.149.0
+## ✨ New in 0.149.1
+
+- **[A Mast Wisp that clears the way ahead](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)**: the Mistlands mist now melts away round the White Hilt Ship and ahead of its bow as it sails, instead of closing in before it gives way, and the wisp reaches twice as far: 30 m, growing to 60 m with Exploration.
+
+### Also new in 0.149.0
 
 - **[Two new terrors in the Ashlands](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-lava-worm)**: the **Lava Worm** rises out of the lava and drags you towards it, and the **Muspell Giant**, a fire giant 9 m tall, shakes the ground and leaves burning pools in its steps. Make **[Lava Worm armour](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#lava-worm-armour)** against the lava's heat, and the **[Surt Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#etching-a-rune)** and **Surtstone Amulet** from the giant's Surtstone.
 - **[Two new spirits in the Mistlands' fog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-huldra)**: the **Huldra** sings and lures you in, then turns into a hag of roots and rotten bark; her bark brews the **Huldra Draught**, which hides you from creatures. The see-through **[Mare](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-mare)** floats in the mist, steals your breath and rides you in your sleep, unless you wear a Mare Charm.
