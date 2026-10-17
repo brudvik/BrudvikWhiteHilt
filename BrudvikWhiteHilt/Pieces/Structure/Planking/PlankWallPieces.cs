@@ -12,10 +12,10 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Structure.Planking;
 
 /// <summary>
-/// A wooden piece made from the vanilla 2 × 2 m wood wall (woodwall) when the game starts: from the wall itself by
-/// <see cref="WallCutting"/>, or from the plank it is built of by <see cref="Joinery"/>. No model of its own, and nothing
-/// of the game's shipped. Keeps the vanilla wall's material, strength for its area and wear, and sits in the hammer
-/// right after it.
+/// A wooden piece made from a vanilla wooden piece (the 2 × 2 m wood wall, unless <see cref="Source"/> says otherwise)
+/// when the game starts: from its model, as by <see cref="WallCutting"/>, or from the plank it is built of by
+/// <see cref="Joinery"/>. No model of its own, and nothing of the game's shipped. Keeps the source's material, wear and
+/// strength for as many of it as it is worth, and sits in the hammer right after it.
 /// </summary>
 public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 {
@@ -29,8 +29,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 
     private static readonly string[] states = { "New", "Worn", "Broken" };
     private static readonly List<PlankWallPieceBase> all = new();
-    private static WallSource source;
-    private static bool sourceRead;
+    private static readonly Dictionary<string, WallSource> sources = new();
     private static bool orderHooked;
 
     private readonly PieceManager instance;
@@ -52,6 +51,12 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 
     /// <summary>Area in square metres, for the cost and the strength: the vanilla wall's for 4 m².</summary>
     protected virtual float Area => Width * Height;
+
+    /// <summary>The vanilla piece whose models it is made of, and after which it sits in the hammer.</summary>
+    protected virtual string Source => Wall;
+
+    /// <summary>How many of the source it is worth, for the cost and the strength.</summary>
+    protected virtual float Amount => Area / 4f;
 
     /// <summary>The vanilla piece the new one is a clone of, for its components.</summary>
     protected virtual string CopyFrom => Wall;
@@ -91,7 +96,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
     {
         try
         {
-            GameObject wall = PrefabManager.Instance.GetPrefab(Wall) ?? throw new InvalidOperationException($"{Wall} not found");
+            GameObject wall = PrefabManager.Instance.GetPrefab(Source) ?? throw new InvalidOperationException($"{Source} not found");
             GameObject copyFrom = PrefabManager.Instance.GetPrefab(CopyFrom) ?? throw new InvalidOperationException($"{CopyFrom} not found");
             PieceConfig config = new()
             {
@@ -102,11 +107,11 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             };
 
             CustomPiece piece = new(PrefabName, CopyFrom, config);
-            WallSource models = ReadWall(wall);
+            WallSource models = ReadSource(wall);
             Assemble(piece.PiecePrefab, models, copyFrom);
             WearNTear vanilla = wall.GetComponent<WearNTear>();
             WearNTear wearNTear = piece.PiecePrefab.GetComponent<WearNTear>();
-            wearNTear.m_health = vanilla.m_health * Area / 4f;
+            wearNTear.m_health = vanilla.m_health * Amount;
             wearNTear.m_materialType = vanilla.m_materialType;
 
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
@@ -120,7 +125,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             if (!orderHooked)
             {
                 orderHooked = true;
-                PieceManager.OnPiecesRegistered += PlaceAfterTheWall;
+                PieceManager.OnPiecesRegistered += PlaceAfterTheSource;
             }
 
             Jotunn.Logger.LogInfo($"{FullName} added!");
@@ -132,9 +137,9 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
         }
     }
 
-    /// <summary>The piece's model in one wear state, from the vanilla wall's models of that state.</summary>
-    /// <param name="tile">The vanilla 2 × 2 m wall's model.</param>
-    /// <param name="plank">One plank of the vanilla wall, a unit block with the grain along z.</param>
+    /// <summary>The piece's model in one wear state, from the source's models of that state.</summary>
+    /// <param name="tile">The source's model, such as the vanilla 2 × 2 m wall's.</param>
+    /// <param name="plank">One plank of the source, a unit block with the grain along z.</param>
     /// <returns>The model.</returns>
     protected abstract MeshData Shape(MeshData tile, MeshData plank);
 
@@ -168,13 +173,13 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
         return false;
     }
 
-    /// <summary>The recipe: the vanilla wall's for the area, rounded, at least 1 of each.</summary>
-    /// <param name="wall">The vanilla wall.</param>
+    /// <summary>The recipe: the source's for as many as it is worth, rounded, at least 1 of each.</summary>
+    /// <param name="wall">The source.</param>
     /// <param name="copyFrom">The vanilla piece the new one is a clone of.</param>
     /// <returns>The recipe.</returns>
     protected virtual RequirementConfig[] Requirements(GameObject wall, GameObject copyFrom)
     {
-        return Scaled(wall, Area / 4f).ToArray();
+        return Scaled(wall, Amount).ToArray();
     }
 
     /// <summary>A vanilla piece's recipe times a factor, rounded, at least 1 of each.</summary>
@@ -193,19 +198,18 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             });
     }
 
-    // The vanilla wall's model in each wear state with its material, read once for all the walls. A dedicated server
-    // draws nothing, so it reads nothing and builds only colliders and snap points.
-    private static WallSource ReadWall(GameObject wall)
+    // A vanilla piece's model in each wear state with its material and plank, read once for all the pieces made of it.
+    // A dedicated server draws nothing, so it reads nothing and builds only colliders and snap points.
+    private static WallSource ReadSource(GameObject wall)
     {
-        if (sourceRead)
-        {
-            return source;
-        }
-
-        sourceRead = true;
         if (VisualHelper.IsHeadless)
         {
             return null;
+        }
+
+        if (sources.TryGetValue(wall.name, out WallSource known))
+        {
+            return known;
         }
 
         Transform root = wall.transform;
@@ -220,25 +224,32 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             Material material = filter != null ? filter.GetComponent<MeshRenderer>()?.sharedMaterial : null;
             if (filter == null || material == null || !filter.sharedMesh.isReadable)
             {
-                throw new InvalidOperationException($"{Wall}: {state} has no readable model");
+                throw new InvalidOperationException($"{wall.name}: {state} has no readable model");
             }
 
             Matrix4x4 matrix = root.worldToLocalMatrix * filter.transform.localToWorldMatrix;
             read.Models[state] = MeshData.FromMesh(filter.sharedMesh, 0, matrix);
             read.Materials[state] = material;
 
-            // The plank the combined model was made of, in its own space: the unit block, its grain along z.
+            // The plank the combined model was made of, in its own space: the unit block, its grain along z. A state
+            // without one of its own takes the new one's.
             Mesh plank = holder.Find("high/plank")?.GetComponent<MeshFilter>()?.sharedMesh;
-            if (plank == null || !plank.isReadable)
+            if (plank != null && plank.isReadable)
             {
-                throw new InvalidOperationException($"{Wall}: {state} has no readable plank");
+                read.Planks[state] = MeshData.FromMesh(plank, 0, Matrix4x4.identity);
             }
-
-            read.Planks[state] = MeshData.FromMesh(plank, 0, Matrix4x4.identity);
+            else if (read.Planks.TryGetValue("New", out MeshData fresh))
+            {
+                read.Planks[state] = fresh;
+            }
+            else
+            {
+                throw new InvalidOperationException($"{wall.name}: {state} has no readable plank");
+            }
         }
 
-        source = read;
-        return source;
+        sources[wall.name] = read;
+        return read;
     }
 
     // Replaces the clone's look, colliders and snap points; keeps its network, piece, wear and what Keeps names.
@@ -304,8 +315,8 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
         wearNTear.m_fragmentRoots = null;
     }
 
-    // The new walls follow the vanilla 2 × 2 m wall in the hammer, in the order they were added.
-    private static void PlaceAfterTheWall()
+    // The new pieces follow the vanilla piece they are made of in the hammer, in the order they were added.
+    private static void PlaceAfterTheSource()
     {
         PieceTable table = PieceManager.Instance.GetPieceTable(PieceTables.Hammer);
         if (table == null)
@@ -314,20 +325,23 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
         }
 
         List<GameObject> pieces = table.m_pieces;
-        List<GameObject> ours = all.Select(entry => pieces.FirstOrDefault(prefab => prefab != null && prefab.name == entry.PrefabName))
-            .Where(prefab => prefab != null)
-            .ToList();
-        if (ours.Count == 0)
+        foreach (IGrouping<string, PlankWallPieceBase> family in all.GroupBy(entry => entry.Source))
         {
-            return;
-        }
+            List<GameObject> ours = family.Select(entry => pieces.FirstOrDefault(prefab => prefab != null && prefab.name == entry.PrefabName))
+                .Where(prefab => prefab != null)
+                .ToList();
+            if (ours.Count == 0)
+            {
+                continue;
+            }
 
-        pieces.RemoveAll(ours.Contains);
-        int after = pieces.FindIndex(prefab => prefab != null && prefab.name == Wall);
-        pieces.InsertRange(after < 0 ? pieces.Count : after + 1, ours);
+            pieces.RemoveAll(ours.Contains);
+            int after = pieces.FindIndex(prefab => prefab != null && prefab.name == family.Key);
+            pieces.InsertRange(after < 0 ? pieces.Count : after + 1, ours);
+        }
     }
 
-    // The vanilla wall's models and materials by wear state.
+    // A vanilla piece's models, materials and planks by wear state.
     private sealed class WallSource
     {
         public readonly Dictionary<string, MeshData> Models = new();
@@ -632,4 +646,274 @@ public sealed class WoodBrace2 : WoodBraceBase
     protected override float Length => 2f;
     /// <inheritdoc/>
     protected override float Section => 0.16f;
+}
+
+/// <summary>
+/// A stair made of the vanilla wood stair (2 m wide, rising 1 m over 2 m). A clone of it, so it keeps its colliders,
+/// which are laid out again for the new shape.
+/// </summary>
+public abstract class WoodStairBase : PlankWallPieceBase
+{
+    /// <summary>The vanilla wood stair.</summary>
+    protected const string Stair = "wood_stair";
+
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    protected WoodStairBase(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Width => 2;
+    /// <inheritdoc/>
+    protected override int Height => 2;
+    /// <inheritdoc/>
+    protected override string Source => Stair;
+    /// <inheritdoc/>
+    protected override string CopyFrom => Stair;
+
+    /// <inheritdoc/>
+    protected override bool Keeps(Transform child)
+    {
+        return child.name.StartsWith("collider");
+    }
+
+    /// <inheritdoc/>
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
+    {
+        yield break;
+    }
+}
+
+/// <summary>The vanilla wood stair twice side by side: 4 m wide.</summary>
+public sealed class WoodStairWide : WoodStairBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodStairWide(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_stair_wide";
+    /// <inheritdoc/>
+    protected override string FullName => "Wide Wood Stair";
+    /// <inheritdoc/>
+    protected override string Description => "The wood stair 4 m wide, rising 1 m over 2 m, as one piece: for the way up to a hall or a broad gallery.";
+    /// <inheritdoc/>
+    protected override float Amount => 2f;
+    /// <inheritdoc/>
+    protected override MeshData Shape(MeshData tile, MeshData plank) => Joinery.WideStair(tile);
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Vector3> SnapPoints()
+    {
+        foreach (float x in new[] { -2f, 0f, 2f })
+        {
+            yield return new Vector3(x, 0f, 1f);
+            yield return new Vector3(x, 1f, -1f);
+        }
+    }
+
+    // The vanilla colliders run across the stair from its middle, so they are made twice as wide.
+    /// <inheritdoc/>
+    protected override void Finish(GameObject prefab, GameObject copyFrom, int layer)
+    {
+        foreach (Transform collider in prefab.transform.Cast<Transform>().Where(Keeps))
+        {
+            Vector3 scale = collider.localScale;
+            collider.localScale = new Vector3(scale.x * 2f, scale.y, scale.z);
+            collider.localPosition = new Vector3(collider.localPosition.x * 2f, collider.localPosition.y, collider.localPosition.z);
+        }
+    }
+}
+
+/// <summary>Two vanilla wood stairs with a landing between them.</summary>
+public sealed class WoodStairLanding : WoodStairBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodStairLanding(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_stair_landing";
+    /// <inheritdoc/>
+    protected override string FullName => "Wood Stair with Landing";
+    /// <inheritdoc/>
+    protected override string Description => "Two flights of the wood stair with a landing 2 × 2 m between them: up 1 m, 2 m level, up 1 m more, 6 m in all. A wall or a railing can stand on the landing's edge.";
+    /// <inheritdoc/>
+    protected override float Amount => 3f;
+    /// <inheritdoc/>
+    protected override MeshData Shape(MeshData tile, MeshData plank) => Joinery.StairWithLanding(tile, plank);
+
+    // The landing, as the vanilla floor's collider.
+    /// <inheritdoc/>
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
+    {
+        yield return (new Vector3(0f, 1.032f, -2f), new Vector3(2f, 0.13f, 2f), Quaternion.identity);
+    }
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Vector3> SnapPoints()
+    {
+        foreach (float x in new[] { -1f, 1f })
+        {
+            yield return new Vector3(x, 0f, 1f);
+            yield return new Vector3(x, 1f, -1f);
+            yield return new Vector3(x, 1f, -3f);
+            yield return Joinery.SecondFlight + new Vector3(x, 1f, -1f);
+        }
+    }
+
+    // The first flight keeps the vanilla colliders; the second gets a copy of them.
+    /// <inheritdoc/>
+    protected override void Finish(GameObject prefab, GameObject copyFrom, int layer)
+    {
+        foreach (Transform collider in prefab.transform.Cast<Transform>().Where(Keeps).ToList())
+        {
+            GameObject copy = UnityEngine.Object.Instantiate(collider.gameObject, prefab.transform);
+            copy.name = collider.name;
+            copy.transform.localPosition = collider.localPosition + Joinery.SecondFlight;
+            copy.transform.localRotation = collider.localRotation;
+            copy.transform.localScale = collider.localScale;
+        }
+    }
+}
+
+/// <summary>
+/// A bargeboard (vindski) along the edge of a gable, made of the vanilla wall's plank: from its upper end down the
+/// roof's edge, as the dragon gable's boards. The 1 m one goes from the ridge end along the half of a ridge piece, the
+/// 2 m one along a roof piece below it, so they follow the vanilla roof's snap points. Snaps at both ends; turn it
+/// 180° for the other slope.
+/// </summary>
+public abstract class WoodBargeboardBase : PlankWallPieceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    protected WoodBargeboardBase(PieceManager instance) : base(instance) { }
+
+    /// <summary>Roof pitch in degrees, for the name: 26, 45 or 67.</summary>
+    protected abstract int Pitch { get; }
+
+    /// <summary>How far the roof falls over 2 m.</summary>
+    protected abstract float Rise { get; }
+
+    /// <summary>How far out it reaches: 1 m for the ridge piece, 2 m for a roof piece.</summary>
+    protected abstract int Run { get; }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => Run == 2 ? $"piece_whitehilt_wood_bargeboard_{Pitch}" : $"piece_whitehilt_wood_bargeboard_{Pitch}_ridge";
+    /// <inheritdoc/>
+    protected override string FullName => Run == 2 ? $"Wood Bargeboard {Pitch}°" : $"Wood Bargeboard {Pitch}°, Ridge";
+    /// <inheritdoc/>
+    protected override string Description => Run == 2
+        ? $"A plain bargeboard along the edge of a {Pitch}° gable, for one roof piece: 2 m out, from where the one above ends to where the next begins. Turn it round for the other slope."
+        : $"A plain bargeboard along the edge of a {Pitch}° gable at the ridge piece: 1 m out from the ridge end, where the bargeboard of the other slope meets it. Turn it round for the other slope.";
+    /// <inheritdoc/>
+    protected override int Width => 1;
+    /// <inheritdoc/>
+    protected override int Height => 1;
+    /// <inheritdoc/>
+    protected override float Area => Run;
+    /// <inheritdoc/>
+    protected override MeshData Shape(MeshData tile, MeshData plank) => Joinery.Bargeboard(plank, Rise, Run);
+
+    /// <inheritdoc/>
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
+    {
+        (Vector3 center, Vector3 size, float degrees) = Joinery.BargeBox(Rise, Run);
+        yield return (center, size, Quaternion.Euler(degrees, 0f, 0f));
+    }
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Vector3> SnapPoints()
+    {
+        return new[] { Vector3.zero, new Vector3(0f, -Rise, 2f) * (Run / 2f) };
+    }
+}
+
+/// <summary>A bargeboard at the ridge piece of the 26° roofs.</summary>
+public sealed class WoodBargeboard26Ridge : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard26Ridge(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 26;
+    /// <inheritdoc/>
+    protected override float Rise => 1f;
+    /// <inheritdoc/>
+    protected override int Run => 1;
+}
+
+/// <summary>A bargeboard for the 26° roofs.</summary>
+public sealed class WoodBargeboard26 : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard26(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 26;
+    /// <inheritdoc/>
+    protected override float Rise => 1f;
+    /// <inheritdoc/>
+    protected override int Run => 2;
+}
+
+/// <summary>A bargeboard at the ridge piece of the 45° roofs.</summary>
+public sealed class WoodBargeboard45Ridge : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard45Ridge(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 45;
+    /// <inheritdoc/>
+    protected override float Rise => 2f;
+    /// <inheritdoc/>
+    protected override int Run => 1;
+}
+
+/// <summary>A bargeboard for the 45° roofs.</summary>
+public sealed class WoodBargeboard45 : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard45(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 45;
+    /// <inheritdoc/>
+    protected override float Rise => 2f;
+    /// <inheritdoc/>
+    protected override int Run => 2;
+}
+
+/// <summary>A bargeboard at the ridge piece of the 67° roofs.</summary>
+public sealed class WoodBargeboard67Ridge : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard67Ridge(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 67;
+    /// <inheritdoc/>
+    protected override float Rise => 4f;
+    /// <inheritdoc/>
+    protected override int Run => 1;
+}
+
+/// <summary>A bargeboard for the 67° roofs.</summary>
+public sealed class WoodBargeboard67 : WoodBargeboardBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBargeboard67(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override int Pitch => 67;
+    /// <inheritdoc/>
+    protected override float Rise => 4f;
+    /// <inheritdoc/>
+    protected override int Run => 2;
 }

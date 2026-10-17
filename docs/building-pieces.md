@@ -139,6 +139,23 @@ Built of the plank the vanilla walls and floors are made of, stretched to each b
 
 The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_lattice_2x2`, `_2x1` and `piece_whitehilt_wood_brace_05`, `_1` and `_2`. Not yet tested in the game.
 
+### Wide stair, landing & bargeboards
+
+<img src="images/wood_stair_wide.png" alt="Wide Wood Stair" title="Wide Wood Stair" height="140"> <img src="images/wood_stair_landing.png" alt="Wood Stair with Landing" title="Wood Stair with Landing" height="140"> <img src="images/wood_bargeboards.png" alt="Bargeboards on vanilla gables at 26° and 45°" title="Bargeboards on vanilla gables at 26° and 45°" height="140">
+
+| Piece | Description | Crafting Station |
+|-------|-------------|------------------|
+| **Wide Wood Stair** | The vanilla wood stair twice side by side: 4 m wide, rising 1 m over 2 m | Workbench |
+| **Wood Stair with Landing** | Two flights of the vanilla stair with a 2 × 2 m landing between: up 1 m, 2 m level, up 1 m more, 6 m in all | Workbench |
+| **Wood Bargeboard 26°, 45°, 67°** | A plain bargeboard along the gable's edge for one vanilla roof piece, 2 m out | Workbench |
+| **Wood Bargeboard 26°, 45°, 67°, Ridge** | The same for the half of a vanilla ridge piece, 1 m out from the ridge end | Workbench |
+
+- **The stairs** are the vanilla stair's own model and colliders, laid out again; they cost and hold as two stairs (the wide one) and three (the one with a landing). The landing's planks lie level with a vanilla floor at the head of the first flight, so a floor, wall or railing snaps to its corners. They sit in the hammer after the vanilla stair.
+- **The bargeboards** lie on the roof line as the [dragon gable](roofs.md#dragon-gable)'s boards do and are sawn plumb at both ends. Snap the ridge board to the ridge end of a vanilla (or White Hilt) ridge piece and the next to its foot, one roof piece at a time down to the eave; turn them 180° for the other slope. Made of the vanilla wall's plank; they sit after the vanilla wood wall.
+- A **ridge purlin** of its own is left out: the vanilla wood beam and log beam under the ridge are just that.
+
+The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_stair_wide`, `_landing` and `piece_whitehilt_wood_bargeboard_26`, `_45`, `_67` and each with `_ridge`. Not yet tested in the game.
+
 ---
 
 ## Iron Grates

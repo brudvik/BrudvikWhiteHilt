@@ -343,4 +343,68 @@ public class PlankingTests
         Assert.Equal(reach, end.x, 3);
         Assert.Equal(0f, end.y, 3);
     }
+
+    [Theory]
+    [InlineData(1f, 1f)]
+    [InlineData(1f, 2f)]
+    [InlineData(2f, 1f)]
+    [InlineData(2f, 2f)]
+    [InlineData(4f, 1f)]
+    [InlineData(4f, 2f)]
+    public void ABargeboardLiesOnTheRoofLineAndIsSawnPlumb(float rise, float run)
+    {
+        MeshData board = Joinery.Bargeboard(Plank(), rise, run);
+        Vector3 up = new Vector3(0f, 2f, rise).normalized;
+
+        board.Range(0, out float left, out float right);
+        board.Range(2, out float front, out float back);
+        Assert.Equal(-Joinery.BargeThickness / 2f, left, 4);
+        Assert.Equal(Joinery.BargeThickness / 2f, right, 4);
+        Assert.Equal(0f, front, 4);
+        Assert.Equal(run, back, 4);
+
+        // Its lower edge on the roof line through its upper end, its upper edge a board's width over it.
+        Assert.All(board.Vertices, v => Assert.InRange(Vector3.Dot(v, up), -1e-4f, Joinery.BargeWidth + 1e-4f));
+        AssertClosed(board);
+
+        // The far end of the box, turned about x, lands at the board's foot on the roof line.
+        (Vector3 center, Vector3 size, float degrees) = Joinery.BargeBox(rise, run);
+        float radians = degrees * Mathf.Deg2Rad;
+        Vector3 foot = center + new Vector3(0f, -Mathf.Sin(radians), Mathf.Cos(radians)) * (size.z / 2f) - up * (size.y / 2f);
+        Assert.Equal(-rise * run / 2f, foot.y, 3);
+        Assert.Equal(run, foot.z, 3);
+    }
+
+    // A stand-in for the vanilla stair: a slab rising 1 m from its foot at z = 1 to its head at z = -1, 2 m wide.
+    private static MeshData StairTile()
+    {
+        return Box(new Vector3(-1f, 0f, -1f), new Vector3(1f, 1f, 1f));
+    }
+
+    [Fact]
+    public void AWideStairIsTwoStairsSideBySide()
+    {
+        MeshData stair = Joinery.WideStair(StairTile());
+
+        stair.Range(0, out float left, out float right);
+        Assert.Equal(-2f, left, 4);
+        Assert.Equal(2f, right, 4);
+        Assert.Equal(2 * StairTile().TriangleCount, stair.TriangleCount);
+    }
+
+    [Fact]
+    public void AStairWithALandingRisesTwoMetresOverSix()
+    {
+        MeshData stair = Joinery.StairWithLanding(StairTile(), Plank());
+
+        stair.Range(1, out float bottom, out float top);
+        stair.Range(2, out float back, out float front);
+        Assert.Equal(0f, bottom, 4);
+        Assert.Equal(2f, top, 4);
+        Assert.Equal(-5f, back, 4);
+        Assert.Equal(1f, front, 4);
+
+        // The landing's planks are level with the top of a vanilla floor laid at the head of the first flight.
+        Assert.Contains(stair.Vertices, v => Mathf.Abs(v.y - (1f + Joinery.FloorTop)) < 1e-4f && v.z < -2.9f && v.z > -3.1f);
+    }
 }

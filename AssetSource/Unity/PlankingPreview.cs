@@ -36,7 +36,16 @@ public static class PlankingPreview
         ("wood_lattice_2x1", (tile, plank) => Joinery.Lattice(plank, 2f, 1f), false),
         ("wood_brace_05", (tile, plank) => Joinery.Brace(plank, 0.5f, 0.12f), false),
         ("wood_brace_1", (tile, plank) => Joinery.Brace(plank, 1f, 0.14f), false),
-        ("wood_brace_2", (tile, plank) => Joinery.Brace(plank, 2f, 0.16f), false)
+        ("wood_brace_2", (tile, plank) => Joinery.Brace(plank, 2f, 0.16f), false),
+        ("wood_bargeboard_26", (tile, plank) => Joinery.Bargeboard(plank, 1f, 2f), false),
+        ("wood_bargeboard_45", (tile, plank) => Joinery.Bargeboard(plank, 2f, 2f), false),
+        ("wood_bargeboard_67", (tile, plank) => Joinery.Bargeboard(plank, 4f, 2f), false)
+    };
+
+    private static readonly (string Name, Func<MeshData, MeshData, MeshData> Shape)[] stairs =
+    {
+        ("wood_stair_wide", (stair, plank) => Joinery.WideStair(stair)),
+        ("wood_stair_landing", (stair, plank) => Joinery.StairWithLanding(stair, plank))
     };
 
     /// <summary>
@@ -125,8 +134,31 @@ public static class PlankingPreview
                 }
             }
 
+            GameObject stairPrefab = prefabs.First(g => g.name == "wood_stair");
+            foreach ((string name, Func<MeshData, MeshData, MeshData> shape) in stairs)
+            {
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+                SetUpStage(true);
+                (MeshData stair, Material material) = ReadModel(stairPrefab);
+                GameObject piece = Place(shape(stair, ReadPlank(wallPrefab)), material, name, Vector3.zero, 0f);
+                Bounds bounds = MeasureBounds(piece);
+                Texture2D sheet = new(1400, 700, TextureFormat.RGB24, false);
+                sheet.SetPixels(0, 0, 700, 700, RenderView(bounds, Quaternion.Euler(25f, 140f, 0f), 700, 700).GetPixels());
+                sheet.SetPixels(700, 0, 700, 700, RenderView(bounds, Quaternion.Euler(10f, 90f, 0f), 700, 700).GetPixels());
+                sheet.Apply();
+                File.WriteAllBytes(Path.Combine(outFolder, $"{name}.png"), sheet.EncodeToPNG());
+                Debug.Log($"[Planking] {name}: {piece.GetComponent<MeshFilter>().sharedMesh.vertexCount} vertices");
+                if (docsFolder != null)
+                {
+                    GameObject.Find("Ground")?.SetActive(false);
+                    Texture2D picture = RenderView(MeasureBounds(piece), Quaternion.Euler(25f, 140f, 0f), 900, 800, 1.05f, default, true);
+                    File.WriteAllBytes(Path.Combine(docsFolder, $"{name}.png"), picture.EncodeToPNG());
+                }
+            }
+
             RenderTower(floorPrefab, wallPrefab, outFolder, docsFolder);
             RenderFrame(prefabs, wallPrefab, outFolder, docsFolder);
+            RenderGables(prefabs, wallPrefab, outFolder, docsFolder);
         }
         finally
         {
@@ -196,6 +228,36 @@ public static class PlankingPreview
         File.WriteAllBytes(Path.Combine(docsFolder ?? outFolder, "wood_frame.png"), picture.EncodeToPNG());
     }
 
+    // Two vanilla gables, 26° and 45°: the ridge piece and a roof piece down each side, and the bargeboards on the
+    // near end, snapped as in the game: the ridge board at the ridge end, the roof board at its foot.
+    private static void RenderGables(List<GameObject> prefabs, GameObject wallPrefab, string outFolder, string docsFolder)
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+        SetUpStage(docsFolder == null);
+        (_, Material material) = ReadModel(wallPrefab);
+        MeshData plank = ReadPlank(wallPrefab);
+        GameObject root = new("gables");
+        foreach ((string suffix, float rise, float x) in new[] { ("", 1f, 0f), ("_45", 2f, 4f) })
+        {
+            // The ridge piece's edge snap is the ridge end, half the rise over its feet 1 m out each way; a roof
+            // piece's top snaps (1, 1, -1) on a foot, so it stands (0, -1, 2) from the ridge piece, turned for each side.
+            Vector3 ridge = new(x, 3f, 0f);
+            Vector3 apex = ridge + new Vector3(-1f, rise / 2f, 0f);
+            Instantiate(prefabs.First(g => g.name == "wood_roof_top" + suffix), ridge, Quaternion.identity).transform.SetParent(root.transform, true);
+            foreach (float side in new[] { 1f, -1f })
+            {
+                Quaternion turn = Quaternion.Euler(0f, side > 0f ? 0f : 180f, 0f);
+                Instantiate(prefabs.First(g => g.name == "wood_roof" + suffix), ridge + turn * new Vector3(0f, -1f, 2f), turn).transform.SetParent(root.transform, true);
+                Place(Joinery.Bargeboard(plank, rise, 1f), material, "ridge_board", apex, side > 0f ? 0f : 180f).transform.SetParent(root.transform, true);
+                Vector3 boardFoot = apex + turn * new Vector3(0f, -rise / 2f, 1f);
+                Place(Joinery.Bargeboard(plank, rise, 2f), material, "roof_board", boardFoot, side > 0f ? 0f : 180f).transform.SetParent(root.transform, true);
+            }
+        }
+
+        Texture2D picture = RenderView(MeasureBounds(root), Quaternion.Euler(20f, 60f, 0f), 1400, 800, 0.85f, default, docsFolder != null);
+        File.WriteAllBytes(Path.Combine(docsFolder ?? outFolder, "wood_bargeboards.png"), picture.EncodeToPNG());
+    }
+
     // As PlankWallPieceBase.ReadWall in the mod: the plank of the vanilla wall, a unit block with the grain along z.
     private static MeshData ReadPlank(GameObject wallPrefab)
     {
@@ -247,7 +309,7 @@ public static class PlankingPreview
             UnityEngine.Object.DestroyImmediate(far.gameObject);
         }
 
-        copy.transform.SetPositionAndRotation(position, rotation * copy.transform.rotation);
+        copy.transform.SetPositionAndRotation(position, rotation);
         return copy;
     }
 
