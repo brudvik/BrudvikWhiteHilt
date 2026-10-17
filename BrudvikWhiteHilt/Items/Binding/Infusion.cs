@@ -43,6 +43,9 @@ public enum InfusionKind
 
     /// <summary>Rowan's Ward, for a shield: a foe whose blow is blocked is struck by lightning.</summary>
     Ward,
+
+    /// <summary>Surt's Wrath: fire damage, and some hits leave a burning pool under the target.</summary>
+    Surt,
 }
 
 /// <summary>
@@ -67,6 +70,7 @@ public sealed class Infusion
         new(InfusionKind.Mire, "WhiteHiltMireRune", "WhiteHiltPeat:5, Tar:3", "Mire's Hold"),
         new(InfusionKind.Berserker, "WhiteHiltBloodRune", "WhiteHiltHenbane:5", "Berserker's Rage"),
         new(InfusionKind.Ward, "WhiteHiltThunderRune", "FineWood:10, WhiteHiltRosehips:5", "Rowan's Ward"),
+        new(InfusionKind.Surt, "WhiteHiltSurtRune", "SurtlingCore:3, FlametalNew:2", "Surt's Wrath"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
@@ -125,6 +129,7 @@ public sealed class Infusion
         switch (Kind)
         {
             case InfusionKind.Flame:
+            case InfusionKind.Surt:
                 damages.m_fire += amount;
                 break;
             case InfusionKind.Frost:

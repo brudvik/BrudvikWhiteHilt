@@ -76,9 +76,9 @@ public static class LavaWormSettings
         CooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "CooldownMinutes", 20f, "Real minutes before the Lava Worm can come for the same player again.",
             new AcceptableValueRange<float>(0f, 1440f));
         Health = WhiteHiltConfig.BindAdminOnly(Section, "Health", 3500f, "Health of the Lava Worm. Applies after a restart.", new AcceptableValueRange<float>(50f, 30000f));
-        Damage = WhiteHiltConfig.BindAdminOnly(Section, "Damage", 90f, "Pierce damage of the Lava Worm's bite. Applies after a restart.",
+        Damage = WhiteHiltConfig.BindAdminOnly(Section, "Damage", 120f, "Pierce damage of the Lava Worm's bite. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 1000f));
-        FireDamage = WhiteHiltConfig.BindAdminOnly(Section, "FireDamage", 60f, "Fire damage of the Lava Worm's bite; fire also sets you burning. Applies after a restart.",
+        FireDamage = WhiteHiltConfig.BindAdminOnly(Section, "FireDamage", 80f, "Fire damage of the Lava Worm's bite; fire also sets you burning. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 1000f));
         Drag = WhiteHiltConfig.BindAdminOnly(Section, "Drag", 150f, "How hard a bite drags its prey towards the worm, and the lava it rose from. 0 = no drag. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 500f));

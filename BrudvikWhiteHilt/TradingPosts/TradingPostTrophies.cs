@@ -47,7 +47,7 @@ public static class TradingPostTrophies
         {
             "TrophyCharredMelee", "TrophyCharredArcher", "TrophyCharredMage", "TrophyAsksvin", "TrophyVolture", "TrophyFallenValkyrie",
             "TrophyMorgen", "TrophyBonemawSerpent", "TrophyBlob_Lava", "WhiteHilt_TrophyGarmHound",
-            "WhiteHilt_TrophyLavaWorm"
+            "WhiteHilt_TrophyLavaWorm", "WhiteHilt_TrophyMuspellGiant"
         },
         new[]
         {
@@ -61,7 +61,7 @@ public static class TradingPostTrophies
     {
         "TrophyAbomination", "TrophySerpent", "TrophySGolem", "TrophyGjall", "TrophyFallenValkyrie", "TrophyMorgen", "TrophyBonemawSerpent",
         "WhiteHilt_TrophyLindorm", "WhiteHilt_TrophyKraken", "WhiteHilt_TrophyDesertDragon", "WhiteHilt_TrophyDraugrJarl",
-        "WhiteHilt_TrophyYggdrasilWarden", "WhiteHilt_TrophyLavaWorm", "TrophyJotunWarrior", "TrophyJotunWitch", "TrophyElaking"
+        "WhiteHilt_TrophyYggdrasilWarden", "WhiteHilt_TrophyLavaWorm", "WhiteHilt_TrophyMuspellGiant", "TrophyJotunWarrior", "TrophyJotunWitch", "TrophyElaking"
     };
 
     // How much more a great beast's trophy costs.

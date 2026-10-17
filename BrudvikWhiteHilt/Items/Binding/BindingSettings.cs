@@ -50,6 +50,15 @@ public static class BindingSettings
     /// <summary>Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death.</summary>
     public static ConfigEntry<float> BerserkerMaxBonus { get; private set; }
 
+    /// <summary>Chance that a hit of a weapon etched with Surt's Wrath leaves a burning pool under the target.</summary>
+    public static ConfigEntry<float> SurtPoolChance { get; private set; }
+
+    /// <summary>Fire damage per second of a pool left by Surt's Wrath.</summary>
+    public static ConfigEntry<float> SurtPoolDamage { get; private set; }
+
+    /// <summary>Seconds a pool left by Surt's Wrath burns.</summary>
+    public static ConfigEntry<float> SurtPoolSeconds { get; private set; }
+
     /// <summary>Lightning damage of Rowan's Ward, as a share of the shield's base block power.</summary>
     public static ConfigEntry<float> WardShare { get; private set; }
 
@@ -96,6 +105,13 @@ public static class BindingSettings
         BerserkerMaxBonus = WhiteHiltConfig.BindAdminOnly(InfusionSection, "BerserkerMaxBonus", 0.6f,
             "Extra damage of a weapon etched with the Berserker's Rage when its wielder is near death; it grows with the health lost (0.6 = 60%, 30% at half health).",
             new AcceptableValueRange<float>(0f, 3f));
+        SurtPoolChance = WhiteHiltConfig.BindAdminOnly(InfusionSection, "SurtPoolChance", 0.25f,
+            "Chance that a hit of a weapon etched with Surt's Wrath leaves a burning pool under the target (0.25 = 25%). The pool burns your foes, never buildings.",
+            new AcceptableValueRange<float>(0f, 1f));
+        SurtPoolDamage = WhiteHiltConfig.BindAdminOnly(InfusionSection, "SurtPoolDamage", 15f,
+            "Fire damage per second of a burning pool left by Surt's Wrath.", new AcceptableValueRange<float>(0f, 500f));
+        SurtPoolSeconds = WhiteHiltConfig.BindAdminOnly(InfusionSection, "SurtPoolSeconds", 5f,
+            "Seconds a burning pool left by Surt's Wrath burns.", new AcceptableValueRange<float>(1f, 30f));
         WardShare = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WardShare", 0.5f,
             "Lightning damage dealt by Rowan's Ward to a foe whose blow is blocked, as a share of the shield's base block power (0.5 = half).",
             new AcceptableValueRange<float>(0f, 3f));

@@ -203,6 +203,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.DesertDragonRegistry.Initialize();
         Monsters.WildMonsterRegistry.Initialize();
         Monsters.LavaWormRegistry.Initialize();
+        Monsters.MuspellRegistry.Initialize();
         // After the Desert Dragon, which the horn's White Dragon is cloned from.
         Items.Summoning.DragonHorn.Initialize();
         Monsters.WhiteDragonRegistry.Initialize();
@@ -408,6 +409,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterRegistry.ApplyConfig();
         Monsters.DesertDragonRegistry.ApplyConfig();
         Monsters.WildMonsterRegistry.ApplyConfig();
+        Monsters.MuspellRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
         SeaBattles.Escorts.EscortContract.ApplyConfig();
         Items.Summoning.DragonHorn.ApplyConfig();

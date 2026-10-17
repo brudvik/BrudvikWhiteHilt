@@ -37,6 +37,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused_mire", "Etched rune: {0}, every hit tars the target");
         Translations.AddEnglish("whitehilt_infused_berserker", "Etched rune: {0}, up to {1}% more damage the more health you have lost");
         Translations.AddEnglish("whitehilt_infused_ward", "Etched rune: {0}, a foe whose blow you block is struck by {1} lightning");
+        Translations.AddEnglish("whitehilt_infused_surt", "Etched rune: {0}, {1}% of hits leave a burning pool under the foe");
         Infusion.RegisterTranslations();
     }
 
@@ -261,6 +262,16 @@ public static class GearBinding
     }
 
     /// <summary>
+    /// Whether a weapon's hits can leave a burning pool under the target.
+    /// </summary>
+    /// <param name="item">The weapon.</param>
+    /// <returns>True for a bound weapon etched with Surt's Wrath.</returns>
+    public static bool Scorches(ItemDrop.ItemData item)
+    {
+        return GetBound(item) != null && GetInfusion(item)?.Kind == InfusionKind.Surt;
+    }
+
+    /// <summary>
     /// Extra damage of a weapon etched with the Berserker's Rage, which grows with the health its wielder has lost.
     /// </summary>
     /// <param name="item">The weapon.</param>
@@ -312,6 +323,7 @@ public static class GearBinding
                     Translations.Number(BindingSettings.WolfsbaneBeastMultiplier.Value)),
                 InfusionKind.Dread => string.Format(localization.Localize("$whitehilt_infused_dread"), name,
                     Percent(BindingSettings.DreadChance.Value), Translations.Number(BindingSettings.DreadSeconds.Value)),
+                InfusionKind.Surt => string.Format(localization.Localize("$whitehilt_infused_surt"), name, Percent(BindingSettings.SurtPoolChance.Value)),
                 _ => string.Format(localization.Localize("$whitehilt_infused"), name),
             };
             text += "\n<color=orange>" + line + "</color>";

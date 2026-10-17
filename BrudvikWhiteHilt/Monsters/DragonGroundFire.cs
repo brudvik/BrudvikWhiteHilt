@@ -7,7 +7,11 @@ using UnityEngine;
 
 namespace BrudvikWhiteHilt.Monsters;
 
-/// <summary>A short-lived, networked ground fire patch without terrain changes or spreading.</summary>
+/// <summary>
+/// A short-lived, networked ground fire patch without terrain changes or spreading: a dragon's breath on dry ground, or
+/// the burning pool a Muspell Giant leaves in its steps and where its molten rocks land. A pool has its own size and
+/// time, does not follow the dragon's settings, and never burns buildings.
+/// </summary>
 public class DragonGroundFire : MonoBehaviour
 {
     /// <summary>Network prefab identifier.</summary>
@@ -34,8 +38,11 @@ public class DragonGroundFire : MonoBehaviour
     /// <summary>The saved scaled fire damage per second.</summary>
     public float Damage => view.GetZDO().GetFloat("whitehilt_fire_damage");
 
+    /// <summary>Whether it is a Muspell Giant's pool rather than a dragon's fire.</summary>
+    public bool IsPool => view.GetZDO().GetFloat("whitehilt_fire_seconds") > 0f;
+
     /// <summary>Whether the patch is initialized and has not expired.</summary>
-    public bool IsActive => view != null && view.IsValid() && MonsterSettings.DragonGroundFire.Value &&
+    public bool IsActive => view != null && view.IsValid() && (IsPool || MonsterSettings.DragonGroundFire.Value) &&
         view.GetZDO().GetLong("whitehilt_fire_until") > ZNet.instance.GetTime().Ticks;
 
     /// <summary>Registers a nonpersistent patch using a lightweight copy of vanilla flame particles.</summary>
@@ -132,10 +139,21 @@ public class DragonGroundFire : MonoBehaviour
     /// <param name="damage">Scaled fire damage per second.</param>
     public void Initialize(Character source, float damage)
     {
+        Initialize(source, damage, MonsterSettings.DragonGroundRadius.Value, 0f);
+    }
+
+    /// <summary>Sets the source, damage, size and time of a pool before it is replicated.</summary>
+    /// <param name="source">The creature that leaves it.</param>
+    /// <param name="damage">Fire damage per second.</param>
+    /// <param name="radius">Radius in metres.</param>
+    /// <param name="seconds">Seconds it burns, or zero for a dragon's fire, which lasts as its settings say.</param>
+    public void Initialize(Character source, float damage, float radius, float seconds)
+    {
         ZDO data = view.GetZDO();
         data.Set("whitehilt_fire_source", source.GetZDOID());
         data.Set("whitehilt_fire_prefab", Utils.GetPrefabName(source.gameObject).GetStableHashCode());
-        data.Set("whitehilt_fire_radius", MonsterSettings.DragonGroundRadius.Value);
+        data.Set("whitehilt_fire_radius", radius);
+        data.Set("whitehilt_fire_seconds", seconds);
         Refresh(damage);
     }
 
@@ -146,7 +164,8 @@ public class DragonGroundFire : MonoBehaviour
         if (view.IsOwner())
         {
             view.GetZDO().Set("whitehilt_fire_damage", Mathf.Max(Damage, damage));
-            view.GetZDO().Set("whitehilt_fire_until", ZNet.instance.GetTime().AddSeconds(MonsterSettings.DragonGroundSeconds.Value).Ticks);
+            float seconds = IsPool ? view.GetZDO().GetFloat("whitehilt_fire_seconds") : MonsterSettings.DragonGroundSeconds.Value;
+            view.GetZDO().Set("whitehilt_fire_until", ZNet.instance.GetTime().AddSeconds(seconds).Ticks);
         }
     }
 
@@ -219,7 +238,8 @@ public class DragonGroundFireDamage : MonoBehaviour
         }
         float interval = MonsterSettings.DragonGroundTickSeconds.Value;
         nextTick = Time.time + interval;
-        if (!MonsterSettings.DragonGroundFire.Value || !DragonGroundFire.HasInstances)
+        // Each patch knows whether it burns: a dragon's fire only while its setting is on, a pool always.
+        if (!DragonGroundFire.HasInstances)
         {
             return;
         }
@@ -266,7 +286,7 @@ public class DragonGroundFireDamage : MonoBehaviour
                 float damage = 0f;
                 foreach (DragonGroundFire patch in DragonGroundFire.Instances)
                 {
-                    if (patch.Contains(piece.transform.position))
+                    if (!patch.IsPool && patch.Contains(piece.transform.position))
                     {
                         damage = Mathf.Max(damage, patch.Damage);
                     }

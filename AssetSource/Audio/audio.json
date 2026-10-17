@@ -201,6 +201,11 @@
       "duration": 3
     },
     {
+      "name": "arrival_muspell",
+      "prompt": "A colossal fire giant approaching: the earth shaking under enormous footsteps, a distant volcanic rumble and a booming roar",
+      "duration": 4
+    },
+    {
       "name": "arrival_kraken",
       "prompt": "A colossal sea monster surfacing from the deep, a huge surge of water, deep rumble and crashing waves",
       "duration": 4
@@ -230,6 +235,12 @@
     {
       "name": "amb_lavaworm",
       "prompt": "A huge burning serpent close by: thick lava bubbling and popping, hissing steam, a slow deep rumbling breath. No music.",
+      "duration": 10,
+      "loop": true
+    },
+    {
+      "name": "amb_muspell",
+      "prompt": "A colossal giant made of molten rock close by: a roaring furnace, crackling fire, cracking stone and a slow deep rumbling breath. No music.",
       "duration": 10,
       "loop": true
     },
@@ -634,6 +645,21 @@
       ],
       "custom": {
         "death": "A colossal burning serpent dying: a long fading rumbling roar, hissing steam and a heavy body sinking into bubbling lava"
+      }
+    },
+    {
+      "prefix": "muspell",
+      "description": "A colossal fire giant of molten rock from Muspelheim",
+      "voice": "thunderous booming roar with a roaring furnace and cracking stone",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "death": "A colossal fire giant of molten rock dying: a long fading thunderous roar, cracking and crumbling stone and a huge collapse that shakes the ground"
       }
     },
     {

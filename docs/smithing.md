@@ -63,6 +63,7 @@ Only a weapon with a bound trophy can be etched, and it holds one rune; etching 
 | Obsidian Rune | Ergot ×5 | **Dread**: a quarter of the hits send the target running in terror for 4 seconds; never bosses |
 | Mire Rune | Peat ×5, Tar ×3 | **Mire's Hold**: every hit tars the target, as a tar pit does, which slows it |
 | Blood Rune | Henbane ×5 | **Berserker's Rage**: the more health you have lost, the harder you hit: up to 60% more damage near death, 30% at half health |
+| Surt Rune | Surtling Core ×3, Flametal ×2 | **Surt's Wrath**: fire damage, and a quarter of the hits leave a burning pool under the foe (15 fire per second for 5 seconds), which burns your foes but never buildings |
 | Thunder Rune | Fine Wood ×10, Rosehips ×5 | **Rowan's Ward**, for a shield: a foe within 10 m whose blow you block is struck by lightning worth half the shield's base block power |
 
 The metal runes are the portal runes ([Portals & travel](portals.md)). The other runes are smithed at the Rune Forge only for etching; they cannot be hung on a rune post:
@@ -75,10 +76,11 @@ The metal runes are the portal runes ([Portals & travel](portals.md)). The other
 | Mire Rune | Iron ×4, Copper ×3, Tar ×2 |
 | Blood Rune | Iron ×4, Bloodbag ×5 |
 | Thunder Rune | Iron ×4, Silver ×2, Crystal ×3 |
+| Surt Rune | Iron ×4, Surtstone ×1 (from the [Muspell Giant](monsters.md#the-muspell-giant)) |
 | Glow Rune | Iron ×4, Surtling Core ×1, Resin ×5 |
 | Flame Rune | Iron ×4, Surtling Core ×2, Coal ×5 |
 
-The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6), and `WardShare` (0.5).
+The server sets it in two sections. `[Gear.Binding]`: `<Beast>Bonus` and `<Beast>Infusion` for each beast (e.g. `BlackMorgenBonus` 0.2, `BlackMorgenInfusion` 0.25). `[Gear.Infusions]`: `<Rune>Cost` for each infusion (e.g. `FlameCost` = `SurtlingCore:3`) and `DeepLifeStealShare` (0.5), `WolfsbaneBeastMultiplier` (3) and `WolfsbaneBeasts` (prefab names), `DreadChance` (0.25) and `DreadSeconds` (4), and `BerserkerMaxBonus` (0.6), `WardShare` (0.5), and `SurtPoolChance` (0.25), `SurtPoolDamage` (15) and `SurtPoolSeconds` (5).
 
 ---
 

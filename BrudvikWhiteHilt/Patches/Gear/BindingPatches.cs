@@ -6,13 +6,16 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Gear;
 
 /// <summary>
-/// Shows a bound trophy and an etched rune in the tooltip, gives the web and the grip of the deep their effect on hit,
+/// Shows a bound trophy and an etched rune in the tooltip, gives the web, the grip of the deep and Surt's Wrath their effect on hit,
 /// and lets the Rune Forge extensions show their own hover text.
 /// </summary>
 [HarmonyPatch]
 public static class BindingPatches
 {
     private static readonly int webHash = MonsterRegistry.WebEffectName.GetStableHashCode();
+
+    // A pool of Surt's Wrath is a little smaller than the Muspell Giant's.
+    private const float SurtPoolRadius = 1.6f;
 
     /// <summary>
     /// Adds the bound trophy and the etched rune to the item's tooltip.
@@ -56,6 +59,12 @@ public static class BindingPatches
         else if (GearBinding.Tars(weapon) && hit.m_statusEffectHash == 0)
         {
             hit.m_statusEffectHash = SEMan.s_statusEffectTared;
+        }
+
+        if (GearBinding.Scorches(weapon) && UnityEngine.Random.value < BindingSettings.SurtPoolChance.Value)
+        {
+            MuspellGiant.LeavePool(player, __instance.transform.position, BindingSettings.SurtPoolDamage.Value, SurtPoolRadius,
+                BindingSettings.SurtPoolSeconds.Value);
         }
 
         hit.m_damage.m_poison *= GearBinding.PoisonMultiplier(weapon, __instance);

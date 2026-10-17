@@ -4,7 +4,7 @@
 
 <img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
@@ -43,7 +43,7 @@ These values use the default difficulty star formulas, before pressure bonuses (
 
 The Lindorm's kin in the Ashlands: charred black, glowing from within, and at home in the lava.
 
-The Lava Worm is about **8.8 m long** at the default size, has **3500 health** and bites for **90 pierce and 60 fire damage**, so its bite sets you burning. Worse, the bite **drags you towards it**, and it lies in the lava. It is immune to fire and lava, resistant to slashing and piercing, and very weak to frost.
+The Lava Worm is about **8.8 m long** at the default size, has **3500 health** and bites for **120 pierce and 80 fire damage**, so its bite sets you burning. Worse, the bite **drags you towards it**, and it lies in the lava. It is immune to fire and lava, resistant to slashing and piercing, and very weak to frost.
 
 It comes, day or night, when:
 
@@ -55,6 +55,16 @@ Then, once a minute, there is a 4% chance it **rises out of the nearest lava**, 
 - It cannot be hurt and does not move while it is still rising.
 - It **sinks back into the lava**, without loot, when it has lost you for about 20 seconds, or when it has followed you more than 18 m from where it rose. Run from the lava and it gives up.
 - Its stars are rolled as a spawn's are, with the difficulty's level-up chance.
+
+## The Muspell Giant
+
+A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**, charred black with glowing cracks and a light in its chest that is seen from afar at night. The ground shakes under its steps, and a message and a distant rumble tell those near when one walks out of the fire.
+
+- It has **9000 health**. It punches, slams the ground and **throws molten rocks**, all as a troll does but much harder (3 times the troll's blunt damage: a punch of 180 blunt and 90 fire) and with **half as much fire** on top, so every hit sets you burning. The slam's area is as wide as the giant.
+- It leaves **burning pools** in its steps (one every 2 seconds while it walks) and where its rocks land: 20 fire damage per second, 2.2 m across, for 8 seconds. They burn its enemies, never buildings.
+- It is immune to fire, lava and poison, resistant to slashing, piercing and spirit, and **very weak to frost**. Pickaxes hurt it as they would stone.
+- It walks the Ashlands by day and night once **the Queen** is slain: a 4% chance every 15 minutes, never more than one near a player.
+- It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy one time in four.
 
 ## Giant spiders
 
@@ -172,6 +182,9 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Lindorm Trophy** | Lindorm | 15% | Your wall |
 | **Lava Worm Scale** ×2–4 | Lava Worm | Always | Lava Worm armour (below) |
 | **Lava Worm Trophy** | Lava Worm | 15% | Your wall |
+| **Surtstone** ×1–2 | Muspell Giant | Always | Surtstone Amulet (below), the Surt Rune ([Smithing](smithing.md#etching-a-rune)) |
+| **Flametal Ore** ×6–10 | Muspell Giant | Always | Vanilla recipes |
+| **Muspell Giant Trophy** | Muspell Giant | 25% | Your wall |
 | **Spider Silk** ×1–2 | Giant Spider | Always | Gift of Loki ([Potions](potions.md)), mending Shore Nets ([Fishing nets](fishing.md)), the Spider's Web rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
@@ -206,6 +219,7 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Hákarl** | Swamp: 46 health, 40 stamina, 60 min, regen 3 ([Foraging](foraging.md)) | Fermenter, **2** per Shark Meat (`HakarlYield`) | Shark Meat ×1 |
 | **Brood Scale Charm** | An accessory: **+8 armor** and **poison Resistant** while worn (`CharmArmor`, `CharmPoison`; [White Hilt gear](equipment.md)) | Galdr Table level 1 | Brood Scale ×4, Black Marble ×2, Eitr ×2 |
 | **Garm Fang Arrow** ×20 | Charred arrows with 82 pierce (as much as the vanilla Charred Arrow) and 25 fire damage (`ArrowPierce`, `ArrowFire`) | Workbench level 2 | Blackwood ×8, Garm Fang ×2, Feathers ×2 |
+| **Surtstone Amulet** | An accessory: **fire Resistant**, and the lava's heat builds up **25% slower**, adding up with [Lava Worm armour](#lava-worm-armour) (`AmuletFire`, `AmuletHeatResistance`) | Galdr Table level 1 | Surtstone ×2, Flametal ×4, Eitr ×4 |
 | **Heartwood Draught** | Mistlands mead: health regenerates 100% faster for 10 min (`HealthRegenMultiplier` 2; [Foraging & food](foraging.md)) | Cauldron (base), then the fermenter, 6 per base | Honey ×10, Living Heartwood ×2, Sap ×5 |
 
 ### Lava Worm armour
@@ -295,7 +309,7 @@ Section `[Lava Worm]` (admin only, synced from the server):
 | `ChancePerMinute` | 4 | Percent per minute while every condition holds |
 | `CooldownMinutes` | 20 | Real minutes before it can come for the same player again |
 | `Health` | 3500 | Health (after a restart) |
-| `Damage` / `FireDamage` | 90 / 60 | Pierce and fire damage of its bite (after a restart) |
+| `Damage` / `FireDamage` | 120 / 80 | Pierce and fire damage of its bite (after a restart) |
 | `Drag` | 150 | How hard a bite drags its prey towards it; 0 = no drag (after a restart) |
 | `Scale` | 2.2 | Size (1 = about 4 m long; default about 8.8 m; after a restart) |
 | `StarScale` | 0.12 | Visual growth per star up to two stars (+12% / +24%; after a restart) |
@@ -305,6 +319,25 @@ Section `[Lava Worm]` (admin only, synced from the server):
 | `Sounds` | true | Own roars, hisses and bubbling lava (after a restart) |
 | `ArmorHeatResistance` | 0.25 | Share of the lava's heat each piece of [Lava Worm armour](#lava-worm-armour) takes off; the pieces add up |
 | `ArmorSetFire` | VeryResistant | How the whole set changes the fire damage you take |
+
+Section `[Muspell Giant]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The Muspell Giant comes at all |
+| `RequiredKey` | defeated_queen | Global key needed first; empty for none |
+| `SpawnChance` | 4 | Percent chance per spawn check; 0 = none |
+| `SpawnSeconds` | 900 | Seconds between two spawn checks |
+| `Health` | 9000 | Health (after a restart) |
+| `DamageMultiplier` | 3 | Its blows and rocks do the troll's blunt damage times this (after a restart) |
+| `FireShare` | 0.5 | Fire each blow and rock adds, as a share of its blunt damage (after a restart) |
+| `Scale` | 2.2 | Size compared with a troll (about 9 m tall; after a restart) |
+| `PoolDamage` / `PoolRadius` / `PoolSeconds` | 20 / 2.2 / 8 | Fire damage per second, radius in metres and seconds of a burning pool |
+| `StepPoolSeconds` | 2 | Seconds between two pools in its steps; 0 = none |
+| `Sounds` | true | Own roars, heavy steps and roaring fire (after a restart) |
+| `TrophyChance` | 25 | Percent chance of its trophy (after a restart) |
+| `AmuletHeatResistance` | 0.25 | Share of the lava's heat the Surtstone Amulet takes off |
+| `AmuletFire` | Resistant | How the Surtstone Amulet changes the fire damage you take |
 
 Section `[Giant Spider]`:
 
@@ -412,7 +445,7 @@ On upgrade to 0.123.0, the previous defaults (`Health` 600, `FireDamage` 8, `Fla
 - `whitehilt_lindorm` shows every condition where you are, and whether it holds.
 - `whitehilt_lindorm summon` (admins) lets the Lindorm break out near you now.
 - `whitehilt_lavaworm` and `whitehilt_lavaworm summon` do the same for the Lava Worm; it needs lava within `LavaRange`.
-- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm`, `spawn WhiteHilt_LavaWorm` and `spawn WhiteHilt_DesertDragon`.
+- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm`, `spawn WhiteHilt_LavaWorm`, `spawn WhiteHilt_MuspellGiant` and `spawn WhiteHilt_DesertDragon`.
 
 ## Trophies and stars
 
@@ -422,10 +455,10 @@ A monster's `TrophyChance` is the chance at no stars. Each star raises it, as fo
 
 Every monster of the mod has its own sounds, made with [ElevenLabs](https://elevenlabs.io): idle, alert, attack, injury and death, three takes of each that the game picks between, so the same roar is not heard twice in a row. That goes for the monsters above, the Draugr Jarl, the White Dragon, the [Black Beasts](difficulty.md) (darker, with an eerie echo, so you know one is near) and the [plagues](trading-posts.md#plagues).
 
-- The big ones walk heavily: the Yggdrasil Warden's steps creak like timber, and the Draugr Jarl, the Black Troll, the Black Stone Golem, the Black Abomination, the Mire Mother, Gnawtooth and Icemaw thud.
+- The big ones walk heavily: the Yggdrasil Warden's steps creak like timber, and the Draugr Jarl, the Muspell Giant, the Black Troll, the Black Stone Golem, the Black Abomination, the Mire Mother, Gnawtooth and Icemaw thud.
 - The dragons beat their wings while they fly.
-- The Lindorm's ground rumbles and bursts as it comes up, the lava boils over as the Lava Worm rises, the sea surges as the Kraken rises, and a dread sounds when a Black Beast or a plague comes.
-- A spider nest rustles and skitters, a Nidhogg Spawn breathes and hisses as it lurks, the lava bubbles and steams round a Lava Worm, and a Yggdrasil Warden creaks and breathes as it stands like a tree.
+- The Lindorm's ground rumbles and bursts as it comes up, the lava boils over as the Lava Worm rises, the earth rumbles as a Muspell Giant comes, the sea surges as the Kraken rises, and a dread sounds when a Black Beast or a plague comes.
+- A spider nest rustles and skitters, a Nidhogg Spawn breathes and hisses as it lurks, the lava bubbles and steams round a Lava Worm, a Muspell Giant roars like a furnace, and a Yggdrasil Warden creaks and breathes as it stands like a tree.
 
 The monsters' `Sounds` settings switch their own sounds off (after a restart). The loops follow `AmbienceVolume` and the rest `EffectsVolume` in `[Sound]`.
 
