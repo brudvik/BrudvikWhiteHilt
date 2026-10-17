@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.146.0 - 2026-10-17
 
 ### Added
 - **[Mistlands foraging](docs/foraging.md#growing-ingredients)**: six new things to gather, each with its own generated
