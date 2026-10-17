@@ -5,6 +5,18 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 ## Unreleased
 
 ### Added
+- **[A wilder storm](docs/storms.md#wind-hail-and-the-lost-course)**:
+  - Fires with no roof over them go out in a raging storm, and a torch in the hand blows out in the open
+    (`FiresGoOut`). Not in the firestorm.
+  - Gusts tear doors open near players; while a door close by stands open the storm comes in, and the room shelters
+    no better than the lee of a wall until it is shut (`DoorsBlowOpen`).
+  - Gusts push players in the open with the wind and now and then knock them off their feet (`Gusts`).
+  - Hail showers in the forest storm, at sea and in the blizzard hurt those in the open or the lee, softened by armour,
+    and break young crops with no roof over them (`Hail`).
+  - The Kraken rises at sea in a raging storm by day or night, in any weather, four times as often, and in Ragnarok
+    at least every other minute (`KrakenFactor`).
+  - Lost at sea: the compass, the minimap and your marker on the map are gone in a storm at sea unless a Navigator's
+    Table is aboard (`LostAtSea`).
 - **[The build camera with a pickaxe](docs/build-tools.md#-build-camera--toolbar)**: hold any pickaxe and the build
   camera stays on; the blow lands where the camera aims, up to 4 m from it (`CameraMining`, `CameraMiningReach`).
   Break a rock while building, or dig the bottom under water from the shore.

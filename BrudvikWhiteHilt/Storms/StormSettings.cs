@@ -81,6 +81,24 @@ public static class StormSettings
     /// <summary>Seconds between felled trees on average.</summary>
     public static ConfigEntry<float> TreeFallSeconds { get; private set; }
 
+    /// <summary>Whether fires without a roof and torches in the open go out in a raging storm.</summary>
+    public static ConfigEntry<bool> FiresGoOut { get; private set; }
+
+    /// <summary>Whether gusts blow doors open, letting the storm in.</summary>
+    public static ConfigEntry<bool> DoorsBlowOpen { get; private set; }
+
+    /// <summary>Whether gusts push players in the open and now and then knock them down.</summary>
+    public static ConfigEntry<bool> Gusts { get; private set; }
+
+    /// <summary>Whether hail showers hurt players in the open and break young crops.</summary>
+    public static ConfigEntry<bool> Hail { get; private set; }
+
+    /// <summary>How many times more likely the Kraken rises at sea in a raging storm.</summary>
+    public static ConfigEntry<float> KrakenFactor { get; private set; }
+
+    /// <summary>Whether the compass and the player's place on the map are lost at sea in a raging storm.</summary>
+    public static ConfigEntry<bool> LostAtSea { get; private set; }
+
     /// <summary>Minutes before the warning that the weather forecast shows a storm.</summary>
     public static ConfigEntry<float> ForecastMinutes { get; private set; }
 
@@ -167,6 +185,19 @@ public static class StormSettings
             "Gusts fell trees 10 to 35 m from players, with the wind; never inside a base. Mind the falling trunk, and take the timber.");
         TreeFallSeconds = WhiteHiltConfig.BindAdminOnly(Section, "TreeFallSeconds", 40f,
             "Seconds between felled trees near each player on average.", new AcceptableValueRange<float>(5f, 600f));
+        FiresGoOut = WhiteHiltConfig.BindAdminOnly(Section, "FiresGoOut", true,
+            "In a raging storm, fires with no roof over them go out and must be lit again, and a torch in the hand blows out in the open. Not in the firestorm.");
+        DoorsBlowOpen = WhiteHiltConfig.BindAdminOnly(Section, "DoorsBlowOpen", true,
+            "In a raging storm, gusts blow doors open near players. While a door close by stands open the storm comes in: the room shelters only as the lee of a wall, and its fire does not help, until the door is shut.");
+        Gusts = WhiteHiltConfig.BindAdminOnly(Section, "Gusts", true,
+            "In a raging storm, hard gusts push players in the open with the wind, and now and then knock them off their feet.");
+        Hail = WhiteHiltConfig.BindAdminOnly(Section, "Hail", true,
+            "In the forest storm, at sea and in the blizzard, hail showers come now and then: they hurt those in the open (a helmet and armour help) and break young crops that have no roof over them.");
+        KrakenFactor = WhiteHiltConfig.BindAdminOnly(Section, "KrakenFactor", 4f,
+            "How many times more likely the Kraken rises by a ship at sea in a raging storm, by day or night, in fog or not and in any wind. In Ragnarok it is two and a half times that again, and at least every other minute. 1: the storm changes nothing.",
+            new AcceptableValueRange<float>(1f, 10f));
+        LostAtSea = WhiteHiltConfig.BindAdminOnly(Section, "LostAtSea", true,
+            "At sea in a raging storm the compass, the minimap and your own marker on the map are gone: the storm hides sun and stars. A Navigator's Table aboard keeps the course.");
         ForecastMinutes = WhiteHiltConfig.BindAdminOnly(Section, "ForecastMinutes", 5f,
             "Minutes before the warning that the weather forecast shows a coming storm, near a map table or a Cartographer's Desk and aboard a ship with a Navigator's Table, where the bell rings. 0: not foretold.", new AcceptableValueRange<float>(0f, 30f));
         Finds = WhiteHiltConfig.BindAdminOnly(Section, "Finds", true,
@@ -215,6 +246,14 @@ public static class StormSettings
         Translations.AddEnglish("whitehilt_forecast_storm_raging", "Great storm, {0} left");
         Translations.AddEnglish("msg_whitehilt_storm_static", "Your hair stands on end. Move!");
         Translations.AddEnglish("msg_whitehilt_storm_struck", "Struck by lightning!");
+        Translations.AddEnglish("msg_whitehilt_storm_fire_out", "The storm puts out the fire!");
+        Translations.AddEnglish("msg_whitehilt_storm_torch_out", "The wind blows out your torch!");
+        Translations.AddEnglish("msg_whitehilt_storm_door", "A gust tears a door open! Shut it, or the storm comes in.");
+        Translations.AddEnglish("msg_whitehilt_storm_door_in", "The storm comes in through the open door.");
+        Translations.AddEnglish("msg_whitehilt_storm_knocked_down", "The gust knocks you off your feet!");
+        Translations.AddEnglish("msg_whitehilt_storm_hail", "Hail! Get under a roof.");
+        Translations.AddEnglish("msg_whitehilt_storm_lost", "The storm hides sun and stars: you have lost your bearings.");
+        Translations.AddEnglish("msg_whitehilt_storm_found", "The storm lets go: you have your bearings again.");
         Translations.AddEnglish("whitehilt_storm_clock_coming", "Storm in {0}");
         Translations.AddEnglish("whitehilt_storm_clock_raging", "Storm, {0} left");
         Translations.AddEnglish("se_whitehiltstorm", "Storm exposure");

@@ -18,7 +18,24 @@ public static class StormPatches
         __instance.gameObject.AddComponent<StormClient>();
         __instance.gameObject.AddComponent<StormAmbience>();
         __instance.gameObject.AddComponent<StormHazards>();
+        __instance.gameObject.AddComponent<StormWind>();
+        __instance.gameObject.AddComponent<StormHail>();
         __instance.gameObject.AddComponent<StormVisions>();
+    }
+
+    // Lost at sea in the storm: no place on the map.
+    [HarmonyPatch(typeof(Minimap), nameof(Minimap.UpdatePlayerMarker))]
+    [HarmonyPostfix]
+    private static void UpdatePlayerMarkerPostfix(Minimap __instance)
+    {
+        StormBearings.Apply(__instance);
+    }
+
+    [HarmonyPatch(typeof(Minimap), nameof(Minimap.SetMapMode))]
+    [HarmonyPostfix]
+    private static void SetMapModePostfix(Minimap __instance)
+    {
+        StormBearings.Opened(__instance);
     }
 
     // After the game's own forced weathers: a dungeon, a raid, a boss or a special place still wins.

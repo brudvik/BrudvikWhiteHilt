@@ -43,6 +43,7 @@ public class StormClient : MonoBehaviour
     private bool passedRagnarok;
     private GameObject[] suffering;
     private bool sufferingBurns;
+    private bool stormIn;
 
     /// <summary>The local player's exposure, 0 to 100.</summary>
     public static float Exposure { get; private set; }
@@ -61,6 +62,9 @@ public class StormClient : MonoBehaviour
 
     /// <summary>How hard the storm drives the exposure on where the local player is (<see cref="StormState.Fury"/>).</summary>
     public static float Fury { get; private set; }
+
+    /// <summary>Whether the local player has lost their bearings at sea in the storm: no compass and no place on the map.</summary>
+    public static bool LostAtSea { get; private set; }
 
     /// <summary>
     /// How much of a potion's healing and stamina is left to a character out in the storm, so the Gift of Odin and the
@@ -123,6 +127,7 @@ public class StormClient : MonoBehaviour
         Exposure = 0f;
         Cover = StormCover.Open;
         SpeedFactor = 1f;
+        LostAtSea = false;
         solidMask = LayerMask.GetMask("Default", "static_solid", "terrain", "piece");
         pieceMask = LayerMask.GetMask("piece");
     }
@@ -306,7 +311,15 @@ public class StormClient : MonoBehaviour
         bool storming = StormSettings.Enabled.Value && StormState.Raging && StormSettings.HasStorms(biome) && !player.IsDead();
         RagingHere = storming && !StormState.InEye;
         Fury = storming ? StormState.Fury(StormState.Wave, StormState.Ragnarok, StormSettings.LastWaveFury.Value, StormSettings.RagnarokFury.Value) : 0f;
+        bool wasIn = stormIn;
+        stormIn = false;
         Cover = FindCover(player);
+        if (stormIn && !wasIn)
+        {
+            player.Message(MessageHud.MessageType.TopLeft, "$msg_whitehilt_storm_door_in");
+        }
+
+        UpdateLost(player);
         bool outside = RagingHere && Cover is StormCover.Open or StormCover.Lee or StormCover.Forest;
 
         // The Weathering skill slows the meter as if the storm took longer to wear you down; the storm's grudge
@@ -338,6 +351,20 @@ public class StormClient : MonoBehaviour
         UpdateSuffering(player);
     }
 
+    // At sea in a raging storm the sun and stars are hidden: no compass, no minimap and no marker on the map, unless a
+    // Navigator's Table aboard keeps the course.
+    private static void UpdateLost(Player player)
+    {
+        bool lost = RagingHere && StormSettings.LostAtSea.Value && Profile.Kind == StormKind.Sea && !ShipChartTable.IsAboardWithTable(player);
+        if (lost == LostAtSea)
+        {
+            return;
+        }
+
+        LostAtSea = lost;
+        player.Message(MessageHud.MessageType.TopLeft, lost ? "$msg_whitehilt_storm_lost" : "$msg_whitehilt_storm_found");
+    }
+
     private StormCover FindCover(Player player)
     {
         // A trading post's dome keeps the storm out as it keeps the beasts out.
@@ -347,6 +374,13 @@ public class StormClient : MonoBehaviour
         if (!RagingHere)
         {
             return StormExposure.Resolve(Profile, interior, roof, fire, true, false, false);
+        }
+
+        // An open door close by lets the storm into the room: no better than the lee of a wall, and the fire no help.
+        stormIn = roof && !interior && StormWind.OpenDoorNear(player.transform.position);
+        if (stormIn)
+        {
+            return StormExposure.Resolve(Profile, false, false, false, true, true, false);
         }
 
         bool stone = roof && Profile.NeedsStoneRoof && StoneRoof(player);

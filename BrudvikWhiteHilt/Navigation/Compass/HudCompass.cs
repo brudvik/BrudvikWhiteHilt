@@ -40,7 +40,7 @@ public static class HudCompass
             && player != null && !player.IsDead() && Hud.instance != null && Hud.instance.m_rootObject != null
             && Hud.instance.m_rootObject.activeInHierarchy && !Hud.IsUserHidden() && Utils.GetMainCamera() != null
             && !InventoryGui.IsVisible() && !Menu.IsVisible() && !TextInput.IsVisible() && !StoreGui.IsVisible()
-            && (Minimap.instance == null || Minimap.instance.m_mode != Minimap.MapMode.Large);
+            && (Minimap.instance == null || Minimap.instance.m_mode != Minimap.MapMode.Large) && !Storms.StormClient.LostAtSea;
     }
 
     /// <summary>Updates the tape after the game camera has finished its late update.</summary>
@@ -194,4 +194,4 @@ public static class HudCompass
         internal Text Label;
         internal int FontSize;
     }
-}
+}

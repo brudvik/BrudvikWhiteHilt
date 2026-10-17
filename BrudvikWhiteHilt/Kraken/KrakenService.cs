@@ -96,14 +96,23 @@ public class KrakenService : MonoBehaviour
             return false;
         }
 
+        // A great storm wakes it by day or night, in any weather and wind.
         string key = KrakenSettings.RequiredKey.Value;
         Vector3 position = ship.transform.position;
-        return (string.IsNullOrEmpty(key) || ZoneSystem.instance.GetGlobalKey(key))
-            && (!KrakenSettings.NightOnly.Value || EnvMan.IsNight())
+        bool quiet = (!KrakenSettings.NightOnly.Value || EnvMan.IsNight())
             && KrakenSettings.IsFog(EnvMan.instance.GetCurrentEnvironment())
-            && EnvMan.instance.GetWindIntensity() <= KrakenSettings.MaxWind.Value
+            && EnvMan.instance.GetWindIntensity() <= KrakenSettings.MaxWind.Value;
+        return (string.IsNullOrEmpty(key) || ZoneSystem.instance.GetGlobalKey(key))
+            && (quiet || StormWakes())
             && Heightmap.FindBiome(position) == Heightmap.Biome.Ocean
             && KrakenSpawner.DeepEnough(position, KrakenSettings.MinDepth.Value);
+    }
+
+    // A great storm raging at sea, out of its eye.
+    private static bool StormWakes()
+    {
+        return Storms.StormSettings.Enabled != null && Storms.StormSettings.Enabled.Value && Storms.StormSettings.KrakenFactor.Value > 1f
+            && Storms.StormState.Raging && !Storms.StormState.InEye && Storms.StormSettings.HasStorms(Heightmap.Biome.Ocean);
     }
 
     private static float AttackChance(int playersAboard)
@@ -114,7 +123,15 @@ public class KrakenService : MonoBehaviour
             return 0f;
         }
 
-        return Mathf.Clamp(baseChance + (playersAboard - 1) * KrakenSettings.ChancePerExtraPlayer.Value, 0f, 100f);
+        float chance = baseChance + (playersAboard - 1) * KrakenSettings.ChancePerExtraPlayer.Value;
+        if (StormWakes())
+        {
+            // The storm stirs it; Ragnarok all but calls it up.
+            float factor = Storms.StormSettings.KrakenFactor.Value;
+            chance = Storms.StormState.Ragnarok ? Mathf.Max(chance * factor * 2.5f, 50f) : chance * factor;
+        }
+
+        return Mathf.Clamp(chance, 0f, 100f);
     }
 
     private void RPC_Request(long sender, ZDOID ship, int playersAboard)

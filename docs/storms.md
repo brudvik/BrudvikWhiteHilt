@@ -145,6 +145,24 @@ In every storm but the sandstorm and the firestorm, gusts fell a tree 10 to 35 m
 Trees inside a base (near a workbench or fire) are never felled, and each tree is felled by the player closest to it
 only, so friends standing together do not fell twice as many.
 
+### Wind, hail and the lost course
+
+- **Fires go out.** A fire with no roof over it (a campfire, a hearth, a brazier, a torch on a wall) goes out in a
+  raging storm and must be fed again. A torch in your hand blows out in the open, in the lee and among trees: it goes
+  back in the bag. Not in the firestorm. A krypinn needs its fire under the roof.
+- **Doors tear open.** Gusts tear shut doors open near you, now and then, through the game's own door so everyone sees
+  it. While a door within 8 m of you stands open the storm comes in: the room shelters you no better than the lee of a
+  wall, and its fire does not help, until the door is shut. A locked door holds; a self-closing door shuts again.
+- **Gusts.** Out in the open, hard gusts push you along with the wind, and one in five knocks you off your feet (more in
+  Ragnarok). Not at the helm or seated.
+- **Hail.** In the forest storm, at sea and in the blizzard, a hail shower comes every minute or so and beats down for
+  8 to 15 seconds: blunt hits of 1.5% of your health a second in the open or in the lee, which a helmet and armour
+  soften. Trees, a roof or a cave keep it off. When it starts, young crops with no roof over them may break.
+- **The Kraken wakes.** At sea in a raging storm the Kraken rises by day or night, in fog or not and in any wind, four
+  times as often (`KrakenFactor`); in Ragnarok ten times as often, and at least every other minute. Its cooldown holds.
+- **Lost at sea.** At sea in a raging storm the storm hides sun and stars: the compass and the minimap are gone, the map
+  shows neither you nor your ship and opens somewhere else. A [Navigator's Table](ships.md) aboard keeps the course.
+
 ### Weathering (Herdet)
 
 A new skill. It rises with every second out in a raging storm (in the open, in the lee or among trees) and by a good
@@ -213,6 +231,12 @@ Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced
 | `LightningDamage` | 0.4 | Lightning damage of a direct hit as a share of maximum health |
 | `FallingTrees` | true | Gusts fell trees near players |
 | `TreeFallSeconds` | 40 | Seconds between felled trees near each player on average |
+| `FiresGoOut` | true | Fires with no roof over them and torches in the open go out |
+| `DoorsBlowOpen` | true | Gusts tear doors open, and an open door lets the storm in |
+| `Gusts` | true | Gusts push players in the open and now and then knock them down |
+| `Hail` | true | Hail showers in the forest storm, at sea and in the blizzard |
+| `KrakenFactor` | 4 | How many times more likely the Kraken rises at sea in a storm; 1 changes nothing |
+| `LostAtSea` | true | No compass, minimap or marker at sea in a storm without a Navigator's Table |
 | `ForecastMinutes` | 5 | Minutes before the warning that the forecast shows the storm; 0 not foretold |
 | `Finds` | true | A storm leaves finds around those who were out in it |
 | `FindsCount` | 4 | Finds around each player |
