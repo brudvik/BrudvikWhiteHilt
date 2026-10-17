@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.148.0 - 2026-10-17
 
 ### Added
 - **[Forge of Potential](docs/equipment.md#-forge-of-potential)**: a fair roll at the game's refinement forge instead

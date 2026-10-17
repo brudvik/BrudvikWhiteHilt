@@ -35,7 +35,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.147.0
+## ✨ New in 0.148.0
+
+- **[Forge of Potential](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md#-forge-of-potential)**: a fair roll at the refinement forge, where every failed try raises the next one's chance and your skills help. A failed try costs only the idol by default; offer up to three more for a better chance, and buy idols at the trading posts.
+- **[Octagonal stairwells](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#-wood-floor-triangles--octagons)**: both octagonal wood floors with an opening in the middle for the next storey of a tower: an eight-sided one the Spiral Stair stands in, and a square 4 × 4 m one on the vanilla floor's grid.
+- **[A Spiral Stair that stacks](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/log-house.md#-stairs-ladders-and-railings)**: aim at the top treads and the next goes on top, turned to go on; its handrail now keeps you on the treads.
+- **[A portal list that finds and scrolls](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/portals.md)**: search by any words of a name, with a scrollbar that shows and a wheel that scrolls three rows per notch.
+- **Mistlands plants, harbours and treasure out from under rock.**
+
+### Also new in 0.147.0
 
 - **[Wood floors in new shapes](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#-wood-floor-triangles--octagons)**: triangles, floors with a 45° end and octagons with 2 m and 4 m sides, the vanilla floor sawn to shape with every cut plank closed.
 - **[Bigger wood walls and a window](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#-wood-walls-4-m--window)**: walls 4 × 2 and 4 × 4 m in one piece, and a wall with a window and the vanilla shutter.
