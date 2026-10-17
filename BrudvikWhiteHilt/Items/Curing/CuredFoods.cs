@@ -414,3 +414,125 @@ public class DriedBonemaw : CuredFoodBase
         effect.m_healthRegenMultiplier = 1.25f;
     }
 }
+
+/// <summary>
+/// A Mistlands sausage of hare, cured on the drying rack, that makes dodging cheaper.
+/// </summary>
+public class CuredHareSausage : CuredFoodBase
+{
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public CuredHareSausage(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltCuredHareSausage";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Cured Hare Sausage";
+
+    /// <inheritdoc/>
+    protected override string Description => "A thin, sour sausage of hare and wood sorrel. Light in the pack and light on the feet.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "Sausages";
+
+    /// <inheritdoc/>
+    protected override string HungItem => RawHareSausage.PrefabName;
+
+    /// <inheritdoc/>
+    protected override float Days => CuringSettings.HareSausageDays.Value;
+
+    /// <inheritdoc/>
+    protected override float Health => 46f;
+
+    /// <inheritdoc/>
+    protected override float Stamina => 70f;
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.7f, 0.45f, 0.42f);
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override float DurationSeconds => 3600f;
+
+    /// <inheritdoc/>
+    protected override float Regen => 4f;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Mistlands;
+
+    /// <inheritdoc/>
+    protected override string BuffTooltip => "Dodging uses 25% less stamina";
+
+    /// <inheritdoc/>
+    protected override void ConfigureBuff(SE_Stats effect)
+    {
+        effect.m_dodgeStaminaUseModifier = -0.25f;
+    }
+}
+
+/// <summary>
+/// A ham of mist stag cured on the drying rack; a long-lasting Mistlands food that makes attacks cheaper.
+/// </summary>
+public class CuredMistStagHam : CuredFoodBase
+{
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public CuredMistStagHam(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltCuredMistStagHam";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Cured Mist Stag Ham";
+
+    /// <inheritdoc/>
+    protected override string Description => "A pale ham of mist stag, dried for days in the cold mist and fragrant with juniper. Every swing comes easier.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "CookedMeat";
+
+    /// <inheritdoc/>
+    protected override string HungItem => SeasonedMistStagHam.PrefabName;
+
+    /// <inheritdoc/>
+    protected override float Days => CuringSettings.MistStagHamDays.Value;
+
+    /// <inheritdoc/>
+    protected override float Health => 78f;
+
+    /// <inheritdoc/>
+    protected override float Stamina => 34f;
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.7f, 0.55f, 0.6f);
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override float DurationSeconds => 3600f;
+
+    /// <inheritdoc/>
+    protected override float Regen => 5f;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Mistlands;
+
+    /// <inheritdoc/>
+    protected override string BuffTooltip => "Attacks use 15% less stamina";
+
+    /// <inheritdoc/>
+    protected override void ConfigureBuff(SE_Stats effect)
+    {
+        effect.m_attackStaminaUseModifier = -0.15f;
+    }
+}

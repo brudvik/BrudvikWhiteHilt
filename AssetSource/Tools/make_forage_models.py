@@ -1253,6 +1253,148 @@ def grain_ear(geo, rng, stem, length, swatch):
         geo.blob(point + out * size * 0.9, size, swatch, subdivisions=1, squash=(0.8, 0.8, 1.6))
 
 
+@model("hazel", "Hazel shrub with nuts")
+def build_hazel(geo, rng, np):
+    V = geo.Vector
+    clusters = []
+    # Many straight stems from one stool, as a coppiced hazel grows.
+    for direction in spread_directions(9, rng, 0.28):
+        stem = curve((0, 0, 0), direction, rng.uniform(1.3, 1.8), 0.25, 8)
+        geo.tube(stem, [0.018 * (1 - 0.7 * i / 8) for i in range(9)], "bark", segments=5)
+        for i in range(3, 9):
+            heading = (stem[i] - stem[i - 1]).normalized()
+            # Broad, round leaves with a pointed tip, held out flat on either side.
+            for side in range(2):
+                out = (around(heading, i * 2.4 + side * math.pi + rng.uniform(0, 0.6)) + heading * 0.3).normalized()
+                geo.leaf(stem[i], out, (0, 0, 1), rng.uniform(0.15, 0.19), 0.13, "leaf", profile="ovate", segments=4, fold=0.2, droop=0.2)
+            if i in (4, 6) and rng.random() < 0.8:
+                clusters.append((stem[i] + out * 0.04, out))
+    geo.target = "fruit"
+    for point, out in clusters:
+        for k in range(rng.integers(2, 4)):
+            hang = (out + V((rng.normal(0, 0.4), rng.normal(0, 0.4), -0.6))).normalized()
+            centre = point + hang * 0.03
+            geo.blob(centre, 0.016, "nut", subdivisions=2, squash=(1.0, 1.0, 1.15))
+            # The ragged green husk round the base of the nut.
+            for n in range(5):
+                geo.leaf(centre - hang * 0.009, around(hang, n * 1.26) - hang * 0.6, hang, 0.028, 0.018, "husk", profile="ovate",
+                         segments=2, fold=0.3, droop=-0.2)
+    geo.target = "main"
+
+
+@model("hazelnuts", "A handful of hazelnuts")
+def build_hazelnuts(geo, rng, np):
+    V = geo.Vector
+    for k in range(5):
+        angle = k * 1.26 + rng.uniform(-0.2, 0.2)
+        distance = 0.0 if k == 0 else 0.022
+        centre = V((math.cos(angle) * distance, math.sin(angle) * distance, 0.011 + (0.012 if k == 0 else 0.0)))
+        geo.blob(centre, 0.011, "nut", subdivisions=2, squash=(1.0, 1.0, 1.15))
+
+
+@model("woodsorrel", "Wood sorrel in flower")
+def build_woodsorrel(geo, rng, np):
+    V = geo.Vector
+    for k in range(22):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.1 * math.sqrt(rng.random())
+        base = V((math.cos(angle) * distance, math.sin(angle) * distance, 0.0))
+        stalk = curve(base, (rng.normal(0, 0.25), rng.normal(0, 0.25), 1.0), rng.uniform(0.05, 0.09), 0.3, 3)
+        geo.tube(stalk, [0.0016, 0.0014, 0.0012, 0.001], "stalk", segments=3, cap=False)
+        # Three heart-shaped leaflets folded along the middle, like a clover.
+        for n in range(3):
+            out = V((math.cos(n * 2.094 + k), math.sin(n * 2.094 + k), 0.15))
+            geo.leaf(stalk[-1], out, (0, 0, 1), 0.022, 0.026, "leaf", profile="round", segments=3, fold=0.45, droop=0.25)
+        if k % 3 == 0:
+            flower_stalk = curve(base, (rng.normal(0, 0.2), rng.normal(0, 0.2), 1.0), rng.uniform(0.08, 0.11), 0.4, 3)
+            geo.tube(flower_stalk, [0.0012] * 4, "stalk", segments=3, cap=False)
+            heading = (flower_stalk[-1] - flower_stalk[-2]).normalized()
+            geo.flower(flower_stalk[-1], heading, 0.012, 5, "petal", "vein", cup=0.5)
+
+
+@model("chaga", "Chaga on a dead birch stump")
+def build_chaga(geo, rng, np):
+    V = geo.Vector
+    stump = curve((0, 0, 0), (0.03, -0.02, 1.0), 0.7, 0.08, 5)
+    geo.tube(stump, [0.1, 0.092, 0.088, 0.085, 0.082, 0.08], "birch", segments=10)
+    geo.blob(stump[-1], 0.075, "wood", subdivisions=2, squash=(1.0, 1.0, 0.25), rng=rng, bumps=0.15)
+    for direction in spread_directions(4, rng, 1.35):
+        root = curve((0, 0, 0.05), direction, rng.uniform(0.16, 0.24), 0.6, 3)
+        geo.tube(root, [0.035, 0.026, 0.016, 0.006], "birch", segments=5)
+    # The black, cracked canker bursting out of the bark.
+    for height, angle, size in ((0.32, 0.5, 0.075), (0.5, 3.2, 0.055)):
+        out = V((math.cos(angle), math.sin(angle), 0))
+        geo.blob(V((0, 0, height)) + out * 0.085, size, "chaga", subdivisions=3, squash=(0.8, 1.0, 1.2), rng=rng, bumps=0.22)
+
+
+@model("chagaitem", "A lump of chaga")
+def build_chagaitem(geo, rng, np):
+    geo.blob((0, 0, 0), 0.06, "chaga", subdivisions=3, squash=(1.0, 0.85, 0.7), rng=rng, bumps=0.22)
+
+
+@model("lungwort", "Lungwort lichen on a fallen log")
+def build_lungwort(geo, rng, np):
+    V = geo.Vector
+    log = [V((-0.32, 0, 0.08)), V((-0.1, 0.02, 0.09)), V((0.12, -0.01, 0.085)), V((0.34, 0.01, 0.08))]
+    geo.tube(log, [0.085, 0.09, 0.088, 0.08], "deadwood", segments=9)
+    # Broad, lobed leaves of lichen over the top and sides of the log.
+    for k in range(60):
+        t = rng.uniform(0.08, 0.92)
+        point = along(log, t)
+        angle = rng.uniform(-1.4, 1.4)
+        normal = V((0, math.sin(angle), math.cos(angle)))
+        surface = point + normal * 0.085
+        out = (normal + V((rng.normal(0, 0.4), 0, 0))).normalized()
+        side = V((1, 0, 0)).cross(normal).normalized()
+        geo.leaf(surface, (side * rng.uniform(-1, 1) + V((rng.normal(0, 1), 0, 0))).normalized() + normal * 0.25, out,
+                 rng.uniform(0.06, 0.09), rng.uniform(0.05, 0.075), "lichen", profile="round", segments=3, fold=-0.25, droop=-0.1)
+
+
+@model("lungwortitem", "A leaf of lungwort lichen")
+def build_lungwortitem(geo, rng, np):
+    V = geo.Vector
+    for k in range(4):
+        geo.leaf(V((0, 0, 0.002 * k)), V((math.cos(k * 1.6), math.sin(k * 1.6), 0.1)), (0, 0, 1), 0.06, 0.05, "lichen", profile="round",
+                 segments=3, fold=-0.25, droop=-0.05)
+
+
+@model("sweetcicely", "Sweet cicely in flower")
+def build_sweetcicely(geo, rng, np):
+    V = geo.Vector
+    # Soft, fern-like leaves around the foot.
+    for direction in spread_directions(7, rng, 0.9, jitter=0.4):
+        pinnate(geo, rng, V((0, 0, 0.01)), direction, rng.uniform(0.3, 0.4), 5, 0.06, "leaf", "stem", droop=0.4)
+    for k in range(3):
+        lean = (rng.normal(0, 0.1), rng.normal(0, 0.1), 1.0)
+        stem = curve((rng.normal(0, 0.03), rng.normal(0, 0.03), 0), lean, rng.uniform(0.7, 0.85), 0.1, 6)
+        geo.tube(stem, [0.008 - 0.004 * i / 6 for i in range(7)], "stem", segments=5)
+        heading = (stem[3] - stem[2]).normalized()
+        pinnate(geo, rng, stem[3], around(heading, k * 2.1) + heading * 0.6, 0.22, 4, 0.045, "leaf", "stem", droop=0.3)
+        # An umbel: rays from the top, each with a small white head.
+        top = stem[-1]
+        for n in range(9):
+            ray_out = V((math.cos(n * 0.7 + k), math.sin(n * 0.7 + k), 0.0)) * rng.uniform(0.04, 0.07)
+            tip = top + ray_out + V((0, 0, 0.05))
+            geo.tube([top, tip], [0.0018, 0.0014], "stem", segments=3, cap=False)
+            corymb(geo, rng, tip + V((0, 0, 0.004)), 0.018, 8, "flower", 0.0045)
+
+
+@model("vivianite", "Vivianite nodules in the moss")
+def build_vivianite(geo, rng, np):
+    geo.blob((0, 0, -0.01), 0.2, "moss", subdivisions=3, squash=(1.0, 0.85, 0.15), rng=rng, bumps=0.1, flat_bottom=-0.02)
+    for k in range(5):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.0 if k == 0 else rng.uniform(0.06, 0.13)
+        size = rng.uniform(0.04, 0.06) if k else 0.075
+        geo.blob((math.cos(angle) * distance, math.sin(angle) * distance, 0.01), size, "mineral", subdivisions=2,
+                 squash=(1.0, rng.uniform(0.7, 1.0), 0.6), rng=rng, bumps=0.3, flat_bottom=-0.02)
+
+
+@model("vivianitelump", "A lump of vivianite")
+def build_vivianitelump(geo, rng, np):
+    geo.blob((0, 0, 0), 0.07, "mineral", subdivisions=2, squash=(1.0, 0.8, 0.7), rng=rng, bumps=0.28)
+
+
 @model("lymegrass", "Lyme grass with ripe ears")
 def build_lymegrass(geo, rng, np):
     # Broad blue-grey blades that arch over the black sand.
@@ -1627,6 +1769,48 @@ SWATCHES.update({
                   "spots": (0.72, 0.42, 0.16), "spot_share": 0.2, "spot_cells": (5, 3)},
     },
 })
+SWATCHES.update({
+    "hazel": {
+        "bark": {"bottom": (0.32, 0.24, 0.18), "top": (0.48, 0.38, 0.28), "streaks": 0.3},
+        "leaf": {"bottom": (0.14, 0.28, 0.1), "top": (0.3, 0.44, 0.16)},
+        "nut": {"bottom": (0.42, 0.26, 0.12), "top": (0.62, 0.42, 0.2), "streaks": 0.4},
+        "husk": {"bottom": (0.32, 0.45, 0.16), "top": (0.5, 0.58, 0.26)},
+    },
+    "hazelnuts": {
+        "nut": {"bottom": (0.42, 0.26, 0.12), "top": (0.62, 0.42, 0.2), "streaks": 0.4},
+    },
+    "woodsorrel": {
+        "stalk": {"bottom": (0.45, 0.25, 0.25), "top": (0.4, 0.45, 0.25)},
+        "leaf": {"bottom": (0.2, 0.42, 0.15), "top": (0.4, 0.6, 0.26)},
+        "petal": {"bottom": (0.92, 0.88, 0.9), "top": (0.98, 0.96, 0.97), "noise": 0.04, "streaks": 0.3},
+        "vein": {"bottom": (0.7, 0.55, 0.65), "top": (0.85, 0.7, 0.8)},
+    },
+    "chaga": {
+        "birch": {"bottom": (0.8, 0.78, 0.74), "top": (0.92, 0.9, 0.86), "noise": 0.2, "cells": (16, 4),
+                  "spots": (0.12, 0.11, 0.1), "spot_share": 0.18, "spot_cells": (12, 3)},
+        "wood": {"bottom": (0.42, 0.34, 0.24), "top": (0.58, 0.48, 0.34), "streaks": 0.5},
+        "chaga": {"bottom": (0.05, 0.04, 0.03), "top": (0.16, 0.1, 0.06), "noise": 0.45, "cells": (8, 4, 2),
+                  "spots": (0.42, 0.24, 0.1), "spot_share": 0.15, "spot_cells": (6, 3)},
+    },
+    "lungwort": {
+        "deadwood": {"bottom": (0.3, 0.26, 0.22), "top": (0.46, 0.4, 0.34), "streaks": 0.6, "noise": 0.2},
+        "lichen": {"bottom": (0.28, 0.42, 0.2), "top": (0.48, 0.62, 0.32), "noise": 0.25, "cells": (6, 3),
+                   "spots": (0.6, 0.66, 0.5), "spot_share": 0.15, "spot_cells": (5, 3)},
+    },
+    "sweetcicely": {
+        "leaf": {"bottom": (0.18, 0.36, 0.14), "top": (0.34, 0.52, 0.22)},
+        "stem": {"bottom": (0.3, 0.42, 0.2), "top": (0.4, 0.5, 0.26)},
+        "flower": {"bottom": (0.9, 0.9, 0.86), "top": (0.98, 0.98, 0.96), "noise": 0.05},
+    },
+    "vivianite": {
+        "moss": {"bottom": (0.18, 0.26, 0.14), "top": (0.28, 0.36, 0.2), "noise": 0.35, "cells": (4, 2)},
+        "mineral": {"bottom": (0.08, 0.12, 0.18), "top": (0.2, 0.28, 0.36), "noise": 0.35, "cells": (8, 4, 2),
+                    "spots": (0.35, 0.5, 0.42), "spot_share": 0.18, "spot_cells": (5, 3)},
+    },
+})
+SWATCHES["chagaitem"] = SWATCHES["chaga"]
+SWATCHES["lungwortitem"] = SWATCHES["lungwort"]
+SWATCHES["vivianitelump"] = SWATCHES["vivianite"]
 SWATCHES["lymegrain"] = SWATCHES["lymegrass"]
 SWATCHES["tinderfungusitem"] = SWATCHES["tinderfungus"]
 SWATCHES["saltlump"] = SWATCHES["saltcrust"]

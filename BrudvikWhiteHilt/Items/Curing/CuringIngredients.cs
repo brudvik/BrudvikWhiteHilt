@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.Monsters;
 using BrudvikWhiteHilt.Pieces.Cooking.StonePot;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
@@ -310,4 +311,88 @@ public class SaltedBonemaw : CuringIngredientBase
 
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
+}
+
+/// <summary>
+/// Minced hare with wood sorrel and sweet cicely in a casing, ready to hang on the drying rack.
+/// </summary>
+public class RawHareSausage : CuringIngredientBase
+{
+    /// <summary>Prefab name.</summary>
+    public const string PrefabName = "WhiteHiltRawHareSausage";
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public RawHareSausage(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => PrefabName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Raw Hare Sausage";
+
+    /// <inheritdoc/>
+    protected override string Description => "Minced hare with wood sorrel and sweet cicely, stuffed in a casing. Hang it on a drying rack to cure.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "HareMeat";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "HareMeat", Amount = 2, Recover = false },
+        new() { Item = Foraging.WoodSorrel.WoodSorrel.PrefabName, Amount = 1, Recover = false },
+        new() { Item = Foraging.SweetCicely.SweetCicely.PrefabName, Amount = 1, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.8f, 0.55f, 0.5f);
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Mistlands;
+}
+
+/// <summary>
+/// A leg of mist stag rubbed with juniper and sweet cicely, ready to hang on the drying rack.
+/// </summary>
+public class SeasonedMistStagHam : CuringIngredientBase
+{
+    /// <summary>Prefab name.</summary>
+    public const string PrefabName = "WhiteHiltSeasonedMistStagHam";
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public SeasonedMistStagHam(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => PrefabName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Seasoned Mist Stag Ham";
+
+    /// <inheritdoc/>
+    protected override string Description => "A leg of mist stag rubbed with juniper and sweet cicely. Hang it on a drying rack to cure.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "RawMeat";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = WildMonsters.MistStagMeat, Amount = 2, Recover = false },
+        new() { Item = Foraging.Juniper.Juniper.PrefabName, Amount = 2, Recover = false },
+        new() { Item = Foraging.SweetCicely.SweetCicely.PrefabName, Amount = 1, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.8f, 0.75f, 0.85f);
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Mistlands;
 }

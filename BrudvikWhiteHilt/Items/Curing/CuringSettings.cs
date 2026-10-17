@@ -23,6 +23,12 @@ public static class CuringSettings
     /// <summary>Game days a coral cod hangs before it is stockfish.</summary>
     public static ConfigEntry<float> StockfishDays { get; private set; }
 
+    /// <summary>Game days a raw hare sausage hangs before it is cured.</summary>
+    public static ConfigEntry<float> HareSausageDays { get; private set; }
+
+    /// <summary>Game days a seasoned mist stag ham hangs before it is cured.</summary>
+    public static ConfigEntry<float> MistStagHamDays { get; private set; }
+
     /// <summary>Game days a raw asksvin sausage hangs before it is cured.</summary>
     public static ConfigEntry<float> AsksvinSausageDays { get; private set; }
 
@@ -42,6 +48,10 @@ public static class CuringSettings
         SausageDays = WhiteHiltConfig.BindAdminOnly(Section, "SausageDays", 2f, "Game days a raw sausage hangs on the drying rack before it is cured.",
             new AcceptableValueRange<float>(0.1f, 20f));
         StockfishDays = WhiteHiltConfig.BindAdminOnly(Section, "StockfishDays", 2f, "Game days a coral cod hangs on the drying rack before it is stockfish.",
+            new AcceptableValueRange<float>(0.1f, 20f));
+        HareSausageDays = WhiteHiltConfig.BindAdminOnly(Section, "HareSausageDays", 2f, "Game days a raw hare sausage hangs on the drying rack before it is cured.",
+            new AcceptableValueRange<float>(0.1f, 20f));
+        MistStagHamDays = WhiteHiltConfig.BindAdminOnly(Section, "MistStagHamDays", 3f, "Game days a seasoned mist stag ham hangs on the drying rack before it is cured.",
             new AcceptableValueRange<float>(0.1f, 20f));
         AsksvinSausageDays = WhiteHiltConfig.BindAdminOnly(Section, "AsksvinSausageDays", 2f, "Game days a raw asksvin sausage hangs on the drying rack before it is cured.",
             new AcceptableValueRange<float>(0.1f, 20f));

@@ -43,7 +43,12 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.145.0
+## ✨ New in 0.146.0
+
+- **[More to gather in the Mistlands](docs/foraging.md#growing-ingredients)**: Hazelnuts from the hazel in the clearings, Wood Sorrel, Chaga on dead birch, Lungwort Lichen on fallen logs, Sweet Cicely and Vivianite, each with a model of its own.
+- **[New Mistlands food and drink](docs/foraging.md#growing-ingredients)**: Hazelnut Bread, a Cured Hare Sausage that makes dodging cheaper and a Cured Mist Stag Ham that makes attacks cheaper, Sweet Cicely Mead for sneaking and Chaga Tea against pierce damage. Vivianite gives paint a blue.
+
+### Also new in 0.145.0
 
 - **[More to gather in the Ashlands](docs/foraging.md#growing-ingredients)**: Lyme Grain on the black sand by the shore, Sea Buckthorn, Wild Thyme on the cooled lava, Tinder Fungus on burnt stumps, Hot Spring Salt and Red Ochre, each with a model of its own.
 - **[New Ashlands food and drink](docs/foraging.md#growing-ingredients)**: Hot Spring Bread, a Cured Asksvin Sausage and Dried Bonemaw from the drying rack with the new salt, Sea Buckthorn Mead for stamina and Wild Thyme Tea against fire. Tinder Fungus burns long in a fire and the kiln makes coal of it; Red Ochre and Wild Thyme colour paint.
