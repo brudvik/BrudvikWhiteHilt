@@ -202,6 +202,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterRegistry.Initialize();
         Monsters.DesertDragonRegistry.Initialize();
         Monsters.WildMonsterRegistry.Initialize();
+        Monsters.LavaWormRegistry.Initialize();
         // After the Desert Dragon, which the horn's White Dragon is cloned from.
         Items.Summoning.DragonHorn.Initialize();
         Monsters.WhiteDragonRegistry.Initialize();

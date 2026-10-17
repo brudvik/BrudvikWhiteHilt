@@ -196,6 +196,11 @@
       "duration": 3
     },
     {
+      "name": "arrival_lavaworm",
+      "prompt": "A pool of molten lava boiling over and erupting as a huge serpent bursts out of it, hissing steam, sputtering magma and a deep rumble",
+      "duration": 3
+    },
+    {
       "name": "arrival_kraken",
       "prompt": "A colossal sea monster surfacing from the deep, a huge surge of water, deep rumble and crashing waves",
       "duration": 4
@@ -219,6 +224,12 @@
     {
       "name": "amb_nidhogg",
       "prompt": "A giant serpent lurking: slow heavy breathing, scales slithering on stone, a low venomous hiss now and then. No music.",
+      "duration": 10,
+      "loop": true
+    },
+    {
+      "name": "amb_lavaworm",
+      "prompt": "A huge burning serpent close by: thick lava bubbling and popping, hissing steam, a slow deep rumbling breath. No music.",
       "duration": 10,
       "loop": true
     },
@@ -609,6 +620,21 @@
         "hit",
         "death"
       ]
+    },
+    {
+      "prefix": "lavaworm",
+      "description": "A colossal burning serpent that lives in molten lava",
+      "voice": "deep rumbling roar with hissing steam and crackling fire",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "death": "A colossal burning serpent dying: a long fading rumbling roar, hissing steam and a heavy body sinking into bubbling lava"
+      }
     },
     {
       "prefix": "kraken",

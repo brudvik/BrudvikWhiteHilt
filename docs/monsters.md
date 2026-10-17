@@ -4,7 +4,7 @@
 
 <img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
@@ -38,6 +38,23 @@ Its strength is set when it emerges, according to the world's defeated bosses, n
 | The Queen | 5 | 3150 | 206.25 |
 
 These values use the default difficulty star formulas, before pressure bonuses (up to +20% health and +10% damage). The chosen stars and pressure bonuses stay fixed for that encounter. Empty `ProgressionStars` disables boss-based stars; disabling difficulty stars disables the pressure bonus, not the configured boss-based stars.
+
+## The Lava Worm
+
+The Lindorm's kin in the Ashlands: charred black, glowing from within, and at home in the lava.
+
+The Lava Worm is about **8.8 m long** at the default size, has **3500 health** and bites for **90 pierce and 60 fire damage**, so its bite sets you burning. Worse, the bite **drags you towards it**, and it lies in the lava. It is immune to fire and lava, resistant to slashing and piercing, and very weak to frost.
+
+It comes, day or night, when:
+
+- you are **within 14 m of lava** in the **Ashlands**, on foot or riding an asksvin (not on a ship, indoors or near your base),
+- **the Queen** is slain.
+
+Then, once a minute, there is a 4% chance it **rises out of the nearest lava**, at least 6 m from you. Each player can meet it at most once every 20 minutes.
+
+- It cannot be hurt and does not move while it is still rising.
+- It **sinks back into the lava**, without loot, when it has lost you for about 20 seconds, or when it has followed you more than 18 m from where it rose. Run from the lava and it gives up.
+- Its stars are rolled as a spawn's are, with the difficulty's level-up chance.
 
 ## Giant spiders
 
@@ -153,6 +170,8 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Lindorm Scale** ×2–4 | Lindorm | Always | Every upgrade of a White Hilt shield ([White Hilt gear](equipment.md#-upgrades-through-the-biomes)) |
 | **Entrails** ×1–3 | Lindorm | Always | Vanilla recipes |
 | **Lindorm Trophy** | Lindorm | 15% | Your wall |
+| **Lava Worm Scale** ×2–4 | Lava Worm | Always | Lava Worm armour (below) |
+| **Lava Worm Trophy** | Lava Worm | 15% | Your wall |
 | **Spider Silk** ×1–2 | Giant Spider | Always | Gift of Loki ([Potions](potions.md)), mending Shore Nets ([Fishing nets](fishing.md)), the Spider's Web rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
@@ -188,6 +207,16 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Brood Scale Charm** | An accessory: **+8 armor** and **poison Resistant** while worn (`CharmArmor`, `CharmPoison`; [White Hilt gear](equipment.md)) | Galdr Table level 1 | Brood Scale ×4, Black Marble ×2, Eitr ×2 |
 | **Garm Fang Arrow** ×20 | Charred arrows with 82 pierce (as much as the vanilla Charred Arrow) and 25 fire damage (`ArrowPierce`, `ArrowFire`) | Workbench level 2 | Blackwood ×8, Garm Fang ×2, Feathers ×2 |
 | **Heartwood Draught** | Mistlands mead: health regenerates 100% faster for 10 min (`HealthRegenMultiplier` 2; [Foraging & food](foraging.md)) | Cauldron (base), then the fermenter, 6 per base | Honey ×10, Living Heartwood ×2, Sap ×5 |
+
+### Lava Worm armour
+
+Three pieces of the Ask armour's make, charred black with glowing seams. Each has the Ask armour's **28 armour** (+2 per upgrade, up to quality 4) and takes **25% of the lava's heat** off; the pieces add up, so the whole set lets the heat build up a quarter as fast (`ArmorHeatResistance`; 0.34 per piece makes the set immune to lava). The whole set worn makes you **Very Resistant to fire** (`ArmorSetFire`).
+
+| Piece | Where | Requirements (per upgrade) |
+|-------|-------|----------------------------|
+| **Lava Worm Helm** | Black Forge level 1 | Lava Worm Scale ×4 (+2), Ask Hide ×4 (+2), Flametal ×4 (+2) |
+| **Lava Worm Mail** | Black Forge level 1 | Lava Worm Scale ×6 (+3), Ask Hide ×4 (+2), Flametal ×4 (+2) |
+| **Lava Worm Greaves** | Black Forge level 1 | Lava Worm Scale ×6 (+3), Ask Hide ×4 (+2), Flametal ×4 (+2) |
 
 ## Config
 
@@ -255,6 +284,27 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
 
 On upgrade to 0.72.2, the previous Lindorm defaults (`Scale` 1.3, `Damage` 55) move to the new defaults once. Other configured values are preserved.
+
+Section `[Lava Worm]` (admin only, synced from the server):
+
+| Setting | Default | What it does |
+|---|---|---|
+| `Enabled` | true | The Lava Worm can come at all |
+| `RequiredKey` | defeated_queen | Global key needed first; empty for none |
+| `LavaRange` | 14 | How close to the lava, in metres, a player must be |
+| `ChancePerMinute` | 4 | Percent per minute while every condition holds |
+| `CooldownMinutes` | 20 | Real minutes before it can come for the same player again |
+| `Health` | 3500 | Health (after a restart) |
+| `Damage` / `FireDamage` | 90 / 60 | Pierce and fire damage of its bite (after a restart) |
+| `Drag` | 150 | How hard a bite drags its prey towards it; 0 = no drag (after a restart) |
+| `Scale` | 2.2 | Size (1 = about 4 m long; default about 8.8 m; after a restart) |
+| `StarScale` | 0.12 | Visual growth per star up to two stars (+12% / +24%; after a restart) |
+| `GiveUpSeconds` | 20 | Seconds without prey in sight before it sinks back |
+| `LeashRange` | 18 | Metres from where it rose it follows its prey before it sinks back |
+| `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
+| `Sounds` | true | Own roars, hisses and bubbling lava (after a restart) |
+| `ArmorHeatResistance` | 0.25 | Share of the lava's heat each piece of [Lava Worm armour](#lava-worm-armour) takes off; the pieces add up |
+| `ArmorSetFire` | VeryResistant | How the whole set changes the fire damage you take |
 
 Section `[Giant Spider]`:
 
@@ -361,7 +411,8 @@ On upgrade to 0.123.0, the previous defaults (`Health` 600, `FireDamage` 8, `Fla
 
 - `whitehilt_lindorm` shows every condition where you are, and whether it holds.
 - `whitehilt_lindorm summon` (admins) lets the Lindorm break out near you now.
-- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm` and `spawn WhiteHilt_DesertDragon`.
+- `whitehilt_lavaworm` and `whitehilt_lavaworm summon` do the same for the Lava Worm; it needs lava within `LavaRange`.
+- With devcommands: `spawn WhiteHilt_GiantSpider`, `spawn WhiteHilt_SpiderNest`, `spawn WhiteHilt_Lindorm`, `spawn WhiteHilt_LavaWorm` and `spawn WhiteHilt_DesertDragon`.
 
 ## Trophies and stars
 
@@ -373,8 +424,8 @@ Every monster of the mod has its own sounds, made with [ElevenLabs](https://elev
 
 - The big ones walk heavily: the Yggdrasil Warden's steps creak like timber, and the Draugr Jarl, the Black Troll, the Black Stone Golem, the Black Abomination, the Mire Mother, Gnawtooth and Icemaw thud.
 - The dragons beat their wings while they fly.
-- The Lindorm's ground rumbles and bursts as it comes up, the sea surges as the Kraken rises, and a dread sounds when a Black Beast or a plague comes.
-- A spider nest rustles and skitters, a Nidhogg Spawn breathes and hisses as it lurks, and a Yggdrasil Warden creaks and breathes as it stands like a tree.
+- The Lindorm's ground rumbles and bursts as it comes up, the lava boils over as the Lava Worm rises, the sea surges as the Kraken rises, and a dread sounds when a Black Beast or a plague comes.
+- A spider nest rustles and skitters, a Nidhogg Spawn breathes and hisses as it lurks, the lava bubbles and steams round a Lava Worm, and a Yggdrasil Warden creaks and breathes as it stands like a tree.
 
 The monsters' `Sounds` settings switch their own sounds off (after a restart). The loops follow `AmbienceVolume` and the rest `EffectsVolume` in `[Sound]`.
 

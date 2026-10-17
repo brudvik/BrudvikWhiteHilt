@@ -4,8 +4,8 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Monsters;
 
 /// <summary>
-/// Hooks the Lindorm service onto the game object, keeps a Lindorm still and unhurt while it is below ground and a
-/// Nidhogg Spawn still while it roars, and keeps dragon fire off buildings unless the config allows it.
+/// Hooks the Lindorm and Lava Worm services onto the game object, keeps a Lindorm or Lava Worm still and unhurt while it
+/// is below ground and a Nidhogg Spawn still while it roars, and keeps dragon fire off buildings unless the config allows it.
 /// </summary>
 [HarmonyPatch]
 public static class MonsterPatches
@@ -15,6 +15,7 @@ public static class MonsterPatches
     private static void GameStartPostfix(Game __instance)
     {
         __instance.gameObject.AddComponent<LindormService>();
+        __instance.gameObject.AddComponent<LavaWormService>();
         __instance.gameObject.AddComponent<DragonGroundFireDamage>();
     }
 

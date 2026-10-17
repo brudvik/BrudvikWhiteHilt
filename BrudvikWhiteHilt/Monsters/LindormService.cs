@@ -103,7 +103,7 @@ public class LindormService : MonoBehaviour
             && CountNear(position) == 0;
     }
 
-    private static bool OnFoot(Player player)
+    internal static bool OnFoot(Player player)
     {
         return !player.InInterior() && !player.IsAttached() && !player.InWater() && player.GetStandingOnShip() == null;
     }
@@ -113,7 +113,7 @@ public class LindormService : MonoBehaviour
         int count = 0;
         foreach (LindormBurrow lindorm in LindormBurrow.Instances)
         {
-            if (lindorm != null && Vector3.Distance(lindorm.transform.position, position) < NearbyRange)
+            if (lindorm != null && lindorm is not LavaWormBurrow && Vector3.Distance(lindorm.transform.position, position) < NearbyRange)
             {
                 count++;
             }
@@ -169,7 +169,7 @@ public class LindormService : MonoBehaviour
         }
     }
 
-    private static bool IsAdmin(long sender)
+    internal static bool IsAdmin(long sender)
     {
         if (sender == ZRoutedRpc.instance.m_id)
         {

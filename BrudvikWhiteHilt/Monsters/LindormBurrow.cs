@@ -5,7 +5,8 @@ namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
 /// Sits on the Lindorm. It breaks out of the ground where it spawns, and burrows back down when it has lost its prey for a
-/// while, or at dawn. While it is below ground it neither moves nor takes damage.
+/// while, or at dawn. While it is below ground it neither moves nor takes damage. The Lava Worm
+/// (<see cref="LavaWormBurrow"/>) rises out of the lava the same way, with its own settings.
 /// </summary>
 public class LindormBurrow : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class LindormBurrow : MonoBehaviour
 
     private const string StartKey = "whitehilt_lindorm_start";
     private const string RetreatKey = "whitehilt_lindorm_retreat";
+    private const string HomeKey = "whitehilt_lindorm_home";
     private const float RiseSeconds = 2.2f;
     private const float SinkSeconds = 2.5f;
     private const float AnnounceRange = 40f;
@@ -32,6 +34,21 @@ public class LindormBurrow : MonoBehaviour
     /// <summary>Every Lindorm in the loaded world.</summary>
     public static IReadOnlyList<LindormBurrow> Instances => instances;
 
+    /// <summary>How deep below the ground it waits, in metres.</summary>
+    protected virtual float Depth => 3.5f * MonsterSettings.LindormScale.Value;
+
+    /// <summary>Whether it leaves at dawn.</summary>
+    protected virtual bool LeavesAtDawn => MonsterSettings.LindormNightOnly.Value;
+
+    /// <summary>Seconds without prey before it leaves.</summary>
+    protected virtual float GiveUpSeconds => MonsterSettings.LindormGiveUpSeconds.Value;
+
+    /// <summary>How far from where it rose it follows its prey before it leaves, or zero for no limit.</summary>
+    protected virtual float LeashRange => 0f;
+
+    /// <summary>What a player close by is told as it rises.</summary>
+    protected virtual string RiseMessage => "$msg_whitehilt_lindorm_rises";
+
     /// <summary>Whether it is still rising or already burrowing away.</summary>
     public bool IsHidden => nview != null && nview.IsValid() && (Seconds(StartKey) < RiseSeconds * 0.7f || nview.GetZDO().GetLong(RetreatKey) != 0L);
 
@@ -41,12 +58,13 @@ public class LindormBurrow : MonoBehaviour
         character = GetComponent<Character>();
         ai = GetComponent<MonsterAI>();
         visual = transform.Find(VisualPath);
-        depth = 3.5f * MonsterSettings.LindormScale.Value;
+        depth = Depth;
         lastPrey = Time.time;
         instances.Add(this);
         if (nview.IsValid() && nview.IsOwner() && nview.GetZDO().GetLong(StartKey) == 0L)
         {
             nview.GetZDO().Set(StartKey, ZNet.instance.GetTime().Ticks);
+            nview.GetZDO().Set(HomeKey, transform.position);
             Burst();
         }
 
@@ -61,7 +79,7 @@ public class LindormBurrow : MonoBehaviour
             return;
         }
 
-        player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_lindorm_rises");
+        player.Message(MessageHud.MessageType.Center, RiseMessage);
         GameCamera.instance?.AddShake(transform.position, 40f, 1.5f, false);
     }
 
@@ -101,11 +119,23 @@ public class LindormBurrow : MonoBehaviour
             lastPrey = Time.time;
         }
 
-        bool dawn = MonsterSettings.LindormNightOnly.Value && !EnvMan.IsNight();
-        if (Time.time - lastPrey > (dawn ? 5f : MonsterSettings.LindormGiveUpSeconds.Value))
+        bool dawn = LeavesAtDawn && !EnvMan.IsNight();
+        if (Time.time - lastPrey > (dawn ? 5f : GiveUpSeconds) || TooFarFromHome())
         {
             Retreat();
         }
+    }
+
+    private bool TooFarFromHome()
+    {
+        if (LeashRange <= 0f)
+        {
+            return false;
+        }
+
+        Vector3 home = nview.GetZDO().GetVec3(HomeKey, transform.position);
+        home.y = transform.position.y;
+        return Vector3.Distance(home, transform.position) > LeashRange;
     }
 
     /// <summary>
