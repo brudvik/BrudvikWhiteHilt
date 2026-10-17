@@ -168,13 +168,22 @@ public static class TerrainShapes
     /// <returns>The plan.</returns>
     public static Plan Level(Vector3 a, Vector3 b, float height, TerrainModifier.PaintType? paint)
     {
-        Vector2 min = new(Mathf.Min(a.x, b.x), Mathf.Min(a.z, b.z));
-        Vector2 max = new(Mathf.Max(a.x, b.x), Mathf.Max(a.z, b.z));
-        return Build(min - Vector2.one * Skirt, max + Vector2.one * Skirt, (x, z, current) =>
+        return Level(new GroundRect(a, 0f, new Vector2(b.x - a.x, b.z - a.z)), height, paint);
+    }
+
+    /// <summary>
+    /// A flat rectangle, turned any way, at a height, with a skirt blending into the ground around it.
+    /// </summary>
+    /// <param name="rect">The rectangle.</param>
+    /// <param name="height">The height.</param>
+    /// <param name="paint">Paint inside the rectangle, or null.</param>
+    /// <returns>The plan.</returns>
+    public static Plan Level(GroundRect rect, float height, TerrainModifier.PaintType? paint)
+    {
+        rect.Bounds(Skirt, out Vector2 min, out Vector2 max);
+        return Build(min, max, (x, z, current) =>
         {
-            float dx = Mathf.Max(min.x - x, 0f, x - max.x);
-            float dz = Mathf.Max(min.y - z, 0f, z - max.y);
-            float distance = Mathf.Sqrt(dx * dx + dz * dz);
+            float distance = rect.OutsideDistance(x, z);
             if (distance <= 0.01f)
             {
                 return new Want(true, height, true);
@@ -258,14 +267,26 @@ public static class TerrainShapes
     /// <returns>The plan.</returns>
     public static Plan PaintArea(Vector3 a, Vector3 b, TerrainModifier.PaintType paint)
     {
+        return PaintArea(new GroundRect(a, 0f, new Vector2(b.x - a.x, b.z - a.z)), paint);
+    }
+
+    /// <summary>
+    /// Paint on a rectangle turned any way, without changing heights.
+    /// </summary>
+    /// <param name="rect">The rectangle.</param>
+    /// <param name="paint">The paint.</param>
+    /// <returns>The plan.</returns>
+    public static Plan PaintArea(GroundRect rect, TerrainModifier.PaintType paint)
+    {
         Plan plan = new();
         TerrainOp.Settings settings = TerrainEdit.Paint(paint, 0.8f);
-        for (int x = Mathf.CeilToInt(Mathf.Min(a.x, b.x)); x <= Mathf.FloorToInt(Mathf.Max(a.x, b.x)); x++)
+        rect.Bounds(0f, out Vector2 min, out Vector2 max);
+        for (int x = Mathf.CeilToInt(min.x); x <= Mathf.FloorToInt(max.x); x++)
         {
-            for (int z = Mathf.CeilToInt(Mathf.Min(a.z, b.z)); z <= Mathf.FloorToInt(Mathf.Max(a.z, b.z)); z++)
+            for (int z = Mathf.CeilToInt(min.y); z <= Mathf.FloorToInt(max.y); z++)
             {
                 Vector3 point = new(x, 0f, z);
-                if (!Heightmap.GetHeight(point, out float height))
+                if (rect.OutsideDistance(x, z) > 0.01f || !Heightmap.GetHeight(point, out float height))
                 {
                     continue;
                 }

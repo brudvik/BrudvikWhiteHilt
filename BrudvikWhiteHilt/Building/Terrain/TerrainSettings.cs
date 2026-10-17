@@ -181,7 +181,16 @@ public static class TerrainSettings
         Translations.AddEnglish("whitehilt_terrain_hint_rect", "{0}: click the first corner   Right mouse: stop");
         Translations.AddEnglish("whitehilt_terrain_hint_rect2", "{0}: {1} x {2} m   click the second corner   Arrows: fixed size   Right mouse: back");
         Translations.AddEnglish("whitehilt_terrain_hint_level",
-            "Level: {0} x {1} m at {2}   PgUp/PgDn: height   Shift+click: height from where you aim   Click: level   Right mouse: back\nDig {3} m³   fill {4} m³   {5}");
+            "Level: {0} x {1} m at {2}   PgUp/PgDn: height (Shift 1 m, Ctrl 0.1 m)   Shift+click: height from where you aim   Click: level   K: next tile   Right mouse: back\nDig {3} m³   fill {4} m³   {5}");
+        Translations.AddEnglish("whitehilt_terrain_hint_turn", "Wheel: turn ({0})");
+        Translations.AddEnglish("whitehilt_terrain_size", "Size");
+        Translations.AddEnglish("whitehilt_terrain_size_free", "free");
+        Translations.AddEnglish("whitehilt_terrain_size_type", "Type a size");
+        Translations.AddEnglish("whitehilt_terrain_size_ask", "Size, such as 40 x 40 (one number for a square)");
+        Translations.AddEnglish("whitehilt_terrain_turn", "Heading");
+        Translations.AddEnglish("whitehilt_terrain_next_tile", "Next tile");
+        Translations.AddEnglish("msg_whitehilt_terrain_size_bad", "Write a size such as 40 x 40");
+        Translations.AddEnglish("msg_whitehilt_terrain_no_tile", "Level an area first");
         Translations.AddEnglish("whitehilt_terrain_hint_ramp",
             "Ramp: click the {0}   Arrows up/down: width {1} m   Right mouse: back\n{2}");
         Translations.AddEnglish("whitehilt_terrain_ramp_start", "bottom");

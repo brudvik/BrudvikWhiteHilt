@@ -4,6 +4,15 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **[The build camera with a pickaxe](docs/build-tools.md#-build-camera--toolbar)**: hold any pickaxe and the build
+  camera stays on; the blow lands where the camera aims, up to 4 m from it (`CameraMining`, `CameraMiningReach`).
+  Break a rock while building, or dig the bottom under water from the shore.
+- **[Even ground by the tile](docs/build-tools.md#white-hilt-hoe-and-cultivator)**: the White Hilt Hoe's areas can be
+  given a size on the panel (1 x 40, 4 x 4, 8 x 8, 16 x 16, 40 x 40 or typed in), turned with the wheel or the way the
+  camera looks, and levelled tile by tile with K, each starting at the height of the last. PgUp / PgDn change the
+  height by 1 m with Shift and 0.1 m with Ctrl.
+
 ### Fixed
 - **Other players no longer hang in the air** for a moment before they drop into place. The game stops sending
   positions while a player's connection is busy, and carries on the last movement in a straight line meanwhile, so a

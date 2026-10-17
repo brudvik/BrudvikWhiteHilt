@@ -27,6 +27,8 @@ public class TerrainPanel : MonoBehaviour
     private Text hoeStatus;
     private Text farmStatus;
     private Text surfaceLabel;
+    private Text sizeLabel;
+    private Text turnLabel;
     private Text widthLabel;
     private Text gradeLabel;
     private Text evenLabel;
@@ -114,6 +116,12 @@ public class TerrainPanel : MonoBehaviour
         AddButton(hoe, 0f, half, "$whitehilt_terrain_reset", TerrainSettings.KeyReset, _ => HoeTools.Toggle(HoeTools.ToolMode.Reset));
         AddButton(hoe, right, half, "$whitehilt_terrain_reference", TerrainSettings.KeyReference, HoeTools.SetReference);
         NextRow();
+        sizeLabel = AddButton(hoe, 0f, half, null, null, _ => HoeTools.CycleSize());
+        AddButton(hoe, right, half, "$whitehilt_terrain_size_type", null, _ => HoeTools.AskSize());
+        NextRow();
+        turnLabel = AddButton(hoe, 0f, half, null, null, _ => HoeTools.ToggleTurn());
+        AddButton(hoe, right, half, "$whitehilt_terrain_next_tile", BuildToolSettings.KeyStamp, HoeTools.NextTile);
+        NextRow();
         surfaceLabel = AddButton(hoe, 0f, half, null, null, _ => HoeTools.CycleSurface());
         widthLabel = AddButton(hoe, right, half, null, null, _ => HoeTools.CycleWidth());
         NextRow();
@@ -168,6 +176,8 @@ public class TerrainPanel : MonoBehaviour
                 HoeTools.BrushRadius > 0f ? HoeTools.Metres(HoeTools.BrushRadius) : "-", BuildToolSettings.KeyName(BuildToolSettings.TiltWheelModifier.Value));
             hoeStatus.text = height + "\n" + brush + "\n" + RoadBuilder.Status() + "\n" + MoatBuilder.Status();
             surfaceLabel.text = Localization.instance.Localize("$whitehilt_terrain_surface") + ": " + HoeTools.SurfaceName(HoeTools.Paving);
+            sizeLabel.text = Localization.instance.Localize("$whitehilt_terrain_size") + ": " + HoeTools.SizeText;
+            turnLabel.text = Localization.instance.Localize("$whitehilt_terrain_turn") + ": " + HoeTools.TurnText;
             widthLabel.text = Localization.instance.Localize("$whitehilt_terrain_width") + ": " + HoeTools.Width.ToString("0") + " m";
             gradeLabel.text = Localization.instance.Localize("$whitehilt_terrain_grade") + ": "
                 + (HoeTools.Grade > 0f ? HoeTools.Grade.ToString("0") + " %" : Localization.instance.Localize("$whitehilt_terrain_grade_free"));

@@ -30,6 +30,12 @@ public static class BuildToolSettings
     /// <summary>Whether the camera picks up items lying close to it.</summary>
     public static ConfigEntry<bool> AutoPickup { get; private set; }
 
+    /// <summary>Whether a pickaxe may be swung from the build camera.</summary>
+    public static ConfigEntry<bool> CameraMining { get; private set; }
+
+    /// <summary>How far from the build camera a pickaxe reaches, in metres.</summary>
+    public static ConfigEntry<float> CameraMiningReach { get; private set; }
+
     /// <summary>How close to the camera items are picked up, in metres.</summary>
     public static ConfigEntry<float> AutoPickupRange { get; private set; }
 
@@ -198,6 +204,10 @@ public static class BuildToolSettings
         MaxPlaceDistance = WhiteHiltConfig.BindAdminOnly(Section, "MaxPlaceDistance", 50f,
             "How far from the build camera pieces may be placed and removed, in metres.", new AcceptableValueRange<float>(5f, 100f));
         AutoPickup = WhiteHiltConfig.BindAdminOnly(Section, "AutoPickup", false, "The build camera picks up items lying close to it.");
+        CameraMining = WhiteHiltConfig.BindAdminOnly(Section, "CameraMining", true,
+            "The build camera may also be used with a pickaxe, which then strikes where the camera aims: rocks, ore and the ground, also under water.");
+        CameraMiningReach = WhiteHiltConfig.BindAdminOnly(Section, "CameraMiningReach", 4f,
+            "How far from the build camera a pickaxe reaches, in metres.", new AcceptableValueRange<float>(2f, 8f));
         AutoPickupRange = WhiteHiltConfig.BindAdminOnly(Section, "AutoPickupRange", 4f,
             "How close to the build camera items are picked up, in metres.", new AcceptableValueRange<float>(1f, 15f));
         UndoSeconds = WhiteHiltConfig.BindAdminOnly(Section, "UndoSeconds", 30f,
@@ -387,6 +397,7 @@ public static class BuildToolSettings
         Translations.AddEnglish("whitehilt_build_tip_light", "A lamp on the build camera.");
         Translations.AddEnglish("msg_whitehilt_build_camera_disabled", "The build camera is switched off on this server");
         Translations.AddEnglish("msg_whitehilt_build_camera_edge", "The camera cannot go further from you or your crafting stations");
+        Translations.AddEnglish("msg_whitehilt_camera_mining", "Build camera: the pickaxe strikes where you aim, up to {0} m from the camera");
         Translations.AddEnglish("msg_whitehilt_build_camera_speed", "Camera speed");
         Translations.AddEnglish("msg_whitehilt_build_snap_on", "Snapping on");
         Translations.AddEnglish("msg_whitehilt_build_snap_off", "Snapping off");

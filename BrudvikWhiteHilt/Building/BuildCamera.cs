@@ -316,7 +316,8 @@ public static class BuildCamera
 
     private static bool CanUse(Player player)
     {
-        return player.InPlaceMode() && !player.IsDead() && !player.IsAttached() && !player.IsTeleporting() && !player.InCutscene();
+        return (player.InPlaceMode() || CameraMining.Holding(player)) && !player.IsDead() && !player.IsAttached() && !player.IsTeleporting()
+            && !player.InCutscene();
     }
 
     private static bool CanTakeInput()

@@ -55,6 +55,11 @@ public static class BuildTools
             }
 
             ExitTerrainTools(player);
+            if (CameraMining.Holding(player))
+            {
+                CameraMining.Tick(player);
+            }
+
             return;
         }
 
@@ -98,7 +103,7 @@ public static class BuildTools
         if (Pressed(BuildToolSettings.KeySnap)) ToggleSnap(player);
         if (Pressed(BuildToolSettings.KeyCopy)) Copy(player);
         if (Pressed(BuildToolSettings.KeyGrid)) ToggleGrid(player);
-        if (Pressed(BuildToolSettings.KeyStamp)) Stamp(player);
+        if (Pressed(BuildToolSettings.KeyStamp) && !HoeTools.Active) Stamp(player);
         if (Pressed(BuildToolSettings.KeyUndo)) Undo(player);
         if (Pressed(BuildToolSettings.KeyRedo)) Redo(player);
         if (Pressed(BuildToolSettings.KeyLight)) ToggleLight(player);
@@ -368,7 +373,7 @@ public static class BuildTools
         }
     }
 
-    private static bool Pressed(ConfigEntry<KeyboardShortcut> key)
+    internal static bool Pressed(ConfigEntry<KeyboardShortcut> key)
     {
         return key.Value.MainKey != KeyCode.None && key.Value.IsDown();
     }

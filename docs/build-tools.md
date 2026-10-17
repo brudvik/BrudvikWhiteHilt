@@ -8,7 +8,7 @@ While you hold a build tool (hammer, hoe, cultivator, or a build tool from anoth
 
 | Tool | Key | What it does |
 |------|-----|--------------|
-| Build camera | B | A free camera that flies within 12 m of you or anywhere inside a crafting station's build range, also below ground to reach awkward spots. You stand still; pieces are aimed and placed from the camera, up to 50 m away. W A S D fly, Space up, Ctrl down, Shift faster. At the edge of the allowed area, rings show where it ends. Your Wisp light follows the camera |
+| Build camera | B | A free camera that flies within 12 m of you or anywhere inside a crafting station's build range, also below ground to reach awkward spots. You stand still; pieces are aimed and placed from the camera, up to 50 m away. W A S D fly, Space up, Ctrl down, Shift faster. At the edge of the allowed area, rings show where it ends. Your Wisp light follows the camera. It also works with a **pickaxe**, any pickaxe: you swing where you stand, and the blow lands where the camera aims, up to 4 m from the camera. Break a rock in an awkward spot while building, or dig the bottom under water from the shore. Switching between the hammer and the pickaxe keeps the camera on |
 | Fly to aim | J | Flies the camera to 3 m in front of what you aim at (and switches it on) |
 | Orbit | hold Z | Circles the camera around the piece or the point you aim at; W / S go closer or further |
 | Camera speed | Num+ / Num- | Faster or slower flying |
@@ -28,7 +28,7 @@ While you hold a build tool (hammer, hoe, cultivator, or a build tool from anoth
 | Repair mode | Ctrl + R | Switches the hammer to its repair and back to the piece you held. One click repairs every damaged piece in a circle around where you aim, from the ground to the roof; the mouse wheel sets the size (1 to 30 m, or one piece as in vanilla). A ring shows the area and damaged pieces glow red to yellow by how worn they are. Each piece costs a quarter of a normal repair's stamina and tool wear; warded pieces and pieces whose crafting station is out of reach are skipped |
 | Light | L | Camera light on and off |
 
-The `BuildTools` config section sets how far the camera may fly (`CameraPlayerRange`, `CameraStationRange`), the placing reach, the undo time, whether the camera picks up items near it (`AutoPickup`, off by default), and area repair (`RepairArea`, `RepairMaxRadius`, `RepairAreaCost`); these are synced from the server. Speed, mouse, light, nudge step, grid size, repair radius, the axes, whether the toolbar and hint show, and whether a piece you build shows the game's puff of dust and smoke (`PlaceSmoke`, off by default: only the hammer's knock is heard) are your own, and every key can be changed in `BuildTools.Keys`.
+The `BuildTools` config section sets how far the camera may fly (`CameraPlayerRange`, `CameraStationRange`), whether a pickaxe may be used from it and how far it reaches (`CameraMining`, `CameraMiningReach`), the placing reach, the undo time, whether the camera picks up items near it (`AutoPickup`, off by default), and area repair (`RepairArea`, `RepairMaxRadius`, `RepairAreaCost`); these are synced from the server. Speed, mouse, light, nudge step, grid size, repair radius, the axes, whether the toolbar and hint show, and whether a piece you build shows the game's puff of dust and smoke (`PlaceSmoke`, off by default: only the hammer's knock is heard) are your own, and every key can be changed in `BuildTools.Keys`.
 
 ### Media: photos and films
 
@@ -88,7 +88,10 @@ The **White Hilt Hoe** and **White Hilt Cultivator** get their own tools. While 
 | Tool | Key | What it does |
 |------|-----|--------------|
 | Road (hoe) | Ctrl + R | The map opens: click points, double-click or close the map to finish. The road (4 m wide by default; the up/down arrow keys change the width while the map is open, 1 to 12 m; stone, dirt or no surface) is built as you walk along it, since only land near you is loaded. It follows the ground with the bumps smoothed out, or keeps an even slope between the points. It stops at water, pays stone as it goes and pauses when you run out. Pause or cancel it on the panel; it is saved with the world |
-| Level (hoe) | Ctrl + F | Pick an area, then the height (PgUp / PgDn in 0.25 m steps, Shift+click to take it from where you aim, or the height reference). The preview shows how much is dug and filled and the cost. The edges slope down to the ground around |
+| Level (hoe) | Ctrl + F | Pick an area; the height starts where you clicked the first corner (or at the height reference). PgUp / PgDn raise and lower it by 0.25 m, with Shift by 1 m and with Ctrl by 0.1 m; Shift+click takes it from where you aim. The preview shows how much is dug and filled and the cost. The edges slope down to the ground around |
+| Area size (hoe) | panel | *Size* chooses a size for every area until set back to free: 1 x 40, 4 x 4, 8 x 8, 16 x 16 or 40 x 40 m. *Type a size* takes any, such as 40 x 20, or one number for a square. Before the first click the area hangs from where you aim |
+| Turn the area (hoe) | wheel, panel | The mouse wheel turns the area for levelling, painting and resetting by the rotation step (Y), so it can follow a wall. *Heading* on the panel turns it the way the camera looks, or back along the world's axes |
+| Next tile (hoe) | K | Levels the tile right next to the last levelled area, on the side you look towards, the same size and heading, at the same height to begin with; change the height before you click for terraces or steps |
 | Ramp (hoe) | Ctrl + G | Click the bottom and the top: an even ramp, as wide as set on the panel (arrow up/down), with length, rise and slope. The slope can be locked to 10, 15, 20 or 25 %. The next ramp starts where the last ended |
 | Paint (hoe) | Ctrl + P | Stone, dirt or grass over an area without changing its height |
 | Reset (hoe) | Ctrl + T | Put an area back to the ground as the world made it |

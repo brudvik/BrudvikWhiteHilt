@@ -380,6 +380,19 @@ public static class BuildToolPatches
     }
 
     /// <summary>
+    /// Sends a pickaxe strike along the build camera's line of sight while the camera is on.
+    /// </summary>
+    /// <param name="__instance">The strike.</param>
+    /// <param name="originJoint">Where it starts from.</param>
+    /// <param name="attackDir">Which way it goes.</param>
+    [HarmonyPatch(typeof(Attack), nameof(Attack.GetMeleeAttackDir))]
+    [HarmonyPostfix]
+    public static void StrikeFromCamera(Attack __instance, ref Transform originJoint, ref Vector3 attackDir)
+    {
+        CameraMining.Redirect(__instance, ref originJoint, ref attackDir);
+    }
+
+    /// <summary>
     /// Lets the demister ball follow the build camera.
     /// </summary>
     /// <param name="__instance">The demister effect.</param>
