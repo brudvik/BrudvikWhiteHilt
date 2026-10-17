@@ -99,8 +99,11 @@ internal sealed class WildLook
 /// </summary>
 internal sealed class WildMonster
 {
-    /// <summary>Name of the model in the bundle (<c>&lt;id&gt;_visual</c>), and of the creature in texts and sounds.</summary>
+    /// <summary>Name of the creature in texts, settings and sounds, and of its model unless <see cref="Model"/> names another.</summary>
     public string Id;
+
+    /// <summary>Name of the model in the bundle (<c>&lt;model&gt;_visual</c>) when it is another monster's, or null for its own.</summary>
+    public string Model;
 
     /// <summary>Prefab name of the creature.</summary>
     public string PrefabName;
@@ -239,6 +242,9 @@ internal sealed class WildMonster
 
     /// <summary>Seconds before the corpse is gone.</summary>
     public float CorpseLifetime = 14f;
+
+    /// <summary>Name of the model in the bundle.</summary>
+    public string ModelName => Model ?? Id;
 
     /// <summary>Whether it comes in groups.</summary>
     public bool InGroups => GroupMax > 1;

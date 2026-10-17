@@ -4,7 +4,7 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
-/// The six wild monsters of the Mistlands, the Ashlands, the ocean and the Nail flagships, and the names of their loot.
+/// The wild monsters of the Mistlands, the Ashlands, the ocean and the Nail flagships, and the names of their loot.
 /// Numbers here are the defaults of the settings; the sizes and clip times come from the models (see the Phase A log in
 /// the plan).
 /// </summary>
@@ -42,6 +42,12 @@ internal static class WildMonsters
 
     /// <summary>Prefab name of the Draugr Jarl trophy.</summary>
     public const string JarlTrophy = "WhiteHilt_TrophyDraugrJarl";
+
+    /// <summary>Prefab name of Huldra Bark.</summary>
+    public const string HuldraBark = "WhiteHilt_HuldraBark";
+
+    /// <summary>Prefab name of the Huldra trophy, her cow's tail.</summary>
+    public const string HuldraTrophy = "WhiteHilt_TrophyHuldra";
 
     /// <summary>Prefab name of the roast Mist Stag.</summary>
     public const string CookedMistStag = "WhiteHilt_CookedMistStag";
@@ -334,8 +340,105 @@ internal static class WildMonsters
         Configure = WildMonsterRegistry.ConfigureJarl
     };
 
-    /// <summary>All six, in the order they are made.</summary>
-    public static readonly IReadOnlyList<WildMonster> All = new[] { MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl };
+    /// <summary>
+    /// The Huldra: a fair maiden who stands in the Mistlands' fog at night and sings. She does not attack; she waves and
+    /// blows kisses and draws whoever stands and listens slowly towards her (<see cref="HuldraLure"/>). Come too close or
+    /// hurt her, and she turns her back, hollow as a rotten tree, and becomes the <see cref="HuldraTrueForm"/>. Her claw is
+    /// only used should she be cornered without turning.
+    /// </summary>
+    public static readonly WildMonster Huldra = new()
+    {
+        Id = "huldra",
+        PrefabName = "WhiteHilt_Huldra",
+        EnglishName = "Huldra",
+        Faction = Character.Faction.MistlandsMonsters,
+        SoundPrefix = "huldra",
+        ModelScale = 1f,
+        SizeText = "about 1.75 m tall",
+        CapsuleCenter = new Vector3(0f, 0.9f, 0f),
+        CapsuleRadius = 0.35f,
+        CapsuleHeight = 1.8f,
+        Eye = new Vector3(0f, 1.62f, 0.1f),
+        WalkSpeed = 1.3f,
+        RunSpeed = 4.5f,
+        TurnSpeed = 200f,
+        RunTurnSpeed = 300f,
+        Health = 400f,
+        Modifiers = Mods(fire: HitData.DamageModifier.Weak, poison: HitData.DamageModifier.Resistant, spirit: HitData.DamageModifier.Weak),
+        Attacks = new[]
+        {
+            new WildAttack
+            {
+                Name = "Claw", Trigger = "huldra_attack", Description = "Slash damage of the Huldra's claw, should she fight without turning.",
+                Type = HitData.DamageType.Slash, Damage = 60f, Range = 1.8f, Height = 1.5f, Angle = 70f, RayWidth = 0.5f, Interval = 2f, Force = 30f
+            }
+        },
+        Trophy = HuldraTrophy,
+        // Her own colours: the fair hair, the blue eyes and the pale skin are painted into her texture.
+        Look = new WildLook(),
+        StarScale = 0.04f,
+        Biome = Heightmap.Biome.Mistlands,
+        SpawnAtDay = false,
+        SpawnChance = 8f,
+        SpawnSeconds = 500f,
+        CorpseSinkAfter = 6f,
+        CorpseLifetime = 12f,
+        Configure = WildMonsterRegistry.ConfigureHuldra
+    };
+
+    /// <summary>
+    /// The Huldra as she truly is: a hag of roots and rotten bark, on the Yggdrasil Warden's model, smaller, darker and
+    /// rotten. She never spawns on her own; the Huldra becomes her.
+    /// </summary>
+    public static readonly WildMonster HuldraTrueForm = new()
+    {
+        Id = "huldraroot",
+        Model = "yggdrasilwarden",
+        PrefabName = "WhiteHilt_HuldraTrueForm",
+        EnglishName = "Unmasked Huldra",
+        // Its own copies of the materials, so the colours below do not reach the Yggdrasil Warden's.
+        TemplateCreature = "Greydwarf",
+        Faction = Character.Faction.MistlandsMonsters,
+        SoundPrefix = "huldraroot",
+        ModelScale = 0.38f,
+        SizeText = "about 2.8 m tall",
+        CapsuleCenter = new Vector3(0f, 1.35f, 0f),
+        CapsuleRadius = 0.7f,
+        CapsuleHeight = 2.7f,
+        Eye = new Vector3(0f, 2.4f, 0.3f),
+        WalkSpeed = 2f,
+        RunSpeed = 5f,
+        TurnSpeed = 90f,
+        RunTurnSpeed = 140f,
+        Health = 2400f,
+        Modifiers = Mods(pierce: HitData.DamageModifier.Resistant, fire: HitData.DamageModifier.VeryWeak, frost: HitData.DamageModifier.Resistant,
+            poison: HitData.DamageModifier.Immune, spirit: HitData.DamageModifier.Weak),
+        Attacks = new[]
+        {
+            new WildAttack
+            {
+                Name = "Slam", Trigger = "warden_slam", Description = "Blunt damage of the Unmasked Huldra's root slam.",
+                Type = HitData.DamageType.Blunt, Damage = 130f, ExtraType = HitData.DamageType.Poison, ExtraDamage = 40f,
+                Range = 4.2f, Height = 2f, Angle = 110f, RayWidth = 1.3f, Interval = 3f, Force = 90f
+            }
+        },
+        Drops = new[] { new WildDrop { Item = HuldraBark, Min = 2, Max = 3 } },
+        Trophy = HuldraTrophy,
+        TrophyChance = 25f,
+        // Rotten: dark, sickly green-grey bark; the runes' glow is the model's own emission map.
+        Look = new WildLook { Tint = new Color(0.5f, 0.55f, 0.45f), Saturation = -0.25f, Value = -0.25f, Skip = new string[0] },
+        StarScale = 0.1f,
+        Spawns = false,
+        CorpseSinkAfter = 10f,
+        CorpseLifetime = 16f,
+        Configure = WildMonsterRegistry.ConfigureHuldraRoot
+    };
+
+    /// <summary>All of them, in the order they are made.</summary>
+    public static readonly IReadOnlyList<WildMonster> All = new[]
+    {
+        MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl, Huldra, HuldraTrueForm
+    };
 
     // Damage modifiers where everything not named is normal, and chopping and pickaxes do nothing.
     private static HitData.DamageModifiers Mods(HitData.DamageModifier blunt = HitData.DamageModifier.Normal, HitData.DamageModifier slash = HitData.DamageModifier.Normal,

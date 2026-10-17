@@ -1,0 +1,25 @@
+{
+  "source": "Arissa by Mixamo (Adobe), used under the Mixamo licence; hair, braid and tail added and the texture repainted by AssetSource/Tools/dress_huldra.py",
+  "clips": [
+    { "name": "idle", "take": "idle", "loop": true },
+    { "name": "walk", "take": "walk", "loop": true },
+    { "name": "run", "take": "run", "loop": true },
+    { "name": "wave", "take": "wave", "loop": false },
+    { "name": "kiss", "take": "kiss", "loop": false },
+    { "name": "attack", "take": "attack", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "front_bone": "mixamorig:LeftToeBase",
+  "front_origin_bone": "mixamorig:LeftFoot",
+  "controller": {
+    "idle": "idle",
+    "move": "walk",
+    "move_speed": 1.3,
+    "run": "run",
+    "run_speed": 4.5,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "huldra_attack", "clip": "attack", "hit": 0.43 } ],
+    "always_animate": true
+  }
+}

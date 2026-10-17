@@ -41,7 +41,7 @@ public static class TradingPostTrophies
         new[]
         {
             "TrophySeeker", "TrophySeekerBrute", "TrophyTick", "TrophyGjall", "TrophyDvergr", "TrophyHare", "WhiteHilt_TrophyMistStag",
-            "WhiteHilt_TrophyNidhoggSpawn", "WhiteHilt_TrophyYggdrasilWarden"
+            "WhiteHilt_TrophyNidhoggSpawn", "WhiteHilt_TrophyYggdrasilWarden", "WhiteHilt_TrophyHuldra"
         },
         new[]
         {

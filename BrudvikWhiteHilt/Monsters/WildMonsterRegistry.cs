@@ -151,6 +151,45 @@ internal static class WildMonsterRegistry
         parts.AI.m_fleeIfHurtWhenTargetCantBeReached = false;
     }
 
+    /// <summary>
+    /// Huldra: she sings and lures instead of hunting. <see cref="HuldraLure"/> holds her AI while she does, and turns her
+    /// into her true form.
+    /// </summary>
+    /// <param name="parts">The Huldra being made.</param>
+    internal static void ConfigureHuldra(WildMonsterParts parts)
+    {
+        parts.AI.m_viewRange = 40f;
+        parts.AI.m_hearRange = 30f;
+        parts.AI.m_alertRange = 30f;
+        parts.AI.m_enableHuntPlayer = false;
+        parts.AI.m_circulateWhileCharging = false;
+        parts.AI.m_fleeIfLowHealth = 0f;
+        parts.Prefab.AddComponent<HuldraLure>();
+        if (parts.Settings.Sounds != null && parts.Settings.Sounds.Value)
+        {
+            LoopSound song = parts.Prefab.AddComponent<LoopSound>();
+            song.clip = "huldra_song";
+            song.near = 8f;
+            song.far = 45f;
+        }
+    }
+
+    /// <summary>
+    /// Unmasked Huldra: she hunts the one who came too close, and does not let go.
+    /// </summary>
+    /// <param name="parts">The true form being made.</param>
+    internal static void ConfigureHuldraRoot(WildMonsterParts parts)
+    {
+        parts.AI.m_viewRange = 35f;
+        parts.AI.m_hearRange = 30f;
+        parts.AI.m_alertRange = 25f;
+        parts.AI.m_enableHuntPlayer = true;
+        parts.AI.m_circulateWhileCharging = false;
+        parts.AI.m_fleeIfLowHealth = 0f;
+        parts.AI.m_fleeIfHurtWhenTargetCantBeReached = false;
+        MonsterRegistry.SetFootsteps(parts.Prefab, "step_wood");
+    }
+
     private static void Add()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= Add;
@@ -193,6 +232,10 @@ internal static class WildMonsterRegistry
         AddItemText(WildMonsters.SharkMeat, "Shark Meat", "Raw, it will poison you. Hang it and wait, and it turns into food.");
         AddItemText(WildMonsters.SharkTrophy, "Greenland Shark Trophy", "It had seen five hundred winters. It did not see you.");
         AddItemText(WildMonsters.JarlTrophy, "Draugr Jarl Trophy", "The rotting head of a jarl who sailed with Naglfar.");
+        AddItemText(WildMonsters.HuldraBark, "Huldra Bark", "Rotten bark from the hollow back of a Huldra. It still smells faintly of flowers.");
+        AddItemText(WildMonsters.HuldraTrophy, "Huldra's Tail", "A cow's tail, the one thing she could never hide.");
+        Translations.AddEnglish("msg_whitehilt_huldra_song", "A beautiful song drifts through the mist...");
+        Translations.AddEnglish("msg_whitehilt_huldra_turns", "She turns, and her back is hollow as a rotten tree!");
     }
 
     private static void AddItemText(string prefab, string name, string description)
@@ -214,6 +257,8 @@ internal static class WildMonsterRegistry
         MonsterRegistry.AddItem(WildMonsters.SharkMeat, "SerpentMeat", prefab => VisualHelper.Tint(prefab, new Color(0.75f, 0.8f, 0.8f)));
         MonsterRegistry.AddItem(WildMonsters.SharkTrophy, "TrophySerpent", prefab => VisualHelper.Recolor(prefab, Tone(0.5f, 0.12f, 0.55f)));
         MonsterRegistry.AddItem(WildMonsters.JarlTrophy, "TrophyDraugrElite", prefab => VisualHelper.Recolor(prefab, Tone(0.4f, 0.22f, 0.75f)));
+        MonsterRegistry.AddItem(WildMonsters.HuldraBark, "ElderBark", prefab => VisualHelper.Recolor(prefab, Tone(0.22f, 0.25f, 0.55f)));
+        MonsterRegistry.AddItem(WildMonsters.HuldraTrophy, "TrophyDeer", prefab => VisualHelper.Recolor(prefab, Tone(0.11f, 0.45f, 0.95f)));
     }
 
     // Moves every pixel towards a hue and a saturation, and scales its brightness.
@@ -246,7 +291,7 @@ internal static class WildMonsterRegistry
                 attack.Range * size, attack.Height * size, attack.Angle, attack.RayWidth * size, attack.Interval, attack.Force);
         }
 
-        GameObject corpse = MonsterRegistry.CreateCorpse(monster.PrefabName + "Corpse", monster.Id, template, modelScale,
+        GameObject corpse = MonsterRegistry.CreateCorpse(monster.PrefabName + "Corpse", monster.ModelName, template, modelScale,
             monster.CorpseSinkAfter, monster.CorpseSinkSpeed, monster.CorpseLifetime);
         CustomCreature creature = new(monster.PrefabName, monster.BaseCreature, new CreatureConfig
         {
@@ -284,7 +329,7 @@ internal static class WildMonsterRegistry
         ai.m_avoidFire = false;
         ai.m_fleeIfNotAlerted = false;
 
-        GameObject model = MonsterRegistry.AttachVisual(visual, monster.Id, template, modelScale);
+        GameObject model = MonsterRegistry.AttachVisual(visual, monster.ModelName, template, modelScale);
         LevelEffects levels = visual.gameObject.AddComponent<LevelEffects>();
         levels.m_levelSetups = Enumerable.Range(1, Difficulty.CreatureStars.MaxLevel - 1)
             .Select(stars => new LevelEffects.LevelSetup { m_scale = 1f + Mathf.Min(stars, 2) * settings.StarScale.Value })

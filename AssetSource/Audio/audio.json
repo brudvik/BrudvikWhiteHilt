@@ -206,6 +206,11 @@
       "duration": 4
     },
     {
+      "name": "huldra_transform",
+      "prompt": "A beautiful woman's laugh twisting into a shriek as bark tears and wood cracks and creaks, a rotten tree splitting open",
+      "duration": 3
+    },
+    {
       "name": "arrival_kraken",
       "prompt": "A colossal sea monster surfacing from the deep, a huge surge of water, deep rumble and crashing waves",
       "duration": 4
@@ -242,6 +247,12 @@
       "name": "amb_muspell",
       "prompt": "A colossal giant made of molten rock close by: a roaring furnace, crackling fire, cracking stone and a slow deep rumbling breath. No music.",
       "duration": 10,
+      "loop": true
+    },
+    {
+      "name": "huldra_song",
+      "prompt": "A hauntingly beautiful wordless female voice singing a slow Scandinavian kulning herding call far away in a misty forest, echoing, alluring and eerie. No instruments.",
+      "duration": 20,
       "loop": true
     },
     {
@@ -661,6 +672,37 @@
       "custom": {
         "death": "A colossal fire giant of molten rock dying: a long fading thunderous roar, cracking and crumbling stone and a huge collapse that shakes the ground"
       }
+    },
+    {
+      "prefix": "huldra",
+      "description": "A beautiful seductive forest maiden of Norse folklore",
+      "voice": "soft breathy female voice",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "idle": "A seductive young woman softly humming a lullaby and giggling playfully, breathy and close",
+        "alert": "A young woman's alluring laugh, playful and inviting, with a hint of something wrong",
+        "attack": "A young woman's sharp angry hiss turning into a snarl",
+        "hit": "A young woman's short gasp of pain turning into a hiss",
+        "death": "A young woman's long fading wail turning into the creak of a falling tree"
+      }
+    },
+    {
+      "prefix": "huldraroot",
+      "description": "A rotten tree hag of roots and bark, the true form of the Huldra",
+      "voice": "rasping witch shriek with creaking wood and rustling leaves",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
     },
     {
       "prefix": "kraken",

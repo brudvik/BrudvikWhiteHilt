@@ -587,7 +587,10 @@ public class DraugrJarlTests
     public void TheJarlNeverSpawnsInTheWild()
     {
         Assert.False(Jarl.Spawns);
-        Assert.All(Monsters.WildMonsters.All.Where(monster => monster != Jarl), monster => Assert.True(monster.Spawns));
+        // The Huldra's true form does not either: the Huldra becomes her.
+        Assert.False(Monsters.WildMonsters.HuldraTrueForm.Spawns);
+        Assert.All(Monsters.WildMonsters.All.Where(monster => monster != Jarl && monster != Monsters.WildMonsters.HuldraTrueForm),
+            monster => Assert.True(monster.Spawns));
     }
 
     [Fact]

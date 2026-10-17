@@ -5,7 +5,7 @@ namespace BrudvikWhiteHilt.Patches.Monsters;
 
 /// <summary>
 /// Hooks the Lindorm and Lava Worm services onto the game object, keeps a Lindorm or Lava Worm still and unhurt while it
-/// is below ground and a Nidhogg Spawn still while it roars, and keeps dragon fire off buildings unless the config allows it.
+/// is below ground, a Nidhogg Spawn still while it roars and a Huldra while she lures, and keeps dragon fire off buildings unless the config allows it.
 /// </summary>
 [HarmonyPatch]
 public static class MonsterPatches
@@ -42,9 +42,22 @@ public static class MonsterPatches
     [HarmonyPrefix]
     private static bool MonsterAIUpdatePrefix(MonsterAI __instance, ref bool __result)
     {
-        if (LindormBurrow.Instances.Count == 0 && SpawnRoar.RoaringCount == 0)
+        if (LindormBurrow.Instances.Count == 0 && SpawnRoar.RoaringCount == 0 && HuldraLure.LuringCount == 0)
         {
             return true;
+        }
+
+        // A Huldra who lures stands and faces the one she sings to.
+        if (HuldraLure.IsLuring(__instance, out Player prey))
+        {
+            __instance.StopMoving();
+            if (prey != null)
+            {
+                __instance.LookAt(prey.GetHeadPoint());
+            }
+
+            __result = true;
+            return false;
         }
 
         // A Lindorm below ground and a Nidhogg Spawn in its roar both stand still.

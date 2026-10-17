@@ -4,7 +4,7 @@
 
 <img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)). Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)), and in the Mistlands' fog at night [the Huldra](#the-huldra) sings. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
@@ -65,6 +65,22 @@ A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**
 - It is immune to fire, lava and poison, resistant to slashing, piercing and spirit, and **very weak to frost**. Pickaxes hurt it as they would stone.
 - It walks the Ashlands by day and night once **the Queen** is slain: a 4% chance every 15 minutes, never more than one near a player.
 - It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy one time in four.
+
+## The Huldra
+
+A fair maiden with a long blonde braid stands in the Mistlands' fog at night and sings, an old herding call that carries far through the mist. She does not attack. She waves and blows kisses, and a player who **stands still and listens** within about 22 m is **drawn slowly towards her**. Walk, run, fight or block, and the pull lets go.
+
+Come within 3.5 m, or hurt her, and **she turns her back: it is hollow as a rotten tree.** A moment later the **Unmasked Huldra** stands in her place, a hag of roots and rotten bark about 2.8 m tall, and hunts whoever came.
+
+| | Huldra | Unmasked Huldra |
+|---|---|---|
+| Health | 400 | 2400 |
+| Attack | none while she lures (a claw of 60 slash should she fight) | root slam, 130 blunt + 40 poison |
+| Weak to | fire, spirit | fire (very), spirit |
+| Resists | poison | piercing, frost; immune to poison |
+| Drops | Huldra's Tail (10%) | Huldra Bark ×2–3, Huldra's Tail (25%) |
+
+She spawns in the Mistlands at night (`[Monsters.Huldra]`, `SpawnChance` 8 every 500 s). Her true form has its settings in `[Monsters.UnmaskedHuldra]`. With devcommands: `spawn WhiteHilt_Huldra`.
 
 ## Giant spiders
 
@@ -185,6 +201,8 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Surtstone** ×1–2 | Muspell Giant | Always | Surtstone Amulet (below), the Surt Rune ([Smithing](smithing.md#etching-a-rune)) |
 | **Flametal Ore** ×6–10 | Muspell Giant | Always | Vanilla recipes |
 | **Muspell Giant Trophy** | Muspell Giant | 25% | Your wall |
+| **Huldra Bark** ×2–3 | Unmasked Huldra | Always | Huldra Draught (below) |
+| **Huldra's Tail** | Huldra, Unmasked Huldra | 10% / 25% | Your wall |
 | **Spider Silk** ×1–2 | Giant Spider | Always | Gift of Loki ([Potions](potions.md)), mending Shore Nets ([Fishing nets](fishing.md)), the Spider's Web rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
@@ -220,6 +238,7 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Brood Scale Charm** | An accessory: **+8 armor** and **poison Resistant** while worn (`CharmArmor`, `CharmPoison`; [White Hilt gear](equipment.md)) | Galdr Table level 1 | Brood Scale ×4, Black Marble ×2, Eitr ×2 |
 | **Garm Fang Arrow** ×20 | Charred arrows with 82 pierce (as much as the vanilla Charred Arrow) and 25 fire damage (`ArrowPierce`, `ArrowFire`) | Workbench level 2 | Blackwood ×8, Garm Fang ×2, Feathers ×2 |
 | **Surtstone Amulet** | An accessory: **fire Resistant**, and the lava's heat builds up **25% slower**, adding up with [Lava Worm armour](#lava-worm-armour) (`AmuletFire`, `AmuletHeatResistance`) | Galdr Table level 1 | Surtstone ×2, Flametal ×4, Eitr ×4 |
+| **Huldra Draught** | Mistlands mead: for 90 s creatures neither see nor hear you beyond 2.5 m, and those that hunted you lose you; your own attack breaks the veil (`[Meads.HuldraDraught]` `DurationMinutes`, `RevealRange`) | Cauldron (base), then the fermenter, 6 per base | Honey ×10, Huldra Bark ×2, Sap ×3 |
 | **Heartwood Draught** | Mistlands mead: health regenerates 100% faster for 10 min (`HealthRegenMultiplier` 2; [Foraging & food](foraging.md)) | Cauldron (base), then the fermenter, 6 per base | Honey ×10, Living Heartwood ×2, Sap ×5 |
 
 ### Lava Worm armour
