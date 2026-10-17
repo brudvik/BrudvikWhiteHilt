@@ -43,7 +43,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.148.0
+## ✨ New in 0.149.0
+
+- **[Two new terrors in the Ashlands](docs/monsters.md#the-lava-worm)**: the **Lava Worm** rises out of the lava and drags you towards it, and the **Muspell Giant**, a fire giant 9 m tall, shakes the ground and leaves burning pools in its steps. Make **[Lava Worm armour](docs/monsters.md#lava-worm-armour)** against the lava's heat, and the **[Surt Rune](docs/smithing.md#etching-a-rune)** and **Surtstone Amulet** from the giant's Surtstone.
+- **[Two new spirits in the Mistlands' fog](docs/monsters.md#the-huldra)**: the **Huldra** sings and lures you in, then turns into a hag of roots and rotten bark; her bark brews the **Huldra Draught**, which hides you from creatures. The see-through **[Mare](docs/monsters.md#the-mare)** floats in the mist, steals your breath and rides you in your sleep, unless you wear a Mare Charm.
+- **[Chests that never run full](docs/chests.md#restocking)**: every chest keeps two empty rows for what you store and grows as unlocked items fill it.
+
+### Also new in 0.148.0
 
 - **[Forge of Potential](docs/equipment.md#-forge-of-potential)**: a fair roll at the refinement forge, where every failed try raises the next one's chance and your skills help. A failed try costs only the idol by default; offer up to three more for a better chance, and buy idols at the trading posts.
 - **[Octagonal stairwells](docs/building-pieces.md#-wood-floor-triangles--octagons)**: both octagonal wood floors with an opening in the middle for the next storey of a tower: an eight-sided one the Spiral Stair stands in, and a square 4 × 4 m one on the vanilla floor's grid.
@@ -260,7 +266,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 
 <table>
 <tr>
-<td align="center" width="33%" valign="top"><a href="docs/monsters.md"><img src="docs/images/giantspider.png" height="110" alt=""></a><br><b><a href="docs/monsters.md">Monsters</a></b><br><sub>A great worm in the forest at night, giant spiders, fire-breathing dragons and a White Dragon to call to your side. Five more beasts: the Mist Stag, Nidhogg Spawn, Yggdrasil Warden, Garm Hound and Greenland Shark.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/monsters.md"><img src="docs/images/giantspider.png" height="110" alt=""></a><br><b><a href="docs/monsters.md">Monsters</a></b><br><sub>A great worm in the forest at night, giant spiders, fire-breathing dragons and a White Dragon to call to your side. Five more beasts: the Mist Stag, Nidhogg Spawn, Yggdrasil Warden, Garm Hound and Greenland Shark, the Lava Worm and the Muspell Giant in the Ashlands, and the Huldra and the Mare in the Mistlands' fog.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/kraken.md"><img src="docs/images/kraken.png" height="110" alt=""></a><br><b><a href="docs/kraken.md">Kraken & octopus</a></b><br><sub>Octopuses in the deep, and a brutal Kraken that grips and lifts ships.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/difficulty.md"><img src="docs/images/readme/tile_difficulty.png" height="110" alt=""></a><br><b><a href="docs/difficulty.md">Difficulty & blood moon</a></b><br><sub>A world that grows harder as you progress: up to 5 stars, black beasts and the rare blood moon.</sub></td>
 </tr>

@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140">
+<img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140"> <img src="images/lavaworm.png" alt="Lava Worm" title="Lava Worm" height="140"> <img src="images/muspellgiant.png" alt="Muspell Giant" title="Muspell Giant" height="140"> <img src="images/huldra.png" alt="Huldra" title="Huldra" height="140"> <img src="images/huldraroot.png" alt="Unmasked Huldra" title="Unmasked Huldra" height="140"> <img src="images/mare.png" alt="Mare" title="Mare" height="140">
 
 New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)), and in the Mistlands' fog at night [the Huldra](#the-huldra) sings and [the Mare](#the-mare) floats. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
@@ -41,6 +41,8 @@ These values use the default difficulty star formulas, before pressure bonuses (
 
 ## The Lava Worm
 
+<img src="images/lavaworm.png" alt="Lava Worm" title="Lava Worm" height="180">
+
 The Lindorm's kin in the Ashlands: charred black, glowing from within, and at home in the lava.
 
 The Lava Worm is about **8.8 m long** at the default size, has **3500 health** and bites for **120 pierce and 80 fire damage**, so its bite sets you burning. Worse, the bite **drags you towards it**, and it lies in the lava. It is immune to fire and lava, resistant to slashing and piercing, and very weak to frost.
@@ -58,6 +60,8 @@ Then, once a minute, there is a 4% chance it **rises out of the nearest lava**, 
 
 ## The Muspell Giant
 
+<img src="images/muspellgiant.png" alt="Muspell Giant" title="Muspell Giant" height="180">
+
 A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**, charred black with glowing cracks and a light in its chest that is seen from afar at night. The ground shakes under its steps, and a message and a distant rumble tell those near when one walks out of the fire.
 
 - It has **9000 health**. It punches, slams the ground and **throws molten rocks**, all as a troll does but much harder (3 times the troll's blunt damage: a punch of 180 blunt and 90 fire) and with **half as much fire** on top, so every hit sets you burning. The slam's area is as wide as the giant.
@@ -67,6 +71,8 @@ A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**
 - It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy one time in four.
 
 ## The Huldra
+
+<img src="images/huldra.png" alt="Huldra" title="Huldra" height="180"> <img src="images/huldraroot.png" alt="Unmasked Huldra" title="Unmasked Huldra" height="180">
 
 A fair maiden with a long blonde braid stands in the Mistlands' fog at night and sings, an old herding call that carries far through the mist. She does not attack. She waves and blows kisses, and a player who **stands still and listens** within about 22 m is **drawn slowly towards her**. Walk, run, fight or block, and the pull lets go.
 
@@ -83,6 +89,8 @@ Come within 3.5 m, or hurt her, and **she turns her back: it is hollow as a rott
 She spawns in the Mistlands at night (`[Monsters.Huldra]`, `SpawnChance` 8 every 500 s). Her true form has its settings in `[Monsters.UnmaskedHuldra]`. With devcommands: `spawn WhiteHilt_Huldra`.
 
 ## The Mare
+
+<img src="images/mare.png" alt="Mare" title="Mare" height="180">
 
 The Huldra's dark sister: a pale, see-through woman with long black hair and no legs, who **floats** through the Mistlands at night, whispering. Beyond **10 m she fades into the mist**; a Wisp light (the Demister) shows her from 25 m.
 

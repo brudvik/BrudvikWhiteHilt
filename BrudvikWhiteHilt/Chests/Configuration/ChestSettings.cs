@@ -56,6 +56,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
         public ConfigEntry<bool> SortContents { get; }
 
         /// <summary>
+        /// Empty rows every chest keeps for the players' own items; it grows when it fills up.
+        /// </summary>
+        public ConfigEntry<int> FreeRows { get; }
+
+        /// <summary>
         /// When enabled, a Learn all button teaches the player the items in a chest they have not learned yet.
         /// </summary>
         public ConfigEntry<bool> LearnAll { get; }
@@ -116,6 +121,11 @@ namespace BrudvikWhiteHilt.Chests.Configuration
                 "Keep the chest contents sorted from the top left: unlimited items first, then items stored by players, " +
                 "each by item type and name. Turn off to arrange the chests yourself; new items are then placed in the " +
                 "first free slot from the top.");
+
+            FreeRows = WhiteHiltConfig.BindAdminOnly(Section, "FreeRows", 2,
+                "Empty rows every chest keeps for items the players store. As unlocked items fill a chest, it grows a row " +
+                "at a time, so it never runs full; it never shrinks. 0 = only the chest's own size.",
+                new AcceptableValueRange<int>(0, 10));
 
             LearnAll = WhiteHiltConfig.BindAdminOnly(Section, "LearnAll", true,
                 "Show a Learn all button on chests that hold items the player has not learned yet. Learning an item " +

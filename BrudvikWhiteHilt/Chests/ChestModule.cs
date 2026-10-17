@@ -218,7 +218,7 @@ namespace BrudvikWhiteHilt.Chests
             var category = piece.CustomPieceConfig.ItemCategory;
             container.Load();
             RegisterChest(container);
-            container.Restock(category, chestSupply, settings.SortContents.Value);
+            container.Restock(category, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
             var inventory = container.GetInventory();
             if (chestSupply.AbsorbsDeposit(category, inventory, source)) return source.m_stack;
 
@@ -248,7 +248,7 @@ namespace BrudvikWhiteHilt.Chests
             var accepted = amount - incoming.m_stack;
             if (accepted > 0)
             {
-                container.Restock(category, chestSupply, settings.SortContents.Value);
+                container.Restock(category, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
                 container.Save();
                 ReportStock(container, category);
             }
@@ -389,7 +389,7 @@ namespace BrudvikWhiteHilt.Chests
 
             RegisterChest(e!.Container);
             ChestEffects.UpdateGlow(e.Container, piece.Color, piece.CustomPieceConfig.ItemCategory, chestSupply);
-            e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value);
+            e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
             UpdateIndicator(e.Container, piece);
             ReportStock(e.Container, piece.CustomPieceConfig.ItemCategory);
         }
@@ -410,7 +410,7 @@ namespace BrudvikWhiteHilt.Chests
             }
 
             RegisterChest(e!.Container);
-            e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value);
+            e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
             UpdateIndicator(e.Container, piece);
         }
 

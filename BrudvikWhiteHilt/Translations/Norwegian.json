@@ -2884,6 +2884,8 @@
   "whitehilt_cfgenum_unlimitedvaluablesmode_off": "Av",
   "whitehilt_cfg_chests_sortcontents": "Sorter innholdet",
   "whitehilt_cfg_chests_sortcontents_desc": "Hold innholdet sortert fra øverst til venstre: ubegrensede ting først, så ting spillerne har lagt inn, etter type og navn. Slå av for å ordne kistene selv; nye ting havner da på første ledige plass ovenfra.",
+  "whitehilt_cfg_chests_freerows": "Ledige rader",
+  "whitehilt_cfg_chests_freerows_desc": "Tomme rader hver kiste holder av til ting spillerne legger inn. Når opplåste ting fyller en kiste, vokser den én rad om gangen, så den aldri blir full; den krymper aldri. 0 = bare kistens egen størrelse.",
   "whitehilt_cfg_chests_learnall": "Lær alt",
   "whitehilt_cfg_chests_learnall_desc": "Vis en «Lær alt»-knapp på kister med ting spilleren ikke har lært ennå. Å lære en ting låser opp oppskriftene og byggedelene som trenger den, som om spilleren hadde plukket den opp.",
   "whitehilt_cfg_chests_learntrophies": "Lær trofeer",

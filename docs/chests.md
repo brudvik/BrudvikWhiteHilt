@@ -108,6 +108,7 @@ Server settings are in **Chests.Collection**. The build recipe and progression t
 - Putting an item into a chest that already holds it without limit (ctrl-click, drag and drop or **Place stacks**) takes it out of your inventory instead of making another stack. **Place stacks** is a quick way to empty your pockets.
 - **Take all** only takes what you stored yourself and leaves the unlimited stacks.
 - Chests keep their contents sorted from the top left: unlimited items first, then what you stored yourself, each by type and name (`SortContents`).
+- **A chest never runs full.** It grows a row for every eight unlocked items, and always keeps at least two empty rows for what you store yourself (`FreeRows`), so a Food Chest that has unlocked most of the game's food still takes your new catch. It never shrinks.
 - Items with skill stars (see [Skills & milestones](skills.md)) or their own data, such as a dog's remains with its name, are always yours: they are never refilled, merged, swallowed or deleted.
 
 ### Removing a chest
@@ -185,6 +186,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 | Chests | UnlockStacks | Linear: full stacks a chest must hold to unlock an item (1–10, default 1) |
 | Chests | UnlimitedValuables | Whether coins, gems and the rest of the Treasure Chest can become unlimited: Auto (default: not in Linear, yes in Full and Discovered), On or Off |
 | Chests | SortContents | Keep the contents sorted from the top left (default on) |
+| Chests | FreeRows | Empty rows every chest keeps for the players' own items, growing as it fills (default 2; 0 = only the chest's own size) |
 | Chests | LearnAll | Show the Learn all button (default on) |
 | Chests | LearnTrophies | Let Learn all learn trophies too (default on) |
 | Chests | UnlimitedCargo | Carts and ship holds keep unlimited items full (default on) |

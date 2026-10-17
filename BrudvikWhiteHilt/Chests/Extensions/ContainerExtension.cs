@@ -36,7 +36,8 @@ namespace BrudvikWhiteHilt.Chests.Extensions
         /// <param name="category">The chest's item category.</param>
         /// <param name="supply">Decides which items are unlimited.</param>
         /// <param name="sort">Whether to keep the contents sorted from the top left.</param>
-        public static void Restock(this Container container, ChestCategory category, ChestSupply supply, bool sort)
+        /// <param name="freeRows">Empty rows the chest keeps for items the players store, growing when it fills up.</param>
+        public static void Restock(this Container container, ChestCategory category, ChestSupply supply, bool sort, int freeRows = 0)
         {
             if (restocking || !IsOwnedByMe(container) || !supply.IsReady) return;
 
@@ -55,6 +56,7 @@ namespace BrudvikWhiteHilt.Chests.Extensions
 
                 changed |= AddMissing(inventory, category, supply);
                 if (sort) changed |= Arrange(inventory, category, supply, mode);
+                KeepFreeRows(inventory, freeRows);
 
                 if (changed) container.Save();
             }
@@ -344,6 +346,21 @@ namespace BrudvikWhiteHilt.Chests.Extensions
                 if (predicate(item)) removed |= inventory.RemoveItem(item);
             }
             return removed;
+        }
+
+        /// <summary>
+        /// Grows the inventory so it always has room for the given number of rows of items besides what it holds, so a
+        /// chest that has unlocked many items still takes the players' own. It never shrinks. Only the owner grows its
+        /// copy; whoever opens the chest becomes its owner and restocks it, so they see the rows too.
+        /// </summary>
+        private static void KeepFreeRows(Inventory inventory, int freeRows)
+        {
+            if (freeRows <= 0) return;
+
+            var width = Mathf.Max(1, inventory.GetWidth());
+            var free = inventory.GetEmptySlots();
+            var wanted = freeRows * width;
+            if (free < wanted) inventory.SetHeight(inventory.GetHeight() + (wanted - free + width - 1) / width);
         }
 
         /// <summary>

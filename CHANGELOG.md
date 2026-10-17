@@ -2,6 +2,44 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.149.0 - 2026-10-17
+
+### Added
+- **[The Lava Worm](docs/monsters.md#the-lava-worm)**: the Lindorm's kin in the Ashlands, charred black and glowing
+  from within. It rises out of the nearest lava when you come within 14 m of it once the Queen is slain, bites for
+  pierce and fire damage and drags you towards it, and the lava does not hurt it. It sinks back when it loses you or
+  has followed you 18 m from where it rose. Its own roars, hisses and bubbling lava; `whitehilt_lavaworm` shows where
+  it can come, and admins can summon it.
+- **[Lava Worm armour](docs/monsters.md#lava-worm-armour)**: helm, mail and greaves of the Ask armour's make from Lava
+  Worm Scales at the Black Forge. Each piece takes a quarter of the lava's heat off, and the whole set makes you very
+  resistant to fire.
+- **[The Muspell Giant](docs/monsters.md#the-muspell-giant)**: a fire giant about 9 m tall that walks the Ashlands
+  once the Queen is slain. It punches, slams the ground and throws molten rocks that burn, the ground shakes under its
+  steps, and it leaves burning pools where it walks and where its rocks land. It drops Surtstone and flametal ore.
+- **[The Surt Rune](docs/smithing.md#etching-a-rune)**: Surt's Wrath, fire damage that now and then leaves a burning
+  pool under the foe, etched with a Surtstone rune.
+- **Surtstone Amulet**: fire hurts less, and the lava's heat builds up slower.
+- **[The Huldra](docs/monsters.md#the-huldra)**: a fair maiden with a long blonde braid and a cow's tail who stands in
+  the Mistlands' fog at night and sings. She waves and blows kisses, and draws whoever stands and listens towards her.
+  Come too close or hurt her, and she turns her back, hollow as a rotten tree, and becomes the Unmasked Huldra, a hag
+  of roots and rotten bark. A Mixamo character, dressed in Blender (`AssetSource/Tools/merge_mixamo.py`,
+  `dress_huldra.py`).
+- **Huldra Draught**: a Mistlands mead of Huldra Bark; for 90 s creatures neither see nor hear you beyond 2.5 m, until
+  you attack.
+- **[The Mare](docs/monsters.md#the-mare)**: a pale, see-through woman without legs who floats through the Mistlands at
+  night and fades into the mist beyond 10 m (25 m with a Wisp light). Her cold grip gives the Nightmare, in which no
+  stamina comes back, and she rides those who sleep in the Mistlands. A Mare Charm of her hair keeps her off.
+- Their trophies are sold by the hunter at the trading posts, and every one has sounds of its own.
+- Creatures can be made see-through in the asset build (`fade` in a `creature.json`).
+- Two diagnostics in the log: where an object of an unknown prefab is, once per prefab, instead of only the game's
+  repeated "Missing prefab hash"; and which code keeps adding to a full inventory.
+
+### Changed
+- **Chests never run full**: every chest keeps at least two empty rows for what the players store, and grows a row at
+  a time as unlocked items fill it (`FreeRows`).
+- A Lindorm's burrowing is shared with the Lava Worm; the Lindorm itself is unchanged.
+- The Desert Dragon's ground fire also serves as the Muspell Giant's burning pools, with their own size and time.
+
 ## v0.148.0 - 2026-10-17
 
 ### Added
