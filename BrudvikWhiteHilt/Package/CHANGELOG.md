@@ -2,6 +2,26 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.146.0 - 2026-10-17
+
+### Added
+- **[Mistlands foraging](docs/foraging.md#growing-ingredients)**: six new things to gather, each with its own generated
+  model, growing in new land and (once) in land generated before:
+  - **Hazelnuts** from a coppiced hazel in the clearings; Hares sometimes drop them.
+  - **Wood Sorrel** in the damp shade; a Magecap sometimes gives it too.
+  - **Chaga** on dead birch stumps, and **Lungwort Lichen** on fallen logs.
+  - **Sweet Cicely**, a tall anise-scented herb.
+  - **Vivianite**, grey-blue nodules in the moss: a blue dye for the Paint Bench. Hazelnuts, Chaga and Lungwort
+    Lichen are dyes too.
+- **New Mistlands food and drink**:
+  - **Hazelnut Bread** (Stone Pot level 4): 58 health, 58 stamina, 35 min.
+  - **Cured Hare Sausage** (Raw Hare Sausage on the Drying Rack, 2 days): 46 health, 70 stamina, 60 min, dodging
+    uses 25% less stamina.
+  - **Cured Mist Stag Ham** (Seasoned Mist Stag Ham on the Drying Rack, 3 days): 78 health, 34 stamina, 60 min,
+    attacks use 15% less stamina. `[Curing] HareSausageDays` and `MistStagHamDays` set the days.
+  - **Sweet Cicely Mead**: sneaking uses 50% less stamina (`SneakStaminaReduction`).
+  - **Chaga Tea**: pierce damage taken is a quarter less.
+
 ## v0.145.0 - 2026-10-17
 
 ### Added
