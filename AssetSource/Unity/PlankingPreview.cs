@@ -24,7 +24,9 @@ public static class PlankingPreview
         ("wood_floor_angled", FloorShape.AngledEnd(false)),
         ("wood_floor_angled_mirrored", FloorShape.AngledEnd(true)),
         ("wood_floor_octagon", FloorShape.Octagon(2f)),
-        ("wood_floor_octagon_4", FloorShape.Octagon(4f))
+        ("wood_floor_octagon_4", FloorShape.Octagon(4f)),
+        ("wood_floor_octagon_stairwell", FloorShape.OctagonWithOctagonalWell(2.6f)),
+        ("wood_floor_octagon_4_stairwell", FloorShape.OctagonWithSquareWell())
     };
 
     private static readonly (string Name, Func<MeshData, MeshData, MeshData> Shape, bool Window)[] walls =

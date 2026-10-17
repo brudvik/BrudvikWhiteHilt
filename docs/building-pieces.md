@@ -76,7 +76,7 @@ The pieces are made when the game starts from the gate's own models, so the mod 
 
 <img src="images/wood_floor_tower.png" alt="An octagonal floor with vanilla walls, two triangles as a square and the two angled ends" title="The 2 m octagon with vanilla walls, two triangles and the two angled-end floors" height="200">
 
-<img src="images/wood_floor_triangle.png" alt="Wood Floor Triangle 2×2" title="Wood Floor Triangle 2×2" height="120"> <img src="images/wood_floor_triangle_1x1.png" alt="Wood Floor Triangle 1×1" title="Wood Floor Triangle 1×1" height="120"> <img src="images/wood_floor_angled.png" alt="Wood Floor 2×1, Angled End" title="Wood Floor 2×1, Angled End" height="120"> <img src="images/wood_floor_octagon.png" alt="Octagonal Wood Floor 2 m" title="Octagonal Wood Floor 2 m" height="120"> <img src="images/wood_floor_octagon_4.png" alt="Octagonal Wood Floor 4 m" title="Octagonal Wood Floor 4 m" height="120">
+<img src="images/wood_floor_triangle.png" alt="Wood Floor Triangle 2×2" title="Wood Floor Triangle 2×2" height="120"> <img src="images/wood_floor_triangle_1x1.png" alt="Wood Floor Triangle 1×1" title="Wood Floor Triangle 1×1" height="120"> <img src="images/wood_floor_angled.png" alt="Wood Floor 2×1, Angled End" title="Wood Floor 2×1, Angled End" height="120"> <img src="images/wood_floor_octagon.png" alt="Octagonal Wood Floor 2 m" title="Octagonal Wood Floor 2 m" height="120"> <img src="images/wood_floor_octagon_4.png" alt="Octagonal Wood Floor 4 m" title="Octagonal Wood Floor 4 m" height="120"> <img src="images/wood_floor_octagon_stairwell.png" alt="Octagonal Wood Floor 2 m, Stairwell" title="Octagonal Wood Floor 2 m, Stairwell" height="120"> <img src="images/wood_floor_octagon_4_stairwell.png" alt="Octagonal Wood Floor 4 m, Stairwell" title="Octagonal Wood Floor 4 m, Stairwell" height="120">
 
 Valheim's wood has gable walls in every pitch (the wall triangles, also upside down), but its floors are only square. These floors are the vanilla 2 × 2 m wood floor sawn to shape: each plank and joist that crosses an edge is cut along it and gets a closed end, so the cut edge looks sawn, not hollow.
 
@@ -88,13 +88,16 @@ Valheim's wood has gable walls in every pitch (the wall triangles, also upside d
 | **Wood Floor 2×1, Angled End, Mirrored** | The same the other way round | Workbench |
 | **Octagonal Wood Floor 2 m** | Eight 2 m sides, 4.8 m across; a vanilla 2 m wall stands on each side | Workbench |
 | **Octagonal Wood Floor 4 m** | Eight 4 m sides, 9.7 m across; two 2 m walls to a side | Workbench |
+| **Octagonal Wood Floor 2 m, Stairwell** | The 2 m octagon with an eight-sided opening 2.6 m across in the middle, for the [Spiral Stair](log-house.md#-stairs-ladders-and-railings) or a ladder | Workbench |
+| **Octagonal Wood Floor 4 m, Stairwell** | The 4 m octagon with a square opening 4 × 4 m in the middle, on the vanilla floor's grid | Workbench |
 
-- **Cost**: the vanilla wood floor's recipe for the floor's area (it is for 4 m²), rounded, at least 1 of each.
-- **Snapping**: every corner, as the vanilla floors, and the middle of every side longer than 2.5 m: the long side of the 2×2 triangle (so two triangles meet there) and each side of the 4 m octagon (so a 2 m wall stands on each half).
+- **Cost**: the vanilla wood floor's recipe for the floor's area (it is for 4 m²; the opening is not counted), rounded, at least 1 of each.
+- **Snapping**: every corner, as the vanilla floors, and the middle of every side longer than 2.5 m: the long side of the 2×2 triangle (so two triangles meet there) and each side of the 4 m octagon (so a 2 m wall stands on each half). The octagons also snap at their centre, and the stairwells round their opening the same way.
+- **Storeys**: put a stairwell floor on the walls of the storey below. In the 2 m tower the **Spiral Stair** stands in the opening: its foot snaps to the centre of the floor below, its head to the centre of the opening, and it rises the 2 m of one wall; a **Loft Ladder** stands against a side of the opening instead. In the 4 m octagon, lay vanilla floors in the opening and leave out what the way up needs: one 2 × 2 m for a **Floor Hatch** or a ladder, two side by side (2 × 4 m) for two vanilla stairs in a row or the **Narrow Stair**, or all four round the Spiral Stair. Railings stand on the opening's edges.
 - **Octagon walls**: turn every other wall 45° (two turns of the rotation). The vanilla walls meet at a 45° corner with a small notch on the outside; a wood pole at the corner closes it.
 - They keep the vanilla floor's material, strength, wear and category, and sit in the hammer right after the vanilla 1×1 floor. Start tier.
 
-The floors are made when the game starts from the vanilla floor's own model, so the mod ships no model of them. A dedicated server builds only their colliders and snap points. `AssetSource/Preview/render_planking.ps1` renders them offline with the same code. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_floor_triangle`, `_triangle_1x1`, `_angled`, `_angled_mirrored`, `_octagon` and `_octagon_4`. Not yet tested in the game.
+The floors are made when the game starts from the vanilla floor's own model, so the mod ships no model of them. A dedicated server builds only their colliders and snap points. `AssetSource/Preview/render_planking.ps1` renders them offline with the same code. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_floor_triangle`, `_triangle_1x1`, `_angled`, `_angled_mirrored`, `_octagon`, `_octagon_4`, `_octagon_stairwell` and `_octagon_4_stairwell`. Not yet tested in the game.
 
 ---
 

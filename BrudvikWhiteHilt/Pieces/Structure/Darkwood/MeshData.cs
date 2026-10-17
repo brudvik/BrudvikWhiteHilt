@@ -400,9 +400,15 @@ public sealed class MeshData
         return groups.Values.Select(set => Select(set.Contains)).ToList();
     }
 
-    // Adds a part; an attribute some part lacks is dropped for the whole (the mesh then recalculates it).
+    // Adds a part; an attribute some part lacks is dropped for the whole (the mesh then recalculates it). An empty part
+    // adds nothing and lacks nothing: a floor laid where the cut leaves none of it would otherwise drop the texture.
     private void Append(MeshData part)
     {
+        if (part.Vertices.Count == 0)
+        {
+            return;
+        }
+
         int start = Vertices.Count;
         bool normals = (start == 0 || Normals.Count == start) && part.HasNormals;
         bool tangents = (start == 0 || Tangents.Count == start) && part.HasTangents;

@@ -1,4 +1,6 @@
 using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Patches.Building;
@@ -10,7 +12,9 @@ namespace BrudvikWhiteHilt.Patches.Building;
 /// <remarks>
 /// <list type="bullet">
 /// <item>A spiral stair rises 2 m in three quarters of a turn (a whole turn leaves too little headroom under the treads
-/// above), so one snapped onto another is turned to start where the other ends.</item>
+/// above), so one put onto another is turned to start where the other ends. The game snaps only within half a metre
+/// of the point inside the post, which the ghost rarely is when aimed at the treads, so a spiral stair's ghost standing
+/// within another's treads near its head (or under its foot) goes there without snapping.</item>
 /// <item>A log corner snapped to the end of a log wall is turned so the log ends of that kind of wall (plain or offset)
 /// run along it. Which way the other wall goes is the player's choice of the plain or the mirrored corner.</item>
 /// <item>A carved frieze or post board has its snap points on its back, a wall on its centre line, so a frieze snapped
@@ -30,8 +34,15 @@ internal static class SnapFitPatches
     private const string Frieze = Prefix + "frise_";
     private const string PostBoard = Prefix + "stolpebord_";
 
-    // The turn of one spiral stair's treads, about +y.
+    // The turn of one spiral stair's treads, about +y, its rise, and how far its treads reach from the post.
     private const float StairTurn = 270f;
+    private const float StairRise = 2f;
+    private const float StairRadius = 1.2f;
+
+    // How far over or under a spiral stair's head or foot a spiral stair's ghost still goes onto it.
+    private const float StackReach = 1.2f;
+
+    private static readonly List<Piece> nearby = new();
 
     // How far in front of a frieze the search for the wall's face starts.
     private const float Reach = 2f;
@@ -60,7 +71,19 @@ internal static class SnapFitPatches
     private static void Fit(Player __instance)
     {
         GameObject ghost = __instance.m_placementGhost;
-        if (__instance != Player.m_localPlayer || ghost == null || !ghost.activeSelf || ghostPoint == null || otherPoint == null)
+        if (__instance != Player.m_localPlayer || ghost == null || !ghost.activeSelf)
+        {
+            return;
+        }
+
+        // A spiral stair goes onto another wherever its ghost stands on the other's treads, not only when aimed at the
+        // snap point inside the post, which the game's half-metre snapping would otherwise ask for.
+        if (global::Utils.GetPrefabName(ghost) == SpiralStair && StackSpiralStair(ghost.transform))
+        {
+            return;
+        }
+
+        if (ghostPoint == null || otherPoint == null)
         {
             return;
         }
@@ -73,14 +96,7 @@ internal static class SnapFitPatches
 
         string ghostName = global::Utils.GetPrefabName(ghost);
         string otherName = global::Utils.GetPrefabName(other.gameObject);
-        if (ghostName == SpiralStair && otherName == SpiralStair)
-        {
-            // On top of the other (the ghost's foot on its head) it goes on a further three quarters of a turn; under
-            // it, it ends where the other begins.
-            bool above = ghostPoint.localPosition.y < otherPoint.localPosition.y;
-            ghost.transform.rotation = other.transform.rotation * Quaternion.Euler(0f, above ? StairTurn : -StairTurn, 0f);
-        }
-        else if ((ghostName == LogCorner || ghostName == MirroredLogCorner) && otherName.StartsWith(LogWall))
+        if ((ghostName == LogCorner || ghostName == MirroredLogCorner) && otherName.StartsWith(LogWall))
         {
             TurnCorner(ghost.transform, ghostName == MirroredLogCorner, other.transform, otherName.StartsWith(OffsetLogWall));
         }
@@ -89,6 +105,59 @@ internal static class SnapFitPatches
         {
             MoveToFace(ghost.transform, other, ghostName.StartsWith(Frieze) ? 0.15f : 1f);
         }
+    }
+
+    // Puts a spiral stair's ghost on top of the nearest spiral stair whose treads it stands within, its head within
+    // reach of the ghost's foot, or under one whose foot is within reach of the ghost's head, where no stair stands yet.
+    // On top it goes on a further three quarters of a turn; under, it ends where the other begins.
+    private static bool StackSpiralStair(Transform ghost)
+    {
+        nearby.Clear();
+        Piece.GetAllPiecesInRadius(ghost.position, StairRise + StackReach + StairRadius, nearby);
+        Transform best = null;
+        bool bestAbove = false;
+        float bestMiss = float.MaxValue;
+        foreach (Piece piece in nearby)
+        {
+            if (piece == null || piece.gameObject == ghost.gameObject || global::Utils.GetPrefabName(piece.gameObject) != SpiralStair)
+            {
+                continue;
+            }
+
+            Transform stair = piece.transform;
+            Vector3 offset = ghost.position - stair.position;
+            float across = new Vector2(offset.x, offset.z).magnitude;
+            if (across > StairRadius)
+            {
+                continue;
+            }
+
+            foreach (bool above in new[] { true, false })
+            {
+                float miss = Mathf.Abs(offset.y - (above ? StairRise : -StairRise));
+                if (miss < StackReach && miss < bestMiss && !SpiralStairAt(stair.position + Vector3.up * (above ? StairRise : -StairRise), ghost.gameObject))
+                {
+                    best = stair;
+                    bestAbove = above;
+                    bestMiss = miss;
+                }
+            }
+        }
+
+        if (best == null)
+        {
+            return false;
+        }
+
+        ghost.rotation = best.rotation * Quaternion.Euler(0f, bestAbove ? StairTurn : -StairTurn, 0f);
+        ghost.position = best.position + Vector3.up * (bestAbove ? StairRise : -StairRise);
+        return true;
+    }
+
+    private static bool SpiralStairAt(Vector3 position, GameObject ghost)
+    {
+        return nearby.Any(piece => piece != null && piece.gameObject != ghost && (piece.transform.position - position).sqrMagnitude < 0.01f
+            && global::Utils.GetPrefabName(piece.gameObject) == SpiralStair);
     }
 
     // The plain corner's log ends run along +x for the plain wall and along +z for the offset one; the mirrored corner's

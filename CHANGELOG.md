@@ -12,8 +12,20 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   to offer up to three more idols for a better chance. The trading posts sell their biome's idols, and at the forge
   three idols make one of the next tier, and a Battle idol becomes a Protection idol and back. All of it is in the
   `Refinement` settings.
+- **[Octagonal stairwells](docs/building-pieces.md#-wood-floor-triangles--octagons)**: both octagonal wood floors
+  with an opening in the middle, for the next storey of a tower. The 2 m one has an eight-sided opening 2.6 m across
+  that the Spiral Stair stands in, its foot and head snapping to the centres of the floors; the 4 m one has a square
+  opening 4 × 4 m on the vanilla floor's grid, to lay vanilla floors in and leave out what a stair, a hatch or a
+  ladder needs.
+
+### Changed
+- The octagonal wood floors also snap at their centre, where a spiral stair's foot stands.
 
 ### Fixed
+- The **Spiral Stair** stacks: aimed anywhere at the top treads of one, the next goes on top, turned to go on where
+  it ends. The game only snapped it when aimed at the point inside the post, so stairs put on top stood askew. Each
+  stair now has a top tread at 2 m to step off, which was missing where no floor was, and its handrail stops you
+  walking off the outer edge, but at the top tread, where you step off to the side.
 - Mistlands plants no longer grow inside or under the cliffs and arches. When land explored before a plant came was
   filled, only the positions of the rocks were known, not how far they reach. Plants that already lie under rock are
   removed when they load, and old land is filled once more with the new rules, for all forageables.

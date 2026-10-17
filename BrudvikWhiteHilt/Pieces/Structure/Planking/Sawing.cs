@@ -53,12 +53,14 @@ public static class Sawing
     }
 
     /// <summary>
-    /// Saws every loose part of a model (each plank, batten and joist) along the planes in turn.
+    /// Saws every loose part of a model (each plank, batten and joist) along the planes in turn, and then out of an
+    /// opening.
     /// </summary>
     /// <param name="model">The model.</param>
     /// <param name="planes">The planes: normal towards the side kept, and distance.</param>
+    /// <param name="hole">The planes round a convex opening, normal into it, or null for none: see <see cref="SawOut"/>.</param>
     /// <returns>What is kept.</returns>
-    public static MeshData SawAll(MeshData model, IEnumerable<(Vector3 Normal, float Distance)> planes)
+    public static MeshData SawAll(MeshData model, IEnumerable<(Vector3 Normal, float Distance)> planes, IReadOnlyList<(Vector3 Normal, float Distance)> hole = null)
     {
         List<(Vector3 Normal, float Distance)> cuts = planes.ToList();
         List<MeshData> kept = new();
@@ -76,11 +78,46 @@ public static class Sawing
 
             if (cut != null)
             {
-                kept.Add(cut);
+                kept.AddRange(hole == null || hole.Count == 0 ? new[] { cut } : SawOut(cut, hole));
             }
         }
 
         return MeshData.Combine(kept);
+    }
+
+    /// <summary>
+    /// Saws a convex part out of a convex opening, keeping what lies outside it: the part beyond each of the opening's
+    /// sides that lies within the sides before it, each convex and closed. A part wholly beyond one side is kept whole,
+    /// and one wholly inside the opening is left out.
+    /// </summary>
+    /// <param name="part">A convex part, such as one plank.</param>
+    /// <param name="hole">The planes round the opening: normal into it, and distance.</param>
+    /// <returns>The pieces kept.</returns>
+    public static IEnumerable<MeshData> SawOut(MeshData part, IEnumerable<(Vector3 Normal, float Distance)> hole)
+    {
+        // A part wholly beyond any side is not sawn at all, where the sides' lines would otherwise cut it in pieces.
+        List<(Vector3 Normal, float Distance)> sides = hole.ToList();
+        if (sides.Any(side => Saw(part, -side.Normal, -side.Distance) == part))
+        {
+            yield return part;
+            yield break;
+        }
+
+        MeshData rest = part;
+        foreach ((Vector3 normal, float distance) in sides)
+        {
+            MeshData beyond = Saw(rest, -normal, -distance);
+            if (beyond != null)
+            {
+                yield return beyond;
+            }
+
+            rest = Saw(rest, normal, distance);
+            if (rest == null)
+            {
+                yield break;
+            }
+        }
     }
 
     // The cut face of a convex part: the corners on the cut, joined round their outline and facing out of the part.

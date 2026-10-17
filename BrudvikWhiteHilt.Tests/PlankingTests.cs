@@ -143,8 +143,9 @@ public class PlankingTests
     [Fact]
     public void LongSidesGetASnapPointInTheMiddle()
     {
-        Assert.Equal(8, FloorShape.Octagon(2f).SnapPoints().Count());
-        Assert.Equal(16, FloorShape.Octagon(4f).SnapPoints().Count());
+        Assert.Equal(9, FloorShape.Octagon(2f).SnapPoints().Count());
+        Assert.Equal(17, FloorShape.Octagon(4f).SnapPoints().Count());
+        Assert.Contains(Vector3.zero, FloorShape.Octagon(2f).SnapPoints());
         Assert.Contains(Vector3.zero, FloorShape.Triangle(2f).SnapPoints());
         Assert.Equal(4, FloorShape.Triangle(2f).SnapPoints().Count());
     }
@@ -183,6 +184,8 @@ public class PlankingTests
     [InlineData("angledMirrored")]
     [InlineData("octagon2")]
     [InlineData("octagon4")]
+    [InlineData("octagon2Well")]
+    [InlineData("octagon4Well")]
     public void AFloorStaysInsideItsShapeAndEveryPlankIsClosed(string name)
     {
         FloorShape shape = name switch
@@ -192,7 +195,9 @@ public class PlankingTests
             "angled" => FloorShape.AngledEnd(false),
             "angledMirrored" => FloorShape.AngledEnd(true),
             "octagon2" => FloorShape.Octagon(2f),
-            _ => FloorShape.Octagon(4f)
+            "octagon4" => FloorShape.Octagon(4f),
+            "octagon2Well" => FloorShape.OctagonWithOctagonalWell(2.6f),
+            _ => FloorShape.OctagonWithSquareWell()
         };
 
         MeshData floor = FloorCutting.Cut(shape, Tile());
@@ -201,6 +206,13 @@ public class PlankingTests
         foreach ((Vector2 normal, float distance) in shape.Sides())
         {
             Assert.All(floor.Vertices, v => Assert.True(Vector2.Dot(normal, new Vector2(v.x, v.z)) >= distance - Sawing.Slack - 1e-4f));
+        }
+
+        // Nothing lies inside the opening: every corner is outside, or on, one of its sides.
+        List<(Vector2 Normal, float Distance)> hole = shape.HoleSides().ToList();
+        if (hole.Count > 0)
+        {
+            Assert.All(floor.Vertices, v => Assert.Contains(hole, side => Vector2.Dot(side.Normal, new Vector2(v.x, v.z)) <= side.Distance + Sawing.Slack + 1e-4f));
         }
 
         // The top of the planks covers the shape but for the slits between them (2 % of the width).
@@ -217,6 +229,95 @@ public class PlankingTests
 
         Assert.InRange(top, shape.Area * 0.95f, shape.Area * 1.01f);
         Assert.All(floor.Islands(), AssertClosed);
+    }
+
+    [Fact]
+    public void AFloorLaidWhereTheCutLeavesNoneOfItKeepsTheTexture()
+    {
+        // The middle floor lies wholly in the opening, and a corner floor of the shifted grid wholly outside the octagon.
+        MeshData floor = FloorCutting.Cut(FloorShape.OctagonWithSquareWell(), Tile());
+
+        Assert.Equal(floor.Vertices.Count, floor.Uvs.Count);
+        Assert.Equal(floor.Vertices.Count, floor.Normals.Count);
+    }
+
+    [Fact]
+    public void AStairwellIsLeftOutOfTheArea()
+    {
+        float well = 2.6f / (1f + Mathf.Sqrt(2f));
+        Assert.Equal(FloorShape.Octagon(2f).Area - 2f * (1f + Mathf.Sqrt(2f)) * well * well, FloorShape.OctagonWithOctagonalWell(2.6f).Area, 3);
+        Assert.Equal(FloorShape.Octagon(4f).Area - 16f, FloorShape.OctagonWithSquareWell().Area, 3);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void TheCollidersOfAStairwellCoverTheFloorButTheOpening(bool square)
+    {
+        FloorShape shape = square ? FloorShape.OctagonWithSquareWell() : FloorShape.OctagonWithOctagonalWell(2.6f);
+        List<Vector2[]> parts = shape.Parts().ToList();
+
+        Assert.Equal(square ? 4 : 8, parts.Count);
+        Assert.Equal(shape.Area, parts.Sum(Area), 3);
+
+        // Each part is convex and lies outside the opening.
+        foreach (Vector2[] part in parts)
+        {
+            float turn = 0f;
+            for (int i = 0; i < part.Length; i++)
+            {
+                Vector2 a = part[i], b = part[(i + 1) % part.Length], c = part[(i + 2) % part.Length];
+                float cross = (b - a).x * (c - b).y - (b - a).y * (c - b).x;
+                Assert.True(turn * cross >= -1e-6f, "part is not convex");
+                turn = Mathf.Abs(cross) > 1e-6f ? cross : turn;
+            }
+
+            Vector2 middle = part.Aggregate(Vector2.zero, (sum, p) => sum + p) / part.Length;
+            Assert.Contains(shape.HoleSides(), side => Vector2.Dot(side.Normal, middle) < side.Distance);
+        }
+
+        static float Area(Vector2[] corners)
+        {
+            float twice = 0f;
+            for (int i = 0; i < corners.Length; i++)
+            {
+                twice += corners[i].x * corners[(i + 1) % corners.Length].y - corners[(i + 1) % corners.Length].x * corners[i].y;
+            }
+
+            return Mathf.Abs(twice) / 2f;
+        }
+    }
+
+    [Fact]
+    public void AStairwellSnapsRoundItsOpeningAndAtTheCentre()
+    {
+        List<Vector3> square = FloorShape.OctagonWithSquareWell().SnapPoints().ToList();
+        List<Vector3> octagonal = FloorShape.OctagonWithOctagonalWell(2.6f).SnapPoints().ToList();
+
+        // The square opening: its corners and the middle of its sides, where vanilla floors laid in it meet.
+        Assert.Equal(16 + 8 + 1, square.Count);
+        Assert.Contains(new Vector3(2f, 0f, -2f), square);
+        Assert.Contains(new Vector3(0f, 0f, 2f), square);
+        Assert.Contains(Vector3.zero, square);
+        Assert.Equal(8 + 8 + 1, octagonal.Count);
+    }
+
+    [Fact]
+    public void ASawnOutPlankKeepsWhatLiesOutsideTheOpening()
+    {
+        // A plank 2 m long across a square opening from z = -0.5 to 0.5: two pieces of 0.5 m are kept.
+        MeshData plank = Box(new Vector3(0f, 0f, -1f), new Vector3(0.5f, 0.1f, 1f));
+        (Vector3, float)[] hole = { (Vector3.forward, -0.5f), (Vector3.back, -0.5f), (Vector3.right, -1f), (Vector3.left, -1f) };
+        List<MeshData> kept = Sawing.SawOut(plank, hole).ToList();
+
+        Assert.Equal(2, kept.Count);
+        Assert.All(kept, AssertClosed);
+        Assert.All(kept.SelectMany(piece => piece.Vertices), v => Assert.True(Mathf.Abs(v.z) >= 0.5f - 1e-4f));
+
+        // A plank beside the opening is kept whole, one inside it left out.
+        MeshData beside = Box(new Vector3(1f, 0f, -1f), new Vector3(1.5f, 0.1f, 1f));
+        Assert.Same(beside, Assert.Single(Sawing.SawOut(beside, hole)));
+        Assert.Empty(Sawing.SawOut(Box(new Vector3(-0.5f, 0f, -0.4f), new Vector3(0f, 0.1f, 0.4f)), hole));
     }
 
     [Fact]

@@ -122,21 +122,26 @@ def spiral_point(angle, radius, y):
 
 def spiral_stair(seed):
     """A spiral stair round a post, rising 2 m in three quarters of a turn: you go up facing +z and come off facing -x.
-    Snap another on top for the next storey; SpiralStairPatches turns it a quarter back."""
+    The last tread, at 2 m, has no handrail: you step off it sideways onto the floor round the stairwell, or straight on
+    up the next stair snapped on top (SnapFitPatches turns it a quarter back). The handrail has a collider, so you
+    cannot walk off the outer edge on the way up."""
     rng = random.Random(seed)
     parts = [part("wood_pole_log", (0, 1.1, 0), (0, rng.uniform(0, 360), 0), (0.14 / 0.26, 2.2 / 2.22, 0.14 / 0.28))]
     rise = 2.0 / SPIRAL_STEPS
     step = SPIRAL_TURN / SPIRAL_STEPS
-    for i in range(SPIRAL_STEPS - 1):
+    rail = SPIRAL_RADIUS - 0.06
+    for i in range(SPIRAL_STEPS):
         angle = step * (i + 0.5)
         y = rise * (i + 1)
         inner, outer = spiral_point(angle, 0.12, y - 0.03), spiral_point(angle, SPIRAL_RADIUS, y - 0.03)
         parts.append(plank(inner, outer, 0.45, 0.06))
-        # A baluster at the outer end of every tread, and the handrail from one to the next.
-        top = spiral_point(angle, SPIRAL_RADIUS - 0.06, y + 0.9)
-        parts.append(plank(spiral_point(angle, SPIRAL_RADIUS - 0.06, y), top, 0.05, 0.05, detail=True))
+        if i == SPIRAL_STEPS - 1:
+            break
+        # A baluster at the outer end of every tread but the last, and the handrail from one to the next.
+        top = spiral_point(angle, rail, y + 0.9)
+        parts.append(plank(spiral_point(angle, rail, y), top, 0.05, 0.05, detail=True))
         if i > 0:
-            previous = spiral_point(angle - step, SPIRAL_RADIUS - 0.06, y - rise + 0.9)
+            previous = spiral_point(angle - step, rail, y - rise + 0.9)
             parts.append(plank(previous, top, 0.07, 0.06))
     colliders = []
     middle = 0.7
@@ -144,6 +149,13 @@ def spiral_stair(seed):
         low = spiral_point(step * i, middle, rise * i)
         high = spiral_point(step * (i + 1), middle, rise * (i + 1))
         colliders.append(ramp(low, high, 1.1))
+    # The handrail: an upright board along the outer edge of every ramp but the last, from the ramp up to 1.1 m over
+    # its upper end, a little longer than the chord so the boards meet.
+    chord = 2 * rail * math.sin(math.radians(step / 2)) + 0.04
+    for i in range(SPIRAL_STEPS - 1):
+        angle = step * (i + 0.5)
+        height = rise + 1.1
+        colliders.append(box(spiral_point(angle, rail, rise * i + height / 2), (chord, height, 0.08), (0, angle, 0)))
     colliders.append(box((0, 1.1, 0), (0.28, 2.2, 0.28)))
     snaps = [(0, 0, 0), (0, 2.0, 0)]
     return parts, colliders, snaps

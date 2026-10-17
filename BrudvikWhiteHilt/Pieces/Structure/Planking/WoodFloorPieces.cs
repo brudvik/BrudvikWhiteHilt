@@ -184,16 +184,21 @@ public abstract class WoodFloorPieceBase : IWhiteHiltCustomPiece
         GameObject worn = Holder(root, "Worn", models, layer);
         worn.SetActive(false);
 
-        (Vector3[] vertices, int[] triangles) = FloorCutting.Slab(Shape.Corners, ColliderBottom, ColliderTop);
-        Mesh slab = new() { name = $"{PrefabName}_collider" };
-        slab.SetVertices(vertices);
-        slab.SetTriangles(triangles, 0);
-        slab.RecalculateBounds();
-        GameObject collider = new("collider") { layer = layer };
-        collider.transform.SetParent(root, false);
-        MeshCollider meshCollider = collider.AddComponent<MeshCollider>();
-        meshCollider.sharedMesh = slab;
-        meshCollider.convex = true;
+        // A convex collider for each part of the floor, as a floor with an opening is not convex.
+        int part = 0;
+        foreach (Vector2[] corners in Shape.Parts())
+        {
+            (Vector3[] vertices, int[] triangles) = FloorCutting.Slab(corners, ColliderBottom, ColliderTop);
+            Mesh slab = new() { name = $"{PrefabName}_collider_{part++}" };
+            slab.SetVertices(vertices);
+            slab.SetTriangles(triangles, 0);
+            slab.RecalculateBounds();
+            GameObject collider = new("collider") { layer = layer };
+            collider.transform.SetParent(root, false);
+            MeshCollider meshCollider = collider.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = slab;
+            meshCollider.convex = true;
+        }
 
         foreach (Vector3 point in Shape.SnapPoints())
         {
@@ -366,4 +371,41 @@ public sealed class WoodFloorOctagon4 : WoodFloorPieceBase
     protected override string Description => "An eight-sided wood floor with 4 m sides, 9.7 m across, for a large tower or a hall. Two 2 m walls stand on each side; it snaps at the corners and the middle of each side.";
     /// <inheritdoc/>
     protected override FloorShape Shape => FloorShape.Octagon(4f);
+}
+
+/// <summary>The 2 m octagonal wood floor with an eight-sided stairwell in the middle.</summary>
+public sealed class WoodFloorOctagon2Stairwell : WoodFloorPieceBase
+{
+    /// <summary>Width of the stairwell from side to side: room for the 2.4 m Spiral Stair.</summary>
+    private const float Well = 2.6f;
+
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodFloorOctagon2Stairwell(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_floor_octagon_stairwell";
+    /// <inheritdoc/>
+    protected override string FullName => "Octagonal Wood Floor 2 m, Stairwell";
+    /// <inheritdoc/>
+    protected override string Description => "The 2 m octagonal wood floor with an eight-sided stairwell 2.6 m across in the middle, for the next storey of a tower. The Spiral Stair stands in it: its foot snaps to the middle of the floor below, and its head to the middle of the stairwell. A Loft Ladder stands against a side.";
+    /// <inheritdoc/>
+    protected override FloorShape Shape => FloorShape.OctagonWithOctagonalWell(Well);
+}
+
+/// <summary>The 4 m octagonal wood floor with a square opening 4 × 4 m in the middle.</summary>
+public sealed class WoodFloorOctagon4Stairwell : WoodFloorPieceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodFloorOctagon4Stairwell(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_floor_octagon_4_stairwell";
+    /// <inheritdoc/>
+    protected override string FullName => "Octagonal Wood Floor 4 m, Stairwell";
+    /// <inheritdoc/>
+    protected override string Description => "The 4 m octagonal wood floor with a square opening 4 × 4 m in the middle, on the grid of the vanilla floor. Lay vanilla floors in it and leave out what the way up needs: one 2 × 2 m for a Floor Hatch or a ladder, two side by side for two vanilla stairs, or all four round the Spiral Stair. Railings stand on its edges.";
+    /// <inheritdoc/>
+    protected override FloorShape Shape => FloorShape.OctagonWithSquareWell();
 }
