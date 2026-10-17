@@ -152,6 +152,19 @@ White Hilt weapons, shields and armor (the uniforms included) go past quality 4:
 
 ---
 
+## 🔥 FORGE OF POTENTIAL
+
+The game's Forge of Potential refines gear past its safe quality with an idol, and rolls once for it: the item goes up a level, breaks, or loses a level, and the idol is spent either way. The first try of each item and level is fixed by the character's name. White Hilt changes this (section `Refinement`; `Enabled` off brings back the game's own rules):
+
+- **A fair roll** (`RollMode`). `Fair` rolls afresh every try. `FairPity`, the default, also adds `PityPerFailure` (+10 %) to the next try for every failed try on the same item and level, until it succeeds, so every item gets there in the end. `Vanilla` keeps the game's roll.
+- **Skill counts.** The idol's own chance is raised by Crafting (`CraftingBonus`, up to +15 %), by the item's own skill such as Swords or Blocking (`ItemSkillBonus`, up to +10 %; armor counts the mean of all skills) and by the mean of all skills (`OverallSkillBonus`, up to +10 %), together with pity and extra idols up to `MaxSuccessChance` (95 %). With the game's rule for failures, the same experience takes up to half of the break chance away (`BreakReduction`).
+- **What a failure does** (`FailureMode`). `LoseIdol`, the default: the item keeps its level and only the idol is spent. `Downgrade`: it loses a level but never breaks. `Break`: it always breaks. `Vanilla`: as the game.
+- **Extra idols.** Hold Shift as you begin the refinement to offer up to `MaxExtraIdols` (3) more idols of the same kind from your inventory, each adding `ExtraIdolBonus` (+10 %).
+- **Idols at the traders.** Each trading post sells the Battle and Protection idol of its biome's tier, Wooden in the Meadows up to Bloodgold in the Deep North, once the world has reached the biome (`IdolsAtTraders`). A Wooden idol costs `IdolPrice` (200) coins, and each biome's cost as much more as its materials are worth, less the Trading discount.
+- **Exchange.** At the forge (`ExchangeStation`), `ExchangeCost` (3) idols of one tier make one of the next, and a Battle idol becomes a Protection idol of the same tier, and back, one for one (`ExchangeKind`).
+
+---
+
 ## 💍 ACCESSORIES
 
 | Item | Description | Crafting Station | Requirements |

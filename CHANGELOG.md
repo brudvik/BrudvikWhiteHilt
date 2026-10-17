@@ -4,6 +4,15 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
 
 ## Unreleased
 
+### Added
+- **[Forge of Potential](docs/equipment.md#-forge-of-potential)**: a fair roll at the game's refinement forge instead
+  of one fixed by the character's name, with every failed try on the same item and level raising the next one's
+  chance. Crafting, the item's own skill and all skills together raise the chance, and lower the break chance. A
+  failed try costs only the idol by default; it can also lose a level, break the item, or follow the game. Hold Shift
+  to offer up to three more idols for a better chance. The trading posts sell their biome's idols, and at the forge
+  three idols make one of the next tier, and a Battle idol becomes a Protection idol and back. All of it is in the
+  `Refinement` settings.
+
 ### Fixed
 - Mistlands plants no longer grow inside or under the cliffs and arches. When land explored before a plant came was
   filled, only the positions of the rocks were known, not how far they reach. Plants that already lie under rock are

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Crafting;
+using BrudvikWhiteHilt.Crafting.Refinement;
 using BrudvikWhiteHilt.Helpers;
 using System.Collections.Generic;
 using TMPro;
@@ -122,6 +123,9 @@ public static class TradingPostStore
         }
 
         AddGear(items, biome, postId, player);
+
+        // The idols of the biome's tier, for the Forge of Potential.
+        items.AddRange(Idols.TradeItems(biome, player));
 
         // The piece of the biome's traders' garb that only this post sells, at half price for the bringer of the head
         // of the monster that plagued the post.
