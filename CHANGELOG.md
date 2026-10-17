@@ -26,6 +26,9 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   it ends. The game only snapped it when aimed at the point inside the post, so stairs put on top stood askew. Each
   stair now has a top tread at 2 m to step off, which was missing where no floor was, and its handrail stops you
   walking off the outer edge, but at the top tread, where you step off to the side.
+- The portal list's search finds what it should: the list goes back to its top with every new search, where the
+  rows found could lie out of sight above it, and the words may come in any order and without accents. The
+  scrollbar beside the list shows, and the mouse wheel scrolls three rows per notch, not a fraction of one.
 - Mistlands plants no longer grow inside or under the cliffs and arches. When land explored before a plant came was
   filled, only the positions of the rocks were known, not how far they reach. Plants that already lie under rock are
   removed when they load, and old land is filled once more with the new rules, for all forageables.

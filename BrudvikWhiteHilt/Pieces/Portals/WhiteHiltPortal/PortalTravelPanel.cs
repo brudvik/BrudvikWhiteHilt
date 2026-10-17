@@ -17,8 +17,14 @@ public class PortalTravelPanel : MonoBehaviour
     private const float PanelWidth = 440f;
     private const float RowHeight = 40f;
     private const float DoubleClickTime = 0.4f;
+    private const float RowSpacing = 4f;
     private const float HandleSize = 8f;
     private const float HandleBorder = 4f;
+    private const float ScrollbarWidth = 24f;
+    private const float RowsPerNotch = 3f;
+
+    // What the game's wheel input (ZInput) gives for one notch: the mouse's scroll scaled by 0.15.
+    private const float WheelNotch = 0.15f;
 
     private static readonly Color selectedColor = new(1f, 0.75f, 0.3f);
     private static readonly Color otherColor = new(0.9f, 0.88f, 0.8f);
@@ -41,6 +47,7 @@ public class PortalTravelPanel : MonoBehaviour
     private Text sortLabel;
     private Text renameLabel;
     private InputField search;
+    private ScrollRect listScroll;
     private RectTransform listContent;
     private Button renameButton;
     private Button privateButton;
@@ -171,54 +178,9 @@ public class PortalTravelPanel : MonoBehaviour
 
         search = GUIManager.Instance.CreateInputField(panel, top, top, new Vector2(-65f, -138f), InputField.ContentType.Standard,
             Localization.instance.Localize("$whitehilt_portal_search"), 18, 265f, 36f).GetComponent<InputField>();
-        search.onValueChanged.AddListener(_ => RefreshList());
+        search.onValueChanged.AddListener(_ => RefreshFromTop());
         CreateButton(panel, top, new Vector2(140f, -138f), 125f, OnToggleSort, out sortLabel);
-
-        const float scrollbarWidth = 24f;
-        ColorBlock scrollbarColors = GUIManager.Instance.ValheimScrollbarHandleColorBlock;
-        scrollbarColors.normalColor = selectedColor;
-        scrollbarColors.highlightedColor = new Color(1f, 0.9f, 0.6f);
-        scrollbarColors.pressedColor = new Color(1f, 0.95f, 0.8f);
-        scrollbarColors.selectedColor = scrollbarColors.highlightedColor;
-        GameObject scroll = GUIManager.Instance.CreateScrollView(panel, false, true, scrollbarWidth, HandleBorder, scrollbarColors,
-            new Color(0f, 0f, 0f, 0.75f), PanelWidth - 40f, 400f);
-        RectTransform scrollRect = (RectTransform)scroll.transform;
-        scrollRect.anchorMin = new Vector2(0f, 0f);
-        scrollRect.anchorMax = new Vector2(1f, 1f);
-        scrollRect.pivot = new Vector2(0.5f, 0.5f);
-        scrollRect.offsetMin = new Vector2(20f, 70f);
-        scrollRect.offsetMax = new Vector2(-20f, -165f);
-        StretchScrollView(scrollRect);
-        ScrollRect portalScroll = scroll.GetComponentInChildren<ScrollRect>();
-        portalScroll.scrollSensitivity = (RowHeight + 4f) * 3f;
-        portalScroll.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
-        Stretch(portalScroll.viewport, Vector2.zero, new Vector2(-(scrollbarWidth + 2f * HandleBorder), 0f));
-        RectTransform scrollbarRect = (RectTransform)portalScroll.verticalScrollbar.transform;
-        scrollbarRect.SetParent(scrollRect, false);
-        scrollbarRect.anchorMin = new Vector2(1f, 0f);
-        scrollbarRect.anchorMax = Vector2.one;
-        scrollbarRect.pivot = new Vector2(1f, 0.5f);
-        scrollbarRect.sizeDelta = new Vector2(scrollbarWidth, -2f * HandleBorder);
-        scrollbarRect.anchoredPosition = Vector2.zero;
-        Stretch((RectTransform)portalScroll.verticalScrollbar.handleRect.parent, Vector2.zero, Vector2.zero);
-        RectTransform handle = portalScroll.verticalScrollbar.handleRect;
-        handle.pivot = new Vector2(0.5f, 0.5f);
-        handle.anchorMin = new Vector2(0f, handle.anchorMin.y);
-        handle.anchorMax = new Vector2(1f, handle.anchorMax.y);
-        handle.offsetMin = new Vector2(2f, 0f);
-        handle.offsetMax = new Vector2(-2f, 0f);
-        handle.GetComponent<Image>().color = Color.white;
-        listContent = portalScroll.content;
-        listContent.anchorMin = new Vector2(0f, 1f);
-        listContent.anchorMax = Vector2.one;
-        listContent.sizeDelta = new Vector2(0f, listContent.sizeDelta.y);
-        listContent.anchoredPosition = Vector2.zero;
-        VerticalLayoutGroup layout = listContent.GetComponent<VerticalLayoutGroup>();
-        layout.spacing = 4f;
-        layout.childControlHeight = true;
-        layout.childForceExpandHeight = false;
-        layout.childControlWidth = true;
-        layout.childForceExpandWidth = true;
+        BuildList(panel);
 
         CreateButton(panel, bottom, new Vector2(-135f, 40f), 125f, OnTravel, out Text travelLabel);
         travelLabel.text = Localization.instance.Localize("$whitehilt_portal_travel");
@@ -226,6 +188,110 @@ public class PortalTravelPanel : MonoBehaviour
         homeTravelLabel.text = Localization.instance.Localize("$whitehilt_portal_take_me_home");
         CreateButton(panel, bottom, new Vector2(135f, 40f), 125f, Close, out Text closeLabel);
         closeLabel.text = Localization.instance.Localize("$whitehilt_portal_close");
+    }
+
+    // The list of destinations: a scroll view built here rather than with Jotunn's, whose nested canvases and sizes
+    // fixed at creation left the scrollbar out of sight. The scrollbar is always shown, and the wheel is read in Update
+    // (ScrollList), as the game's input gives the scroll view only a fraction of a row per notch.
+    private void BuildList(RectTransform panel)
+    {
+        GameObject view = new("PortalList", typeof(RectTransform), typeof(Image), typeof(ScrollRect));
+        view.transform.SetParent(panel, false);
+        RectTransform viewRect = (RectTransform)view.transform;
+        Stretch(viewRect, new Vector2(20f, 70f), new Vector2(-20f, -165f));
+        view.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.45f);
+
+        GameObject viewport = new("Viewport", typeof(RectTransform), typeof(RectMask2D));
+        viewport.transform.SetParent(viewRect, false);
+        RectTransform viewportRect = (RectTransform)viewport.transform;
+        Stretch(viewportRect, new Vector2(HandleBorder, HandleBorder), new Vector2(-(ScrollbarWidth + 2f * HandleBorder), -HandleBorder));
+
+        GameObject content = new("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+        content.transform.SetParent(viewportRect, false);
+        listContent = (RectTransform)content.transform;
+        listContent.anchorMin = new Vector2(0f, 1f);
+        listContent.anchorMax = Vector2.one;
+        listContent.pivot = new Vector2(0.5f, 1f);
+        listContent.sizeDelta = Vector2.zero;
+        VerticalLayoutGroup layout = content.GetComponent<VerticalLayoutGroup>();
+        layout.childAlignment = TextAnchor.UpperLeft;
+        layout.spacing = RowSpacing;
+        layout.childControlHeight = true;
+        layout.childForceExpandHeight = false;
+        layout.childControlWidth = true;
+        layout.childForceExpandWidth = true;
+        content.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        GameObject bar = new("Scrollbar", typeof(RectTransform), typeof(Image), typeof(Scrollbar));
+        bar.transform.SetParent(viewRect, false);
+        RectTransform barRect = (RectTransform)bar.transform;
+        barRect.anchorMin = new Vector2(1f, 0f);
+        barRect.anchorMax = Vector2.one;
+        barRect.pivot = new Vector2(1f, 0.5f);
+        barRect.sizeDelta = new Vector2(ScrollbarWidth, -2f * HandleBorder);
+        barRect.anchoredPosition = new Vector2(-HandleBorder, 0f);
+        bar.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.7f);
+
+        GameObject area = new("Sliding Area", typeof(RectTransform));
+        area.transform.SetParent(barRect, false);
+        Stretch((RectTransform)area.transform, new Vector2(3f, 3f), new Vector2(-3f, -3f));
+        GameObject handle = new("Handle", typeof(RectTransform), typeof(Image));
+        handle.transform.SetParent(area.transform, false);
+        RectTransform handleRect = (RectTransform)handle.transform;
+        Stretch(handleRect, Vector2.zero, Vector2.zero);
+        Image handleImage = handle.GetComponent<Image>();
+        handleImage.sprite = GUIManager.Instance.GetSprite("UISprite");
+        handleImage.type = Image.Type.Sliced;
+        handleImage.color = Color.white;
+
+        Scrollbar scrollbar = bar.GetComponent<Scrollbar>();
+        scrollbar.handleRect = handleRect;
+        scrollbar.targetGraphic = handleImage;
+        scrollbar.direction = Scrollbar.Direction.BottomToTop;
+        ColorBlock colors = GUIManager.Instance.ValheimScrollbarHandleColorBlock;
+        colors.normalColor = selectedColor;
+        colors.highlightedColor = new Color(1f, 0.9f, 0.6f);
+        colors.pressedColor = new Color(1f, 0.95f, 0.8f);
+        colors.selectedColor = colors.highlightedColor;
+        scrollbar.colors = colors;
+
+        listScroll = view.GetComponent<ScrollRect>();
+        listScroll.horizontal = false;
+        listScroll.vertical = true;
+        listScroll.viewport = viewportRect;
+        listScroll.content = listContent;
+        listScroll.verticalScrollbar = scrollbar;
+        listScroll.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.Permanent;
+        listScroll.movementType = ScrollRect.MovementType.Clamped;
+        listScroll.scrollSensitivity = 0f;
+    }
+
+    // Moves the list three rows for each notch of the wheel while the pointer is over it. The game's wheel input gives
+    // WheelNotch for a notch.
+    private void ScrollList()
+    {
+        float wheel = ZInput.GetMouseScrollWheel();
+        if (wheel == 0f || !PointerOver(listScroll.viewport))
+        {
+            return;
+        }
+
+        Canvas.ForceUpdateCanvases();
+        float scrollable = listContent.rect.height - listScroll.viewport.rect.height;
+        if (scrollable <= 0f)
+        {
+            return;
+        }
+
+        float y = listContent.anchoredPosition.y - wheel / WheelNotch * RowsPerNotch * (RowHeight + RowSpacing);
+        listContent.anchoredPosition = new Vector2(listContent.anchoredPosition.x, Mathf.Clamp(y, 0f, scrollable));
+    }
+
+    private static bool PointerOver(RectTransform rect)
+    {
+        Canvas canvas = rect.GetComponentInParent<Canvas>().rootCanvas;
+        Camera camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(rect, ZInput.pointerPosition, camera);
     }
 
     // Jotunn sizes the parts of a scroll view once, at the size it is made with; stretch them with the view instead.
@@ -335,6 +401,7 @@ public class PortalTravelPanel : MonoBehaviour
         }
 
         UpdateHeader(player);
+        ScrollList();
     }
 
     private void OnDestroy()
@@ -361,6 +428,14 @@ public class PortalTravelPanel : MonoBehaviour
         sortLabel.text = Localization.instance.Localize(PortalSettings.SortByDistance ? "$whitehilt_portal_sort_distance" : "$whitehilt_portal_sort_name");
     }
 
+    // A new search or sort shows the list from its top, where a scroll position kept from the longer list would leave
+    // the few rows found out of sight.
+    private void RefreshFromTop()
+    {
+        RefreshList();
+        listContent.anchoredPosition = new Vector2(listContent.anchoredPosition.x, 0f);
+    }
+
     // Lists the destinations that match the search, by name or by distance.
     private void RefreshList()
     {
@@ -372,9 +447,9 @@ public class PortalTravelPanel : MonoBehaviour
         Player player = Player.m_localPlayer;
         Vector3 here = player.transform.position;
         string home = PortalTravel.GetHome(player);
-        string filter = search.text.Trim();
+        string[] words = Simplify(search.text).Split((char[])null, System.StringSplitOptions.RemoveEmptyEntries);
         IEnumerable<PortalDestination> visible = PortalTravel.Destinations
-            .Where(destination => filter.Length == 0 || DisplayName(destination).IndexOf(filter, System.StringComparison.OrdinalIgnoreCase) >= 0);
+            .Where(destination => Matches(DisplayName(destination), words));
         visible = PortalSettings.SortByDistance
             ? visible.OrderBy(destination => Utils.DistanceXZ(here, destination.Position))
             : visible.OrderBy(DisplayName, System.StringComparer.CurrentCultureIgnoreCase);
@@ -504,7 +579,7 @@ public class PortalTravelPanel : MonoBehaviour
     private void OnToggleSort()
     {
         PortalSettings.SortByDistance = !PortalSettings.SortByDistance;
-        RefreshList();
+        RefreshFromTop();
     }
 
     private bool IsOrigin(PortalDestination destination)
@@ -569,6 +644,59 @@ public class PortalTravelPanel : MonoBehaviour
         }
 
         return destination.Name;
+    }
+
+    /// <summary>
+    /// Whether a portal's name holds every word of a search, in any order.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <param name="words">The search's words, each made with <see cref="Simplify"/>.</param>
+    /// <returns>True when every word is found; always with no words.</returns>
+    internal static bool Matches(string name, string[] words)
+    {
+        string simple = Simplify(name);
+        return words.All(word => simple.IndexOf(word, System.StringComparison.Ordinal) >= 0);
+    }
+
+    /// <summary>
+    /// Text as it is compared in a search: without rich-text tags, in lower case, its letters without their accents
+    /// (å as a, é as e), and every run of white space, the non-breaking space too, as one space.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The simplified text.</returns>
+    internal static string Simplify(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        string plain = System.Text.RegularExpressions.Regex.Replace(text, "<[^>]*>", string.Empty).Normalize(System.Text.NormalizationForm.FormD);
+        System.Text.StringBuilder simple = new(plain.Length);
+        bool space = false;
+        foreach (char c in plain)
+        {
+            if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.NonSpacingMark)
+            {
+                continue;
+            }
+
+            if (char.IsWhiteSpace(c))
+            {
+                space = true;
+                continue;
+            }
+
+            if (space && simple.Length > 0)
+            {
+                simple.Append(' ');
+            }
+
+            space = false;
+            simple.Append(char.ToLowerInvariant(c));
+        }
+
+        return simple.ToString();
     }
 
     private static string FormatDistance(float metres)
