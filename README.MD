@@ -43,7 +43,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.146.0
+## ✨ New in 0.147.0
+
+- **[Wood floors in new shapes](docs/building-pieces.md#-wood-floor-triangles--octagons)**: triangles, floors with a 45° end and octagons with 2 m and 4 m sides, the vanilla floor sawn to shape with every cut plank closed.
+- **[Bigger wood walls and a window](docs/building-pieces.md#-wood-walls-4-m--window)**: walls 4 × 2 and 4 × 4 m in one piece, and a wall with a window and the vanilla shutter.
+- **[Lattices, braces, stairs and bargeboards](docs/building-pieces.md#lattices--braces)**: lattice screens and railings, braces under a beam, a 4 m wide stair, a stair with a landing, and bargeboards that follow the vanilla roof down to the eave.
+- **[A smaller settings button](docs/progression.md)**: the White Hilt settings in the inventory are now a round gear in the corner, so they no longer lie over big chests.
+
+### Also new in 0.146.0
 
 - **[More to gather in the Mistlands](docs/foraging.md#growing-ingredients)**: Hazelnuts from the hazel in the clearings, Wood Sorrel, Chaga on dead birch, Lungwort Lichen on fallen logs, Sweet Cicely and Vivianite, each with a model of its own.
 - **[New Mistlands food and drink](docs/foraging.md#growing-ingredients)**: Hazelnut Bread, a Cured Hare Sausage that makes dodging cheaper and a Cured Mist Stag Ham that makes attacks cheaper, Sweet Cicely Mead for sneaking and Chaga Tea against pierce damage. Vivianite gives paint a blue.
