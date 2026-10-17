@@ -22,7 +22,7 @@ public abstract class ForageableBase
     private static readonly Dictionary<Texture2D, Material> plantMaterials = new();
 
     // Raised when the placement rules change so much that land filled before gets another go (OldLandFiller).
-    private const int OldLandRound = 2;
+    private const int OldLandRound = 3;
 
     // Highest vegetation mask a plant may stand on in the Ashlands; the game counts more than 0.6 as lava.
     private const float MaxLavaMask = 0.5f;

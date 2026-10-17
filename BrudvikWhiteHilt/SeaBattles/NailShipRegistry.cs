@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Helpers;
+using BrudvikWhiteHilt.OldLand;
 using BrudvikWhiteHilt.Pieces.Ships.Ballista;
 using BrudvikWhiteHilt.Pieces.Ships.Ram;
 using BrudvikWhiteHilt.SeaBattles.Fleets;
@@ -253,6 +254,9 @@ public static class NailShipRegistry
             }
 
             hoard.AddComponent<RaidHoard>();
+
+            // Harbours are made from the world's network data, so the hoard goes onto the real ground when it loads.
+            hoard.AddComponent<OldLandGrounding>();
             PrefabManager.Instance.AddPrefab(new CustomPrefab(hoard, false));
         }
         catch (Exception ex)

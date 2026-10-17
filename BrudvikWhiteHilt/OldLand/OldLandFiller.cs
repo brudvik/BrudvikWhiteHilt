@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Helpers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +20,7 @@ public class OldLandFiller : MonoBehaviour
     private const double FrameBudgetMs = 2.0;
 
     private static readonly Dictionary<string, Entry> entries = new();
+
 
     private readonly Dictionary<Vector2s, List<Vector3>> buildings = new();
     private readonly List<ZDO> nearby = new();
@@ -58,6 +60,7 @@ public class OldLandFiller : MonoBehaviour
         }
 
         grounding.GroundOffset = vegetation.m_groundOffset;
+        grounding.RemoveWhenBuried = vegetation.m_blockCheck;
 
         string name = vegetation.m_prefab.name;
         HashSet<int> hashes = new(alsoCounts.Select(other => other.GetStableHashCode())) { name.GetStableHashCode() };
@@ -444,7 +447,7 @@ public class OldLandFiller : MonoBehaviour
             }
         }
 
-        if (clearRadius > 0f && nearby.Any(zdo => Utils.DistanceXZ(zdo.GetPosition(), point) < clearRadius))
+        if (clearRadius > 0f && nearby.Any(zdo => Utils.DistanceXZ(zdo.GetPosition(), point) < clearRadius || RockCover.Covers(zdo, point, clearRadius)))
         {
             return false;
         }

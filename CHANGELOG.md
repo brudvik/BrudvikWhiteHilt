@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Fixed
+- Mistlands plants no longer grow inside or under the cliffs and arches. When land explored before a plant came was
+  filled, only the positions of the rocks were known, not how far they reach. Plants that already lie under rock are
+  removed when they load, and old land is filled once more with the new rules, for all forageables.
+- Draugr harbours are no longer made inside rocks, and their hoard goes onto the real ground near biome borders.
+- A buried treasure no longer settles under an overhang or inside a large rock.
+
 ## v0.147.0 - 2026-10-17
 
 ### Added

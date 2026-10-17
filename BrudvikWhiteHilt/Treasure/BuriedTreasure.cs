@@ -192,8 +192,14 @@ public class BuriedTreasure : MonoBehaviour, IDestructible, Hoverable
         nview.GetZDO().Set(SettledKey, true);
     }
 
+    // A sphere does not see an overhang above it, nor rock it lies wholly inside, so rock over the point is checked too.
     private bool IsClear(Vector3 point)
     {
+        if (RockCover.IsUnder(point, transform))
+        {
+            return false;
+        }
+
         foreach (Collider hit in Physics.OverlapSphere(point + Vector3.up * (SettleClearance + 0.2f), SettleClearance, obstacleMask))
         {
             if (!hit.transform.IsChildOf(transform) && hit.GetComponentInParent<Character>() == null)

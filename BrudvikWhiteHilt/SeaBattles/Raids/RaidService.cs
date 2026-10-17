@@ -1,6 +1,7 @@
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Items.Navigation;
 using BrudvikWhiteHilt.Navigation.Waypoints;
+using BrudvikWhiteHilt.OldLand;
 using BrudvikWhiteHilt.Treasure;
 using System;
 using System.Collections.Generic;
@@ -366,7 +367,8 @@ public class RaidService : MonoBehaviour
         List<(GameObject Prefab, bool Archer)> guards = ChooseGuards(scene);
         float water = ZoneSystem.instance.m_waterLevel;
         WorldGenerator world = WorldGenerator.instance;
-        Func<float, float, float> height = world.GetHeight;
+        // The heights of the terrain the game builds, not of the biome at the point, which near a border lie metres off.
+        Func<float, float, float> height = OldLandFiller.TerrainHeight;
         foreach (Vector3 candidate in candidates)
         {
             Vector2 spot = new(candidate.x, candidate.z);
@@ -448,7 +450,7 @@ public class RaidService : MonoBehaviour
             {
                 uint index = ZoneSystem.SectorToIndex(x, y).Sector;
                 List<ZDO> objects = index < sectors.Length ? sectors[index] : null;
-                if (objects != null && objects.Any(zdo => Utils.DistanceXZ(zdo.GetPosition(), point) < radius))
+                if (objects != null && objects.Any(zdo => Utils.DistanceXZ(zdo.GetPosition(), point) < radius || RockCover.Covers(zdo, point, radius)))
                 {
                     return true;
                 }
