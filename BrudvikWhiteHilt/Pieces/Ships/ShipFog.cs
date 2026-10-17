@@ -10,7 +10,7 @@ namespace BrudvikWhiteHilt.Pieces.Ships;
 public static class ShipFog
 {
     // The wisp's reach grows with the player's Exploration, and counts along the ground from the mast.
-    private const float FadeSeconds = 2f;
+    private const float FadeSeconds = 0.75f;
 
     private static float factor = 1f;
 

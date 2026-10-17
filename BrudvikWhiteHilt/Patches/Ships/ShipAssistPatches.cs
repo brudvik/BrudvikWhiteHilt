@@ -62,7 +62,8 @@ public static class ShipAssistPatches
     }
 
     /// <summary>
-    /// Thins the fog near a White Hilt Ship with the Mast Wisp, after the game has set it.
+    /// Thins the fog near a White Hilt Ship with the Mast Wisp, after the game has set it, and fades the Mistlands mist
+    /// round and ahead of the ship.
     /// </summary>
     /// <param name="dt">Seconds since the last update.</param>
     [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.SetEnv))]
@@ -73,6 +74,7 @@ public static class ShipAssistPatches
         if (Utils.GetMainCamera() != null)
         {
             ShipFog.Apply(dt);
+            ShipMist.Apply(dt);
         }
     }
 

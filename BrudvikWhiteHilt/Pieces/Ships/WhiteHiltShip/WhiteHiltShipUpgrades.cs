@@ -199,6 +199,29 @@ public class WhiteHiltShipUpgrades : MonoBehaviour
     }
 
     /// <summary>
+    /// Fills in the water each lit mast wisp keeps clear of mist: a stretch along the ground from under the wisp to
+    /// where it will be after <paramref name="leadSeconds"/> of sailing, and the height of the ship's waterline.
+    /// </summary>
+    /// <param name="clearings">Cleared and filled in.</param>
+    /// <param name="leadSeconds">How far ahead of the ship, in seconds of its present speed, the clearing reaches.</param>
+    public static void GetMastWispClearings(List<(Vector3 From, Vector3 To, float Waterline)> clearings, float leadSeconds)
+    {
+        clearings.Clear();
+        foreach (WhiteHiltShipUpgrades ship in instances)
+        {
+            if (ship == null || ship.mastWisp == null || !ship.mastWisp.activeInHierarchy || !ship.Has(ShipMastWisp.Bit))
+            {
+                continue;
+            }
+
+            Vector3 from = ship.mastWisp.transform.position;
+            Vector3 velocity = ship.body != null ? ship.body.linearVelocity : Vector3.zero;
+            velocity.y = 0f;
+            clearings.Add((from, from + velocity * leadSeconds, ship.transform.position.y));
+        }
+    }
+
+    /// <summary>
     /// Checks whether the ship has an upgrade.
     /// </summary>
     /// <param name="bit">The upgrade's bit.</param>

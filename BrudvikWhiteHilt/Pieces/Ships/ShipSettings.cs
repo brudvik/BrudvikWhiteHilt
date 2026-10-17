@@ -318,10 +318,10 @@ public static class ShipSettings
             "The ship counts as still for the auto anchor below this speed, in m/s.", new AcceptableValueRange<float>(0.1f, 20f));
         TentShelter = WhiteHiltConfig.BindAdminOnly(Section, "TentShelter", true,
             "The White Hilt Ship's tent gives shelter and keeps the rain off those under it.");
-        MastWispReach = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReach", 15f,
-            "Reach in metres of the Mast Wisp at Exploration 0, as the vanilla wisplight's: it keeps the Mistlands mist away and thins the ordinary fog this far round the ship. Each player sees it by their own Exploration level.",
+        MastWispReach = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReach", 30f,
+            "Reach in metres of the Mast Wisp at Exploration 0, twice the vanilla wisplight's: it keeps the Mistlands mist away and thins the ordinary fog this far round the ship, and clears the mist ahead of it as it sails. Each player sees it by their own Exploration level.",
             new AcceptableValueRange<float>(0f, 100f));
-        MastWispReachMax = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReachMax", 30f,
+        MastWispReachMax = WhiteHiltConfig.BindAdminOnly(Section, "MastWispReachMax", 60f,
             "Reach in metres of the Mast Wisp at Exploration 100; in between it grows evenly with the level.",
             new AcceptableValueRange<float>(0f, 150f));
         AllowShipPortal = WhiteHiltConfig.BindAdminOnly(Section, "ShipPortal", true,
