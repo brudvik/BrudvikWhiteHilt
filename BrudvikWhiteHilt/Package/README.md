@@ -35,7 +35,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.148.0
+## ✨ New in 0.149.0
+
+- **[Two new terrors in the Ashlands](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-lava-worm)**: the **Lava Worm** rises out of the lava and drags you towards it, and the **Muspell Giant**, a fire giant 9 m tall, shakes the ground and leaves burning pools in its steps. Make **[Lava Worm armour](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#lava-worm-armour)** against the lava's heat, and the **[Surt Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#etching-a-rune)** and **Surtstone Amulet** from the giant's Surtstone.
+- **[Two new spirits in the Mistlands' fog](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-huldra)**: the **Huldra** sings and lures you in, then turns into a hag of roots and rotten bark; her bark brews the **Huldra Draught**, which hides you from creatures. The see-through **[Mare](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-mare)** floats in the mist, steals your breath and rides you in your sleep, unless you wear a Mare Charm.
+- **[Chests that never run full](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/chests.md#restocking)**: every chest keeps two empty rows for what you store and grows as unlocked items fill it.
+
+### Also new in 0.148.0
 
 - **[Forge of Potential](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/equipment.md#-forge-of-potential)**: a fair roll at the refinement forge, where every failed try raises the next one's chance and your skills help. A failed try costs only the idol by default; offer up to three more for a better chance, and buy idols at the trading posts.
 - **[Octagonal stairwells](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/building-pieces.md#-wood-floor-triangles--octagons)**: both octagonal wood floors with an opening in the middle for the next storey of a tower: an eight-sided one the Spiral Stair stands in, and a square 4 × 4 m one on the vanilla floor's grid.
@@ -363,7 +369,7 @@ Weapons that swing in several styles, and the Rune Sword's own strike, thrust an
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/giantspider.png" alt="Monsters" height="120">
 
-A great worm in the forest at night, giant spiders, fire-breathing dragons and a White Dragon to call to your side. Five more beasts: the Mist Stag, Nidhogg Spawn, Yggdrasil Warden, Garm Hound and Greenland Shark.
+A great worm in the forest at night, giant spiders, fire-breathing dragons and a White Dragon to call to your side. Five more beasts: the Mist Stag, Nidhogg Spawn, Yggdrasil Warden, Garm Hound and Greenland Shark, the Lava Worm and the Muspell Giant in the Ashlands, and the Huldra and the Mare in the Mistlands' fog.
 
 #### [Kraken & octopus](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/kraken.md)
 
@@ -575,6 +581,7 @@ The Thunderstore package gets a plain markdown version of this README (`BrudvikW
 - Lindorm model: ["Worm Monster"](https://sketchfab.com/3d-models/5563066315694125b741901681d387c5) by [CR!STALLL](https://sketchfab.com/CR1STALLL), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Merged into one mesh, converted to FBX with six of its animations and rescaled for Valheim.
 - Giant Spider model: ["Wolf Spider (Rigged) - (Rabidosa rabida)"](https://sketchfab.com/3d-models/6392e4cfb64d407182fdad2cea9e0abe) by [Dreaming In Alternation 27](https://sketchfab.com/DreamingInAlternation27), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, idle, bite, hit and death animations added, and rescaled for Valheim.
 - Desert Dragon model: ["Red Dragon"](https://sketchfab.com/3d-models/red-dragon-d53fe00255334386a0fd1f4ac2858cab) by [absol](https://sketchfab.com/absol_cg), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Textures downscaled, converted to FBX with two of its animations, a fire-breathing animation added, recoloured in game and rescaled for Valheim.
+- Huldra model and animations: the character Arissa and her Happy Idle, Female Walk, Running, Waving, Blow A Kiss, Standing Melee Attack Horizontal, Hit Reaction and Dying animations from [Mixamo](https://www.mixamo.com) (Adobe), used under the Mixamo licence. Merged, her cloak and daggers removed, fair hair, a braid and a cow's tail added and her texture repainted (`AssetSource/Tools/merge_mixamo.py`, `dress_huldra.py`); the same model, with black hair and without legs, is the Mare (`dress_huldra.py --mare`). The source files are not in the repository, as the licence does not allow that.
 - Mist Stag model: ["Deer"](https://sketchfab.com/3d-models/deer-144b33ab9e3345cb92b41bf297a38b7d) by KhmerTeach (chemchamroeun1988), licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Converted to FBX with its walk, run and attack animations, hit and death animations added, recoloured in game and rescaled for Valheim.
 - Nidhogg Spawn model: ["Four Legged Predator"](https://sketchfab.com/3d-models/four-legged-predator-7f68f9daa698433299092bfecaae4e9e) by Timsblends, licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Mesh reduced, glowing eyes added, converted to FBX with its walk, run, bite, crush and roar animations, hit and death animations added, recoloured in game and rescaled for Valheim.
 - Yggdrasil Warden model: ["Treant - Week 2"](https://sketchfab.com/3d-models/treant-week-2-aa60f5de1ed94b2e96e46ad08cde4d5a) by Batuhan13, licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/). Helper sphere removed, converted to FBX with its idle animation, walk, slam, hit, death and dormant animations added, darkened in game and rescaled for Valheim.
