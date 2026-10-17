@@ -8,8 +8,8 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 /// <summary>
-/// Renders the White Hilt wood floors and plank walls offline with the mod's own cutting code (MeshData, Sawing,
-/// FloorCutting and WallCutting, copied in by render_planking.ps1), from the vanilla wood floor, wall and window read
+/// Renders the White Hilt wood floors, plank walls, lattices and braces offline with the mod's own cutting code
+/// (MeshData, Sawing, FloorCutting, WallCutting and Joinery, copied in by render_planking.ps1), from the vanilla wood floor, wall and window read
 /// straight out of the game's asset bundles. Writes a check sheet per piece (floors from above, the side and below;
 /// walls from the front, the back and askew) and a tower of vanilla walls on the octagon; with -plDocs also the
 /// pictures for the documentation. Run with
@@ -27,11 +27,16 @@ public static class PlankingPreview
         ("wood_floor_octagon_4", FloorShape.Octagon(4f))
     };
 
-    private static readonly (string Name, Func<MeshData, MeshData> Shape, bool Window)[] walls =
+    private static readonly (string Name, Func<MeshData, MeshData, MeshData> Shape, bool Window)[] walls =
     {
-        ("woodwall_4x2", tile => WallCutting.Lay(tile, 4, 2), false),
-        ("woodwall_4x4", tile => WallCutting.Lay(tile, 4, 4), false),
-        ("woodwall_window", tile => WallCutting.CutOpening(tile, WallCutting.Window), true)
+        ("woodwall_4x2", (tile, plank) => WallCutting.Lay(tile, 4, 2), false),
+        ("woodwall_4x4", (tile, plank) => WallCutting.Lay(tile, 4, 4), false),
+        ("woodwall_window", (tile, plank) => WallCutting.CutOpening(tile, WallCutting.Window), true),
+        ("wood_lattice_2x2", (tile, plank) => Joinery.Lattice(plank, 2f, 2f), false),
+        ("wood_lattice_2x1", (tile, plank) => Joinery.Lattice(plank, 2f, 1f), false),
+        ("wood_brace_05", (tile, plank) => Joinery.Brace(plank, 0.5f, 0.12f), false),
+        ("wood_brace_1", (tile, plank) => Joinery.Brace(plank, 1f, 0.14f), false),
+        ("wood_brace_2", (tile, plank) => Joinery.Brace(plank, 2f, 0.16f), false)
     };
 
     /// <summary>
@@ -83,13 +88,13 @@ public static class PlankingPreview
                 }
             }
 
-            foreach ((string name, Func<MeshData, MeshData> shape, bool window) in walls)
+            foreach ((string name, Func<MeshData, MeshData, MeshData> shape, bool window) in walls)
             {
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
                 SetUpStage(true);
                 (MeshData tile, Material material) = ReadModel(wallPrefab);
-                GameObject piece = Place(shape(tile), material, name, Vector3.zero, 0f);
-                piece.transform.position = Vector3.up * MeasureBounds(piece).extents.y;
+                GameObject piece = Place(shape(tile, ReadPlank(wallPrefab)), material, name, Vector3.zero, 0f);
+                piece.transform.position = Vector3.up * (MeasureBounds(piece).extents.y - MeasureBounds(piece).center.y);
                 if (window)
                 {
                     HangShutter(piece, windowPrefab);
@@ -121,6 +126,7 @@ public static class PlankingPreview
             }
 
             RenderTower(floorPrefab, wallPrefab, outFolder, docsFolder);
+            RenderFrame(prefabs, wallPrefab, outFolder, docsFolder);
         }
         finally
         {
@@ -161,6 +167,41 @@ public static class PlankingPreview
         File.WriteAllBytes(Path.Combine(docsFolder ?? outFolder, "wood_floor_tower.png"), picture.EncodeToPNG());
     }
 
+    // Two vanilla poles under a vanilla beam, a brace in each corner and a lattice railing between them.
+    private static void RenderFrame(List<GameObject> prefabs, GameObject wallPrefab, string outFolder, string docsFolder)
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+        SetUpStage(docsFolder == null);
+        (_, Material material) = ReadModel(wallPrefab);
+        MeshData plank = ReadPlank(wallPrefab);
+        GameObject root = new("frame");
+        GameObject pole = prefabs.First(g => g.name == "wood_pole2");
+        GameObject beam = prefabs.First(g => g.name == "wood_beam");
+        foreach (float x in new[] { 0f, 2f, 4f })
+        {
+            Instantiate(pole, new Vector3(x, 1f, 0f), Quaternion.identity).transform.SetParent(root.transform, true);
+        }
+
+        foreach (float x in new[] { 1f, 3f })
+        {
+            Instantiate(beam, new Vector3(x, 2f, 0f), Quaternion.identity).transform.SetParent(root.transform, true);
+            Place(Joinery.Lattice(plank, 2f, 1f), material, "lattice", new Vector3(x, 0.5f, 0f), 0f).transform.SetParent(root.transform, true);
+        }
+
+        Place(Joinery.Brace(plank, 0.5f, 0.12f), material, "knee", new Vector3(0f, 2f, 0f), 0f).transform.SetParent(root.transform, true);
+        Place(Joinery.Brace(plank, 0.5f, 0.12f), material, "knee2", new Vector3(2f, 2f, 0f), 180f).transform.SetParent(root.transform, true);
+        Place(Joinery.Brace(plank, 0.5f, 0.12f), material, "knee3", new Vector3(2f, 2f, 0f), 0f).transform.SetParent(root.transform, true);
+        Place(Joinery.Brace(plank, 0.5f, 0.12f), material, "knee4", new Vector3(4f, 2f, 0f), 180f).transform.SetParent(root.transform, true);
+        Texture2D picture = RenderView(MeasureBounds(root), Quaternion.Euler(15f, 25f, 0f), 1400, 800, 0.85f, default, docsFolder != null);
+        File.WriteAllBytes(Path.Combine(docsFolder ?? outFolder, "wood_frame.png"), picture.EncodeToPNG());
+    }
+
+    // As PlankWallPieceBase.ReadWall in the mod: the plank of the vanilla wall, a unit block with the grain along z.
+    private static MeshData ReadPlank(GameObject wallPrefab)
+    {
+        return MeshData.FromMesh(wallPrefab.transform.Find("New/high/plank").GetComponent<MeshFilter>().sharedMesh, 0, Matrix4x4.identity);
+    }
+
     // As PlankWallWindow.Finish in the mod: the vanilla window's shutter and post moved to the opening's right side.
     private static void HangShutter(GameObject piece, GameObject windowPrefab)
     {
@@ -185,7 +226,7 @@ public static class PlankingPreview
     private static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation, params string[] keep)
     {
         GameObject copy = UnityEngine.Object.Instantiate(prefab);
-        foreach (Transform child in copy.transform.Cast<Transform>().Where(child => child.name != "New" && !keep.Contains(child.name)).ToList())
+        foreach (Transform child in copy.transform.Cast<Transform>().Where(child => !child.name.Equals("New", StringComparison.OrdinalIgnoreCase) && !keep.Contains(child.name)).ToList())
         {
             UnityEngine.Object.DestroyImmediate(child.gameObject);
         }

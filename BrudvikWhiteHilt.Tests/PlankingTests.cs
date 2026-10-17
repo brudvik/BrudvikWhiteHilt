@@ -279,4 +279,68 @@ public class PlankingTests
         Assert.Equal(8, wall.Islands().Count);
         Assert.All(wall.Islands(), AssertClosed);
     }
+
+    // The vanilla plank: a unit block with the grain along z.
+    private static MeshData Plank() => Box(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+
+    [Fact]
+    public void ABoardLiesBetweenItsEnds()
+    {
+        MeshData board = Joinery.Board(Plank(), new Vector3(0f, 0f, 0f), new Vector3(2f, 0f, 0f), 0.2f, 0.1f);
+
+        board.Range(0, out float x0, out float x1);
+        board.Range(1, out float y0, out float y1);
+        board.Range(2, out float z0, out float z1);
+        Assert.Equal(0f, x0, 4);
+        Assert.Equal(2f, x1, 4);
+        Assert.Equal(0.2f, y1 - y0, 4);
+        Assert.Equal(0.1f, z1 - z0, 4);
+    }
+
+    [Theory]
+    [InlineData(2f, 2f)]
+    [InlineData(2f, 1f)]
+    public void ALatticeStaysInsideItsFrameAndEverySlatIsClosed(float width, float height)
+    {
+        MeshData lattice = Joinery.Lattice(Plank(), width, height);
+
+        lattice.Range(0, out float left, out float right);
+        lattice.Range(1, out float bottom, out float top);
+        lattice.Range(2, out float back, out float front);
+        Assert.Equal(-width / 2f, left, 3);
+        Assert.Equal(width / 2f, right, 3);
+        Assert.Equal(-height / 2f, bottom, 3);
+        Assert.Equal(height / 2f, top, 3);
+        Assert.True(front <= Joinery.Frame / 2f + 1e-4f && back >= -Joinery.Frame / 2f - 1e-4f);
+
+        // The frame (its four boards touch, so they are one part here) and at least four slats each way.
+        Assert.True(lattice.Islands().Count >= 1 + 2 * 4);
+        Assert.All(lattice.Islands(), AssertClosed);
+    }
+
+    [Theory]
+    [InlineData(0.5f, 0.12f)]
+    [InlineData(1f, 0.14f)]
+    [InlineData(2f, 0.16f)]
+    public void ABraceIsSawnFlushWithThePostAndTheBeam(float length, float section)
+    {
+        MeshData brace = Joinery.Brace(Plank(), length, section);
+
+        brace.Range(0, out float left, out float right);
+        brace.Range(1, out float bottom, out float top);
+        Assert.Equal(0f, left, 4);
+        Assert.Equal(0f, top, 4);
+        float reach = length + Joinery.BraceInset;
+        Assert.True(right > reach && right < reach + section * 1.5f);
+        Assert.True(bottom < -reach && bottom > -reach - section * 1.5f);
+        AssertClosed(brace);
+        Assert.Equal(3, Joinery.BraceSnapPoints(length).Count());
+
+        // The top of the box's height, turned about z, lands at the brace's end on the beam.
+        (Vector3 center, Vector3 size, float degrees) = Joinery.BraceBox(length, section);
+        float radians = degrees * Mathf.Deg2Rad;
+        Vector3 end = center + new Vector3(-Mathf.Sin(radians), Mathf.Cos(radians), 0f) * (size.y / 2f);
+        Assert.Equal(reach, end.x, 3);
+        Assert.Equal(0f, end.y, 3);
+    }
 }

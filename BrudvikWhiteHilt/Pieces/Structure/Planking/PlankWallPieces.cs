@@ -12,9 +12,10 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Structure.Planking;
 
 /// <summary>
-/// A plank wall the vanilla wood walls do not have, made from the vanilla 2 × 2 m wood wall (woodwall) by
-/// <see cref="WallCutting"/> when the game starts: no model of its own, and nothing of the game's shipped. Keeps the
-/// vanilla wall's material, strength and wear, and sits in the hammer right after it.
+/// A wooden piece made from the vanilla 2 × 2 m wood wall (woodwall) when the game starts: from the wall itself by
+/// <see cref="WallCutting"/>, or from the plank it is built of by <see cref="Joinery"/>. No model of its own, and nothing
+/// of the game's shipped. Keeps the vanilla wall's material, strength for its area and wear, and sits in the hammer
+/// right after it.
 /// </summary>
 public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 {
@@ -48,6 +49,9 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 
     /// <summary>Height in metres, a multiple of 2.</summary>
     protected abstract int Height { get; }
+
+    /// <summary>Area in square metres, for the cost and the strength: the vanilla wall's for 4 m².</summary>
+    protected virtual float Area => Width * Height;
 
     /// <summary>The vanilla piece the new one is a clone of, for its components.</summary>
     protected virtual string CopyFrom => Wall;
@@ -102,7 +106,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             Assemble(piece.PiecePrefab, models, copyFrom);
             WearNTear vanilla = wall.GetComponent<WearNTear>();
             WearNTear wearNTear = piece.PiecePrefab.GetComponent<WearNTear>();
-            wearNTear.m_health = vanilla.m_health * Width * Height / 4f;
+            wearNTear.m_health = vanilla.m_health * Area / 4f;
             wearNTear.m_materialType = vanilla.m_materialType;
 
             Sprite icon = VisualHelper.RenderIcon(piece.PiecePrefab);
@@ -128,16 +132,24 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
         }
     }
 
-    /// <summary>The wall's model in one wear state, from the vanilla wall's model of that state.</summary>
+    /// <summary>The piece's model in one wear state, from the vanilla wall's models of that state.</summary>
     /// <param name="tile">The vanilla 2 × 2 m wall's model.</param>
+    /// <param name="plank">One plank of the vanilla wall, a unit block with the grain along z.</param>
     /// <returns>The model.</returns>
-    protected abstract MeshData Shape(MeshData tile);
+    protected abstract MeshData Shape(MeshData tile, MeshData plank);
 
-    /// <summary>Box colliders, centre and size, in the piece's space.</summary>
+    /// <summary>Box colliders, centre, size and turn, in the piece's space.</summary>
     /// <returns>The boxes.</returns>
-    protected virtual IEnumerable<(Vector3 Center, Vector3 Size)> Colliders()
+    protected virtual IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
     {
-        yield return (Vector3.zero, new Vector3(Width, Height, Depth));
+        yield return (Vector3.zero, new Vector3(Width, Height, Depth), Quaternion.identity);
+    }
+
+    /// <summary>Snap points: every 2 m round the edge.</summary>
+    /// <returns>The points.</returns>
+    protected virtual IEnumerable<Vector3> SnapPoints()
+    {
+        return WallCutting.SnapPoints(Width, Height);
     }
 
     /// <summary>Adds what the clone keeps of its own, such as a window's shutter.</summary>
@@ -162,7 +174,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
     /// <returns>The recipe.</returns>
     protected virtual RequirementConfig[] Requirements(GameObject wall, GameObject copyFrom)
     {
-        return Scaled(wall, Width * Height / 4f).ToArray();
+        return Scaled(wall, Area / 4f).ToArray();
     }
 
     /// <summary>A vanilla piece's recipe times a factor, rounded, at least 1 of each.</summary>
@@ -214,6 +226,15 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
             Matrix4x4 matrix = root.worldToLocalMatrix * filter.transform.localToWorldMatrix;
             read.Models[state] = MeshData.FromMesh(filter.sharedMesh, 0, matrix);
             read.Materials[state] = material;
+
+            // The plank the combined model was made of, in its own space: the unit block, its grain along z.
+            Mesh plank = holder.Find("high/plank")?.GetComponent<MeshFilter>()?.sharedMesh;
+            if (plank == null || !plank.isReadable)
+            {
+                throw new InvalidOperationException($"{Wall}: {state} has no readable plank");
+            }
+
+            read.Planks[state] = MeshData.FromMesh(plank, 0, Matrix4x4.identity);
         }
 
         source = read;
@@ -249,19 +270,20 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
 
             GameObject model = new("model") { layer = layer };
             model.transform.SetParent(holder.transform, false);
-            model.AddComponent<MeshFilter>().sharedMesh = MeshData.ToMesh($"{PrefabName}_{state}", Shape(models.Models[state]));
+            model.AddComponent<MeshFilter>().sharedMesh = MeshData.ToMesh($"{PrefabName}_{state}", Shape(models.Models[state], models.Planks[state]));
             model.AddComponent<MeshRenderer>().sharedMaterial = models.Materials[state];
         }
 
-        foreach ((Vector3 center, Vector3 size) in Colliders())
+        foreach ((Vector3 center, Vector3 size, Quaternion rotation) in Colliders())
         {
             GameObject box = new("collider") { layer = layer };
             box.transform.SetParent(root, false);
             box.transform.localPosition = center;
+            box.transform.localRotation = rotation;
             box.AddComponent<BoxCollider>().size = size;
         }
 
-        foreach (Vector3 point in WallCutting.SnapPoints(Width, Height))
+        foreach (Vector3 point in SnapPoints())
         {
             GameObject snap = new("$hud_snappoint") { tag = SnapTag };
             snap.transform.SetParent(root, false);
@@ -310,6 +332,7 @@ public abstract class PlankWallPieceBase : IWhiteHiltCustomPiece
     {
         public readonly Dictionary<string, MeshData> Models = new();
         public readonly Dictionary<string, Material> Materials = new();
+        public readonly Dictionary<string, MeshData> Planks = new();
     }
 }
 
@@ -331,7 +354,7 @@ public sealed class PlankWall4x2 : PlankWallPieceBase
     /// <inheritdoc/>
     protected override int Height => 2;
     /// <inheritdoc/>
-    protected override MeshData Shape(MeshData tile) => WallCutting.Lay(tile, Width, Height);
+    protected override MeshData Shape(MeshData tile, MeshData plank) => WallCutting.Lay(tile, Width, Height);
 }
 
 /// <summary>A plank wall 4 m wide and 4 m high.</summary>
@@ -352,7 +375,7 @@ public sealed class PlankWall4x4 : PlankWallPieceBase
     /// <inheritdoc/>
     protected override int Height => 4;
     /// <inheritdoc/>
-    protected override MeshData Shape(MeshData tile) => WallCutting.Lay(tile, Width, Height);
+    protected override MeshData Shape(MeshData tile, MeshData plank) => WallCutting.Lay(tile, Width, Height);
 }
 
 /// <summary>
@@ -381,18 +404,18 @@ public sealed class PlankWallWindow : PlankWallPieceBase
     /// <inheritdoc/>
     protected override string CopyFrom => Window;
     /// <inheritdoc/>
-    protected override MeshData Shape(MeshData tile) => WallCutting.CutOpening(tile, WallCutting.Window);
+    protected override MeshData Shape(MeshData tile, MeshData plank) => WallCutting.CutOpening(tile, WallCutting.Window);
 
     // Beside, under and over the opening.
     /// <inheritdoc/>
-    protected override IEnumerable<(Vector3 Center, Vector3 Size)> Colliders()
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
     {
         Rect o = WallCutting.Window;
         const float depth = 0.3f;
-        yield return (new Vector3((-1f + o.xMin) / 2f, 0f, 0f), new Vector3(o.xMin + 1f, 2f, depth));
-        yield return (new Vector3((1f + o.xMax) / 2f, 0f, 0f), new Vector3(1f - o.xMax, 2f, depth));
-        yield return (new Vector3(o.center.x, (-1f + o.yMin) / 2f, 0f), new Vector3(o.width, o.yMin + 1f, depth));
-        yield return (new Vector3(o.center.x, (1f + o.yMax) / 2f, 0f), new Vector3(o.width, 1f - o.yMax, depth));
+        yield return (new Vector3((-1f + o.xMin) / 2f, 0f, 0f), new Vector3(o.xMin + 1f, 2f, depth), Quaternion.identity);
+        yield return (new Vector3((1f + o.xMax) / 2f, 0f, 0f), new Vector3(1f - o.xMax, 2f, depth), Quaternion.identity);
+        yield return (new Vector3(o.center.x, (-1f + o.yMin) / 2f, 0f), new Vector3(o.width, o.yMin + 1f, depth), Quaternion.identity);
+        yield return (new Vector3(o.center.x, (1f + o.yMax) / 2f, 0f), new Vector3(o.width, 1f - o.yMax, depth), Quaternion.identity);
     }
 
     // The vanilla window and the wall it replaces.
@@ -449,4 +472,164 @@ public sealed class PlankWallWindow : PlankWallPieceBase
             }
         }
     }
+}
+
+/// <summary>A wooden lattice: a frame with slats both ways at 45°, made of the vanilla wall's plank.</summary>
+public abstract class WoodLatticeBase : PlankWallPieceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    protected WoodLatticeBase(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => $"piece_whitehilt_wood_lattice_{Width}x{Height}";
+    /// <inheritdoc/>
+    protected override string FullName => $"Wood Lattice {Width}×{Height}";
+    /// <inheritdoc/>
+    protected override MeshData Shape(MeshData tile, MeshData plank) => Joinery.Lattice(plank, Width, Height);
+
+    /// <inheritdoc/>
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
+    {
+        yield return (Vector3.zero, new Vector3(Width, Height, Joinery.Frame), Quaternion.identity);
+    }
+
+    // The corners, as the vanilla walls snap.
+    /// <inheritdoc/>
+    protected override IEnumerable<Vector3> SnapPoints()
+    {
+        foreach (float x in new[] { -Width / 2f, Width / 2f })
+        {
+            foreach (float y in new[] { -Height / 2f, Height / 2f })
+            {
+                yield return new Vector3(x, y, 0f);
+            }
+        }
+    }
+}
+
+/// <summary>A wooden lattice 2 × 2 m.</summary>
+public sealed class WoodLattice2x2 : WoodLatticeBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodLattice2x2(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string Description => "A frame of planks with slats crossing at 45°, 2 × 2 m: a screen between rooms, the top of a gable or a wall for a pergola.";
+    /// <inheritdoc/>
+    protected override int Width => 2;
+    /// <inheritdoc/>
+    protected override int Height => 2;
+}
+
+/// <summary>A wooden lattice 2 × 1 m.</summary>
+public sealed class WoodLattice2x1 : WoodLatticeBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodLattice2x1(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string Description => "A frame of planks with slats crossing at 45°, 2 m long and 1 m high: a balustrade for a gallery or a deck.";
+    /// <inheritdoc/>
+    protected override int Width => 2;
+    /// <inheritdoc/>
+    protected override int Height => 1;
+}
+
+/// <summary>
+/// A brace at 45° in the corner under a beam where it meets a post, made of the vanilla wall's plank. Its corner
+/// snaps where a pole's top meets a beam's end.
+/// </summary>
+public abstract class WoodBraceBase : PlankWallPieceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    protected WoodBraceBase(PieceManager instance) : base(instance) { }
+
+    /// <summary>How far down the post and out along the beam the brace reaches.</summary>
+    protected abstract float Length { get; }
+
+    /// <summary>Width and depth of the brace.</summary>
+    protected abstract float Section { get; }
+
+    /// <inheritdoc/>
+    protected override int Width => 1;
+    /// <inheritdoc/>
+    protected override int Height => 1;
+
+    // Costs and holds as a wall of 2 m² for every metre it reaches: half a wall for the 1 m brace.
+    /// <inheritdoc/>
+    protected override float Area => Length * 2f;
+
+    /// <inheritdoc/>
+    protected override MeshData Shape(MeshData tile, MeshData plank) => Joinery.Brace(plank, Length, Section);
+
+    /// <inheritdoc/>
+    protected override IEnumerable<(Vector3 Center, Vector3 Size, Quaternion Rotation)> Colliders()
+    {
+        (Vector3 center, Vector3 size, float degrees) = Joinery.BraceBox(Length, Section);
+        yield return (center, size, Quaternion.Euler(0f, 0f, degrees));
+    }
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Vector3> SnapPoints() => Joinery.BraceSnapPoints(Length);
+}
+
+/// <summary>A short knee brace, 0.5 m.</summary>
+public sealed class WoodBrace05 : WoodBraceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBrace05(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_brace_05";
+    /// <inheritdoc/>
+    protected override string FullName => "Wood Knee Brace";
+    /// <inheritdoc/>
+    protected override string Description => "A short brace at 45° under a beam or an eave where it meets a post, reaching 0.5 m down and 0.5 m out.";
+    /// <inheritdoc/>
+    protected override float Length => 0.5f;
+    /// <inheritdoc/>
+    protected override float Section => 0.12f;
+}
+
+/// <summary>A corner brace, 1 m.</summary>
+public sealed class WoodBrace1 : WoodBraceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBrace1(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_brace_1";
+    /// <inheritdoc/>
+    protected override string FullName => "Wood Brace 1 m";
+    /// <inheritdoc/>
+    protected override string Description => "A brace at 45° in the corner between a post and a beam, reaching 1 m down and 1 m out.";
+    /// <inheritdoc/>
+    protected override float Length => 1f;
+    /// <inheritdoc/>
+    protected override float Section => 0.14f;
+}
+
+/// <summary>A long corner brace, 2 m.</summary>
+public sealed class WoodBrace2 : WoodBraceBase
+{
+    /// <summary>Registers the piece's text.</summary>
+    /// <param name="instance">The piece manager.</param>
+    public WoodBrace2(PieceManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string PrefabName => "piece_whitehilt_wood_brace_2";
+    /// <inheritdoc/>
+    protected override string FullName => "Wood Brace 2 m";
+    /// <inheritdoc/>
+    protected override string Description => "A long brace at 45° between a post and a beam, reaching 2 m down and 2 m out, for a hall or a barn.";
+    /// <inheritdoc/>
+    protected override float Length => 2f;
+    /// <inheritdoc/>
+    protected override float Section => 0.16f;
 }

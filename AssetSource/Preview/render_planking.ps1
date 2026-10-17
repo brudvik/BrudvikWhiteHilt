@@ -1,13 +1,14 @@
 <#
 .SYNOPSIS
-    Renders the White Hilt wood floors and plank walls offline with the mod's own cutting code.
+    Renders the White Hilt wood floors, plank walls, lattices and braces offline with the mod's own cutting code.
 .DESCRIPTION
-    Copies Pieces/Structure/Darkwood/MeshData.cs and Pieces/Structure/Planking/Sawing.cs, FloorCutting.cs and
-    WallCutting.cs (rewritten to block namespaces, which Unity's C# needs) and AssetSource/Unity/PlankingPreview.cs into
+    Copies Pieces/Structure/Darkwood/MeshData.cs and Pieces/Structure/Planking/Sawing.cs, FloorCutting.cs,
+    WallCutting.cs and Joinery.cs (rewritten to block namespaces, which Unity's C# needs) and AssetSource/Unity/PlankingPreview.cs into
     the git-ignored BrudvikWhiteHiltUnity project (MeshData to Assets/Editor/Shared, where the darkwood preview puts it
     too), which reads the vanilla wood floor, wall and window straight from the game's asset bundles. A check sheet per
     piece and a tower of vanilla walls on the octagon land in BrudvikWhiteHiltUnity/Preview/planking (or -Out). -Docs
-    also writes the pictures for the documentation into docs/images/wood_floor_*.png and woodwall_*.png, cropped like
+    also writes the pictures for the documentation into docs/images/wood_floor_*.png, woodwall_*.png, wood_lattice_*.png, wood_brace_*.png
+    and wood_frame.png, cropped like
     render_showcase.py does.
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File AssetSource\Preview\render_planking.ps1 -Docs
@@ -41,6 +42,7 @@ $sources = @{
     'BrudvikWhiteHilt\Pieces\Structure\Planking\Sawing.cs'       = $target
     'BrudvikWhiteHilt\Pieces\Structure\Planking\FloorCutting.cs' = $target
     'BrudvikWhiteHilt\Pieces\Structure\Planking\WallCutting.cs'  = $target
+    'BrudvikWhiteHilt\Pieces\Structure\Planking\Joinery.cs'      = $target
 }
 foreach ($file in $sources.Keys) {
     $source = Get-Content (Join-Path $repoRoot $file) -Raw -Encoding UTF8

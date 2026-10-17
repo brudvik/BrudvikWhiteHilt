@@ -125,11 +125,15 @@ public static class Sawing
         return end;
     }
 
-    // The convex outline of points in a plane spanned by two directions, in order round it.
+    // The convex outline of points in a plane spanned by two directions, in order round it. The points are rounded to
+    // a hundredth of a millimetre from their middle first: corners on one line that differ by rounding alone would
+    // otherwise sort out of order along it and turn the outline the wrong way, dropping a true corner.
     private static List<Vector3> Hull(List<Vector3> points, Vector3 along, Vector3 across)
     {
+        Vector3 middle = points.Aggregate(Vector3.zero, (sum, p) => sum + p) / Mathf.Max(1, points.Count);
+        static float Round(float value) => Mathf.Round(value * 1e5f) / 1e5f;
         List<(Vector2 Flat, Vector3 Point)> sorted = points
-            .Select(p => (new Vector2(Vector3.Dot(p, along), Vector3.Dot(p, across)), p))
+            .Select(p => (new Vector2(Round(Vector3.Dot(p - middle, along)), Round(Vector3.Dot(p - middle, across))), p))
             .OrderBy(entry => entry.Item1.x).ThenBy(entry => entry.Item1.y)
             .ToList();
         if (sorted.Count < 3)

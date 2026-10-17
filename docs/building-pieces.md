@@ -117,6 +117,28 @@ The vanilla wood wall as larger pieces, and with a window sawn into it. Each pla
 
 Made when the game starts from the vanilla wall and window, as the floors are, and rendered offline by the same `render_planking.ps1`. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_woodwall_4x2`, `_4x4` and `_window`. Not yet tested in the game.
 
+### Lattices & braces
+
+<img src="images/wood_frame.png" alt="Vanilla poles and beams with knee braces and lattice railings" title="Vanilla poles and beams with knee braces in the corners and lattice railings between them" height="200">
+
+<img src="images/wood_lattice_2x2.png" alt="Wood Lattice 2×2" title="Wood Lattice 2×2" height="120"> <img src="images/wood_lattice_2x1.png" alt="Wood Lattice 2×1" title="Wood Lattice 2×1" height="120"> <img src="images/wood_brace_05.png" alt="Wood Knee Brace" title="Wood Knee Brace" height="120"> <img src="images/wood_brace_1.png" alt="Wood Brace 1 m" title="Wood Brace 1 m" height="120"> <img src="images/wood_brace_2.png" alt="Wood Brace 2 m" title="Wood Brace 2 m" height="120">
+
+Built of the plank the vanilla walls and floors are made of, stretched to each board as vanilla does, and sawn to fit.
+
+| Piece | Description | Crafting Station |
+|-------|-------------|------------------|
+| **Wood Lattice 2×2** | A plank frame with slats crossing at 45°: a screen, a gable top or a pergola wall | Workbench |
+| **Wood Lattice 2×1** | The same 1 m high, for a balustrade | Workbench |
+| **Wood Knee Brace** | A short brace at 45° under a beam or an eave, 0.5 m down and out | Workbench |
+| **Wood Brace 1 m** | A brace at 45° between a post and a beam, 1 m down and out | Workbench |
+| **Wood Brace 2 m** | The same 2 m down and out, for a hall or a barn | Workbench |
+
+- **Placing a brace**: its corner snaps where a vanilla pole's top meets a beam's end. The length is what shows below the beam and beside the pole (both 0.4 m thick); the brace's ends are sawn at their middle lines, inside them. Turn it 180° for the other side of the post.
+- **Lattices** snap at their corners, as the vanilla walls do. The slats' ends sit in the frame.
+- **Cost and strength**: a lattice as a vanilla wall of its area; a brace as a wall of 2 m² for every metre it shows. Start tier, in the hammer after the vanilla wood wall.
+
+The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_lattice_2x2`, `_2x1` and `piece_whitehilt_wood_brace_05`, `_1` and `_2`. Not yet tested in the game.
+
 ---
 
 ## Iron Grates
