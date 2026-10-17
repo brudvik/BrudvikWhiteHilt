@@ -1,33 +1,32 @@
+using BrudvikWhiteHilt.Helpers;
 using Jotunn.Managers;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BrudvikWhiteHilt.Settings;
 
 /// <summary>
-/// A small panel in the bottom left corner while the inventory is open, right of the health and food bars, with a
-/// short explanation and a button that opens the settings window.
+/// A small round settings button in the bottom left corner while the inventory is open, right of the health and food
+/// bars, with two short lines of text beside it. It stays low and narrow, so tall chests and big inventories do not
+/// end up behind it.
 /// </summary>
 public class ConfigButton : MonoBehaviour
 {
-    private const float PanelWidth = 290f;
-    private const float PanelHeight = 150f;
     private const float Left = 150f;
     private const float Bottom = 16f;
-    private const float Padding = 14f;
-    private const float ButtonHeight = 46f;
+    private const float Diameter = 44f;
+    private const float TextGap = 8f;
+    private const float TextWidth = 170f;
+    private const int IconSize = 64;
 
     private static ConfigButton instance;
 
     private GameObject panel;
     private Text title;
     private Text text;
-    private TMP_Text buttonTmp;
-    private Text buttonText;
 
     /// <summary>
-    /// Creates the panel once the game's GUI exists. Cheap to call every frame.
+    /// Creates the button once the game's GUI exists. Cheap to call every frame.
     /// </summary>
     public static void EnsureCreated()
     {
@@ -53,37 +52,41 @@ public class ConfigButton : MonoBehaviour
         instance.Build();
     }
 
-    // Builds the small corner panel once: a wooden panel with a title, a line of text and the button that opens the
-    // settings window. It starts hidden and is shown in the menus only.
+    // Builds the corner once: the round button and the two lines beside it. It starts hidden and is shown in the
+    // inventory only.
     private void Build()
     {
-        Vector2 corner = Vector2.zero;
-        panel = GUIManager.Instance.CreateWoodpanel(transform, corner, corner, Vector2.zero, PanelWidth, PanelHeight, false);
-        panel.name = "Panel";
+        panel = new GameObject("Panel", typeof(RectTransform));
         RectTransform panelRect = (RectTransform)panel.transform;
-        panelRect.pivot = corner;
+        panelRect.SetParent(transform, false);
+        panelRect.anchorMin = panelRect.anchorMax = panelRect.pivot = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(Diameter + TextGap + TextWidth, Diameter);
         panelRect.anchoredPosition = new Vector2(Left, Bottom);
 
-        Vector2 top = new(0.5f, 1f);
-        title = GUIManager.Instance.CreateText(string.Empty, panelRect, top, top, new Vector2(0f, -Padding - 12f), GUIManager.Instance.AveriaSerifBold, 20,
-            GUIManager.Instance.ValheimOrange, true, Color.black, PanelWidth - Padding * 2f, 24f, false).GetComponent<Text>();
-        title.alignment = TextAnchor.MiddleCenter;
-
-        text = GUIManager.Instance.CreateText(string.Empty, panelRect, top, top, new Vector2(0f, -Padding - 24f - 22f), GUIManager.Instance.AveriaSerif, 14,
-            new Color(0.9f, 0.88f, 0.8f), true, Color.black, PanelWidth - Padding * 2f, 40f, false).GetComponent<Text>();
-        text.alignment = TextAnchor.MiddleCenter;
-
         CreateButton(panelRect);
+
+        Vector2 left = new(0f, 0.5f);
+        float textX = Diameter + TextGap + TextWidth / 2f;
+        title = GUIManager.Instance.CreateText(string.Empty, panelRect, left, left, new Vector2(textX, 9f), GUIManager.Instance.AveriaSerifBold, 15,
+            GUIManager.Instance.ValheimOrange, true, Color.black, TextWidth, 20f, false).GetComponent<Text>();
+        title.alignment = TextAnchor.MiddleLeft;
+        title.raycastTarget = false;
+
+        text = GUIManager.Instance.CreateText(string.Empty, panelRect, left, left, new Vector2(textX, -9f), GUIManager.Instance.AveriaSerif, 12,
+            new Color(0.9f, 0.88f, 0.8f), true, Color.black, TextWidth, 18f, false).GetComponent<Text>();
+        text.alignment = TextAnchor.MiddleLeft;
+        text.raycastTarget = false;
+
         panel.SetActive(false);
     }
 
-    // A copy of the vanilla Craft button, so it looks and sounds the same.
+    // A copy of the vanilla Craft button, so it sounds the same, dressed as a round gear.
     private void CreateButton(RectTransform parent)
     {
         Button source = InventoryGui.instance.m_craftButton;
         GameObject copy = source != null
             ? Instantiate(source.gameObject, parent, false)
-            : GUIManager.Instance.CreateButton(string.Empty, parent, Vector2.zero, Vector2.zero, Vector2.zero, 200f, ButtonHeight);
+            : GUIManager.Instance.CreateButton(string.Empty, parent, Vector2.zero, Vector2.zero, Vector2.zero, Diameter, Diameter);
         copy.name = "SettingsButton";
         copy.SetActive(true);
 
@@ -107,21 +110,93 @@ public class ConfigButton : MonoBehaviour
             }
         }
 
+        // Only the button's own picture stays: the label and any decoration under it are hidden.
+        foreach (Transform child in copy.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
         RectTransform rect = (RectTransform)copy.transform;
-        rect.anchorMin = new Vector2(0f, 0f);
-        rect.anchorMax = new Vector2(1f, 0f);
-        rect.pivot = new Vector2(0.5f, 0f);
-        rect.offsetMin = new Vector2(Padding, Padding);
-        rect.offsetMax = new Vector2(-Padding, Padding + ButtonHeight);
+        rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 0.5f);
+        rect.sizeDelta = new Vector2(Diameter, Diameter);
+        rect.anchoredPosition = Vector2.zero;
+
+        Image image = copy.GetComponent<Image>();
+        if (image == null)
+        {
+            image = copy.AddComponent<Image>();
+        }
+
+        image.sprite = GearSprite();
+        image.type = Image.Type.Simple;
+        image.preserveAspect = true;
+        image.color = Color.white;
 
         Button button = copy.GetComponent<Button>();
         button.onClick = new Button.ButtonClickedEvent();
         button.onClick.AddListener(ConfigWindow.Toggle);
         button.interactable = true;
-
-        buttonTmp = copy.GetComponentInChildren<TMP_Text>(true);
-        buttonText = buttonTmp == null ? copy.GetComponentInChildren<Text>(true) : null;
+        button.targetGraphic = image;
+        button.transition = Selectable.Transition.ColorTint;
+        ColorBlock colors = ColorBlock.defaultColorBlock;
+        colors.normalColor = new Color(0.9f, 0.9f, 0.9f);
+        colors.highlightedColor = Color.white;
+        colors.selectedColor = new Color(0.9f, 0.9f, 0.9f);
+        colors.pressedColor = new Color(0.7f, 0.7f, 0.7f);
+        button.colors = colors;
     }
+
+    // A dark round plate with an orange rim and a pale gear, drawn once in code.
+    private static Sprite GearSprite()
+    {
+        if (VisualHelper.IsHeadless)
+        {
+            return null;
+        }
+
+        Color rim = GUIManager.Instance.ValheimOrange;
+        Color plate = new(0.16f, 0.11f, 0.07f, 0.92f);
+        Color gear = new(0.93f, 0.89f, 0.8f);
+        const float half = IconSize / 2f;
+        const float plateRadius = half - 1f;
+        const float rimWidth = 3f;
+        const float hole = 5f;
+        const int teeth = 8;
+
+        Color[] pixels = new Color[IconSize * IconSize];
+        for (int y = 0; y < IconSize; y++)
+        {
+            for (int x = 0; x < IconSize; x++)
+            {
+                float dx = x + 0.5f - half;
+                float dy = y + 0.5f - half;
+                float distance = Mathf.Sqrt(dx * dx + dy * dy);
+
+                // Rounded teeth: a squared-off cosine around the rim of the wheel.
+                float tooth = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(-0.25f, 0.25f, Mathf.Cos(Mathf.Atan2(dy, dx) * teeth)));
+                float gearRadius = 14f + 5f * tooth;
+
+                Color pixel = Color.Lerp(plate, rim, Coverage(distance - (plateRadius - rimWidth)));
+                float inGear = Coverage(gearRadius - distance) * Coverage(distance - hole);
+                pixel = Color.Lerp(pixel, gear, inGear);
+                pixel.a *= Coverage(plateRadius - distance);
+                pixels[y * IconSize + x] = pixel;
+            }
+        }
+
+        Texture2D texture = new(IconSize, IconSize, TextureFormat.RGBA32, false)
+        {
+            name = "White Hilt settings gear",
+            wrapMode = TextureWrapMode.Clamp,
+            filterMode = FilterMode.Bilinear
+        };
+        texture.SetPixels(pixels);
+        texture.Apply(false, true);
+        return Sprite.Create(texture, new Rect(0f, 0f, IconSize, IconSize), new Vector2(0.5f, 0.5f));
+    }
+
+    // How much of a pixel lies inside an edge, from its signed distance in pixels, for soft edges.
+    private static float Coverage(float inside) => Mathf.Clamp01(inside + 0.5f);
 
     private void Update()
     {
@@ -139,23 +214,13 @@ public class ConfigButton : MonoBehaviour
         panel.SetActive(show);
     }
 
-    // Texts follow the language and the chosen key, so they are set each time the panel appears.
+    // Texts follow the language and the chosen key, so they are set each time the button appears.
     private void Refresh()
     {
         title.text = Localization.instance.Localize("$whitehilt_settings_panel_title");
         string key = ConfigWindow.OpenKeyText;
         text.text = string.IsNullOrEmpty(key)
-            ? Localization.instance.Localize("$whitehilt_settings_panel_text")
-            : string.Format(Localization.instance.Localize("$whitehilt_settings_panel_text_key"), key);
-
-        string label = Localization.instance.Localize("$whitehilt_settings_button");
-        if (buttonTmp != null)
-        {
-            buttonTmp.text = label;
-        }
-        else if (buttonText != null)
-        {
-            buttonText.text = label;
-        }
+            ? Localization.instance.Localize("$whitehilt_settings_button")
+            : string.Format(Localization.instance.Localize("$whitehilt_settings_button_key"), key);
     }
 }

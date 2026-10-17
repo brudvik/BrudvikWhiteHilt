@@ -4,7 +4,7 @@
 
 ## 🛠️ SETTINGS WINDOW
 
-Open the inventory (Tab) and click **Settings** in the small White Hilt panel in the bottom left corner, or press **F7** anywhere (`Settings.Keys` → `OpenSettings`). The window shows every White Hilt setting, in English or Norwegian, grouped by feature, with a search field.
+Open the inventory (Tab) and click the round gear button in the bottom left corner, right of the health and food bars, or press **F7** anywhere (`Settings.Keys` → `OpenSettings`). The window shows every White Hilt setting, in English or Norwegian, grouped by feature, with a search field.
 
 Both lists support mouse-wheel scrolling at the same speed as the portal list.
 

@@ -196,7 +196,7 @@ Paint or stain any piece in a colour mixed from dyes, and dye banners, sails and
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_banners.png" alt="Beams, poles & banners" height="120">
 
-Longer and angled beams and poles, darkwood doors, walls and gables, iron grates in more sizes and White Hilt banners.
+Longer and angled beams and poles, darkwood doors, walls and gables, triangular and octagonal wood floors, 4 m wood walls, a wall with a window, lattices, braces, wide stairs and bargeboards, iron grates in more sizes and White Hilt banners.
 
 #### [Build camera & toolbar](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md)
 

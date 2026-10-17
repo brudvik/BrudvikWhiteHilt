@@ -104,9 +104,8 @@ public class ConfigWindow : MonoBehaviour
         Translations.AddEnglish("whitehilt_settings_reset", "Back to the default value");
         Translations.AddEnglish("whitehilt_settings_open", "White Hilt settings");
         Translations.AddEnglish("whitehilt_settings_panel_title", "White Hilt");
-        Translations.AddEnglish("whitehilt_settings_panel_text", "All White Hilt settings: your own and the server's.");
-        Translations.AddEnglish("whitehilt_settings_panel_text_key", "All White Hilt settings: your own and the server's. Shortcut: {0}");
         Translations.AddEnglish("whitehilt_settings_button", "Settings");
+        Translations.AddEnglish("whitehilt_settings_button_key", "Settings · {0}");
     }
 
     /// <summary>
