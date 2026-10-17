@@ -2,6 +2,40 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.144.0 - 2026-10-17
+
+### Added
+- **[A wilder storm](docs/storms.md#wind-hail-and-the-lost-course)**:
+  - Fires with no roof over them go out in a raging storm, and a torch in the hand blows out in the open
+    (`FiresGoOut`). Not in the firestorm.
+  - Gusts tear doors open near players; while a door close by stands open the storm comes in, and the room shelters
+    no better than the lee of a wall until it is shut (`DoorsBlowOpen`).
+  - Gusts push players in the open with the wind and now and then knock them off their feet (`Gusts`).
+  - Hail showers in the forest storm, at sea and in the blizzard hurt those in the open or the lee, softened by armour,
+    and break young crops with no roof over them (`Hail`).
+  - The Kraken rises at sea in a raging storm by day or night, in any weather, four times as often, and in Ragnarok
+    at least every other minute (`KrakenFactor`).
+  - Lost at sea: the compass, the minimap and your marker on the map are gone in a storm at sea unless a Navigator's
+    Table is aboard (`LostAtSea`).
+- **[The build camera with a pickaxe](docs/build-tools.md#-build-camera--toolbar)**: hold any pickaxe and the build
+  camera stays on; the blow lands where the camera aims, up to 4 m from it (`CameraMining`, `CameraMiningReach`).
+  Break a rock while building, or dig the bottom under water from the shore.
+- **[Even ground by the tile](docs/build-tools.md#white-hilt-hoe-and-cultivator)**: the White Hilt Hoe's areas can be
+  given a size on the panel (1 x 40, 4 x 4, 8 x 8, 16 x 16, 40 x 40 or typed in), turned with the wheel or the way the
+  camera looks, and levelled tile by tile with K, each starting at the height of the last. PgUp / PgDn change the
+  height by 1 m with Shift and 0.1 m with Ctrl.
+
+### Fixed
+- **Other players no longer hang in the air** for a moment before they drop into place. The game stops sending
+  positions while a player's connection is busy, and carries on the last movement in a straight line meanwhile, so a
+  player who jumped kept rising on the other screens. White Hilt now sends its own data so that positions come first:
+  - The portal map sent every portal again every two seconds while a ship was loaded, since a ship bobs on the waves.
+    Ships now go in a small list of their own, sent again only when a ship has moved 8 m.
+  - Discoveries are sent whole only once; after that a player gets only what changed, such as berries ripening.
+  - Large lists and shared blueprints go out in small pieces, and only while the connection has room, taking at most
+    64 KB/s; before, they went in 192 KB pieces that held back positions for seconds.
+  See [the analysis](docs/plans/network-stalls.md).
+
 ## v0.143.0 - 2026-10-16
 
 ### Added

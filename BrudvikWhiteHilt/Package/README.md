@@ -35,7 +35,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.143.0
+## ✨ New in 0.144.0
+
+- **[A wilder storm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/storms.md#wind-hail-and-the-lost-course)**: fires with no roof go out and the torch in your hand blows out, gusts tear doors open and let the storm in, push you about and knock you down, hail beats down on those in the open, the Kraken wakes at sea, and out there the storm takes your compass and your place on the map unless a Navigator's Table is aboard.
+- **[The build camera with a pickaxe](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#-build-camera--toolbar)**: the camera stays on with any pickaxe, and the blow lands where you aim: break a rock while building, or dig the bottom under water from the shore.
+- **[Even ground by the tile](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/build-tools.md#white-hilt-hoe-and-cultivator)**: the White Hilt Hoe's areas get a size on the panel (1 x 40 up to 40 x 40, or typed in), turn with the wheel, and level tile by tile from the height of the last.
+- **Fixed**: other players no longer hang in the air for a moment before they drop into place; the mod's own lists and blueprints now wait their turn behind the players' positions.
+
+### Also new in 0.143.0
 
 - **[A darker dark](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md)**: below ground the sounds fall silent before the black, doors slam shut or swing open by themselves, the light you carry reaches less far the longer you stay, and a voice calls from down the passage.
 - **[The shadows come](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/darkness.md#something-is-down-there)**: the shadow failed to load and never came; now it does, and fear of the dark builds up as it should.
