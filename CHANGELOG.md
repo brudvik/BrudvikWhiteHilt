@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.144.0 - 2026-10-17
 
 ### Added
 - **[A wilder storm](docs/storms.md#wind-hail-and-the-lost-course)**:
