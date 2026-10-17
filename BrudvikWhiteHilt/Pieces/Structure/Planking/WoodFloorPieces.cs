@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace BrudvikWhiteHilt.Pieces.Structure.WoodFloors;
+namespace BrudvikWhiteHilt.Pieces.Structure.Planking;
 
 /// <summary>
 /// A wooden floor in a shape the vanilla floors do not have, cut from the vanilla 2 × 2 m wood floor by

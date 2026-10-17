@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using BrudvikWhiteHilt.Pieces.Structure.Darkwood;
-using BrudvikWhiteHilt.Pieces.Structure.WoodFloors;
+using BrudvikWhiteHilt.Pieces.Structure.Planking;
 using UnityEngine;
 using Xunit;
 
 namespace BrudvikWhiteHilt.Tests;
 
-public class WoodFloorTests
+public class PlankingTests
 {
     // A box between two corners, four corners to a face, facing out, with normals and texture coordinates.
     private static MeshData Box(Vector3 min, Vector3 max)
@@ -50,6 +50,22 @@ public class WoodFloorTests
         }
 
         parts.Add(Box(new Vector3(-0.998f, -0.14f, -0.1f), new Vector3(0.998f, -0.02f, 0.1f)));
+        return MeshData.Combine(parts);
+    }
+
+    // A stand-in for the vanilla wall: four upright boards 0.5 m wide and 2 m high, and two battens across the back at
+    // the vanilla wall's heights, with slits at the ends.
+    private static MeshData WallTile()
+    {
+        List<MeshData> parts = new();
+        for (int i = 0; i < 4; i++)
+        {
+            float x = -1f + 0.5f * i;
+            parts.Add(Box(new Vector3(x + 0.005f, -0.998f, -0.15f), new Vector3(x + 0.495f, 0.998f, 0.15f)));
+        }
+
+        parts.Add(Box(new Vector3(-0.998f, -0.735f, -0.277f), new Vector3(0.998f, -0.555f, -0.15f)));
+        parts.Add(Box(new Vector3(-0.998f, 0.664f, -0.277f), new Vector3(0.998f, 0.852f, -0.15f)));
         return MeshData.Combine(parts);
     }
 
@@ -137,7 +153,7 @@ public class WoodFloorTests
     public void ASawnPlankIsClosedAndItsEndFacesOut()
     {
         Vector3 normal = new Vector3(-1f, 0f, -1f).normalized;
-        MeshData plank = FloorCutting.Saw(Box(new Vector3(0f, 0f, -1f), new Vector3(0.5f, 0.1f, 1f)), normal, Vector3.Dot(normal, new Vector3(0f, 0f, 0.5f)));
+        MeshData plank = Sawing.Saw(Box(new Vector3(0f, 0f, -1f), new Vector3(0.5f, 0.1f, 1f)), normal, Vector3.Dot(normal, new Vector3(0f, 0f, 0.5f)));
 
         Assert.NotNull(plank);
         Assert.All(plank.Vertices, v => Assert.True(Vector3.Dot(normal, v) >= Vector3.Dot(normal, new Vector3(0f, 0f, 0.5f)) - 1e-4f));
@@ -156,8 +172,8 @@ public class WoodFloorTests
     {
         MeshData plank = Box(new Vector3(-1.01f, 0f, -1f), new Vector3(-0.5f, 0.1f, 1f));
 
-        Assert.Same(plank, FloorCutting.Saw(plank, Vector3.right, -1f));
-        Assert.Null(FloorCutting.Saw(plank, Vector3.right, -0.5f));
+        Assert.Same(plank, Sawing.Saw(plank, Vector3.right, -1f));
+        Assert.Null(Sawing.Saw(plank, Vector3.right, -0.5f));
     }
 
     [Theory]
@@ -184,7 +200,7 @@ public class WoodFloorTests
         Assert.True(floor.TriangleCount > 0);
         foreach ((Vector2 normal, float distance) in shape.Sides())
         {
-            Assert.All(floor.Vertices, v => Assert.True(Vector2.Dot(normal, new Vector2(v.x, v.z)) >= distance - FloorCutting.Slack - 1e-4f));
+            Assert.All(floor.Vertices, v => Assert.True(Vector2.Dot(normal, new Vector2(v.x, v.z)) >= distance - Sawing.Slack - 1e-4f));
         }
 
         // The top of the planks covers the shape but for the slits between them (2 % of the width).
@@ -217,5 +233,50 @@ public class WoodFloorTests
             Vector3 facing = Vector3.Cross(vertices[triangles[t + 1]] - a, vertices[triangles[t + 2]] - a);
             Assert.True(Vector3.Dot(facing, a - centre) > 0f);
         }
+    }
+
+    [Fact]
+    public void ASawCrossTheBoardsIsClosedToo()
+    {
+        MeshData board = Sawing.Saw(Box(new Vector3(0f, -1f, -0.15f), new Vector3(0.5f, 1f, 0.15f)), Vector3.down, 0.5f);
+
+        Assert.NotNull(board);
+        board.Range(1, out float min, out float max);
+        Assert.Equal(-1f, min, 4);
+        Assert.Equal(-0.5f, max, 4);
+        AssertClosed(board);
+    }
+
+    [Theory]
+    [InlineData(4, 2, 6)]
+    [InlineData(4, 4, 8)]
+    [InlineData(2, 2, 4)]
+    public void WallsAreLaidToTheirSizeAndSnapEveryTwoMetres(int width, int height, int snaps)
+    {
+        MeshData wall = WallCutting.Lay(WallTile(), width, height);
+
+        wall.Range(0, out float left, out float right);
+        wall.Range(1, out float bottom, out float top);
+        Assert.Equal(-width / 2f, left, 1);
+        Assert.Equal(width / 2f, right, 1);
+        Assert.Equal(-height / 2f, bottom, 1);
+        Assert.Equal(height / 2f, top, 1);
+        Assert.Equal(snaps, WallCutting.SnapPoints(width, height).Count());
+        Assert.Contains(new Vector3(-width / 2f, height / 2f, 0f), WallCutting.SnapPoints(width, height));
+    }
+
+    [Fact]
+    public void AWindowIsSawnThroughTheBoardsAndTheyStayClosed()
+    {
+        Rect opening = WallCutting.Window;
+        MeshData wall = WallCutting.CutOpening(WallTile(), opening);
+
+        Assert.All(wall.Vertices, v => Assert.False(
+            v.x > opening.xMin + 1e-3f && v.x < opening.xMax - 1e-3f && v.y > opening.yMin + 1e-3f && v.y < opening.yMax - 1e-3f,
+            $"{v} lies in the opening"));
+
+        // The two outer boards whole, the two inner ones under and over the opening, and both battens.
+        Assert.Equal(8, wall.Islands().Count);
+        Assert.All(wall.Islands(), AssertClosed);
     }
 }

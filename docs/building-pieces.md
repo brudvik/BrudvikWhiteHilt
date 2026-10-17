@@ -94,7 +94,28 @@ Valheim's wood has gable walls in every pitch (the wall triangles, also upside d
 - **Octagon walls**: turn every other wall 45° (two turns of the rotation). The vanilla walls meet at a 45° corner with a small notch on the outside; a wood pole at the corner closes it.
 - They keep the vanilla floor's material, strength, wear and category, and sit in the hammer right after the vanilla 1×1 floor. Start tier.
 
-The floors are made when the game starts from the vanilla floor's own model, so the mod ships no model of them. A dedicated server builds only their colliders and snap points. `AssetSource/Preview/render_wood_floors.ps1` renders them offline with the same code. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_floor_triangle`, `_triangle_1x1`, `_angled`, `_angled_mirrored`, `_octagon` and `_octagon_4`. Not yet tested in the game.
+The floors are made when the game starts from the vanilla floor's own model, so the mod ships no model of them. A dedicated server builds only their colliders and snap points. `AssetSource/Preview/render_planking.ps1` renders them offline with the same code. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_wood_floor_triangle`, `_triangle_1x1`, `_angled`, `_angled_mirrored`, `_octagon` and `_octagon_4`. Not yet tested in the game.
+
+---
+
+## 🪵 WOOD WALLS 4 M & WINDOW
+
+<img src="images/woodwall_4x2.png" alt="Wood Wall 4×2" title="Wood Wall 4×2" height="140"> <img src="images/woodwall_4x4.png" alt="Wood Wall 4×4" title="Wood Wall 4×4" height="140"> <img src="images/woodwall_window.png" alt="Wood Wall with Window" title="Wood Wall with Window" height="140">
+
+The vanilla wood wall as larger pieces, and with a window sawn into it. Each plank cut for the window gets a closed end, as on the floors above.
+
+| Piece | Description | Crafting Station |
+|-------|-------------|------------------|
+| **Wood Wall 4×2** | Two vanilla walls side by side as one piece | Workbench |
+| **Wood Wall 4×4** | Four vanilla walls as one piece | Workbench |
+| **Wood Wall with Window** | A 2 × 2 m wall with a window 1 m wide, 0.5 to 1.5 m above the floor, and the vanilla window's shutter and post | Workbench |
+
+- **Cost**: the 4 m walls cost the vanilla wall's recipe for their area; the window wall costs a vanilla wall and a vanilla window together.
+- **Strength**: the vanilla wall's health for each 2 × 2 m, so a 4×4 wall takes as much as the four walls it replaces; it is one piece for support.
+- **Snapping**: every 2 m round the edge, corners included, so a 2 m wall snaps to each stretch of a 4 m one.
+- They sit in the hammer right after the vanilla wood wall. Start tier. The shutter opens and closes as the vanilla window does.
+
+Made when the game starts from the vanilla wall and window, as the floors are, and rendered offline by the same `render_planking.ps1`. The usual `Content` and `Recipes` settings apply to `piece_whitehilt_woodwall_4x2`, `_4x4` and `_window`. Not yet tested in the game.
 
 ---
 
