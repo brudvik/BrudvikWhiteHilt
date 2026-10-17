@@ -30,13 +30,17 @@ if (-not (Test-Path (Join-Path $project 'Assets'))) {
     throw "Run AssetSource\build_foraging_bundle.ps1 once first; it creates the Unity project."
 }
 
+# MeshData goes to Assets\Editor\Shared, as the wood floor preview puts it: two copies in one project do not compile.
 $target = Join-Path $project 'Assets\Editor\Darkwood'
-New-Item -ItemType Directory -Force $target | Out-Null
+$shared = Join-Path $project 'Assets\Editor\Shared'
+New-Item -ItemType Directory -Force $target, $shared | Out-Null
 foreach ($file in 'MeshData.cs', 'GateJoinery.cs') {
     $source = Get-Content (Join-Path $repoRoot "BrudvikWhiteHilt\Pieces\Structure\Darkwood\$file") -Raw -Encoding UTF8
     $converted = [regex]::Replace($source, '(?m)^namespace ([\w\.]+);', 'namespace $1 {') + "`n}`n"
-    Set-Content -Path (Join-Path $target $file) -Value $converted -Encoding UTF8
+    $folder = if ($file -eq 'MeshData.cs') { $shared } else { $target }
+    Set-Content -Path (Join-Path $folder $file) -Value $converted -Encoding UTF8
 }
+Remove-Item (Join-Path $target 'MeshData.cs*') -ErrorAction SilentlyContinue
 Copy-Item (Join-Path $repoRoot 'AssetSource\Unity\DarkwoodPreview.cs') $target -Force
 
 $arguments = @('-batchmode', '-quit', '-projectPath', "`"$project`"", '-executeMethod', 'DarkwoodPreview.Render',
