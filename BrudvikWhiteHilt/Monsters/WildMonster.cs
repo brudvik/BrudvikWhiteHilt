@@ -117,6 +117,12 @@ internal sealed class WildMonster
     /// <summary>Vanilla creature whose material is the template of the model, and whose hit effects it borrows.</summary>
     public string TemplateCreature = "Wolf";
 
+    /// <summary>
+    /// Whether the model keeps the materials it was built with instead of copies of the template's: the Mare's are
+    /// see-through, which the game's creature shader cannot be.
+    /// </summary>
+    public bool KeepModelMaterials;
+
     /// <summary>Who the monster is friends with.</summary>
     public Character.Faction Faction;
 

@@ -190,9 +190,35 @@ internal static class WildMonsterRegistry
         MonsterRegistry.SetFootsteps(parts.Prefab, "step_wood");
     }
 
+    /// <summary>
+    /// Mare: she floats and fades into the mist (<see cref="MareSpirit"/>), her grip gives the Nightmare, and she
+    /// whispers as she drifts.
+    /// </summary>
+    /// <param name="parts">The Mare being made.</param>
+    internal static void ConfigureMare(WildMonsterParts parts)
+    {
+        parts.AI.m_viewRange = 30f;
+        parts.AI.m_hearRange = 25f;
+        parts.AI.m_alertRange = 20f;
+        parts.AI.m_circulateWhileCharging = true;
+        parts.AI.m_fleeIfLowHealth = 0f;
+        parts.Humanoid.m_tolerateWater = true;
+        parts.Prefab.AddComponent<MareSpirit>();
+        ItemDrop.ItemData.SharedData grip = parts.Humanoid.m_defaultItems[0].GetComponent<ItemDrop>().m_itemData.m_shared;
+        grip.m_attackStatusEffect = nightmare;
+        grip.m_attackStatusEffectChance = 1f;
+        if (parts.Settings.Sounds != null && parts.Settings.Sounds.Value)
+        {
+            parts.Prefab.AddComponent<LoopSound>().clip = "amb_mare";
+        }
+    }
+
+    private static StatusEffect nightmare;
+
     private static void Add()
     {
         CreatureManager.OnVanillaCreaturesAvailable -= Add;
+        Try("Mare's Nightmare", () => nightmare = MareSpirit.CreateNightmare());
         Try("Wild monster loot", AddLoot);
         foreach (WildMonster monster in WildMonsters.All)
         {
@@ -234,6 +260,12 @@ internal static class WildMonsterRegistry
         AddItemText(WildMonsters.JarlTrophy, "Draugr Jarl Trophy", "The rotting head of a jarl who sailed with Naglfar.");
         AddItemText(WildMonsters.HuldraBark, "Huldra Bark", "Rotten bark from the hollow back of a Huldra. It still smells faintly of flowers.");
         AddItemText(WildMonsters.HuldraTrophy, "Huldra's Tail", "A cow's tail, the one thing she could never hide.");
+        AddItemText(WildMonsters.MareHair, "Mare Hair", "Long, black and cold as the grave. It moves a little, even when there is no wind.");
+        AddItemText(WildMonsters.MareTrophy, "Mare Trophy", "A pale face that still whispers when you sleep near it.");
+        Translations.AddEnglish("se_whitehilt_nightmare", "Nightmare");
+        Translations.AddEnglish("se_whitehilt_nightmare_tooltip", "Something sits on your chest. No stamina comes back.");
+        Translations.AddEnglish("se_whitehilt_nightmare_start", "The Mare's cold grip steals your breath!");
+        Translations.AddEnglish("msg_whitehilt_mare_rode", "The Mare rode you in your sleep...");
         Translations.AddEnglish("msg_whitehilt_huldra_song", "A beautiful song drifts through the mist...");
         Translations.AddEnglish("msg_whitehilt_huldra_turns", "She turns, and her back is hollow as a rotten tree!");
     }
@@ -257,6 +289,8 @@ internal static class WildMonsterRegistry
         MonsterRegistry.AddItem(WildMonsters.SharkMeat, "SerpentMeat", prefab => VisualHelper.Tint(prefab, new Color(0.75f, 0.8f, 0.8f)));
         MonsterRegistry.AddItem(WildMonsters.SharkTrophy, "TrophySerpent", prefab => VisualHelper.Recolor(prefab, Tone(0.5f, 0.12f, 0.55f)));
         MonsterRegistry.AddItem(WildMonsters.JarlTrophy, "TrophyDraugrElite", prefab => VisualHelper.Recolor(prefab, Tone(0.4f, 0.22f, 0.75f)));
+        MonsterRegistry.AddItem(WildMonsters.MareHair, "LinenThread", prefab => VisualHelper.Recolor(prefab, Tone(0.66f, 0.15f, 0.25f)));
+        MonsterRegistry.AddItem(WildMonsters.MareTrophy, "TrophyWraith", prefab => VisualHelper.Recolor(prefab, Tone(0.58f, 0.18f, 1.25f)));
         MonsterRegistry.AddItem(WildMonsters.HuldraBark, "ElderBark", prefab => VisualHelper.Recolor(prefab, Tone(0.22f, 0.25f, 0.55f)));
         MonsterRegistry.AddItem(WildMonsters.HuldraTrophy, "TrophyDeer", prefab => VisualHelper.Recolor(prefab, Tone(0.11f, 0.45f, 0.95f)));
     }
@@ -279,7 +313,7 @@ internal static class WildMonsterRegistry
         WildMonsterSettings settings = WildMonsterSettings.Of(monster);
         float size = settings.Scale.Value;
         float modelScale = monster.ModelScale * size;
-        Material template = CreatureVisual.TemplateOf(PrefabManager.Instance.GetPrefab(monster.TemplateCreature));
+        Material template = monster.KeepModelMaterials ? null : CreatureVisual.TemplateOf(PrefabManager.Instance.GetPrefab(monster.TemplateCreature));
 
         CustomItem[] weapons = new CustomItem[monster.Attacks.Length];
         for (int i = 0; i < weapons.Length; i++)

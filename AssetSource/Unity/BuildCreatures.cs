@@ -59,6 +59,10 @@ public static class BuildCreatures
         public string front_bone;
         public string front_origin_bone;
         public ControllerSpec controller = new();
+        // Above zero: every material is see-through (the Standard shader's Fade mode) with this alpha, and glows softly
+        // in fade_glow, for a spirit such as the Mare.
+        public float fade;
+        public float[] fade_glow;
     }
 
     [Serializable]
@@ -103,7 +107,7 @@ public static class BuildCreatures
                 .Where(clip => !clip.name.StartsWith("__preview__", StringComparison.Ordinal))
                 .ToDictionary(clip => clip.name);
             AnimatorController controller = BuildController(name, spec, clips);
-            Material[] created = BuildMaterials(name, materials);
+            Material[] created = BuildMaterials(name, materials, spec);
             prefabs.Add(BuildPrefab(name, fbx, spec, clips, controller, created));
         }
 
@@ -279,7 +283,7 @@ public static class BuildCreatures
             : throw new InvalidOperationException($"{creature}: no clip '{clip}' among {string.Join(", ", clips.Keys)}");
     }
 
-    private static Material[] BuildMaterials(string name, MaterialList list)
+    private static Material[] BuildMaterials(string name, MaterialList list, CreatureSpec creature)
     {
         Shader shader = Shader.Find("Standard");
         List<Material> materials = new();
@@ -325,6 +329,28 @@ public static class BuildCreatures
                 material.SetFloat("_Cutoff", 0.5f);
                 material.EnableKeyword("_ALPHATEST_ON");
                 material.renderQueue = 2450;
+            }
+
+            if (creature.fade > 0f)
+            {
+                // The Standard shader's Fade mode, set by hand like Cutout. The bundle then carries the shader variant
+                // for it, which the game could not make on its own.
+                material.SetFloat("_Mode", 2f);
+                material.SetOverrideTag("RenderType", "Transparent");
+                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                material.SetInt("_ZWrite", 0);
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.EnableKeyword("_ALPHABLEND_ON");
+                material.renderQueue = 3000;
+                Color colour = material.color;
+                colour.a *= creature.fade;
+                material.color = colour;
+                if (creature.fade_glow != null && creature.fade_glow.Length >= 3)
+                {
+                    material.SetColor("_EmissionColor", new Color(creature.fade_glow[0], creature.fade_glow[1], creature.fade_glow[2]));
+                    material.EnableKeyword("_EMISSION");
+                }
             }
 
             string path = $"{Folder}/{name}_{spec.name}.mat";

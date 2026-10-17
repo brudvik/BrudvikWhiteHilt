@@ -1,7 +1,12 @@
-"""Blender script: dresses the Mixamo character Arissa as the Huldra and writes AssetSource/Creatures/huldra.glb.
+"""Blender script: dresses the Mixamo character Arissa as the Huldra and writes AssetSource/Creatures/huldra.glb, or with
+--mare as the Mare and writes AssetSource/Creatures/mare.glb.
 
 Run headless on the glb merge_mixamo.py made from the Mixamo downloads (kept outside the repo, see that script):
   blender -b --factory-startup --python dress_huldra.py -- <huldra_base.glb> <out huldra.glb>
+  blender -b --factory-startup --python dress_huldra.py -- <huldra_base.glb> <out mare.glb> --mare
+
+The Mare is the same woman as a night spirit: black hair, no tail, and no legs below the skirt, so that she floats; the
+game makes her pale and see-through.
 
 What it changes:
 - drops her cloak with its hood and her daggers, so she stands in her top and skirt, bare-headed;
@@ -239,9 +244,30 @@ def inpaint(pixels, mask):
         mask &= ~fill
 
 
+def drop_legs(body):
+    """Deletes the legs below the skirt: every vertex the legs carry most, below mid-thigh in the rest pose."""
+    legs = {group.index for group in body.vertex_groups if any(part in group.name for part in ("UpLeg", "Leg", "Foot", "Toe"))}
+    mesh = bmesh.new()
+    mesh.from_mesh(body.data)
+    mesh.verts.ensure_lookup_table()
+    doomed = []
+    for vertex in mesh.verts:
+        groups = body.data.vertices[vertex.index].groups
+        strongest = max(groups, key=lambda g: g.weight, default=None)
+        if strongest is not None and strongest.group in legs and (body.matrix_world @ vertex.co).z < 0.82:
+            doomed.append(vertex)
+    bmesh.ops.delete(mesh, geom=doomed, context="VERTS")
+    mesh.to_mesh(body.data)
+    print(f"dropped {len(doomed)} leg vertices")
+
+
 def main():
+    global HAIR
     argv = sys.argv[sys.argv.index("--") + 1:]
     source, out = argv[0], argv[1]
+    mare = "--mare" in argv
+    if mare:
+        HAIR = (0.1, 0.09, 0.1)
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=source)
     for obj in list(bpy.data.objects):
@@ -254,7 +280,10 @@ def main():
     material = hair_material()
     cap(body, armature, material)
     braid(armature, material)
-    tail(armature, material)
+    if mare:
+        drop_legs(body)
+    else:
+        tail(armature, material)
 
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.export_scene.gltf(filepath=out, export_format="GLB", use_selection=True, export_animations=True,

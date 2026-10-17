@@ -388,3 +388,4 @@ AssetSource/Carvings/Work/
 
 # Mixamo-derived creatures: the licence allows them in the built bundle, not as files to download (see AssetSource/Tools/merge_mixamo.py).
 AssetSource/Creatures/huldra.glb
+AssetSource/Creatures/mare.glb

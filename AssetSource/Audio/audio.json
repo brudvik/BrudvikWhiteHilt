@@ -211,6 +211,11 @@
       "duration": 3
     },
     {
+      "name": "mare_ride",
+      "prompt": "Waking from a nightmare: a sharp terrified gasp for air, a pounding heartbeat and a woman's cold whisper fading away",
+      "duration": 3
+    },
+    {
       "name": "arrival_kraken",
       "prompt": "A colossal sea monster surfacing from the deep, a huge surge of water, deep rumble and crashing waves",
       "duration": 4
@@ -253,6 +258,12 @@
       "name": "huldra_song",
       "prompt": "A hauntingly beautiful wordless female voice singing a slow Scandinavian kulning herding call far away in a misty forest, echoing, alluring and eerie. No instruments.",
       "duration": 20,
+      "loop": true
+    },
+    {
+      "name": "amb_mare",
+      "prompt": "A ghostly woman close by in the dark: faint cold whispers, slow shallow breathing and a soft eerie wind. No music.",
+      "duration": 10,
       "loop": true
     },
     {
@@ -690,6 +701,25 @@
         "attack": "A young woman's sharp angry hiss turning into a snarl",
         "hit": "A young woman's short gasp of pain turning into a hiss",
         "death": "A young woman's long fading wail turning into the creak of a falling tree"
+      }
+    },
+    {
+      "prefix": "huldraroot",      "prefix": "mare",
+      "description": "A pale floating night spirit of a woman that sits on sleepers' chests",
+      "voice": "cold breathy female whisper",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "custom": {
+        "idle": "A ghostly woman softly whispering unintelligible words, cold and breathy, with a faint eerie echo",
+        "alert": "A ghostly woman's chilling whispered laugh rising to a soft wail",
+        "attack": "A ghostly woman's sudden piercing shriek with a rush of cold wind",
+        "hit": "A ghostly woman's short distorted hiss",
+        "death": "A ghostly woman's long fading wail dissolving into wind"
       }
     },
     {

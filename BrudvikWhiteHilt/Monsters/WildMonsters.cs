@@ -43,6 +43,12 @@ internal static class WildMonsters
     /// <summary>Prefab name of the Draugr Jarl trophy.</summary>
     public const string JarlTrophy = "WhiteHilt_TrophyDraugrJarl";
 
+    /// <summary>Prefab name of Mare Hair.</summary>
+    public const string MareHair = "WhiteHilt_MareHair";
+
+    /// <summary>Prefab name of the Mare trophy.</summary>
+    public const string MareTrophy = "WhiteHilt_TrophyMare";
+
     /// <summary>Prefab name of Huldra Bark.</summary>
     public const string HuldraBark = "WhiteHilt_HuldraBark";
 
@@ -434,10 +440,62 @@ internal static class WildMonsters
         Configure = WildMonsterRegistry.ConfigureHuldraRoot
     };
 
+    /// <summary>
+    /// The Mare: a pale, see-through woman without legs who floats through the Mistlands at night and shows only up close
+    /// (<see cref="MareSpirit"/>). Her cold grip gives the Nightmare, in which no stamina comes back, and she rides those
+    /// who sleep in the Mistlands. Fire and spirit hurt her most; blades and arrows pass half through her.
+    /// </summary>
+    public static readonly WildMonster Mare = new()
+    {
+        Id = "mare",
+        PrefabName = "WhiteHilt_Mare",
+        EnglishName = "Mare",
+        TemplateCreature = "Ghost",
+        KeepModelMaterials = true,
+        Faction = Character.Faction.Undead,
+        SoundPrefix = "mare",
+        ModelScale = 1f,
+        SizeText = "about 1.75 m tall, floating",
+        CapsuleCenter = new Vector3(0f, 1.1f, 0f),
+        CapsuleRadius = 0.35f,
+        CapsuleHeight = 1.6f,
+        Eye = new Vector3(0f, 1.9f, 0.1f),
+        WalkSpeed = 1.5f,
+        RunSpeed = 5.5f,
+        TurnSpeed = 200f,
+        RunTurnSpeed = 300f,
+        Health = 550f,
+        Modifiers = Mods(blunt: HitData.DamageModifier.Resistant, slash: HitData.DamageModifier.Resistant, pierce: HitData.DamageModifier.Resistant,
+            fire: HitData.DamageModifier.VeryWeak, frost: HitData.DamageModifier.Resistant, poison: HitData.DamageModifier.Immune,
+            spirit: HitData.DamageModifier.VeryWeak),
+        Attacks = new[]
+        {
+            new WildAttack
+            {
+                Name = "Grip", Trigger = "mare_grip", Description = "Spirit damage of the Mare's cold grip, which also gives the Nightmare.",
+                Type = HitData.DamageType.Spirit, Damage = 55f, ExtraType = HitData.DamageType.Frost, ExtraDamage = 25f,
+                Range = 1.9f, Height = 1.6f, Angle = 70f, RayWidth = 0.5f, Interval = 2.5f, Force = 10f
+            }
+        },
+        Drops = new[] { new WildDrop { Item = MareHair, Min = 1, Max = 2 } },
+        Trophy = MareTrophy,
+        // Pale and cold; her see-through materials and glow come from the model (mare.creature.json).
+        Look = new WildLook { Tint = new Color(0.82f, 0.9f, 1f) },
+        StarScale = 0.05f,
+        Biome = Heightmap.Biome.Mistlands,
+        SpawnAtDay = false,
+        SpawnChance = 10f,
+        SpawnSeconds = 400f,
+        CorpseSinkAfter = 2f,
+        CorpseSinkSpeed = 0.5f,
+        CorpseLifetime = 6f,
+        Configure = WildMonsterRegistry.ConfigureMare
+    };
+
     /// <summary>All of them, in the order they are made.</summary>
     public static readonly IReadOnlyList<WildMonster> All = new[]
     {
-        MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl, Huldra, HuldraTrueForm
+        MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl, Huldra, HuldraTrueForm, Mare
     };
 
     // Damage modifiers where everything not named is normal, and chopping and pickaxes do nothing.

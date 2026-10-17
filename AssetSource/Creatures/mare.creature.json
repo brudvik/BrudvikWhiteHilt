@@ -1,0 +1,23 @@
+{
+  "source": "Arissa by Mixamo (Adobe), used under the Mixamo licence; as the Mare by AssetSource/Tools/dress_huldra.py --mare (black hair, no legs)",
+  "clips": [
+    { "name": "idle", "take": "idle", "loop": true },
+    { "name": "attack", "take": "attack", "loop": false },
+    { "name": "hit", "take": "hit", "loop": false },
+    { "name": "die", "take": "die", "loop": false }
+  ],
+  "fade": 0.45,
+  "fade_glow": [0.12, 0.16, 0.22],
+  "front_bone": "mixamorig:LeftToeBase",
+  "front_origin_bone": "mixamorig:LeftFoot",
+  "controller": {
+    "idle": "idle",
+    "move": "idle",
+    "move_speed": 1.0,
+    "run": "idle",
+    "run_speed": 5.0,
+    "stagger": "hit",
+    "attacks": [ { "trigger": "mare_grip", "clip": "attack", "hit": 0.43 } ],
+    "always_animate": true
+  }
+}
