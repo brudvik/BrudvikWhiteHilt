@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using BrudvikWhiteHilt.Patches.Foraging;
 using BrudvikWhiteHilt.Progression;
 using Jotunn.Configs;
 using Jotunn.Entities;
@@ -87,6 +88,7 @@ public class Peat : ForageableBase
     /// <inheritdoc/>
     protected override void OnAdded()
     {
+        ForageFuelPatch.Register(Helpers.Translations.Token(Helpers.Translations.ItemKey(PrefabName)), () => FuelValue);
         ItemManager.Instance.AddItemConversion(new CustomItemConversion(new SmelterConversionConfig
         {
             Station = Smelters.CharcoalKiln,

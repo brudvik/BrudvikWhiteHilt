@@ -292,3 +292,125 @@ public class Rakfisk : WhiteHiltFoodBase
         }));
     }
 }
+
+/// <summary>
+/// An Ashlands sausage of asksvin, cured on the drying rack, that lets you carry more.
+/// </summary>
+public class CuredAsksvinSausage : CuredFoodBase
+{
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public CuredAsksvinSausage(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltCuredAsksvinSausage";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Cured Asksvin Sausage";
+
+    /// <inheritdoc/>
+    protected override string Description => "A dark, salty sausage of asksvin and wild thyme. One in the belt and you carry a load like a pack animal.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "Sausages";
+
+    /// <inheritdoc/>
+    protected override string HungItem => RawAsksvinSausage.PrefabName;
+
+    /// <inheritdoc/>
+    protected override float Days => CuringSettings.AsksvinSausageDays.Value;
+
+    /// <inheritdoc/>
+    protected override float Health => 72f;
+
+    /// <inheritdoc/>
+    protected override float Stamina => 58f;
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.55f, 0.3f, 0.28f);
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override float DurationSeconds => 3600f;
+
+    /// <inheritdoc/>
+    protected override float Regen => 5f;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
+
+    /// <inheritdoc/>
+    protected override string BuffTooltip => "+60 carry weight";
+
+    /// <inheritdoc/>
+    protected override void ConfigureBuff(SE_Stats effect)
+    {
+        effect.m_addMaxCarryWeight = 60f;
+    }
+}
+
+/// <summary>
+/// Bonemaw meat salted and dried on the rack; a long-lasting Ashlands food that speeds up health regeneration.
+/// </summary>
+public class DriedBonemaw : CuredFoodBase
+{
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public DriedBonemaw(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => "WhiteHiltDriedBonemaw";
+
+    /// <inheritdoc/>
+    protected override string FullName => "Dried Bonemaw";
+
+    /// <inheritdoc/>
+    protected override string Description => "Strips of salted bonemaw dried until they are as hard as bone. Chew slowly; the wounds close while you do.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "CookedBoneMawSerpentMeat";
+
+    /// <inheritdoc/>
+    protected override string HungItem => SaltedBonemaw.PrefabName;
+
+    /// <inheritdoc/>
+    protected override float Days => CuringSettings.BonemawDays.Value;
+
+    /// <inheritdoc/>
+    protected override float Health => 88f;
+
+    /// <inheritdoc/>
+    protected override float Stamina => 38f;
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.75f, 0.6f, 0.5f);
+
+    /// <inheritdoc/>
+    public override bool Enabled => true;
+
+    /// <inheritdoc/>
+    protected override float DurationSeconds => 3600f;
+
+    /// <inheritdoc/>
+    protected override float Regen => 6f;
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
+
+    /// <inheritdoc/>
+    protected override string BuffTooltip => "Health regenerates 25% faster";
+
+    /// <inheritdoc/>
+    protected override void ConfigureBuff(SE_Stats effect)
+    {
+        effect.m_healthRegenMultiplier = 1.25f;
+    }
+}

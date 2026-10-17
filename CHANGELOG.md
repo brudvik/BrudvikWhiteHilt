@@ -2,6 +2,27 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[Ashlands foraging](docs/foraging.md#growing-ingredients)**: six new things to gather, each with its own generated
+  model, growing in new land and (once) in land generated before:
+  - **Lyme Grain** from lyme grass on the low black sand along the shore.
+  - **Sea Buckthorn**, a thorny silver shrub with orange berries; Asksvin sometimes drop them.
+  - **Wild Thyme** on the cooled lava; a Smoke Puff sometimes gives it too.
+  - **Tinder Fungus** on burnt stumps. Used from the hotbar on a wood fire it burns like three pieces of wood
+    (`[Foraging.TinderFungus] FuelValue`), and the Charcoal Kiln turns it into Coal.
+  - **Hot Spring Salt**, white crusts on the ash, for curing meat.
+  - **Red Ochre**, a deep red dye for the Paint Bench; Wild Thyme and Sea Buckthorn are dyes too.
+- **New Ashlands food and drink**:
+  - **Hot Spring Bread** (Stone Pot level 4): 45 health, 92 stamina, 35 min.
+  - **Cured Asksvin Sausage** (Raw Asksvin Sausage on the Drying Rack, 2 days): 72 health, 58 stamina, 60 min,
+    +60 carry weight.
+  - **Dried Bonemaw** (Salted Bonemaw on the Drying Rack, 3 days): 88 health, 38 stamina, 60 min, health regenerates
+    25% faster. `[Curing] AsksvinSausageDays` and `BonemawDays` set the days.
+  - **Sea Buckthorn Mead**: stamina regenerates 30% faster (`StaminaRegenBonus`).
+  - **Wild Thyme Tea**: fire resistance.
+
 ## v0.144.0 - 2026-10-17
 
 ### Added

@@ -219,7 +219,7 @@ All patches live in `Patches/`, in folders named after the features they serve. 
   and so on), and `ChestModule.Initialize` subscribes to them. This keeps the module free of Harmony and lets
   several handlers react to one game method.
 - **A postfix is the default.** A prefix that returns `false` replaces the vanilla method, so it is only used where
-  that is the point, for example `PeatFuelPatch` (peat in a wood fire). Even then it hands everything that is not
+  that is the point, for example `ForageFuelPatch` (peat or tinder fungus in a wood fire). Even then it hands everything that is not
   its case back to vanilla by returning `true`.
 - **Harmony's naming.** `__instance` is the patched object, `__result` the return value, and `__state` carries a
   value from the prefix to the postfix (`ForagingDropPatch` uses it to know that a pick really happened).
@@ -230,7 +230,7 @@ All patches live in `Patches/`, in folders named after the features they serve. 
   is not stopped. It logs a warning if it replaces nothing, and a test reads the game's code to see that the count is
   still read where it expects.
 
-> Read next: `Patches/Chests/ContainerPatch.cs` with `Chests/ChestModule.cs`, `Patches/Foraging/PeatFuelPatch.cs`,
+> Read next: `Patches/Chests/ContainerPatch.cs` with `Chests/ChestModule.cs`, `Patches/Foraging/ForageFuelPatch.cs`,
 > `Patches/Foraging/ForagingDropPatch.cs`.
 
 ## ⚙️ Settings

@@ -1242,6 +1242,167 @@ def build_rowan(geo, rng, np):
     geo.target = "main"
 
 
+def grain_ear(geo, rng, stem, length, swatch):
+    """A dense ear of grain at the top of a stem: rows of plump spikelets that narrow towards the tip."""
+    heading = (stem[-1] - stem[-2]).normalized()
+    for n in range(26):
+        t = n / 25
+        point = stem[-1] + heading * (length * t)
+        out = around(heading, n * 2.4)
+        size = 0.0075 * (1.0 - 0.45 * t)
+        geo.blob(point + out * size * 0.9, size, swatch, subdivisions=1, squash=(0.8, 0.8, 1.6))
+
+
+@model("lymegrass", "Lyme grass with ripe ears")
+def build_lymegrass(geo, rng, np):
+    # Broad blue-grey blades that arch over the black sand.
+    for direction in spread_directions(24, rng, 0.4, jitter=0.4):
+        blade = curve((0, 0, 0), direction, rng.uniform(0.5, 0.75), 0.7, 6)
+        heading = (blade[1] - blade[0]).normalized()
+        geo.leaf(blade[0], heading, (0, 0, 1), (blade[-1] - blade[0]).length * 1.1, 0.04, "blade", profile="blade", segments=6,
+                 fold=0.45, droop=0.4, twist=rng.uniform(-0.6, 0.6))
+    # Stiff stems standing above them, each with a long ear.
+    for k in range(5):
+        lean = (rng.normal(0, 0.12), rng.normal(0, 0.12), 1.0)
+        stem = curve((rng.normal(0, 0.03), rng.normal(0, 0.03), 0), lean, rng.uniform(0.75, 0.95), 0.12, 6)
+        geo.tube(stem, [0.004 - 0.0015 * i / 6 for i in range(7)], "stem", segments=4)
+        grain_ear(geo, rng, stem, rng.uniform(0.16, 0.22), "ear")
+
+
+@model("lymegrain", "A sheaf of lyme grass ears")
+def build_lymegrain(geo, rng, np):
+    V = geo.Vector
+    for k in range(4):
+        lean = V((rng.normal(0, 0.08), rng.normal(0, 0.08), 1.0))
+        stem = curve(V((rng.normal(0, 0.006), rng.normal(0, 0.006), 0)), lean, 0.16, 0.05, 3)
+        geo.tube(stem, [0.0035] * 4, "stem", segments=4)
+        grain_ear(geo, rng, stem, 0.15, "ear")
+    geo.tube([V((0, 0, 0.05)), V((0, 0, 0.065))], [0.012, 0.012], "cord", segments=8, cap=False)
+
+
+@model("seabuckthorn", "Sea buckthorn with berries")
+def build_seabuckthorn(geo, rng, np):
+    V = geo.Vector
+    twigs = []
+    for direction in spread_directions(9, rng, 0.4):
+        branch = curve((0, 0, 0), direction, rng.uniform(0.9, 1.3), 0.35, 7)
+        geo.tube(branch, [0.016 * (1 - 0.7 * i / 7) for i in range(8)], "bark", segments=5)
+        for i in range(2, 8):
+            heading = (branch[i] - branch[i - 1]).normalized()
+            out = (around(heading, i * 2.4 + rng.uniform(0, 1)) + heading * 0.6).normalized()
+            twig = curve(branch[i], out, rng.uniform(0.15, 0.25), 0.2, 3)
+            geo.tube(twig, [0.005, 0.004, 0.003, 0.002], "bark", segments=3)
+            # Thorny tip, as the shrub has.
+            geo.tube([twig[-1], twig[-1] + (twig[-1] - twig[-2]).normalized() * 0.025], [0.002, 0.0004], "bark", segments=3)
+            # Narrow silver leaves crowded towards the tips.
+            for j in range(1, 4):
+                twig_heading = (twig[j] - twig[j - 1]).normalized()
+                for side in range(3):
+                    leaf_out = around(twig_heading, j * 1.7 + side * 2.1) + twig_heading * 0.7
+                    geo.leaf(twig[j], leaf_out, (0, 0, 1), rng.uniform(0.07, 0.09), 0.018, "leaf", profile="linear", segments=3,
+                             fold=0.35, droop=0.2)
+            twigs.append(twig)
+    geo.target = "fruit"
+    # The berries sit tight against the older wood, crowded all along it.
+    for twig in twigs:
+        for j in range(8):
+            point = along(twig, 0.05 + 0.6 * j / 7)
+            heading = (twig[1] - twig[0]).normalized()
+            out = around(heading, j * 2.1 + rng.uniform(0, 0.6))
+            geo.blob(point + out * 0.008, rng.uniform(0.0065, 0.008), "berry", subdivisions=1, squash=(1.0, 1.0, 1.25))
+    geo.target = "main"
+
+
+@model("thyme", "Wild thyme in flower on the lava")
+def build_thyme(geo, rng, np):
+    V = geo.Vector
+    geo.blob((0, 0, -0.005), 0.12, "mat", subdivisions=3, squash=(1.0, 0.85, 0.3), rng=rng, bumps=0.1, flat_bottom=-0.02)
+    for k in range(70):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.11 * math.sqrt(rng.random())
+        base = V((math.cos(angle) * distance, math.sin(angle) * distance * 0.85, 0.02))
+        lean = V((rng.normal(0, 0.2), rng.normal(0, 0.2), 1.0))
+        shoot = curve(base, lean, rng.uniform(0.02, 0.045), 0.1, 2)
+        geo.tube(shoot, [0.0012, 0.001, 0.0009], "shoot", segments=3, cap=False)
+        for j in range(1, 3):
+            heading = (shoot[j] - shoot[j - 1]).normalized()
+            for side in range(2):
+                geo.leaf(shoot[j], around(heading, j + side * math.pi) + heading * 0.3, heading, 0.008, 0.005, "leaf", profile="ovate",
+                         segments=2, fold=0.2, droop=0.1)
+        if k % 2 == 0:
+            # A round head of tiny purple flowers.
+            tip = shoot[-1]
+            for n in range(5):
+                geo.blob(tip + V((rng.normal(0, 0.004), rng.normal(0, 0.004), 0.004 + rng.normal(0, 0.002))), 0.0035, "flower",
+                         subdivisions=1)
+
+
+def bracket(geo, rng, centre, facing, size):
+    """A hoof-shaped bracket fungus on a trunk: a squat cone of grey bands, darker towards the wood."""
+    V = geo.Vector
+    facing = V(facing).normalized()
+    for n in range(4):
+        t = n / 3
+        radius = size * (1.0 - 0.18 * n)
+        geo.blob(V(centre) + facing * (size * 0.35 * t) + V((0, 0, size * 0.32 * t)), radius, "fungus", subdivisions=2,
+                 squash=(1.0, 1.0, 0.45), rng=rng, bumps=0.04)
+
+
+@model("tinderfungus", "Tinder fungus on a burnt stump")
+def build_tinderfungus(geo, rng, np):
+    V = geo.Vector
+    stump = curve((0, 0, 0), (0.05, 0.02, 1.0), 0.55, 0.1, 5)
+    geo.tube(stump, [0.12, 0.105, 0.1, 0.095, 0.09, 0.085], "char", segments=9)
+    # Broken, jagged top.
+    for k in range(5):
+        angle = k * 1.26 + rng.uniform(-0.3, 0.3)
+        out = V((math.cos(angle), math.sin(angle), 0))
+        geo.tube([stump[-1] + out * 0.06, stump[-1] + out * 0.065 + V((0, 0, rng.uniform(0.05, 0.12)))], [0.025, 0.004], "char", segments=4)
+    # Roots spreading into the ash.
+    for direction in spread_directions(4, rng, 1.35):
+        root = curve((0, 0, 0.06), direction, rng.uniform(0.18, 0.26), 0.6, 3)
+        geo.tube(root, [0.04, 0.03, 0.018, 0.008], "char", segments=5)
+    for height, angle, size in ((0.17, 0.4, 0.1), (0.3, 2.6, 0.085), (0.43, 4.4, 0.07)):
+        out = V((math.cos(angle), math.sin(angle), 0))
+        bracket(geo, rng, V((0, 0, height)) + out * (0.1 + size * 0.45), out, size)
+
+
+@model("tinderfungusitem", "A tinder fungus")
+def build_tinderfungusitem(geo, rng, np):
+    bracket(geo, rng, (0, 0, 0), (1, 0, 0), 0.07)
+
+
+@model("saltcrust", "Salt crust on a hot spring bank")
+def build_saltcrust(geo, rng, np):
+    geo.blob((0, 0, -0.01), 0.24, "ash", subdivisions=3, squash=(1.0, 0.85, 0.12), rng=rng, bumps=0.08, flat_bottom=-0.02)
+    for k in range(9):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.0 if k == 0 else rng.uniform(0.05, 0.17)
+        size = rng.uniform(0.04, 0.07) if k else 0.08
+        geo.blob((math.cos(angle) * distance, math.sin(angle) * distance * 0.85, 0.01), size, "salt", subdivisions=2,
+                 squash=(1.0, rng.uniform(0.7, 1.0), 0.45), rng=rng, bumps=0.25, flat_bottom=-0.02)
+
+
+@model("saltlump", "A lump of hot spring salt")
+def build_saltlump(geo, rng, np):
+    geo.blob((0, 0, 0), 0.07, "salt", subdivisions=2, squash=(1.0, 0.8, 0.65), rng=rng, bumps=0.22)
+
+
+@model("ochre", "Red ochre in the ash")
+def build_ochre(geo, rng, np):
+    for k in range(5):
+        angle = rng.uniform(0, 2 * math.pi)
+        distance = 0.0 if k == 0 else rng.uniform(0.08, 0.15)
+        size = rng.uniform(0.06, 0.09) if k else 0.12
+        geo.blob((math.cos(angle) * distance, math.sin(angle) * distance, 0.0), size, "ochre", subdivisions=3,
+                 squash=(1.0, rng.uniform(0.75, 1.0), 0.55), rng=rng, bumps=0.18, flat_bottom=-0.1)
+
+
+@model("ochrelump", "A lump of red ochre")
+def build_ochrelump(geo, rng, np):
+    geo.blob((0, 0, 0), 0.09, "ochre", subdivisions=3, squash=(1.0, 0.8, 0.65), rng=rng, bumps=0.15)
+
+
 SWATCHES = {
     "bogbean": {
         "leaf": {"bottom": (0.12, 0.26, 0.08), "top": (0.3, 0.48, 0.16)},
@@ -1434,6 +1595,42 @@ SWATCHES.update({
 })
 SWATCHES["beardlichenitem"] = SWATCHES["beardlichen"]
 SWATCHES["mistletoeitem"] = SWATCHES["mistletoe"]
+SWATCHES.update({
+    "lymegrass": {
+        "blade": {"bottom": (0.28, 0.38, 0.38), "top": (0.55, 0.64, 0.62), "streaks": 0.4},
+        "stem": {"bottom": (0.4, 0.46, 0.4), "top": (0.62, 0.6, 0.46)},
+        "ear": {"bottom": (0.55, 0.5, 0.34), "top": (0.78, 0.7, 0.48), "noise": 0.15},
+        "cord": {"bottom": (0.42, 0.32, 0.2), "top": (0.52, 0.4, 0.26)},
+    },
+    "seabuckthorn": {
+        "bark": {"bottom": (0.2, 0.17, 0.15), "top": (0.36, 0.32, 0.28), "streaks": 0.4},
+        "leaf": {"bottom": (0.3, 0.38, 0.3), "top": (0.62, 0.68, 0.6), "noise": 0.08},
+        "berry": {"bottom": (0.88, 0.42, 0.04), "top": (1.0, 0.62, 0.12), "noise": 0.08},
+    },
+    "thyme": {
+        "mat": {"bottom": (0.12, 0.18, 0.08), "top": (0.22, 0.3, 0.12), "noise": 0.35, "cells": (4, 2)},
+        "shoot": {"bottom": (0.35, 0.18, 0.2), "top": (0.4, 0.3, 0.2)},
+        "leaf": {"bottom": (0.18, 0.3, 0.12), "top": (0.3, 0.42, 0.18)},
+        "flower": {"bottom": (0.62, 0.28, 0.6), "top": (0.82, 0.48, 0.78), "noise": 0.08},
+    },
+    "tinderfungus": {
+        "char": {"bottom": (0.04, 0.035, 0.03), "top": (0.14, 0.11, 0.09), "noise": 0.3, "cells": (8, 3), "streaks": 0.5},
+        "fungus": {"bottom": (0.24, 0.17, 0.11), "top": (0.55, 0.5, 0.45), "noise": 0.2, "streaks": 0.2, "cells": (16, 4)},
+    },
+    "saltcrust": {
+        "ash": {"bottom": (0.18, 0.17, 0.17), "top": (0.3, 0.29, 0.28), "noise": 0.3, "cells": (12, 5, 2)},
+        "salt": {"bottom": (0.8, 0.78, 0.72), "top": (0.97, 0.96, 0.92), "noise": 0.1, "cells": (8, 3),
+                 "spots": (0.88, 0.78, 0.3), "spot_share": 0.18, "spot_cells": (5, 3)},
+    },
+    "ochre": {
+        "ochre": {"bottom": (0.32, 0.09, 0.05), "top": (0.56, 0.2, 0.09), "noise": 0.4, "cells": (8, 4, 2),
+                  "spots": (0.72, 0.42, 0.16), "spot_share": 0.2, "spot_cells": (5, 3)},
+    },
+})
+SWATCHES["lymegrain"] = SWATCHES["lymegrass"]
+SWATCHES["tinderfungusitem"] = SWATCHES["tinderfungus"]
+SWATCHES["saltlump"] = SWATCHES["saltcrust"]
+SWATCHES["ochrelump"] = SWATCHES["ochre"]
 
 
 # ---------------------------------------------------------------------------------------------------------------- export

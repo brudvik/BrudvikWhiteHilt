@@ -43,7 +43,12 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.144.0
+## ✨ New in 0.145.0
+
+- **[More to gather in the Ashlands](docs/foraging.md#growing-ingredients)**: Lyme Grain on the black sand by the shore, Sea Buckthorn, Wild Thyme on the cooled lava, Tinder Fungus on burnt stumps, Hot Spring Salt and Red Ochre, each with a model of its own.
+- **[New Ashlands food and drink](docs/foraging.md#growing-ingredients)**: Hot Spring Bread, a Cured Asksvin Sausage and Dried Bonemaw from the drying rack with the new salt, Sea Buckthorn Mead for stamina and Wild Thyme Tea against fire. Tinder Fungus burns long in a fire and the kiln makes coal of it; Red Ochre and Wild Thyme colour paint.
+
+### Also new in 0.144.0
 
 - **[A wilder storm](docs/storms.md#wind-hail-and-the-lost-course)**: fires with no roof go out and the torch in your hand blows out, gusts tear doors open and let the storm in, push you about and knock you down, hail beats down on those in the open, the Kraken wakes at sea, and out there the storm takes your compass and your place on the map unless a Navigator's Table is aboard.
 - **[The build camera with a pickaxe](docs/build-tools.md#-build-camera--toolbar)**: the camera stays on with any pickaxe, and the blow lands where you aim: break a rock while building, or dig the bottom under water from the shore.

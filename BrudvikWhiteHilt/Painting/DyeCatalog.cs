@@ -44,6 +44,10 @@ public static class DyeCatalog
         Items.Foraging.Woad.Woad.PrefabName, Items.Foraging.Madder.Madder.PrefabName, Items.Foraging.Henbane.Henbane.PrefabName,
         Items.Foraging.Ergot.Ergot.PrefabName, Items.Foraging.WildHops.WildHops.PrefabName,
 
+        // Ashlands
+        Items.Foraging.RedOchre.RedOchre.PrefabName, Items.Foraging.SeaBuckthorn.SeaBuckthorn.PrefabName,
+        Items.Foraging.WildThyme.WildThyme.PrefabName,
+
         // Ocean, once Bonemass is slain
         Kraken.KrakenRegistry.InkName
     };
@@ -52,7 +56,9 @@ public static class DyeCatalog
     private static readonly Dictionary<string, Color> dyeColours = new()
     {
         [Items.Foraging.Woad.Woad.PrefabName] = new Color(0.13f, 0.22f, 0.52f),
-        [Items.Foraging.RockLichen.RockLichen.PrefabName] = new Color(0.45f, 0.16f, 0.45f)
+        [Items.Foraging.RockLichen.RockLichen.PrefabName] = new Color(0.45f, 0.16f, 0.45f),
+        [Items.Foraging.RedOchre.RedOchre.PrefabName] = new Color(0.55f, 0.14f, 0.08f),
+        [Items.Foraging.WildThyme.WildThyme.PrefabName] = new Color(0.5f, 0.22f, 0.5f)
     };
 
     private static List<Dye> dyes;

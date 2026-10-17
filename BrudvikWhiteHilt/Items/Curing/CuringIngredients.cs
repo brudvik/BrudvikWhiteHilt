@@ -228,3 +228,86 @@ public class RakfiskTub : CuringIngredientBase
     /// <inheritdoc/>
     public override ProgressionTier DefaultTier => ProgressionTier.BlackForest;
 }
+
+/// <summary>
+/// Minced asksvin with hot spring salt and wild thyme in a casing, ready to hang on the drying rack.
+/// </summary>
+public class RawAsksvinSausage : CuringIngredientBase
+{
+    /// <summary>Prefab name.</summary>
+    public const string PrefabName = "WhiteHiltRawAsksvinSausage";
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public RawAsksvinSausage(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => PrefabName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Raw Asksvin Sausage";
+
+    /// <inheritdoc/>
+    protected override string Description => "Minced asksvin with hot spring salt and wild thyme, stuffed in a casing. Hang it on a drying rack to cure.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "AsksvinMeat";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "AsksvinMeat", Amount = 2, Recover = false },
+        new() { Item = Foraging.HotSpringSalt.HotSpringSalt.PrefabName, Amount = 1, Recover = false },
+        new() { Item = Foraging.WildThyme.WildThyme.PrefabName, Amount = 1, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.8f, 0.5f, 0.45f);
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
+}
+
+/// <summary>
+/// Bonemaw meat rubbed hard with hot spring salt, ready to hang on the drying rack.
+/// </summary>
+public class SaltedBonemaw : CuringIngredientBase
+{
+    /// <summary>Prefab name.</summary>
+    public const string PrefabName = "WhiteHiltSaltedBonemaw";
+
+    /// <summary>
+    /// Creates the definition. The plugin does this for every such class by reflection when it starts; the game sees
+    /// the result only once Add has run.
+    /// </summary>
+    /// <param name="instance">The item manager.</param>
+    public SaltedBonemaw(ItemManager instance) : base(instance) { }
+
+    /// <inheritdoc/>
+    protected override string BaseName => PrefabName;
+
+    /// <inheritdoc/>
+    protected override string FullName => "Salted Bonemaw";
+
+    /// <inheritdoc/>
+    protected override string Description => "Thick strips of bonemaw meat rubbed hard with hot spring salt. Hang them on a drying rack to cure.";
+
+    /// <inheritdoc/>
+    protected override string CopyFrom => "BoneMawSerpentMeat";
+
+    /// <inheritdoc/>
+    protected override RequirementConfig[] Requirements => new RequirementConfig[]
+    {
+        new() { Item = "BoneMawSerpentMeat", Amount = 1, Recover = false },
+        new() { Item = Foraging.HotSpringSalt.HotSpringSalt.PrefabName, Amount = 2, Recover = false }
+    };
+
+    /// <inheritdoc/>
+    protected override Color Tint => new(0.9f, 0.85f, 0.8f);
+
+    /// <inheritdoc/>
+    public override ProgressionTier DefaultTier => ProgressionTier.Ashlands;
+}
