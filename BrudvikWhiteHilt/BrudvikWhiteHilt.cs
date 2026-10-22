@@ -217,6 +217,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         laps.Lap("creatures and ships");
         Treasure.TreasureSettings.Initialize();
         TradingPosts.TradingPostRegistry.Initialize();
+        Household.HouseholdRegistry.Initialize();
         Treasure.TreasureRegistry.Initialize();
         Pieces.Roofs.RoofSettings.Initialize();
         Items.Roofing.RoofMaterials.Initialize();

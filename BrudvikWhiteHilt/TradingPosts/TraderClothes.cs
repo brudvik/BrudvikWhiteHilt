@@ -80,9 +80,9 @@ public static class TraderClothes
         };
     }
 
-    // A copy of a vanilla piece of clothing under its own name, dyed. On a dedicated server, which draws nothing, the
-    // copy keeps the vanilla colours; a failing dye keeps them too.
-    private static void Add(string prefabName, string source, string nameKey, Func<Color32, Color32> dye)
+    // A copy of a vanilla piece of clothing under its own name, dyed; the household's clothes are made the same way.
+    // On a dedicated server, which draws nothing, the copy keeps the vanilla colours; a failing dye keeps them too.
+    internal static void Add(string prefabName, string source, string nameKey, Func<Color32, Color32> dye)
     {
         try
         {

@@ -949,6 +949,8 @@ def main():
     pieces += carving_pieces()
     from build_husvette import husvette_piece
     pieces.append(husvette_piece())
+    from build_household import high_seat_piece
+    pieces.append(high_seat_piece())
     # Compact, one piece to a line: the mod reads this file at every start.
     lines = ",\n".join(json.dumps(piece, separators=(",", ":")) for piece in pieces)
     OUT.write_text('{"pieces":[\n' + lines + "\n]}\n", encoding="utf-8")
