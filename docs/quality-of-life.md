@@ -129,6 +129,18 @@ The `Sound` section sets it: `IndoorSound` (on/off), `IndoorWindVolume` (0.25) a
 
 ---
 
+## 🌨️ INDOOR WEATHER
+
+In the game a snowstorm that starts while you are outside keeps snowing in your hall, however tight the walls and roof are, and its fog fills the room. The game only asks whether you are sheltered at the moment the weather changes, and only for misty weather; the fog is one setting for the whole view, and several of its rain and snow systems are made to stop on roofs but have it turned off. White Hilt keeps the weather outside:
+
+- **The fog thins under a roof**, by how well you are covered, down to about clear weather in a closed house, and comes back as you go out. You see less fog out through the door too while you stand inside.
+- **No snow or rain inside.** Under a roof every snowflake and raindrop under the building pieces near you is taken away, so you still see the weather outside through the door and the windows, and less of it is made round you in a closed house.
+- **Rain and snow land on roofs.** The game's rain and some of its snow fell through every roof; they now stop on roofs and ground as its other snow does.
+
+Dungeons keep their own fog. The `IndoorWeather` section sets it: `IndoorWeather` (on/off), `IndoorFogDensity` (0.004; clear weather is about 0.003, a snowstorm 0.05), `IndoorParticleAmount` (0.3 of the snow and rain made in a closed house), `ClearReach` (12 m round you), `RoofCollision` (on) and `FadeSeconds` (1.5).
+
+---
+
 ## 🌊 FLOATING ITEMS
 
 Everything dropped floats in water instead of sinking, so a Serpent killed at sea leaves its trophy and meat bobbing on the surface, and nothing is lost when a fight at sea goes overboard. Items that already lay on the sea floor come up when their area loads. The server sets it in the `FloatingItems` section: `Enabled` (on by default) and `SinkingItems`, a comma-separated list of prefab names that still sink (e.g. `Stone,Flint`).

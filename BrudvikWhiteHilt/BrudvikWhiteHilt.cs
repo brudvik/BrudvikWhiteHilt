@@ -148,6 +148,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Painting.PaintSettings.Initialize();
         Branding.BrandingSettings.Initialize();
         Sound.IndoorSoundSettings.Initialize();
+        Shelter.IndoorWeatherSettings.Initialize();
         Drops.FloatingItems.Initialize();
         Pieces.Waste.WasteWellSettings.Initialize();
         Pieces.Smithing.RepairAnvil.RepairAnvilSettings.Initialize();
