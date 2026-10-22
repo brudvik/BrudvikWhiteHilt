@@ -2,6 +2,21 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.150.0 - 2026-10-22
+
+### Added
+- **[The weather stays outside your house](docs/quality-of-life.md#-indoor-weather).** In the game a snowstorm that
+  starts while you are outside keeps snowing in the hall, however tight the walls and roof, and its fog fills the
+  room: the game only asks whether you are sheltered when the weather changes, and only for misty weather. Now the
+  fog thins under a roof by how well you are covered, down to about clear weather in a closed house, the snow and
+  rain under the building pieces near you are taken away while you still see them outside the door, and less is made
+  round you indoors. The `IndoorWeather` section sets it (`IndoorFogDensity`, `IndoorParticleAmount`, `ClearReach`,
+  `FadeSeconds`).
+
+### Fixed
+- **Rain and snow land on roofs.** The game's rain and some of its snow were made to stop on roofs and ground but had
+  it turned off, so they fell through every roof; it is turned on (`[IndoorWeather] RoofCollision`).
+
 ## v0.149.1 - 2026-10-17
 
 ### Changed
