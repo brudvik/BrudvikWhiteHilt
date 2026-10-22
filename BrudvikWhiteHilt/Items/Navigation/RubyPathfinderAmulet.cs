@@ -76,6 +76,7 @@ public class RubyPathfinderAmulet : PathfinderAmulet
         }
 
         string name = Translations.Token(Translations.ItemKey(RubyPrefabName));
-        return (player.m_trinketItem != null && player.m_trinketItem.m_shared.m_name == name) || UtilitySlots.IsWornExtra(player, name);
+        return (player.m_trinketItem != null && player.m_trinketItem.m_shared.m_name == name) || UtilitySlots.IsWornExtra(player, name)
+            || TrinketSlots.IsWornExtra(player, name);
     }
 }

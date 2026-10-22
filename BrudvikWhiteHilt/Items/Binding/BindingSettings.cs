@@ -59,6 +59,15 @@ public static class BindingSettings
     /// <summary>Seconds a pool left by Surt's Wrath burns.</summary>
     public static ConfigEntry<float> SurtPoolSeconds { get; private set; }
 
+    /// <summary>How many times the frost of Niflheim's Rime is that of the other runes.</summary>
+    public static ConfigEntry<float> RimeFrostMultiplier { get; private set; }
+
+    /// <summary>Chance that a hit of a weapon etched with Niflheim's Rime freezes the target fast.</summary>
+    public static ConfigEntry<float> RimeFreezeChance { get; private set; }
+
+    /// <summary>Seconds a creature stays frozen fast.</summary>
+    public static ConfigEntry<float> RimeFreezeSeconds { get; private set; }
+
     /// <summary>Lightning damage of Rowan's Ward, as a share of the shield's base block power.</summary>
     public static ConfigEntry<float> WardShare { get; private set; }
 
@@ -112,6 +121,14 @@ public static class BindingSettings
             "Fire damage per second of a burning pool left by Surt's Wrath.", new AcceptableValueRange<float>(0f, 500f));
         SurtPoolSeconds = WhiteHiltConfig.BindAdminOnly(InfusionSection, "SurtPoolSeconds", 5f,
             "Seconds a burning pool left by Surt's Wrath burns.", new AcceptableValueRange<float>(1f, 30f));
+        RimeFrostMultiplier = WhiteHiltConfig.BindAdminOnly(InfusionSection, "RimeFrostMultiplier", 1.5f,
+            "How many times the frost damage of Niflheim's Rime is that of the other runes, as it is etched with an Ashlands rune (1.5 = half as much again).",
+            new AcceptableValueRange<float>(0.5f, 5f));
+        RimeFreezeChance = WhiteHiltConfig.BindAdminOnly(InfusionSection, "RimeFreezeChance", 0.15f,
+            "Chance that a hit of a weapon etched with Niflheim's Rime freezes the target fast, so it cannot move (0.15 = 15%). Never bosses.",
+            new AcceptableValueRange<float>(0f, 1f));
+        RimeFreezeSeconds = WhiteHiltConfig.BindAdminOnly(InfusionSection, "RimeFreezeSeconds", 1.5f,
+            "How long a creature stays frozen fast, in seconds.", new AcceptableValueRange<float>(0.5f, 10f));
         WardShare = WhiteHiltConfig.BindAdminOnly(InfusionSection, "WardShare", 0.5f,
             "Lightning damage dealt by Rowan's Ward to a foe whose blow is blocked, as a share of the shield's base block power (0.5 = half).",
             new AcceptableValueRange<float>(0f, 3f));

@@ -16,11 +16,11 @@ public static class MuspellSettings
     /// <summary>Global key that must be set before it comes; empty for none.</summary>
     public static ConfigEntry<string> RequiredKey { get; private set; }
 
-    /// <summary>Chance per spawn check, in percent.</summary>
-    public static ConfigEntry<float> SpawnChance { get; private set; }
+    /// <summary>Chance per minute, in percent, that a giant comes for a player out in the Ashlands.</summary>
+    public static ConfigEntry<float> ChancePerMinute { get; private set; }
 
-    /// <summary>Seconds between spawn checks.</summary>
-    public static ConfigEntry<float> SpawnSeconds { get; private set; }
+    /// <summary>Real minutes before a giant can come for the same player again.</summary>
+    public static ConfigEntry<float> CooldownMinutes { get; private set; }
 
     /// <summary>Health of the giant.</summary>
     public static ConfigEntry<float> Health { get; private set; }
@@ -66,10 +66,11 @@ public static class MuspellSettings
         Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true, "A Muspell Giant now and then walks the Ashlands.");
         RequiredKey = WhiteHiltConfig.BindAdminOnly(Section, "RequiredKey", "defeated_queen",
             "Global key needed before the Muspell Giant comes (defeated_queen = the Queen is slain). Empty: from the start.");
-        SpawnChance = WhiteHiltConfig.BindAdminOnly(Section, "SpawnChance", 4f, "Chance, in percent, per spawn check that a Muspell Giant comes. 0 = none.",
+        ChancePerMinute = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerMinute", 3f,
+            "Chance per minute, in percent, that a Muspell Giant comes for a player out in the Ashlands, when none is near. 0 = none.",
             new AcceptableValueRange<float>(0f, 100f));
-        SpawnSeconds = WhiteHiltConfig.BindAdminOnly(Section, "SpawnSeconds", 900f, "Seconds between two spawn checks for the Muspell Giant.",
-            new AcceptableValueRange<float>(30f, 7200f));
+        CooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "CooldownMinutes", 45f,
+            "Real minutes before a Muspell Giant can come for the same player again.", new AcceptableValueRange<float>(0f, 600f));
         Health = WhiteHiltConfig.BindAdminOnly(Section, "Health", 9000f, "Health of the Muspell Giant. Applies after a restart.", new AcceptableValueRange<float>(100f, 50000f));
         DamageMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplier", 3f,
             "Its blows and rocks do the troll's blunt damage times this (3 = a punch of 180). Applies after a restart.", new AcceptableValueRange<float>(0.1f, 10f));

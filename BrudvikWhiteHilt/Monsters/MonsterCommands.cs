@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
-/// Console commands whitehilt_lindorm and whitehilt_lavaworm: show the conditions, or (admins) let the Lindorm break out
-/// or the Lava Worm rise near you.
+/// Console commands whitehilt_lindorm, whitehilt_lavaworm and whitehilt_muspell: show the conditions, or (admins) let
+/// the Lindorm break out, the Lava Worm rise or a Muspell Giant come near you.
 /// </summary>
 public static class MonsterCommands
 {
@@ -17,6 +17,7 @@ public static class MonsterCommands
     {
         CommandManager.Instance.AddConsoleCommand(new LindormCommand());
         CommandManager.Instance.AddConsoleCommand(new LavaWormCommand());
+        CommandManager.Instance.AddConsoleCommand(new MuspellCommand());
     }
 
     private sealed class LindormCommand : ConsoleCommand
@@ -57,6 +58,29 @@ public static class MonsterCommands
             }
 
             global::Console.instance?.Print(LavaWormService.Describe());
+        }
+
+        public override List<string> CommandOptionList()
+        {
+            return new List<string> { "status", "summon" };
+        }
+    }
+
+    private sealed class MuspellCommand : ConsoleCommand
+    {
+        public override string Name => "whitehilt_muspell";
+
+        public override string Help => "[status|summon] Shows whether a Muspell Giant can come here; admins can summon one nearby.";
+
+        public override void Run(string[] args)
+        {
+            if (args.Length > 0 && args[0] == "summon")
+            {
+                MuspellService.Summon();
+                return;
+            }
+
+            global::Console.instance?.Print(MuspellService.Describe());
         }
 
         public override List<string> CommandOptionList()

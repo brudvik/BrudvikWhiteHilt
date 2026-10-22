@@ -10,6 +10,10 @@ namespace BrudvikWhiteHilt.Monsters;
 /// </summary>
 internal static class WildMonsters
 {
+    // The Night Garm is the Garm Hound grown to a bear's size, and this much stronger.
+    private const float NightGarmSize = 1.4f;
+    private const float NightGarmStrength = 2.5f;
+
     /// <summary>Prefab name of Mist Stag Meat.</summary>
     public const string MistStagMeat = "WhiteHilt_MistStagMeat";
 
@@ -33,6 +37,9 @@ internal static class WildMonsters
 
     /// <summary>Prefab name of the Garm Hound trophy.</summary>
     public const string GarmTrophy = "WhiteHilt_TrophyGarmHound";
+
+    /// <summary>Prefab name of the Night Garm trophy.</summary>
+    public const string NightGarmTrophy = "WhiteHilt_TrophyNightGarm";
 
     /// <summary>Prefab name of Shark Meat.</summary>
     public const string SharkMeat = "WhiteHilt_SharkMeat";
@@ -242,6 +249,56 @@ internal static class WildMonsters
         MaxSpawned = 3,
         GroupMin = 2,
         GroupMax = 3,
+        Configure = WildMonsterRegistry.ConfigureGarm
+    };
+
+    /// <summary>
+    /// The Night Garm: the leader of the Garm Hounds, as big as a bear and two and a half times as strong, which only
+    /// hunts by night in bad weather. It is the Garm Hound's model grown, darker, alone.
+    /// </summary>
+    public static readonly WildMonster NightGarm = new()
+    {
+        Id = "nightgarm",
+        Model = "garmhound",
+        PrefabName = "WhiteHilt_NightGarm",
+        EnglishName = "Night Garm",
+        Faction = Character.Faction.Demon,
+        SoundPrefix = "garm",
+        ModelScale = 90f * NightGarmSize,
+        SizeText = "about 2.1 m at the head and 3.6 m long, as big as a bear",
+        CapsuleCenter = new Vector3(0f, 0.8f, 0f) * NightGarmSize,
+        CapsuleRadius = 0.7f * NightGarmSize,
+        CapsuleHeight = 1.6f * NightGarmSize,
+        Eye = new Vector3(0f, 1.3f, 1f) * NightGarmSize,
+        WalkSpeed = 4f,
+        RunSpeed = 10f,
+        TurnSpeed = 160f,
+        RunTurnSpeed = 240f,
+        Health = 500f * NightGarmStrength,
+        Modifiers = Mods(fire: HitData.DamageModifier.Immune, frost: HitData.DamageModifier.Weak, spirit: HitData.DamageModifier.Weak,
+            poison: HitData.DamageModifier.Resistant),
+        Attacks = new[]
+        {
+            new WildAttack
+            {
+                Name = "Bite", Trigger = "garm_bite", Description = "Slash damage of the Night Garm's bite.",
+                Type = HitData.DamageType.Slash, Damage = 60f * NightGarmStrength, ExtraType = HitData.DamageType.Fire, ExtraDamage = 45f * NightGarmStrength,
+                Range = 2.2f * NightGarmSize, Height = 1.2f * NightGarmSize, Angle = 70f, RayWidth = 0.5f * NightGarmSize, Interval = 1.6f, Force = 60f
+            }
+        },
+        Drops = new[] { new WildDrop { Item = GarmFang, Min = 3, Max = 5 } },
+        Trophy = NightGarmTrophy,
+        TrophyChance = 25f,
+        // Near black, with the glow of the eyes left alone.
+        Look = new WildLook { Tint = new Color(0.3f, 0.27f, 0.28f), Value = -0.3f, Glossiness = 0.1f, Matte = true },
+        StarScale = 0.1f,
+        Biome = Heightmap.Biome.AshLands,
+        SpawnAtDay = false,
+        BadWeatherOnly = true,
+        SpawnChance = 10f,
+        SpawnSeconds = 400f,
+        SpawnDistance = 50f,
+        MaxSpawned = 1,
         Configure = WildMonsterRegistry.ConfigureGarm
     };
 
@@ -495,7 +552,7 @@ internal static class WildMonsters
     /// <summary>All of them, in the order they are made.</summary>
     public static readonly IReadOnlyList<WildMonster> All = new[]
     {
-        MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, GreenlandShark, DraugrJarl, Huldra, HuldraTrueForm, Mare
+        MistStag, NidhoggSpawn, YggdrasilWarden, GarmHound, NightGarm, GreenlandShark, DraugrJarl, Huldra, HuldraTrueForm, Mare
     };
 
     // Damage modifiers where everything not named is normal, and chopping and pickaxes do nothing.

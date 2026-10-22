@@ -55,7 +55,7 @@ public enum SlotKind
 /// <summary>
 /// The rows of the local player's inventory. The visible rows are the vanilla rows (4, more when bought from a trader)
 /// plus the extra rows. Below the most rows that can be shown lie hidden rows at fixed positions for the stored hotbar,
-/// the equipment and food slots, the accessory slots and the shield and ammo slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
+/// the equipment and food slots, the accessory slots and the shield, ammo, coin and extra trinket slots, so nothing has to move when the visible rows change. Without the mod the game drops what lies there at your feet.
 /// </summary>
 public static class BackpackLayout
 {
@@ -185,6 +185,11 @@ public static class BackpackLayout
                 return SlotKind.Ammo;
             }
 
+            if (TrinketSlots.IsExtraSlot(pos))
+            {
+                return SlotKind.Trinket;
+            }
+
             return pos.x >= HandSlots.CoinColumn && pos.x < HandSlots.CoinColumn + HandSlots.CoinCount ? SlotKind.Coins : SlotKind.Void;
         }
 
@@ -230,8 +235,9 @@ public static class BackpackLayout
         return KindAt(pos, VisibleRows(player)) switch
         {
             SlotKind.Grid or SlotKind.Hotbar => true,
-            SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape or SlotKind.Trinket =>
+            SlotKind.Helmet or SlotKind.Chest or SlotKind.Legs or SlotKind.Cape =>
                 TryGetGearSlot(item, out Vector2i slot) && slot == pos,
+            SlotKind.Trinket => TrinketSlots.CanHold(player.m_inventory, item, pos),
             SlotKind.Food => FoodSlots.IsFood(item),
             SlotKind.Potion => FoodSlots.IsPotion(item),
             SlotKind.Utility => UtilitySlots.Fits(item, pos) && !UtilitySlots.WornElsewhere(player.m_inventory, item, pos),

@@ -4,7 +4,7 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Monsters;
 
 /// <summary>
-/// Hooks the Lindorm and Lava Worm services onto the game object, keeps a Lindorm or Lava Worm still and unhurt while it
+/// Hooks the Lindorm, Lava Worm and Muspell Giant services onto the game object, keeps a Lindorm or Lava Worm still and unhurt while it
 /// is below ground, a Nidhogg Spawn still while it roars and a Huldra while she lures, and keeps dragon fire off buildings unless the config allows it.
 /// </summary>
 [HarmonyPatch]
@@ -16,7 +16,16 @@ public static class MonsterPatches
     {
         __instance.gameObject.AddComponent<LindormService>();
         __instance.gameObject.AddComponent<LavaWormService>();
+        __instance.gameObject.AddComponent<MuspellService>();
         __instance.gameObject.AddComponent<DragonGroundFireDamage>();
+    }
+
+    // A wild monster that only comes in bad weather learns the weathers before the spawn checks.
+    [HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.UpdateSpawning))]
+    [HarmonyPrefix]
+    private static void UpdateSpawningPrefix()
+    {
+        WildMonsterRegistry.RefreshWeather();
     }
 
     // A creature cloned from a vanilla one plays its own attack sound as it starts an attack.

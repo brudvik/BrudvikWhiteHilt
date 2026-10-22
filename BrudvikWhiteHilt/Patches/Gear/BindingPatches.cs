@@ -6,7 +6,7 @@ using HarmonyLib;
 namespace BrudvikWhiteHilt.Patches.Gear;
 
 /// <summary>
-/// Shows a bound trophy and an etched rune in the tooltip, gives the web, the grip of the deep and Surt's Wrath their effect on hit,
+/// Shows a bound trophy and an etched rune in the tooltip, gives the web, the grip of the deep, Surt's Wrath and Niflheim's Rime their effect on hit,
 /// and lets the Rune Forge extensions show their own hover text.
 /// </summary>
 [HarmonyPatch]
@@ -59,6 +59,11 @@ public static class BindingPatches
         else if (GearBinding.Tars(weapon) && hit.m_statusEffectHash == 0)
         {
             hit.m_statusEffectHash = SEMan.s_statusEffectTared;
+        }
+        else if (GearBinding.Freezes(weapon) && hit.m_statusEffectHash == 0 && !__instance.IsBoss()
+            && UnityEngine.Random.value < BindingSettings.RimeFreezeChance.Value)
+        {
+            hit.m_statusEffectHash = RimeFreezeEffect.Hash;
         }
 
         if (GearBinding.Scorches(weapon) && UnityEngine.Random.value < BindingSettings.SurtPoolChance.Value)

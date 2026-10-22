@@ -46,6 +46,9 @@ public enum InfusionKind
 
     /// <summary>Surt's Wrath: fire damage, and some hits leave a burning pool under the target.</summary>
     Surt,
+
+    /// <summary>Niflheim's Rime: strong frost damage, and some hits freeze the target fast for a moment.</summary>
+    Rime,
 }
 
 /// <summary>
@@ -71,6 +74,7 @@ public sealed class Infusion
         new(InfusionKind.Berserker, "WhiteHiltBloodRune", "WhiteHiltHenbane:5", "Berserker's Rage"),
         new(InfusionKind.Ward, "WhiteHiltThunderRune", "FineWood:10, WhiteHiltRosehips:5", "Rowan's Ward"),
         new(InfusionKind.Surt, "WhiteHiltSurtRune", "SurtlingCore:3, FlametalNew:2", "Surt's Wrath"),
+        new(InfusionKind.Rime, "WhiteHiltRimeRune", "FreezeGland:3, Crystal:3", "Niflheim's Rime"),
     };
 
     private Infusion(InfusionKind kind, string rune, string defaultCost, string englishName)
@@ -134,6 +138,9 @@ public sealed class Infusion
                 break;
             case InfusionKind.Frost:
                 damages.m_frost += amount;
+                break;
+            case InfusionKind.Rime:
+                damages.m_frost += amount * BindingSettings.RimeFrostMultiplier.Value;
                 break;
             case InfusionKind.Venom:
             case InfusionKind.Wolfsbane:

@@ -123,13 +123,15 @@ public class PathfinderAmulet : IWhiteHiltCustomItem, IWhiteHiltConfigurable
     }
 
     /// <summary>
-    /// Returns true if the player wears a Pathfinder amulet as trinket; only then does it fill the adrenaline.
+    /// Returns true if the player wears a Pathfinder amulet as trinket, in the game's trinket slot or an extra one; only
+    /// then does it fill the adrenaline.
     /// </summary>
     /// <param name="player">The player.</param>
-    /// <returns>True while one is the worn trinket.</returns>
+    /// <returns>True while one is a worn trinket.</returns>
     public static bool IsWornAsTrinket(Player player)
     {
-        return player != null && player.m_trinketItem != null && amuletNames.Contains(player.m_trinketItem.m_shared.m_name);
+        return player != null && ((player.m_trinketItem != null && amuletNames.Contains(player.m_trinketItem.m_shared.m_name))
+            || amuletNames.Any(name => TrinketSlots.IsWornExtra(player, name)));
     }
 
     /// <summary>

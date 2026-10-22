@@ -173,6 +173,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
+        Items.Binding.RimeFreezeEffect.Register();
         Items.Weapons.BleedEffect.Register();
         Items.Weapons.ArmorBreakEffect.Register();
         Patches.Gear.WeaponTraitPatches.RegisterTranslations();
@@ -411,7 +412,6 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterRegistry.ApplyConfig();
         Monsters.DesertDragonRegistry.ApplyConfig();
         Monsters.WildMonsterRegistry.ApplyConfig();
-        Monsters.MuspellRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
         SeaBattles.Escorts.EscortContract.ApplyConfig();
         Items.Summoning.DragonHorn.ApplyConfig();

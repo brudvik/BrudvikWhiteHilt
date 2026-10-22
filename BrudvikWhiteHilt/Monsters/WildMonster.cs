@@ -198,6 +198,9 @@ internal sealed class WildMonster
     /// <summary>Whether it spawns by night.</summary>
     public bool SpawnAtNight = true;
 
+    /// <summary>Whether it only spawns in bad weather, as the difficulty's Black Beasts count it.</summary>
+    public bool BadWeatherOnly;
+
     /// <summary>Lowest ground (relative to the sea) it spawns on.</summary>
     public float MinAltitude = 1f;
 

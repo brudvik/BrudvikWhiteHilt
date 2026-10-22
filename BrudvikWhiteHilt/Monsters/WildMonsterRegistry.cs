@@ -19,6 +19,12 @@ internal static class WildMonsterRegistry
 {
     private static readonly Dictionary<string, SpawnSystem.SpawnData> spawns = new();
     private static readonly HashSet<Material> dressed = new();
+    private static readonly List<string> badWeather = new();
+
+    // The weathers and the setting the bad-weather list was made from.
+    private static EnvMan weatherOf;
+    private static int weatherCount = -1;
+    private static string weatherSetting;
 
     /// <summary>
     /// Binds the settings, registers the English texts, and makes the prefabs once the vanilla creatures can be cloned.
@@ -56,6 +62,39 @@ internal static class WildMonsterRegistry
             if (settings.RequiredKey != null)
             {
                 data.m_requiredGlobalKey = settings.RequiredKey.Value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Lets a monster that only comes in bad weather spawn only while one is on: the game's spawn system takes a list of
+    /// weathers, so it gets the names of every weather that counts as bad. Called before the game's spawn checks; it only
+    /// makes the list again when the weathers or the setting have changed.
+    /// </summary>
+    public static void RefreshWeather()
+    {
+        EnvMan env = EnvMan.instance;
+        if (env == null || (env == weatherOf && env.m_environments.Count == weatherCount && weatherSetting == Difficulty.DifficultySettings.BadWeather.Value))
+        {
+            return;
+        }
+
+        weatherOf = env;
+        weatherCount = env.m_environments.Count;
+        weatherSetting = Difficulty.DifficultySettings.BadWeather.Value;
+        badWeather.Clear();
+        badWeather.AddRange(env.m_environments.Where(Difficulty.DifficultySettings.IsBadWeather).Select(setup => setup.m_name));
+        if (badWeather.Count == 0)
+        {
+            // An empty list would let it come in any weather.
+            badWeather.Add("whitehilt_no_bad_weather");
+        }
+
+        foreach (WildMonster monster in WildMonsters.All)
+        {
+            if (monster.BadWeatherOnly && spawns.TryGetValue(monster.Id, out SpawnSystem.SpawnData data))
+            {
+                data.m_requiredEnvironments = new List<string>(badWeather);
             }
         }
     }
@@ -255,6 +294,7 @@ internal static class WildMonsterRegistry
         AddItemText(WildMonsters.WardenTrophy, "Yggdrasil Warden Trophy", "The tree stood still. Then it did not.");
         AddItemText(WildMonsters.GarmFang, "Garm Fang", "A fang blackened by hellfire, hot to the root.");
         AddItemText(WildMonsters.GarmTrophy, "Garm Hound Trophy", "Whelp of the hound at the gate of Hel.");
+        AddItemText(WildMonsters.NightGarmTrophy, "Night Garm Trophy", "It led the pack through the ash storm. The pack goes on without it.");
         AddItemText(WildMonsters.SharkMeat, "Shark Meat", "Raw, it will poison you. Hang it and wait, and it turns into food.");
         AddItemText(WildMonsters.SharkTrophy, "Greenland Shark Trophy", "It had seen five hundred winters. It did not see you.");
         AddItemText(WildMonsters.JarlTrophy, "Draugr Jarl Trophy", "The rotting head of a jarl who sailed with Naglfar.");
@@ -286,6 +326,7 @@ internal static class WildMonsterRegistry
         MonsterRegistry.AddItem(WildMonsters.WardenTrophy, "TrophyGreydwarfShaman", prefab => VisualHelper.Recolor(prefab, Tone(0.3f, 0.45f, 0.5f)));
         MonsterRegistry.AddItem(WildMonsters.GarmFang, "WolfFang", prefab => VisualHelper.Recolor(prefab, Tone(0.02f, 0.6f, 0.3f)));
         MonsterRegistry.AddItem(WildMonsters.GarmTrophy, "TrophyWolf", prefab => VisualHelper.Recolor(prefab, Tone(0.03f, 0.6f, 0.35f)));
+        MonsterRegistry.AddItem(WildMonsters.NightGarmTrophy, "TrophyWolf", prefab => VisualHelper.Recolor(prefab, Tone(0.98f, 0.45f, 0.18f)));
         MonsterRegistry.AddItem(WildMonsters.SharkMeat, "SerpentMeat", prefab => VisualHelper.Tint(prefab, new Color(0.75f, 0.8f, 0.8f)));
         MonsterRegistry.AddItem(WildMonsters.SharkTrophy, "TrophySerpent", prefab => VisualHelper.Recolor(prefab, Tone(0.5f, 0.12f, 0.55f)));
         MonsterRegistry.AddItem(WildMonsters.JarlTrophy, "TrophyDraugrElite", prefab => VisualHelper.Recolor(prefab, Tone(0.4f, 0.22f, 0.75f)));
@@ -387,6 +428,12 @@ internal static class WildMonsterRegistry
         if (spawn != null)
         {
             spawns[monster.Id] = spawn;
+            if (monster.BadWeatherOnly)
+            {
+                // Never, until the weathers are known.
+                spawn.m_requiredEnvironments = new List<string> { "whitehilt_no_bad_weather" };
+                weatherOf = null;
+            }
         }
 
         ApplyConfig();
