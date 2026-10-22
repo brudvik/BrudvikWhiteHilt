@@ -35,7 +35,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.150.0
+## ✨ New in 0.151.0
+
+- **[Three trinkets at once](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/backpack.md)**: a row of trinket slots in the equipment panel, each kind once, all sharing one adrenaline bar; when it is full, every trinket's effect comes at once.
+- **[The Rime Rune](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/smithing.md#etching-a-rune)**: Niflheim's Rime, strong frost that bites the fire-born of the Ashlands and now and then freezes the foe fast.
+- **[The Night Garm](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#night-garm)**: the Garm Hounds' leader, as big as a bear and two and a half times as strong, hunts alone in the Ashlands at night in bad weather.
+- **[A rarer Muspell Giant](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/monsters.md#the-muspell-giant)**: at most one every 45 minutes per player, instead of one for every zone round you.
+
+### Also new in 0.150.0
 
 - **[The weather stays outside your house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-indoor-weather)**: no more snowstorm in the hall or fog filling the room. Under a roof the fog thins, the snow and rain inside are taken away while you still see them out the door, and the game's rain no longer falls through roofs.
 
