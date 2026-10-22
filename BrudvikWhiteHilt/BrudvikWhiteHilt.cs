@@ -39,7 +39,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     public const string PluginName = "BrudvikWhiteHilt";
 
     /// <summary>The version; it must match Package/manifest.json and Properties/AssemblyInfo.cs.</summary>
-    public const string PluginVersion = "0.150.0";
+    public const string PluginVersion = "0.151.0";
 
     private readonly List<IWhiteHiltCustomItem> customItems = new();
     private readonly List<IWhiteHiltCustomPiece> customPieces = new();
@@ -173,6 +173,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();
+        Items.Binding.RimeFreezeEffect.Register();
         Items.Weapons.BleedEffect.Register();
         Items.Weapons.ArmorBreakEffect.Register();
         Patches.Gear.WeaponTraitPatches.RegisterTranslations();
@@ -412,7 +413,6 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.MonsterRegistry.ApplyConfig();
         Monsters.DesertDragonRegistry.ApplyConfig();
         Monsters.WildMonsterRegistry.ApplyConfig();
-        Monsters.MuspellRegistry.ApplyConfig();
         Treasure.TreasureRegistry.ApplyConfig();
         SeaBattles.Escorts.EscortContract.ApplyConfig();
         Items.Summoning.DragonHorn.ApplyConfig();

@@ -16,6 +16,9 @@ public static class BackpackSettings
     /// <summary>Rows added to every player's inventory, on top of the vanilla rows.</summary>
     public static ConfigEntry<int> ExtraRows { get; private set; }
 
+    /// <summary>Trinkets worn at once, the game's own trinket slot included.</summary>
+    public static ConfigEntry<int> TrinketSlots { get; private set; }
+
     /// <summary>Whether the hotbar switches to the build bar when a build tool is taken out, and back when it is put away.</summary>
     public static ConfigEntry<bool> AutoSwitchHotbar { get; private set; }
 
@@ -71,6 +74,9 @@ public static class BackpackSettings
         ExtraRows = WhiteHiltConfig.BindAdminOnly(Section, "ExtraRows", 1,
             "Rows added to every player's inventory, on top of the rows the game gives (4, or more when bought from a trader).",
             new AcceptableValueRange<int>(0, 2));
+        TrinketSlots = WhiteHiltConfig.BindAdminOnly(Section, "TrinketSlots", 3,
+            "Trinkets worn at once, the game's own trinket slot included; each kind once. They share one adrenaline bar, which holds what they hold together, and when it is full all their effects come at once. 1 = as the game.",
+            new AcceptableValueRange<int>(1, Backpack.TrinketSlots.MaxCount));
 
         AutoSwitchHotbar = WhiteHiltConfig.BindLocal(Section, "AutoSwitchHotbar", true,
             "Switch to the build bar when you take out a hammer, hoe or cultivator, and back to the travel bar when you put it away.");
@@ -109,6 +115,9 @@ public static class BackpackSettings
         Translations.AddEnglish("whitehilt_backpack_legs", "Legs");
         Translations.AddEnglish("whitehilt_backpack_cape", "Cape");
         Translations.AddEnglish("whitehilt_backpack_trinket", "Trinket");
+        Translations.AddEnglish("whitehilt_backpack_trinkets", "Trinkets");
+        Translations.AddEnglish("whitehilt_backpack_trinket_hint",
+            "Drag a trinket here, or right-click it in your inventory. All are worn at once, each kind once, and share one adrenaline bar: when it is full, every trinket's effect comes. Right-click it here or drag it out to take it off.");
         Translations.AddEnglish("whitehilt_backpack_slot_hint", "Drag an item here, or right-click it in your inventory.");
         Translations.AddEnglish("whitehilt_backpack_food", "Food and potions");
         Translations.AddEnglish("whitehilt_backpack_food_slot", "Food");

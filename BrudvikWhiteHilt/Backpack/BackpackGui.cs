@@ -28,7 +28,8 @@ public static class BackpackGui
 
     private static readonly PanelSection[] sections =
     {
-        new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 5)),
+        new("$whitehilt_backpack_equipment", Row(BackpackLayout.GearRow, 0, 4)),
+        new("$whitehilt_backpack_trinkets", TrinketSlots.AllPositions()),
         new("$whitehilt_backpack_food", FoodSlots.Positions(), StatsHeight + TotalHeight),
         new("$whitehilt_backpack_accessories", Row(BackpackLayout.UtilityRow, 0, UtilitySlots.Count)),
         new("$whitehilt_backpack_hands", Row(BackpackLayout.HandRow, 0, HandSlots.Count + HandSlots.CoinCount))
@@ -40,7 +41,7 @@ public static class BackpackGui
         { SlotKind.Chest, new SlotLook("ArmorLeatherChest", "$whitehilt_backpack_chest") },
         { SlotKind.Legs, new SlotLook("ArmorLeatherLegs", "$whitehilt_backpack_legs") },
         { SlotKind.Cape, new SlotLook("CapeDeerHide", "$whitehilt_backpack_cape") },
-        { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket") },
+        { SlotKind.Trinket, new SlotLook("TrinketBronzeHealth", "$whitehilt_backpack_trinket", "$whitehilt_backpack_trinket_hint") },
         { SlotKind.Food, new SlotLook("CookedMeat", "$whitehilt_backpack_food_slot", "$whitehilt_backpack_food_hint") },
         { SlotKind.Potion, new SlotLook("MeadHealthMinor", "$whitehilt_backpack_potion", "$whitehilt_backpack_potion_hint") },
         { SlotKind.Utility, new SlotLook("BeltStrength", "$whitehilt_backpack_accessory", "$whitehilt_backpack_accessory_hint") },
@@ -113,6 +114,11 @@ public static class BackpackGui
                     if (element.m_used && kind == SlotKind.Utility)
                     {
                         ShowSwitchedOff(element, grid.m_inventory.GetItemAt(pos.x, pos.y), UtilitySlots.IsExtraSlot(pos));
+                    }
+                    else if (element.m_used && TrinketSlots.IsExtraSlot(pos))
+                    {
+                        // The extra trinkets are not equipped in the game's sense, so the mark is set here.
+                        element.m_equiped.enabled = true;
                     }
 
                     break;

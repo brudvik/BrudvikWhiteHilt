@@ -4,7 +4,7 @@
 
 <img src="images/lindorm.png" alt="Lindorm" title="Lindorm" height="140"> <img src="images/giantspider.png" alt="Giant Spider" title="Giant Spider" height="140"> <img src="images/desertdragon.png" alt="Desert Dragon" title="Desert Dragon" height="140"> <img src="images/miststag.png" alt="Mist Stag" title="Mist Stag" height="140"> <img src="images/nidhoggspawn.png" alt="Nidhogg Spawn" title="Nidhogg Spawn" height="140"> <img src="images/yggdrasilwarden.png" alt="Yggdrasil Warden" title="Yggdrasil Warden" height="140"> <img src="images/garmhound.png" alt="Garm Hound" title="Garm Hound" height="140"> <img src="images/greenlandshark.png" alt="Greenland Shark" title="Greenland Shark" height="140"> <img src="images/draugrjarl.png" alt="Draugr Jarl" title="Draugr Jarl" height="140"> <img src="images/lavaworm.png" alt="Lava Worm" title="Lava Worm" height="140"> <img src="images/muspellgiant.png" alt="Muspell Giant" title="Muspell Giant" height="140"> <img src="images/huldra.png" alt="Huldra" title="Huldra" height="140"> <img src="images/huldraroot.png" alt="Unmasked Huldra" title="Unmasked Huldra" height="140"> <img src="images/mare.png" alt="Mare" title="Mare" height="140">
 
-New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Five more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound and the Greenland Shark (see [The wild beasts](#the-wild-beasts)), and in the Mistlands' fog at night [the Huldra](#the-huldra) sings and [the Mare](#the-mare) floats. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A sixth beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
+New monsters haunt the land: the Lindorm that breaks out of the ground at night, the [Lava Worm](#the-lava-worm) that rises out of the Ashlands' lava, the [Muspell Giant](#the-muspell-giant) that walks out of the fire, giant spiders that nest among the trees, and Desert Dragons that breathe fire over the Plains. Six more beasts walk the Mistlands, the Ashlands and the open sea: the Mist Stag, the Nidhogg Spawn, the Yggdrasil Warden, the Garm Hound, the [Night Garm](#night-garm) and the Greenland Shark (see [The wild beasts](#the-wild-beasts)), and in the Mistlands' fog at night [the Huldra](#the-huldra) sings and [the Mare](#the-mare) floats. Once Moder is slain, a horn from the Bog Witch calls a White Dragon to fight at your side. A seventh beast never roams: the Draugr Jarl leads the crew of a Nail Ship flagship (see [Draugr Jarl](#draugr-jarl)).
 
 Creature labels use localized names: Lindorm, Giant Spider and Desert Dragon (Lindorm, Kjempeedderkopp and Ørkendrage in Norwegian), and likewise for the wild beasts, not their internal `WhiteHilt_` prefab identifiers.
 
@@ -67,7 +67,7 @@ A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**
 - It has **9000 health**. It punches, slams the ground and **throws molten rocks**, all as a troll does but much harder (3 times the troll's blunt damage: a punch of 180 blunt and 90 fire) and with **half as much fire** on top, so every hit sets you burning. The slam's area is as wide as the giant.
 - It leaves **burning pools** in its steps (one every 2 seconds while it walks) and where its rocks land: 20 fire damage per second, 2.2 m across, for 8 seconds. They burn its enemies, never buildings.
 - It is immune to fire, lava and poison, resistant to slashing, piercing and spirit, and **very weak to frost**. Pickaxes hurt it as they would stone.
-- It walks the Ashlands by day and night once **the Queen** is slain: a 4% chance every 15 minutes, never more than one near a player.
+- It walks the Ashlands by day and night once **the Queen** is slain. Out in the Ashlands each player has a 3% chance a minute that one walks out of the fire 45 to 70 m away, never while one is within 200 m, and then not again for that player for 45 minutes. `whitehilt_muspell` shows whether one can come where you stand; admins can summon one with `whitehilt_muspell summon`.
 - It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy one time in four.
 
 ## The Huldra
@@ -166,7 +166,7 @@ The Lindorm shrugs off chop and pickaxe damage, resists pierce and poison and is
 
 ## The wild beasts
 
-Five more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there. The Draugr Jarl is the exception: he never spawns in the wild.
+Six more monsters, each with its own animated model, own sounds and own loot. They are cloned from vanilla creatures, so they use the normal star system and the [Difficulty](difficulty.md) settings. Each has its own section `[Monsters.<Name>]` (see Config below), and all of them can be switched off or made rarer there. The Draugr Jarl is the exception: he never spawns in the wild.
 
 | | Where | When | Health | Attacks | Speed (walk / run) |
 |---|---|---|---|---|---|
@@ -174,6 +174,7 @@ Five more monsters, each with its own animated model, own sounds and own loot. T
 | **Nidhogg Spawn** | Mistlands | Night only | 1800 | Bite, 95 slash + 30 poison; crushing blow, 150 blunt | 2.5 / 8 |
 | **Yggdrasil Warden** | Mistlands | Day and night | 3000 | Slam, 160 blunt, long reach | 1.2 / 2.5 |
 | **Garm Hound** | Ashlands | Night only, in packs of 2–3 | 500 | Bite, 60 slash + 45 fire | 4 / 10 |
+| **Night Garm** | Ashlands | Night in bad weather only, alone | 1250 | Bite, 150 slash + 112 fire | 4 / 10 |
 | **Greenland Shark** | Open sea, after **Bonemass** | Day and night | 450 | Bite, 60 pierce | swims at 6 |
 | **Draugr Jarl** | The deck of a Nail flagship only | Never in the wild | 600 per level | Chop, 70 slash; sweep, 45 slash | 1.4 / 2.5 |
 
@@ -192,6 +193,10 @@ A tree grown from a fallen branch of Yggdrasil, about **4 m tall**, with glowing
 ### Garm Hound
 
 Whelps of Garm, the hound of Hel: charcoal-black, with yellow eyes, about 1.5 m at the head and **2.6 m long**. They hunt in **packs of 2–3** at night in the Ashlands and circle their prey before they bite. Their bite is slash and **fire**, so it sets you burning. They are immune to fire and weak to frost and spirit. They drop Garm Fangs.
+
+### Night Garm
+
+The leader of the pack: a Garm Hound **as big as a bear**, about 2.1 m at the head and 3.6 m long, near black, and **two and a half times as strong** (1250 health, a bite of 150 slash and 112 fire). It hunts **alone, only at night and only in bad weather** in the Ashlands: ash rain, storms and the like, whatever the [Black Beasts](difficulty.md) count as bad weather (`[Difficulty.Beasts] BadWeather`). Like the hounds it is immune to fire and weak to frost and spirit. It drops Garm Fangs ×3–5, and its trophy one time in four.
 
 ### Greenland Shark
 
@@ -240,6 +245,8 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 | **Yggdrasil Warden Trophy** | Yggdrasil Warden | 10% | Your wall |
 | **Garm Fang** ×1–2 | Garm Hound | Always | Garm Fang Arrow (below) |
 | **Garm Hound Trophy** | Garm Hound | 10% | Your wall |
+| **Garm Fang** ×3–5 | Night Garm | Always | Garm Fang Arrow (below) |
+| **Night Garm Trophy** | Night Garm | 25% | Your wall |
 | **Shark Meat** ×2–4 | Greenland Shark | Always | Hákarl (below) |
 | **Greenland Shark Trophy** | Greenland Shark | 10% | Your wall |
 | **Draugr Jarl Trophy** | Draugr Jarl | Always | Your wall |
@@ -276,22 +283,22 @@ Three pieces of the Ask armour's make, charred black with glowing seams. Each ha
 
 ## Config
 
-Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilWarden]`, `[Monsters.GarmHound]` and `[Monsters.GreenlandShark]` (admin only, synced from the server). They share the same keys:
+Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilWarden]`, `[Monsters.GarmHound]`, `[Monsters.NightGarm]` and `[Monsters.GreenlandShark]` (admin only, synced from the server). They share the same keys; the defaults are in that order:
 
 | Setting | Default | What it does |
 |---|---|---|
 | `Enabled` | true | The monster spawns |
-| `Health` | 900 / 1800 / 3000 / 500 / 450 | Health (after a restart) |
-| `Damage` | 80 / 95 / 160 / 60 / 60 | Damage of the first attack: the stag's charge, the Spawn's and the Garm Hound's bite, the Warden's slam, the shark's bite (after a restart) |
+| `Health` | 900 / 1800 / 3000 / 500 / 1250 / 450 | Health (after a restart) |
+| `Damage` | 80 / 95 / 160 / 60 / 150 / 60 | Damage of the first attack: the stag's charge, the Spawn's, the Garm Hound's and the Night Garm's bite, the Warden's slam, the shark's bite (after a restart) |
 | `SecondDamage` | 100 / 150 | Blunt damage of the second attack, for the stag (stomp) and the Spawn (crushing blow) (after a restart) |
-| `ExtraDamage` | 30 / 45 | Poison (Spawn) or fire (Garm Hound) added to the bite (after a restart) |
+| `ExtraDamage` | 30 / 45 / 112 | Poison (Spawn) or fire (Garm Hound, Night Garm) added to the bite (after a restart) |
 | `Scale` | 1 | Size (1 = the sizes above; after a restart) |
-| `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
-| `SpawnChance` | 15 / 10 / 6 / 15 / 8 | Percent chance per spawn check; 0 = none |
-| `SpawnSeconds` | 300 / 400 / 600 / 250 / 300 | Seconds between two spawn checks |
-| `MaxSpawned` | 1 / 1 / 1 / 3 / 1 | Most around a player |
+| `StarScale` | 0.15 (Night Garm 0.1) | Visual growth per star up to two stars (+15% / +30%; after a restart) |
+| `SpawnChance` | 15 / 10 / 6 / 15 / 10 / 8 | Percent chance per spawn check; 0 = none. The Night Garm's checks only count at night in bad weather |
+| `SpawnSeconds` | 300 / 400 / 600 / 250 / 400 / 300 | Seconds between two spawn checks |
+| `MaxSpawned` | 1 / 1 / 1 / 3 / 1 / 1 | Most around a player |
 | `GroupMin` / `GroupMax` | 2 / 3 | Garm Hound only: pack size |
-| `TrophyChance` | 10 | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 10 (Night Garm 25) | Percent chance of its trophy (after a restart) |
 | `Sounds` | true | Own sounds for idle, alert, attack, injury and death (after a restart) |
 | `WakeRange` | 8 | Yggdrasil Warden only: metres at which a player wakes it (after a restart) |
 | `RequiredKey` | defeated_bonemass | Greenland Shark only: global key needed first; empty for none |
@@ -368,8 +375,8 @@ Section `[Muspell Giant]` (admin only, synced from the server):
 |---|---|---|
 | `Enabled` | true | The Muspell Giant comes at all |
 | `RequiredKey` | defeated_queen | Global key needed first; empty for none |
-| `SpawnChance` | 4 | Percent chance per spawn check; 0 = none |
-| `SpawnSeconds` | 900 | Seconds between two spawn checks |
+| `ChancePerMinute` | 3 | Percent chance a minute that one comes for a player out in the Ashlands; 0 = none |
+| `CooldownMinutes` | 45 | Real minutes before one can come for the same player again |
 | `Health` | 9000 | Health (after a restart) |
 | `DamageMultiplier` | 3 | Its blows and rocks do the troll's blunt damage times this (after a restart) |
 | `FireShare` | 0.5 | Fire each blow and rock adds, as a share of its blunt damage (after a restart) |

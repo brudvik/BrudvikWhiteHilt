@@ -38,6 +38,7 @@ public static class GearBinding
         Translations.AddEnglish("whitehilt_infused_berserker", "Etched rune: {0}, up to {1}% more damage the more health you have lost");
         Translations.AddEnglish("whitehilt_infused_ward", "Etched rune: {0}, a foe whose blow you block is struck by {1} lightning");
         Translations.AddEnglish("whitehilt_infused_surt", "Etched rune: {0}, {1}% of hits leave a burning pool under the foe");
+        Translations.AddEnglish("whitehilt_infused_rime", "Etched rune: {0}, {1} times the frost of other runes, and {2}% of hits freeze the foe fast for {3} s");
         Infusion.RegisterTranslations();
     }
 
@@ -272,6 +273,16 @@ public static class GearBinding
     }
 
     /// <summary>
+    /// Whether a weapon's hits can freeze the target fast.
+    /// </summary>
+    /// <param name="item">The weapon.</param>
+    /// <returns>True for a bound weapon etched with Niflheim's Rime.</returns>
+    public static bool Freezes(ItemDrop.ItemData item)
+    {
+        return GetBound(item) != null && GetInfusion(item)?.Kind == InfusionKind.Rime;
+    }
+
+    /// <summary>
     /// Extra damage of a weapon etched with the Berserker's Rage, which grows with the health its wielder has lost.
     /// </summary>
     /// <param name="item">The weapon.</param>
@@ -324,6 +335,8 @@ public static class GearBinding
                 InfusionKind.Dread => string.Format(localization.Localize("$whitehilt_infused_dread"), name,
                     Percent(BindingSettings.DreadChance.Value), Translations.Number(BindingSettings.DreadSeconds.Value)),
                 InfusionKind.Surt => string.Format(localization.Localize("$whitehilt_infused_surt"), name, Percent(BindingSettings.SurtPoolChance.Value)),
+                InfusionKind.Rime => string.Format(localization.Localize("$whitehilt_infused_rime"), name, Translations.Number(BindingSettings.RimeFrostMultiplier.Value),
+                    Percent(BindingSettings.RimeFreezeChance.Value), Translations.Number(BindingSettings.RimeFreezeSeconds.Value)),
                 _ => string.Format(localization.Localize("$whitehilt_infused"), name),
             };
             text += "\n<color=orange>" + line + "</color>";

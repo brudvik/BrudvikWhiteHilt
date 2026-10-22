@@ -11,8 +11,8 @@ namespace BrudvikWhiteHilt.Monsters;
 /// <summary>
 /// Makes the Muspell Giant: a fire giant of Muspelheim, a clone of the vanilla troll grown to about 9 m, charred black
 /// with glowing cracks. Its punches, ground slam and thrown rocks hit harder and burn, its rocks and its steps leave
-/// burning pools (<see cref="MuspellGiant"/>), and fire and lava do not hurt it, while frost cracks it. It now and then
-/// walks the Ashlands once the Queen is slain.
+/// burning pools (<see cref="MuspellGiant"/>), and fire and lava do not hurt it, while frost cracks it. Once the Queen
+/// is slain <see cref="MuspellService"/> now and then lets one walk out of the fire near a player in the Ashlands.
 /// </summary>
 public static class MuspellRegistry
 {
@@ -32,8 +32,6 @@ public static class MuspellRegistry
     private static readonly string[] trollWeapons = { "troll_groundslam", "troll_punch", "troll_throw" };
     private static readonly Color glowColor = new(1f, 0.42f, 0.1f);
 
-    private static SpawnSystem.SpawnData spawn;
-
     /// <summary>
     /// Binds the settings, registers the English texts, and makes the prefab once the vanilla creatures can be cloned.
     /// </summary>
@@ -47,22 +45,6 @@ public static class MuspellRegistry
         Translations.AddEnglishNameAndDescription(Translations.ItemKey(TrophyName), "Muspell Giant Trophy",
             "A head of molten rock, still cooling. Surt will miss one of his sons.");
         CreatureManager.OnVanillaCreaturesAvailable += Add;
-    }
-
-    /// <summary>
-    /// Applies changed or server-synced settings to its spawn data.
-    /// </summary>
-    public static void ApplyConfig()
-    {
-        if (spawn == null)
-        {
-            return;
-        }
-
-        spawn.m_enabled = MuspellSettings.Enabled.Value && MuspellSettings.SpawnChance.Value > 0f;
-        spawn.m_spawnChance = MuspellSettings.SpawnChance.Value;
-        spawn.m_spawnInterval = MuspellSettings.SpawnSeconds.Value;
-        spawn.m_requiredGlobalKey = MuspellSettings.RequiredKey.Value;
     }
 
     private static void Add()
@@ -116,27 +98,6 @@ public static class MuspellRegistry
                 MonsterRegistry.Drop(SurtstoneName, 1, 2, 100f),
                 MonsterRegistry.Drop("FlametalOreNew", 6, 10, 100f),
                 MonsterRegistry.Drop(TrophyName, 1, 1, MuspellSettings.TrophyChance.Value)
-            },
-            SpawnConfigs = new[]
-            {
-                new SpawnConfig
-                {
-                    Name = $"{PrefabName}_Spawn",
-                    Biome = Heightmap.Biome.AshLands,
-                    SpawnAtDay = true,
-                    SpawnAtNight = true,
-                    SpawnInForest = true,
-                    SpawnOutsideForest = true,
-                    SpawnChance = MuspellSettings.SpawnChance.Value,
-                    SpawnInterval = MuspellSettings.SpawnSeconds.Value,
-                    MaxSpawned = 1,
-                    SpawnDistance = 60f,
-                    MinAltitude = 1f,
-                    MaxTilt = 25f,
-                    MinLevel = 1,
-                    MaxLevel = 1,
-                    RequiredGlobalKey = MuspellSettings.RequiredKey.Value
-                }
             }
         });
 
@@ -193,8 +154,6 @@ public static class MuspellRegistry
         prefab.AddComponent<MuspellGiant>();
         prefab.AddComponent<ArrivalSound>().clip = "arrival_muspell";
         CreatureManager.Instance.AddCreature(creature);
-        spawn = creature.Spawns?.FirstOrDefault();
-        ApplyConfig();
     }
 
     // A troll's weapon made the giant's: its reach grown with the giant, its blunt damage raised and fire added. The slam

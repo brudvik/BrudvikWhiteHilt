@@ -22,17 +22,17 @@ public static class UtilitySlots
 
     // The Swamp Key opens crypt doors from anywhere in the inventory, so it may be kept here out of the way.
     private static readonly HashSet<string> extraItems = new() { "$item_cryptkey" };
-    private static readonly List<ItemDrop.ItemData> worn = new();
-    private static readonly HashSet<StatusEffect> applied = new();
+    private static readonly ExtraWear wear = new();
     private static Player wornBy;
-    private static float[] modifierSums;
     private static float nextCheck;
 
     /// <summary>Eitr regeneration added by the extra accessories.</summary>
-    public static float EitrRegen { get; private set; }
+    public static float EitrRegen => wear.EitrRegen;
 
     /// <summary>Weight of the extra accessories, counted as worn equipment.</summary>
-    public static float Weight { get; private set; }
+    public static float Weight => wear.Weight;
+
+    private static List<ItemDrop.ItemData> worn => wear.Worn;
 
     /// <summary>
     /// Lets an item that is not a vanilla accessory lie in the extra slots, e.g. the Home Stone.
@@ -284,8 +284,7 @@ public static class UtilitySlots
         if (changed)
         {
             wornBy = player;
-            worn.Clear();
-            applied.Clear();
+            wear.Reset();
         }
 
         if (BackpackLayout.IsLocalInventory(player.m_inventory) && !player.IsDead())
@@ -315,7 +314,7 @@ public static class UtilitySlots
         if (changed || Time.time >= nextCheck)
         {
             nextCheck = Time.time + CheckSeconds;
-            ApplyStatusEffects(player);
+            wear.ApplyStatusEffects(player);
         }
     }
 
@@ -325,19 +324,10 @@ public static class UtilitySlots
     /// <param name="values">The player's summed equipment modifiers.</param>
     public static void AddModifiers(float[] values)
     {
-        if (modifierSums == null || values == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < values.Length && i < modifierSums.Length; i++)
-        {
-            values[i] += modifierSums[i];
-        }
+        wear.AddModifiers(values);
     }
 
-    // Collects the accessories worn in the utility row and sums their eitr regeneration, weight and the equipment
-    // modifiers the game reads by reflection.
+    // Collects the accessories worn in the utility row and sums what they give.
     private static void Collect(Player player)
     {
         worn.Clear();
@@ -347,60 +337,7 @@ public static class UtilitySlots
             worn.Add(active ? Active(player, x) : null);
         }
 
-        EitrRegen = 0f;
-        Weight = 0f;
-        System.Reflection.FieldInfo[] fields = Player.s_equipmentModifierSourceFields;
-        modifierSums = fields != null ? new float[fields.Length] : null;
-        foreach (ItemDrop.ItemData item in worn)
-        {
-            if (item == null)
-            {
-                continue;
-            }
-
-            EitrRegen += item.m_shared.m_eitrRegenModifier;
-            Weight += item.m_shared.m_weight;
-            for (int i = 0; modifierSums != null && i < fields.Length; i++)
-            {
-                if (fields[i].GetValue(item.m_shared) is float value)
-                {
-                    modifierSums[i] += value;
-                }
-            }
-        }
-    }
-
-    // Keeps the status effects of the worn accessories on the player, removing those of accessories taken off (unless
-    // worn gear gives the same).
-    private static void ApplyStatusEffects(Player player)
-    {
-        HashSet<StatusEffect> desired = new();
-        foreach (ItemDrop.ItemData item in worn)
-        {
-            if (item != null && item.m_shared.m_equipStatusEffect != null)
-            {
-                desired.Add(item.m_shared.m_equipStatusEffect);
-            }
-        }
-
-        foreach (StatusEffect effect in applied)
-        {
-            if (!desired.Contains(effect) && !player.m_equipmentStatusEffects.Contains(effect))
-            {
-                player.m_seman.RemoveStatusEffect(effect.NameHash());
-            }
-        }
-
-        foreach (StatusEffect effect in desired)
-        {
-            if (!player.m_seman.HaveStatusEffect(effect.NameHash()))
-            {
-                player.m_seman.AddStatusEffect(effect);
-            }
-        }
-
-        applied.Clear();
-        applied.UnionWith(desired);
+        wear.Collect();
     }
 
     private static void SetOff(ItemDrop.ItemData item, bool off)

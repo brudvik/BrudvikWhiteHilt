@@ -2,6 +2,30 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.151.0 - 2026-10-22
+
+### Added
+- **[Three trinkets at once](docs/backpack.md).** The equipment panel has a row of trinket slots: the game's own and
+  two more (`[Backpack] TrinketSlots`, 1–4), each kind once. The extra ones give their effects, stats and weight
+  without showing on the character. All worn trinkets share one adrenaline bar, which holds what they hold together;
+  when it is full every trinket's effect comes at once. The Pathfinder's Amulet fills the bar and gives Raven Sight
+  from any trinket slot.
+- **[The Rime Rune](docs/smithing.md#etching-a-rune)**: Niflheim's Rime, frost damage half as strong again as the
+  other runes', and 15% of the hits freeze the foe fast for 1.5 s (never bosses). Smithed at the Rune Forge from Freeze
+  Glands and a Dragon Tear once the Ashlands are unlocked, and etched with Freeze Glands and Crystal. The Muspell Giant
+  and the Lava Worm are very weak to frost (`RimeFrostMultiplier`, `RimeFreezeChance`, `RimeFreezeSeconds` in
+  `[Gear.Infusions]`).
+- **[The Night Garm](docs/monsters.md#night-garm)**: the leader of the Garm Hounds, as big as a bear and two and a half
+  times as strong (1250 health, a bite of 150 slash and 112 fire). It hunts alone in the Ashlands, only at night in
+  bad weather, and drops Garm Fangs and its own trophy (`[Monsters.NightGarm]`).
+
+### Changed
+- **The Muspell Giant comes far less often.** The game's spawn system rolled its chance once for every loaded zone
+  round a player, so it came several times as often as its numbers said. Now each player out in the Ashlands has a 3%
+  chance a minute, never while a giant is within 200 m, and then not again for 45 minutes (`ChancePerMinute` and
+  `CooldownMinutes` in `[Muspell Giant]`, in place of `SpawnChance` and `SpawnSeconds`). `whitehilt_muspell` shows
+  whether one can come where you stand; admins can summon one with `whitehilt_muspell summon`.
+
 ## v0.150.0 - 2026-10-22
 
 ### Added

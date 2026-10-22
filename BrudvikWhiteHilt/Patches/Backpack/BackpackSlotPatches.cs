@@ -13,7 +13,8 @@ namespace BrudvikWhiteHilt.Patches.Backpack;
 public static class BackpackSlotPatches
 {
     /// <summary>
-    /// Sends an accessory to a free extra slot when the game's own slot is taken, and refuses a second of the same kind.
+    /// Sends an accessory or a trinket to a free extra slot when the game's own slot is taken, and refuses a second of the
+    /// same kind.
     /// </summary>
     /// <param name="__instance">The character.</param>
     /// <param name="item">The item.</param>
@@ -23,9 +24,11 @@ public static class BackpackSlotPatches
     [HarmonyPrefix]
     public static bool EquipItemPrefix(Humanoid __instance, ItemDrop.ItemData item, ref bool __result)
     {
+        ItemDrop.ItemData.ItemType? type = item?.m_shared.m_itemType;
         if (__instance is not Player player || player != Player.m_localPlayer || GearSlots.Dropping
-            || item?.m_shared.m_itemType != ItemDrop.ItemData.ItemType.Utility || player.IsItemEquiped(item)
-            || !BackpackLayout.IsLocalInventory(player.m_inventory) || UtilitySlots.BeforeEquip(player, item))
+            || (type != ItemDrop.ItemData.ItemType.Utility && type != ItemDrop.ItemData.ItemType.Trinket) || player.IsItemEquiped(item)
+            || !BackpackLayout.IsLocalInventory(player.m_inventory)
+            || (type == ItemDrop.ItemData.ItemType.Utility ? UtilitySlots.BeforeEquip(player, item) : TrinketSlots.BeforeEquip(player, item)))
         {
             return true;
         }
@@ -139,7 +142,7 @@ public static class BackpackSlotPatches
     public static bool ToggleEquipped(Player __instance, ItemDrop.ItemData item, ref bool __result)
     {
         if (__instance != Player.m_localPlayer || __instance.InAttack() || !BackpackLayout.IsLocalInventory(__instance.m_inventory)
-            || (!GearSlots.InSlot(item) && !UtilitySlots.IsExtraSlot(item.m_gridPos)))
+            || (!GearSlots.InSlot(item) && !UtilitySlots.IsExtraSlot(item.m_gridPos) && !TrinketSlots.IsExtraSlot(item.m_gridPos)))
         {
             return true;
         }
@@ -244,8 +247,9 @@ public static class BackpackSlotPatches
             return true;
         }
 
-        if (toPlayer && BackpackLayout.KindAt(pos, BackpackLayout.VisibleRows(player)) == SlotKind.Utility
-            && UtilitySlots.Fits(item, pos))
+        SlotKind kind = toPlayer ? BackpackLayout.KindAt(pos, BackpackLayout.VisibleRows(player)) : SlotKind.Void;
+        if ((kind == SlotKind.Utility && UtilitySlots.Fits(item, pos))
+            || (kind == SlotKind.Trinket && item.m_shared.m_itemType == ItemDrop.ItemData.ItemType.Trinket))
         {
             player.Message(MessageHud.MessageType.Center, "$whitehilt_backpack_duplicate");
         }
@@ -267,6 +271,7 @@ public static class BackpackSlotPatches
             GearSlots.Tick(__instance);
             FoodSlots.Tick(__instance);
             UtilitySlots.Tick(__instance);
+            TrinketSlots.Tick(__instance);
             HandSlots.Tick(__instance);
         }
     }
@@ -282,6 +287,7 @@ public static class BackpackSlotPatches
         if (__instance == Player.m_localPlayer)
         {
             UtilitySlots.AddModifiers(__instance.m_equipmentModifierValues);
+            TrinketSlots.AddModifiers(__instance.m_equipmentModifierValues);
         }
     }
 
@@ -296,7 +302,7 @@ public static class BackpackSlotPatches
     {
         if (__instance == Player.m_localPlayer)
         {
-            __result += UtilitySlots.EitrRegen;
+            __result += UtilitySlots.EitrRegen + TrinketSlots.EitrRegen;
         }
     }
 
@@ -311,7 +317,35 @@ public static class BackpackSlotPatches
     {
         if (__instance == Player.m_localPlayer)
         {
-            __result += UtilitySlots.Weight;
+            __result += UtilitySlots.Weight + TrinketSlots.Weight;
+        }
+    }
+
+    /// <summary>
+    /// Notes the adrenaline before it is added, so a full bar can also bring the extra trinkets' effects.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    /// <param name="__state">The adrenaline before.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.AddAdrenaline))]
+    [HarmonyPrefix]
+    public static void AddAdrenalinePrefix(Player __instance, out float __state)
+    {
+        __state = __instance.m_adrenaline;
+    }
+
+    /// <summary>
+    /// Lets the extra trinkets' effects come when the shared adrenaline bar is full.
+    /// </summary>
+    /// <param name="__instance">The player.</param>
+    /// <param name="v">Adrenaline added.</param>
+    /// <param name="__state">The adrenaline before.</param>
+    [HarmonyPatch(typeof(Player), nameof(Player.AddAdrenaline))]
+    [HarmonyPostfix]
+    public static void AddAdrenaline(Player __instance, float v, float __state)
+    {
+        if (__instance == Player.m_localPlayer)
+        {
+            TrinketSlots.AfterAddAdrenaline(__instance, __state, v);
         }
     }
 
