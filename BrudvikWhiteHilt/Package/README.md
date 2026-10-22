@@ -35,7 +35,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.149.1
+## ✨ New in 0.150.0
+
+- **[The weather stays outside your house](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/quality-of-life.md#-indoor-weather)**: no more snowstorm in the hall or fog filling the room. Under a roof the fog thins, the snow and rain inside are taken away while you still see them out the door, and the game's rain no longer falls through roofs.
+
+### Also new in 0.149.1
 
 - **[A Mast Wisp that clears the way ahead](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/ships.md)**: the Mistlands mist now melts away round the White Hilt Ship and ahead of its bow as it sails, instead of closing in before it gives way, and the wisp reaches twice as far: 30 m, growing to 60 m with Exploration.
 
@@ -423,7 +427,7 @@ Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven and h
 
 <img src="https://raw.githubusercontent.com/brudvik/BrudvikWhiteHilt/master/docs/images/readme/tile_clock.png" alt="HUD, clock, party & sound" height="120">
 
-Your bars, food, hotbar and effects in one console, a clock with the weather, your friends' health and stamina, muffled weather indoors and dropped items that float.
+Your bars, food, hotbar and effects in one console, a clock with the weather, your friends' health and stamina, weather kept out of your house, muffled and without snow or fog, and dropped items that float.
 
 #### [Skills & milestones](https://github.com/brudvik/BrudvikWhiteHilt/blob/master/docs/skills.md)
 

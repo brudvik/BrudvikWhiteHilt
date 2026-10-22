@@ -43,7 +43,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.149.1
+## ✨ New in 0.150.0
+
+- **[The weather stays outside your house](docs/quality-of-life.md#-indoor-weather)**: no more snowstorm in the hall or fog filling the room. Under a roof the fog thins, the snow and rain inside are taken away while you still see them out the door, and the game's rain no longer falls through roofs.
+
+### Also new in 0.149.1
 
 - **[A Mast Wisp that clears the way ahead](docs/ships.md)**: the Mistlands mist now melts away round the White Hilt Ship and ahead of its bow as it sails, instead of closing in before it gives way, and the wisp reaches twice as far: 30 m, growing to 60 m with Exploration.
 
@@ -287,7 +291,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <tr>
 <td align="center" width="33%" valign="top"><a href="docs/backpack.md"><img src="docs/images/readme/tile_backpack.png" height="110" alt=""></a><br><b><a href="docs/backpack.md">Backpack</a></b><br><sub>An extra row, two hotbars, and slots for equipment, food, potions, ammo and coins.</sub></td>
 <td align="center" width="33%" valign="top"><a href="docs/production.md"><img src="docs/images/readme/tile_production.png" height="110" alt=""></a><br><b><a href="docs/production.md">Production timers</a></b><br><sub>Time left, fuel and why it stopped on every smelter, kiln, fermenter, oven and hive.</sub></td>
-<td align="center" width="33%" valign="top"><a href="docs/quality-of-life.md"><img src="docs/images/readme/tile_clock.png" height="110" alt=""></a><br><b><a href="docs/quality-of-life.md">HUD, clock, party & sound</a></b><br><sub>Your bars, food, hotbar and effects in one console, a clock with the weather, your friends' health and stamina, muffled weather indoors and dropped items that float.</sub></td>
+<td align="center" width="33%" valign="top"><a href="docs/quality-of-life.md"><img src="docs/images/readme/tile_clock.png" height="110" alt=""></a><br><b><a href="docs/quality-of-life.md">HUD, clock, party & sound</a></b><br><sub>Your bars, food, hotbar and effects in one console, a clock with the weather, your friends' health and stamina, weather kept out of your house, muffled and without snow or fog, and dropped items that float.</sub></td>
 </tr>
 <tr>
 <td align="center" valign="top"><a href="docs/skills.md"><img src="docs/images/readme/tile_skills.png" height="110" alt=""></a><br><b><a href="docs/skills.md">Skills & milestones</a></b><br><sub>Milestones from level 25 to 100, a new Foraging skill, starred food and crops and the Compost Bin.</sub></td>
