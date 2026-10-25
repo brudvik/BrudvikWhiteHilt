@@ -156,6 +156,30 @@ public static class StormSettings
     /// <summary>The share of its health a weak piece loses to a quake.</summary>
     public static ConfigEntry<float> RagnarokQuakeDamage { get; private set; }
 
+    /// <summary>Whether the dead rise from the earth in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokDead { get; private set; }
+
+    /// <summary>Seconds between the dead rising near a player in Ragnarok on average.</summary>
+    public static ConfigEntry<float> RagnarokDeadSeconds { get; private set; }
+
+    /// <summary>Whether Surt's host comes for bases in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokSurt { get; private set; }
+
+    /// <summary>Seconds between Surt's host coming for a base in Ragnarok on average.</summary>
+    public static ConfigEntry<float> RagnarokSurtSeconds { get; private set; }
+
+    /// <summary>Whether Fenrir is loosed on players out in the open in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokFenrir { get; private set; }
+
+    /// <summary>Seconds out in the open in Ragnarok before Fenrir is loosed.</summary>
+    public static ConfigEntry<float> RagnarokFenrirSeconds { get; private set; }
+
+    /// <summary>How many times harder Fenrir bites than a wolf.</summary>
+    public static ConfigEntry<float> RagnarokFenrirDamage { get; private set; }
+
+    /// <summary>Whether Naglfar comes in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokNaglfar { get; private set; }
+
     /// <summary>Whether the storm remembers who braves it.</summary>
     public static ConfigEntry<bool> Grudge { get; private set; }
 
@@ -264,6 +288,22 @@ public static class StormSettings
         RagnarokQuakeDamage = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokQuakeDamage", 0.1f,
             "The share of its full health a building piece at half its health or less loses to a quake (0.1 = 10%). 0: quakes harm nothing.",
             new AcceptableValueRange<float>(0f, 0.5f));
+        RagnarokDead = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokDead", true,
+            "While Ragnarok rages the dead rise from the earth near players, two or three at a time and never more than eight close by: draugr, now and then an archer or an elite. They hunt the living and break what is built in their way, and sink back into the earth when the storm passes.");
+        RagnarokDeadSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokDeadSeconds", 60f,
+            "Seconds between the dead rising near each player on average.", new AcceptableValueRange<float>(15f, 600f));
+        RagnarokSurt = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokSurt", true,
+            "While Ragnarok rages Surt's host comes out of the fire for the bases players are in: two charred warriors and an archer just outside, never more than six close by. They go when the storm passes.");
+        RagnarokSurtSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokSurtSeconds", 120f,
+            "Seconds between Surt's host coming for a base on average.", new AcceptableValueRange<float>(30f, 900f));
+        RagnarokFenrir = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFenrir", true,
+            "Whoever stays out in the open in Ragnarok has Fenrir loosed on them, once a storm: a black wolf the size of a house that no weapon bites on, as fast as a running man, howling as he comes. A roof, a fire or a cave makes him lose the scent; with no one left in the open, he goes.");
+        RagnarokFenrirSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFenrirSeconds", 30f,
+            "Seconds out in the open while Ragnarok rages before Fenrir is loosed.", new AcceptableValueRange<float>(5f, 600f));
+        RagnarokFenrirDamage = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFenrirDamage", 4f,
+            "How many times harder Fenrir bites than a wolf.", new AcceptableValueRange<float>(1f, 20f));
+        RagnarokNaglfar = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokNaglfar", true,
+            "Once a storm Naglfar, the ship of nails, comes in Ragnarok: a fleet of Nail Ships sails out of the storm for a ship at sea, or by a player on the coast it runs ashore and its dead wade out of the sea.");
         Grudge = WhiteHiltConfig.BindAdminOnly(Section, "Grudge", true,
             "The storm remembers who braves it: each storm a player lives through out in it makes the meter climb faster for them the next time, and leaves them more finds; each storm they sit out in shelter it forgets them a little.");
         GrudgeStep = WhiteHiltConfig.BindAdminOnly(Section, "GrudgeStep", 0.05f,
@@ -337,6 +377,13 @@ public static class StormSettings
         Translations.AddEnglish("msg_whitehilt_ragnarok_sun", "Skoll swallows the sun!");
         Translations.AddEnglish("msg_whitehilt_ragnarok_moon", "Hati swallows the moon!");
         Translations.AddEnglish("msg_whitehilt_ragnarok_quake", "The earth shakes: Yggdrasil trembles!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_dead", "The dead rise from the earth!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_surt", "Surt's host comes out of the fire!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_fenrir", "Fenrir is loose! Find a roof or a fire!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_fenrir_lost", "Fenrir loses your scent");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_fenrir_immune", "No weapon bites on Fenrir. Run!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_naglfar", "Naglfar sails out of the storm!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_naglfar_ashore", "Naglfar runs ashore: the dead wade out of the sea!");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_up", "The storm remembers you. It will come harder for you next time");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_down", "The storm forgets you a little");
         Translations.AddEnglish("whitehilt_storm_grudge", "The storm remembers you: {0}% faster");

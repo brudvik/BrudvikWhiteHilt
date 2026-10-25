@@ -77,6 +77,23 @@ falls is always Ragnarok, and any other is one time in twenty (`RagnarokChance`)
   are already at half their health or less lose a tenth of their full health (`RagnarokQuakeDamage`). Keep the house
   mended.
 
+While Ragnarok rages, outside its eye, its host comes:
+- **The dead rise from the earth** 16 to 30 m from each player about every minute (`RagnarokDead`,
+  `RagnarokDeadSeconds`), two or three at a time and never more than eight close by: draugr, now and then an archer or
+  an elite. They hunt the living and break what is built in their way, so a barred house is worth having.
+- **Surt's host** comes out of the fire for a base a player is in, about every two minutes (`RagnarokSurt`,
+  `RagnarokSurtSeconds`): two charred warriors and an archer just outside it, never more than six close by.
+- **Fenrir** is loosed, once a storm, on a player who stays out in the open for 30 seconds (`RagnarokFenrir`,
+  `RagnarokFenrirSeconds`): a black wolf the size of a house with eyes of fire, as fast as a running man, biting four
+  times as hard as a wolf (`RagnarokFenrirDamage`). No weapon bites on him. He is heard howling as he comes; a roof, a
+  fire or a cave makes him lose your scent, and with no one left in the open he goes.
+- **Naglfar**, the ship of nails, comes once a storm (`RagnarokNaglfar`): for a ship at sea a fleet of two or three
+  Nail Ships sails out of the storm, and by a player on the coast it runs ashore and four of its dead wade out of the
+  sea.
+
+When the storm passes the dead sink back into the earth and the rest of the host is gone; Naglfar's ships sail on until
+no one sees them.
+
 Admins can call it with `whitehilt_storm ragnarok`.
 
 ### The storm remembers you
@@ -261,6 +278,14 @@ Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced
 | `RagnarokQuakes` | true | The earth shakes in Ragnarok, and weak building pieces take a blow |
 | `RagnarokQuakeSeconds` | 60 | Seconds between quakes on average |
 | `RagnarokQuakeDamage` | 0.1 | Share of its full health a piece at half health or less loses to a quake |
+| `RagnarokDead` | true | The dead rise from the earth near players in Ragnarok |
+| `RagnarokDeadSeconds` | 60 | Seconds between the dead rising near each player on average |
+| `RagnarokSurt` | true | Surt's host comes for the bases players are in |
+| `RagnarokSurtSeconds` | 120 | Seconds between Surt's host coming for a base on average |
+| `RagnarokFenrir` | true | Fenrir is loosed on a player who stays out in the open |
+| `RagnarokFenrirSeconds` | 30 | Seconds out in the open before Fenrir is loosed |
+| `RagnarokFenrirDamage` | 4 | How many times harder Fenrir bites than a wolf |
+| `RagnarokNaglfar` | true | Naglfar comes for a ship at sea, or runs ashore by the coast |
 | `StormBar` | true | The Storm Bar can be built, to bar a house's doors and windows in a storm |
 | `StormBarComfort` | 10 | The comfort a Storm Bar needs where it stands before it can be put across |
 | `StormBarRadius` | 20 | Metres from a Storm Bar within which it bars doors and windows |

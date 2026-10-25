@@ -165,7 +165,7 @@ public static class BeastRegistry
         }
     }
 
-    private static void Darken(GameObject root)
+    internal static void Darken(GameObject root)
     {
         if (VisualHelper.IsHeadless)
         {

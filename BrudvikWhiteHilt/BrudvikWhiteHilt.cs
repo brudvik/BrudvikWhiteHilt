@@ -214,6 +214,7 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Monsters.WhiteDragonRegistry.Initialize();
         // After the monsters: the Black Dragon is cloned from the Desert Dragon.
         Difficulty.Beasts.BeastRegistry.Initialize();
+        Storms.RagnarokRegistry.Initialize();
         Companions.CompanionRest.Initialize();
         Companions.DogSettings.Initialize();
         Companions.DogRegistry.Initialize();

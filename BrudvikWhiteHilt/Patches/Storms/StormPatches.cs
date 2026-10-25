@@ -23,6 +23,7 @@ public static class StormPatches
         __instance.gameObject.AddComponent<StormHail>();
         __instance.gameObject.AddComponent<StormVisions>();
         __instance.gameObject.AddComponent<StormRagnarok>();
+        __instance.gameObject.AddComponent<RagnarokSpawner>();
     }
 
     // Lost at sea in the storm: no place on the map.
@@ -49,6 +50,25 @@ public static class StormPatches
         {
             __result = StormWeather.Override(__instance) ?? DeepNorthNight.Override(__instance);
         }
+    }
+
+    // No weapon bites on Fenrir: the blow is stopped on the attacker's machine, before it is sent.
+    [HarmonyPatch(typeof(Character), nameof(Character.Damage))]
+    [HarmonyPrefix]
+    private static bool CharacterDamagePrefix(Character __instance, HitData hit)
+    {
+        RagnarokHost host = RagnarokHost.Loaded.Count > 0 ? __instance.GetComponent<RagnarokHost>() : null;
+        if (host == null || !host.IsFenrir)
+        {
+            return true;
+        }
+
+        if (hit != null && Player.m_localPlayer != null && hit.GetAttacker() == Player.m_localPlayer)
+        {
+            Player.m_localPlayer.Message(MessageHud.MessageType.Center, "$msg_whitehilt_ragnarok_fenrir_immune");
+        }
+
+        return false;
     }
 
     [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.SetEnv))]
