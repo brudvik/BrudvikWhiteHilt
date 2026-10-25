@@ -91,8 +91,18 @@ While Ragnarok rages, outside its eye, its host comes:
   Nail Ships sails out of the storm, and by a player on the coast it runs ashore and four of its dead wade out of the
   sea.
 
+**Fire falls from the sky** while it rages (`RagnarokFire`, `RagnarokFireSeconds`): about every 45 seconds a burning
+rock comes down 15 to 40 m from each player, more often than not on something built of wood. A glowing streak comes
+down the sky for a couple of seconds first, roaring; get out from under it. It hurts whoever stands within 5 m, and the
+wooden pieces within 5 m burn for 20 seconds, losing half their full health in all (`RagnarokFireDamage`): repair them
+to save them. Stone, marble and iron do not burn.
+
 When the storm passes the dead sink back into the earth and the rest of the host is gone; Naglfar's ships sail on until
 no one sees them.
+
+**The Fimbulwinter** follows Ragnarok for a game day (`RagnarokFimbul`, `RagnarokFimbulDays`): three winters in one.
+Snow falls in every biome but the Ashlands, the cold bites by day and freezes by night, the light is dim, and no crop
+grows while it lasts; crops pick up where they were once it loosens its grip.
 
 Admins can call it with `whitehilt_storm ragnarok`.
 
@@ -286,6 +296,11 @@ Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced
 | `RagnarokFenrirSeconds` | 30 | Seconds out in the open before Fenrir is loosed |
 | `RagnarokFenrirDamage` | 4 | How many times harder Fenrir bites than a wolf |
 | `RagnarokNaglfar` | true | Naglfar comes for a ship at sea, or runs ashore by the coast |
+| `RagnarokFire` | true | Burning rocks fall from the sky in Ragnarok and set wood burning |
+| `RagnarokFireSeconds` | 45 | Seconds between burning rocks near each player on average |
+| `RagnarokFireDamage` | 0.5 | Share of its full health a wooden piece near a strike loses as it burns |
+| `RagnarokFimbul` | true | The Fimbulwinter follows Ragnarok |
+| `RagnarokFimbulDays` | 1 | Game days the Fimbulwinter lasts |
 | `StormBar` | true | The Storm Bar can be built, to bar a house's doors and windows in a storm |
 | `StormBarComfort` | 10 | The comfort a Storm Bar needs where it stands before it can be put across |
 | `StormBarRadius` | 20 | Metres from a Storm Bar within which it bars doors and windows |

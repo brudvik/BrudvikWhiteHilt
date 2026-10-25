@@ -8009,5 +8009,9 @@
   "msg_whitehilt_ragnarok_fenrir_lost": "Fenrisulven mister sporet ditt",
   "msg_whitehilt_ragnarok_fenrir_immune": "Ingen våpen biter på Fenrisulven. Løp!",
   "msg_whitehilt_ragnarok_naglfar": "Naglfar seiler ut av stormen!",
-  "msg_whitehilt_ragnarok_naglfar_ashore": "Naglfar går på land: de døde vasser opp av havet!"
+  "msg_whitehilt_ragnarok_naglfar_ashore": "Naglfar går på land: de døde vasser opp av havet!",
+  "msg_whitehilt_ragnarok_fire": "Ild faller fra himmelen!",
+  "msg_whitehilt_ragnarok_burning": "Ilden har tatt treverket! Reparer det før det brenner ned.",
+  "msg_whitehilt_fimbul_start": "Fimbulvinteren kommer: tre vintre i én. Ingenting gror.",
+  "msg_whitehilt_fimbul_end": "Fimbulvinteren slipper taket"
 }

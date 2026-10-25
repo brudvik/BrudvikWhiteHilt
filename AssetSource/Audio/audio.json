@@ -509,6 +509,11 @@
       "duration": 8
     },
     {
+      "name": "sfx_storm_meteor",
+      "prompt": "A burning rock falling from the sky at the end of the world: a rising fiery roar and whistle coming down fast for two seconds, then a massive explosive impact, rocks and earth thrown up, crackling flames after. No music, no voices.",
+      "duration": 5
+    },
+    {
       "name": "sfx_storm_quake",
       "prompt": "A violent earthquake: a deep subterranean rumble that rises from nothing, the ground groaning and cracking, timber creaking and rattling, stones shifting, then the rumble slowly dying away. No music, no voices.",
       "duration": 6

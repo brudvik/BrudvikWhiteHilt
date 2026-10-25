@@ -214,6 +214,13 @@ public class StormService : MonoBehaviour
         if (StormState.Raging)
         {
             StormState.Passed(now);
+
+            // Three winters in one after the end of the world.
+            if (StormState.Ragnarok && StormSettings.RagnarokFimbul.Value && EnvMan.instance != null)
+            {
+                StormState.SetFimbulwinter(now, now + StormSettings.RagnarokFimbulDays.Value * EnvMan.instance.m_dayLengthSec);
+                Jotunn.Logger.LogInfo("Storms: the Fimbulwinter falls after Ragnarok");
+            }
         }
 
         StormState.Set(StormPhase.Calm, 0.0, number);

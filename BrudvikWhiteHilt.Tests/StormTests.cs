@@ -353,6 +353,31 @@ public class StormTests
         Assert.Equal(100, quakes);
     }
 
+    /// <summary>The Fimbulwinter holds from its start to its end.</summary>
+    [Theory]
+    [InlineData(100.0, 0.0, 0.0, false)]
+    [InlineData(999.0, 1000.0, 2800.0, false)]
+    [InlineData(1000.0, 1000.0, 2800.0, true)]
+    [InlineData(2799.0, 1000.0, 2800.0, true)]
+    [InlineData(2800.0, 1000.0, 2800.0, false)]
+    public void TheFimbulwinterHoldsForItsTime(double now, double starts, double ends, bool holds)
+    {
+        Assert.Equal(holds, RagnarokRules.Fimbulwinter(now, starts, ends));
+    }
+
+    /// <summary>Nothing grows in the Fimbulwinter: a crop's growing time leaves out the part of it that fell there.</summary>
+    [Theory]
+    [InlineData(500.0, 900.0, 0.0, 0.0, 500.0)]
+    [InlineData(500.0, 900.0, 1000.0, 2000.0, 500.0)]
+    [InlineData(500.0, 1500.0, 1000.0, 2000.0, 0.0)]
+    [InlineData(1500.0, 2500.0, 1000.0, 2000.0, 500.0)]
+    [InlineData(1000.0, 3000.0, 1000.0, 2000.0, 1000.0)]
+    [InlineData(3000.0, 3000.0, 1000.0, 2000.0, 2000.0)]
+    public void NothingGrowsInTheFimbulwinter(double sincePlanted, double now, double starts, double ends, double grown)
+    {
+        Assert.Equal(grown, RagnarokRules.Grown(sincePlanted, now, starts, ends), 3);
+    }
+
     /// <summary>A quake swells and dies away, and is over after its length.</summary>
     [Theory]
     [InlineData(-1f, 0f)]

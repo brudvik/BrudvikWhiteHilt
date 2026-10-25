@@ -83,6 +83,38 @@ public static class RagnarokRules
     }
 
     /// <summary>
+    /// Whether the Fimbulwinter holds at a time.
+    /// </summary>
+    /// <param name="now">World time.</param>
+    /// <param name="starts">When it began; 0 for none.</param>
+    /// <param name="ends">When it ends.</param>
+    /// <returns>True while it holds.</returns>
+    public static bool Fimbulwinter(double now, double starts, double ends)
+    {
+        return starts > 0.0 && now >= starts && now < ends;
+    }
+
+    /// <summary>
+    /// How long a crop has grown: the time since it was planted without the Fimbulwinter, when nothing grows.
+    /// </summary>
+    /// <param name="sincePlanted">Seconds since it was planted.</param>
+    /// <param name="now">World time.</param>
+    /// <param name="starts">When the Fimbulwinter began; 0 for none.</param>
+    /// <param name="ends">When it ends.</param>
+    /// <returns>Seconds it has grown.</returns>
+    public static double Grown(double sincePlanted, double now, double starts, double ends)
+    {
+        if (starts <= 0.0 || ends <= starts)
+        {
+            return sincePlanted;
+        }
+
+        double planted = now - sincePlanted;
+        double frozen = System.Math.Min(now, ends) - System.Math.Max(planted, starts);
+        return frozen > 0.0 ? sincePlanted - frozen : sincePlanted;
+    }
+
+    /// <summary>
     /// How hard a quake shakes a moment after it began: it swells and dies away.
     /// </summary>
     /// <param name="seconds">Seconds since it began.</param>
