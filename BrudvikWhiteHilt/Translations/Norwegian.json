@@ -8039,5 +8039,8 @@
   "whitehilt_door_barred": "Stengt fra innsiden",
   "whitehilt_door_pound": "Dundre på døra",
   "msg_whitehilt_door_barred": "Stengt fra innsiden! Noen der inne må løfte bommen.",
-  "msg_whitehilt_door_pounding": "$1 dundrer på døra!"
+  "msg_whitehilt_door_pounding": "$1 dundrer på døra!",
+  "msg_whitehilt_ragnarok_sun": "Skoll sluker sola!",
+  "msg_whitehilt_ragnarok_moon": "Hate sluker månen!",
+  "msg_whitehilt_ragnarok_quake": "Jorda rister: Yggdrasil skjelver!"
 }

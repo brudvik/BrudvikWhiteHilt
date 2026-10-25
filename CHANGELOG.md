@@ -10,6 +10,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   or raging and every door and window within 20 m (`StormBarRadius`) slams shut and is barred: no one opens them,
   inside or out, and no gust tears them open. Whoever is caught outside can only pound on the door, and those inside
   hear who it is. Someone at the bar lifts it; it lifts by itself when the storm has passed (`StormBar`).
+- **[Ragnarok](docs/storms.md#ragnarok) is the end of the world** (`[Storms]`): Gjallarhorn sounds as it is warned of
+  and as its last wave comes (`RagnarokHorn`). The sky reddens as it gathers, and as it breaks the wolves Skoll and Hati
+  swallow the sun or the moon, howling across the sky, until the light goes out in a red dark (`RagnarokSky`). Ash
+  rains through it in every biome (`RagnarokAsh`), and about every minute the earth shakes, the same moment for
+  everyone, wearing down building pieces already at half their health (`RagnarokQuakes`, `RagnarokQuakeSeconds`,
+  `RagnarokQuakeDamage`).
 
 ## v0.152.0 - 2026-10-25
 
