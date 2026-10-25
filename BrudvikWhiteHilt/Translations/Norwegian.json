@@ -8042,5 +8042,13 @@
   "msg_whitehilt_door_pounding": "$1 dundrer på døra!",
   "msg_whitehilt_ragnarok_sun": "Skoll sluker sola!",
   "msg_whitehilt_ragnarok_moon": "Hate sluker månen!",
-  "msg_whitehilt_ragnarok_quake": "Jorda rister: Yggdrasil skjelver!"
+  "msg_whitehilt_ragnarok_quake": "Jorda rister: Yggdrasil skjelver!",
+  "whitehilt_fenrir": "Fenrisulven",
+  "msg_whitehilt_ragnarok_dead": "De døde reiser seg fra jorda!",
+  "msg_whitehilt_ragnarok_surt": "Surts hær kommer ut av ilden!",
+  "msg_whitehilt_ragnarok_fenrir": "Fenrisulven er løs! Finn tak over hodet eller et bål!",
+  "msg_whitehilt_ragnarok_fenrir_lost": "Fenrisulven mister sporet ditt",
+  "msg_whitehilt_ragnarok_fenrir_immune": "Ingen våpen biter på Fenrisulven. Løp!",
+  "msg_whitehilt_ragnarok_naglfar": "Naglfar seiler ut av stormen!",
+  "msg_whitehilt_ragnarok_naglfar_ashore": "Naglfar går på land: de døde vasser opp av havet!"
 }

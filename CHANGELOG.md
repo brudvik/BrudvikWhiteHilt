@@ -16,6 +16,12 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   rains through it in every biome (`RagnarokAsh`), and about every minute the earth shakes, the same moment for
   everyone, wearing down building pieces already at half their health (`RagnarokQuakes`, `RagnarokQuakeSeconds`,
   `RagnarokQuakeDamage`).
+- **[Ragnarok's host](docs/storms.md#ragnarok)** (`[Storms]`): while it rages the dead rise from the earth near
+  players and break what is built in their way (`RagnarokDead`); Surt's host of charred warriors comes for the bases
+  players are in (`RagnarokSurt`); Fenrir, a black wolf the size of a house that no weapon bites on, is loosed on whoever
+  stays out in the open and loses the scent at a roof, a fire or a cave (`RagnarokFenrir`); and Naglfar sends a fleet
+  of Nail Ships for a ship at sea, or runs ashore and its dead wade out of the sea (`RagnarokNaglfar`). The host goes
+  when the storm passes.
 
 ## v0.152.0 - 2026-10-25
 
