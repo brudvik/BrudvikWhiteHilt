@@ -87,6 +87,15 @@ public static class StormSettings
     /// <summary>Whether gusts blow doors open, letting the storm in.</summary>
     public static ConfigEntry<bool> DoorsBlowOpen { get; private set; }
 
+    /// <summary>Whether the Storm Bar can be built, to bar a house's doors and windows in a storm.</summary>
+    public static ConfigEntry<bool> BarEnabled { get; private set; }
+
+    /// <summary>The comfort a Storm Bar needs where it stands before it can be put across.</summary>
+    public static ConfigEntry<int> BarComfort { get; private set; }
+
+    /// <summary>Metres from a Storm Bar within which it bars doors and windows.</summary>
+    public static ConfigEntry<float> BarRadius { get; private set; }
+
     /// <summary>Whether gusts push players in the open and now and then knock them down.</summary>
     public static ConfigEntry<bool> Gusts { get; private set; }
 
@@ -189,6 +198,12 @@ public static class StormSettings
             "In a raging storm, fires with no roof over them go out and must be lit again, and a torch in the hand blows out in the open. Not in the firestorm.");
         DoorsBlowOpen = WhiteHiltConfig.BindAdminOnly(Section, "DoorsBlowOpen", true,
             "In a raging storm, gusts blow doors open near players. While a door close by stands open the storm comes in: the room shelters only as the lee of a wall, and its fire does not help, until the door is shut.");
+        BarEnabled = WhiteHiltConfig.BindAdminOnly(Section, "StormBar", true,
+            "The Storm Bar can be built. Put across while a storm is coming or raging, it slams shut every door and window within reach and bars them: no one opens them, inside or out, and no gust tears them open. Those outside can only pound on the door. Someone at the bar lifts it; it lifts by itself when the storm has passed.");
+        BarComfort = WhiteHiltConfig.BindAdminOnly(Section, "StormBarComfort", 10,
+            "The comfort a Storm Bar needs where it stands before it can be put across.", new AcceptableValueRange<int>(0, 30));
+        BarRadius = WhiteHiltConfig.BindAdminOnly(Section, "StormBarRadius", 20f,
+            "Metres from a Storm Bar within which it bars doors and windows. Gates are left alone.", new AcceptableValueRange<float>(5f, 50f));
         Gusts = WhiteHiltConfig.BindAdminOnly(Section, "Gusts", true,
             "In a raging storm, hard gusts push players in the open with the wind, and now and then knock them off their feet.");
         Hail = WhiteHiltConfig.BindAdminOnly(Section, "Hail", true,
@@ -250,6 +265,19 @@ public static class StormSettings
         Translations.AddEnglish("msg_whitehilt_storm_torch_out", "The wind blows out your torch!");
         Translations.AddEnglish("msg_whitehilt_storm_door", "A gust tears a door open! Shut it, or the storm comes in.");
         Translations.AddEnglish("msg_whitehilt_storm_door_in", "The storm comes in through the open door.");
+        Translations.AddEnglish("whitehilt_stormbar_bar", "Bar the house");
+        Translations.AddEnglish("whitehilt_stormbar_lift", "Lift the bar");
+        Translations.AddEnglish("whitehilt_stormbar_barred", "Barred: the doors and windows hold");
+        Translations.AddEnglish("whitehilt_stormbar_no_storm", "Bars the house when a storm is coming");
+        Translations.AddEnglish("whitehilt_stormbar_comfort", "Comfort here $1, needs $2");
+        Translations.AddEnglish("msg_whitehilt_stormbar_barred", "You bar the house: every door and window holds.");
+        Translations.AddEnglish("msg_whitehilt_stormbar_lifted", "You lift the bar.");
+        Translations.AddEnglish("msg_whitehilt_stormbar_no_storm", "No storm is coming.");
+        Translations.AddEnglish("msg_whitehilt_stormbar_comfort", "Not homely enough to bar: comfort $1, needs $2.");
+        Translations.AddEnglish("whitehilt_door_barred", "Barred from the inside");
+        Translations.AddEnglish("whitehilt_door_pound", "Pound on the door");
+        Translations.AddEnglish("msg_whitehilt_door_barred", "Barred from the inside! Someone in there must lift the bar.");
+        Translations.AddEnglish("msg_whitehilt_door_pounding", "$1 is pounding on the door!");
         Translations.AddEnglish("msg_whitehilt_storm_knocked_down", "The gust knocks you off your feet!");
         Translations.AddEnglish("msg_whitehilt_storm_hail", "Hail! Get under a roof.");
         Translations.AddEnglish("msg_whitehilt_storm_lost", "The storm hides sun and stars: you have lost your bearings.");

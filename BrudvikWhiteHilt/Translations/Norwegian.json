@@ -7983,5 +7983,20 @@
   "whitehilt_cfg_refinement_exchangekind": "Bytte type",
   "whitehilt_cfg_refinement_exchangekind_desc": "Et Kamp-idol kan byttes til et Beskyttelses-idol av samme nivå, og tilbake, ett mot ett.",
   "whitehilt_cfg_refinement_exchangestation": "Stasjon for bytte",
-  "whitehilt_cfg_refinement_exchangestation_desc": "Prefab-navnet på stasjonen der idolene byttes. Potensialets smie selv bare raffinerer. Trenger omstart."
+  "whitehilt_cfg_refinement_exchangestation_desc": "Prefab-navnet på stasjonen der idolene byttes. Potensialets smie selv bare raffinerer. Trenger omstart.",
+  "piece_whitehilt_stormbom": "Stormbom",
+  "piece_whitehilt_stormbom_description": "En tung bom på to stolper, til å stå innenfor døra. Der huset er trivelig nok, legger du den på mens uværet nærmer seg eller raser: hver dør og hvert vindu innen rekkevidde smeller igjen og stenges, for dem som er inne som for dem som er ute, og ingen vindkast river dem opp. Bare den som står ved bommen kan løfte den; den løfter seg selv når stormen er over.",
+  "whitehilt_stormbar_bar": "Steng huset",
+  "whitehilt_stormbar_lift": "Løft bommen",
+  "whitehilt_stormbar_barred": "Stengt: dører og vinduer holder",
+  "whitehilt_stormbar_no_storm": "Stenger huset når uværet kommer",
+  "whitehilt_stormbar_comfort": "Komfort her $1, trenger $2",
+  "msg_whitehilt_stormbar_barred": "Du stenger huset: hver dør og hvert vindu holder.",
+  "msg_whitehilt_stormbar_lifted": "Du løfter bommen.",
+  "msg_whitehilt_stormbar_no_storm": "Ingen storm er på vei.",
+  "msg_whitehilt_stormbar_comfort": "Ikke trivelig nok til å stenge: komfort $1, trenger $2.",
+  "whitehilt_door_barred": "Stengt fra innsiden",
+  "whitehilt_door_pound": "Dundre på døra",
+  "msg_whitehilt_door_barred": "Stengt fra innsiden! Noen der inne må løfte bommen.",
+  "msg_whitehilt_door_pounding": "$1 dundrer på døra!"
 }

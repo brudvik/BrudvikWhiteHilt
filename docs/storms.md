@@ -125,6 +125,18 @@ with the hammer anywhere, without a workbench, so it can go up in the minutes of
 are under a roof; light a campfire in front of the opening and the meter falls. Turn the closed back to the wind. It is
 wood, so it does not shelter you in the Ashlands' firestorm.
 
+### The Storm Bar (stormbom)
+
+A heavy beam resting in the forks of two posts, built at the workbench from 8 fine wood, 4 round logs and 6 bronze
+nails, to stand inside by the door. Where the comfort is 10 or more (`StormBarComfort`), counted as for resting where
+the bar stands, put it across while a storm is coming or raging: every door and window within 20 m (`StormBarRadius`)
+slams shut and is barred. Gates, and doors that need a key, are left alone.
+
+- No one opens a barred door or window, inside or out, nor can the household; no gust tears them open.
+- Whoever tries pounds on the door instead: everyone near hears the blows, and those within the bar's reach are told
+  who stands outside. Someone inside must go to the bar and lift it.
+- The bar lifts by itself when the storm has passed, so no one is barred out for good.
+
 ### Lightning
 
 In the storms that thunder (the forest storm, the sea and the Mistlands) lightning strikes near every player about every
@@ -233,6 +245,9 @@ Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced
 | `TreeFallSeconds` | 40 | Seconds between felled trees near each player on average |
 | `FiresGoOut` | true | Fires with no roof over them and torches in the open go out |
 | `DoorsBlowOpen` | true | Gusts tear doors open, and an open door lets the storm in |
+| `StormBar` | true | The Storm Bar can be built, to bar a house's doors and windows in a storm |
+| `StormBarComfort` | 10 | The comfort a Storm Bar needs where it stands before it can be put across |
+| `StormBarRadius` | 20 | Metres from a Storm Bar within which it bars doors and windows |
 | `Gusts` | true | Gusts push players in the open and now and then knock them down |
 | `Hail` | true | Hail showers in the forest storm, at sea and in the blizzard |
 | `KrakenFactor` | 4 | How many times more likely the Kraken rises at sea in a storm; 1 changes nothing |

@@ -157,7 +157,7 @@ public class StormLeanTo : IWhiteHiltCustomPiece
     }
 
     // A vanilla mesh stretched along its longest side from one point to another, its thickness scaled by a share.
-    private static DefenseModelBuilder.Placement Span(string mesh, Vector3 from, Vector3 to, float thickness)
+    internal static DefenseModelBuilder.Placement Span(string mesh, Vector3 from, Vector3 to, float thickness)
     {
         Bounds bounds = MeshBounds(mesh);
         Vector3 size = bounds.size;
@@ -196,7 +196,7 @@ public class StormLeanTo : IWhiteHiltCustomPiece
         return bounds;
     }
 
-    private static void Strip(GameObject prefab)
+    internal static void Strip(GameObject prefab)
     {
         foreach (Transform child in prefab.transform.Cast<Transform>().ToList())
         {

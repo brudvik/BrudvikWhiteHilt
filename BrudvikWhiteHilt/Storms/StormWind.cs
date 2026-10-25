@@ -149,11 +149,12 @@ public class StormWind : MonoBehaviour
     }
 
     // A gust tears a shut door open near the player, through the game's own door so everyone sees and hears it. A locked
-    // door holds.
+    // door holds, and so does one a Storm Bar bars.
     private static void BlowDoorOpen(Player player)
     {
         List<Door> doors = doorsNear.Where(door => door != null && door.m_nview != null && door.m_nview.IsValid()
                 && door.m_keyItem == null && !door.m_canNotBeClosed && door.m_nview.GetZDO().GetInt(ZDOVars.s_state) == 0
+                && StormBar.Holding(door) == null
                 && Vector3.Distance(door.transform.position, player.transform.position) <= DoorReach
                 && Player.GetClosestPlayer(door.transform.position, DoorReach * 2f) == player)
             .ToList();
