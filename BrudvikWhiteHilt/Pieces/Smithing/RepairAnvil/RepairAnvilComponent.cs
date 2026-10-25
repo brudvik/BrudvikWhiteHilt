@@ -7,8 +7,8 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Pieces.Smithing.RepairAnvil;
 
 /// <summary>
-/// Using the anvil repairs everything the player wears at once, and the shield in its slot, with the forge's repair
-/// sound. Free unless the server sets a cost per item.
+/// Using the anvil repairs everything the player wears at once, the shield in its slot and what lies in the hotbars,
+/// with the forge's repair sound. Free unless the server sets a cost per item.
 /// </summary>
 public class RepairAnvilComponent : MonoBehaviour, Hoverable, Interactable
 {
@@ -106,17 +106,23 @@ public class RepairAnvilComponent : MonoBehaviour, Hoverable, Interactable
         piece = GetComponent<Piece>();
     }
 
-    // Worn out and either worn, the shield in its slot, or anything carried when the server allows it.
+    // Worn out and either worn, the shield in its slot, in a hotbar, or anything carried when the server allows it.
     private static List<ItemDrop.ItemData> Repairable(Player player)
     {
         List<ItemDrop.ItemData> worn = new();
         player.GetInventory().GetWornItems(worn);
         if (!RepairAnvilSettings.WholeInventory.Value)
         {
-            worn.RemoveAll(item => !player.IsItemEquiped(item) && item.m_gridPos != HandSlots.ShieldSlot);
+            worn.RemoveAll(item => !player.IsItemEquiped(item) && !AtHand(item));
         }
 
         return worn;
+    }
+
+    // In the hotbar, the stored hotbar or one of the worn slots below it: weapons and tools not in hand count too.
+    private static bool AtHand(ItemDrop.ItemData item)
+    {
+        return item.m_gridPos.y == 0 || item.m_gridPos.y >= BackpackLayout.HotbarRow;
     }
 
     // Takes the cost of repairing a number of items from the player and nearby chests, as crafting does, checking all

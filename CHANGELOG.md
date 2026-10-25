@@ -50,6 +50,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   the black (`DeepNorthPotionShare`).
 
 ### Fixed
+- The Repair Anvil also repairs the weapons and tools in your hotbar, not only what you hold, so Black Forge gear
+  no longer has to go to the Black Forge.
 - A ragdoll of a creature with two or more stars no longer throws a NullReferenceException from Jötunn's cumulative
   level effects.
 
