@@ -180,6 +180,21 @@ public static class StormSettings
     /// <summary>Whether Naglfar comes in Ragnarok.</summary>
     public static ConfigEntry<bool> RagnarokNaglfar { get; private set; }
 
+    /// <summary>Whether fire falls from the sky in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokFire { get; private set; }
+
+    /// <summary>Seconds between burning rocks falling near a player in Ragnarok on average.</summary>
+    public static ConfigEntry<float> RagnarokFireSeconds { get; private set; }
+
+    /// <summary>The share of its full health a wooden piece burning after a strike loses in all.</summary>
+    public static ConfigEntry<float> RagnarokFireDamage { get; private set; }
+
+    /// <summary>Whether the Fimbulwinter follows Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokFimbul { get; private set; }
+
+    /// <summary>Game days the Fimbulwinter lasts.</summary>
+    public static ConfigEntry<float> RagnarokFimbulDays { get; private set; }
+
     /// <summary>Whether the storm remembers who braves it.</summary>
     public static ConfigEntry<bool> Grudge { get; private set; }
 
@@ -304,6 +319,17 @@ public static class StormSettings
             "How many times harder Fenrir bites than a wolf.", new AcceptableValueRange<float>(1f, 20f));
         RagnarokNaglfar = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokNaglfar", true,
             "Once a storm Naglfar, the ship of nails, comes in Ragnarok: a fleet of Nail Ships sails out of the storm for a ship at sea, or by a player on the coast it runs ashore and its dead wade out of the sea.");
+        RagnarokFire = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFire", true,
+            "While Ragnarok rages burning rocks fall from the sky 15 to 40 m from players, often on what they have built. A glowing streak in the sky warns of each a couple of seconds before. It hurts whoever stands where it lands, and sets wooden pieces close by burning; repair them to save them. Stone does not burn.");
+        RagnarokFireSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFireSeconds", 45f,
+            "Seconds between burning rocks falling near each player on average.", new AcceptableValueRange<float>(10f, 600f));
+        RagnarokFireDamage = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFireDamage", 0.5f,
+            "The share of its full health a wooden piece near a strike loses as it burns for 20 seconds (0.5 = half). 0: nothing burns.",
+            new AcceptableValueRange<float>(0f, 2f));
+        RagnarokFimbul = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFimbul", true,
+            "After Ragnarok comes the Fimbulwinter: snow and bitter cold in every biome but the Ashlands, dim light, and no crop grows while it lasts.");
+        RagnarokFimbulDays = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFimbulDays", 1f,
+            "Game days the Fimbulwinter lasts.", new AcceptableValueRange<float>(0.25f, 5f));
         Grudge = WhiteHiltConfig.BindAdminOnly(Section, "Grudge", true,
             "The storm remembers who braves it: each storm a player lives through out in it makes the meter climb faster for them the next time, and leaves them more finds; each storm they sit out in shelter it forgets them a little.");
         GrudgeStep = WhiteHiltConfig.BindAdminOnly(Section, "GrudgeStep", 0.05f,
@@ -384,6 +410,10 @@ public static class StormSettings
         Translations.AddEnglish("msg_whitehilt_ragnarok_fenrir_immune", "No weapon bites on Fenrir. Run!");
         Translations.AddEnglish("msg_whitehilt_ragnarok_naglfar", "Naglfar sails out of the storm!");
         Translations.AddEnglish("msg_whitehilt_ragnarok_naglfar_ashore", "Naglfar runs ashore: the dead wade out of the sea!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_fire", "Fire falls from the sky!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_burning", "The fire has caught the wood! Repair it before it burns down.");
+        Translations.AddEnglish("msg_whitehilt_fimbul_start", "The Fimbulwinter falls: three winters in one. Nothing grows.");
+        Translations.AddEnglish("msg_whitehilt_fimbul_end", "The Fimbulwinter loosens its grip");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_up", "The storm remembers you. It will come harder for you next time");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_down", "The storm forgets you a little");
         Translations.AddEnglish("whitehilt_storm_grudge", "The storm remembers you: {0}% faster");

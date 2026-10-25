@@ -24,6 +24,8 @@ public static class StormPatches
         __instance.gameObject.AddComponent<StormVisions>();
         __instance.gameObject.AddComponent<StormRagnarok>();
         __instance.gameObject.AddComponent<RagnarokSpawner>();
+        __instance.gameObject.AddComponent<RagnarokFire>();
+        __instance.gameObject.AddComponent<Fimbulwinter>();
     }
 
     // Lost at sea in the storm: no place on the map.
@@ -48,7 +50,18 @@ public static class StormPatches
     {
         if (string.IsNullOrEmpty(__result))
         {
-            __result = StormWeather.Override(__instance) ?? DeepNorthNight.Override(__instance);
+            __result = StormWeather.Override(__instance) ?? DeepNorthNight.Override(__instance) ?? Fimbulwinter.Override(__instance);
+        }
+    }
+
+    // Nothing grows in the Fimbulwinter: the time a crop has grown leaves it out.
+    [HarmonyPatch(typeof(Plant), nameof(Plant.TimeSincePlanted))]
+    [HarmonyPostfix]
+    private static void TimeSincePlantedPostfix(ref double __result)
+    {
+        if (StormState.FimbulStarts > 0.0 && ZNet.instance != null)
+        {
+            __result = RagnarokRules.Grown(__result, ZNet.instance.GetTimeSeconds(), StormState.FimbulStarts, StormState.FimbulEnds);
         }
     }
 

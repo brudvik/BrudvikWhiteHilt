@@ -22,6 +22,11 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   stays out in the open and loses the scent at a roof, a fire or a cave (`RagnarokFenrir`); and Naglfar sends a fleet
   of Nail Ships for a ship at sea, or runs ashore and its dead wade out of the sea (`RagnarokNaglfar`). The host goes
   when the storm passes.
+- **[Fire from the sky and the Fimbulwinter](docs/storms.md#ragnarok)** (`[Storms]`): in Ragnarok burning rocks fall
+  near players, often on what they have built, with a glowing streak down the sky first; they hurt whoever stands
+  there and set wood burning until it is repaired (`RagnarokFire`, `RagnarokFireSeconds`, `RagnarokFireDamage`). After
+  Ragnarok the Fimbulwinter holds for a game day: snow and cold in every biome but the Ashlands, dim light, and no
+  crop grows (`RagnarokFimbul`, `RagnarokFimbulDays`).
 
 ## v0.152.0 - 2026-10-25
 

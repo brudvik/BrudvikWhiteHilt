@@ -65,6 +65,26 @@ public static class StormState
     /// <summary>World time the eye closes and the last wave comes.</summary>
     public static double EyeEnds { get; private set; }
 
+    /// <summary>World time the Fimbulwinter after the last Ragnarok began; 0 for none.</summary>
+    public static double FimbulStarts { get; private set; }
+
+    /// <summary>World time the Fimbulwinter ends.</summary>
+    public static double FimbulEnds { get; private set; }
+
+    /// <summary>Whether the Fimbulwinter holds now.</summary>
+    public static bool InFimbulwinter => ZNet.instance != null && RagnarokRules.Fimbulwinter(ZNet.instance.GetTimeSeconds(), FimbulStarts, FimbulEnds);
+
+    /// <summary>
+    /// Begins the Fimbulwinter after Ragnarok. On the server; sent with the state.
+    /// </summary>
+    /// <param name="starts">World time it begins.</param>
+    /// <param name="ends">World time it ends.</param>
+    public static void SetFimbulwinter(double starts, double ends)
+    {
+        FimbulStarts = starts;
+        FimbulEnds = ends;
+    }
+
     /// <summary>The wave of the raging storm now.</summary>
     public static StormWave Wave => ZNet.instance == null ? StormWave.None : WaveAt(Phase, ZNet.instance.GetTimeSeconds(), EyeStarts, EyeEnds);
 
@@ -240,6 +260,8 @@ public static class StormState
         package.Write(Ragnarok);
         package.Write(EyeStarts);
         package.Write(EyeEnds);
+        package.Write(FimbulStarts);
+        package.Write(FimbulEnds);
         return package;
     }
 
@@ -252,6 +274,10 @@ public static class StormState
         Set((StormPhase)package.ReadInt(), package.ReadDouble(), package.ReadInt());
         LastEnded = package.ReadDouble();
         SetStorm(package.ReadBool(), package.ReadDouble(), package.ReadDouble());
+
+        // A server of an older version sends no Fimbulwinter.
+        bool fimbul = package.GetPos() < package.Size();
+        SetFimbulwinter(fimbul ? package.ReadDouble() : 0.0, fimbul ? package.ReadDouble() : 0.0);
     }
 
     /// <summary>
@@ -261,6 +287,7 @@ public static class StormState
     {
         Set(StormPhase.Calm, 0.0, 0);
         SetStorm(false, 0.0, 0.0);
+        SetFimbulwinter(0.0, 0.0);
         LastEnded = 0.0;
     }
 
