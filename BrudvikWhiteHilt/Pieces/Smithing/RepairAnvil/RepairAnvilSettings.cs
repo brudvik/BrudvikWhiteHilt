@@ -46,7 +46,7 @@ public static class RepairAnvilSettings
         CostPerItem = WhiteHiltConfig.BindAdminOnly(Section, "CostPerItem", string.Empty,
             "What each repaired item costs, as prefab:amount pairs, e.g. Resin:1,Iron:1. Empty makes repairing free.");
         WholeInventory = WhiteHiltConfig.BindAdminOnly(Section, "WholeInventory", false,
-            "Repair everything in the inventory, not only what you wear and the shield in its slot.");
+            "Repair everything in the inventory, not only what you wear, the shield in its slot and the hotbar.");
         RaiseCraftingSkill = WhiteHiltConfig.BindAdminOnly(Section, "RaiseCraftingSkill", true,
             "Repairing raises the Crafting skill, as it does at a workbench.");
 
@@ -58,7 +58,7 @@ public static class RepairAnvilSettings
         ChainIron = WhiteHiltConfig.BindAdminOnly(ChainSection, "IronPerCraft", 2, "Iron one chain craft costs.", new AcceptableValueRange<int>(1, 50));
         ChainCoal = WhiteHiltConfig.BindAdminOnly(ChainSection, "CoalPerCraft", 1, "Coal one chain craft costs. 0: none.", new AcceptableValueRange<int>(0, 50));
 
-        Translations.AddEnglish("whitehilt_anvil_repair", "Repair everything you wear");
+        Translations.AddEnglish("whitehilt_anvil_repair", "Repair what you wear and have in your hotbar");
         Translations.AddEnglish("whitehilt_anvil_repair_all", "Repair everything you carry");
         Translations.AddEnglish("whitehilt_anvil_worn", "{0} worn items");
         Translations.AddEnglish("whitehilt_anvil_cost", "Cost per item");

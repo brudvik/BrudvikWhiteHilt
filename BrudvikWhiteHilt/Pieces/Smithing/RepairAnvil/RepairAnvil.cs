@@ -20,7 +20,7 @@ public class RepairAnvil : IWhiteHiltCustomPiece
     public const string PrefabName = "piece_whitehilt_repairanvil";
 
     private const string FullName = "Repair Anvil";
-    private const string Description = "An anvil on a stump. Use it to repair everything you wear at once, whatever station made it.";
+    private const string Description = "An anvil on a stump. Use it to repair everything you wear and have in your hotbar at once, whatever station made it.";
     private const string ModelName = "repairanvil";
 
     // Height in metres; the footprint follows the model.

@@ -10,7 +10,7 @@
 |------|-------------|------------------|--------------|
 | **Chain Bench** | Forge extension with a smith's vise. While it stands next to the forge, the forge can make Chains | Hammer (next to the Forge) | Wood ×10, Iron ×4, Stone ×4 |
 | **Chain** (vanilla item) | Made at the forge, only with a Chain Bench attached | Forge + Chain Bench | Iron ×2, Coal ×1 |
-| **Repair Anvil** | An anvil on a stump. Use it to repair everything you wear at once (weapons, armor, cape, accessories and the shield in its slot), whatever station made it, with the forge's repair sound | Hammer (near a Forge) | Bronze ×5, Wood ×4 |
+| **Repair Anvil** | An anvil on a stump. Use it to repair everything you wear at once (weapons, armor, cape, accessories, the shield in its slot and whatever lies in your hotbar), whatever station made it, with the forge's repair sound | Hammer (near a Forge) | Bronze ×5, Wood ×4 |
 
 The Chain Bench also counts as a forge extension, so the forge can reach level 8.
 
