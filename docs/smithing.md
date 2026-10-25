@@ -43,6 +43,7 @@ One trophy per weapon or shield. The trophy is used up; binding another replaces
 | Black Fuling Berserker | +12% | 18% |
 | Black Seeker Soldier | +15% | 21% |
 | Black Morgen, Black Bonemaw | +20% | 25% |
+| Black Wolf | +22% | 27% |
 
 At quality 8 a bound White Hilt Sword goes from 137 to 164 slash with the Black Morgen trophy, above the Nidhogg (153): the reward for felling the hardest beasts. Black trophies are never supplied by the restocking chests, carts or ship holds.
 

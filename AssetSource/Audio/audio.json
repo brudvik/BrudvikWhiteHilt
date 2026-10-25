@@ -1074,6 +1074,18 @@
         "hit",
         "death"
       ]
+    },
+    {
+      "prefix": "blackwolf",
+      "description": "A black wolf of the Deep North's night, hunting in a pack",
+      "voice": "deep snarling wolf growl and howl in an icy wind with an eerie dark distorted echo and faint ghostly whispers",
+      "actions": [
+        "idle",
+        "alert",
+        "attack",
+        "hit",
+        "death"
+      ]
     }
   ]
 }

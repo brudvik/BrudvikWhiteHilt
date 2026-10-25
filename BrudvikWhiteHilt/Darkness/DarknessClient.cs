@@ -34,6 +34,9 @@ public class DarknessClient : MonoBehaviour
     private const float FirePlaceRefresh = 2f;
     private const float GutterSeconds = 1.5f;
     private const float GutterChance = 0.35f;
+    private const float NorthShadowSeconds = 6f;
+    private const float NightShadowSeconds = 45f;
+    private const float NorthHealthFloor = 0.25f;
 
     private static readonly List<Fireplace> fires = new();
     private static float nextFireRefresh;
@@ -46,7 +49,9 @@ public class DarknessClient : MonoBehaviour
     private DarkPhase shownPhase;
     private int shownStage;
     private float owed;
-    private bool spawnedThisDarkness;
+    private float northOwed;
+    private int summonedThisDarkness;
+    private float nextSummon;
 
     /// <summary>The key of the place below ground the local player is in, or null.</summary>
     public static string PlaceKey { get; private set; }
@@ -71,6 +76,36 @@ public class DarknessClient : MonoBehaviour
 
     /// <summary>Until when the local player's torch is guttered out.</summary>
     public static float GutterUntil { get; private set; }
+
+    /// <summary>Whether the place below ground the local player is in lies in the Deep North, where the dark is worse.</summary>
+    public static bool DeepNorth { get; private set; }
+
+    /// <summary>Whether the local player is out in the night of the Deep North, where the fear follows them.</summary>
+    public static bool NightOut { get; private set; }
+
+    /// <summary>
+    /// How much of the Gifts of Freya and Odin a character gets: less in the dark below ground in the Deep North, down to
+    /// <see cref="DarknessSettings.DeepNorthPotionShare"/> in the black.
+    /// </summary>
+    /// <param name="character">The character the potion is on.</param>
+    /// <returns>0 to 1; 1 for anyone but the local player.</returns>
+    public static float PotionFactor(Character character)
+    {
+        return character != null && character == Player.m_localPlayer && DeepNorth && DarknessSettings.DeepNorthPotionShare != null
+            ? Mathf.Lerp(1f, DarknessSettings.DeepNorthPotionShare.Value, Level)
+            : 1f;
+    }
+
+    /// <summary>
+    /// How many shadows come in one darkness.
+    /// </summary>
+    /// <param name="deepNorth">Whether the place lies in the Deep North.</param>
+    /// <param name="extra">How many more come in the Deep North.</param>
+    /// <returns>1, or more in the Deep North.</returns>
+    public static int ShadowsPerDarkness(bool deepNorth, int extra)
+    {
+        return 1 + (deepNorth ? Mathf.Max(0, extra) : 0);
+    }
 
     /// <summary>
     /// The timing of the darkness from the settings.
@@ -273,7 +308,10 @@ public class DarknessClient : MonoBehaviour
         {
             PlaceKey = key;
             askedKey = null;
-            spawnedThisDarkness = false;
+            summonedThisDarkness = 0;
+            // A dungeon lies high above the ground it belongs to, so the biome under it is the biome of the place.
+            DeepNorth = key != null && WorldGenerator.instance != null
+                && WorldGenerator.instance.GetBiome(player.transform.position) == Heightmap.Biome.DeepNorth;
         }
 
         // Ask the server when this place was first gone into, and tell it now and then that someone is still here.
@@ -284,15 +322,19 @@ public class DarknessClient : MonoBehaviour
             DarknessService.Inside(key);
         }
 
-        Lit = key != null && IsLit(player);
-        bool black = Level >= 0.85f;
-        Fear = key == null || player.IsDead() ? 0f : StepFear(Fear, seconds, black, Phase == DarkPhase.Calm, Lit, DarknessSettings.FearSeconds.Value);
-        SetUnlit(player, key != null && Level >= 0.5f && !Lit);
+        // Out in the night of the Deep North it is always black, and only a light holds the fear off.
+        NightOut = key == null && !player.IsDead() && DeepNorthNightSettings.FearOutside.Value && DeepNorthNight.Out(player);
+        Lit = (key != null || NightOut) && IsLit(player);
+        bool black = key == null || Level >= 0.85f;
+        Fear = (key == null && !NightOut) || player.IsDead() ? 0f
+            : StepFear(Fear, seconds, black, key != null && Phase == DarkPhase.Calm, Lit, DarknessSettings.FearSeconds.Value);
+        SetUnlit(player, ((key != null && Level >= 0.5f) || NightOut) && !Lit);
 
         Announce(player);
         UpdateEffect(player);
         WarnOfStage(player);
         Hurt(player, seconds);
+        Sap(player, seconds);
         WearTorch(player, seconds);
         Haunt(player);
     }
@@ -315,6 +357,11 @@ public class DarknessClient : MonoBehaviour
                 break;
             case DarkPhase.Black:
                 player.Message(MessageHud.MessageType.Center, "$msg_whitehilt_dark_falls");
+                if (DeepNorth)
+                {
+                    player.Message(MessageHud.MessageType.TopLeft, "$msg_whitehilt_dark_north");
+                }
+
                 DarknessSounds.Play(DarknessSounds.Out, player.transform.position + Vector3.up * 2f);
                 break;
             case DarkPhase.Returning:
@@ -322,7 +369,7 @@ public class DarknessClient : MonoBehaviour
                 DarknessSounds.Play(DarknessSounds.Return, player.transform.position + Vector3.up * 2f);
                 break;
             case DarkPhase.Calm when was != DarkPhase.Calm:
-                spawnedThisDarkness = false;
+                summonedThisDarkness = 0;
                 break;
         }
     }
@@ -400,6 +447,32 @@ public class DarknessClient : MonoBehaviour
         player.ApplyDamage(hit, showDamageText: false, triggerEffects: false);
     }
 
+    // In the Deep North the dark brings the cold: health and stamina drain away while it is dark, light or not. The
+    // health is gathered until it is at least 1, and it never takes the last quarter.
+    private void Sap(Player player, float seconds)
+    {
+        if (!DeepNorth || Level < 0.5f || player.InGodMode() || player.IsDead())
+        {
+            northOwed = 0f;
+            return;
+        }
+
+        player.m_stamina = Mathf.Max(0f, player.m_stamina - DarknessSettings.DeepNorthStaminaDrain.Value * seconds);
+
+        northOwed += player.GetMaxHealth() * DarknessSettings.DeepNorthHealthDrain.Value * seconds;
+        float room = player.GetHealth() - player.GetMaxHealth() * NorthHealthFloor;
+        if (northOwed < 1f || room < 1f)
+        {
+            northOwed = Mathf.Min(northOwed, 1f);
+            return;
+        }
+
+        HitData hit = new() { m_point = player.GetCenterPoint() };
+        hit.m_damage.m_damage = Mathf.Min(northOwed, room);
+        northOwed = 0f;
+        player.ApplyDamage(hit, showDamageText: false, triggerEffects: false);
+    }
+
     // In the black a torch burns down faster and now and then gutters out for a moment.
     private void WearTorch(Player player, float seconds)
     {
@@ -422,14 +495,22 @@ public class DarknessClient : MonoBehaviour
         }
     }
 
-    // From half fear, in the black without a light, once a darkness a shadow comes for the player.
+    // From half fear, in the black without a light, once a darkness a shadow comes for the player; below ground in the
+    // Deep North more come, a few seconds apart. Out in its night one comes now and then for as long as it lasts.
     private void Haunt(Player player)
     {
-        if (!DarknessSettings.Shadows.Value || spawnedThisDarkness || Phase != DarkPhase.Black || Lit || Fear < Terrified || player.IsDead())
+        int shadows = ShadowsPerDarkness(DeepNorth, DarknessSettings.DeepNorthShadows.Value);
+        bool below = PlaceKey != null;
+        if (!DarknessSettings.Shadows.Value || Time.time < nextSummon || Lit || Fear < Terrified || player.IsDead()
+            || (below && (summonedThisDarkness >= shadows || Phase != DarkPhase.Black)) || (!below && !NightOut))
         {
             return;
         }
 
-        spawnedThisDarkness = DarkShadow.Summon(player, PlaceKey);
+        if (DarkShadow.Summon(player, below ? PlaceKey : DarkShadow.NightPlace))
+        {
+            summonedThisDarkness++;
+            nextSummon = Time.time + (below ? NorthShadowSeconds : NightShadowSeconds);
+        }
     }
 }

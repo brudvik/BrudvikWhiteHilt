@@ -48,6 +48,18 @@ public static class DarknessSettings
     /// <summary>How much faster a torch burns down in the black.</summary>
     public static ConfigEntry<float> TorchWear { get; private set; }
 
+    /// <summary>How many more shadows come in each darkness of the Deep North, and how many more a place there holds.</summary>
+    public static ConfigEntry<int> DeepNorthShadows { get; private set; }
+
+    /// <summary>Share of maximum health lost per second in the dark of the Deep North, light or not.</summary>
+    public static ConfigEntry<float> DeepNorthHealthDrain { get; private set; }
+
+    /// <summary>Stamina lost per second in the dark of the Deep North, light or not.</summary>
+    public static ConfigEntry<float> DeepNorthStaminaDrain { get; private set; }
+
+    /// <summary>Share of the Gifts of Freya and Odin left in the black of the Deep North.</summary>
+    public static ConfigEntry<float> DeepNorthPotionShare { get; private set; }
+
     /// <summary>Whether the darkness has eyes and sounds, for each player.</summary>
     public static ConfigEntry<bool> EyesAndSounds { get; private set; }
 
@@ -83,6 +95,14 @@ public static class DarknessSettings
             "The most shadows in one place below ground.", new AcceptableValueRange<int>(1, 10));
         TorchWear = WhiteHiltConfig.BindAdminOnly(Section, "TorchWear", 3f,
             "How many times as fast a torch burns down in the black; it may also gutter out for a moment.", new AcceptableValueRange<float>(1f, 10f));
+        DeepNorthShadows = WhiteHiltConfig.BindAdminOnly(Section, "DeepNorthShadows", 2,
+            "Below ground in the Deep North this many more shadows come in each darkness, one after the other, and a place holds this many more than MaxShadows.", new AcceptableValueRange<int>(0, 10));
+        DeepNorthHealthDrain = WhiteHiltConfig.BindAdminOnly(Section, "DeepNorthHealthDrain", 0.003f,
+            "Share of maximum health lost per second while it is dark below ground in the Deep North, with a light or without. It never takes you below a quarter of your health. 0: off.", new AcceptableValueRange<float>(0f, 0.05f));
+        DeepNorthStaminaDrain = WhiteHiltConfig.BindAdminOnly(Section, "DeepNorthStaminaDrain", 3f,
+            "Stamina lost per second while it is dark below ground in the Deep North, with a light or without. 0: off.", new AcceptableValueRange<float>(0f, 20f));
+        DeepNorthPotionShare = WhiteHiltConfig.BindAdminOnly(Section, "DeepNorthPotionShare", 0.5f,
+            "Share of the Gift of Freya's stamina and the Gift of Odin's healing left in the black below ground in the Deep North; it sinks as the light goes. 1: no change.", new AcceptableValueRange<float>(0f, 1f));
         EyesAndSounds = WhiteHiltConfig.BindLocal(Section, "EyesAndSounds", true,
             "Glowing eyes in the black that blink and are gone, scraping in the walls, breathing and whispers. Your own setting.");
         Volume = WhiteHiltConfig.BindLocal(Section, "Volume", 1f,
@@ -95,6 +115,7 @@ public static class DarknessSettings
         Translations.AddEnglish("msg_whitehilt_dark_panic", "Panic grips you!");
         Translations.AddEnglish("msg_whitehilt_dark_dying", "The dark is killing you!");
         Translations.AddEnglish("msg_whitehilt_dark_gutter", "Your torch gutters!");
+        Translations.AddEnglish("msg_whitehilt_dark_north", "The cold of the north comes with the dark. It saps you!");
         Translations.AddEnglish("se_whitehiltfear", "Fear of the dark");
         Translations.AddEnglish("se_whitehiltfear_tooltip", "Alone in the dark. A torch in hand, a circlet or a fire you built keeps it off.");
         Translations.AddEnglish("whitehilt_dark_lit", "In the light: the fear falls");

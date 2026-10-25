@@ -417,7 +417,8 @@ public class DifficultyService : MonoBehaviour
         BeastDefinition beast = candidates[UnityEngine.Random.Range(0, candidates.Count)];
 
         float chance = DifficultySettings.BeastChance.Value / 100f * (0.5f + DifficultyState.Pressure)
-            * (bloodMoon ? DifficultySettings.BloodMoonBeastChance.Value : 1f);
+            * (bloodMoon ? DifficultySettings.BloodMoonBeastChance.Value : 1f)
+            * ((Heightmap.Biome)biome == Heightmap.Biome.DeepNorth && !atSea ? Darkness.DeepNorthNightSettings.BeastChanceMultiplier.Value : 1f);
         if (UnityEngine.Random.value >= Mathf.Min(chance, 0.95f))
         {
             return;

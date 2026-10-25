@@ -19,6 +19,9 @@ public class DarkShadow : MonoBehaviour
     /// <summary>The shadow's prefab.</summary>
     public const string PrefabName = "WhiteHilt_Shadow";
 
+    /// <summary>The place of a shadow that came out in the night of the Deep North, which it lasts as long as.</summary>
+    public const string NightPlace = "night";
+
     private const string BaseCreature = "Ghost";
     private const string PlaceKey = "WhiteHilt_ShadowPlace";
     private const float TickSeconds = 0.5f;
@@ -60,7 +63,8 @@ public class DarkShadow : MonoBehaviour
             return false;
         }
 
-        if (instances.Count(shadow => shadow != null && Vector3.Distance(shadow.transform.position, player.transform.position) < PlaceReach) >= DarknessSettings.MaxShadows.Value)
+        int most = DarknessSettings.MaxShadows.Value + (DarknessClient.DeepNorth ? DarknessSettings.DeepNorthShadows.Value : 0);
+        if (instances.Count(shadow => shadow != null && Vector3.Distance(shadow.transform.position, player.transform.position) < PlaceReach) >= most)
         {
             return true;
         }
@@ -179,7 +183,8 @@ public class DarkShadow : MonoBehaviour
         }
 
         nextTick = Time.time + TickSeconds;
-        if (DarknessClient.LevelOf(view.GetZDO().GetString(PlaceKey)) < 0.5f)
+        string place = view.GetZDO().GetString(PlaceKey);
+        if (place == NightPlace ? !DeepNorthNight.IsNight() : DarknessClient.LevelOf(place) < 0.5f)
         {
             Vanish();
             return;

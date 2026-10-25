@@ -12,7 +12,7 @@ namespace BrudvikWhiteHilt.Difficulty.Beasts;
 public sealed class BeastDefinition
 {
     /// <summary>
-    /// Every beast: at least one per biome, and two at sea.
+    /// Every beast: at least one per biome, and two at sea. The Deep North's comes as a pack.
     /// </summary>
     public static readonly BeastDefinition[] All =
     {
@@ -24,7 +24,8 @@ public sealed class BeastDefinition
         new("BlackSeekerSoldier", "Black Seeker Soldier", "SeekerBrute", "TrophySeekerBrute", Heightmap.Biome.Mistlands, false, "defeated_queen"),
         new("BlackMorgen", "Black Morgen", "Morgen", "TrophyMorgen", Heightmap.Biome.AshLands, false, "defeated_fader"),
         new("BlackSerpent", "Black Serpent", "Serpent", "TrophySerpent", Heightmap.Biome.Ocean, true, "defeated_bonemass"),
-        new("BlackBonemaw", "Black Bonemaw", "BonemawSerpent", "TrophyBonemawSerpent", Heightmap.Biome.AshLands, true, "defeated_fader")
+        new("BlackBonemaw", "Black Bonemaw", "BonemawSerpent", "TrophyBonemawSerpent", Heightmap.Biome.AshLands, true, "defeated_fader"),
+        new("BlackWolf", "Black Wolf", "Wolf", "TrophyWolf", Heightmap.Biome.DeepNorth, false, "defeated_fader", pack: true)
     };
 
     /// <summary>
@@ -35,7 +36,8 @@ public sealed class BeastDefinition
         "defeated_eikthyr", "defeated_gdking", "defeated_bonemass", "defeated_dragon", "defeated_goblinking", "defeated_queen", "defeated_fader"
     };
 
-    private BeastDefinition(string key, string englishName, string baseCreature, string baseTrophy, Heightmap.Biome biome, bool sea, string bossKey)
+    private BeastDefinition(string key, string englishName, string baseCreature, string baseTrophy, Heightmap.Biome biome, bool sea, string bossKey,
+        bool pack = false)
     {
         Key = key;
         EnglishName = englishName;
@@ -44,6 +46,7 @@ public sealed class BeastDefinition
         Biome = biome;
         Sea = sea;
         BossKey = bossKey;
+        Pack = pack;
     }
 
     /// <summary>Identifier, used in config and commands.</summary>
@@ -66,6 +69,9 @@ public sealed class BeastDefinition
 
     /// <summary>Global key of the boss that unlocks it.</summary>
     public string BossKey { get; }
+
+    /// <summary>Whether it comes as a pack that hunts a player until they find warmth or shelter.</summary>
+    public bool Pack { get; }
 
     /// <summary>Prefab name of the creature.</summary>
     public string PrefabName => $"WhiteHilt_{Key}";

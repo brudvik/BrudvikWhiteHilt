@@ -170,6 +170,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
         Darkness.DarknessCommands.Register();
         Darkness.FearEffect.Register();
         Darkness.DarkShadow.Register();
+        Darkness.DeepNorthNightSettings.Initialize();
+        Darkness.BitingColdEffect.Register();
         Items.Binding.BindingSettings.Initialize();
         Items.Binding.GearBinding.RegisterTranslations();
         Items.Binding.DreadEffect.Register();

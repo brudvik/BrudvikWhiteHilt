@@ -57,6 +57,18 @@ public static class StormWeather
     }
 
     /// <summary>
+    /// The arctic storm's weather, for the white storms of the Deep North's night.
+    /// </summary>
+    /// <param name="env">The environment manager.</param>
+    /// <returns>The weather's name, or null when it could not be made.</returns>
+    public static string Whiteout(EnvMan env)
+    {
+        Register(env);
+        string name = Name(StormKind.Arctic, false);
+        return env.GetEnv(name) != null ? name : null;
+    }
+
+    /// <summary>
     /// The name of a storm's weather.
     /// </summary>
     /// <param name="kind">The storm.</param>

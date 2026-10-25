@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Difficulty.Beasts;
+﻿using BrudvikWhiteHilt.Darkness;
+using BrudvikWhiteHilt.Difficulty.Beasts;
 using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Kraken;
@@ -32,7 +33,7 @@ public class GiftOfOdinEffect : SE_Stats
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} has faded!";
         m_tooltip = "+{0} max health. Heals fully when drunk, then {1} health every second and {2}x health regeneration. "
-            + "{3}% less fall damage. Weaker near the Kraken and black beasts, and out in a great storm";
+            + "{3}% less fall damage. Weaker near the Kraken and black beasts, out in a great storm and in the dark below the Deep North";
     }
 
     /// <summary>
@@ -100,7 +101,7 @@ public class GiftOfOdinEffect : SE_Stats
     private static float HealingFactor(Character character)
     {
         return Mathf.Min(Mathf.Min(KrakenBody.PotionFactor(character, KrakenSettings.OdinHealingShare.Value),
-            BeastBehaviour.OdinHealingFactor(character)), StormClient.PotionFactor(character));
+            BeastBehaviour.OdinHealingFactor(character)), Mathf.Min(StormClient.PotionFactor(character), DarknessClient.PotionFactor(character)));
     }
 
 }

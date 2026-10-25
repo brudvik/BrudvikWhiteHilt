@@ -38,6 +38,7 @@ public sealed class BeastCounterCoating : SE_Stats
             HitData.DamageType.Pickaxe => damage.m_pickaxe > 0f,
             HitData.DamageType.Blunt => damage.m_blunt > 0f,
             HitData.DamageType.Slash => damage.m_slash > 0f,
+            HitData.DamageType.Pierce => damage.m_pierce > 0f,
             _ => false
         };
     }

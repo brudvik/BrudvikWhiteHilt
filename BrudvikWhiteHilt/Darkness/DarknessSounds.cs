@@ -21,7 +21,8 @@ public class DarknessSounds : MonoBehaviour
 
     private static readonly string[] scrapes = { "sfx_dark_scrape", "sfx_dark_scrape_2", "sfx_dark_scrape_3" };
     private static readonly string[] breaths = { "sfx_dark_breath", "sfx_dark_breath_2" };
-    private static readonly string[] whispers = { "sfx_storm_whisper", "sfx_storm_whisper_2", "sfx_storm_whisper_3" };
+    /// <summary>Whispers at the ear.</summary>
+    public static readonly string[] Whispers = { "sfx_storm_whisper", "sfx_storm_whisper_2", "sfx_storm_whisper_3" };
     private const string Heartbeat = "sfx_dark_heartbeat";
     private const float EyesNearest = 7f;
     private const float EyesFarthest = 15f;
@@ -141,7 +142,7 @@ public class DarknessSounds : MonoBehaviour
         }
         else if (roll < 0.88f)
         {
-            Play(whispers, player.GetHeadPoint() + aside * 1.5f, 1f, 8f);
+            Play(Whispers, player.GetHeadPoint() + aside * 1.5f, 1f, 8f);
         }
         else
         {
