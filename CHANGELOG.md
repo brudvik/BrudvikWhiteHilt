@@ -2,6 +2,15 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **[The Storm Bar / Stormbom](docs/storms.md#the-storm-bar-stormbom)** (`[Storms]`): a heavy bar on two posts to
+  stand inside by the door. Where the comfort is 10 or more (`StormBarComfort`), put it across while a storm is coming
+  or raging and every door and window within 20 m (`StormBarRadius`) slams shut and is barred: no one opens them,
+  inside or out, and no gust tears them open. Whoever is caught outside can only pound on the door, and those inside
+  hear who it is. Someone at the bar lifts it; it lifts by itself when the storm has passed (`StormBar`).
+
 ## v0.152.0 - 2026-10-25
 
 ### Added

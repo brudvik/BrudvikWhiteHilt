@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Building.Doors;
+using BrudvikWhiteHilt.Storms;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Household;
@@ -58,14 +59,15 @@ public class HouseholdDoors : MonoBehaviour
     }
 
     /// <summary>
-    /// Whether a member may open this door: it is shut and needs no key.
+    /// Whether a member may open this door: it is shut, needs no key and no Storm Bar holds it.
     /// </summary>
     /// <param name="door">The door.</param>
     /// <returns>True when it can be opened.</returns>
     public static bool CanOpen(Door door)
     {
         ZNetView view = door != null ? door.m_nview : null;
-        return view != null && view.IsValid() && door.m_keyItem == null && view.GetZDO().GetInt(ZDOVars.s_state) == 0;
+        return view != null && view.IsValid() && door.m_keyItem == null && view.GetZDO().GetInt(ZDOVars.s_state) == 0
+            && StormBar.Holding(door) == null;
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Building.Doors;
+using BrudvikWhiteHilt.Storms;
 using HarmonyLib;
 using UnityEngine;
 
@@ -65,7 +66,8 @@ public static class AutoDoorPatches
     [HarmonyPrefix]
     public static bool DoorInteract(Door __instance, bool hold, bool alt, ref bool __result)
     {
-        if (!alt || hold)
+        // A door a Storm Bar holds is pounded on, not held open (StormBarPatches).
+        if (!alt || hold || StormBar.Holding(__instance) != null)
         {
             return true;
         }

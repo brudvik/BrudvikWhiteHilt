@@ -295,4 +295,26 @@ public class StormTests
     {
         Assert.Equal(text, StormState.Countdown(seconds));
     }
+
+    /// <summary>The Storm Bar goes across only in a storm, and only where the house is homely enough.</summary>
+    [Theory]
+    [InlineData(false, 20, 10, StormBarRefusal.NoStorm)]
+    [InlineData(true, 9, 10, StormBarRefusal.Comfort)]
+    [InlineData(true, 10, 10, StormBarRefusal.None)]
+    [InlineData(true, 0, 0, StormBarRefusal.None)]
+    public void TheStormBarNeedsAStormAndComfort(bool stormHere, int comfort, int needed, StormBarRefusal refusal)
+    {
+        Assert.Equal(refusal, StormBarRules.Refusal(stormHere, comfort, needed));
+    }
+
+    /// <summary>A bar holds for the storm it was put across in, and lifts by itself once that storm has passed.</summary>
+    [Theory]
+    [InlineData(3, 3, true, true)]
+    [InlineData(3, 3, false, false)]
+    [InlineData(3, 4, true, false)]
+    [InlineData(0, 0, true, false)]
+    public void TheStormBarHoldsForItsOwnStorm(int barredIn, int stormNumber, bool visible, bool holds)
+    {
+        Assert.Equal(holds, StormBarRules.Holds(barredIn, stormNumber, visible));
+    }
 }
