@@ -14,6 +14,7 @@ public static class StormWeather
 {
     private const string Prefix = "WhiteHilt_Storm_";
     private const string GatheringSuffix = "_Gathering";
+    private const string RagnarokSuffix = "_Ragnarok";
     private const string Fallback = "ThunderStorm";
 
     // How each storm looks, and the game's weathers to copy, best first.
@@ -27,6 +28,9 @@ public static class StormWeather
         [StormKind.Fire] = new Look(new[] { "Ashlands_storm", "Ashlands_ashrain", "Ashrain", "ThunderStorm" }, 0.06f, new Color(0.55f, 0.18f, 0.06f), 0.7f, 1f, false, false, 0.8f),
         [StormKind.Arctic] = new Look(new[] { "Twilight_SnowStorm", "SnowStorm" }, 0.11f, new Color(0.88f, 0.9f, 0.95f), 1f, 1f, false, true, 0.65f)
     };
+
+    // The game's ash rain, which falls in every Ragnarok storm.
+    private static readonly string[] ashSources = { "Ashrain", "Ashlands_ashrain", "Ashlands_storm" };
 
     private static EnvMan registeredWith;
     private static float extraFog;
@@ -50,9 +54,15 @@ public static class StormWeather
             return null;
         }
 
-        // The eye has the warning's sky: dark and windy, without the rain or snow.
+        // The eye has the warning's sky: dark and windy, without the rain or snow. Ragnarok rains ash on top.
         Register(env);
-        string name = Name(profile.Kind, StormState.Coming || StormState.InEye);
+        bool gathering = StormState.Coming || StormState.InEye;
+        string name = Name(profile.Kind, gathering);
+        if (!gathering && StormState.Ragnarok && StormSettings.RagnarokAsh.Value && env.GetEnv(name + RagnarokSuffix) != null)
+        {
+            return name + RagnarokSuffix;
+        }
+
         return env.GetEnv(name) != null ? name : null;
     }
 
@@ -105,6 +115,7 @@ public static class StormWeather
         }
 
         registeredWith = env;
+        EnvSetup ash = ashSources.Select(env.GetEnv).FirstOrDefault(found => found != null && found.m_psystems != null && found.m_psystems.Length > 0);
         foreach (KeyValuePair<StormKind, Look> pair in looks)
         {
             EnvSetup source = pair.Value.Sources.Select(env.GetEnv).FirstOrDefault(found => found != null) ?? env.GetEnv(Fallback);
@@ -116,6 +127,10 @@ public static class StormWeather
 
             env.AppendEnvironment(Storm(source, pair.Key, pair.Value));
             env.AppendEnvironment(Gathering(source, pair.Key, pair.Value));
+            if (ash != null)
+            {
+                env.AppendEnvironment(Ragnarok(source, ash, pair.Key, pair.Value));
+            }
             Jotunn.Logger.LogInfo($"Storms: the {pair.Key} storm is a copy of {source.m_name}");
         }
     }
@@ -147,6 +162,15 @@ public static class StormWeather
         }
 
         return storm;
+    }
+
+    // Ragnarok's storm: the storm with the ash rain falling through it as well.
+    private static EnvSetup Ragnarok(EnvSetup source, EnvSetup ash, StormKind kind, Look look)
+    {
+        EnvSetup ragnarok = Storm(source, kind, look);
+        ragnarok.m_name = Name(kind, false) + RagnarokSuffix;
+        ragnarok.m_psystems = (ragnarok.m_psystems ?? new GameObject[0]).Concat(ash.m_psystems).Where(system => system != null).Distinct().ToArray();
+        return ragnarok;
     }
 
     // The warning's sky: darker, windier and foggier than usual, without the storm's rain or snow.

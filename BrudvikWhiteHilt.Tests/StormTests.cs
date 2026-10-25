@@ -317,4 +317,50 @@ public class StormTests
     {
         Assert.Equal(holds, StormBarRules.Holds(barredIn, stormNumber, visible));
     }
+
+    /// <summary>The sky reddens as Ragnarok gathers, the sun is swallowed as it breaks and glimpsed in its eye.</summary>
+    [Theory]
+    [InlineData(false, StormPhase.Raging, StormWave.First, 0f)]
+    [InlineData(true, StormPhase.Brewing, StormWave.None, 0f)]
+    [InlineData(true, StormPhase.Warning, StormWave.None, RagnarokRules.GatheringEclipse)]
+    [InlineData(true, StormPhase.Raging, StormWave.First, 1f)]
+    [InlineData(true, StormPhase.Raging, StormWave.Eye, RagnarokRules.EyeEclipse)]
+    [InlineData(true, StormPhase.Raging, StormWave.Last, 1f)]
+    [InlineData(true, StormPhase.Calm, StormWave.None, 0f)]
+    public void TheWolvesSwallowTheSunInRagnarok(bool ragnarok, StormPhase phase, StormWave wave, float eclipse)
+    {
+        Assert.Equal(eclipse, RagnarokRules.Eclipse(ragnarok, phase, wave));
+    }
+
+    /// <summary>One quake in each stretch of time, at the same moment on every machine, in its first two thirds.</summary>
+    [Fact]
+    public void RagnarokQuakesOncePerStretch()
+    {
+        for (long slot = 1000; slot < 1100; slot++)
+        {
+            double at = RagnarokRules.QuakeTime(slot, 7, 60f);
+            Assert.InRange(at, slot * 60.0, slot * 60.0 + 40.3);
+            Assert.Equal(at, RagnarokRules.QuakeTime(slot, 7, 60f));
+            Assert.True(RagnarokRules.QuakeBetween(slot * 60.0 - 0.001, slot * 60.0 + 59.999, 7, 60f));
+        }
+
+        int quakes = 0;
+        for (double time = 60000.0; time < 66000.0; time += 0.5)
+        {
+            quakes += RagnarokRules.QuakeBetween(time, time + 0.5, 7, 60f) ? 1 : 0;
+        }
+
+        Assert.Equal(100, quakes);
+    }
+
+    /// <summary>A quake swells and dies away, and is over after its length.</summary>
+    [Theory]
+    [InlineData(-1f, 0f)]
+    [InlineData(0f, 0f)]
+    [InlineData(2.5f, 1f)]
+    [InlineData(5f, 0f)]
+    public void AQuakeSwellsAndDies(float seconds, float strength)
+    {
+        Assert.Equal(strength, RagnarokRules.QuakeStrength(seconds, 5f), 3);
+    }
 }

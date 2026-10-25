@@ -499,6 +499,21 @@
       "duration": 7
     },
     {
+      "name": "sfx_storm_gjallarhorn",
+      "prompt": "Gjallarhorn, the horn of the gods, blown at the end of the world: an enormous, deep and ancient horn blast that swells and echoes across mountains and valleys, three long rising calls, the last one breaking, with thunder rumbling underneath. Terrifying and vast. No music, no voices.",
+      "duration": 10
+    },
+    {
+      "name": "sfx_storm_ragnarok_wolves",
+      "prompt": "Two gigantic wolves howling across the whole sky at the end of the world, deep and monstrous howls that echo endlessly, a low growl and jaws snapping shut, as the light dies. Terrifying. No music, no voices.",
+      "duration": 8
+    },
+    {
+      "name": "sfx_storm_quake",
+      "prompt": "A violent earthquake: a deep subterranean rumble that rises from nothing, the ground groaning and cracking, timber creaking and rattling, stones shifting, then the rumble slowly dying away. No music, no voices.",
+      "duration": 6
+    },
+    {
       "name": "sfx_storm_ignite",
       "prompt": "A burst of fire catching on clothes: a sudden whoosh of flames igniting and crackling. Short, no music.",
       "duration": 2

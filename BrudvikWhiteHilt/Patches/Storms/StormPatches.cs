@@ -22,6 +22,7 @@ public static class StormPatches
         __instance.gameObject.AddComponent<StormWind>();
         __instance.gameObject.AddComponent<StormHail>();
         __instance.gameObject.AddComponent<StormVisions>();
+        __instance.gameObject.AddComponent<StormRagnarok>();
     }
 
     // Lost at sea in the storm: no place on the map.
@@ -55,5 +56,6 @@ public static class StormPatches
     private static void SetEnvPostfix()
     {
         StormWeather.ApplyFog();
+        StormRagnarok.ApplyLight();
     }
 }

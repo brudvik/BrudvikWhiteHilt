@@ -138,6 +138,24 @@ public static class StormSettings
     /// <summary>How much harder Ragnarok drives the exposure on.</summary>
     public static ConfigEntry<float> RagnarokFury { get; private set; }
 
+    /// <summary>Whether Gjallarhorn sounds before Ragnarok and as its last wave comes.</summary>
+    public static ConfigEntry<bool> RagnarokHorn { get; private set; }
+
+    /// <summary>Whether the wolves swallow the sun and the moon in Ragnarok, and the sky turns red.</summary>
+    public static ConfigEntry<bool> RagnarokSky { get; private set; }
+
+    /// <summary>Whether ash rains in every Ragnarok storm.</summary>
+    public static ConfigEntry<bool> RagnarokAsh { get; private set; }
+
+    /// <summary>Whether the earth shakes in Ragnarok.</summary>
+    public static ConfigEntry<bool> RagnarokQuakes { get; private set; }
+
+    /// <summary>Seconds between quakes in Ragnarok on average.</summary>
+    public static ConfigEntry<float> RagnarokQuakeSeconds { get; private set; }
+
+    /// <summary>The share of its health a weak piece loses to a quake.</summary>
+    public static ConfigEntry<float> RagnarokQuakeDamage { get; private set; }
+
     /// <summary>Whether the storm remembers who braves it.</summary>
     public static ConfigEntry<bool> Grudge { get; private set; }
 
@@ -233,6 +251,19 @@ public static class StormSettings
             "Chance in percent that any other storm is Ragnarok, once a boss has fallen.", new AcceptableValueRange<float>(0f, 100f));
         RagnarokFury = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokFury", 1.5f,
             "How much faster the exposure climbs in Ragnarok, on top of the wave.", new AcceptableValueRange<float>(1f, 3f));
+        RagnarokHorn = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokHorn", true,
+            "Gjallarhorn, Heimdall's horn, sounds over the world when Ragnarok is coming and again as its last wave comes, as loud under a roof as in the open.");
+        RagnarokSky = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokSky", true,
+            "In Ragnarok the sky reddens as it gathers, and the wolves Skoll and Hati swallow the sun and the moon as it breaks: the light goes out in a red dark and comes back when it has passed.");
+        RagnarokAsh = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokAsh", true,
+            "Ash from Muspelheim rains through every Ragnarok storm, in every biome.");
+        RagnarokQuakes = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokQuakes", true,
+            "The earth shakes now and then while Ragnarok rages, as Yggdrasil trembles: the ground rumbles, the view shakes, and building pieces already at half their health or less take a blow.");
+        RagnarokQuakeSeconds = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokQuakeSeconds", 60f,
+            "Seconds between quakes in Ragnarok on average.", new AcceptableValueRange<float>(15f, 600f));
+        RagnarokQuakeDamage = WhiteHiltConfig.BindAdminOnly(Section, "RagnarokQuakeDamage", 0.1f,
+            "The share of its full health a building piece at half its health or less loses to a quake (0.1 = 10%). 0: quakes harm nothing.",
+            new AcceptableValueRange<float>(0f, 0.5f));
         Grudge = WhiteHiltConfig.BindAdminOnly(Section, "Grudge", true,
             "The storm remembers who braves it: each storm a player lives through out in it makes the meter climb faster for them the next time, and leaves them more finds; each storm they sit out in shelter it forgets them a little.");
         GrudgeStep = WhiteHiltConfig.BindAdminOnly(Section, "GrudgeStep", 0.05f,
@@ -303,6 +334,9 @@ public static class StormSettings
         Translations.AddEnglish("whitehilt_forecast_ragnarok_raging", "Ragnarok, {0} left");
         Translations.AddEnglish("whitehilt_storm_clock_ragnarok_coming", "Ragnarok in {0}");
         Translations.AddEnglish("whitehilt_storm_clock_ragnarok", "Ragnarok, {0} left");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_sun", "Skoll swallows the sun!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_moon", "Hati swallows the moon!");
+        Translations.AddEnglish("msg_whitehilt_ragnarok_quake", "The earth shakes: Yggdrasil trembles!");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_up", "The storm remembers you. It will come harder for you next time");
         Translations.AddEnglish("msg_whitehilt_storm_grudge_down", "The storm forgets you a little");
         Translations.AddEnglish("whitehilt_storm_grudge", "The storm remembers you: {0}% faster");

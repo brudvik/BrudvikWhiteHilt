@@ -27,10 +27,17 @@ public class StormAmbience : MonoBehaviour
     private float nextThunder;
 
     /// <summary>
-    /// The warning: distant thunder, a gust and a horn far away.
+    /// The warning: distant thunder, a gust and a horn far away. Before Ragnarok, Gjallarhorn: Heimdall's horn, heard
+    /// as loud under a roof as out in the open.
     /// </summary>
     public static void PlayWarning()
     {
+        if (StormState.Ragnarok && StormSettings.RagnarokHorn.Value)
+        {
+            PlayEffect("sfx_storm_gjallarhorn", false);
+            return;
+        }
+
         PlayEffect("sfx_storm_warning");
     }
 
@@ -40,13 +47,18 @@ public class StormAmbience : MonoBehaviour
     /// <param name="name">The sound.</param>
     public static void PlayEffect(string name)
     {
+        PlayEffect(name, true);
+    }
+
+    private static void PlayEffect(string name, bool muffled)
+    {
         if (instance == null || instance.effects == null)
         {
             return;
         }
 
         AudioClip clip = AudioAssets.TryLoad(name);
-        float volume = (SoundSettings.EffectsVolume?.Value ?? 1f) * StormSettings.Volume.Value * Muffle();
+        float volume = (SoundSettings.EffectsVolume?.Value ?? 1f) * StormSettings.Volume.Value * (muffled ? Muffle() : 1f);
         if (clip != null && volume > 0f)
         {
             instance.effects.PlayOneShot(clip, volume);

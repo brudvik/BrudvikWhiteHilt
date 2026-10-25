@@ -66,6 +66,16 @@ falls is always Ragnarok, and any other is one time in twenty (`RagnarokChance`)
   and the firestorm too. The view closes in further.
 - Those who were out in it find twice as much after, and some of it rare: thunderstones, rubies, amber pearls, silver
   necklaces, surtling cores and now and then Ymir flesh.
+- **Gjallarhorn** sounds over the world as it is warned of, and again as its last wave comes, Heimdall's horn as loud
+  under a roof as out in the open (`RagnarokHorn`).
+- **The wolves swallow the sun.** The sky reddens as Ragnarok gathers; as it breaks, *Skoll swallows the sun!* (or
+  *Hati swallows the moon!* by night), the wolves howl across the sky and over some forty seconds the light goes out
+  in a red dark. In the eye the sun is glimpsed again; it comes back when the storm has passed (`RagnarokSky`).
+- **Ash rains** from Muspelheim through every Ragnarok storm, in every biome (`RagnarokAsh`).
+- **The earth shakes** about every minute while it rages, at the same moment for everyone (`RagnarokQuakes`,
+  `RagnarokQuakeSeconds`): the ground rumbles, the view shakes for some seconds, and building pieces within 40 m that
+  are already at half their health or less lose a tenth of their full health (`RagnarokQuakeDamage`). Keep the house
+  mended.
 
 Admins can call it with `whitehilt_storm ragnarok`.
 
@@ -245,6 +255,12 @@ Section `Storms`. Everything but `Volume` and `Visions` is admin-only and synced
 | `TreeFallSeconds` | 40 | Seconds between felled trees near each player on average |
 | `FiresGoOut` | true | Fires with no roof over them and torches in the open go out |
 | `DoorsBlowOpen` | true | Gusts tear doors open, and an open door lets the storm in |
+| `RagnarokHorn` | true | Gjallarhorn sounds before Ragnarok and as its last wave comes |
+| `RagnarokSky` | true | The sky reddens and the wolves swallow the sun and the moon in Ragnarok |
+| `RagnarokAsh` | true | Ash rains through every Ragnarok storm |
+| `RagnarokQuakes` | true | The earth shakes in Ragnarok, and weak building pieces take a blow |
+| `RagnarokQuakeSeconds` | 60 | Seconds between quakes on average |
+| `RagnarokQuakeDamage` | 0.1 | Share of its full health a piece at half health or less loses to a quake |
 | `StormBar` | true | The Storm Bar can be built, to bar a house's doors and windows in a storm |
 | `StormBarComfort` | 10 | The comfort a Storm Bar needs where it stands before it can be put across |
 | `StormBarRadius` | 20 | Metres from a Storm Bar within which it bars doors and windows |
