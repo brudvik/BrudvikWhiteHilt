@@ -2,6 +2,31 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.152.0 - 2026-10-25
+
+### Added
+- **[The night in the Deep North](docs/darkness.md#the-night-in-the-deep-north)** (`[DeepNorthNight]`). Out in the
+  open at night the cold bites through any frost resistance: without a fire, a warm place or a roof you lose 0.4% of
+  your health and 2 stamina a second, never the last tenth of your health (`ColdHealthDrain`, `ColdStaminaDrain`).
+  White storms sweep in for about a third of the night, the same for everyone, with whispers on the wind
+  (`WhiteoutShare`, `WhiteoutMinutes`). The fear of the dark and its shadows follow you out of the light
+  (`FearOutside`).
+- **[The Black Wolf](docs/difficulty.md)**: the Deep North's black beast, a pack of 3 to 5 five-star wolves
+  (`PackMin`, `PackMax`) coming twice as often as the other beasts (`BeastChanceMultiplier`). They circle you, howl
+  before they are seen and hunt whoever is nearest out in the open until a fire, a roof or a cave makes them lose the
+  scent; back out in the open the same night, a new pack finds you (`PackReturnSeconds`). With its own sounds, trophy
+  and binding bonus.
+- **[Hearth Tallow / Ildtalg](docs/bestiary.md#weapon-treatments)**: the Black Wolf's counter, a treatment for a spear
+  or a knife from Wolf Fangs, Resin and Coal. The Black Bestiary now covers ten beasts.
+- **[A darker dark below the Deep North](docs/darkness.md#the-deep-north)** (`[Darkness]`). When the darkness falls
+  there, two more shadows come in each darkness (`DeepNorthShadows`), health and stamina drain light or not, never
+  below a quarter (`DeepNorthHealthDrain`, `DeepNorthStaminaDrain`), and the Gifts of Freya and Odin sink to half in
+  the black (`DeepNorthPotionShare`).
+
+### Fixed
+- A ragdoll of a creature with two or more stars no longer throws a NullReferenceException from Jötunn's cumulative
+  level effects.
+
 ## v0.151.0 - 2026-10-22
 
 ### Added
