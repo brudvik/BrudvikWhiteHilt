@@ -43,7 +43,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.151.0
+## ✨ New in 0.152.0
+
+- **[The night in the Deep North](docs/darkness.md#the-night-in-the-deep-north)**: out in the open the cold bites through any frost resistance, white storms sweep in, and the fear of the dark and its shadows follow you out of the light.
+- **[The Black Wolf](docs/difficulty.md)**: the Deep North's black beast comes as a pack of 3 to 5 that circles you and hunts you until you find a fire or a roof, and finds you again when you go back out. Its counter is **[Hearth Tallow](docs/bestiary.md#weapon-treatments)** for spears and knives.
+- **[A darker dark below the Deep North](docs/darkness.md#the-deep-north)**: more shadows, health and stamina drain away even with a torch, and Freya and Odin give only half in the black.
+
+### Also new in 0.151.0
 
 - **[Three trinkets at once](docs/backpack.md)**: a row of trinket slots in the equipment panel, each kind once, all sharing one adrenaline bar; when it is full, every trinket's effect comes at once.
 - **[The Rime Rune](docs/smithing.md#etching-a-rune)**: Niflheim's Rime, strong frost that bites the fire-born of the Ashlands and now and then freezes the foe fast.
