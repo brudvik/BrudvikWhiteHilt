@@ -20,6 +20,7 @@ public static class DarknessPatches
         __instance.gameObject.AddComponent<DarknessSounds>();
         __instance.gameObject.AddComponent<DarknessSilence>();
         __instance.gameObject.AddComponent<DarknessDoors>();
+        __instance.gameObject.AddComponent<DeepNorthNight>();
     }
 
     [HarmonyPatch(typeof(EnvMan), nameof(EnvMan.SetEnv))]

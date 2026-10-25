@@ -13,7 +13,7 @@ namespace BrudvikWhiteHilt.Bestiary;
 /// <summary>A crafted material counter, its recipe and the beast it affects.</summary>
 public sealed class BeastCounter
 {
-    /// <summary>The nine distinct material counters, in book order.</summary>
+    /// <summary>The ten distinct material counters, in book order.</summary>
     public static readonly BeastCounter[] All =
     {
         new("BlackTroll", "TrollArrow", "Troll Arrow", "ArrowFlint", HitData.DamageType.Pierce, 27f, 0f,
@@ -51,7 +51,11 @@ public sealed class BeastCounter
         new("BlackBonemaw", "StormArrow", "Storm Arrow", "ArrowCarapace", HitData.DamageType.Lightning, 32f, 30f,
             "Wood:8,Feathers:2,WhiteHiltRosehips:3,WhiteHilt_KrakenInk:1", "An arrow inked with kraken ink and rosehips. Its alchemical charge strikes through the Black Bonemaw's hide.",
             "Its attacks threaten both crew and hull in dangerous Ashlands waters. Keep distance, bring repairs, and let one crew member steer while the others shoot.",
-            "Rosehips grow on the Plains and may drop from cloudberry bushes. Kraken drops Kraken Ink.")
+            "Rosehips grow on the Plains and may drop from cloudberry bushes. Kraken drops Kraken Ink."),
+        new("BlackWolf", "HearthTallow", "Hearth Tallow", "MeadTasty", HitData.DamageType.Pierce, 0f, 0f,
+            "WolfFang:2,Resin:3,Coal:2", "Resin and coal rendered with wolf fangs, for a spear or a knife. The point smokes like a hearth, and the Black Wolves shy from it.",
+            "They come as a pack, circle you and strike from behind while one holds your eye. Keep your back to a rock or a fire, and thin the pack before it closes in.",
+            "Wolves in the Mountains drop Wolf Fangs. Resin comes from trees and Greydwarfs; Coal from a kiln or from Surtlings.")
     };
 
     private ConfigEntry<float> bonus;

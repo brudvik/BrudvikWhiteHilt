@@ -17,7 +17,7 @@ public sealed class BeastBookPiece : DefensePieceBase
     /// <inheritdoc/>
     protected override string FullName => "Black Bestiary";
     /// <inheritdoc/>
-    protected override string Description => "A book of the nine black beasts: their dangers, material weaknesses, and the recipes and gathering places of their counters.";
+    protected override string Description => "A book of the ten black beasts: their dangers, material weaknesses, and the recipes and gathering places of their counters.";
     /// <inheritdoc/>
     protected override RequirementConfig[] Requirements => new RequirementConfig[]
     {

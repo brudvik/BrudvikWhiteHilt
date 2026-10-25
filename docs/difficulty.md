@@ -37,6 +37,7 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 - It is about as strong as the biome's boss; bring friends.
 - A beast only comes once its biome's boss is defeated. The Black Dragon comes once Moder is slain, in the Plains too.
 - Where two beasts share a biome, one of them comes at random.
+- In the Deep North the chance is doubled (`[DeepNorthNight] BeastChanceMultiplier`), and the Black Wolves come as a pack that hunts you until you find a fire or a roof, and finds you again when you go back out.
 - By day it sinks into the ground when no one is near.
 - It always drops its black trophy, which can be bound to a White Hilt weapon or shield at the Binding Stone ([Smithing](smithing.md#-binding-and-rune-etching)).
 - Within 40 m of a living beast, [Gift of Odin](potions.md#near-black-beasts) retains 80% of its healing bonuses: +1.6 HP/s, 1.8x health regeneration and an 80%-of-maximum-health heal when drunk. Maximum HP, fall protection, duration and Freya are unchanged. Multiple beasts do not stack, and Kraken's stronger healing attenuation takes precedence. Full strength returns outside range or when the beast dies. Server settings in `[Difficulty.Beasts]`: `OdinHealingRange` (40 m; 0 disables attenuation), `OdinHealingShare` (0.8; 1 keeps full power).
@@ -52,8 +53,9 @@ Between 00:00 and 02:00, in bad weather (rain, storm or thunder), a black 5 star
 | **Black Morgen** | Ashlands | Fader | 1600 × 6.75 |
 | **Black Serpent** | At sea, on a ship | Bonemass | 400 × 6.75 |
 | **Black Bonemaw** | Ashlands sea, on a ship | Fader | 1100 × 6.75 |
+| **Black Wolf** | Deep North, a pack of 3 to 5 ([The night in the Deep North](darkness.md#the-night-in-the-deep-north)) | Fader | 80 × 6.75 each |
 
-Each black beast has its own **material counter**, made with gathered ingredients: six special arrows and three weapon treatments. Build the **Black Bestiary / Svartboka** with Meadows materials to browse their dangers, counters and current recipes; each reader unlocks pages only by discovering the corresponding biomes, not by killing bosses. Meadows-only readers see a warning without monster spoilers. These preparations add a default 50% material-damage component only against their matching beast; ordinary resistance profiles are unchanged. See [Black Bestiary & material counters](bestiary.md).
+Each black beast has its own **material counter**, made with gathered ingredients: six special arrows and four weapon treatments. Build the **Black Bestiary / Svartboka** with Meadows materials to browse their dangers, counters and current recipes; each reader unlocks pages only by discovering the corresponding biomes, not by killing bosses. Meadows-only readers see a warning without monster spoilers. These preparations add a default 50% material-damage component only against their matching beast; ordinary resistance profiles are unchanged. See [Black Bestiary & material counters](bestiary.md).
 
 **Blood moon**
 

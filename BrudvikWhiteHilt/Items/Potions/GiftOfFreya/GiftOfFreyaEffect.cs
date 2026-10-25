@@ -1,4 +1,5 @@
-﻿using BrudvikWhiteHilt.Extensions;
+﻿using BrudvikWhiteHilt.Darkness;
+using BrudvikWhiteHilt.Extensions;
 using BrudvikWhiteHilt.Helpers;
 using BrudvikWhiteHilt.Kraken;
 using BrudvikWhiteHilt.Storms;
@@ -27,7 +28,7 @@ public class GiftOfFreyaEffect : SE_Stats
         m_stopMessageType = MessageHud.MessageType.Center;
         m_stopMessage = $"{effectName} is no more!";
         m_tooltip = "Fills your stamina when drunk. Running, jumping, attacking, blocking, dodging, swimming, building and "
-            + "sneaking restore a little stamina instead of using it. Stamina regenerates {0}x as fast. Weaker near the Kraken and out in a great storm";
+            + "sneaking restore a little stamina instead of using it. Stamina regenerates {0}x as fast. Weaker near the Kraken, out in a great storm and in the dark below the Deep North";
     }
 
     /// <summary>
@@ -159,7 +160,8 @@ public class GiftOfFreyaEffect : SE_Stats
     // Near the Kraken and out in a great storm the potion gives less.
     private float Share()
     {
-        return Mathf.Min(KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value), StormClient.PotionFactor(m_character));
+        return Mathf.Min(Mathf.Min(KrakenBody.PotionFactor(m_character, KrakenSettings.FreyaShare.Value), StormClient.PotionFactor(m_character)),
+            DarknessClient.PotionFactor(m_character));
     }
 
 }

@@ -77,6 +77,40 @@ dark it is very hard to hurt; within 6 m of a carried light it is easy to hurt. 
 a puff. It grows with the world, a star for every two bosses fallen, up to two, and leaves nothing behind. There are at
 most 3 in one place (`MaxShadows`). Turn them off with `Shadows`.
 
+### The Deep North
+
+Below ground in the Deep North the dark is worse. When it falls the cold comes with it (*The cold of the north comes
+with the dark. It saps you!*):
+
+- While it is dark you lose stamina, 3 a second (`DeepNorthStaminaDrain`), and health, 0.3% of your maximum a second
+  (`DeepNorthHealthDrain`), with a light or without. The cold alone never takes the last quarter of your health.
+- Two more shadows come in each darkness (`DeepNorthShadows`), a few seconds apart, and a place there holds two more
+  than `MaxShadows`.
+- The Gift of Freya's stamina and the Gift of Odin's healing sink with the light, to half in the black
+  (`DeepNorthPotionShare`).
+
+### The night in the Deep North
+
+The night out in the open in the Deep North (18:00 to 06:00) is worse than anywhere. All of it is in the section
+`DeepNorthNight`, admin-only, and off with `Enabled`.
+
+- **Biting cold.** Frost resistance does not help. Out in the open, without a fire or another warm place nearby or a
+  roof over your head, you lose 0.4% of your maximum health a second (`ColdHealthDrain`) and 2 stamina a second
+  (`ColdStaminaDrain`): *The night cold bites through everything. Find a fire or a roof!* The cold alone never takes
+  the last tenth of your health. A status effect with the game's freezing icon shows when it bites.
+- **White storms.** About a third of the night (`WhiteoutShare`), in stretches of 2 minutes (`WhiteoutMinutes`), a
+  white storm sweeps in: the arctic storm's weather, with the view closed in, the wind howling and whispers on the wind.
+  Everyone in the Deep North has the same storm at the same time. It counts as bad weather, so a beast may come in it.
+- **The hunt.** The black beast of the Deep North is a pack of 3 to 5 **Black Wolves** (`PackMin`, `PackMax`), coming
+  twice as often as the other beasts (`BeastChanceMultiplier`). They circle you and are heard howling before they are
+  seen. They hunt whoever is nearest out in the open, and only a fire, a warm place, a roof or going below ground makes
+  them lose your scent (*The pack circles out in the dark. Stay in the warmth...*): after 20 seconds with no one left out in the open,
+  they are gone. Out in the open again the same night, after 30 seconds (`PackReturnSeconds`) a new pack finds you:
+  *The pack has found your scent again!*
+- **Fear and shadows.** The [fear of the dark](#fear-of-the-dark) follows you out (`FearOutside`): out in the night it
+  is always black, and only a light of your own, a friend's or a fire you built holds the fear off. From half fear a
+  shadow comes now and then, at most every 45 seconds, and it is gone at dawn.
+
 ### The light fails
 
 In the black a torch burns down three times as fast (`TorchWear`), and now and then it gutters out for a moment and
@@ -114,6 +148,10 @@ Section `Darkness`. Everything but `EyesAndSounds` and `Volume` is admin-only an
 | `Shadows` | true | Shadows come for those without a light |
 | `MaxShadows` | 3 | The most shadows in one place |
 | `TorchWear` | 3 | How many times as fast a torch burns down in the black |
+| `DeepNorthShadows` | 2 | How many more shadows come in each darkness in the Deep North, and how many more a place there holds |
+| `DeepNorthHealthDrain` | 0.003 | Share of maximum health lost per second in the dark of the Deep North, never below a quarter; 0 off |
+| `DeepNorthStaminaDrain` | 3 | Stamina lost per second in the dark of the Deep North; 0 off |
+| `DeepNorthPotionShare` | 0.5 | Share of Freya's stamina and Odin's healing left in the black of the Deep North |
 | `EyesAndSounds` | true | Eyes, scraping, breathing and whispers in the black (your own setting) |
 | `Volume` | 1 | Volume of the darkness's sounds (your own setting) |
 

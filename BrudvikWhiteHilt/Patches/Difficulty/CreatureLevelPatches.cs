@@ -149,6 +149,16 @@ public static class CreatureLevelPatches
         }
     }
 
+    // Jotunn's postfix on SetupLevelVisualization reads m_character.m_nview for every level above 2, but a ragdoll's
+    // LevelEffects has no character, so a 2 star or higher ragdoll threw. No creature of the mod asks for cumulative
+    // level effects, so there is nothing to do without a character.
+    [HarmonyPatch(typeof(Jotunn.Managers.CreatureManager), "EnableCumulativeLevelEffects")]
+    [HarmonyPrefix]
+    private static bool JotunnCumulativeLevelEffectsPrefix(LevelEffects self)
+    {
+        return self != null && self.m_character != null && self.m_character.m_nview != null;
+    }
+
     [HarmonyPatch(typeof(LevelEffects), nameof(LevelEffects.GetColorChanges))]
     [HarmonyPostfix]
     private static void GetColorChangesPostfix(LevelEffects __instance, ref float hue, ref float saturation, ref float value)

@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Darkness;
 using BrudvikWhiteHilt.Storms;
 using HarmonyLib;
 
@@ -45,7 +46,7 @@ public static class StormPatches
     {
         if (string.IsNullOrEmpty(__result))
         {
-            __result = StormWeather.Override(__instance);
+            __result = StormWeather.Override(__instance) ?? DeepNorthNight.Override(__instance);
         }
     }
 

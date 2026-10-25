@@ -15,6 +15,7 @@ Pages unlock only when **the reader discovers a biome where that beast lives**, 
 | Plains | Black Fuling Berserker, Black Dragon if not already known |
 | Mistlands | Black Seeker Soldier |
 | Ashlands | Black Morgen, Black Bonemaw |
+| Deep North | Black Wolf |
 | Ocean | Black Serpent |
 
 The Dragon has one page even after visiting both Mountains and Plains. Discovering a biome reveals knowledge, not an early encounter: the beasts retain their existing guardian-boss spawn requirements.
@@ -59,8 +60,9 @@ Each lasts **30 eligible attacks**, including misses. Stonebreaker mining swings
 | **Stonebreaker Coating / Steinbryterbelegg** | Black Stone Golem | Pickaxe | Rock Lichen x3, Slate x2, Resin x2 |
 | **Berserker Coating / Berserkerbelegg** | Black Fuling Berserker | Club, mace or sledge | Henbane x3, Resin x2, Coal x1 |
 | **Carapace Whetstone / Panserbryner** | Black Seeker Soldier | Sword or axe | Woad x3, Slate x2, Resin x2 |
+| **Hearth Tallow / Ildtalg** | Black Wolf | Spear or knife | Wolf Fang x2, Resin x3, Coal x2 |
 
-Prefab names: `WhiteHiltStonebreakerCoating`, `WhiteHiltBerserkerCoating`, `WhiteHiltCarapaceWhetstone`.
+Prefab names: `WhiteHiltStonebreakerCoating`, `WhiteHiltBerserkerCoating`, `WhiteHiltCarapaceWhetstone`, `WhiteHiltHearthTallow`.
 
 Gathering locations are described in the book and on [Foraging](foraging.md). Slate is described on [Roofs](roofs.md); Poison Glands on [Monsters](monsters.md); Kraken Ink on [Kraken](kraken.md). Every default recipe uses ingredients from its own biome or earlier. These recipes stay at `ProgressionTier.Start`: ingredients gate them without added tier costs.
 
@@ -88,7 +90,7 @@ The existing `[Content]` and `[Recipes]` settings control each item and `piece_w
 
 ## Testing
 
-Build and offline behavior checks do not replace in-game testing. Verify all nine counters against their matching and nonmatching beasts, shot-then-weapon-switch behavior, treatment charges and weapon restrictions, sketch readability, paging and scrolling at different HUD scales, Escape/input release and dedicated-server ownership. No asset bundle rebuild is needed: existing vanilla arrows, oil-flask/whetstone models and guestbook stand are reused; trophy icons are processed into cached paper sketches only for the book.
+Build and offline behavior checks do not replace in-game testing. Verify all ten counters against their matching and nonmatching beasts, shot-then-weapon-switch behavior, treatment charges and weapon restrictions, sketch readability, paging and scrolling at different HUD scales, Escape/input release and dedicated-server ownership. No asset bundle rebuild is needed: existing vanilla arrows, oil-flask/whetstone models and guestbook stand are reused; trophy icons are processed into cached paper sketches only for the book.
 
 ## Sounds
 

@@ -26,6 +26,7 @@ public static class BindingSettings
         ["BlackSeekerSoldier"] = (0.15f, 0.21f),
         ["BlackMorgen"] = (0.20f, 0.25f),
         ["BlackBonemaw"] = (0.20f, 0.25f),
+        ["BlackWolf"] = (0.22f, 0.27f),
     };
 
     private static readonly Dictionary<string, ConfigEntry<float>> bonus = new();

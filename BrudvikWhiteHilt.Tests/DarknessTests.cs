@@ -1,3 +1,4 @@
+using BrudvikWhiteHilt.Difficulty.Beasts;
 using BrudvikWhiteHilt.Darkness;
 using Xunit;
 
@@ -159,6 +160,46 @@ public class DarknessTests
     public void FearHasItsStages(float fear, int stage)
     {
         Assert.Equal(stage, DarknessClient.Stage(fear));
+    }
+
+    /// <summary>One shadow comes in each darkness, and in the Deep North the extra ones with it.</summary>
+    [Theory]
+    [InlineData(false, 2, 1)]
+    [InlineData(true, 2, 3)]
+    [InlineData(true, 0, 1)]
+    [InlineData(true, -1, 1)]
+    public void TheDeepNorthSendsMoreShadows(bool deepNorth, int extra, int shadows)
+    {
+        Assert.Equal(shadows, DarknessClient.ShadowsPerDarkness(deepNorth, extra));
+    }
+
+    /// <summary>A white storm blows in about the share of the night asked for, and never or always at the ends.</summary>
+    [Theory]
+    [InlineData(0f)]
+    [InlineData(0.35f)]
+    [InlineData(1f)]
+    public void WhiteStormsBlowTheirShareOfTheNight(float share)
+    {
+        int blowing = 0;
+        for (long stretch = 0; stretch < 10000; stretch++)
+        {
+            blowing += DeepNorthNight.WhiteoutAt(stretch, share) ? 1 : 0;
+        }
+
+        Assert.InRange(blowing / 10000f, share - 0.03f, share + 0.03f);
+    }
+
+    /// <summary>A pack is as big as asked, at least one, and a minimum above the maximum wins.</summary>
+    [Theory]
+    [InlineData(3, 5, 0f, 3)]
+    [InlineData(3, 5, 0.5f, 4)]
+    [InlineData(3, 5, 0.999f, 5)]
+    [InlineData(3, 5, 1f, 5)]
+    [InlineData(4, 2, 0.7f, 4)]
+    [InlineData(0, 0, 0.5f, 1)]
+    public void APackIsAsBigAsAsked(int min, int max, float roll, int size)
+    {
+        Assert.Equal(size, BeastSpawner.PackSize(min, max, roll));
     }
 
     /// <summary>A place keeps its start while someone has been there in the last five minutes, else starts over.</summary>

@@ -58,6 +58,11 @@ Full healing strength returns when the beast dies or you leave its range. This i
 
 The exposure meter of a [great storm](storms.md#out-in-it) wears down Odin's healing (the heal over time, the faster regeneration and the heal when drunk) and all of Freya: half from 20% exposure, a quarter from 40%, and nothing once you freeze at 60%. Odin's maximum HP, fall-damage reduction and duration are unchanged. In shelter the meter falls and the potions come back with it.
 
+### In the dark below the Deep North
+
+Below ground in the Deep North, as the [creeping darkness](darkness.md#the-deep-north) falls, Odin's healing and all of
+Freya sink with the light, to half in the black (`[Darkness] DeepNorthPotionShare`). They come back as the light does.
+
 Server settings in `[Difficulty.Beasts]`: `OdinHealingRange` (default 40 m; 0 disables attenuation) and `OdinHealingShare` (default 0.8; 1 retains full healing strength).
 
 ### Emergency Draught (2 minutes)

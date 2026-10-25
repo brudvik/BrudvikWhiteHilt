@@ -286,7 +286,7 @@ Every feature has its own page in the [documentation](docs/README.md) with all i
 <td align="center" width="33%" valign="top"><a href="docs/difficulty.md"><img src="docs/images/readme/tile_difficulty.png" height="110" alt=""></a><br><b><a href="docs/difficulty.md">Difficulty & blood moon</a></b><br><sub>A world that grows harder as you progress: up to 5 stars, black beasts and the rare blood moon.</sub></td>
 </tr>
 <tr>
-<td align="center" valign="top"><a href="docs/bestiary.md"><img src="docs/images/readme/tile_bestiary.png" height="110" alt=""></a><br><b><a href="docs/bestiary.md">Black Bestiary</a></b><br><sub>A field guide to the nine black beasts, with the arrows and weapon treatments that exploit their weaknesses.</sub></td>
+<td align="center" valign="top"><a href="docs/bestiary.md"><img src="docs/images/readme/tile_bestiary.png" height="110" alt=""></a><br><b><a href="docs/bestiary.md">Black Bestiary</a></b><br><sub>A field guide to the ten black beasts, with the arrows and weapon treatments that exploit their weaknesses.</sub></td>
 <td align="center" valign="top"><a href="docs/storms.md"><img src="docs/images/readme/tile_storms.png" height="110" alt=""></a><br><b><a href="docs/storms.md">Great storms</a></b><br><sub>Storms that tire, freeze, blind and kill you out in the open, a storm for each biome, lightning, falling trees and the lean-to that saves you.</sub></td>
 <td align="center" valign="top"><a href="docs/darkness.md"><img src="docs/images/readme/tile_darkness.png" height="110" alt=""></a><br><b><a href="docs/darkness.md">Creeping darkness</a></b><br><sub>Below ground the light flickers and goes black; only a torch, a circlet or your own fire holds it off, and out of the light fear grows and shadows come.</sub></td>
 </tr>

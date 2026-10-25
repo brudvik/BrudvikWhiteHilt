@@ -97,12 +97,38 @@ public static class BeastRegistry
             });
         }
 
+        if (beast.Pack)
+        {
+            MakeWild(prefab);
+        }
+
         Darken(prefab);
         DarkenCorpses(beast, character);
         AddGlow(prefab);
         prefab.AddComponent<BeastBehaviour>();
         AddSounds(beast, prefab);
         CreatureManager.Instance.AddCreature(creature);
+    }
+
+    // A pack beast cloned from a creature that can be tamed and bred can be neither, and circles its prey.
+    private static void MakeWild(GameObject prefab)
+    {
+        foreach (Procreation procreation in prefab.GetComponents<Procreation>())
+        {
+            UnityEngine.Object.DestroyImmediate(procreation);
+        }
+
+        foreach (Tameable tameable in prefab.GetComponents<Tameable>())
+        {
+            UnityEngine.Object.DestroyImmediate(tameable);
+        }
+
+        MonsterAI ai = prefab.GetComponent<MonsterAI>();
+        if (ai != null)
+        {
+            ai.m_circulateWhileCharging = true;
+            ai.m_sleeping = false;
+        }
     }
 
     // Its own darker sounds (AssetSource/Audio/Creatures), and the sound of its coming, which everyone near hears.
