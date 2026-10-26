@@ -2,6 +2,32 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.153.0 - 2026-10-26
+
+### Added
+- **[The Storm Bar / Stormbom](docs/storms.md#the-storm-bar-stormbom)** (`[Storms]`): a heavy bar on two posts to
+  stand inside by the door. Where the comfort is 10 or more (`StormBarComfort`), put it across while a storm is coming
+  or raging and every door and window within 20 m (`StormBarRadius`) slams shut and is barred: no one opens them,
+  inside or out, and no gust tears them open. Whoever is caught outside can only pound on the door, and those inside
+  hear who it is. Someone at the bar lifts it; it lifts by itself when the storm has passed (`StormBar`).
+- **[Ragnarok](docs/storms.md#ragnarok) is the end of the world** (`[Storms]`): Gjallarhorn sounds as it is warned of
+  and as its last wave comes (`RagnarokHorn`). The sky reddens as it gathers, and as it breaks the wolves Skoll and Hati
+  swallow the sun or the moon, howling across the sky, until the light goes out in a red dark (`RagnarokSky`). Ash
+  rains through it in every biome (`RagnarokAsh`), and about every minute the earth shakes, the same moment for
+  everyone, wearing down building pieces already at half their health (`RagnarokQuakes`, `RagnarokQuakeSeconds`,
+  `RagnarokQuakeDamage`).
+- **[Ragnarok's host](docs/storms.md#ragnarok)** (`[Storms]`): while it rages the dead rise from the earth near
+  players and break what is built in their way (`RagnarokDead`); Surt's host of charred warriors comes for the bases
+  players are in (`RagnarokSurt`); Fenrir, a black wolf the size of a house that no weapon bites on, is loosed on whoever
+  stays out in the open and loses the scent at a roof, a fire or a cave (`RagnarokFenrir`); and Naglfar sends a fleet
+  of Nail Ships for a ship at sea, or runs ashore and its dead wade out of the sea (`RagnarokNaglfar`). The host goes
+  when the storm passes.
+- **[Fire from the sky and the Fimbulwinter](docs/storms.md#ragnarok)** (`[Storms]`): in Ragnarok burning rocks fall
+  near players, often on what they have built, with a glowing streak down the sky first; they hurt whoever stands
+  there and set wood burning until it is repaired (`RagnarokFire`, `RagnarokFireSeconds`, `RagnarokFireDamage`). After
+  Ragnarok the Fimbulwinter holds for a game day: snow and cold in every biome but the Ashlands, dim light, and no
+  crop grows (`RagnarokFimbul`, `RagnarokFimbulDays`).
+
 ## v0.152.0 - 2026-10-25
 
 ### Added
@@ -24,6 +50,8 @@ All notable changes to BrudvikWhiteHilt. Newest version first.
   the black (`DeepNorthPotionShare`).
 
 ### Fixed
+- The Repair Anvil also repairs the weapons and tools in your hotbar, not only what you hold, so Black Forge gear
+  no longer has to go to the Black Forge.
 - A ragdoll of a creature with two or more stars no longer throws a NullReferenceException from Jötunn's cumulative
   level effects.
 
