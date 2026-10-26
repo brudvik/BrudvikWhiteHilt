@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.153.0 - 2026-10-26
 
 ### Added
 - **[The Storm Bar / Stormbom](docs/storms.md#the-storm-bar-stormbom)** (`[Storms]`): a heavy bar on two posts to
