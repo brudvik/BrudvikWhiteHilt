@@ -43,7 +43,14 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.152.0
+## ✨ New in 0.153.0
+
+- **[Ragnarok is the end of the world](docs/storms.md#ragnarok)**: Gjallarhorn sounds, the wolves swallow the sun, ash rains and the earth shakes. The dead rise around you, Surt's fire giants come for your base, Fenrir hunts whoever stays out in the open and Naglfar comes from the sea.
+- **[Fire from the sky and the Fimbulwinter](docs/storms.md#ragnarok)**: burning rocks fall on what you have built and set the wood burning, and after Ragnarok comes a day of bitter winter in which nothing grows.
+- **[The Storm Bar](docs/storms.md#the-storm-bar-stormbom)**: bar a cosy house against the storm. Every door and window slams shut and holds, and whoever is caught outside can only pound on the door.
+- **[The Repair Anvil](docs/smithing.md)** repairs the weapons and tools in your hotbar too, not only what you hold.
+
+### Also new in 0.152.0
 
 - **[The night in the Deep North](docs/darkness.md#the-night-in-the-deep-north)**: out in the open the cold bites through any frost resistance, white storms sweep in, and the fear of the dark and its shadows follow you out of the light.
 - **[The Black Wolf](docs/difficulty.md)**: the Deep North's black beast comes as a pack of 3 to 5 that circles you and hunts you until you find a fire or a roof, and finds you again when you go back out. Its counter is **[Hearth Tallow](docs/bestiary.md#weapon-treatments)** for spears and knives.
