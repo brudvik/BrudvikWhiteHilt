@@ -2,6 +2,46 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **Fixes for the game's own hitches** (`[Performance]`, each player's own settings, all on by default). Ideas are
+  taken from Valheim Community Patch and HitchFix, written anew here. Where Valheim Community Patch is installed and
+  has the same fix switched on, ours stands aside.
+  - The map: uncovering it sends only the changed patch of the fog to the graphics card instead of the whole map
+    (`MapFogUpload`), and saving the character writes the map from its packed bits and reuses an unchanged one
+    (`MapSave`).
+  - A shorter loading screen after a portal, a respawn or a login: it ends as soon as the server has sent everything
+    saved around the destination and it has loaded, instead of a fixed 8 seconds (`LoadingWait`).
+  - Objects coming into view are made within a time budget per frame, nearest first, instead of a fixed number however
+    heavy they are; nearby objects are never later than before (`ObjectBudget`, `ObjectBudgetMs`, `ObjectBudgetLog`).
+  - The hourly clear-out of unused assets, which froze a server and everyone on it, waits until the server is empty
+    or a player is behind a loading screen (`AssetUnload`), and assets load faster behind loading screens
+    (`LoadingPriority`).
+  - Less garbage to clear up every frame: network messages within messages (`PackageWrite`), network values that are
+    set (`ZdoWrite`), the hotbar's keys (`HotbarKeys`), equipment modifiers (`EquipmentModifiers`), zone distances
+    (`ZoneDistance`), and recipe and status effect lookups (`RecipeLookup`, `StatusEffectLookup`).
+- **`whitehilt_perf` measures garbage**: the report shows how much memory each method allocates and how often the
+  game clears it up.
+
+### Fixed
+- A dedicated server could lose changes made by players, such as a filled chest or a new piece, when it restarted:
+  changes arriving from a player did not mark their part of the world for saving (`SaveClientChanges`).
+- Fuel or ore put into a smelter, kiln, cooking station or fire could vanish when another player owned it
+  (`FeedOwnership`).
+- The loading screen could wait forever next to an object another player had destroyed (`DeadObjects`).
+
+### Changed
+- The mod costs less time per frame, most of all in large bases and on servers:
+  - the server's world scans for the portal map, discoveries and map areas are now one shared scan with a time
+    limit per frame, and trading posts no longer read the whole world for each request;
+  - chests restock, mark and report only when something has changed, not every second, and collection posts,
+    eternal fires and the inventory screen do less work;
+  - weapon glow, flames and dyed capes are worked out again only when the equipment changes; moats, Skidbladnir
+    furniture, dogs, householders and the dark's shadows cost nothing where none is loaded; still doors, gates and
+    hatches are left alone, and auto-closing doors share one timer;
+  - indoor weather, the dark's lights and silence, the compass and the hotbar label do less every frame.
+
 ## v0.153.0 - 2026-10-26
 
 ### Added
