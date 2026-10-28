@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.154.0 - 2026-10-28
 
 ### Added
 - **Fixes for the game's own hitches** (`[Performance]`, each player's own settings, all on by default). Ideas are

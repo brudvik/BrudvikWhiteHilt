@@ -43,7 +43,13 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.153.0
+## ✨ New in 0.154.0
+
+- **[Smoother play](CHANGELOG.md)**: the mod costs less time every frame, most of all in large bases and on servers. Chests, weapon glow, doors, the compass and the server's world scans do their work only when something has changed.
+- **Fixes for Valheim's own hitches** (`[Performance]`): the map no longer stutters as you explore or save, the loading screen after a portal or respawn ends as soon as the area has loaded, objects coming into view are spread over frames, and a server no longer freezes everyone once an hour.
+- **Lost builds and lost fuel fixed**: a dedicated server could forget what players built or put in chests when it restarted, and fuel or ore could vanish in a smelter someone else owned.
+
+### Also new in 0.153.0
 
 - **[Ragnarok is the end of the world](docs/storms.md#ragnarok)**: Gjallarhorn sounds, the wolves swallow the sun, ash rains and the earth shakes. The dead rise around you, Surt's fire giants come for your base, Fenrir hunts whoever stays out in the open and Naglfar comes from the sea.
 - **[Fire from the sky and the Fimbulwinter](docs/storms.md#ragnarok)**: burning rocks fall on what you have built and set the wood burning, and after Ragnarok comes a day of bitter winter in which nothing grows.
