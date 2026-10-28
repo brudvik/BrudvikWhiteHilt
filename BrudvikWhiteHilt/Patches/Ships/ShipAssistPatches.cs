@@ -30,7 +30,7 @@ public static class ShipAssistPatches
     [HarmonyPrefix]
     public static void ShipPhysics(Ship __instance)
     {
-        __instance.GetComponent<ShipAssist>()?.PreparePhysics();
+        ShipParts.Of(__instance).Assist?.PreparePhysics();
     }
 
     /// <summary>Replaces vanilla's position jumps on White Hilt ships another player owns.</summary>

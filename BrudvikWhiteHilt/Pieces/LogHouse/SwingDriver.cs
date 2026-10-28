@@ -34,6 +34,10 @@ public class SwingDriver : MonoBehaviour
     private Quaternion[] partRests;
     private Vector3[] hangOffsets;
 
+    // The door's turn the parts were last set to; a door at rest or standing open moves nothing, so they are left.
+    private Quaternion appliedDoor;
+    private bool applied;
+
     private void Awake()
     {
         if (m_door == null || m_parts.Length != m_axes.Length || m_hangers.Length != m_hangFrom.Length)
@@ -63,7 +67,15 @@ public class SwingDriver : MonoBehaviour
 
     private void LateUpdate()
     {
-        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(doorRest) * m_door.localRotation).eulerAngles.y));
+        Quaternion door = m_door.localRotation;
+        if (applied && door.Equals(appliedDoor))
+        {
+            return;
+        }
+
+        applied = true;
+        appliedDoor = door;
+        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(doorRest) * door).eulerAngles.y));
         for (int i = 0; i < m_parts.Length; i++)
         {
             if (m_parts[i] != null)

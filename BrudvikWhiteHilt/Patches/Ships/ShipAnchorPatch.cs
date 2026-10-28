@@ -42,7 +42,7 @@ public static class ShipAnchorPatch
     [HarmonyPostfix]
     private static void HoldAnchored(Ship __instance)
     {
-        __instance.GetComponent<WhiteHiltShipUpgrades>()?.HoldAnchor();
+        ShipParts.Of(__instance).Upgrades?.HoldAnchor();
     }
 
     /// <summary>

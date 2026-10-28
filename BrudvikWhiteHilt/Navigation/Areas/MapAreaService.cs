@@ -8,16 +8,15 @@ using UnityEngine;
 namespace BrudvikWhiteHilt.Navigation.Areas;
 
 /// <summary>
-/// Runs on the <see cref="Game"/> object. On the server it reads every object in the world, a few hundred sectors per
-/// frame, and groups player-built pieces, planted crops and tamed animals into areas of 16 m cells; then it sends each
-/// player the areas and wards they may see, only when they have changed. On a client it hands the list to
-/// <see cref="MapAreaOverlay"/>.
+/// Runs on the <see cref="Game"/> object. On the server it reads every object in the world through the shared
+/// <see cref="WorldScan"/>, a slice of each frame, and groups player-built pieces, planted crops and tamed animals into
+/// areas of 16 m cells; then it sends each player the areas and wards they may see, only when they have changed. On a
+/// client it hands the list to <see cref="MapAreaOverlay"/>.
 /// </summary>
-public class MapAreaService : MonoBehaviour
+public class MapAreaService : MonoBehaviour, WorldScan.IClient
 {
     private const string RpcName = "WhiteHiltMapAreas";
     private const float ScanPause = 30f;
-    private const int SectorsPerFrame = 400;
     private const int MaxNameLength = 32;
 
     // Cells this far apart (in cells) still belong to one area, so a path or garden between houses does not split it.
@@ -37,7 +36,7 @@ public class MapAreaService : MonoBehaviour
     private Dictionary<int, Traits> traits;
     private List<MapArea> areas = new();
     private List<MapWard> wards = new();
-    private int sectorIndex = -1;
+    private WorldScan scan;
     private float nextScan;
 
     [Flags]
@@ -59,10 +58,11 @@ public class MapAreaService : MonoBehaviour
     private void Start()
     {
         MapAreaOverlay.SetData(new List<MapArea>(), new List<MapWard>());
+        scan = WorldScanService.On(gameObject);
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_MapAreas);
     }
 
-    // On the server: scans the world now and then, a few sectors per frame. A failed scan is logged and retried later
+    // On the server: scans the world now and then, a slice of each frame. A failed scan is logged and retried later
     // instead of stopping the feature.
     private void Update()
     {
@@ -73,21 +73,14 @@ public class MapAreaService : MonoBehaviour
 
         try
         {
-            if (sectorIndex < 0 && Time.time >= nextScan)
+            if (Time.time >= nextScan && !scan.IsRunning(this))
             {
                 BeginScan();
-            }
-
-            if (sectorIndex >= 0)
-            {
-                ContinueScan();
             }
         }
         catch (Exception ex)
         {
-            Jotunn.Logger.LogWarning($"Map areas: scan failed: {ex.Message}");
-            sectorIndex = -1;
-            nextScan = Time.time + ScanPause;
+            ((WorldScan.IClient)this).Fail(ex);
         }
     }
 
@@ -120,34 +113,28 @@ public class MapAreaService : MonoBehaviour
         scanWards.Clear();
         signs.Clear();
         names.Clear();
-        sectorIndex = MapAreaSettings.AllowAreas.Value ? 0 : ZDOMan.instance.m_objectsBySector.Length;
+
+        // With areas off nothing is read, and the empty lists clear the players' maps.
+        if (MapAreaSettings.AllowAreas.Value)
+        {
+            scan.Begin(this, traits.Keys);
+        }
+        else
+        {
+            ((WorldScan.IClient)this).Finish();
+        }
     }
 
-    // Collects the objects of the next few sectors; when all sectors are done, groups them into areas. Spreading the
-    // scan over frames keeps a large world from stalling the server.
-    private void ContinueScan()
+    // When the whole world is read, groups what was found into areas.
+    void WorldScan.IClient.Finish()
     {
-        List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
-        int budget = SectorsPerFrame;
-        while (sectorIndex < sectors.Length && budget > 0)
-        {
-            List<ZDO> sector = sectors[sectorIndex++];
-            if (sector == null)
-            {
-                continue;
-            }
-
-            budget--;
-            sector.ForEach(Collect);
-        }
-
-        if (sectorIndex < sectors.Length)
-        {
-            return;
-        }
-
+        nextScan = Time.time + ScanPause;
         FinishScan();
-        sectorIndex = -1;
+    }
+
+    void WorldScan.IClient.Fail(Exception error)
+    {
+        Jotunn.Logger.LogWarning($"Map areas: scan failed: {error.Message}");
         nextScan = Time.time + ScanPause;
     }
 
@@ -249,9 +236,9 @@ public class MapAreaService : MonoBehaviour
     }
 
     // Values are read at once: ZDOs are pooled, so a reference kept to the next frame may be another object.
-    private void Collect(ZDO zdo)
+    void WorldScan.IClient.Collect(ZDO zdo, int prefab)
     {
-        if (zdo == null || !zdo.IsValid() || !traits.TryGetValue(zdo.GetPrefab(), out Traits kind))
+        if (!traits.TryGetValue(prefab, out Traits kind))
         {
             return;
         }
@@ -300,7 +287,7 @@ public class MapAreaService : MonoBehaviour
             scanWards.Add(new MapWard
             {
                 Position = position,
-                Radius = WardRadius(zdo.GetPrefab()),
+                Radius = WardRadius(prefab),
                 Enabled = zdo.GetBool(ZDOVars.s_enabled),
                 Creator = creator,
             });

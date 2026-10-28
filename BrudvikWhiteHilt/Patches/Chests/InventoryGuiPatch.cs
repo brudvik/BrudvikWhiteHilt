@@ -34,11 +34,21 @@ namespace BrudvikWhiteHilt.Patches.Chests
         [HarmonyPatch(typeof(InventoryGrid), "UpdateGui")]
         public static class InventoryGridUpdateGuiPatch
         {
+            // Every grid updates every frame, so one event object serves them all; no handler keeps it.
+            private static readonly InventoryGridUpdatedPatchEvent Args = new();
+
             static void Postfix(InventoryGrid __instance)
             {
-                if (__instance != null)
+                if (__instance == null || InventoryGridUpdatedPatched == null) return;
+
+                Args.Grid = __instance;
+                try
                 {
-                    InventoryGridUpdatedPatched?.Invoke(null, new InventoryGridUpdatedPatchEvent { Grid = __instance });
+                    InventoryGridUpdatedPatched.Invoke(null, Args);
+                }
+                finally
+                {
+                    Args.Grid = null;
                 }
             }
         }
@@ -79,11 +89,21 @@ namespace BrudvikWhiteHilt.Patches.Chests
         [HarmonyPatch(typeof(InventoryGui), "UpdateContainer")]
         public static class InventoryGuiUpdateContainerPatch
         {
+            // The container panel updates every frame, so one event object serves; no handler keeps it.
+            private static readonly ContainerPanelUpdatedPatchEvent Args = new();
+
             static void Postfix(InventoryGui __instance)
             {
-                if (__instance != null)
+                if (__instance == null || ContainerPanelUpdatedPatched == null) return;
+
+                Args.Gui = __instance;
+                try
                 {
-                    ContainerPanelUpdatedPatched?.Invoke(null, new ContainerPanelUpdatedPatchEvent { Gui = __instance });
+                    ContainerPanelUpdatedPatched.Invoke(null, Args);
+                }
+                finally
+                {
+                    Args.Gui = null;
                 }
             }
         }

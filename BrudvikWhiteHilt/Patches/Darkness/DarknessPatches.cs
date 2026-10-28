@@ -35,7 +35,7 @@ public static class DarknessPatches
     [HarmonyPostfix]
     private static void FindEnemyPostfix(BaseAI __instance, ref Character __result)
     {
-        if (__instance.GetComponent<DarkShadow>() != null)
+        if (DarkShadow.AnyLoaded && __instance.GetComponent<DarkShadow>() != null)
         {
             __result = DarkShadow.Prey(__instance);
         }

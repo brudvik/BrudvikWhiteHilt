@@ -24,7 +24,7 @@ public static class WeaponFlame
     private const float HeadShare = 0.4f;
 
     private static readonly string[] ownFlameRoots = { "Burny vfx", "equiped" };
-    private static readonly int[] slotKeys = GearSlots.Keys("whitehilt_flame");
+    private static readonly GearLook look = new("whitehilt_flame", Value, Apply);
 
     /// <summary>
     /// Registers the English texts.
@@ -65,6 +65,7 @@ public static class WeaponFlame
     public static void SetColor(ItemDrop.ItemData item, Color32 color)
     {
         item.m_customData[ColorKey] = PaintColor.ToHex(color);
+        GearSlots.LookChanged();
     }
 
     /// <summary>
@@ -74,6 +75,7 @@ public static class WeaponFlame
     public static void PutOut(ItemDrop.ItemData item)
     {
         item.m_customData[ColorKey] = OffValue;
+        GearSlots.LookChanged();
     }
 
     /// <summary>
@@ -83,6 +85,7 @@ public static class WeaponFlame
     public static void Restore(ItemDrop.ItemData item)
     {
         item.m_customData.Remove(ColorKey);
+        GearSlots.LookChanged();
     }
 
     /// <summary>
@@ -108,7 +111,7 @@ public static class WeaponFlame
     /// <param name="equipment">The character's equipment visuals.</param>
     public static void Refresh(VisEquipment equipment)
     {
-        GearSlots.Refresh<WeaponFlameState>(equipment, slotKeys, Value, Apply);
+        look.Refresh(equipment);
     }
 
     /// <summary>
@@ -279,13 +282,6 @@ public static class WeaponFlame
         Vector3 centre = new(whole.center.x, whole.center.y, whole.max.z - length / 2f);
         return new Bounds(centre, new Vector3(whole.size.x, whole.size.y, length));
     }
-}
-
-/// <summary>
-/// What a character's gear models' flames were last shown as.
-/// </summary>
-public class WeaponFlameState : GearSlotState
-{
 }
 
 /// <summary>

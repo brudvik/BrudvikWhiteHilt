@@ -201,6 +201,11 @@ public class ShipFurniture : MonoBehaviour
 {
     /// <summary>Saved identity of the parent ship.</summary>
     public const string ParentKey = "whitehilt_ship_parent";
+    /// <summary>
+    /// The parent key's two halves, hashed once: the string overload builds and hashes two new strings on every read,
+    /// and the key is read for every piece that loads and every frame per furnishing.
+    /// </summary>
+    public static readonly KeyValuePair<int, int> ParentHash = ZDO.GetHashZDOID(ParentKey);
     private static readonly int PositionKey = "whitehilt_ship_local_position".GetStableHashCode();
     private static readonly int RotationKey = "whitehilt_ship_local_rotation".GetStableHashCode();
 
@@ -209,7 +214,7 @@ public class ShipFurniture : MonoBehaviour
     private float nextSync;
 
     /// <summary>Whether this piece has a persisted ship attachment, including while the ship loads.</summary>
-    public bool IsAttached => view != null && view.IsValid() && !view.GetZDO().GetZDOID(ParentKey).IsNone();
+    public bool IsAttached => view != null && view.IsValid() && !view.GetZDO().GetZDOID(ParentHash).IsNone();
 
     /// <summary>Attaches a newly built piece without changing its world-space appearance.</summary>
     /// <param name="ship">Sailing home beneath the building piece.</param>
@@ -263,15 +268,39 @@ public class ShipFurniture : MonoBehaviour
     public static bool HasFurniture(GameObject ship)
     {
         ZNetView parent = ship.GetComponent<ZNetView>();
-        if (parent == null || !parent.IsValid() || ZDOMan.instance == null) return false;
+        if (parent == null || !parent.IsValid() || ZDOMan.instance == null || ZNetScene.instance == null) return false;
         ZDOID identity = parent.GetZDO().m_uid;
-        foreach (var sector in ZDOMan.instance.m_objectsBySector)
+        if (mayBeFurnitureOf != ZNetScene.instance)
+        {
+            mayBeFurnitureOf = ZNetScene.instance;
+            mayBeFurniture.Clear();
+        }
+        foreach (List<ZDO> sector in ZDOMan.instance.m_objectsBySector)
         {
             if (sector == null) continue;
-            foreach (ZDO data in sector)
-                if (data != null && data.GetZDOID(ParentKey) == identity) return true;
+            for (int i = 0; i < sector.Count; i++)
+            {
+                ZDO data = sector[i];
+                if (data != null && MayBeFurniture(data.GetPrefab()) && data.GetZDOID(ParentHash) == identity) return true;
+            }
         }
         return false;
+    }
+
+    // Per prefab, whether its objects can be furniture, so the world's trees and rocks are passed by on their prefab alone.
+    private static readonly Dictionary<int, bool> mayBeFurniture = new();
+    private static ZNetScene mayBeFurnitureOf;
+
+    // Only building pieces are fixed to a ship. An unknown prefab is read too, so a piece whose mod is gone still counts.
+    private static bool MayBeFurniture(int prefab)
+    {
+        if (!mayBeFurniture.TryGetValue(prefab, out bool may))
+        {
+            GameObject found = ZNetScene.instance.GetPrefab(prefab);
+            may = found == null || found.GetComponent<Piece>() != null;
+            mayBeFurniture[prefab] = may;
+        }
+        return may;
     }
 
     /// <summary>Detaches local network objects before their parent ship is unloaded, preserving saved links.</summary>
@@ -298,7 +327,7 @@ public class ShipFurniture : MonoBehaviour
         ZDO data = view.GetZDO();
         if (shipRoot == null)
         {
-            GameObject parent = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(data.GetZDOID(ParentKey)) : null;
+            GameObject parent = ZNetScene.instance != null ? ZNetScene.instance.FindInstance(data.GetZDOID(ParentHash)) : null;
             if (parent == null || parent.GetComponent<SkidbladnirShip>() == null || !parent.activeInHierarchy
                 || !(parent.GetComponent<ZNetView>()?.IsValid() ?? false)) return;
             Apply(parent.transform, data);

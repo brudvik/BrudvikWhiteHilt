@@ -71,6 +71,12 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public event Action<string>? ItemUnlocked;
 
         /// <summary>
+        /// Gets a number that changes whenever the record of unlocked and discovered items changes, here or anywhere in
+        /// the world, so chests can skip their restock while nothing they depend on has changed.
+        /// </summary>
+        public int Revision { get; private set; }
+
+        /// <summary>
         /// Checks whether a full stack of the item has been stored in a chest in this world.
         /// </summary>
         /// <param name="prefabName">The item prefab name.</param>
@@ -162,6 +168,8 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             var added = candidates.Where(key => keys.Add(key)).ToList();
             if (added.Count == 0) return added;
 
+            Revision++;
+
             if (ZNet.instance.IsServer())
             {
                 Persist(added);
@@ -233,6 +241,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
             if (session == current) return true;
 
             session = current;
+            Revision++;
             keys.Clear();
             stockByChest.Clear();
             bestStock.Clear();
@@ -545,10 +554,13 @@ namespace BrudvikWhiteHilt.Chests.Helpers
                 {
                     keys.UnionWith(Unpack(package));
                     hasFullRecord = true;
+                    Revision++;
                 }
                 else if (type == AddKeys)
                 {
-                    RaiseUnlocked(Unpack(package).Where(key => keys.Add(key)).ToList());
+                    var added = Unpack(package).Where(key => keys.Add(key)).ToList();
+                    if (added.Count > 0) Revision++;
+                    RaiseUnlocked(added);
                 }
                 else if (type == StockBest)
                 {

@@ -21,6 +21,12 @@ namespace BrudvikWhiteHilt.Diagnostics;
 /// and every <c>Update</c>, <c>LateUpdate</c> and <c>FixedUpdate</c> of the mod with a timer, and patches the game's
 /// connection and routed messages to count their sizes. <c>stop</c> removes all of it again. Times include the methods
 /// a method calls; the JIT may inline a very small method into its caller, and then it does not show on its own.
+/// <para>
+/// The timer also counts the memory each method allocates, which the garbage collector must later clear and which
+/// shows as stutter. The game's runtime counts the bytes each thread allocates where it can; where it reports nothing,
+/// the growth of the whole heap is used, which only moves when a new block of memory is taken, so small allocations
+/// show late and in lumps, and a collection during the method makes it shrink (that call then counts as nothing).
+/// </para>
 /// </remarks>
 public static class PerfMonitor
 {
@@ -40,8 +46,14 @@ public static class PerfMonitor
     private static readonly Dictionary<string, Traffic> traffic = new();
     private static readonly Dictionary<int, string> names = new();
 
+    // The runtime's count of bytes allocated on this thread, if it has one that works; else the heap's size.
+    private static Func<long> allocated;
+    private static bool exactAllocations;
+
     private static Harmony harmony;
     private static float startedAt;
+    private static int collectionsAtStart;
+    private static long allocatedAtStart;
     private static int patchedMethods;
     private static bool logging;
     private static float nextLog;
@@ -67,6 +79,7 @@ public static class PerfMonitor
         timings.Clear();
         traffic.Clear();
         SeedNames();
+        ChooseAllocationCounter();
         harmony = new Harmony(HarmonyId);
         patchedMethods = 0;
         HarmonyMethod begin = new(AccessTools.Method(typeof(PerfMonitor), nameof(Begin)));
@@ -85,7 +98,7 @@ public static class PerfMonitor
         }
 
         PatchNetwork();
-        startedAt = Time.realtimeSinceStartup;
+        ResetWindow(Time.realtimeSinceStartup);
         return $"Measuring {patchedMethods} methods and the network. 'whitehilt_perf report' shows the numbers, 'whitehilt_perf stop' ends it.";
     }
 
@@ -128,7 +141,7 @@ public static class PerfMonitor
         Jotunn.Logger.LogInfo(Report(DefaultRows));
         timings.Clear();
         traffic.Clear();
-        startedAt = now;
+        ResetWindow(now);
         nextLog = now + minutes * 60f;
     }
 
@@ -157,14 +170,16 @@ public static class PerfMonitor
         StringBuilder text = new();
         double totalMs = timings.Values.Sum(timing => timing.Ticks) * 1000.0 / Stopwatch.Frequency;
         text.AppendLine(Invariant($"White Hilt over {seconds:0} s: {totalMs / seconds:0.00} ms of the mod's code per second ({patchedMethods} methods timed, times include calls)"));
-        text.AppendLine("  ms/s     calls/s   avg us   max us   method");
+        text.AppendLine(MemoryLine(seconds));
+        text.AppendLine("  ms/s     calls/s   avg us   max us   alloc KB/s   method");
         foreach (KeyValuePair<MethodBase, Timing> row in timings.OrderByDescending(pair => pair.Value.Ticks).Take(rows))
         {
             Timing timing = row.Value;
             double ms = timing.Ticks * 1000.0 / Stopwatch.Frequency;
             double average = timing.Calls > 0 ? ms * 1000.0 / timing.Calls : 0.0;
             double max = timing.MaxTicks * 1000000.0 / Stopwatch.Frequency;
-            text.AppendLine(Invariant($"  {ms / seconds,7:0.000}  {timing.Calls / seconds,8:0.0}  {average,7:0.0}  {max,7:0}   {Describe(row.Key)}"));
+            double alloc = timing.Bytes / 1024.0 / seconds;
+            text.AppendLine(Invariant($"  {ms / seconds,7:0.000}  {timing.Calls / seconds,8:0.0}  {average,7:0.0}  {max,7:0}  {alloc,10:0.0}   {Describe(row.Key)}"));
         }
 
         long sent = traffic.Values.Sum(item => item.SentBytes);
@@ -178,6 +193,65 @@ public static class PerfMonitor
         }
 
         return text.ToString();
+    }
+
+    // Garbage collections since the start, and with an exact counter, all this thread allocated: the whole game's
+    // main thread, to set the mod's share against.
+    private static string MemoryLine(float seconds)
+    {
+        int collections = GC.CollectionCount(0) - collectionsAtStart;
+        string line = Invariant($"Memory: {collections} garbage collections ({collections * 60f / seconds:0.0} a minute)");
+        if (exactAllocations)
+        {
+            double all = (allocated() - allocatedAtStart) / 1024.0 / seconds;
+            return line + Invariant($", {all:0.0} KB/s allocated by the whole main thread; alloc is the bytes each method allocated, calls included");
+        }
+
+        return line + "; alloc is the heap's growth during each method, rough: it moves in blocks and leaves out calls a collection ran in";
+    }
+
+    private static void ResetWindow(float now)
+    {
+        startedAt = now;
+        collectionsAtStart = GC.CollectionCount(0);
+        allocatedAtStart = allocated?.Invoke() ?? 0L;
+    }
+
+    // Uses the runtime's per-thread count of allocated bytes when it has one and it moves when memory is allocated; the
+    // game's runtime may have the method and still always answer nothing.
+    private static void ChooseAllocationCounter()
+    {
+        if (allocated != null)
+        {
+            return;
+        }
+
+        MethodInfo method = typeof(GC).GetMethod("GetAllocatedBytesForCurrentThread",
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, Type.EmptyTypes, null);
+        if (method != null && method.ReturnType == typeof(long))
+        {
+            try
+            {
+                Func<long> perThread = (Func<long>)Delegate.CreateDelegate(typeof(Func<long>), method);
+                long before = perThread();
+                byte[] probe = new byte[64 * 1024];
+                long after = perThread();
+                GC.KeepAlive(probe);
+                if (after - before >= probe.Length)
+                {
+                    allocated = perThread;
+                    exactAllocations = true;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Jotunn.Logger.LogDebug($"Perf: the per-thread allocation count does not work here: {ex.Message}");
+            }
+        }
+
+        allocated = () => GC.GetTotalMemory(false);
+        exactAllocations = false;
     }
 
     // The mod's Harmony patch methods and Unity update methods: where its per-frame time goes.
@@ -286,14 +360,17 @@ public static class PerfMonitor
         return item;
     }
 
-    private static void Begin(out long __state)
+    // The allocation count is read before the clock starts and after it stops, so its own cost is not timed.
+    private static void Begin(out Mark __state)
     {
-        __state = Stopwatch.GetTimestamp();
+        __state.Bytes = allocated();
+        __state.Ticks = Stopwatch.GetTimestamp();
     }
 
-    private static void End(long __state, MethodBase __originalMethod)
+    private static void End(Mark __state, MethodBase __originalMethod)
     {
-        long ticks = Stopwatch.GetTimestamp() - __state;
+        long ticks = Stopwatch.GetTimestamp() - __state.Ticks;
+        long bytes = allocated() - __state.Bytes;
         if (!timings.TryGetValue(__originalMethod, out Timing timing))
         {
             timing = new Timing();
@@ -303,6 +380,12 @@ public static class PerfMonitor
         timing.Calls++;
         timing.Ticks += ticks;
         timing.MaxTicks = Math.Max(timing.MaxTicks, ticks);
+
+        // Less than before only when a collection ran during the call.
+        if (bytes > 0)
+        {
+            timing.Bytes += bytes;
+        }
     }
 
     private static void ConnectionSendPrefix(ZRpc __instance, string method, out bool __state)
@@ -376,11 +459,19 @@ public static class PerfMonitor
         return text.ToString(CultureInfo.InvariantCulture);
     }
 
+    // What Begin noted for End.
+    private struct Mark
+    {
+        public long Ticks;
+        public long Bytes;
+    }
+
     private sealed class Timing
     {
         public long Calls;
         public long Ticks;
         public long MaxTicks;
+        public long Bytes;
     }
 
     private sealed class Traffic

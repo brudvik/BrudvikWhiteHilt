@@ -31,6 +31,10 @@ public class DrawbridgeDriver : MonoBehaviour
     private bool linkKnown;
     private float nextLink;
 
+    // The door's turn the deck was last set to; a bridge that is up or down moves nothing, so it is left.
+    private Quaternion appliedDoor;
+    private bool applied;
+
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -55,7 +59,15 @@ public class DrawbridgeDriver : MonoBehaviour
 
     private void LateUpdate()
     {
-        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(m_doorRest) * m_door.localRotation).eulerAngles.y));
+        Quaternion doorTurn = m_door.localRotation;
+        if (applied && doorTurn.Equals(appliedDoor))
+        {
+            return;
+        }
+
+        applied = true;
+        appliedDoor = doorTurn;
+        float open = Mathf.Abs(Mathf.DeltaAngle(0f, (Quaternion.Inverse(m_doorRest) * doorTurn).eulerAngles.y));
         float raised = RaisedAngle * (1f - Mathf.Clamp01(open / 90f));
         m_deck.localRotation = m_deckRest * Quaternion.Euler(-raised, 0f, 0f);
     }

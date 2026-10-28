@@ -70,18 +70,27 @@ namespace BrudvikWhiteHilt.Patches.Chests
         [HarmonyPatch(typeof(Container), "CheckForChanges")]
         public static class ContainerCheckForChangesPatch
         {
+            // The game checks every loaded container every second, so one event object serves them all. The check
+            // never runs inside another, and no handler keeps the object.
+            private static readonly ContainerCheckForChangesPatchEvent Args = new();
+
             /// <summary>
             /// Postfix method that is called after the original CheckForChanges method of the Container class.
             /// </summary>
             /// <param name="__instance">The instance of the Container class.</param>
             static void Postfix(Container __instance)
             {
-                if (__instance != null)
+                if (__instance == null || ContainerCheckForChangesPatched == null) return;
+
+                Args.Container = __instance;
+                try
                 {
-                    ContainerCheckForChangesPatched?.Invoke(null, new ContainerCheckForChangesPatchEvent()
-                    {
-                        Container = __instance
-                    });
+                    ContainerCheckForChangesPatched.Invoke(null, Args);
+                }
+                finally
+                {
+                    // Not kept alive by the shared object once it is gone.
+                    Args.Container = null;
                 }
             }
         }

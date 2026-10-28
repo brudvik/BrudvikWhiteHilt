@@ -109,6 +109,19 @@ public static class Stars
     /// <returns>Rich text, empty for none.</returns>
     public static string Text(int stars)
     {
+        if (stars <= 0)
+        {
+            return string.Empty;
+        }
+
+        return stars < StarTexts.Length ? StarTexts[stars] : MakeText(stars);
+    }
+
+    // The inventory shows the stars of every starred stack each frame, so the usual texts are made once.
+    private static readonly string[] StarTexts = Enumerable.Range(0, Max + 1).Select(MakeText).ToArray();
+
+    private static string MakeText(int stars)
+    {
         return stars <= 0 ? string.Empty : $"<color={StarColor}>{string.Concat(Enumerable.Repeat(StarText, stars))}</color>";
     }
 

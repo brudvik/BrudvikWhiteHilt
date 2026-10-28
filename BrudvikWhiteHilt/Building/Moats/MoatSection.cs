@@ -107,6 +107,11 @@ public class MoatSection : MonoBehaviour
     }
 
     /// <summary>
+    /// True while any dug ditch is loaded, so the checks that run for every creature every frame can stop early.
+    /// </summary>
+    public static bool AnyLoaded => sections.Count > 0;
+
+    /// <summary>
     /// True if a point lies down in a dug ditch.
     /// </summary>
     /// <param name="position">The point.</param>

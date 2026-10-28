@@ -11,8 +11,10 @@ namespace BrudvikWhiteHilt.Chests.Collection;
 /// <summary>A collector that sorts loose items and the contents of its own basket into White Hilt chests.</summary>
 internal sealed class CollectionPostComponent : MonoBehaviour
 {
-    private const string PausedKey = "whitehilt_collection_paused";
-    private const string StuckKey = "whitehilt_collection_stuck";
+    // ZDO keys, hashed once: the glow reads them every frame and the collection for every drop.
+    private static readonly int PausedKey = "whitehilt_collection_paused".GetStableHashCode();
+    private static readonly int StuckKey = "whitehilt_collection_stuck".GetStableHashCode();
+    private static readonly int PlayerDropKey = "whitehilt_player_drop".GetStableHashCode();
     private const string PulseRpc = "WhiteHilt_CollectionPulse";
     private const string SortedEffect = "vfx_pick_wisp";
     private const float GlowIntensity = 0.5f;
@@ -33,6 +35,9 @@ internal sealed class CollectionPostComponent : MonoBehaviour
     private float flare;
     private int lastSorted;
     private float lastSortedAt = -1f;
+
+    // Whether the light shows its steady idle look, so it need not be set again until something changes.
+    private bool glowIdle;
 
     // Basket stacks the last attempt could place nowhere; only the basket owner keeps them.
     private readonly HashSet<ItemDrop.ItemData> stuck = new();
@@ -98,9 +103,7 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         if (player == null || Module == null || !Active || Time.time < nextRound) return;
         nextRound = Time.time + CollectionSettings.Interval.Value;
         if (!PrivateArea.CheckAccess(transform.position, 0f, false)) return;
-        var nearest = Player.GetAllPlayers().OrderBy(candidate => (candidate.transform.position - transform.position).sqrMagnitude)
-            .ThenBy(candidate => candidate.GetPlayerID()).FirstOrDefault();
-        bool collects = nearest == player;
+        bool collects = NearestPlayer() == player;
         if (!collects && !view.IsOwner()) return;
 
         roundMoved = 0;
@@ -111,19 +114,42 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         if (roundMoved > 0) Announce();
     }
 
-    // Brightens briefly after each delivery; turns red and breathes while basket stacks fit in no chest.
+    // The player nearest the post, the one with the lowest id when two are as near; null when there is none.
+    private Player NearestPlayer()
+    {
+        Player nearest = null;
+        float nearestDistance = 0f;
+        foreach (var candidate in Player.GetAllPlayers())
+        {
+            float distance = (candidate.transform.position - transform.position).sqrMagnitude;
+            if (nearest != null && (distance > nearestDistance
+                || (distance == nearestDistance && candidate.GetPlayerID() >= nearest.GetPlayerID()))) continue;
+            nearest = candidate;
+            nearestDistance = distance;
+        }
+        return nearest;
+    }
+
+    // Brightens briefly after each delivery; turns red and breathes while basket stacks fit in no chest. While it
+    // neither flares nor breathes, the light keeps its idle look and is left alone.
     private void UpdateGlow()
     {
         if (glow == null) return;
         bool active = Active;
-        glow.enabled = active;
-        if (!active) return;
-        flare = Mathf.Max(0f, flare - Time.deltaTime / FlareSeconds);
+        if (glow.enabled != active) glow.enabled = active;
+        if (!active)
+        {
+            glowIdle = false;
+            return;
+        }
         bool stuckItems = view.GetZDO().GetInt(StuckKey) > 0;
+        if (glowIdle && !stuckItems && flare <= 0f) return;
+        flare = Mathf.Max(0f, flare - Time.deltaTime / FlareSeconds);
         float breath = stuckItems ? 0.75f + 0.25f * Mathf.Sin(Time.time * 3f) : 1f;
         glow.color = Color.Lerp(stuckItems ? StuckColor : IdleColor, Color.white, flare * 0.5f);
         glow.intensity = GlowIntensity * breath + flare * 2.5f;
         glow.range = GlowRange + flare * 3f;
+        glowIdle = !stuckItems && flare <= 0f;
     }
 
     // Moves loose drops within reach into chests that take them, a limited number per round so a large pile is done
@@ -138,25 +164,29 @@ internal sealed class CollectionPostComponent : MonoBehaviour
         }
 
         float radius = CollectionSettings.Radius.Value * CollectionSettings.Radius.Value;
-        var drops = new List<ItemDrop>(ItemDrop.s_instances);
+        int scanLimit = CollectionSettings.ScanLimit.Value;
+        int batchSize = CollectionSettings.BatchSize.Value;
+        bool playerDrops = CollectionSettings.PlayerDrops.Value;
+        Func<CollectionPostComponent, List<Container>> receiversOf = ReceiversOf;
+
+        // The game's own list of drops, read in place. A drop delivered whole is destroyed at the end of the frame, so
+        // the list does not change while this round runs; the bounds are checked all the same.
+        var drops = ItemDrop.s_instances;
+        int count = drops.Count;
         int processed = 0;
         int examined = 0;
-        while (examined < drops.Count && examined < CollectionSettings.ScanLimit.Value && processed < CollectionSettings.BatchSize.Value)
+        while (examined < count && examined < scanLimit && processed < batchSize)
         {
-            var drop = drops[(cursor + examined) % drops.Count];
+            int index = (cursor + examined) % count;
             examined++;
-            if (drop == null || drop.IsPiece()
-                || drop.GetComponent<Fish>() != null || drop.InTar() || drop.m_nview == null || !drop.m_nview.IsValid()
+            if (index >= drops.Count) continue;
+            var drop = drops[index];
+            if (drop == null || drop.m_nview == null || !drop.m_nview.IsValid()
                 || (drop.transform.position - transform.position).sqrMagnitude > radius
+                || drop.IsPiece() || drop.GetComponent<Fish>() != null || drop.InTar()
                 || !PrivateArea.CheckAccess(drop.transform.position, 0f, false)) continue;
-            if (!CollectionSettings.PlayerDrops.Value && (!drop.m_autoPickup || drop.m_nview.GetZDO().GetBool("whitehilt_player_drop"))) continue;
-            var chosen = posts.Where(post => post != null && post.Active
-                    && (post.transform.position - drop.transform.position).sqrMagnitude <= radius
-                    && PrivateArea.CheckAccess(post.transform.position, 0f, false)
-                    && ReceiversOf(post).Any(chest => Module.CollectionPriority(chest, drop.m_itemData) >= 0))
-                .OrderBy(post => (post.transform.position - drop.transform.position).sqrMagnitude)
-                .ThenBy(post => post.view.GetZDO().m_uid.ToString()).FirstOrDefault();
-            if (chosen != this) continue;
+            if (!playerDrops && (!drop.m_autoPickup || drop.m_nview.GetZDO().GetBool(PlayerDropKey))) continue;
+            if (NearestPost(drop, radius, receiversOf) != this) continue;
             processed++;
             if (!drop.CanPickup())
             {
@@ -172,7 +202,39 @@ internal sealed class CollectionPostComponent : MonoBehaviour
                 return false;
             }, out _);
         }
-        cursor = drops.Count == 0 ? 0 : (cursor + examined) % drops.Count;
+        cursor = count == 0 ? 0 : (cursor + examined) % count;
+    }
+
+    /// <summary>
+    /// The post a drop goes to: the nearest active post that reaches it and has a chest that takes it. Two posts
+    /// equally near are told apart by their network id as text, so every client chooses the same one.
+    /// </summary>
+    private static CollectionPostComponent NearestPost(ItemDrop drop, float radius, Func<CollectionPostComponent, List<Container>> receiversOf)
+    {
+        var position = drop.transform.position;
+        CollectionPostComponent nearest = null;
+        float nearestDistance = 0f;
+        foreach (var post in posts)
+        {
+            if (post == null || !post.Active) continue;
+            float distance = (post.transform.position - position).sqrMagnitude;
+            if (distance > radius || (nearest != null && distance > nearestDistance)) continue;
+            if (nearest != null && distance == nearestDistance && string.Compare(post.view.GetZDO().m_uid.ToString(),
+                nearest.view.GetZDO().m_uid.ToString(), StringComparison.CurrentCulture) >= 0) continue;
+            if (!PrivateArea.CheckAccess(post.transform.position, 0f, false) || !TakesAny(receiversOf(post), drop.m_itemData)) continue;
+            nearest = post;
+            nearestDistance = distance;
+        }
+        return nearest;
+    }
+
+    private static bool TakesAny(List<Container> receivers, ItemDrop.ItemData item)
+    {
+        foreach (var chest in receivers)
+        {
+            if (Module.CollectionPriority(chest, item) >= 0) return true;
+        }
+        return false;
     }
 
     // The basket owner sorts it, only while nobody has it open, a batch of stacks per round in turn, so stacks that
@@ -284,12 +346,20 @@ internal sealed class CollectionPostComponent : MonoBehaviour
 
     private List<Container> Receivers(Player player)
     {
-        if (Module == null) return new List<Container>();
+        var receivers = new List<Container>();
+        if (Module == null) return receivers;
         float radius = CollectionSettings.ChestRadius.Value * CollectionSettings.ChestRadius.Value;
-        return NearbyContainers.Registered().Where(chest => chest != null && Module.IsCollectionChest(chest)
-            && chest.m_nview != null && chest.m_nview.IsValid() && chest.GetInventory() != null
-            && !chest.IsInUse() && chest.m_nview.GetZDO().GetInt(ZDOVars.s_inUse) == 0
-            && (chest.transform.position - transform.position).sqrMagnitude <= radius
-            && chest.CheckAccess(player.GetPlayerID()) && (!chest.m_checkGuardStone || PrivateArea.CheckAccess(chest.transform.position, 0f, false))).ToList();
+        var position = transform.position;
+        long playerId = player.GetPlayerID();
+        foreach (var chest in NearbyContainers.Registered())
+        {
+            // The distance first: of all the loaded containers, few are near this post.
+            if (chest == null || (chest.transform.position - position).sqrMagnitude > radius || !Module.IsCollectionChest(chest)
+                || chest.m_nview == null || !chest.m_nview.IsValid() || chest.GetInventory() == null
+                || chest.IsInUse() || chest.m_nview.GetZDO().GetInt(ZDOVars.s_inUse) != 0
+                || !chest.CheckAccess(playerId) || (chest.m_checkGuardStone && !PrivateArea.CheckAccess(chest.transform.position, 0f, false))) continue;
+            receivers.Add(chest);
+        }
+        return receivers;
     }
 }

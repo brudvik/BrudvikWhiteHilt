@@ -1,9 +1,11 @@
 using BrudvikWhiteHilt.Crafting;
 using BrudvikWhiteHilt.Items.Painting;
 using BrudvikWhiteHilt.Items.Textiles;
+using BrudvikWhiteHilt.Items.Weapons;
 using BrudvikWhiteHilt.Painting;
 using BrudvikWhiteHilt.Pieces.Textiles;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace BrudvikWhiteHilt.Textiles;
@@ -16,6 +18,7 @@ public static class Dyeing
 {
     private const string CapeKey = "whitehilt_dye";
     private static readonly int capeZdoKey = "whitehilt_cape_dye".GetStableHashCode();
+    private static readonly ConditionalWeakTable<VisEquipment, CapeDyeState> capeStates = new();
 
     /// <summary>
     /// Dyes what the player looks at or wears, if anything.
@@ -58,6 +61,7 @@ public static class Dyeing
             if (Pay(player, pot, TextileSettings.CapeUses.Value, 0, null))
             {
                 cape.m_customData[CapeKey] = PaintColor.ToHex(color);
+                GearSlots.LookChanged();
                 Done(player, cape.m_shared.m_name, color);
             }
 
@@ -81,7 +85,9 @@ public static class Dyeing
 
     /// <summary>
     /// Keeps a character's cape in its dye: the wearer writes the dye of the worn cape to its ZDO, and every machine shows
-    /// it on the cape model. Called every frame for every character's equipment.
+    /// it on the cape model. Called every frame for every character's equipment, so it remembers per character what it
+    /// last wrote, read and showed: the wearer works the dye out again only when the cape worn or a dye changes, and the
+    /// ZDO is read again only when its data revision changes.
     /// </summary>
     /// <param name="equipment">The character's equipment visuals.</param>
     public static void RefreshCape(VisEquipment equipment)
@@ -93,29 +99,44 @@ public static class Dyeing
         }
 
         ZDO zdo = nview.GetZDO();
-        if (nview.IsOwner() && equipment.TryGetComponent(out Player player))
+        CapeDyeState state = capeStates.GetOrCreateValue(equipment);
+        if (!state.LookedForPlayer)
         {
-            int wanted = CapeValue(player.m_shoulderItem);
+            state.LookedForPlayer = true;
+            equipment.TryGetComponent(out state.Player);
+        }
+
+        Player player = state.Player;
+        if (player != null && nview.IsOwner()
+            && (!ReferenceEquals(state.WrittenZdo, zdo) || state.WrittenVersion != GearSlots.LookVersion || !ReferenceEquals(state.Cape, player.m_shoulderItem)))
+        {
+            state.WrittenZdo = zdo;
+            state.WrittenVersion = GearSlots.LookVersion;
+            state.Cape = player.m_shoulderItem;
+            int wanted = CapeValue(state.Cape);
             if (zdo.GetInt(capeZdoKey) != wanted)
             {
                 zdo.Set(capeZdoKey, wanted);
             }
         }
 
-        int value = zdo.GetInt(capeZdoKey);
-        GameObject first = equipment.m_shoulderItemInstances != null && equipment.m_shoulderItemInstances.Count > 0 ? equipment.m_shoulderItemInstances[0] : null;
-        CapeDyeState state = equipment.GetComponent<CapeDyeState>();
-        if (state == null)
+        if (!ReferenceEquals(state.ReadZdo, zdo) || state.Revision != zdo.DataRevision)
         {
-            if (value == 0)
-            {
-                return;
-            }
-
-            state = equipment.gameObject.AddComponent<CapeDyeState>();
+            state.ReadZdo = zdo;
+            state.Revision = zdo.DataRevision;
+            state.Wanted = zdo.GetInt(capeZdoKey);
+            state.Active |= state.Wanted != 0;
         }
 
-        if (state.Value == value && state.Instance == first)
+        // Nothing is shown on a character whose cape was never dyed, as most never are.
+        if (!state.Active)
+        {
+            return;
+        }
+
+        int value = state.Wanted;
+        GameObject first = equipment.m_shoulderItemInstances != null && equipment.m_shoulderItemInstances.Count > 0 ? equipment.m_shoulderItemInstances[0] : null;
+        if (state.Value == value && ReferenceEquals(state.Instance, first))
         {
             return;
         }
@@ -205,10 +226,38 @@ public static class Dyeing
 }
 
 /// <summary>
-/// What a character's cape was last dyed with, so the dye is only applied when it or the cape changes.
+/// What a character's cape dye was last written, read and shown as, so the dye is only worked out, read and applied
+/// when it or the cape changes.
 /// </summary>
-public class CapeDyeState : MonoBehaviour
+public sealed class CapeDyeState
 {
+    /// <summary>Whether the character was looked at for being a player.</summary>
+    public bool LookedForPlayer;
+
+    /// <summary>The player, or null for another character.</summary>
+    public Player Player;
+
+    /// <summary>The ZDO the wearer last wrote the dye to.</summary>
+    public ZDO WrittenZdo;
+
+    /// <summary>The <see cref="GearSlots.LookVersion"/> the dye was last written at.</summary>
+    public int WrittenVersion;
+
+    /// <summary>The cape worn when the dye was last written.</summary>
+    public ItemDrop.ItemData Cape;
+
+    /// <summary>The ZDO last read.</summary>
+    public ZDO ReadZdo;
+
+    /// <summary>Its data revision when last read.</summary>
+    public uint Revision;
+
+    /// <summary>The packed colour read.</summary>
+    public int Wanted;
+
+    /// <summary>Whether the cape was ever dyed.</summary>
+    public bool Active;
+
     /// <summary>The packed colour shown.</summary>
     public int Value;
 

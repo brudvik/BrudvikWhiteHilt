@@ -36,14 +36,16 @@ public static class EternalFireRules
 
     private const string Section = "EternalFire";
 
-    private static readonly Dictionary<string, bool> vanillaInfinite = new();
+    // Whether each fire prefab burns forever in vanilla, by prefab hash. Every torch is a fire, and the game asks
+    // about each fire every update, so the prefab is looked up once.
+    private static readonly Dictionary<int, bool> vanillaInfinite = new();
 
     private static ConfigEntry<FireMode> mode;
     private static ConfigEntry<bool> fires;
     private static ConfigEntry<bool> ovens;
     private static ConfigEntry<bool> smelters;
     private static ConfigEntry<string> excluded;
-    private static HashSet<string> excludedSet = new();
+    private static HashSet<int> excludedSet = new();
 
     /// <summary>
     /// Binds the config entries. Call from the plugin's Awake.
@@ -80,8 +82,9 @@ public static class EternalFireRules
             return mode.Value switch
             {
                 FireMode.Always => true,
+                // GlobalKey is lower case already; GetGlobalKey would make a lower-case copy on every call.
                 FireMode.Progression => WhiteHiltConfig.Mode.Value != ProgressionMode.Linear
-                    || (ZoneSystem.instance != null && ZoneSystem.instance.GetGlobalKey(GlobalKey)),
+                    || (ZoneSystem.instance != null && ZoneSystem.instance.m_globalKeysValues.ContainsKey(GlobalKey)),
                 _ => false
             };
         }
@@ -124,7 +127,7 @@ public static class EternalFireRules
     /// <returns>True for a vanilla eternal fire.</returns>
     public static bool IsVanillaInfinite(Fireplace fireplace)
     {
-        string prefab = Utils.GetPrefabName(fireplace.m_nview != null ? fireplace.m_nview.gameObject : fireplace.gameObject);
+        int prefab = PrefabHash(fireplace.m_nview, fireplace.gameObject);
         if (!vanillaInfinite.TryGetValue(prefab, out bool infinite))
         {
             GameObject original = ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(prefab) : null;
@@ -159,11 +162,21 @@ public static class EternalFireRules
 
     private static bool Applies(ZNetView nview)
     {
-        return IsActive && nview != null && nview.IsValid() && !excludedSet.Contains(Utils.GetPrefabName(nview.gameObject));
+        return IsActive && nview != null && nview.IsValid()
+            && (excludedSet.Count == 0 || !excludedSet.Contains(PrefabHash(nview, nview.gameObject)));
     }
 
-    private static HashSet<string> ParseList(string value)
+    // The hash of the prefab name, as the game keeps it in the network data: read from there, so no name is built.
+    // An object without network data falls back to its name without "(Clone)".
+    private static int PrefabHash(ZNetView nview, GameObject fallback)
     {
-        return new HashSet<string>(value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).Where(part => part.Length > 0));
+        ZDO zdo = nview != null && nview.IsValid() ? nview.GetZDO() : null;
+        return zdo != null ? zdo.GetPrefab() : Utils.GetPrefabName(nview != null ? nview.gameObject : fallback).GetStableHashCode();
+    }
+
+    private static HashSet<int> ParseList(string value)
+    {
+        return new HashSet<int>(value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim())
+            .Where(part => part.Length > 0).Select(part => part.GetStableHashCode()));
     }
 }

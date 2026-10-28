@@ -13,14 +13,18 @@ public class AutoDoor : MonoBehaviour
     private const float TickSeconds = 0.5f;
 
     private static readonly int HoldKey = "whitehilt_door_hold".GetStableHashCode();
-    private static readonly HashSet<AutoDoor> instances = new();
+    // The doors in the world, ticked a few per frame by one AutoDoorTicker rather than each by its own Update, as
+    // there can be hundreds and each only needs a look twice a second.
+    private static readonly List<AutoDoor> instances = new();
+    private static int cursor;
+    private static AutoDoorTicker ticker;
 
     private Door door;
     private ZNetView nview;
     private Piece piece;
     private string prefabName;
     private Vector3 localCentre;
-    private float nextTick;
+    private int index = -1;
     private float openedAt = -1f;
     private float lastBusy;
     private bool weatherKnown;
@@ -148,23 +152,63 @@ public class AutoDoor : MonoBehaviour
         if (nview != null && nview.GetZDO() != null)
         {
             nview.Register<bool>(HoldRpc, RPC_Hold);
+            index = instances.Count;
             instances.Add(this);
+            if (ticker == null)
+            {
+                ticker = new GameObject("WhiteHiltAutoDoors").AddComponent<AutoDoorTicker>();
+            }
         }
     }
 
     private void OnDestroy()
     {
-        instances.Remove(this);
-    }
-
-    private void Update()
-    {
-        if (Time.time < nextTick)
+        if (index < 0)
         {
             return;
         }
 
-        nextTick = Time.time + TickSeconds;
+        // The last door takes this one's place, so removing is quick when a whole area unloads.
+        int last = instances.Count - 1;
+        AutoDoor moved = instances[last];
+        instances[index] = moved;
+        moved.index = index;
+        instances.RemoveAt(last);
+        index = -1;
+    }
+
+    /// <summary>
+    /// Ticks the next doors in turn, so that each is ticked about twice a second. Called every frame by
+    /// the <see cref="AutoDoorTicker"/>.
+    /// </summary>
+    /// <param name="deltaTime">The frame's time.</param>
+    public static void TickSome(float deltaTime)
+    {
+        int count = instances.Count;
+        if (count == 0)
+        {
+            return;
+        }
+
+        int budget = Mathf.Min(count, Mathf.CeilToInt(count * deltaTime / TickSeconds));
+        for (int i = 0; i < budget; i++)
+        {
+            if (cursor >= instances.Count)
+            {
+                cursor = 0;
+            }
+
+            AutoDoor auto = instances[cursor++];
+            // As with an Update of its own, a door that is switched off or in an inactive object is not ticked.
+            if (auto != null && auto.isActiveAndEnabled)
+            {
+                auto.Visit();
+            }
+        }
+    }
+
+    private void Visit()
+    {
         if (nview == null || !nview.IsValid() || !nview.IsOwner())
         {
             openedAt = -1f;
@@ -352,5 +396,16 @@ public class AutoDoor : MonoBehaviour
         {
             nview.GetZDO().Set(HoldKey, hold);
         }
+    }
+}
+
+/// <summary>
+/// Ticks all <see cref="AutoDoor"/>s, a few each frame. Made by the first door that loads, and gone with the scene.
+/// </summary>
+public class AutoDoorTicker : MonoBehaviour
+{
+    private void Update()
+    {
+        AutoDoor.TickSome(Time.deltaTime);
     }
 }

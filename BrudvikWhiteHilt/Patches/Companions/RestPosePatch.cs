@@ -18,13 +18,20 @@ public static class RestPosePatch
     private static void KeepResting(MonsterAI __instance)
     {
         // Only dogs have a rest pose.
-        if (DogCompanion.All.Count == 0 || !__instance.TryGetComponent(out RestPose rest) || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner() || !rest.IsResting)
+        if (DogCompanion.All.Count == 0)
+        {
+            return;
+        }
+
+        AiParts parts = AiParts.Of(__instance);
+        RestPose rest = parts.Rest;
+        if (rest == null || !__instance.m_nview.IsValid() || !__instance.m_nview.IsOwner() || !rest.IsResting)
         {
             return;
         }
 
         // A sitting dog still follows; it stands up by itself when its master walks on. A trick is finished first.
-        bool acting = __instance.TryGetComponent(out DogCare care) && care.IsActing;
+        bool acting = parts.Care != null && parts.Care.IsActing;
         bool following = __instance.GetFollowTarget() != null && rest.Current != RestPose.Pose.Sit && !acting;
         if (following || __instance.m_targetCreature != null)
         {
