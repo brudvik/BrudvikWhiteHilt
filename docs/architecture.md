@@ -269,16 +269,22 @@ Valheim runs everything on one thread, and so does the mod. These habits recur:
 - **Work on a timer, not every frame.** Many `Update` methods start with `if (Time.time < nextCheck) return;`. Where
   many objects share the same check, they get a random first delay, so a large roof or a pack of dogs does not do
   all its work in the same frame (`RoofEave`, `DogCompanion`).
-- **Spread large scans over frames.** The server services scan a few sectors of the world per frame
-  (`ContinueScan`). The sea route finder and the old-land filler are coroutines that yield when their time budget
-  for the frame runs out.
+- **Spread large scans over frames.** The server services that read the whole world (portal map, discoveries,
+  map areas) share one walk, `WorldScan`, which reads each object once, hands it to the services that want its
+  prefab, and stops for the frame after 1.5 ms (`WorldScanService`). The sea route finder and the old-land filler
+  are coroutines that yield when their time budget for the frame runs out.
 - **Cache and rebuild only on change.** Materials, textures and lookups by prefab are made once and kept. UI is
-  rebuilt only when the data behind it has changed (for example `ShipRoute.Read` compares `DataRevision`).
+  rebuilt only when the data behind it has changed (for example `ShipRoute.Read` compares `DataRevision`). What is
+  worked out for every character each frame is skipped while its ZDO's `DataRevision` is unchanged (`GearLook`), and
+  a chest restocks only when its contents, owner, settings or the world's progress changed (`ChestModule.NeedsCheck`).
+  Components are looked up once per object and kept in a `ConditionalWeakTable` (`AiParts`, `ShipParts`).
 - **Draw less.** Meshes are combined per material (`DefenseModelBuilder`), and a bone animation is skipped while its
   model is off screen (`DogExpression`). A model that replaces a vanilla one is outside the prefab's level-of-detail
   group, so `VisualHelper.HideWhenSmall` gives it its own, which hides it when it is small on screen.
 - **Skip early when there is nothing to do.** A patch that runs for every creature each frame first checks a static
-  count, such as `DogCompanion.All.Count` or `KrakenTentacle.AnyLoaded`, before it looks for a component.
+  count, such as `DogCompanion.All.Count` or `KrakenTentacle.AnyLoaded`, before it looks for a component. Many
+  objects that need a slow tick share one ticker that takes a few of them each frame (`AutoDoorTicker`) instead of
+  an `Update` each.
 - **Send little.** The game's `ZDO.Set` already ignores a value that did not change, so what costs traffic is a value
   that changes all the time. Messages carry whole numbers where the screen shows whole numbers (`PartyStatus`), and
   the server's lists go out only when they changed, gzipped when large (`ServerLists`).
@@ -296,9 +302,15 @@ Valheim runs everything on one thread, and so does the mod. These habits recur:
 - **Measure.** The console command `whitehilt_perf start` wraps every Harmony patch method and every `Update`,
   `LateUpdate` and `FixedUpdate` of the mod with a timer, and counts the bytes of each network message;
   `whitehilt_perf report` lists the slowest methods and the busiest messages, and `stop` removes it all again
-  (`Diagnostics/PerfMonitor.cs`). Times include what a method calls. `[Diagnostics] PerfLogMinutes` does the same
+  (`Diagnostics/PerfMonitor.cs`). Times include what a method calls, and the report also shows how much memory each
+  method allocates and how often the game collected garbage. `[Diagnostics] PerfLogMinutes` does the same
   on a dedicated server and writes the report to the log, and `StartupTimer` logs how long each item, piece and plant
   took to make.
+- **Fix the game's own hitches.** `Performance/` holds fixes for slow spots in Valheim itself, each with its own
+  switch in `[Performance]`: the map's fog upload and save, the loading screen's wait, a time budget for making
+  objects, the hourly asset clear-out, and garbage made every frame. Each is checked against the game's code first,
+  falls back to the game's own method on any error, and stands aside where Valheim Community Patch has the same fix
+  switched on (`CommunityPatchCoexistence`). The ideas come from that mod and HitchFix; the code is our own.
 - **One message for many objects.** Registering an RPC on a network view costs a little on every object that loads.
   Paint and dye register one routed RPC each, once, that names the piece (`PaintedPieces.RegisterRpc`).
 
