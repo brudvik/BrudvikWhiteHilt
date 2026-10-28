@@ -16,6 +16,7 @@ public class DarknessSilence : MonoBehaviour
     private const float Left = 0.05f;
 
     private readonly Dictionary<AudioSource, float> quietened = new();
+    private readonly HashSet<AudioSource> spared = new();
     private float nextRefresh;
 
     // After the game has set its own volumes this frame.
@@ -29,16 +30,12 @@ public class DarknessSilence : MonoBehaviour
         }
 
         float share = Mathf.Lerp(1f, Left, silence);
-        if (AudioMan.instance != null)
+        AudioMan audio = AudioMan.instance;
+        if (audio != null)
         {
-            foreach (AudioSource source in new[] { AudioMan.instance.m_ambientLoopSource, AudioMan.instance.m_windLoopSource, AudioMan.instance.m_oceanAmbientSource })
-            {
-                if (source != null)
-                {
-                    // The game moves these towards its own volume each frame, so this holds them down without piling up.
-                    source.volume = Mathf.Min(source.volume, share);
-                }
-            }
+            HoldDown(audio.m_ambientLoopSource, share);
+            HoldDown(audio.m_windLoopSource, share);
+            HoldDown(audio.m_oceanAmbientSource, share);
         }
 
         if (MusicMan.instance != null && MusicMan.instance.m_musicSource != null)
@@ -61,6 +58,15 @@ public class DarknessSilence : MonoBehaviour
         }
     }
 
+    // The game moves these towards its own volume each frame, so this holds them down without piling up.
+    private static void HoldDown(AudioSource source, float share)
+    {
+        if (source != null)
+        {
+            source.volume = Mathf.Min(source.volume, share);
+        }
+    }
+
     private void OnDestroy()
     {
         Restore();
@@ -75,12 +81,21 @@ public class DarknessSilence : MonoBehaviour
             return;
         }
 
+        // A creature's or the darkness's own sound is remembered as spared, so its parents are not searched again each
+        // second; the list is cleared when the sounds come back.
+        Vector3 centre = player.transform.position;
+        spared.RemoveWhere(source => source == null);
         foreach (AudioSource source in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
         {
-            if (source == null || !source.loop || quietened.ContainsKey(source) || source.gameObject == gameObject
-                || Vector3.Distance(source.transform.position, player.transform.position) > Reach
-                || source.GetComponentInParent<Character>() != null || source.GetComponentInParent<DarknessKeep>() != null)
+            if (source == null || !source.loop || quietened.ContainsKey(source) || spared.Contains(source)
+                || source.gameObject == gameObject || (source.transform.position - centre).sqrMagnitude > Reach * Reach)
             {
+                continue;
+            }
+
+            if (source.GetComponentInParent<Character>() != null || source.GetComponentInParent<DarknessKeep>() != null)
+            {
+                spared.Add(source);
                 continue;
             }
 
@@ -99,5 +114,6 @@ public class DarknessSilence : MonoBehaviour
         }
 
         quietened.Clear();
+        spared.Clear();
     }
 }

@@ -13,6 +13,22 @@ public static class SkidbladnirPatches
     private static readonly RaycastHit[] hoverHits = new RaycastHit[32];
     private static readonly IComparer<RaycastHit> ByDistance = Comparer<RaycastHit>.Create((left, right) => left.distance.CompareTo(right.distance));
     private static SkidbladnirShip placing;
+    private static int vehicleMask;
+
+    // Whether a piece in this world may have a ship attachment: set once a ShipFurniture is added to a piece that is
+    // not a placement ghost. Until then the support and roof hooks, which run for every piece, have nothing to do.
+    private static bool anyFurniture;
+
+    // The placement ghost last looked at, and its parts. The game makes a new ghost whenever another piece is chosen,
+    // so the parts are looked up once per ghost rather than every frame.
+    private static GameObject ghostSeen;
+    private static Piece ghostPiece;
+    private static bool ghostAllowed;
+    private static global::BrudvikWhiteHilt.Chests.Piece.WallDrawer ghostDrawer;
+    private static ShipWorkshop ghostWorkshop;
+
+    // The "vehicle" layer, looked up once; LayerMask.GetMask makes a new array on every call.
+    private static int VehicleMask => vehicleMask != 0 ? vehicleMask : vehicleMask = LayerMask.GetMask("vehicle");
 
     // The ship whose surface the latest build ray hit, furnishings on it included; null when it hit anything else.
     private static SkidbladnirShip aimed;
@@ -46,14 +62,15 @@ public static class SkidbladnirPatches
     {
         GameObject ghost = __instance.m_placementGhost;
         if (ghost == null || !ghost.activeSelf) return;
-        var drawer = ghost.GetComponent<global::BrudvikWhiteHilt.Chests.Piece.WallDrawer>();
+        SeeGhost(ghost);
+        var drawer = ghostDrawer;
         if (drawer != null) drawer.SnapToWall();
-        var workshop = ghost.GetComponent<ShipWorkshop>();
+        var workshop = ghostWorkshop;
         if (workshop != null) workshop.SettleOnFloor();
         if (__instance.m_placementStatus != Player.PlacementStatus.Valid) return;
         if ((drawer == null || drawer.HasWall()) && (workshop == null || workshop.CanPlace())) return;
         __instance.m_placementStatus = Player.PlacementStatus.Invalid;
-        ghost.GetComponent<Piece>().SetInvalidPlacementHeightlight(true);
+        ghostPiece.SetInvalidPlacementHeightlight(true);
     }
 
     /// <summary>Preserves independent furniture views when the ship is unloaded or the world closes.</summary>
@@ -79,8 +96,10 @@ public static class SkidbladnirPatches
         // Most pieces stand on land; a piece built aboard later gets the reader when it is attached. Without a ZDO yet,
         // whether it is attached is not known, so it gets one and switches it off at Start.
         ZDO data = view.GetZDO();
-        if (data != null && data.GetZDOID(ShipFurniture.ParentKey).IsNone())
+        if (data != null && data.GetZDOID(ShipFurniture.ParentHash).IsNone())
             return;
+        // A placement ghost never has a ZDO and is never attached, so it does not wake the support and roof hooks.
+        if (data != null || !ZNetView.m_forceDisableInit) anyFurniture = true;
         __instance.gameObject.AddComponent<ShipFurniture>();
     }
 
@@ -100,10 +119,11 @@ public static class SkidbladnirPatches
         // Stations are m_noInWater, which makes vanilla pass water=true; water pieces are excluded by Allowed.
         aimed = null;
         if (!SkidbladnirSettings.BuildingAllowed || GameCamera.instance == null || __instance.m_placementGhost == null) return;
-        Piece selected = __instance.m_placementGhost.GetComponent<Piece>();
-        if (!Allowed(selected)) return;
+        SeeGhost(__instance.m_placementGhost);
+        Piece selected = ghostPiece;
+        if (!ghostAllowed) return;
         if (!Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out RaycastHit hit,
-            50f, __instance.m_placeRayMask | LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore)) return;
+            50f, __instance.m_placeRayMask | VehicleMask, QueryTriggerInteraction.Ignore)) return;
         SkidbladnirShip ship = hit.collider.GetComponentInParent<SkidbladnirShip>();
         if (ship == null) return;
         aimed = ship;
@@ -153,6 +173,7 @@ public static class SkidbladnirPatches
     public static void Created(Piece __instance)
     {
         if (placing == null || __instance.GetComponent<Ship>() != null) return;
+        anyFurniture = true;
         ShipFurniture furniture = __instance.GetComponent<ShipFurniture>() ?? __instance.gameObject.AddComponent<ShipFurniture>();
         furniture.Attach(placing);
     }
@@ -164,7 +185,7 @@ public static class SkidbladnirPatches
     [HarmonyPrefix]
     public static bool Support(WearNTear __instance)
     {
-        if (!(__instance.GetComponent<ShipFurniture>()?.IsAttached ?? false)) return true;
+        if (!anyFurniture || !(__instance.GetComponent<ShipFurniture>()?.IsAttached ?? false)) return true;
         __instance.m_support = __instance.GetMaxSupport();
         if (__instance.m_nview.IsOwner()) __instance.m_nview.GetZDO().Set(ZDOVars.s_support, __instance.m_support);
         return false;
@@ -186,7 +207,7 @@ public static class SkidbladnirPatches
     /// <param name="__instance">Updated ship.</param>
     [HarmonyPatch(typeof(Ship), nameof(Ship.CustomFixedUpdate))]
     [HarmonyPostfix]
-    public static void PhysicsStep(Ship __instance) => __instance.GetComponent<SkidbladnirShip>()?.LimitSpeed();
+    public static void PhysicsStep(Ship __instance) => ShipParts.Of(__instance).Skidbladnir?.LimitSpeed();
 
     /// <summary>Lets the ship's decks count as a roof for furnishings below them; vanilla's roof ray skips ships.</summary>
     /// <param name="obj">Piece being checked.</param>
@@ -198,10 +219,10 @@ public static class SkidbladnirPatches
     [HarmonyPostfix]
     public static void ShipRoof(Transform obj, Vector3 position, ref GameObject roofObject, float heightOffset, ref bool __result)
     {
-        if (__result || obj == null || !(obj.GetComponent<ShipFurniture>()?.IsAttached ?? false)) return;
+        if (__result || !anyFurniture || obj == null || !(obj.GetComponent<ShipFurniture>()?.IsAttached ?? false)) return;
         // Vanilla's own ray: a 0.1 m sphere straight up for 100 m.
         if (Physics.SphereCast(position + Vector3.up * heightOffset, 0.1f, Vector3.up, out RaycastHit hit, 100f,
-            LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SkidbladnirShip>() != null)
+            VehicleMask, QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SkidbladnirShip>() != null)
         {
             roofObject = hit.collider.gameObject;
             __result = true;
@@ -235,12 +256,23 @@ public static class SkidbladnirPatches
         if (distance < 0.01f) return;
         Vector3 direction = offset.normalized;
         foreach (RaycastHit hit in Physics.SphereCastAll(eye, __instance.m_raycastWidth, direction, distance,
-            LayerMask.GetMask("vehicle"), QueryTriggerInteraction.Ignore))
+            VehicleMask, QueryTriggerInteraction.Ignore))
         {
             if (hit.distance > 0f && hit.collider.GetComponentInParent<SkidbladnirShip>() == ship)
                 distance = Mathf.Min(distance, hit.distance);
         }
         pos = eye + direction * distance;
+    }
+
+    // Looks up the parts of a placement ghost the first time it is seen.
+    private static void SeeGhost(GameObject ghost)
+    {
+        if (ReferenceEquals(ghost, ghostSeen)) return;
+        ghostSeen = ghost;
+        ghostPiece = ghost.GetComponent<Piece>();
+        ghostAllowed = Allowed(ghostPiece);
+        ghostDrawer = ghost.GetComponent<global::BrudvikWhiteHilt.Chests.Piece.WallDrawer>();
+        ghostWorkshop = ghost.GetComponent<ShipWorkshop>();
     }
 
     private static bool Allowed(Piece piece) => piece != null && !piece.m_groundPiece && !piece.m_groundOnly

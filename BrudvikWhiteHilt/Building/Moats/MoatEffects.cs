@@ -41,6 +41,17 @@ public static class MoatEffects
     private static bool InDitch(Character character, out float since)
     {
         since = 0f;
+        if (!MoatSection.AnyLoaded)
+        {
+            // With no ditch loaded no creature is in one; what is remembered is forgotten, as a check would have.
+            if (states.Count > 0)
+            {
+                states.Clear();
+            }
+
+            return false;
+        }
+
         if (MoatSettings.Enabled == null || !MoatSettings.Enabled.Value || character == null || character.IsPlayer() || character.IsTamed()
             || character.IsBoss())
         {

@@ -21,7 +21,7 @@ public static class WeaponGlow
     private const float LightIntensity = 1.6f;
     private const int DarkSum = 24;
 
-    private static readonly int[] slotKeys = GearSlots.Keys("whitehilt_glow");
+    private static readonly GearLook look = new("whitehilt_glow", Value, Apply);
     private static readonly Dictionary<string, Texture2D> emissionByMesh = new();
 
     /// <summary>
@@ -66,6 +66,8 @@ public static class WeaponGlow
         {
             item.m_customData[ColorKey] = PaintColor.ToHex(color);
         }
+
+        GearSlots.LookChanged();
     }
 
     /// <summary>
@@ -75,6 +77,7 @@ public static class WeaponGlow
     public static void Clear(ItemDrop.ItemData item)
     {
         item.m_customData.Remove(ColorKey);
+        GearSlots.LookChanged();
     }
 
     /// <summary>
@@ -96,7 +99,7 @@ public static class WeaponGlow
     /// <param name="equipment">The character's equipment visuals.</param>
     public static void Refresh(VisEquipment equipment)
     {
-        GearSlots.Refresh<WeaponGlowState>(equipment, slotKeys, Value, Apply);
+        look.Refresh(equipment);
     }
 
     /// <summary>
@@ -247,13 +250,6 @@ public static class WeaponGlow
         emissionByMesh[meshName] = texture;
         return texture;
     }
-}
-
-/// <summary>
-/// What a character's gear models were last lit with.
-/// </summary>
-public class WeaponGlowState : GearSlotState
-{
 }
 
 /// <summary>

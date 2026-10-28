@@ -68,6 +68,22 @@ namespace BrudvikWhiteHilt.Chests
         // Containers dropping their items: refilling them now would drop the refills, and Take all must empty them.
         private readonly ConditionalWeakTable<Container, object> destroyedContainers = new();
 
+        // The chest piece each container is, or null for any other container. A container never changes its prefab,
+        // and the hover panel and the inventory grid ask every frame, so the prefab name is looked up once.
+        private readonly ConditionalWeakTable<Container, StrongBox<CustomPieceExtended?>> containerPieces = new();
+        private readonly ConditionalWeakTable<Container, StrongBox<CustomPieceExtended?>>.CreateValueCallback resolvePiece;
+
+        // What each chest and cargo hold looked like at its last full check, see NeedsCheck.
+        private readonly ConditionalWeakTable<Container, ChestCheck> chestChecks = new();
+
+        // Counts changes of the settings, which decide what the chests hold and show.
+        private int settingsRevision;
+
+        private ChestModule()
+        {
+            resolvePiece = ResolvePiece;
+        }
+
         /// <summary>
         /// Starts the chests. Call from the plugin's Awake.
         /// </summary>
@@ -89,7 +105,7 @@ namespace BrudvikWhiteHilt.Chests
             itemCatalog = new ItemCatalog(settings);
             worldProgress = new WorldProgress();
             chestSupply = new ChestSupply(settings, itemCatalog, worldProgress);
-            progressUi = new ChestProgressUi(chestSupply, FindPiece, IsCargo);
+            progressUi = new ChestProgressUi(chestSupply, FindPiece, IsCargo, SupplyRevision);
             hoverPanel = new ChestHoverPanel(chestSupply, FindPiece, () => settings.ShowHoverPanel.Value);
             biomeCatalog = new BiomeCatalog(settings);
             learnUi = new ChestLearnUi(FindPiece, () => settings.LearnAll.Value, () => settings.LearnTrophies.Value);
@@ -257,6 +273,7 @@ namespace BrudvikWhiteHilt.Chests
 
         private void HandleSettingsChanged()
         {
+            settingsRevision++;
             itemCatalog.Invalidate();
             chestFinder.Reset();
             RegisterDiscoveries(Player.m_localPlayer);
@@ -376,22 +393,87 @@ namespace BrudvikWhiteHilt.Chests
         /// Handles the ContainerCheckForChangesPatched event.
         /// Keeps the unlimited stacks in one of our chests full and adds the unlimited items that are missing.
         /// </summary>
+        /// <remarks>
+        /// The game asks every loaded container every second, so in a large base this runs often. The work is done
+        /// only when something it depends on changed since the chest's last check (see <see cref="NeedsCheck"/>).
+        /// </remarks>
         private void HandleContainerCheckForChanges(object sender, ContainerCheckForChangesPatchEvent e)
         {
-            if (IsDestroyed(e?.Container)) return;
+            var container = e?.Container;
+            if (container == null || IsDestroyed(container)) return;
 
-            var piece = FindPiece(e?.Container);
+            var piece = FindPiece(container);
             if (piece == null)
             {
-                RestockCargo(e?.Container);
+                if (!IsCargo(container) || !NeedsCheck(container)) return;
+
+                RestockCargo(container);
+                MarkChecked(container);
                 return;
             }
 
-            RegisterChest(e!.Container);
-            ChestEffects.UpdateGlow(e.Container, piece.Color, piece.CustomPieceConfig.ItemCategory, chestSupply);
-            e.Container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
-            UpdateIndicator(e.Container, piece);
-            ReportStock(e.Container, piece.CustomPieceConfig.ItemCategory);
+            if (!NeedsCheck(container)) return;
+
+            RegisterChest(container);
+            ChestEffects.UpdateGlow(container, piece.Color, piece.CustomPieceConfig.ItemCategory, chestSupply);
+            container.Restock(piece.CustomPieceConfig.ItemCategory, chestSupply, settings.SortContents.Value, settings.FreeRows.Value);
+            UpdateIndicator(container, piece);
+            ReportStock(container, piece.CustomPieceConfig.ItemCategory);
+            MarkChecked(container);
+        }
+
+        // Changes whenever the settings or the world's unlocked and discovered items change, which together decide
+        // what is unlimited.
+        private long SupplyRevision() => ((long)settingsRevision << 32) | (uint)worldProgress.Revision;
+
+        // What a chest or cargo hold looked like at its last full check.
+        private sealed class ChestCheck
+        {
+            public ZDO? Zdo;
+            public uint DataRevision;
+            public bool Owner;
+            public bool Ready;
+            public int SettingsRevision;
+            public int ProgressRevision;
+        }
+
+        /// <summary>
+        /// Whether a container must be restocked and its glow, indicator and stock report brought up to date: its
+        /// contents changed (its network data has a new revision, from this machine or another), it changed hands,
+        /// the settings changed, or the world's unlocked and discovered items did. Nothing else changes the result,
+        /// so the check every second can skip a chest nobody touched.
+        /// </summary>
+        private bool NeedsCheck(Container container)
+        {
+            if (!chestChecks.TryGetValue(container, out var last)) return true;
+
+            var zdo = container.m_nview != null && container.m_nview.IsValid() ? container.m_nview.GetZDO() : null;
+            return zdo == null || last.Zdo != zdo || last.DataRevision != zdo.DataRevision || last.Owner != zdo.IsOwner()
+                || last.Ready != chestSupply.IsReady || last.SettingsRevision != settingsRevision
+                || last.ProgressRevision != worldProgress.Revision;
+        }
+
+        /// <summary>
+        /// Remembers what a container looked like after a full check. A container whose inventory has not yet been
+        /// read from its newest network data (the game waits while it is open) is not remembered, so it is checked
+        /// again once it has been.
+        /// </summary>
+        private void MarkChecked(Container container)
+        {
+            var zdo = container.m_nview != null && container.m_nview.IsValid() ? container.m_nview.GetZDO() : null;
+            if (zdo == null || container.m_lastRevision != zdo.DataRevision)
+            {
+                chestChecks.Remove(container);
+                return;
+            }
+
+            var last = chestChecks.GetOrCreateValue(container);
+            last.Zdo = zdo;
+            last.DataRevision = zdo.DataRevision;
+            last.Owner = zdo.IsOwner();
+            last.Ready = chestSupply.IsReady;
+            last.SettingsRevision = settingsRevision;
+            last.ProgressRevision = worldProgress.Revision;
         }
 
         /// <summary>
@@ -514,13 +596,16 @@ namespace BrudvikWhiteHilt.Chests
 
         private CustomPieceExtended? FindPiece(Container? container)
         {
-            if (container == null || container.name == null) return null;
+            if (container == null || customPieces.Count == 0) return null;
 
-            foreach (var piece in customPieces)
-            {
-                if (global::Utils.GetPrefabName(container.gameObject) == piece.PrefabName) return piece;
-            }
-            return null;
+            return containerPieces.GetValue(container, resolvePiece).Value;
+        }
+
+        // Looks up the chest piece by the container's prefab name, once per container (see containerPieces).
+        private StrongBox<CustomPieceExtended?> ResolvePiece(Container container)
+        {
+            var prefabName = global::Utils.GetPrefabName(container.gameObject);
+            return new StrongBox<CustomPieceExtended?>(customPieces.Find(piece => piece.PrefabName == prefabName));
         }
 
         /// <summary>

@@ -27,8 +27,17 @@ public static class IndoorWeather
     private static readonly List<ParticleSystem> collisionAdded = new();
     private static readonly Dictionary<Vector2Int, Roof> roofs = new();
     private static readonly List<Vector2Int> staleCells = new();
+    private static readonly Dictionary<ParticleSystem, ParticleSystemCollisionQuality> qualityOf = new();
 
     private static ParticleSystem.Particle[] buffer = new ParticleSystem.Particle[1024];
+
+    // The roof heights round the player this frame as a flat square of cells, read once per particle; a dictionary
+    // lookup per raindrop costs more than copying the scanned cells here once a frame.
+    private static float[] grid = new float[0];
+    private static int gridX;
+    private static int gridZ;
+    private static int gridSide;
+
     private static float indoor;
     private static float fogIndoor;
     private static int pieceMask;
@@ -244,6 +253,30 @@ public static class IndoorWeather
                 roofs.Remove(cell);
             }
         }
+
+        FillGrid(middle, radius, side, cells);
+    }
+
+    // Copies the known roof heights round the player into the flat grid.
+    private static void FillGrid(Vector2Int middle, int radius, int side, int cells)
+    {
+        if (grid.Length < cells)
+        {
+            grid = new float[cells];
+        }
+
+        gridX = middle.x - radius;
+        gridZ = middle.y - radius;
+        gridSide = side;
+        for (int z = 0; z < side; z++)
+        {
+            for (int x = 0; x < side; x++)
+            {
+                grid[z * side + x] = roofs.TryGetValue(new Vector2Int(gridX + x, gridZ + z), out Roof roof)
+                    ? roof.Height
+                    : float.NegativeInfinity;
+            }
+        }
     }
 
     // Ends the snowflakes and raindrops that are under a roof near the player.
@@ -269,11 +302,14 @@ public static class IndoorWeather
             _ => null,
         };
 
+        // One matrix for the whole system instead of a call into the engine per particle.
+        bool local = space != null;
+        Matrix4x4 toWorld = local ? space.localToWorldMatrix : Matrix4x4.identity;
         float reachSqr = reach * reach;
         bool changed = false;
         for (int i = 0; i < count; i++)
         {
-            Vector3 position = space != null ? space.TransformPoint(buffer[i].position) : buffer[i].position;
+            Vector3 position = local ? toWorld.MultiplyPoint3x4(buffer[i].position) : buffer[i].position;
             float dx = position.x - centre.x;
             float dz = position.z - centre.z;
             if (dx * dx + dz * dz > reachSqr)
@@ -281,7 +317,9 @@ public static class IndoorWeather
                 continue;
             }
 
-            if (roofs.TryGetValue(CellOf(position), out Roof roof) && position.y < roof.Height)
+            int x = Mathf.FloorToInt(position.x / CellSize) - gridX;
+            int z = Mathf.FloorToInt(position.z / CellSize) - gridZ;
+            if (x >= 0 && z >= 0 && x < gridSide && z < gridSide && position.y < grid[z * gridSide + x])
             {
                 buffer[i].remainingLifetime = 0f;
                 changed = true;
@@ -312,6 +350,7 @@ public static class IndoorWeather
         if (env != collisionEnv)
         {
             collisionAdded.Clear();
+            qualityOf.Clear();
             collisionEnv = env;
             FindRoofCollision(env);
         }
@@ -323,7 +362,27 @@ public static class IndoorWeather
             {
                 ParticleSystem.CollisionModule collision = system.collision;
                 collision.enabled = wanted;
+                SetCollisionQuality(system, collision, wanted);
             }
+        }
+    }
+
+    // High quality casts a ray per drop every frame. Medium answers from a cache of the roofs it has already met, which
+    // is enough for roofs, which do not move; near the player the drops under a roof are taken away anyway.
+    private static void SetCollisionQuality(ParticleSystem system, ParticleSystem.CollisionModule collision, bool wanted)
+    {
+        if (wanted)
+        {
+            if (collision.quality == ParticleSystemCollisionQuality.High && !qualityOf.ContainsKey(system))
+            {
+                qualityOf[system] = collision.quality;
+                collision.quality = ParticleSystemCollisionQuality.Medium;
+            }
+        }
+        else if (qualityOf.TryGetValue(system, out ParticleSystemCollisionQuality quality))
+        {
+            collision.quality = quality;
+            qualityOf.Remove(system);
         }
     }
 

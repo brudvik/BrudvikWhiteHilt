@@ -19,6 +19,12 @@ public static class HotbarSets
     private static bool toolWasHeld;
     private static Text hudLabel;
 
+    // What the label was last made from; a change of the key clears labelMade.
+    private static bool labelMade;
+    private static bool labelBuild;
+    private static string labelLanguage;
+    private static bool keyWatched;
+
     /// <summary>
     /// True while the build bar is the active hotbar.
     /// </summary>
@@ -119,6 +125,12 @@ public static class HotbarSets
             hudLabel.raycastTarget = false;
             hudLabel.rectTransform.pivot = new Vector2(1f, 0.5f);
             hudLabel.rectTransform.localPosition = new Vector3(-HudLabelOffset, 0f, 0f);
+            labelMade = false;
+            if (!keyWatched)
+            {
+                keyWatched = true;
+                BackpackSettings.KeyHotbar.SettingChanged += (_, _) => labelMade = false;
+            }
         }
 
         // The White Hilt HUD has the food where the label would be.
@@ -128,14 +140,23 @@ public static class HotbarSets
             hudLabel.gameObject.SetActive(show);
         }
 
-        if (show)
+        if (!show)
         {
-            string text = Localization.instance.Localize(BuildActive(player) ? "$whitehilt_hotbar_short_build" : "$whitehilt_hotbar_short_travel")
-                + "\n[" + BuildToolSettings.KeyName(BackpackSettings.KeyHotbar) + "]";
-            if (hudLabel.text != text)
-            {
-                hudLabel.text = text;
-            }
+            return;
         }
+
+        // Made again only when the bar, the key or the language changed, not every frame.
+        bool build = BuildActive(player);
+        string language = Localization.instance.GetSelectedLanguage();
+        if (labelMade && build == labelBuild && language == labelLanguage)
+        {
+            return;
+        }
+
+        labelMade = true;
+        labelBuild = build;
+        labelLanguage = language;
+        hudLabel.text = Localization.instance.Localize(build ? "$whitehilt_hotbar_short_build" : "$whitehilt_hotbar_short_travel")
+            + "\n[" + BuildToolSettings.KeyName(BackpackSettings.KeyHotbar) + "]";
     }
 }

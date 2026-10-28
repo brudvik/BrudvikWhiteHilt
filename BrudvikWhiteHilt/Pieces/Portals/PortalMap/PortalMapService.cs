@@ -18,9 +18,9 @@ namespace BrudvikWhiteHilt.Pieces.Portals.PortalMap;
 /// Runs on the <see cref="Game"/> object. On the server it finds every portal and ship in the world and sends each
 /// player what they may see: portals while a Portal Astrolabe stands at a map table, ships while a Harbour Anchor does.
 /// The same scan tells whether a Surt's Brazier stands anywhere, for eternal fire.
-/// On a client it receives that list.
+/// On a client it receives that list. The world is read through the server's shared <see cref="WorldScan"/>.
 /// </summary>
-public class PortalMapService : MonoBehaviour
+public class PortalMapService : MonoBehaviour, WorldScan.IClient
 {
     /// <summary>
     /// How close a map table extension must stand to a map table to switch its markers on.
@@ -40,9 +40,6 @@ public class PortalMapService : MonoBehaviour
     // A ship's pin is sent again once it has moved this far. A ship in water bobs all the time; sending every bob would
     // fill the players' connections, and the game sends no positions while they are full.
     private const float ShipMoveResend = 8f;
-
-    // Non-empty sectors read per frame, as the game's own iterative ZDO search does.
-    private const int SectorsPerFrame = 400;
 
     // The game keeps one entry per peer; the local player of a hosting client is not a peer.
     private const long LocalKey = long.MinValue;
@@ -77,12 +74,13 @@ public class PortalMapService : MonoBehaviour
     private HashSet<int> stationPrefabs;
     private HashSet<int> mapTablePrefabs;
     private HashSet<int> shipPrefabs;
+    private HashSet<int> wantedPrefabs;
+    private WorldScan scan;
     private int astrolabePrefab;
     private int anchorPrefab;
     private int runePostPrefab;
     private int brazierPrefab;
     private bool brazierFound;
-    private int sectorIndex = -1;
     private float nextScan;
     private float nextShipUpdate;
 
@@ -91,12 +89,13 @@ public class PortalMapService : MonoBehaviour
         // A new game: the pins of the last world must not linger until this server's list arrives.
         PortalMapPins.SetEntries(new List<PortalMapEntry>());
         PortalTravel.SetDestinations(new List<PortalDestination>());
+        scan = WorldScanService.On(gameObject);
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_PortalMap);
         ZRoutedRpc.instance?.Register<ZPackage>(ShipRpcName, RPC_ShipMap);
         ZRoutedRpc.instance?.Register<ZPackage>(TravelRpcName, RPC_PortalList);
     }
 
-    // On the server: scans the world for portals, ships and the pieces that unlock them now and then, a few sectors per
+    // On the server: scans the world for portals, ships and the pieces that unlock them now and then, a slice of each
     // frame so the scan never stalls the server, and sends ship positions more often as ships move.
     private void Update()
     {
@@ -107,14 +106,9 @@ public class PortalMapService : MonoBehaviour
 
         try
         {
-            if (sectorIndex < 0 && Time.time >= nextScan)
+            if (Time.time >= nextScan && !scan.IsRunning(this))
             {
                 BeginScan();
-            }
-
-            if (sectorIndex >= 0)
-            {
-                ContinueScan();
             }
 
             // Ships move, so their positions are read again between the slow full scans.
@@ -128,9 +122,7 @@ public class PortalMapService : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Jotunn.Logger.LogWarning($"Portal map: scan failed: {ex.Message}");
-            sectorIndex = -1;
-            nextScan = Time.time + ScanPause;
+            ((WorldScan.IClient)this).Fail(ex);
         }
     }
 
@@ -199,52 +191,39 @@ public class PortalMapService : MonoBehaviour
         scanTravel.Clear();
         scanTravelShips.Clear();
         brazierFound = false;
-        sectorIndex = 0;
+        scan.Begin(this, wantedPrefabs);
     }
 
-    // Scans the next few sectors of the world's objects; once all are done, also the portals the game keeps apart
-    // (those in unloaded areas) and finishes the scan.
-    private void ContinueScan()
+    void WorldScan.IClient.Collect(ZDO zdo, int prefab) => Collect(zdo, prefab);
+
+    // The world has been read; also the portals the game keeps apart (those in unloaded areas), then the scan is done.
+    void WorldScan.IClient.Finish()
     {
-        List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
-        int budget = SectorsPerFrame;
-        while (sectorIndex < sectors.Length && budget > 0)
-        {
-            List<ZDO> sector = sectors[sectorIndex++];
-            if (sector == null)
-            {
-                continue;
-            }
-
-            budget--;
-            sector.ForEach(Collect);
-        }
-
-        if (sectorIndex < sectors.Length)
-        {
-            return;
-        }
-
-        // Portals outside loaded areas live in their own list.
+        nextScan = Time.time + ScanPause;
         foreach (List<ZDO> list in ZDOMan.instance.m_portalObjects.Values)
         {
-            list.ForEach(Collect);
+            foreach (ZDO zdo in list)
+            {
+                if (zdo != null && zdo.IsValid())
+                {
+                    Collect(zdo, zdo.GetPrefab());
+                }
+            }
         }
 
         FinishScan();
-        sectorIndex = -1;
+    }
+
+    // A failed scan is logged and tried again later instead of stopping the feature.
+    void WorldScan.IClient.Fail(Exception error)
+    {
+        Jotunn.Logger.LogWarning($"Portal map: scan failed: {error.Message}");
         nextScan = Time.time + ScanPause;
     }
 
     // Values are read at once: ZDOs are pooled, so a reference kept to the next frame may be another object.
-    private void Collect(ZDO zdo)
+    private void Collect(ZDO zdo, int prefab)
     {
-        if (zdo == null || !zdo.IsValid())
-        {
-            return;
-        }
-
-        int prefab = zdo.GetPrefab();
         if (prefab == brazierPrefab)
         {
             brazierFound = true;
@@ -594,6 +573,10 @@ public class PortalMapService : MonoBehaviour
         anchorPrefab = Ships.HarbourAnchor.HarbourAnchor.PrefabName.GetStableHashCode();
         runePostPrefab = RuneRack.RuneRack.PrefabName.GetStableHashCode();
         brazierPrefab = SurtsBrazier.PrefabName.GetStableHashCode();
+        wantedPrefabs = new HashSet<int>(portalPrefabs.Concat(stationPrefabs).Concat(mapTablePrefabs).Concat(shipPrefabs).Concat(travelPrefabs.Keys))
+        {
+            astrolabePrefab, anchorPrefab, runePostPrefab, brazierPrefab
+        };
         Jotunn.Logger.LogInfo($"Portal map: {portalPrefabs.Count} portal, {stationPrefabs.Count} station, {travelPrefabs.Count} White Hilt portal, {shipPrefabs.Count} ship and {mapTablePrefabs.Count} map table prefabs");
     }
 

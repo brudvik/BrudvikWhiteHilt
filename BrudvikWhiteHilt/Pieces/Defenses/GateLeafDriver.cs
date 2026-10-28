@@ -21,6 +21,10 @@ public class GateLeafDriver : MonoBehaviour
     private Quaternion leafRest;
     private Quaternion mirroredRest;
 
+    // The door's turn the leaves were last set to; a shut or open gate moves nothing, so they are left.
+    private Quaternion appliedDoor;
+    private bool applied;
+
     private void Awake()
     {
         if (m_door == null)
@@ -36,7 +40,15 @@ public class GateLeafDriver : MonoBehaviour
 
     private void LateUpdate()
     {
-        float angle = Mathf.DeltaAngle(0f, (Quaternion.Inverse(doorRest) * m_door.localRotation).eulerAngles.y);
+        Quaternion door = m_door.localRotation;
+        if (applied && door.Equals(appliedDoor))
+        {
+            return;
+        }
+
+        applied = true;
+        appliedDoor = door;
+        float angle = Mathf.DeltaAngle(0f, (Quaternion.Inverse(doorRest) * door).eulerAngles.y);
         if (m_leaf != null)
         {
             m_leaf.localRotation = leafRest * Quaternion.Euler(0f, angle, 0f);

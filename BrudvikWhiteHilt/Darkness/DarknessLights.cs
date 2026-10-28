@@ -21,6 +21,9 @@ public class DarknessLights : MonoBehaviour
     private readonly List<Light> guttered = new();
     private readonly Dictionary<LightFlicker, float> circlet = new();
     private readonly Dictionary<Light, float> carried = new();
+    private readonly Dictionary<GameObject, Light[]> lightsOf = new();
+    private readonly HashSet<Light> ours = new();
+    private readonly List<GameObject> goneItems = new();
     private float nextRefresh;
     private float nextCircletFlicker;
 
@@ -58,6 +61,7 @@ public class DarknessLights : MonoBehaviour
         if (Time.time >= nextRefresh)
         {
             nextRefresh = Time.time + RefreshSeconds;
+            Prune();
             Gather();
         }
 
@@ -111,6 +115,7 @@ public class DarknessLights : MonoBehaviour
                 carried.Clear();
             }
 
+            lightsOf.Clear();
             return;
         }
 
@@ -122,25 +127,61 @@ public class DarknessLights : MonoBehaviour
                 continue;
             }
 
-            foreach (GameObject held in new[] { equipment.m_rightItemInstance, equipment.m_leftItemInstance, equipment.m_helmetItemInstance })
+            Shrink(equipment.m_rightItemInstance, share);
+            Shrink(equipment.m_leftItemInstance, share);
+            Shrink(equipment.m_helmetItemInstance, share);
+        }
+    }
+
+    private void Shrink(GameObject held, float share)
+    {
+        if (held == null)
+        {
+            return;
+        }
+
+        // An item shown in a hand is made anew each time it is taken out, so its lights are found once per instance.
+        if (!lightsOf.TryGetValue(held, out Light[] lights))
+        {
+            lights = held.GetComponentsInChildren<Light>(true);
+            lightsOf[held] = lights;
+        }
+
+        foreach (Light light in lights)
+        {
+            if (light == null)
             {
-                if (held == null)
-                {
-                    continue;
-                }
+                continue;
+            }
 
-                foreach (Light light in held.GetComponentsInChildren<Light>(true))
-                {
-                    if (!carried.TryGetValue(light, out float range))
-                    {
-                        range = light.range;
-                        carried[light] = range;
-                    }
+            if (!carried.TryGetValue(light, out float range))
+            {
+                range = light.range;
+                carried[light] = range;
+            }
 
-                    light.range = range * share;
-                }
+            light.range = range * share;
+        }
+    }
+
+    // Forgets items put away and lights gone with them, once a second.
+    private void Prune()
+    {
+        goneItems.Clear();
+        foreach (GameObject item in lightsOf.Keys)
+        {
+            if (item == null)
+            {
+                goneItems.Add(item);
             }
         }
+
+        foreach (GameObject item in goneItems)
+        {
+            lightsOf.Remove(item);
+        }
+
+        ours.RemoveWhere(light => light == null);
     }
 
     // The place's own lights close to the player; not the players' lights, the fires they built or the sun.
@@ -152,12 +193,19 @@ public class DarknessLights : MonoBehaviour
             return;
         }
 
+        // A light found to be the players' own is remembered, so its parents are not searched again each second.
         Vector3 centre = player.transform.position;
         foreach (Light light in FindObjectsByType<Light>(FindObjectsSortMode.None))
         {
-            if (light == null || dimmed.ContainsKey(light) || light.type == LightType.Directional
-                || Vector3.Distance(light.transform.position, centre) > Reach || IsOurs(light))
+            if (light == null || dimmed.ContainsKey(light) || ours.Contains(light) || light.type == LightType.Directional
+                || (light.transform.position - centre).sqrMagnitude > Reach * Reach)
             {
+                continue;
+            }
+
+            if (IsOurs(light))
+            {
+                ours.Add(light);
                 continue;
             }
 

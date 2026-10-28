@@ -14,6 +14,7 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
     private const float Speed = 180f;
     private const float RainCheckSeconds = 2f;
 
+    private static readonly int openHash = OpenKey.GetStableHashCode();
     private static int pieceMask;
 
     /// <summary>The hinge the hatch turns on.</summary>
@@ -31,6 +32,11 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
     private bool? lastWet;
     private float nextRainCheck;
 
+    // The ZDO and data revision the target angle was last read from, so a hatch at rest reads nothing.
+    private ZDO seenZdo;
+    private uint seenRevision;
+    private float target = OpenAngle;
+
     private void Awake()
     {
         nview = GetComponent<ZNetView>();
@@ -46,7 +52,14 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
 
     private void Update()
     {
-        float target = IsOpen() ? OpenAngle : 0f;
+        ZDO zdo = nview != null ? nview.GetZDO() : null;
+        if (!ReferenceEquals(zdo, seenZdo) || (zdo != null && zdo.DataRevision != seenRevision))
+        {
+            seenZdo = zdo;
+            seenRevision = zdo != null ? zdo.DataRevision : 0u;
+            target = IsOpen() ? OpenAngle : 0f;
+        }
+
         if (!Mathf.Approximately(angle, target))
         {
             angle = Mathf.MoveTowards(angle, target, Speed * Time.deltaTime);
@@ -109,14 +122,14 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
 
     private bool IsOpen()
     {
-        return nview == null || nview.GetZDO() == null || nview.GetZDO().GetBool(OpenKey, true);
+        return nview == null || nview.GetZDO() == null || nview.GetZDO().GetBool(openHash, true);
     }
 
     private void RPC_Toggle(long sender, bool open)
     {
         if (nview.IsOwner())
         {
-            nview.GetZDO().Set(OpenKey, open);
+            nview.GetZDO().Set(openHash, open);
         }
     }
 
@@ -131,7 +144,7 @@ public class SmokeHoleHatch : MonoBehaviour, Hoverable, Interactable
         bool wet = EnvMan.IsWet();
         if (lastWet.HasValue && lastWet.Value != wet && (!wet || !FireBelow()))
         {
-            nview.GetZDO().Set(OpenKey, !wet);
+            nview.GetZDO().Set(openHash, !wet);
         }
 
         lastWet = wet;

@@ -21,6 +21,12 @@ public static class TradingPostBuilder
     // Never more long piles stacked under one place than this, so a post on the edge of a deep trench stays sane.
     private const int MaxPilesPerPlace = 4;
 
+    // Every post's marker, found once from every object in the world and then kept up to date as posts are built and
+    // removed, so asking for the markers does not read the whole world each time. Kept per world: a new ZDOMan starts it
+    // over.
+    private static readonly List<ZDOID> markers = new();
+    private static ZDOMan markersOf;
+
     /// <summary>
     /// Builds a post. Call on the server.
     /// </summary>
@@ -46,6 +52,11 @@ public static class TradingPostBuilder
         site.Set(TradingPostKeys.PostId, id);
         site.Set(TradingPostKeys.Biome, (int)biome);
         site.Set(TradingPostKeys.LayoutVersion, layout.version);
+        if (markersOf == ZDOMan.instance)
+        {
+            markers.Add(site.m_uid);
+        }
+
         int built = 1;
         List<string> missing = new();
         foreach (TradingPostPart part in layout.parts.Where(part => part.BelongsIn(biome)))
@@ -131,12 +142,38 @@ public static class TradingPostBuilder
     }
 
     /// <summary>
-    /// Every post's marker the server knows.
+    /// Every post's marker the server knows. The world is read for them only the first time; after that the list is
+    /// kept, and a marker that is gone drops out.
     /// </summary>
     /// <returns>The markers' network data.</returns>
     public static IEnumerable<ZDO> Markers()
     {
-        return ZDOMan.instance.m_objectsByID.Values.Where(zdo => zdo.GetPrefab() == TradingPostKeys.MarkerHash);
+        if (markersOf != ZDOMan.instance)
+        {
+            markersOf = ZDOMan.instance;
+            markers.Clear();
+            foreach (ZDO zdo in ZDOMan.instance.m_objectsByID.Values)
+            {
+                if (zdo.GetPrefab() == TradingPostKeys.MarkerHash)
+                {
+                    markers.Add(zdo.m_uid);
+                }
+            }
+        }
+
+        List<ZDO> found = new(markers.Count);
+        markers.RemoveAll(id =>
+        {
+            ZDO zdo = ZDOMan.instance.GetZDO(id);
+            if (zdo == null || zdo.GetPrefab() != TradingPostKeys.MarkerHash)
+            {
+                return true;
+            }
+
+            found.Add(zdo);
+            return false;
+        });
+        return found;
     }
 
     // Stands long piles under the jetty's own piles wherever the bed lies deeper than they reach, stacked down to

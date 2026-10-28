@@ -42,6 +42,11 @@ public class DarkShadow : MonoBehaviour
     private bool? inLight;
 
     /// <summary>
+    /// True while any shadow is loaded, so the hook on every creature's search for an enemy can stop early.
+    /// </summary>
+    public static bool AnyLoaded => instances.Count > 0;
+
+    /// <summary>
     /// Registers the shadow's name and makes it once the game's creatures are there. Call from the plugin's Awake.
     /// </summary>
     public static void Register()

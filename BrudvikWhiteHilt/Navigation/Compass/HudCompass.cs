@@ -22,6 +22,9 @@ public static class HudCompass
     private static int majorInterval;
     private static bool showDegrees;
     private static bool showDirections;
+    private static float laidWidth;
+    private static float laidHeight;
+    private static float laidFade;
 
     /// <summary>The tape while it shows, for the White Hilt HUD to put the clock and waypoint at its ends; else null.</summary>
     internal static RectTransform Tape => root != null && root.gameObject.activeInHierarchy ? root : null;
@@ -61,26 +64,49 @@ public static class HudCompass
         float width = Mathf.Min(HudCompassSettings.CompassWidth.Value, Mathf.Max(1f, available - 24f) / scale);
         float height = HudCompassSettings.CompassHeight.Value;
         float offsetLimit = Mathf.Max(0f, (available - width * scale) / 2f - 12f);
-        root.sizeDelta = new Vector2(width, height);
-        root.localScale = Vector3.one * scale;
-        root.anchoredPosition = new Vector2(Mathf.Clamp(HudCompassSettings.HorizontalPosition.Value, -offsetLimit, offsetLimit), -HudCompassSettings.VerticalPosition.Value);
-        group.alpha = HudCompassSettings.Opacity.Value;
+        // Only what changed is written: every write marks the tape's canvas for a rebuild.
+        Vector2 size = new(width, height);
+        if (root.sizeDelta != size) root.sizeDelta = size;
+        Vector3 scaled = Vector3.one * scale;
+        if (root.localScale != scaled) root.localScale = scaled;
+        Vector2 place = new(Mathf.Clamp(HudCompassSettings.HorizontalPosition.Value, -offsetLimit, offsetLimit), -HudCompassSettings.VerticalPosition.Value);
+        if (root.anchoredPosition != place) root.anchoredPosition = place;
+        if (group.alpha != HudCompassSettings.Opacity.Value) group.alpha = HudCompassSettings.Opacity.Value;
         // The White Hilt HUD's band behind the top is the tape's background then.
         background.color = new Color(0.08f, 0.07f, 0.05f, HudLayout.HudTop.BandShown ? 0f : HudCompassSettings.BackgroundOpacity.Value);
-        RebuildTicks();
+        bool rebuilt = RebuildTicks();
 
         float heading = CompassGeometry.Normalize(Utils.GetMainCamera().transform.eulerAngles.y);
         float degrees = HudCompassSettings.VisibleDegrees.Value;
         float compact = Mathf.Min(1f, height / 52f);
-        indicator.rectTransform.sizeDelta = new Vector2(5f, 5f) * compact;
-        indicator.rectTransform.anchoredPosition = new Vector2(0f, -3f * compact);
+        if (rebuilt || height != laidHeight || width != laidWidth || HudCompassSettings.EdgeFade.Value != laidFade) LayOutTicks(width, height, compact);
         foreach (Tick tick in ticks)
         {
             bool inside = CompassGeometry.Project(heading, tick.Heading, width, degrees, out float position);
             if (tick.Rect.gameObject.activeSelf != inside) tick.Rect.gameObject.SetActive(inside);
-            if (!inside) continue;
+            if (!inside || position == tick.Position) continue;
+            tick.Position = position;
             tick.Rect.anchoredPosition = new Vector2(position, 0f);
-            tick.Group.alpha = Fade(position, width);
+            float alpha = Fade(position, width);
+            if (tick.Group.alpha != alpha) tick.Group.alpha = alpha;
+        }
+
+        HudCompassMarkers.Update(Player.m_localPlayer.transform.position, heading, width, height);
+        HudCompassLayout.Update();
+    }
+
+    // Sizes the indicator and the ticks' lines and labels to the tape's height, and has every tick placed again, only
+    // when the tape's size or edge fade changed.
+    private static void LayOutTicks(float width, float height, float compact)
+    {
+        laidWidth = width;
+        laidHeight = height;
+        laidFade = HudCompassSettings.EdgeFade.Value;
+        indicator.rectTransform.sizeDelta = new Vector2(5f, 5f) * compact;
+        indicator.rectTransform.anchoredPosition = new Vector2(0f, -3f * compact);
+        foreach (Tick tick in ticks)
+        {
+            tick.Position = float.NaN;
             float length = tick.Heading % majorInterval == 0 ? 6f : tick.Heading % mediumInterval == 0 ? 4f : 2f;
             tick.Line.rectTransform.sizeDelta = new Vector2(1f, length * compact);
             tick.Line.rectTransform.anchoredPosition = new Vector2(0f, -height * 0.56f);
@@ -88,9 +114,6 @@ public static class HudCompass
             tick.Label.rectTransform.sizeDelta = new Vector2(50f, 24f * compact);
             tick.Label.fontSize = Mathf.RoundToInt(tick.FontSize * compact);
         }
-
-        HudCompassMarkers.Update(Player.m_localPlayer.transform.position, heading, width, height);
-        HudCompassLayout.Update();
     }
 
     internal static float Fade(float position, float width)
@@ -124,6 +147,8 @@ public static class HudCompass
         ticks.Clear();
         tickInterval = 0;
         root = CreateRect(parent, "WhiteHiltHudCompass");
+        // A canvas of its own, so the ticks moving each frame rebuild only the tape and not the whole HUD.
+        root.gameObject.AddComponent<Canvas>();
         root.gameObject.AddComponent<RectMask2D>();
         group = root.gameObject.AddComponent<CanvasGroup>();
         group.interactable = false;
@@ -147,12 +172,12 @@ public static class HudCompass
     }
 
     // Creates a tick for every bearing the settings ask for (with degrees or a direction as its label), only when those
-    // settings changed.
-    private static void RebuildTicks()
+    // settings changed. True when it did.
+    private static bool RebuildTicks()
     {
         if (tickInterval == HudCompassSettings.TickInterval.Value && mediumInterval == HudCompassSettings.MediumTickInterval.Value
             && numberInterval == HudCompassSettings.NumberInterval.Value && majorInterval == HudCompassSettings.MajorTickInterval.Value
-            && showDegrees == HudCompassSettings.ShowDegrees.Value && showDirections == HudCompassSettings.ShowCardinalDirections.Value) return;
+            && showDegrees == HudCompassSettings.ShowDegrees.Value && showDirections == HudCompassSettings.ShowCardinalDirections.Value) return false;
         foreach (Tick tick in ticks) Object.Destroy(tick.Rect.gameObject);
         ticks.Clear();
         tickInterval = HudCompassSettings.TickInterval.Value;
@@ -183,6 +208,8 @@ public static class HudCompass
             label.verticalOverflow = VerticalWrapMode.Overflow;
             ticks.Add(new Tick { Heading = bearing, Rect = rect, Group = alpha, Line = line, Label = label, FontSize = font });
         }
+
+        return true;
     }
 
     private sealed class Tick
@@ -193,5 +220,8 @@ public static class HudCompass
         internal Image Line;
         internal Text Label;
         internal int FontSize;
+
+        // Where it was last placed on the tape; NaN to place it again.
+        internal float Position = float.NaN;
     }
 }

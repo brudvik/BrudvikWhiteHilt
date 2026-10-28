@@ -10,7 +10,8 @@ namespace BrudvikWhiteHilt.Patches.Diagnostics;
 public static class MessageSizeGuardPatches
 {
     /// <summary>
-    /// Drops a message Steam would refuse.
+    /// Drops a message Steam would refuse. The receiver's name is only looked up for a message that is refused, since
+    /// it turns a Steam id into text and this runs for every message sent.
     /// </summary>
     /// <param name="__instance">The connection.</param>
     /// <param name="pkg">The message.</param>
@@ -19,6 +20,11 @@ public static class MessageSizeGuardPatches
     [HarmonyPrefix]
     public static bool SendPrefix(ZSteamSocket __instance, ZPackage pkg)
     {
+        if (pkg == null || pkg.Size() <= MessageSizeGuard.SteamLimit)
+        {
+            return true;
+        }
+
         return MessageSizeGuard.Allow(pkg, __instance.GetHostName());
     }
 }

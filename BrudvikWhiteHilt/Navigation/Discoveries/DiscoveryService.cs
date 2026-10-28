@@ -12,18 +12,15 @@ namespace BrudvikWhiteHilt.Navigation.Discoveries;
 /// Runs on the <see cref="Game"/> object. On the server it searches the world for caves, settlements, wild plants,
 /// deposits and landmarks while Munin's Perch stands at a map table, keeps what is uncovered on that table's map, counts
 /// plants and deposits per square and sends the list to every player: the whole list once, after that only what changed.
-/// On a client it receives that list.
+/// On a client it receives that list. The world is read through the server's shared <see cref="WorldScan"/>.
 /// </summary>
-public class DiscoveryService : MonoBehaviour
+public class DiscoveryService : MonoBehaviour, WorldScan.IClient
 {
     private const string RpcName = "WhiteHiltDiscoveries";
     private const string ResyncRpcName = "WhiteHiltDiscoveriesResync";
 
     // A client that missed a version asks for the whole list again, but not more often than this.
     private const float ResyncPause = 10f;
-
-    // Non-empty sectors read per frame, as the game's own iterative ZDO search does.
-    private const int SectorsPerFrame = 400;
 
     // Dungeon interiors lie far above the world.
     private const float InteriorHeight = 3000f;
@@ -53,6 +50,8 @@ public class DiscoveryService : MonoBehaviour
     private Dictionary<int, PrefabInfo> prefabs;
     private HashSet<int> piecePrefabs;
     private HashSet<int> mapTablePrefabs;
+    private HashSet<int> wantedPrefabs;
+    private WorldScan scan;
     private int perchPrefab;
     private string classifiedWith;
     private string exploredKey;
@@ -62,7 +61,6 @@ public class DiscoveryService : MonoBehaviour
     private int version;
     private byte[] wholeBytes;
     private byte[] changesBytes;
-    private int sectorIndex = -1;
     private float nextScan;
     private float nextPublish;
 
@@ -75,11 +73,12 @@ public class DiscoveryService : MonoBehaviour
     private void Start()
     {
         DiscoveryOverlay.SetData(new List<DiscoveryKind>(), new List<DiscoveryEntry>());
+        scan = WorldScanService.On(gameObject);
         ZRoutedRpc.instance?.Register<ZPackage>(RpcName, RPC_Discoveries);
         ZRoutedRpc.instance?.Register(ResyncRpcName, RPC_Resync);
     }
 
-    // On the server: scans the world now and then, a few sectors per frame, and sends the result to the players.
+    // On the server: scans the world now and then, a slice of each frame, and sends the result to the players.
     private void Update()
     {
         if (ZNet.instance == null || !ZNet.instance.IsServer() || ZDOMan.instance == null || ZNetScene.instance == null || ZoneSystem.instance == null)
@@ -89,14 +88,9 @@ public class DiscoveryService : MonoBehaviour
 
         try
         {
-            if (sectorIndex < 0 && Time.time >= nextScan)
+            if (Time.time >= nextScan && !scan.IsRunning(this))
             {
                 BeginScan();
-            }
-
-            if (sectorIndex >= 0)
-            {
-                ContinueScan();
             }
 
             if (snapshot != null && Time.time >= nextPublish)
@@ -107,9 +101,7 @@ public class DiscoveryService : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Jotunn.Logger.LogWarning($"Discoveries: scan failed: {ex.Message}");
-            sectorIndex = -1;
-            nextScan = Time.time + DiscoverySettings.ScanInterval.Value;
+            ((WorldScan.IClient)this).Fail(ex);
         }
     }
 
@@ -126,45 +118,26 @@ public class DiscoveryService : MonoBehaviour
         builtCells.Clear();
         mapTables.Clear();
         perches.Clear();
-        sectorIndex = 0;
+        scan.Begin(this, wantedPrefabs);
     }
 
-    // Collects the finds of the next few sectors; when all are done, the scan is finished.
-    private void ContinueScan()
+    void WorldScan.IClient.Finish()
     {
-        List<ZDO>[] sectors = ZDOMan.instance.m_objectsBySector;
-        int budget = SectorsPerFrame;
-        while (sectorIndex < sectors.Length && budget > 0)
-        {
-            List<ZDO> sector = sectors[sectorIndex++];
-            if (sector == null)
-            {
-                continue;
-            }
-
-            budget--;
-            sector.ForEach(Collect);
-        }
-
-        if (sectorIndex < sectors.Length)
-        {
-            return;
-        }
-
-        sectorIndex = -1;
         nextScan = Time.time + DiscoverySettings.ScanInterval.Value;
         FinishScan();
     }
 
-    // Values are read at once: ZDOs are pooled, so a reference kept to the next frame may be another object.
-    private void Collect(ZDO zdo)
+    // A failed scan is logged and tried again later instead of stopping the feature.
+    void WorldScan.IClient.Fail(Exception error)
     {
-        if (zdo == null || !zdo.IsValid())
-        {
-            return;
-        }
+        Jotunn.Logger.LogWarning($"Discoveries: scan failed: {error.Message}");
+        nextScan = Time.time + DiscoverySettings.ScanInterval.Value;
+    }
 
-        int prefab = zdo.GetPrefab();
+    // Values are read at once: ZDOs are pooled, so a reference kept to the next frame may be another object. Only the
+    // prefabs in wantedPrefabs come here.
+    void WorldScan.IClient.Collect(ZDO zdo, int prefab)
+    {
         if (prefab == perchPrefab)
         {
             perches.Add(zdo.GetPosition());
@@ -544,6 +517,7 @@ public class DiscoveryService : MonoBehaviour
         }
 
         perchPrefab = MuninsPerch.PrefabName.GetStableHashCode();
+        wantedPrefabs = new HashSet<int>(piecePrefabs.Concat(mapTablePrefabs).Concat(prefabs.Keys)) { perchPrefab };
         Jotunn.Logger.LogInfo($"Discoveries: {prefabs.Count} prefabs in {kinds.Count} kinds, {mapTablePrefabs.Count} map table prefabs");
     }
 
