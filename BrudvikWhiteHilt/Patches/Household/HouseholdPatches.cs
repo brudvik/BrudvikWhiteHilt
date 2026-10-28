@@ -1,4 +1,5 @@
 using BrudvikWhiteHilt.Household;
+using BrudvikWhiteHilt.Patches.Companions;
 using HarmonyLib;
 using UnityEngine;
 
@@ -29,14 +30,15 @@ public static class HouseholdPatches
             return;
         }
 
-        if (__instance.TryGetComponent(out HouseholdMember member))
+        AiParts parts = AiParts.Of(__instance);
+        if (parts.Member != null)
         {
-            member.UpdateAI();
+            parts.Member.UpdateAI();
         }
 
-        if (__instance.TryGetComponent(out HouseholdProbe probe))
+        if (parts.Probe != null)
         {
-            probe.UpdateGoal(dt);
+            parts.Probe.UpdateGoal(dt);
         }
     }
 

@@ -1,12 +1,13 @@
 using BrudvikWhiteHilt.Companions;
+using BrudvikWhiteHilt.Household;
 using System.Runtime.CompilerServices;
 
 namespace BrudvikWhiteHilt.Patches.Companions;
 
 /// <summary>
-/// The mod's parts on a creature that its <c>MonsterAI.UpdateAI</c> hooks drive: a dog's. They are looked up once per
-/// creature and remembered, as the hooks run every frame for every creature once one dog is loaded, and the parts are
-/// on the creature from its prefab, so they never change.
+/// The mod's parts on a creature that its <c>MonsterAI.UpdateAI</c> hooks drive: a dog's or a householder's. They are
+/// looked up once per creature and remembered, as the hooks run every frame for every creature once one dog or
+/// householder is loaded, and the parts are on the creature from its prefab, so they never change.
 /// </summary>
 public sealed class AiParts
 {
@@ -27,6 +28,12 @@ public sealed class AiParts
     /// <summary>The dog's rest pose, or null.</summary>
     public RestPose Rest { get; private set; }
 
+    /// <summary>The householder's member part, or null.</summary>
+    public HouseholdMember Member { get; private set; }
+
+    /// <summary>The householder's goal steering, or null.</summary>
+    public HouseholdProbe Probe { get; private set; }
+
     /// <summary>
     /// The parts of a creature.
     /// </summary>
@@ -45,9 +52,13 @@ public sealed class AiParts
             Activities = ai.GetComponent<DogActivities>(),
             Care = ai.GetComponent<DogCare>(),
             Rest = ai.GetComponent<RestPose>(),
+            Member = ai.GetComponent<HouseholdMember>(),
+            Probe = ai.GetComponent<HouseholdProbe>(),
         };
 
-        return parts.Dog == null && parts.Activities == null && parts.Care == null && parts.Rest == null ? none
+        return parts.Dog == null && parts.Activities == null && parts.Care == null && parts.Rest == null && parts.Member == null
+            && parts.Probe == null
+                ? none
                 : parts;
     }
 }
