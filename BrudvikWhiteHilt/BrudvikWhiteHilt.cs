@@ -78,6 +78,8 @@ internal class BrudvikWhiteHilt : BaseUnityPlugin
     {
         WhiteHiltConfig.Initialize(Config);
         Diagnostics.PerformanceSettings.Initialize();
+        Performance.StreamingSettings.Initialize();
+        Performance.VanillaFixSettings.Initialize();
         RanchingSettings.Initialize();
         LoxMilking.Initialize();
         NavigationSettings.Initialize();
