@@ -147,7 +147,7 @@ In Linear and Discovered:
 
 ### Coins and valuables
 
-Coins, gems and everything else the Treasure Chest holds only become unlimited where `UnlimitedValuables` allows it. By default (`Auto`) they never do in Linear mode, so coins are something you earn: by trade, escorts, raids and treasure. In Full and Discovered they are unlimited as before. `On` lets them become unlimited in every mode, `Off` never. While they are held back, a full stack of coins is an ordinary stack, the Treasure Chest's bars do not count them, and carts and ship holds do not refill them. When valuables stop being unlimited, the chests remove their unlimited stacks of them, as a switch to a less generous mode does.
+Coins, gems and everything else in the Treasure Chest that a trader pays coins for only become unlimited where `UnlimitedValuables` allows it. The found curiosities the Treasure Chest also keeps, which nobody buys (Dragon Tears, barrel rings, eggs, boss items), unlock like any other item. By default (`Auto`) they never do in Linear mode, so coins are something you earn: by trade, escorts, raids and treasure. In Full and Discovered they are unlimited as before. `On` lets them become unlimited in every mode, `Off` never. While they are held back, a full stack of coins is an ordinary stack, the Treasure Chest's bars do not count them, and carts and ship holds do not refill them. When valuables stop being unlimited, the chests remove their unlimited stacks of them, as a switch to a less generous mode does.
 
 Switching to a less generous mode removes the unlimited items the new mode no longer supplies, for example everything that is not unlocked when going from Full to Linear.
 
@@ -184,7 +184,7 @@ All in the `Chests` section of the White Hilt settings. `Display` settings are e
 |---------|---------|-------------|
 | Chests | Mode | Linear, Full or Discovered (default Linear) |
 | Chests | UnlockStacks | Linear: full stacks a chest must hold to unlock an item (1–10, default 1) |
-| Chests | UnlimitedValuables | Whether coins, gems and the rest of the Treasure Chest can become unlimited: Auto (default: not in Linear, yes in Full and Discovered), On or Off |
+| Chests | UnlimitedValuables | Whether coins, gems and the rest of the Treasure Chest that traders buy can become unlimited: Auto (default: not in Linear, yes in Full and Discovered), On or Off |
 | Chests | SortContents | Keep the contents sorted from the top left (default on) |
 | Chests | FreeRows | Empty rows every chest keeps for the players' own items, growing as it fills (default 2; 0 = only the chest's own size) |
 | Chests | LearnAll | Show the Learn all button (default on) |

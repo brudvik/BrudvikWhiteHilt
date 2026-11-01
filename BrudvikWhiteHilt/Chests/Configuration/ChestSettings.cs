@@ -46,7 +46,7 @@ namespace BrudvikWhiteHilt.Chests.Configuration
         public ConfigEntry<int> UnlockStacks { get; }
 
         /// <summary>
-        /// Whether the Treasure chest's items (coins, gems and everything with a trade value) can become unlimited.
+        /// Whether the Treasure chest's valuables (coins, gems and everything else a trader pays coins for) can become unlimited.
         /// </summary>
         public ConfigEntry<UnlimitedValuablesMode> UnlimitedValuables { get; }
 
@@ -112,7 +112,8 @@ namespace BrudvikWhiteHilt.Chests.Configuration
                 new AcceptableValueRange<int>(1, 10));
 
             UnlimitedValuables = WhiteHiltConfig.BindAdminOnly(Section, "UnlimitedValuables", UnlimitedValuablesMode.Auto,
-                "Whether coins, gems and everything else the Treasure Chest holds can become unlimited. " +
+                "Whether coins, gems and everything else in the Treasure Chest that a trader pays coins for can become unlimited. " +
+                "Found curiosities nobody buys, such as Dragon Tears, unlock like any other item. " +
                 "Auto (default): not in Linear mode, so coins are something to work for; yes in Full and Discovered. " +
                 "On: like every other item. Off: never, in any mode. " +
                 "When they stop being unlimited, the chests remove the unlimited stacks of them.");

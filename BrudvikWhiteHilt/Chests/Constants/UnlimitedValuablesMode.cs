@@ -3,7 +3,7 @@
 namespace BrudvikWhiteHilt.Chests.Constants
 {
     /// <summary>
-    /// Decides whether the items of the Treasure chest (coins, gems and everything else with a trade value) can become
+    /// Decides whether the valuables of the Treasure chest (coins, gems and everything else a trader pays coins for) can become
     /// unlimited, so coins can be made something to work for.
     /// </summary>
     public enum UnlimitedValuablesMode
