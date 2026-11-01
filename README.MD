@@ -43,7 +43,11 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.154.0
+## ✨ New in 0.154.1
+
+- **[Curiosities unlock in the chests](docs/chests.md#coins-and-valuables)**: Dragon Tears, barrel rings, eggs and boss items are no longer held back with the coins in Linear mode. Only what a trader pays coins for stays something to work for; the rest become unlimited like any other item.
+
+### Also new in 0.154.0
 
 - **[Smoother play](CHANGELOG.md)**: the mod costs less time every frame, most of all in large bases and on servers. Chests, weapon glow, doors, the compass and the server's world scans do their work only when something has changed.
 - **Fixes for Valheim's own hitches** (`[Performance]`): the map no longer stutters as you explore or save, the loading screen after a portal or respawn ends as soon as the area has loaded, objects coming into view are spread over frames, and a server no longer freezes everyone once an hour.

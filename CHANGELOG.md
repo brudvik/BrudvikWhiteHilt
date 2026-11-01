@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.154.1 - 2026-11-01
 
 ### Fixed
 - Found curiosities nobody buys, such as Dragon Tears, barrel rings, eggs and boss items, were held back with the
