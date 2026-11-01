@@ -2,6 +2,13 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## v0.154.1 - 2026-11-01
+
+### Fixed
+- Found curiosities nobody buys, such as Dragon Tears, barrel rings, eggs and boss items, were held back with the
+  coins in the Treasure Chest and never became unlimited in Linear mode. `UnlimitedValuables` now holds back only what
+  a trader pays coins for; the rest unlock like any other item.
+
 ## v0.154.0 - 2026-10-28
 
 ### Added
