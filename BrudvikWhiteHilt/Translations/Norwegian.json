@@ -2896,7 +2896,7 @@
   "whitehilt_cfg_chests_unlockstacks": "Stabler for å låse opp",
   "whitehilt_cfg_chests_unlockstacks_desc": "Lineær modus: hvor mange fulle stabler av en ting en kiste må ha før tingen låses opp.",
   "whitehilt_cfg_chests_unlimitedvaluables": "Ubegrensede verdisaker",
-  "whitehilt_cfg_chests_unlimitedvaluables_desc": "Om mynter, edelsteiner og alt annet skattkisten har, kan bli ubegrenset. Auto (standard): ikke i Lineær modus, så mynter blir noe du må jobbe for; ja i Full og Oppdaget. På: som alle andre ting. Av: aldri, i noen modus. Når de slutter å være ubegrenset, fjerner kistene de ubegrensede stablene av dem.",
+  "whitehilt_cfg_chests_unlimitedvaluables_desc": "Om mynter, edelsteiner og alt annet i skattkisten som en handelsmann betaler mynter for, kan bli ubegrenset. Funne kuriositeter ingen kjøper, som dragetårer, låses opp som alle andre ting. Auto (standard): ikke i Lineær modus, så mynter blir noe du må jobbe for; ja i Full og Oppdaget. På: som alle andre ting. Av: aldri, i noen modus. Når de slutter å være ubegrenset, fjerner kistene de ubegrensede stablene av dem.",
   "whitehilt_cfgenum_unlimitedvaluablesmode_auto": "Auto",
   "whitehilt_cfgenum_unlimitedvaluablesmode_on": "På",
   "whitehilt_cfgenum_unlimitedvaluablesmode_off": "Av",

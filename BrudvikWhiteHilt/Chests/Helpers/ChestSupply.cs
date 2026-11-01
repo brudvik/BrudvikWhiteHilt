@@ -78,7 +78,7 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         public bool IsReady => Mode == ChestMode.Full || progress.IsReady;
 
         /// <summary>
-        /// Gets a value indicating whether the Treasure chest's items (coins, gems and everything with a trade value)
+        /// Gets a value indicating whether the Treasure chest's valuables (coins, gems and everything a trader buys)
         /// can become unlimited: <see cref="UnlimitedValuablesMode.Auto"/> allows it in every mode but Linear.
         /// </summary>
         public bool ValuablesUnlimited => settings.UnlimitedValuables.Value switch
@@ -490,7 +490,17 @@ namespace BrudvikWhiteHilt.Chests.Helpers
         // then stays an ordinary stack in every mode and every container.
         private bool IsWithheld(string prefabName, bool valuablesUnlimited)
         {
-            return !valuablesUnlimited && catalog.Contains(ChestCategory.Treasure, prefabName);
+            return !valuablesUnlimited && IsValuable(prefabName);
+        }
+
+        // A valuable is what a trader pays coins for. The Treasure chest also keeps found curiosities nobody buys, such
+        // as Dragon Tears and barrel rings; they are ingredients like any other and may become unlimited.
+        private bool IsValuable(string prefabName)
+        {
+            if (!catalog.Contains(ChestCategory.Treasure, prefabName)) return false;
+
+            var shared = catalog.GetShared(prefabName);
+            return shared == null || shared.m_value > 0 || prefabName == "Coins";
         }
 
         private bool BelongsIn(ChestCategory category, string prefabName)
