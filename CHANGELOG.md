@@ -2,7 +2,7 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
-## Unreleased
+## v0.155.0 - 2026-11-14
 
 ### Added
 - **The red Grausten Roof made complete** (`[Roofs.RedGrausten]`): the game's own red tile roof from the Ashlands
