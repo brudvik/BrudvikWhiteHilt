@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.MD)
 
-Eight roof coverings from the Viking age, each in every shape and pitch of the vanilla wooden roof: turf over birch bark, reed and straw thatch, tarred shingles (plain and dragon-scale), slate, black marble and grausten. They come with smoke holes that open and close, dragon gables for the ridge ends, and new materials from the Meadows to the Ashlands. Roseroot can be planted on a turf roof, as it was on the sod roofs of old.
+Eight roof coverings from the Viking age, each in every shape and pitch of the vanilla wooden roof: turf over birch bark, reed and straw thatch, tarred shingles (plain and dragon-scale), slate, black marble and grausten. They come with smoke holes that open and close, dragon gables for the ridge ends, and new materials from the Meadows to the Ashlands. The game's own red Grausten Roof is made complete: its ridge, hips, valleys, joints of ridges, hip ends and pyramid tops, and the 26° and 67° pitches it lacks. Roseroot can be planted on a turf roof, as it was on the sod roofs of old.
 
 <img src="images/roof_turf.png" alt="Turf roof" title="Turf roof" height="140"> <img src="images/roof_reed.png" alt="Reed thatch" title="Reed thatch" height="140"> <img src="images/roof_shingle.png" alt="Shingle roof" title="Shingle roof" height="140"> <img src="images/roof_scaleshingle.png" alt="Scale shingle roof" title="Scale shingle roof" height="140"> <img src="images/roof_slate.png" alt="Slate roof" title="Slate roof" height="140"> <img src="images/roof_straw.png" alt="Straw thatch" title="Straw thatch" height="140"> <img src="images/roof_marble.png" alt="Black marble roof" title="Black marble roof" height="140"> <img src="images/roof_grausten.png" alt="Grausten roof" title="Grausten roof" height="140">
 
@@ -20,11 +20,12 @@ Every covering comes at **26°, 45° and 67°**, in five shapes: the roof itself
 | **Straw thatch** | Thick, golden thatch of barley and flax straw | Plains | Wood ×1, Straw ×3 | 450 | Yes |
 | **Black marble roof** | Thin slabs of black marble laid in courses, as the dvergr build in the mist | Mistlands | Yggdrasil Wood ×1, Black Marble ×2 | 900 | No |
 | **Grausten roof** | Tiles of grey ash stone laid in courses; the strongest roof, and the ash rain wears it least | Ashlands | Blackwood ×1, Grausten ×3 | 1000 | No |
+| **Red grausten roof** | The red tiles of the game's own Grausten Roof, in the pieces and pitches the game lacks ([below](#the-red-grausten-roof-made-complete)) | Ashlands | Grausten ×5 | 800 | No |
 
 - **Eaves**: the lowest row of a roof reaches past the eave, and a turf roof has its turf log there. Where the roof goes on downhill, the overhang and the log are hidden, so they only show at the bottom.
-- **Quiet roofs**: under turf, slate, reed, straw, black marble and grausten the wind and rain are muffled even more than under other roofs (see [Clock, sound & floating items](quality-of-life.md)).
-- **Fire**: turf, slate, black marble and grausten roofs do not catch fire.
-- **Ash rain**: in the Ashlands every roof open to the sky wears away in the ash rain; a grausten roof only down to a tenth of its health.
+- **Quiet roofs**: under turf, slate, reed, straw, black marble and both grausten roofs the wind and rain are muffled even more than under other roofs (see [Clock, sound & floating items](quality-of-life.md)).
+- **Fire**: turf, slate, black marble and both grausten roofs do not catch fire.
+- **Ash rain**: in the Ashlands every roof open to the sky wears away in the ash rain; a grey or red grausten roof only down to a tenth of its health.
 
 ### Smoke hole (ljore)
 
@@ -37,6 +38,22 @@ Crossed barge boards (vindskier) with a carved dragon head on each tip, as on th
 | Piece | Description | Crafting Station | Requirements |
 |-------|-------------|------------------|--------------|
 | **Dragon gable** | Crossed barge boards with dragon heads for the end of a ridge | Hammer (near Workbench) | Fine Wood ×4, Lindorm Scale ×2, Pine Tar ×1 |
+
+### The red Grausten Roof, made complete
+
+The game's own **Grausten Roof** from the Ashlands, the red tiles built at the Stonecutter, comes only at 45°, as a slope, two corners and an arched slope with its corners. It has no ridge, so a gap is left at the top where its slopes end, and nothing for hips, valleys or the other pitches. The **Red grausten roof** fills in all of it, in the game's own tiles and stone, so it can be built with the game's pieces:
+
+- **Ridge 45°** and **arched ridge 45°**: they close the gap at the top of the game's slope and arched slope, as the thatch roof ridge does for the wooden roofs, and snap where it snaps. They are made of the game's own tiles. Under the arched ridge a vault of stone carries on the curve of the arched slopes, so the two slopes and the ridge make one barrel vault.
+- **Every piece at 26° and 67°**: slope, ridge, inner and outer corner and smoke hole, as the other coverings have them.
+- **At 45°**, beside the game's own slope: the inner and outer corner and the smoke hole.
+- **Joints of ridges at every pitch**, which no other roof has: the **ridge corner** (an L-shaped house: the ridge turns, with a hip outside the turn and a valley inside it), the **ridge tee** (a wing meets the ridge, with a valley either side) and the **ridge cross** (two ridges cross, with a valley in each corner).
+- **Hip end** and **pyramid top** at every pitch: the hipped end of a ridge, with a third slope and a hip either side (with the outer corners this makes a hipped roof, a valmtak), and the point of a pyramid roof over a square tower.
+
+The tiles are laid as on the game's roof: each its own tile, in rows that lap down the slope, every other row half a tile across, on a slab of grausten. Round ridge tiles run along every ridge and every hip. The pieces snap as the wooden roof pieces of the same shape; the joints, the hip end and the pyramid top snap at their four low corners and at the end of each ridge, as a ridge does. Like the game's roof they are stone: they do not burn, the ash rain wears them only to a tenth of their health, and the weather is muffled under them.
+
+| Pieces | Crafting Station | Requirements per piece | Health |
+|--------|------------------|------------------------|--------|
+| **Red grausten roof**, every piece | Hammer (near Stonecutter) | Grausten ×5, as the game's roof (a smoke hole Wood ×2 more) | 800 |
 
 ### Roseroot on the turf roof
 
@@ -65,7 +82,7 @@ Reed and slate outcrops appear as new land is generated, and once, when the serv
 
 Admin only, synced from the server.
 
-Each covering has a section `[Roofs.<Covering>]` (`Turf`, `Reed`, `Shingle`, `ScaleShingle`, `Slate`, `Straw`, `Marble`, `Grausten`):
+Each covering has a section `[Roofs.<Covering>]` (`Turf`, `Reed`, `Shingle`, `ScaleShingle`, `Slate`, `Straw`, `Marble`, `Grausten`, `RedGrausten`):
 
 | Setting | Default | What it does |
 |---|---|---|

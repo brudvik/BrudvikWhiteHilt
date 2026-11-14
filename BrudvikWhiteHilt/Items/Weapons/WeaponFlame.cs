@@ -19,11 +19,12 @@ public static class WeaponFlame
     private const string ColorKey = "whitehilt_flame";
     private const string OffValue = "off";
     private const string AddedName = "whitehilt_flame";
+    private const string OwnName = "Burny vfx";
     private const string FlameSource = "SwordDyrnwyn";
     private const int OffPacked = 1;
     private const float HeadShare = 0.4f;
 
-    private static readonly string[] ownFlameRoots = { "Burny vfx", "equiped" };
+    private static readonly string[] ownFlameRoots = { OwnName, "equiped" };
     private static readonly GearLook look = new("whitehilt_flame", Value, Apply);
 
     /// <summary>
@@ -86,6 +87,32 @@ public static class WeaponFlame
     {
         item.m_customData.Remove(ColorKey);
         GearSlots.LookChanged();
+    }
+
+    /// <summary>
+    /// Gives a model flames of its own: Dyrnwyn's fire along the given share of its length, from the tip, in a colour.
+    /// They count as the flames it was made with, so a Flame Rune recolours them and can put them out.
+    /// </summary>
+    /// <param name="model">The model under the item's attach child.</param>
+    /// <param name="color">The colour of the flames and their light.</param>
+    /// <param name="share">How much of the model's length burns, from the tip (0.7 = the blade of a sword).</param>
+    public static void AddOwnFlame(GameObject model, Color color, float share)
+    {
+        Transform flame = CreateFlame(model, OwnName, share);
+        if (flame == null)
+        {
+            return;
+        }
+
+        foreach (ParticleSystem particles in flame.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            StaffFlame.Recolor(particles, color);
+        }
+
+        foreach (Light light in flame.GetComponentsInChildren<Light>(true))
+        {
+            light.color = color;
+        }
     }
 
     /// <summary>
@@ -185,7 +212,7 @@ public static class WeaponFlame
 
         if (added == null)
         {
-            added = CreateFlame(root);
+            added = CreateFlame(root, AddedName, HeadShare);
         }
 
         if (added == null)
@@ -216,8 +243,8 @@ public static class WeaponFlame
         return particles;
     }
 
-    // Dyrnwyn's fire spread over the head of the model, the top part of its length.
-    private static Transform CreateFlame(GameObject root)
+    // Dyrnwyn's fire spread over the head of the model, the given share of its length from the top.
+    private static Transform CreateFlame(GameObject root, string name, float share)
     {
         Transform source = PrefabManager.Instance.GetPrefab(FlameSource)?.transform.Find("attach/Burny vfx");
         if (source == null)
@@ -226,8 +253,8 @@ public static class WeaponFlame
             return null;
         }
 
-        Bounds head = HeadBounds(root);
-        GameObject flame = new(AddedName) { layer = source.gameObject.layer };
+        Bounds head = HeadBounds(root, share);
+        GameObject flame = new(name) { layer = source.gameObject.layer };
         flame.transform.SetParent(root.transform, false);
         flame.transform.localPosition = head.center;
 
@@ -255,7 +282,7 @@ public static class WeaponFlame
     }
 
     // The top part of the model along its length (z), in the root's space.
-    private static Bounds HeadBounds(GameObject root)
+    private static Bounds HeadBounds(GameObject root, float share)
     {
         Bounds? bounds = null;
         foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>(true))
@@ -278,7 +305,7 @@ public static class WeaponFlame
         }
 
         Bounds whole = bounds ?? new Bounds(Vector3.zero, Vector3.one * 0.2f);
-        float length = whole.size.z * HeadShare;
+        float length = whole.size.z * share;
         Vector3 centre = new(whole.center.x, whole.center.y, whole.max.z - length / 2f);
         return new Bounds(centre, new Vector3(whole.size.x, whole.size.y, length));
     }

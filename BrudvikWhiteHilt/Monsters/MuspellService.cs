@@ -133,8 +133,30 @@ public class MuspellService : MonoBehaviour
             return;
         }
 
-        lastGiant[sender] = Time.time;
+        StartCooldown(sender);
         ZRoutedRpc.instance.InvokeRoutedRPC(sender, SpawnRpc);
+    }
+
+    // The cooldown starts for every player near the one the giant comes for, not only for them: players out together
+    // would otherwise each call their own giant in turn, one after the other.
+    private void StartCooldown(long sender)
+    {
+        float now = Time.time;
+        lastGiant[sender] = now;
+        ZNetPeer origin = ZNet.instance.GetPeer(sender);
+        Vector3 position = origin != null ? origin.m_refPos : ZNet.instance.GetReferencePosition();
+        foreach (ZNetPeer peer in ZNet.instance.GetPeers())
+        {
+            if (Vector3.Distance(peer.m_refPos, position) < NearbyRange)
+            {
+                lastGiant[peer.m_uid] = now;
+            }
+        }
+
+        if (!ZNet.instance.IsDedicated() && Vector3.Distance(ZNet.instance.GetReferencePosition(), position) < NearbyRange)
+        {
+            lastGiant[ZDOMan.GetSessionID()] = now;
+        }
     }
 
     private void RPC_Spawn(long sender)

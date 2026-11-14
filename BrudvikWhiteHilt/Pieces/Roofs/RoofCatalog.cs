@@ -14,11 +14,15 @@ namespace BrudvikWhiteHilt.Pieces.Roofs;
 /// pieces and the dragon gables. Each piece is a clone of the vanilla roof piece (snap points, station, build menu
 /// group), with a mesh built in code by <see cref="RoofMeshBuilder"/>.
 /// </summary>
-public static class RoofCatalog
+public static partial class RoofCatalog
 {
     private const string GablePrefix = "piece_whitehilt_roof_gable_";
 
-    private static readonly RoofShape[] shapes = { RoofShape.Slope, RoofShape.Ridge, RoofShape.InnerCorner, RoofShape.OuterCorner, RoofShape.SmokeHole };
+    private static readonly RoofShape[] shapes =
+    {
+        RoofShape.Slope, RoofShape.Ridge, RoofShape.InnerCorner, RoofShape.OuterCorner, RoofShape.SmokeHole,
+        RoofShape.RidgeCorner, RoofShape.RidgeTee, RoofShape.RidgeCross, RoofShape.HipEnd, RoofShape.Pyramid
+    };
     private static readonly RoofPitch[] pitches = { RoofPitch.Low, RoofPitch.Medium, RoofPitch.Steep };
     private static readonly List<Entry> entries = new();
     private static readonly List<GameObject> gables = new();
@@ -69,6 +73,11 @@ public static class RoofCatalog
             Apply(gable, RoofSettings.GableEnabled.Value, RoofSettings.GableRecipe.Value, null);
         }
 
+        foreach (GameObject ridge in graustenRidges)
+        {
+            Apply(ridge, RoofSettings.IsEnabled(RoofCovering.RedGrausten), RoofSettings.Recipe(RoofCovering.RedGrausten), RoofSettings.Health(RoofCovering.RedGrausten));
+        }
+
         TarKiln.ApplyConfig();
         SoapstoneHearth.ApplyConfig();
     }
@@ -84,7 +93,10 @@ public static class RoofCatalog
             {
                 foreach (RoofPitch pitch in pitches)
                 {
-                    Try($"{covering} roof {shape} {RoofMeshBuilder.Degrees(pitch)}", () => CreateRoof(covering, shape, pitch));
+                    if (RoofCoverings.Has(covering, shape, pitch))
+                    {
+                        Try($"{covering} roof {shape} {RoofMeshBuilder.Degrees(pitch)}", () => CreateRoof(covering, shape, pitch));
+                    }
                 }
             }
         }
@@ -94,13 +106,16 @@ public static class RoofCatalog
             Try($"Dragon gable {RoofMeshBuilder.Degrees(pitch)}", () => CreateGable(pitch));
         }
 
+        Try("Red grausten roof ridge 45", () => CreateGraustenRidge(false));
+        Try("Red grausten roof arched ridge 45", () => CreateGraustenRidge(true));
+
         if (!orderHooked)
         {
             orderHooked = true;
             PieceManager.OnPiecesRegistered += PlaceAfterVanillaRoofs;
         }
 
-        Jotunn.Logger.LogInfo($"{entries.Count} roof pieces and {gables.Count} gables added!");
+        Jotunn.Logger.LogInfo($"{entries.Count} roof pieces, {gables.Count} gables and {graustenRidges.Count} ridges for the game's Grausten Roof added!");
     }
 
     private static void Try(string what, Action action)
@@ -141,9 +156,18 @@ public static class RoofCatalog
             Requirements = ToConfig(recipe)
         };
 
-        CustomPiece piece = new(PrefabName(covering, shape, pitch), VanillaName(shape, pitch), config);
+        bool red = covering == RoofCovering.RedGrausten;
+        CustomPiece piece = new(PrefabName(covering, shape, pitch), red ? VanillaGraustenRoof : VanillaName(shape, pitch), config);
         GameObject prefab = piece.PiecePrefab;
-        Strip(prefab);
+        if (red)
+        {
+            Clear(prefab);
+            AddSnapPoints(prefab, shape, pitch);
+        }
+        else
+        {
+            Strip(prefab);
+        }
 
         RoofStyle style = RoofCoverings.Style(covering);
         Mesh mesh = RoofMeshBuilder.Build(shape, pitch, style);
@@ -205,6 +229,50 @@ public static class RoofCatalog
         foreach (Component component in prefab.GetComponents<Collider>().Cast<Component>().Concat(prefab.GetComponents<LODGroup>()))
         {
             UnityEngine.Object.DestroyImmediate(component);
+        }
+    }
+
+    // Removes everything of a cloned piece but its components: its look, colliders and snap points.
+    private static void Clear(GameObject prefab)
+    {
+        foreach (Transform child in prefab.transform.Cast<Transform>().ToList())
+        {
+            UnityEngine.Object.DestroyImmediate(child.gameObject);
+        }
+
+        foreach (Component component in prefab.GetComponents<Collider>().Cast<Component>().Concat(prefab.GetComponents<LODGroup>()))
+        {
+            UnityEngine.Object.DestroyImmediate(component);
+        }
+    }
+
+    // The snap points of the vanilla wooden roof piece of that shape and pitch, or for a joint of ridges, a hip end or a
+    // pyramid top, which the game does not have, their own: the four low corners and the ends of the ridges.
+    private static void AddSnapPoints(GameObject prefab, RoofShape shape, RoofPitch pitch)
+    {
+        List<(string Name, Vector3 Position, Quaternion Rotation)> points = new();
+        if (RoofMeshBuilder.IsTopJoint(shape))
+        {
+            int index = 0;
+            foreach (Vector3 point in RoofMeshBuilder.TopJointSnapPoints(shape, pitch))
+            {
+                points.Add(($"$hud_snappoint {++index}", point, Quaternion.identity));
+            }
+        }
+        else
+        {
+            GameObject wood = PrefabManager.Instance.GetPrefab(VanillaName(shape, pitch)) ?? throw new InvalidOperationException($"{VanillaName(shape, pitch)} not found");
+            points.AddRange(wood.transform.Cast<Transform>().Where(child => child.CompareTag("snappoint"))
+                .Select(child => (child.name, child.localPosition, child.localRotation)));
+        }
+
+        foreach ((string name, Vector3 position, Quaternion rotation) in points)
+        {
+            GameObject snap = new(name) { tag = "snappoint", layer = prefab.layer };
+            snap.transform.SetParent(prefab.transform, false);
+            snap.transform.localPosition = position;
+            snap.transform.localRotation = rotation;
+            snap.SetActive(false);
         }
     }
 
@@ -318,6 +386,14 @@ public static class RoofCatalog
         if (materials.TryGetValue(covering, out Material[] cached))
         {
             return cached;
+        }
+
+        if (covering == RoofCovering.RedGrausten)
+        {
+            Material[] vanilla = VanillaGraustenMaterials();
+            Material[] red = { vanilla[TileSubmesh], vanilla[StoneSubmesh], vanilla[StoneSubmesh], vanilla[StoneSubmesh] };
+            materials[covering] = red;
+            return red;
         }
 
         Material wood = FindWoodMaterial();
@@ -648,6 +724,11 @@ public static class RoofCatalog
             RoofShape.InnerCorner => "icorner",
             RoofShape.OuterCorner => "ocorner",
             RoofShape.SmokeHole => "smokehole",
+            RoofShape.RidgeCorner => "ridgecorner",
+            RoofShape.RidgeTee => "ridgetee",
+            RoofShape.RidgeCross => "ridgecross",
+            RoofShape.HipEnd => "hipend",
+            RoofShape.Pyramid => "pyramid",
             _ => "slope"
         };
     }
@@ -662,7 +743,8 @@ public static class RoofCatalog
         }
 
         List<GameObject> pieces = table.m_pieces;
-        HashSet<GameObject> ours = new(entries.Select(entry => entry.Prefab).Concat(gables));
+        PlaceAfterVanillaGrausten(pieces);
+        HashSet<GameObject> ours = new(entries.Where(entry => entry.Covering != RoofCovering.RedGrausten).Select(entry => entry.Prefab).Concat(gables));
         List<GameObject> moved = pieces.Where(ours.Contains).ToList();
         if (moved.Count == 0)
         {

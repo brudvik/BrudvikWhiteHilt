@@ -66,11 +66,11 @@ public static class MuspellSettings
         Enabled = WhiteHiltConfig.BindAdminOnly(Section, "Enabled", true, "A Muspell Giant now and then walks the Ashlands.");
         RequiredKey = WhiteHiltConfig.BindAdminOnly(Section, "RequiredKey", "defeated_queen",
             "Global key needed before the Muspell Giant comes (defeated_queen = the Queen is slain). Empty: from the start.");
-        ChancePerMinute = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerMinute", 3f,
+        ChancePerMinute = WhiteHiltConfig.BindAdminOnly(Section, "ChancePerMinute", 1.5f,
             "Chance per minute, in percent, that a Muspell Giant comes for a player out in the Ashlands, when none is near. 0 = none.",
             new AcceptableValueRange<float>(0f, 100f));
-        CooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "CooldownMinutes", 45f,
-            "Real minutes before a Muspell Giant can come for the same player again.", new AcceptableValueRange<float>(0f, 600f));
+        CooldownMinutes = WhiteHiltConfig.BindAdminOnly(Section, "CooldownMinutes", 90f,
+            "Real minutes before a Muspell Giant can come again for the same player, or for anyone who was near them when it came.", new AcceptableValueRange<float>(0f, 600f));
         Health = WhiteHiltConfig.BindAdminOnly(Section, "Health", 9000f, "Health of the Muspell Giant. Applies after a restart.", new AcceptableValueRange<float>(100f, 50000f));
         DamageMultiplier = WhiteHiltConfig.BindAdminOnly(Section, "DamageMultiplier", 3f,
             "Its blows and rocks do the troll's blunt damage times this (3 = a punch of 180). Applies after a restart.", new AcceptableValueRange<float>(0.1f, 10f));
@@ -87,7 +87,7 @@ public static class MuspellSettings
             new AcceptableValueRange<float>(0f, 30f));
         Sounds = WhiteHiltConfig.BindAdminOnly(Section, "Sounds", true,
             "Use the Muspell Giant's own roars, heavy steps and roaring fire. Applies after a restart.");
-        TrophyChance = WhiteHiltConfig.BindAdminOnly(Section, "TrophyChance", 25f, "Chance, in percent, that the Muspell Giant drops its trophy. Applies after a restart.",
+        TrophyChance = WhiteHiltConfig.BindAdminOnly(Section, "TrophyChance", 50f, "Chance, in percent, that the Muspell Giant drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         AmuletHeatResistance = WhiteHiltConfig.BindAdminOnly(Section, "AmuletHeatResistance", 0.25f,
             "How much less heat the Surtstone Amulet lets the lava build up (0.25 = 25%); it adds up with armour that does the same. Applies when it is put on.",

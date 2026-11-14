@@ -235,7 +235,7 @@ internal sealed class WildMonster
     public float Health;
 
     /// <summary>Default chance, in percent, that the trophy drops.</summary>
-    public float TrophyChance = 10f;
+    public float TrophyChance = 50f;
 
     /// <summary>Default global key needed before it spawns, or null when it needs none; a monster with a key also gets the setting for it.</summary>
     public string RequiredKey;

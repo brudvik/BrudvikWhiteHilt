@@ -21,7 +21,25 @@ public enum RoofShape
     OuterCorner,
 
     /// <summary>A slope with a smoke hole (ljore) and a hatch.</summary>
-    SmokeHole
+    SmokeHole,
+
+    /// <summary>Where a ridge turns a corner: the ridge comes in from -x and goes on towards +z, with a hip on the outside
+    /// of the turn and a valley on the inside.</summary>
+    RidgeCorner,
+
+    /// <summary>Where a ridge branches: the ridge runs along x and a branch leaves towards +z, with valleys either side of
+    /// the branch.</summary>
+    RidgeTee,
+
+    /// <summary>Where two ridges cross, with a valley in each of the four corners.</summary>
+    RidgeCross,
+
+    /// <summary>The hipped end of a ridge: the ridge comes in from -x and ends in a third slope down towards +x, with a hip
+    /// on either side.</summary>
+    HipEnd,
+
+    /// <summary>The top of a pyramid roof: four slopes meeting in a point, with four hips.</summary>
+    Pyramid
 }
 
 /// <summary>
@@ -54,7 +72,10 @@ public enum RoofCrest
     Roll,
 
     /// <summary>Flat stone caps (slate).</summary>
-    Cap
+    Cap,
+
+    /// <summary>A row of round ridge tiles along every ridge and hip (tiled roofs).</summary>
+    Tiles
 }
 
 /// <summary>
@@ -94,6 +115,16 @@ public sealed class RoofStyle
 
     /// <summary>Width of one edge texture tile, in metres.</summary>
     public float EdgeTile { get; set; } = 2f;
+
+    /// <summary>
+    /// True for a roof of separate tiles, each laid as its own piece in rows that lap over each other, half a tile offset
+    /// row by row, on a slab of stone. The rows are <see cref="CourseLength"/> apart. The top material is the tiles, the
+    /// edge material the stone slab.
+    /// </summary>
+    public bool Tiled { get; set; }
+
+    /// <summary>How far the stone slab of a tiled roof rises above the roof's plane, out of the slope, in metres.</summary>
+    public float TileLift { get; set; }
 }
 
 /// <summary>
@@ -171,6 +202,24 @@ public static class RoofMeshBuilder
 
     private const float Epsilon = 1e-4f;
 
+    // A tile of the tiled roofs, as the vanilla Grausten Roof lays them, in metres: across the slope, along it, how far it
+    // reaches below the start of its row onto the row under it, and its underside and thickness at its lower and upper
+    // ends, out of the slab's top.
+    private const float TileSpacing = 0.4f;
+    private const float TileWidthHalf = 0.205f;
+    private const float TileLength = 0.79f;
+    private const float TileLapBelow = 0.12f;
+    private const float TileLowerBottom = -0.014f;
+    private const float TileUpperBottom = -0.062f;
+    private const float TileLowerThickness = 0.107f;
+    private const float TileUpperThickness = 0.082f;
+
+    // The round ridge tiles: radius, length, how far each laps over the next, and how high over the slab they rest.
+    private const float RidgeTileRadius = 0.16f;
+    private const float RidgeTileLength = 0.42f;
+    private const float RidgeTileLap = 0.04f;
+    private const float RidgeTileSeat = 0.119f;
+
     /// <summary>
     /// The angle the vanilla pieces of a pitch are named after.
     /// </summary>
@@ -208,8 +257,48 @@ public static class RoofMeshBuilder
             RoofShape.Ridge => g * (1f - Mathf.Abs(z)),
             RoofShape.InnerCorner => Mathf.Max(g * (1f - z), g * (1f - x)),
             RoofShape.OuterCorner => Mathf.Min(g * (1f - z), g * (1f - x)),
-            _ => SlopeCentre(pitch) - z * g
+            RoofShape.Slope or RoofShape.SmokeHole => SlopeCentre(pitch) - z * g,
+            _ => FindFacet(Facets(shape, pitch, new RoofStyle(), RoofPart.Main, out _), new Vector2(x, z)).Height(new Vector2(x, z))
         };
+    }
+
+    /// <summary>
+    /// Whether a shape is one of the top pieces that only White Hilt has, with snap points of its own rather than those of
+    /// the vanilla piece it is cloned from.
+    /// </summary>
+    /// <param name="shape">The shape.</param>
+    /// <returns>True for the ridge corner, tee and cross, the hip end and the pyramid top.</returns>
+    public static bool IsTopJoint(RoofShape shape)
+    {
+        return shape is RoofShape.RidgeCorner or RoofShape.RidgeTee or RoofShape.RidgeCross or RoofShape.HipEnd or RoofShape.Pyramid;
+    }
+
+    /// <summary>
+    /// The snap points of a top joint, in the piece's own space: its four corners, low on the slopes as a ridge's, and the
+    /// end of each ridge that leaves it, high on the ridge as a ridge's ends.
+    /// </summary>
+    /// <param name="shape">A shape for which <see cref="IsTopJoint"/> is true.</param>
+    /// <param name="pitch">The pitch.</param>
+    /// <returns>The snap points.</returns>
+    public static List<Vector3> TopJointSnapPoints(RoofShape shape, RoofPitch pitch)
+    {
+        float g = Rise(pitch) / 2f;
+        List<Vector3> points = new() { new(1f, 0f, 1f), new(1f, 0f, -1f), new(-1f, 0f, 1f), new(-1f, 0f, -1f) };
+        Vector2[] ends = shape switch
+        {
+            RoofShape.RidgeCorner => new[] { new Vector2(-1f, 0f), new Vector2(0f, 1f) },
+            RoofShape.RidgeTee => new[] { new Vector2(-1f, 0f), new Vector2(1f, 0f), new Vector2(0f, 1f) },
+            RoofShape.RidgeCross => new[] { new Vector2(-1f, 0f), new Vector2(1f, 0f), new Vector2(0f, 1f), new Vector2(0f, -1f) },
+            RoofShape.HipEnd => new[] { new Vector2(-1f, 0f) },
+            RoofShape.Pyramid => new[] { Vector2.zero },
+            _ => new Vector2[0]
+        };
+        foreach (Vector2 end in ends)
+        {
+            points.Add(new Vector3(end.x, g, end.y));
+        }
+
+        return points;
     }
 
     /// <summary>
@@ -486,6 +575,9 @@ public static class RoofMeshBuilder
                 facets.Add(slopeZ.With(Clip(Rectangle(x0, x1, z0, z1), new Vector2(1f, -1f), 0f)));
                 facets.Add(slopeX.With(Clip(Rectangle(x0, x1, z0, z1), new Vector2(-1f, 1f), 0f)));
                 break;
+            default:
+                facets.AddRange(TopJointFacets(shape, g));
+                break;
         }
 
         boundaries = new List<Boundary>
@@ -505,6 +597,101 @@ public static class RoofMeshBuilder
 
         facets.RemoveAll(facet => facet.Polygon.Count < 3);
         return facets;
+    }
+
+    // The slopes of a top joint, each a plane falling to the edge of the footprint, over the part of the footprint where
+    // it is the roof: under a hip the lower of two slopes, over a valley the higher.
+    private static List<Facet> TopJointFacets(RoofShape shape, float g)
+    {
+        Facet south = new(g, new Vector2(0f, g), -1f);
+        Facet north = new(g, new Vector2(0f, -g), -1f);
+        Facet east = new(g, new Vector2(-g, 0f), -1f);
+        Facet west = new(g, new Vector2(g, 0f), -1f);
+        Vector2 o = Vector2.zero;
+        Vector2 nw = new(-1f, -1f);
+        Vector2 ne = new(1f, -1f);
+        Vector2 se = new(1f, 1f);
+        Vector2 sw = new(-1f, 1f);
+        Vector2 n = new(0f, -1f);
+        Vector2 s = new(0f, 1f);
+        Vector2 e = new(1f, 0f);
+        Vector2 w = new(-1f, 0f);
+        List<Vector2> P(params Vector2[] points) => new(points);
+        return shape switch
+        {
+            RoofShape.RidgeCorner => new List<Facet>
+            {
+                south.With(P(nw, ne, o, w)), east.With(P(o, ne, se, s)), north.With(P(o, w, sw)), west.With(P(o, sw, s))
+            },
+            RoofShape.RidgeTee => new List<Facet>
+            {
+                south.With(P(nw, ne, e, w)), north.With(P(o, e, se)), east.With(P(o, se, s)), north.With(P(o, w, sw)), west.With(P(o, sw, s))
+            },
+            RoofShape.RidgeCross => new List<Facet>
+            {
+                north.With(P(o, e, se)), east.With(P(o, se, s)), north.With(P(o, w, sw)), west.With(P(o, sw, s)),
+                south.With(P(o, w, nw)), west.With(P(o, nw, n)), south.With(P(o, e, ne)), east.With(P(o, ne, n))
+            },
+            RoofShape.HipEnd => new List<Facet>
+            {
+                south.With(P(nw, ne, o, w)), north.With(P(w, o, se, sw)), east.With(P(o, ne, se))
+            },
+            RoofShape.Pyramid => new List<Facet>
+            {
+                south.With(P(nw, ne, o)), east.With(P(ne, se, o)), north.With(P(se, sw, o)), west.With(P(sw, nw, o))
+            },
+            _ => new List<Facet>()
+        };
+    }
+
+    // The ridges and hips of a piece, each from its lower or outer end to its higher or inner one, on the plane of the
+    // roof (before the covering's thickness).
+    private static List<(Vector3 From, Vector3 To)> CrestLines(RoofShape shape, RoofPitch pitch, RoofStyle style, RoofPart part)
+    {
+        float g = Rise(pitch) / 2f;
+        Vector3 Point(float x, float z) => new(x, Height(shape, pitch, x, z), z);
+        Vector3 top = new(0f, g, 0f);
+        List<(Vector3, Vector3)> lines = new();
+        switch (shape)
+        {
+            case RoofShape.Ridge when part == RoofPart.Main:
+                lines.Add((new Vector3(-1f, g, 0f), new Vector3(1f, g, 0f)));
+                break;
+            case RoofShape.OuterCorner when part == RoofPart.Main:
+                lines.Add((Point(1f, 1f), Point(-1f, -1f)));
+                break;
+            case RoofShape.OuterCorner when part == RoofPart.EaveZ:
+                float o = 1f + style.Overhang;
+                lines.Add((new Vector3(o, -g * style.Overhang, o), Point(1f, 1f)));
+                break;
+            case RoofShape.RidgeCorner:
+                lines.Add((new Vector3(-1f, g, 0f), top));
+                lines.Add((new Vector3(0f, g, 1f), top));
+                lines.Add((Point(1f, -1f), top));
+                break;
+            case RoofShape.RidgeTee:
+                lines.Add((new Vector3(-1f, g, 0f), new Vector3(1f, g, 0f)));
+                lines.Add((new Vector3(0f, g, 1f), top));
+                break;
+            case RoofShape.RidgeCross:
+                lines.Add((new Vector3(-1f, g, 0f), new Vector3(1f, g, 0f)));
+                lines.Add((new Vector3(0f, g, 1f), new Vector3(0f, g, -1f)));
+                break;
+            case RoofShape.HipEnd:
+                lines.Add((new Vector3(-1f, g, 0f), top));
+                lines.Add((Point(1f, -1f), top));
+                lines.Add((Point(1f, 1f), top));
+                break;
+            case RoofShape.Pyramid:
+                foreach (Vector2 corner in new[] { new Vector2(1f, 1f), new Vector2(1f, -1f), new Vector2(-1f, 1f), new Vector2(-1f, -1f) })
+                {
+                    lines.Add((Point(corner.x, corner.y), top));
+                }
+
+                break;
+        }
+
+        return lines;
     }
 
     // The facet of the roof a point lies on, or the nearest one if it lies on none (a point on a shared edge).
@@ -535,6 +722,12 @@ public static class RoofMeshBuilder
     // real tiles. Texture coordinates follow the slope, so tiles keep their size on every pitch.
     private static void AddFacet(MeshParts parts, Facet facet, List<Boundary> boundaries, RoofStyle style, float courseLength)
     {
+        if (style.Tiled)
+        {
+            AddTiledFacet(parts, facet, boundaries, style, courseLength);
+            return;
+        }
+
         float slopeFactor = Mathf.Sqrt(1f + facet.Gradient.sqrMagnitude);
         Vector2 up = facet.Up;
         Vector2 lateral = new(up.y, -up.x);
@@ -618,6 +811,192 @@ public static class RoofMeshBuilder
         }
     }
 
+    // A facet of a tiled roof: the stone slab, its top lifted out of the plane by TileLift, and on it the tiles, each its
+    // own block in rows that lap down the slope, every other row half a tile across. A tile that crosses the edge of the
+    // facet (a hip, a valley, the ridge, the edge of the piece) is cut there, so neighbouring pieces meet without
+    // overlapping and the rows run on from one piece to the next.
+    private static void AddTiledFacet(MeshParts parts, Facet facet, List<Boundary> boundaries, RoofStyle style, float courseLength)
+    {
+        float slopeFactor = Mathf.Sqrt(1f + facet.Gradient.sqrMagnitude);
+        float lift = style.TileLift * slopeFactor;
+        Vector2 up = facet.Up;
+        Vector2 lateral = new(up.y, -up.x);
+
+        List<Vector3> under = new();
+        List<Vector2> underUv = new();
+        List<Vector3> slab = new();
+        foreach (Vector2 p in facet.Polygon)
+        {
+            Vector2 uv = new(Vector2.Dot(p, lateral) / 2f, (Vector2.Dot(p, up) - facet.EaveW) * slopeFactor / 2f);
+            under.Add(new Vector3(p.x, facet.Height(p) - style.Thickness, p.y));
+            slab.Add(new Vector3(p.x, facet.Height(p) + lift, p.y));
+            underUv.Add(uv);
+        }
+
+        parts.AddPolygon(UndersideMaterial, under, underUv, -facet.Normal);
+        parts.AddPolygon(EdgeMaterial, slab, underUv, facet.Normal);
+        for (int i = 0; i < facet.Polygon.Count; i++)
+        {
+            Vector2 a = facet.Polygon[i];
+            Vector2 b = facet.Polygon[(i + 1) % facet.Polygon.Count];
+            Boundary? boundary = FindBoundary(boundaries, a, b);
+            if (boundary.HasValue)
+            {
+                AddEdge(parts, facet, style, boundary.Value, a, b, lift, lift);
+            }
+        }
+
+        if (courseLength <= 0f)
+        {
+            return;
+        }
+
+        float wMin = float.MaxValue;
+        float wMax = float.MinValue;
+        float uMin = float.MaxValue;
+        float uMax = float.MinValue;
+        foreach (Vector2 p in facet.Polygon)
+        {
+            wMin = Mathf.Min(wMin, Vector2.Dot(p, up));
+            wMax = Mathf.Max(wMax, Vector2.Dot(p, up));
+            uMin = Mathf.Min(uMin, Vector2.Dot(p, lateral));
+            uMax = Mathf.Max(uMax, Vector2.Dot(p, lateral));
+        }
+
+        float dw = courseLength / slopeFactor;
+        float below = TileLapBelow / slopeFactor;
+        float length = TileLength / slopeFactor;
+        int first = Mathf.FloorToInt((wMin - facet.EaveW) / dw + Epsilon);
+        int last = Mathf.CeilToInt((wMax + below - facet.EaveW) / dw - Epsilon);
+        for (int k = first; k <= last; k++)
+        {
+            float wLow = facet.EaveW + k * dw - below;
+            float wHigh = wLow + length;
+            float shift = Mathf.Abs(k) % 2 == 1 ? TileSpacing / 2f : 0f;
+            int jMin = Mathf.FloorToInt((uMin - shift) / TileSpacing) - 1;
+            int jMax = Mathf.CeilToInt((uMax - shift) / TileSpacing) + 1;
+            for (int j = jMin; j <= jMax; j++)
+            {
+                float centre = shift + j * TileSpacing;
+                List<Vector2> footprint = new()
+                {
+                    lateral * (centre - TileWidthHalf) + up * wLow,
+                    lateral * (centre + TileWidthHalf) + up * wLow,
+                    lateral * (centre + TileWidthHalf) + up * wHigh,
+                    lateral * (centre - TileWidthHalf) + up * wHigh
+                };
+                footprint = Intersect(footprint, facet.Polygon);
+                if (footprint.Count >= 3 && Area(footprint) > 0.002f)
+                {
+                    AddTile(parts, facet, footprint, up, wLow, wHigh, slopeFactor, style.TileLift);
+                }
+            }
+        }
+    }
+
+    // One tile: a block over its footprint, its lower end raised where it lies on the row below, lifted out of the slope
+    // onto the slab.
+    private static void AddTile(MeshParts parts, Facet facet, List<Vector2> footprint, Vector2 up, float wLow, float wHigh, float slopeFactor, float lift)
+    {
+        List<Vector3> bottom = new();
+        List<Vector3> top = new();
+        List<Vector2> uv = new();
+        Vector3 centre = Vector3.zero;
+        foreach (Vector2 p in footprint)
+        {
+            float t = Mathf.Clamp01((Vector2.Dot(p, up) - wLow) / (wHigh - wLow));
+            float under = lift + Mathf.Lerp(TileLowerBottom, TileUpperBottom, t);
+            float over = under + Mathf.Lerp(TileLowerThickness, TileUpperThickness, t);
+            float height = facet.Height(p);
+            bottom.Add(new Vector3(p.x, height + under * slopeFactor, p.y));
+            top.Add(new Vector3(p.x, height + over * slopeFactor, p.y));
+            uv.Add(new Vector2(p.x + p.y, Vector2.Dot(p, up) * slopeFactor) * 0.8f);
+            centre += top[top.Count - 1] + bottom[bottom.Count - 1];
+        }
+
+        centre /= 2f * footprint.Count;
+        parts.AddPolygon(TopMaterial, top, uv, facet.Normal);
+        parts.AddPolygon(TopMaterial, bottom, uv, -facet.Normal);
+        for (int i = 0; i < footprint.Count; i++)
+        {
+            int next = (i + 1) % footprint.Count;
+            Vector3 middle = (top[i] + top[next] + bottom[i] + bottom[next]) / 4f;
+            Vector3 outward = middle - centre;
+            outward -= facet.Normal * Vector3.Dot(outward, facet.Normal);
+            float run = (top[next] - top[i]).magnitude * 0.8f;
+            float rise = (top[i] - bottom[i]).magnitude * 0.8f;
+            parts.AddPolygon(
+                TopMaterial,
+                new List<Vector3> { bottom[i], bottom[next], top[next], top[i] },
+                new List<Vector2> { new(0f, 0f), new(run, 0f), new(run, rise), new(0f, rise) },
+                outward);
+        }
+    }
+
+    // The part of a convex polygon inside another convex polygon.
+    private static List<Vector2> Intersect(List<Vector2> subject, List<Vector2> clip)
+    {
+        Vector2 inside = Centroid(clip);
+        List<Vector2> result = subject;
+        for (int i = 0; i < clip.Count && result.Count >= 3; i++)
+        {
+            Vector2 a = clip[i];
+            Vector2 b = clip[(i + 1) % clip.Count];
+            Vector2 outward = new(b.y - a.y, a.x - b.x);
+            if (outward.sqrMagnitude < 1e-10f)
+            {
+                continue;
+            }
+
+            if (Vector2.Dot(outward, inside - a) > 0f)
+            {
+                outward = -outward;
+            }
+
+            result = Clip(result, outward, Vector2.Dot(outward, a));
+        }
+
+        return result;
+    }
+
+    private static float Area(List<Vector2> polygon)
+    {
+        float sum = 0f;
+        for (int i = 0; i < polygon.Count; i++)
+        {
+            Vector2 a = polygon[i];
+            Vector2 b = polygon[(i + 1) % polygon.Count];
+            sum += a.x * b.y - b.x * a.y;
+        }
+
+        return Mathf.Abs(sum) / 2f;
+    }
+
+    // A row of round ridge tiles along a ridge or a hip, from its lower end up: each tile wider at its lower end, where
+    // it laps over the one below, and resting on the tiles of the slopes.
+    private static void AddRidgeTiles(MeshParts parts, RoofPitch pitch, RoofStyle style, Vector3 from, Vector3 to)
+    {
+        float slopeFactor = Mathf.Sqrt(1f + Mathf.Pow(Rise(pitch) / 2f, 2f));
+        Vector3 raise = Vector3.up * ((style.TileLift + RidgeTileSeat) * slopeFactor + RidgeTileRadius * 0.15f);
+        Vector3 a = from + raise;
+        Vector3 b = to + raise;
+        float length = (b - a).magnitude;
+        if (length < 0.05f)
+        {
+            return;
+        }
+
+        int count = Mathf.Max(1, Mathf.CeilToInt(length / (RidgeTileLength - RidgeTileLap)));
+        Vector3 along = (b - a) / length;
+        float step = length / count;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 start = a + along * Mathf.Max(0f, i * step - RidgeTileLap / 2f);
+            Vector3 end = a + along * Mathf.Min(length, (i + 1) * step + RidgeTileLap / 2f);
+            parts.AddTaperedTube(TopMaterial, start, end, RidgeTileRadius, RidgeTileRadius * 0.88f, 14, 0.5f);
+        }
+    }
+
     private static void AddEdge(MeshParts parts, Facet facet, RoofStyle style, Boundary boundary, Vector2 a, Vector2 b, float offsetA, float offsetB)
     {
         float topA = facet.Height(a) + offsetA;
@@ -688,6 +1067,16 @@ public static class RoofMeshBuilder
     // says.
     private static void AddCrest(MeshParts parts, RoofShape shape, RoofPitch pitch, RoofStyle style, RoofPart part, List<Facet> facets)
     {
+        if (style.Crest == RoofCrest.Tiles)
+        {
+            foreach ((Vector3 from, Vector3 to) in CrestLines(shape, pitch, style, part))
+            {
+                AddRidgeTiles(parts, pitch, style, from, to);
+            }
+
+            return;
+        }
+
         if (style.Crest == RoofCrest.None || facets.Count < 2 || (shape != RoofShape.Ridge && shape != RoofShape.OuterCorner) || part == RoofPart.EaveX)
         {
             return;
@@ -757,8 +1146,9 @@ public static class RoofMeshBuilder
         }
 
         float half = HoleHalf + FrameThickness / 2f;
-        float height = (FrameHeight + style.Thickness) / 2f;
-        Vector3 Base(float x, float z) => new Vector3(x, Height(RoofShape.SmokeHole, pitch, x, z), z) + normal * ((FrameHeight - style.Thickness) / 2f);
+        float frameTop = FrameHeight + (style.Tiled ? style.TileLift + TileLowerThickness : 0f);
+        float height = (frameTop + style.Thickness) / 2f;
+        Vector3 Base(float x, float z) => new Vector3(x, Height(RoofShape.SmokeHole, pitch, x, z), z) + normal * ((frameTop - style.Thickness) / 2f);
         float slopeFactor = Mathf.Sqrt(1f + Mathf.Pow(Rise(pitch) / 2f, 2f));
         float alongHalf = HoleHalf + FrameThickness;
         parts.AddBox(Base(0f, -half), Vector3.right * alongHalf, normal * height, upSlope * (FrameThickness / 2f), TrimMaterial, 1f);
@@ -1005,6 +1395,40 @@ public static class RoofMeshBuilder
 
             AddPolygon(material, capA, capUv, -axis);
             AddPolygon(material, capB, capUv, axis);
+        }
+
+        // A tube from a to b, narrowing from one radius to the other, its ends closed.
+        public void AddTaperedTube(int material, Vector3 a, Vector3 b, float radiusA, float radiusB, int sides, float tile)
+        {
+            Vector3 axis = (b - a).normalized;
+            Vector3 side = Vector3.Cross(axis, Mathf.Abs(axis.y) > 0.9f ? Vector3.right : Vector3.up).normalized;
+            Vector3 other = Vector3.Cross(axis, side).normalized;
+            float length = (b - a).magnitude;
+            List<Vector3> capA = new();
+            List<Vector3> capB = new();
+            List<Vector2> capUvA = new();
+            List<Vector2> capUvB = new();
+            for (int i = 0; i < sides; i++)
+            {
+                float angle0 = i * Mathf.PI * 2f / sides;
+                float angle1 = (i + 1) * Mathf.PI * 2f / sides;
+                Vector3 d0 = side * Mathf.Cos(angle0) + other * Mathf.Sin(angle0);
+                Vector3 d1 = side * Mathf.Cos(angle1) + other * Mathf.Sin(angle1);
+                float v0 = i * radiusA * Mathf.PI * 2f / sides / tile;
+                float v1 = (i + 1) * radiusA * Mathf.PI * 2f / sides / tile;
+                AddPolygon(
+                    material,
+                    new List<Vector3> { a + d0 * radiusA, b + d0 * radiusB, b + d1 * radiusB, a + d1 * radiusA },
+                    new List<Vector2> { new(0f, v0), new(length / tile, v0), new(length / tile, v1), new(0f, v1) },
+                    (d0 + d1).normalized);
+                capA.Add(a + d0 * radiusA);
+                capB.Add(b + d0 * radiusB);
+                capUvA.Add(new Vector2(Mathf.Cos(angle0), Mathf.Sin(angle0)) * radiusA / tile);
+                capUvB.Add(new Vector2(Mathf.Cos(angle0), Mathf.Sin(angle0)) * radiusB / tile);
+            }
+
+            AddPolygon(material, capA, capUvA, -axis);
+            AddPolygon(material, capB, capUvB, axis);
         }
 
         /// <summary>

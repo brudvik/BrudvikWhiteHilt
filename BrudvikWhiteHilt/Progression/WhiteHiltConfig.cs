@@ -352,7 +352,21 @@ public static class WhiteHiltConfig
             (Id: "ship-mastwisp-0.149.1", Section: "Ships", Values: new[] { ("MastWispReach", 15f), ("MastWispReachMax", 30f) }),
             (Id: "freya-0.72.3", Section: "Potions.GiftOfFreya", Values: new[] { ("DurationMinutes", 20f) }),
             (Id: "fenrir-0.72.3", Section: "Potions.GiftOfFenrir", Values: new[] { ("AttackSpeed", 1.5f), ("LifeSteal", 0.15f) }),
-            (Id: "eir-0.72.3", Section: "Potions.GiftOfEir", Values: new[] { ("DurationMinutes", 10f), ("HealShare", 0.5f), ("HealthRegenMultiplier", 2f) })
+            (Id: "eir-0.72.3", Section: "Potions.GiftOfEir", Values: new[] { ("DurationMinutes", 10f), ("HealShare", 0.5f), ("HealthRegenMultiplier", 2f) }),
+            (Id: "lavaworm-0.155.0", Section: "Lava Worm", Values: new[] { ("GiveUpSeconds", 20f), ("LeashRange", 18f), ("TrophyChance", 15f) }),
+            (Id: "muspell-0.155.0", Section: "Muspell Giant", Values: new[] { ("ChancePerMinute", 3f), ("CooldownMinutes", 45f), ("TrophyChance", 25f) }),
+            (Id: "trophy-lindorm-0.155.0", Section: "Lindorm", Values: new[] { ("TrophyChance", 15f) }),
+            (Id: "trophy-spider-0.155.0", Section: "Giant Spider", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-dragon-0.155.0", Section: "Desert Dragon", Values: new[] { ("TrophyChance", 35f) }),
+            (Id: "trophy-miststag-0.155.0", Section: "Monsters.MistStag", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-nidhoggspawn-0.155.0", Section: "Monsters.NidhoggSpawn", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-yggdrasilwarden-0.155.0", Section: "Monsters.YggdrasilWarden", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-garmhound-0.155.0", Section: "Monsters.GarmHound", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-nightgarm-0.155.0", Section: "Monsters.NightGarm", Values: new[] { ("TrophyChance", 25f) }),
+            (Id: "trophy-greenlandshark-0.155.0", Section: "Monsters.GreenlandShark", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-huldra-0.155.0", Section: "Monsters.Huldra", Values: new[] { ("TrophyChance", 10f) }),
+            (Id: "trophy-unmaskedhuldra-0.155.0", Section: "Monsters.UnmaskedHuldra", Values: new[] { ("TrophyChance", 25f) }),
+            (Id: "trophy-mare-0.155.0", Section: "Monsters.Mare", Values: new[] { ("TrophyChance", 10f) })
         })
         {
             if (done.Contains(migration.Id))

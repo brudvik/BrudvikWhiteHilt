@@ -288,7 +288,6 @@ internal static class WildMonsters
         },
         Drops = new[] { new WildDrop { Item = GarmFang, Min = 3, Max = 5 } },
         Trophy = NightGarmTrophy,
-        TrophyChance = 25f,
         // Near black, with the glow of the eyes left alone.
         Look = new WildLook { Tint = new Color(0.3f, 0.27f, 0.28f), Value = -0.3f, Glossiness = 0.1f, Matte = true },
         StarScale = 0.1f,
@@ -487,7 +486,6 @@ internal static class WildMonsters
         },
         Drops = new[] { new WildDrop { Item = HuldraBark, Min = 2, Max = 3 } },
         Trophy = HuldraTrophy,
-        TrophyChance = 25f,
         // Rotten: dark, sickly green-grey bark; the runes' glow is the model's own emission map.
         Look = new WildLook { Tint = new Color(0.5f, 0.55f, 0.45f), Saturation = -0.25f, Value = -0.25f, Skip = new string[0] },
         StarScale = 0.1f,

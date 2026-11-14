@@ -26,7 +26,7 @@ Each White Hilt melee weapon has a **signature style** and one or two others tha
 
 | Weapon | Styles (signature first) |
 |---|---|
-| Sword, Ice Sword | Slash, Chop, Stab |
+| Sword, Ice Sword, Flame Sword | Slash, Chop, Stab |
 | Viking Sword | Slash, Chop |
 | Falchion | Chop, Slash |
 | Gladius | Stab, Lunge, Slash |
