@@ -2,6 +2,39 @@
 
 All notable changes to BrudvikWhiteHilt. Newest version first.
 
+## Unreleased
+
+### Added
+- **The red Grausten Roof made complete** (`[Roofs.RedGrausten]`): the game's own red tile roof from the Ashlands
+  comes only at 45° and has no ridge. The **Red grausten roof** fills in what it lacks, in the game's own tiles and
+  stone, built at the Stonecutter for Grausten ×5 a piece as the game's roof:
+  - the **ridge** and the **arched ridge** at 45°, which close the gap at the top of the game's slope and arched
+    slope; the arched ridge has a stone vault that carries on the arch, so the roof makes one barrel vault;
+  - **every piece at 26° and 67°** (slope, ridge, inner and outer corner, smoke hole), and the corners and smoke hole
+    at 45°;
+  - **joints of ridges**, which no roof had: the ridge corner for L-shaped houses, the ridge tee where a wing meets
+    the ridge and the ridge cross, each with its hips and valleys;
+  - the **hip end** for hipped roofs and the **pyramid top** for square towers.
+  The tiles are laid as on the game's roof, each its own tile in lapping rows, half a tile across row by row, with
+  round ridge tiles along every ridge and hip.
+- **White Hilt Flame Sword**, the Ice Sword's fiery twin: the Silver Sword's strength with fire that sets alight in
+  place of spirit, on the Ice Sword's blade glowing like embers and wrapped in Dyrnwyn's fire. A Flame Rune recolours
+  or puts out its flames. Forge level 2, Silver ×20, Surtling Core ×10, Obsidian ×5; Mountain tier in linear
+  progression.
+
+### Changed
+- **The Lava Worm stays up longer**, so it can be killed: it sinks back after a minute without prey instead of 20
+  seconds (`GiveUpSeconds`), follows you 30 m from where it rose instead of 18 (`LeashRange`), and a hit counts as
+  prey, so arrows from the shore keep it up.
+- **A rarer Muspell Giant**: 1.5% a minute instead of 3% (`ChancePerMinute`), and 90 minutes between instead of 45
+  (`CooldownMinutes`). The wait now starts for everyone within 200 m of the player it came for, so players out
+  together no longer each call their own giant in turn.
+- **Trophies of the mod's own monsters drop every other time** (50%) at no stars, instead of 10–35%: the Lindorm, Lava
+  Worm, Muspell Giant, Giant Spider, Desert Dragon, Mist Stag, Nidhogg Spawn, Yggdrasil Warden, Garm Hound, Night
+  Garm, Greenland Shark, Huldra and Mare. Stars still raise the chance. The Draugr Jarl and Kraken always drop theirs.
+- On upgrade, these settings move to the new defaults once where they still hold the old ones; values an admin has
+  changed are kept.
+
 ## v0.154.1 - 2026-11-01
 
 ### Fixed

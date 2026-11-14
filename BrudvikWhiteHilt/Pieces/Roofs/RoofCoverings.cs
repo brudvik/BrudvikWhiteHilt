@@ -27,7 +27,10 @@ public enum RoofCovering
     Marble,
 
     /// <summary>Tiles of grey ash stone.</summary>
-    Grausten
+    Grausten,
+
+    /// <summary>The red tiles of the game's own Grausten Roof, in the pitches and shapes the game lacks.</summary>
+    RedGrausten
 }
 
 /// <summary>
@@ -39,8 +42,28 @@ public static class RoofCoverings
     public static readonly RoofCovering[] All =
     {
         RoofCovering.Turf, RoofCovering.Reed, RoofCovering.Shingle, RoofCovering.ScaleShingle, RoofCovering.Slate, RoofCovering.Straw,
-        RoofCovering.Marble, RoofCovering.Grausten
+        RoofCovering.Marble, RoofCovering.Grausten, RoofCovering.RedGrausten
     };
+
+    /// <summary>
+    /// Whether a covering comes in a shape and pitch. Most come in the five shapes of the vanilla wooden roof at every
+    /// pitch. The red Grausten Roof fills in what the game's own lacks: every shape at 26° and 67°, and at 45° all but the
+    /// plain slope (the game's own) and the ridge (made from the game's own tiles), and only it has the joints of the
+    /// ridges (corner, tee, cross), the hip end and the pyramid top.
+    /// </summary>
+    /// <param name="covering">The covering.</param>
+    /// <param name="shape">The shape.</param>
+    /// <param name="pitch">The pitch.</param>
+    /// <returns>True if the piece exists.</returns>
+    public static bool Has(RoofCovering covering, RoofShape shape, RoofPitch pitch)
+    {
+        if (covering != RoofCovering.RedGrausten)
+        {
+            return !RoofMeshBuilder.IsTopJoint(shape);
+        }
+
+        return pitch != RoofPitch.Medium || (shape != RoofShape.Slope && shape != RoofShape.Ridge);
+    }
 
     /// <summary>
     /// The build of a covering.
@@ -77,6 +100,11 @@ public static class RoofCoverings
             {
                 Thickness = 0.12f, TileWidth = 1.8f, TileHeight = 1.8f, Overhang = 0.18f, Crest = RoofCrest.Cap, EdgeTile = 1.8f
             },
+            RoofCovering.RedGrausten => new RoofStyle
+            {
+                Thickness = 0.3f, CourseLength = 0.354f, TileWidth = 2f, TileHeight = 2f, Overhang = 0.2f, Crest = RoofCrest.Tiles, EdgeTile = 2f,
+                Tiled = true, TileLift = 0.15f
+            },
             _ => new RoofStyle
             {
                 Thickness = 0.28f, TileWidth = 0.8f, TileHeight = 0.8f, Overhang = 0.3f, Crest = RoofCrest.Roll, EdgeTile = 0.8f
@@ -99,7 +127,7 @@ public static class RoofCoverings
             RoofCovering.Slate => "roof_slate",
             RoofCovering.Straw => "roof_straw",
             RoofCovering.Marble => "roof_marble",
-            RoofCovering.Grausten => "roof_grausten",
+            RoofCovering.Grausten or RoofCovering.RedGrausten => "roof_grausten",
             _ => "roof_reed"
         };
     }

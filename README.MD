@@ -43,7 +43,15 @@ It is also open source and written to be read. The code explains what it does an
 
 Everything is named after **Dyrnwyn**, the white-hilted sword of Welsh legend that blazed with fire when drawn by one who was worthy.
 
-## ✨ New in 0.154.1
+## ✨ New in 0.155.0
+
+- **[The red Grausten Roof made complete](docs/roofs.md#the-red-grausten-roof-made-complete)**: the game's red tile roof from the Ashlands gets what it lacks, in its own tiles: the ridge and the arched ridge that close the gap at the top, hips and valleys, ridge corners, tees and crosses for L- and T-shaped houses, hip ends and pyramid tops, and every piece at 26° and 67°.
+- **[The White Hilt Flame Sword](docs/equipment.md)**: the Ice Sword's fiery twin, with fire that sets alight and a blade wrapped in Dyrnwyn's flames.
+- **[A Lava Worm you can kill](docs/monsters.md#the-lava-worm)**: it stays up for a minute, follows you further from the lava, and arrows from the shore keep it up.
+- **[A rarer Muspell Giant](docs/monsters.md#the-muspell-giant)**: half as often, at most one every 90 minutes, and no longer one for each player out together.
+- **[Trophies every other time](docs/monsters.md)**: the mod's own monsters drop their trophy half the time instead of one time in four to ten.
+
+### Also new in 0.154.1
 
 - **[Curiosities unlock in the chests](docs/chests.md#coins-and-valuables)**: Dragon Tears, barrel rings, eggs and boss items are no longer held back with the coins in Linear mode. Only what a trader pays coins for stays something to work for; the rest become unlimited like any other item.
 

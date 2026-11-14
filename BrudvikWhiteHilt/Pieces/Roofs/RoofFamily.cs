@@ -32,7 +32,10 @@ public sealed class RoofFamily
             "YggdrasilWood:1, BlackMarble:2", 900f, fireproof: true, quiet: true),
         new(RoofCovering.Grausten, "Grausten roof",
             "Tiles of grey ash stone from the burning lands, laid in courses. It does not burn, the ash rain wears it far less than other roofs, and it is the strongest roof of all.",
-            "Blackwood:1, Grausten:3", 1000f, fireproof: true, quiet: true, ashResistant: true)
+            "Blackwood:1, Grausten:3", 1000f, fireproof: true, quiet: true, ashResistant: true),
+        new(RoofCovering.RedGrausten, "Red grausten roof",
+            "The red tiles of the Grausten Roof from the burning lands, on a slab of grausten, with round ridge tiles along the ridges and hips. These are the pieces the game's own roof lacks: the ridge, corners, joints of ridges, hip ends and pyramid tops, and every piece at 26° and 67°. It does not burn and the ash rain wears it far less than other roofs.",
+            "Grausten:5", 800f, fireproof: true, quiet: true, ashResistant: true)
     };
 
     private RoofFamily(RoofCovering covering, string englishName, string englishDescription, string defaultRecipe, float defaultHealth, bool fireproof, bool quiet,
@@ -107,6 +110,12 @@ public sealed class RoofFamily
         Translations.AddEnglish("whitehilt_roofshape_icorner", "inner corner");
         Translations.AddEnglish("whitehilt_roofshape_ocorner", "outer corner");
         Translations.AddEnglish("whitehilt_roofshape_smokehole", "smoke hole");
+        Translations.AddEnglish("whitehilt_roofshape_ridgecorner", "ridge corner");
+        Translations.AddEnglish("whitehilt_roofshape_ridgetee", "ridge tee");
+        Translations.AddEnglish("whitehilt_roofshape_ridgecross", "ridge cross");
+        Translations.AddEnglish("whitehilt_roofshape_hipend", "hip end");
+        Translations.AddEnglish("whitehilt_roofshape_pyramid", "pyramid top");
+        Translations.AddEnglish("whitehilt_roofshape_archedridge", "arched ridge");
         Translations.AddEnglish("whitehilt_roofshape_smokehole_description",
             "A smoke hole (ljore) with a hatch lets the smoke of a fire below out. Use it to open or close the hatch.");
         Translations.AddEnglishNameAndDescription("whitehilt_roof_gable", "Dragon gable",
