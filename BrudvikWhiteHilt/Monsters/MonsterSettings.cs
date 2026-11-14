@@ -219,7 +219,7 @@ public static class MonsterSettings
             "Use the Lindorm's own rasps and growls for idle, alert, bite, injury and death. Applies after a restart.");
         LindormGiveUpSeconds = WhiteHiltConfig.BindAdminOnly(LindormSection, "GiveUpSeconds", 25f, "Seconds without prey in sight before the Lindorm burrows away.",
             new AcceptableValueRange<float>(5f, 600f));
-        LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 15f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",
+        LindormTrophyChance = WhiteHiltConfig.BindAdminOnly(LindormSection, "TrophyChance", 50f, "Chance, in percent, that the Lindorm drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
 
         SpiderEnabled = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Enabled", true, "Giant spiders nest in the Black Forest and roam it at night. Off: no new nests and no lone spiders.");
@@ -235,7 +235,7 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0f, 0.5f));
         SpiderSounds = WhiteHiltConfig.BindAdminOnly(SpiderSection, "Sounds", true,
             "Use the spider's own clicks, rasps and hisses for idle, alert, bite, injury and death. Applies after a restart.");
-        SpiderTrophyChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "TrophyChance", 10f, "Chance, in percent, that a giant spider drops its trophy. Applies after a restart.",
+        SpiderTrophyChance = WhiteHiltConfig.BindAdminOnly(SpiderSection, "TrophyChance", 50f, "Chance, in percent, that a giant spider drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         NestChancePerZone = WhiteHiltConfig.BindAdminOnly(SpiderSection, "NestChancePerZone", 0.15f,
             "Chance of a nest in each Black Forest zone (64 x 64 m): in newly generated land, and once in land generated before the spiders came ([OldLand]).",
@@ -281,7 +281,7 @@ public static class MonsterSettings
             new AcceptableValueRange<float>(0.3f, 3f));
         DragonSounds = WhiteHiltConfig.BindAdminOnly(DragonSection, "Sounds", true,
             "Use the dragon's own growls, roars and breath for idle, alert, attack, injury and death. Black Dragons inherit these sounds. Applies after a restart.");
-        DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 35f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
+        DragonTrophyChance = WhiteHiltConfig.BindAdminOnly(DragonSection, "TrophyChance", 50f, "Chance, in percent, that a Desert Dragon drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         DragonScalesMin = WhiteHiltConfig.BindAdminOnly(DragonSection, "ScalesMin", 4, "Fewest Desert Dragon scales a dragon drops. Applies after a restart.",
             new AcceptableValueRange<int>(0, 50));

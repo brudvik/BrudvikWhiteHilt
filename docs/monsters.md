@@ -55,7 +55,7 @@ It comes, day or night, when:
 Then, once a minute, there is a 4% chance it **rises out of the nearest lava**, at least 6 m from you. Each player can meet it at most once every 20 minutes.
 
 - It cannot be hurt and does not move while it is still rising.
-- It **sinks back into the lava**, without loot, when it has lost you for about 20 seconds, or when it has followed you more than 18 m from where it rose. Run from the lava and it gives up.
+- It **sinks back into the lava**, without loot, when it has lost you for about a minute, or when it has followed you more than 30 m from where it rose. A hit counts as being in the hunt, so arrows from the shore keep it up. Run from the lava and it gives up.
 - Its stars are rolled as a spawn's are, with the difficulty's level-up chance.
 
 ## The Muspell Giant
@@ -67,8 +67,8 @@ A son of Surt out of Muspelheim: a fire giant of molten rock, **about 9 m tall**
 - It has **9000 health**. It punches, slams the ground and **throws molten rocks**, all as a troll does but much harder (3 times the troll's blunt damage: a punch of 180 blunt and 90 fire) and with **half as much fire** on top, so every hit sets you burning. The slam's area is as wide as the giant.
 - It leaves **burning pools** in its steps (one every 2 seconds while it walks) and where its rocks land: 20 fire damage per second, 2.2 m across, for 8 seconds. They burn its enemies, never buildings.
 - It is immune to fire, lava and poison, resistant to slashing, piercing and spirit, and **very weak to frost**. Pickaxes hurt it as they would stone.
-- It walks the Ashlands by day and night once **the Queen** is slain. Out in the Ashlands each player has a 3% chance a minute that one walks out of the fire 45 to 70 m away, never while one is within 200 m, and then not again for that player for 45 minutes. `whitehilt_muspell` shows whether one can come where you stand; admins can summon one with `whitehilt_muspell summon`.
-- It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy one time in four.
+- It walks the Ashlands by day and night once **the Queen** is slain. Out in the Ashlands each player has a 1.5% chance a minute that one walks out of the fire 45 to 70 m away, never while one is within 200 m, and then not again for 90 minutes, neither for that player nor for anyone within 200 m of them. `whitehilt_muspell` shows whether one can come where you stand; admins can summon one with `whitehilt_muspell summon`.
+- It drops **Surtstone** ×1–2, Flametal Ore ×6–10, and its trophy every other time.
 
 ## The Huldra
 
@@ -97,7 +97,7 @@ The Huldra's dark sister: a pale, see-through woman with long black hair and no 
 - Her **cold grip** does 55 spirit and 25 frost damage and gives the **Nightmare**: for 60 seconds no stamina comes back.
 - **She rides sleepers.** Sleep in the Mistlands and there is a 30% chance you wake with half your health, in the Nightmare.
 - She has 550 health. Blades, blunt weapons and arrows pass half through her (resistant), she resists frost and is immune to poison, and **fire and spirit hurt her most** (very weak).
-- She drops **Mare Hair** ×1–2, and her trophy one time in ten.
+- She drops **Mare Hair** ×1–2, and her trophy every other time.
 - A **Mare Charm** keeps the Nightmare off you, from her grip and from her ride.
 
 Her fighting and spawning are in `[Monsters.Mare]` (`SpawnChance` 10 every 400 s at night), the rest in `[Monsters.MareNight]`: `VisibleRange` (10), `WispRange` (25), `NightmareSeconds` (60), `SleepChance` (30) and `SleepHealth` (0.5). With devcommands: `spawn WhiteHilt_Mare`.
@@ -196,7 +196,7 @@ Whelps of Garm, the hound of Hel: charcoal-black, with yellow eyes, about 1.5 m 
 
 ### Night Garm
 
-The leader of the pack: a Garm Hound **as big as a bear**, about 2.1 m at the head and 3.6 m long, near black, and **two and a half times as strong** (1250 health, a bite of 150 slash and 112 fire). It hunts **alone, only at night and only in bad weather** in the Ashlands: ash rain, storms and the like, whatever the [Black Beasts](difficulty.md) count as bad weather (`[Difficulty.Beasts] BadWeather`). Like the hounds it is immune to fire and weak to frost and spirit. It drops Garm Fangs ×3–5, and its trophy one time in four.
+The leader of the pack: a Garm Hound **as big as a bear**, about 2.1 m at the head and 3.6 m long, near black, and **two and a half times as strong** (1250 health, a bite of 150 slash and 112 fire). It hunts **alone, only at night and only in bad weather** in the Ashlands: ash rain, storms and the like, whatever the [Black Beasts](difficulty.md) count as bad weather (`[Difficulty.Beasts] BadWeather`). Like the hounds it is immune to fire and weak to frost and spirit. It drops Garm Fangs ×3–5, and its trophy every other time.
 
 ### Greenland Shark
 
@@ -220,35 +220,35 @@ Spawn them with the console: `spawn WhiteHilt_MistStag`, `WhiteHilt_NidhoggSpawn
 |------|------|--------|----------|
 | **Lindorm Scale** ×2–4 | Lindorm | Always | Every upgrade of a White Hilt shield ([White Hilt gear](equipment.md#-upgrades-through-the-biomes)) |
 | **Entrails** ×1–3 | Lindorm | Always | Vanilla recipes |
-| **Lindorm Trophy** | Lindorm | 15% | Your wall |
+| **Lindorm Trophy** | Lindorm | 50% | Your wall |
 | **Lava Worm Scale** ×2–4 | Lava Worm | Always | Lava Worm armour (below) |
-| **Lava Worm Trophy** | Lava Worm | 15% | Your wall |
+| **Lava Worm Trophy** | Lava Worm | 50% | Your wall |
 | **Surtstone** ×1–2 | Muspell Giant | Always | Surtstone Amulet (below), the Surt Rune ([Smithing](smithing.md#etching-a-rune)) |
 | **Flametal Ore** ×6–10 | Muspell Giant | Always | Vanilla recipes |
-| **Muspell Giant Trophy** | Muspell Giant | 25% | Your wall |
+| **Muspell Giant Trophy** | Muspell Giant | 50% | Your wall |
 | **Huldra Bark** ×2–3 | Unmasked Huldra | Always | Huldra Draught (below) |
-| **Huldra's Tail** | Huldra, Unmasked Huldra | 10% / 25% | Your wall |
+| **Huldra's Tail** | Huldra, Unmasked Huldra | 50% | Your wall |
 | **Mare Hair** ×1–2 | Mare | Always | Mare Charm (below) |
-| **Mare Trophy** | Mare | 10% | Your wall |
+| **Mare Trophy** | Mare | 50% | Your wall |
 | **Spider Silk** ×1–2 | Giant Spider | Always | Gift of Loki ([Potions](potions.md)), mending Shore Nets ([Fishing nets](fishing.md)), the Spider's Web rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
 | **Poison Gland** | Giant Spider | 50% | Gift of Hel ([Potions](potions.md)), the Venom rune ([Smithing](smithing.md#-binding-and-rune-etching)) |
-| **Giant Spider Trophy** | Giant Spider | 10% | Your wall |
+| **Giant Spider Trophy** | Giant Spider | 50% | Your wall |
 | **Spider Silk** ×3–5 | Spider Nest | Always | As above |
 | **Desert Dragon Scale** ×4–6 | Desert Dragon | Always | Dragonscale Broth, Dragonfire Arrows (below) |
 | **Surtling Core** | Desert Dragon | 50% | Vanilla recipes |
-| **Desert Dragon Trophy** | Desert Dragon | 35% | Your wall |
+| **Desert Dragon Trophy** | Desert Dragon | 50% | Your wall |
 | **Mist Stag Meat** ×2–3 | Mist Stag | Always | Roast Mist Stag (below) |
-| **Mist Stag Trophy** | Mist Stag | 10% | Your wall |
+| **Mist Stag Trophy** | Mist Stag | 50% | Your wall |
 | **Brood Scale** ×2–3 | Nidhogg Spawn | Always | Brood Scale Charm (below) |
-| **Nidhogg Spawn Trophy** | Nidhogg Spawn | 10% | Your wall |
+| **Nidhogg Spawn Trophy** | Nidhogg Spawn | 50% | Your wall |
 | **Living Heartwood** ×1–2 | Yggdrasil Warden | Always | Heartwood Draught (below) |
-| **Yggdrasil Warden Trophy** | Yggdrasil Warden | 10% | Your wall |
+| **Yggdrasil Warden Trophy** | Yggdrasil Warden | 50% | Your wall |
 | **Garm Fang** ×1–2 | Garm Hound | Always | Garm Fang Arrow (below) |
-| **Garm Hound Trophy** | Garm Hound | 10% | Your wall |
+| **Garm Hound Trophy** | Garm Hound | 50% | Your wall |
 | **Garm Fang** ×3–5 | Night Garm | Always | Garm Fang Arrow (below) |
-| **Night Garm Trophy** | Night Garm | 25% | Your wall |
+| **Night Garm Trophy** | Night Garm | 50% | Your wall |
 | **Shark Meat** ×2–4 | Greenland Shark | Always | Hákarl (below) |
-| **Greenland Shark Trophy** | Greenland Shark | 10% | Your wall |
+| **Greenland Shark Trophy** | Greenland Shark | 50% | Your wall |
 | **Draugr Jarl Trophy** | Draugr Jarl | Always | Your wall |
 
 ### Made from Desert Dragon Scales
@@ -298,7 +298,7 @@ Sections `[Monsters.MistStag]`, `[Monsters.NidhoggSpawn]`, `[Monsters.YggdrasilW
 | `SpawnSeconds` | 300 / 400 / 600 / 250 / 400 / 300 | Seconds between two spawn checks |
 | `MaxSpawned` | 1 / 1 / 1 / 3 / 1 / 1 | Most around a player |
 | `GroupMin` / `GroupMax` | 2 / 3 | Garm Hound only: pack size |
-| `TrophyChance` | 10 (Night Garm 25) | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 50 | Percent chance of its trophy (after a restart) |
 | `Sounds` | true | Own sounds for idle, alert, attack, injury and death (after a restart) |
 | `WakeRange` | 8 | Yggdrasil Warden only: metres at which a player wakes it (after a restart) |
 | `RequiredKey` | defeated_bonemass | Greenland Shark only: global key needed first; empty for none |
@@ -344,7 +344,7 @@ Section `[Lindorm]` (admin only, synced from the server):
 | `StarScale` | 0.15 | Visual growth per star up to two stars (+15% / +30%; after a restart) |
 | `Sounds` | true | Own growls and rasps (after a restart) |
 | `GiveUpSeconds` | 25 | Seconds without prey in sight before it burrows away |
-| `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 50 | Percent chance of its trophy (after a restart) |
 
 On upgrade to 0.72.2, the previous Lindorm defaults (`Scale` 1.3, `Damage` 55) move to the new defaults once. Other configured values are preserved.
 
@@ -362,9 +362,9 @@ Section `[Lava Worm]` (admin only, synced from the server):
 | `Drag` | 150 | How hard a bite drags its prey towards it; 0 = no drag (after a restart) |
 | `Scale` | 2.2 | Size (1 = about 4 m long; default about 8.8 m; after a restart) |
 | `StarScale` | 0.12 | Visual growth per star up to two stars (+12% / +24%; after a restart) |
-| `GiveUpSeconds` | 20 | Seconds without prey in sight before it sinks back |
-| `LeashRange` | 18 | Metres from where it rose it follows its prey before it sinks back |
-| `TrophyChance` | 15 | Percent chance of its trophy (after a restart) |
+| `GiveUpSeconds` | 60 | Seconds without prey in sight, and without being hit, before it sinks back |
+| `LeashRange` | 30 | Metres from where it rose it follows its prey before it sinks back |
+| `TrophyChance` | 50 | Percent chance of its trophy (after a restart) |
 | `Sounds` | true | Own roars, hisses and bubbling lava (after a restart) |
 | `ArmorHeatResistance` | 0.25 | Share of the lava's heat each piece of [Lava Worm armour](#lava-worm-armour) takes off; the pieces add up |
 | `ArmorSetFire` | VeryResistant | How the whole set changes the fire damage you take |
@@ -375,8 +375,8 @@ Section `[Muspell Giant]` (admin only, synced from the server):
 |---|---|---|
 | `Enabled` | true | The Muspell Giant comes at all |
 | `RequiredKey` | defeated_queen | Global key needed first; empty for none |
-| `ChancePerMinute` | 3 | Percent chance a minute that one comes for a player out in the Ashlands; 0 = none |
-| `CooldownMinutes` | 45 | Real minutes before one can come for the same player again |
+| `ChancePerMinute` | 1.5 | Percent chance a minute that one comes for a player out in the Ashlands; 0 = none |
+| `CooldownMinutes` | 90 | Real minutes before one can come again for the same player, or anyone who was within 200 m of them |
 | `Health` | 9000 | Health (after a restart) |
 | `DamageMultiplier` | 3 | Its blows and rocks do the troll's blunt damage times this (after a restart) |
 | `FireShare` | 0.5 | Fire each blow and rock adds, as a share of its blunt damage (after a restart) |
@@ -384,7 +384,7 @@ Section `[Muspell Giant]` (admin only, synced from the server):
 | `PoolDamage` / `PoolRadius` / `PoolSeconds` | 20 / 2.2 / 8 | Fire damage per second, radius in metres and seconds of a burning pool |
 | `StepPoolSeconds` | 2 | Seconds between two pools in its steps; 0 = none |
 | `Sounds` | true | Own roars, heavy steps and roaring fire (after a restart) |
-| `TrophyChance` | 25 | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 50 | Percent chance of its trophy (after a restart) |
 | `AmuletHeatResistance` | 0.25 | Share of the lava's heat the Surtstone Amulet takes off |
 | `AmuletFire` | Resistant | How the Surtstone Amulet changes the fire damage you take |
 
@@ -402,7 +402,7 @@ Section `[Giant Spider]`:
 | `NestChancePerZone` | 0.15 | Chance of a nest in each Black Forest zone |
 | `NestHealth` | 300 | Health of a nest |
 | `NestMaxNear` | 3 | Spiders a nest keeps around it |
-| `TrophyChance` | 10 | Percent chance of a spider's trophy (after a restart) |
+| `TrophyChance` | 50 | Percent chance of a spider's trophy (after a restart) |
 | `NestSpawnSeconds` | 20 | Seconds between two spiders from a nest (after a restart) |
 | `NestLevelUpChance` | 10 | Percent chance a spider from a nest gets a star (after a restart) |
 | `NightSpawnChance` | 20 | Percent chance per spawn check of a lone spider at night; 0 = none |
@@ -429,7 +429,7 @@ Section `[Desert Dragon]`:
 | `FlyHeightMin` / `FlyHeightMax` | 5 / 12 | Metres above the ground it flies at (after a restart) |
 | `Scale` | 1 | Size (1 = about 8 m from wingtip to wingtip; after a restart) |
 | `Sounds` | true | Deep roars and growls, also on Black Dragons (after a restart) |
-| `TrophyChance` | 35 | Percent chance of its trophy (after a restart) |
+| `TrophyChance` | 50 | Percent chance of its trophy (after a restart) |
 | `ScalesMin` / `ScalesMax` | 4 / 6 | Desert Dragon Scales it drops (after a restart) |
 | `BurnsBuildings` | false | Its fire also damages the buildings it hits |
 | `GroundFire` | true | Dry terrain impacts leave short-lived flames; no spreading or terrain changes |

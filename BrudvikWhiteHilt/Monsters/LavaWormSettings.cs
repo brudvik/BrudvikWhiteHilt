@@ -89,11 +89,11 @@ public static class LavaWormSettings
             new AcceptableValueRange<float>(0f, 0.5f));
         Sounds = WhiteHiltConfig.BindAdminOnly(Section, "Sounds", true,
             "Use the Lava Worm's own roars, hisses and bubbling lava for idle, alert, bite, injury and death. Applies after a restart.");
-        GiveUpSeconds = WhiteHiltConfig.BindAdminOnly(Section, "GiveUpSeconds", 20f, "Seconds without prey in sight before the Lava Worm sinks back into the lava.",
+        GiveUpSeconds = WhiteHiltConfig.BindAdminOnly(Section, "GiveUpSeconds", 60f, "Seconds without prey in sight, and without being hit, before the Lava Worm sinks back into the lava.",
             new AcceptableValueRange<float>(5f, 600f));
-        LeashRange = WhiteHiltConfig.BindAdminOnly(Section, "LeashRange", 18f, "How far, in metres, from where it rose the Lava Worm follows its prey before it sinks back.",
+        LeashRange = WhiteHiltConfig.BindAdminOnly(Section, "LeashRange", 30f, "How far, in metres, from where it rose the Lava Worm follows its prey before it sinks back.",
             new AcceptableValueRange<float>(5f, 100f));
-        TrophyChance = WhiteHiltConfig.BindAdminOnly(Section, "TrophyChance", 15f, "Chance, in percent, that the Lava Worm drops its trophy. Applies after a restart.",
+        TrophyChance = WhiteHiltConfig.BindAdminOnly(Section, "TrophyChance", 50f, "Chance, in percent, that the Lava Worm drops its trophy. Applies after a restart.",
             new AcceptableValueRange<float>(0f, 100f));
         ArmorHeatResistance = WhiteHiltConfig.BindAdminOnly(Section, "ArmorHeatResistance", 0.25f,
             "How much less heat each piece of Lava Worm armour lets the lava build up (0.25 = 25%; the pieces add up, so the set gives 75%). 0.34 or more makes the whole set immune to lava. Applies when a piece is put on.",

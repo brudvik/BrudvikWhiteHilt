@@ -5,7 +5,7 @@ namespace BrudvikWhiteHilt.Monsters;
 
 /// <summary>
 /// Sits on the Lindorm. It breaks out of the ground where it spawns, and burrows back down when it has lost its prey for a
-/// while, or at dawn. While it is below ground it neither moves nor takes damage. The Lava Worm
+/// while (a hit counts as prey), or at dawn. While it is below ground it neither moves nor takes damage. The Lava Worm
 /// (<see cref="LavaWormBurrow"/>) rises out of the lava the same way, with its own settings.
 /// </summary>
 public class LindormBurrow : MonoBehaviour
@@ -61,6 +61,11 @@ public class LindormBurrow : MonoBehaviour
         depth = Depth;
         lastPrey = Time.time;
         instances.Add(this);
+        if (character != null)
+        {
+            character.m_onDamaged += OnDamaged;
+        }
+
         if (nview.IsValid() && nview.IsOwner() && nview.GetZDO().GetLong(StartKey) == 0L)
         {
             nview.GetZDO().Set(StartKey, ZNet.instance.GetTime().Ticks);
@@ -86,6 +91,16 @@ public class LindormBurrow : MonoBehaviour
     private void OnDestroy()
     {
         instances.Remove(this);
+        if (character != null)
+        {
+            character.m_onDamaged -= OnDamaged;
+        }
+    }
+
+    // A hit counts as prey: arrows from the shore keep it up, though it may not see who shot them.
+    private void OnDamaged(float damage, Character attacker)
+    {
+        lastPrey = Time.time;
     }
 
     // On the owner: sinks back into the ground when it has had no prey for a while, sooner at dawn if it only comes at
